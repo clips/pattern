@@ -1,0 +1,2431 @@
+arXiv:1701.00069v1 [math-ph] 31 Dec 2016
+
+Whitham modulation equations and application to small dispersion asymptotics and long time asymptotics of nonlinear dispersive equations
+Tamara Grava1,2 1SISSA, Via Bonomea 265, 34136 Trieste, Italy, grava@sissa.it 2School of Mathematics, University of Bristol, Bristol BS8 1TW, UK
+January 3, 2017
+
+Abstract
+In this chapter we review the theory of modulation equations or Whitham equations for the travelling wave solution of KdV. We then apply the Whitham modulation equations to describe the long-time asymptotics and small dispersion asymptotics of the KdV solution.
+
+1 Introduction
+
+The theory of modulation refers to the idea of slowly changing the constant pa-
+
+rameters in a solution to a given PDE. Let us consider for example the linear PDE
+
+in one spatial dimension
+
+ut + 2uxxx = 0,
+
+(1)
+
+where  is a small positive parameter. Such equation admits the exact travelling
+
+wave solution
+
+xt u(x,t) = a cos k + 
+
+,
+
+ = k3
+
+
+
+xt where a and k are constants. Here and are considered as fast variables since
+ 0 <  1. The general solution of equation (1) restricted for simplicity to even
+
+initial data f (x) is given by
+
+
+
+xt
+
+u(x,t; ) = F(k; ) cos k +  dk
+
+0
+
+
+
+where the function F(k; ) depends on the initial conditions by the inverse Fourier
+
+1 transform F(k; ) =
+
+
+ -
+
+f
+
+(x)e-ik
+
+x 
+
+dx.
+
+1
+
+For fixed , the large time asymptotics of u(x,t; ) can be obtained using the method of stationary phase
+
+u(x,t; )
+
+F(k; )
+
+2 cos t| (k)|
+
+k
+
+x 
+
++
+
+
+
+t 
+
+-
+
+ 4
+
+sign 
+
+(k)
+
+,
+
+(2)
+
+where now k = k(x,t) solves
+
+x +  (k)t = 0.
+
+(3)
+
+We will now obtain a formula compatible with (2) using the modulation theory. Let us assume that the amplitude a and the wave number k are slowly varying functions of space and time:
+
+a = a(x,t), k = k(x,t).
+
+Plugging the expression
+
+x
+
+t
+
+u(x,t; ) = a(x,t) cos k(x,t) + (x,t) ,
+
+
+
+
+
+into the equation (1) one obtains from the terms of order one the equations
+
+1
+
+kt =  (k)kx, at =  (k)ax + 2 a (k)kx,
+
+(4)
+
+dx which describe the modulation of the wave parameters a and k. The curve =
+dt - (k) is a characteristic for both the above equations. On such curve
+
+dk
+
+da 1
+
+= 0, dt
+
+dt = 2 a (k)kx.
+
+We look for a self-similar solution of the above equation in the form k = k(z) with z = x/t. The first equation in (4) gives
+
+(z +  (k))kz = 0
+
+which has the solutions kz = 0 or z +  (k) = 0. This second solution is equivalent to (3). Plugging this solution into the equation for the amplitude a one gets
+
+da a =- ,
+
+or a(x,t) = a0(k) ,
+
+dt 2t
+
+t
+
+for an arbitrary function a0(k). Such expression gives an amplitude a(x,t) compatible with the stationary phase asymptotic (2).
+
+2 Modulation of nonlinear equation
+
+Now let us consider a similar problem for a nonlinear equation, by adding a nonlinear term 6uux to the equation (1)
+
+ut + 6uux + 2uxxx = 0.
+
+(5)
+
+Such equation is called Korteweg de Vries (KdV) equation, and it describes the behaviour of long waves in shallow water. The coefficient 6 is front of the nonlinear
+
+2
+
+term, is just put for convenience. The KdV equation admits the travelling wave
+
+solution
+
+1 u(x,t; ) = ( ),  = (kx - t + 0),
+
+
+where we assumed that  is a 2-periodic function of its argument and 0 is an
+
+arbitrary constant. Plugging the above ansatz into the KdV equation one obtains
+
+after a double integration
+
+k2 2
+
+2
+
+=
+
+- 3
+
++V2
+
++ B
+
++
+
+A,
+
+V= , 2k
+
+(6)
+
+where A and B are integration constants and V is the wave velocity. In order to get a periodic solution, we assume that the polynomial -3 + V 2 + B + A =
+-( - e1)( - e2)( - e3) with e1 > e2 > e3. Then the periodic motion takes place for e2    e1 and one has the relation
+
+k
+
+d
+
+= d,
+
+(7)
+
+2(e1 - )( - e2)( - e3)
+
+so that integrating over a period, one obtains
+
+e1
+2k
+
+d
+
+= d = 2.
+
+e2 2(e1 - )( - e2)( - e3)
+
+It follows that the wavenumber k = 2 is expressed by a complete integral of the L
+first kind:
+
+k =  (e1 - e3) , 2K(m)
+
+m = e1 - e2 , e1 - e3
+
+ 2
+K(m) :=
+0
+
+d
+
+,
+
+1 - m2 sin2 
+
+(8)
+
+and the frequency
+
+ = 2k(e1 + e2 + e3) ,
+
+(9)
+
+is obtained by comparison with the polynomial in the r.h.s. of (6). Performing an
+
+integral between e1 and  in equation (7) one arrives to the equation
+
+
+
+
+
+ 0
+
+d
+
+= -
+
+1 - s2 sin2 
+
+e1 - e3 + K(m), 2k
+
+cos 
+
+=
+
+  - e1 e2 - e1
+
+.
+
+ Introducing the Jacobi elliptic function cn - e1 - e3 + K(m); m = cos  and
+2k using the above equations we obtain
+
+u(x,t; ) = ( ) = e2 + (e1 - e2)cn2
+
+ e1 - e3 2
+
+x -  t + 0 kk
+
+- K(m); m , (10)
+
+where we use also the evenness of the function cn(z; m). The function cn2(z; m) is periodic with period 2K(m) and has its maximum at
+
+z = 0 where cn(0; m) = 1 and its minimum at z = K(m) where cn(K(m); m) = 0.
+
+Therefore from (10), the maximum value of the function u(x,t; ) is umax = e1 and the minimum value is umin = e2.
+
+3
+
+2.1 Whitham modulation equations
+
+Now, as we did it in the linear case, let us suppose that the integration constants A, B and V depend weekly on time and space
+
+A = A(x,t), B = B(x,t), V = V (x,t).
+
+It follows that the wave number and the frequency depends weakly on time and too. We are going to derive the equations of A = A(x,t), B = B(x,t) and V = V (x,t) in such a way that (10) is an approximate solution of the KdV equation (5) up to subleading corrections. We are going to apply the nonlinear analogue of the WKB theory introduced in [19]. For the purpose let us assume that
+
+u = u( (x,t), x,t),  = 
+
+(11)
+
+
+
+Pluggin the ansatz (11) into the KdV equation one has
+
+u
+
+t 
+
++ ut
+
++ 6u(u
+
+x 
+
++ ux) +
+
+x3 
+
+u
+
+
+
+
+
++ 3x2ux + 3xuxx + 3xxu x
+
+(12)
+
++ 3xxxu + xxxu + 2uxxx = 0.
+
+Next assuming that u has an expansion in power of , namely u = u0 + u1 + 2u2 + . . . one obtain from (12) at order 1/
+
+t u0, + 6xu0u0, + x3u0, = 0. The above equation gives the cnoidal wave solution (10) if u0( ) = ( ) and
+
+t = -, x = k,
+
+(13)
+
+where k and  are the frequency and wave number of the cnoidal wave as defined in (8) and (9) respectively. Compatibility of equation (13) gives
+
+kt + x = 0,
+
+(14)
+
+which is the first equation we are looking for. To obtain the other equations let us introduce the linear operator
+
+L
+
+:=
+
+ 
+
+
+- 6k  
+
+u0
+
+-
+
+k3
+
+3 3
+
+,
+
+with
+
+formal
+
+adjoint
+
+L
+
+
+
+=
+
+
+
+ 
+
+- 6ku0
+
+ 
+
+- k3
+
+3 3
+
+.
+
+Then
+
+at
+
+order
+
+0
+
+equation
+
+(12) gives
+
+L u1 =R(u0), R(u0) := u0,t + 6u0u0,x + 3x2u0,x + 3xxxu0, .
+
+In a similar way it is possible to get the equations for the higher order correction
+terms. A condition of solvability of the above equation can be obtained by ob-
+serving that the integral over a period of the l.h.s of the above equation against the
+constant function and the function u0 is equal to zero because 1 and u0 are in the kernel of L . Therefore it follows that
+
+0=
+
+2
+R(u0)d = t
+
+2
+u0d + 3x
+
+2 u20d
+
+0
+
+0
+
+0
+
+4
+
+and
+
+0=
+
+2
+u0R(u0)d =t
+0
+
+2 0
+
+1 2
+
+u20d
+
++ 2x
+
+2
+0 u30d
+
++ 3 2 u0(x2u0,x + xxxu0, )d .
+0
+
+By denoting with the bracket . the average over a period, we rewrite the above two equations, after elementary algebra and an integration by parts, in the form
+
+t u0 + 3x u20 = 0
+
+(15)
+
+t u20 + 4x u30 - 3x x2u20, = 0.
+
+(16)
+
+Using the identities
+
+u0u0, + u20, = 0, u0, = 0,
+
+and (6), we obtained the identities for the elliptic integrals
+
+e2
+
+5 3
+
+- 4V 2
+
+- 3B
+
+- 2A d
+
+=
+
+0,
+
+e1 -3 +V 2 + B + A
+
+e2 -32 + 2V  + B d = 0. e1 -3 +V 2 + B + A
+
+
+
+Introducing the integral W :=
+
+2 
+
+e2 e1
+
+-3 +V 2 + B + Ad and using the
+
+above two identities and the relations kWA = 1, u0 = 2kWB and u20 = 2kWV
+
+where WA, WB and WV are the partial derivatives of W with respect to A, B and V
+
+respectively, we can reduce (14), (15) and (16) to the form
+
+ t
+
+WA
+
++ 2V
+
+ x
+
+WA
+
+-
+
+2WA
+
+ x
+
+V
+
+=
+
+0
+
+(17)
+
+ t
+
+WB
+
++
+
+2V
+
+ x
+
+WB
+
++ WA
+
+ x
+
+B
+
+=
+
+0
+
+(18)
+
+ t
+
+WV
+
++
+
+2V
+
+ x
+
+WV
+
+-
+
+2WA
+
+ x
+
+A
+
+=
+
+0.
+
+(19)
+
+The equation (17), (18) and (19) are the Whitham modulation equations for the parameters A, B and V . The same equations can also be derived according to Whitham's original ideas of averaging method applied to conservation laws, to Lagrangian or to Hamiltonians [60]. Using e1, e2 and e3 as independent variables, instead of their symmetric function A, B and V , Whitham reduced the above three equations to the form
+
+ 
+t
+
+ei
+
++
+
+3
+ik
+k=1
+
+ x
+
+ek
+
+=
+
+0,
+
+i = 1, 2, 3,
+
+(20)
+
+for the matrix ik given by
+
+e1 WA  = 2V -WA e1WB
+e1 WV
+
+e2 WA e2 WB e2 WB
+
+e3WA-1  2
+
+e3WB e2 + e3
+
+e3 WV
+
+2e2e3
+
+2 e1 + e3 2e1e3
+
+2 e1 + e2 , 2e1e2
+
+where eiWA is the partial derivative with respect to ei and the same notation holds for the other quantities. Equations (20) is a system of quasi-linear equations for
+
+5
+
+ei = ei(x,t), j = 1, 2, 3. Generically, a quasi-linear 3 × 3 system cannot be reduced to a diagonal form. However Whitham, analyzing the form of the matrix  , was able to get the Riemann invariants that reduce the system to diagonal form. Indeed making the change of coordinates
+
+1
+
+=
+
+e2
+
++ e1 2
+
+,
+
+2 =
+
+e1 + e3 , 2
+
+3 =
+
+e2 + e3 , 2
+
+(21)
+
+with 3 < 2 < 1,
+the Whitham modulation equations (20) are diagonal and take the form
+
+ t
+
+i
+
++
+
+i
+
+ x
+
+i
+
+=
+
+0,
+
+i = 1, 2, 3,
+
+(22)
+
+where the characteristics speeds i = i(1, 2, 3) are
+
+i
+
+=
+
+2(1
+
++
+
+2
+
++ 3)
+
++ 4 i=k(i - i + 
+
+k )
+
+,
+
+(23)
+
+E (m)
+
+
+
+=
+
+-1
+
++ (1
+
+-
+
+3)
+
+, K(m)
+
+m = 2 - 3 , 1 - 3
+
+(24)
+
+where E(m) =
+
+ /2 0
+
+1 - m sin 2d is the complete elliptic integral of the sec-
+
+ond kind. Another compact form of the Whitham modulations equations (22) is
+
+ k  i +    i = 0, i = 1, 2, 3,
+
+(25)
+
+ i  t  i  x
+
+where the above equations do not contain the sum over repeated indices. Observe
+that the above expression can be derived from the conservation of waves (14) by
+assuming that the Riemann invariants 1 > 2 > 3 vary independently. Such form (25) is quite general and easily adapts to other modulation equations ( see for
+example the book [37]). The equations (25) gives another expression for the speed k
+i = 2(1 + 2 + 3) + 2 i k which was obtained in [33]. The Whitham equations are a systems of 3 × 3 quasi-linear hyperbolic equa-
+tions namely for 1 > 2 > 3 one has [45]
+
+1 > 2 > 3.
+
+Using the expansion of the elliptic integrals as m  0 (see e.g. [43])
+
+K(m) = 
+
+m 1+ +
+
+9
+
+m2 + O(m3)
+
+,
+
+2
+
+4 64
+
+and m  1
+
+E(m) =  2
+
+m 1- -
+
+3
+
+m2 + O(m3)
+
+,
+
+4 64
+
+(26)
+
+E (m)
+
+1
+
++
+
+1
+
+(1
+
+-
+
+ m)
+
+log
+
+16
+
+-1 ,
+
+K(m)
+
+1 log
+
+16
+
+,
+
+(27)
+
+2
+
+1-m
+
+2 1-m
+
+one can verify that the speeds i have the following limiting behaviour respectively · at 2 = 1
+
+1(1, 1, 3) = 2(1, 1, 3) = 41 + 23
+
+(28)
+
+3(1, 1, 3) = 63;
+
+6
+
+· at 2 = 3 one has
+
+1(1, 3, 3) = 61
+
+(29)
+
+2(1, 3, 3) = 3(1, 3, 3) = 123 - 61.
+
+Namely,
+
+when
+
+1
+
+=
+
+2,
+
+the
+
+equation
+
+for
+
+3
+
+reduces
+
+to
+
+the
+
+Hopf
+
+equation
+
+ t
+
+3
+
++
+
+63
+
+ x
+
+3
+
+=
+
+0.
+
+In
+
+the
+
+same
+
+way
+
+when
+
+2
+
+=
+
+3
+
+the
+
+equation
+
+for
+
+1
+
+reduces
+
+to
+
+the
+
+Hopf equation.
+
+In the coordinates i, i = 1, 2, 3 the travelling wave solution (10) takes the form
+
+u(x,t; ) = 1 + 3 - 2 + 2(2 - 3)cn2 K(m)  + K(m); m ,
+
+(30)
+
+
+
+where
+
+ := kx - t + 0 = 
+
+1 - 3 K(m)
+
+(x
+
+-
+
+2t
+
+(1
+
++
+
+2
+
++
+
+3))
+
++
+
+0
+
+,
+
+m = 2 - 3 . 1 - 3
+
+(31)
+
+We recall that
+
+k=
+
+1 - 3 , K(m)
+
+ = 2k(1 + 2 + 3),
+
+(32)
+
+are the wave-number and frequency of the oscillations respectively.
+In the formal limit 1  2, the above cnoidal wave reduce to the soliton solution since cn(z, m) m1 sech(z), while the limit 2  3 is the small amplitude limit where the oscillations become linear and cn(z, m) m0 cos(z). Using identi-
+
+ties among elliptic functions [43] we can rewrite the travelling wave solution (30)
+
+using theta-functions
+
+u(x, t ,
+
+)
+
+=
+
+1
+
++
+
+2
+
++
+
+3
+
++
+
+2
+
++
+
+2 2
+
+2  x2
+
+log
+
+
+
+(x, t ) 2 
+
+;
+
+
+
+,
+
+(33)
+
+with  as in (24) and where for any z  C the function  (z; ) is defined by the
+
+Fourier series
+
+  (z; ) = ein2+2inz, nZ
+
+K (m)  = i K(m) .
+
+(34)
+
+The formula (33) is a particular case of the Its-Matveev formula [35] that describes
+
+the quasi-periodic solutions of the KdV equation through higher order  -functions.
+
+Remark 2.1 We remark that for fixed 1, 2 and 3, formulas (30) or (33) give an exact solution of the KdV equation (5), while when  j =  j(x,t) evolves according to the Whitham equations, such formulas give an approximate solution of the KdV equation (5). We also remark that in the derivation of the Whitham equations, we did not get any information for an eventual modulation of the arbitrary phase 0. The modulation of the phase requires a higher order analysis, that won't be explained here. However we will give below a formula for the phase.
+
+Remark 2.2 The Riemann invariants 1, 2 and 3 have an important spectral meaning. Let us consider the spectrum of the Schro¨dinger equation
+
+
+
+2
+
+d2 dx2
+
+
+
++
+
+u
+
+=
+
+-
+
+,
+
+7
+
+where u(x,t; ) is a solution of the KdV equation. The main discovery of Gardener, Green Kruskal and Miura [26] is that the spectrum of the Schro¨dinger operator is constant in time if u(x,t; ) evolve according to the KdV equation. This important observation is the starting point of inverse scattering and the modern theory of integrable systems in infinite dimensions.
+If u(x,t; ) is the travelling wave solution (33), where 1 > 2 > 3 are constants, then the Schro¨dinger equation coincides with the Lame´ equation and its spectrum coincides with the Riemann invariants 1 > 2 > 3. The stability zones of the spectrum are the bands (-, 3]  [2, 1]. The corresponding solution (x,t;  ) of the Schro¨dinger equation is quasi-periodic in x and t with monodromy
+(x + L,t;  ) = eip( )L(x,t;  )
+
+and (x,t + T ;  ) = eiq( )T (x,t;  ),
+where L and T are the wave-length and the period of the oscillations. The functions p( ) and q( ) are called quasi-momentum and quasi-energy and for the cnoidal wave solution they take the simple form
+
+
+
+
+
+p( ) = d p( ), q( ) = dq( ),
+
+2
+
+2
+
+where d p and dq are given by the expression
+
+d p( ) =
+
+( + )d
+
+,
+
+dq(
+
+)
+
+=
+
+12
+
+(
+
+2
+
+-
+
+1 2
+
+(1
+
++
+
+2
+
++
+
+3)
+
++
+
+ )d 
+
+2 (1 -  )( - 2)( - 3)
+
+2 (1 -  )( - 2)( - 3)
+
+with
+
+the
+
+constant
+
+
+
+defined
+
+in
+
+(24)
+
+and
+
+
+
+=
+
+ 6
+
+(1
+
++
+
+2
+
++
+
+3)
+
++
+
+1 3 (12
+
++
+
+13
+
++
+
+23) Note that the constants  and  are chosen so that
+
+2
+d p = 0,
+3
+
+2
+dq = 0.
+3
+
+The square root (1 -  )( - 2)( - 3) is analytic in the complex place C\{(-, 3] [2, 1]} and real for large negative  so that p( ) and q( ) are real in the stability zones. The Whitham modulation equations (22) are equivalent to
+
+ t
+
+d
+
+p(
+
+)
+
++
+
+ x
+
+dq(
+
+)
+
+=
+
+0,
+
+(35)
+
+for
+
+any
+
+.
+
+Indeed
+
+by
+
+multiplying
+
+the
+
+above
+
+equation
+
+by
+
+(
+
+-
+
+i
+
+)
+
+3 2
+
+and
+
+taking
+
+the
+
+limit   i, one gets (22). Furthermore
+
+1
+
+1
+
+k = d p,  = dq,
+
+2
+
+2
+
+with k and  the wave-number and frequency as in (32), so that integrating (35) between 1 and 2 and observing that the integral does not depend on the path of integration one recovers the equation of wave conservation (14).
+
+8
+
+3 Application of Whitham modulation equations
+
+As in the linear case, the modulation equations have important applications in the description of the solution of the Cauchy problem of the KdV equation in asymptotic limits. Let us consider the initial value problem
+
+ut + 6uux + 2uxxx = 0 u(x, 0; ) = f (x),
+
+(36)
+
+where f (x) is an initial data independent from . When we study the solution of such initial value problem u(x,t; ) one can consider two limits:
+· the long time behaviour, namely
+
+u(x,t; ) t ?,  fixed;
+
+· the small dispersion limit, namely u(x,t; ) 0 ?, x and t in compact sets.
+
+These two limits have been widely studied in the literature. The physicists Gurevich and Pitaevski [31] were among the first to address these limits and gave an heuristic solution imitating the linear case. Let us first consider one of the case studied by Gurevich and Pitaevski, namely a decreasing step initial data
+
+f (x) =
+
+c 0
+
+for x < 0, c > 0, for x > 0.
+
+(37)
+
+Using the Galileian invariance of KdV equation, namely x  x + 6Ct, t  t and u  u +C, every initial data with a single step can be reduced to the above form. The above step initial data is invariant under the rescaling x/  x and t/ , therefore, in this particular case it is completely equivalent to study the small  asymptotic, or the long time asymptotics of the solution.
+Such initial data is called compressive step, and the solution of the Hopf equation vt + 6vvx = 0 ( = 0 in (36) ) develop a shock for t > 0. The shock front s(t) moves with velocity 3ct while the multi-valued piece-wise continuos solution of the Hopf equation vt + 6vvx = 0 for the same initial data is given by
+
+c
+
+
+
+
+
+
+
+
+
+ 
+
+x
+
+v(x,t) =
+
+ 6t
+
+
+
+
+
+
+
+
+
+0
+
+for x < 6tc, for 0  x  6tc, for x  0.
+
+For t > 0 the solution u(x,t; ) of the KdV equation develops a train of oscillations near the discontinuity. These oscillations are approximately described by the travelling wave solution (33) of the KdV equation where i = i(x,t), i = 1, 2, 3, evolve according to the Whitham equations. However one needs to fix the solution of the Whitham equations. Given the self-similar structure of the solution of the Hopf equation, it is natural to look for a self-similar solution of the Whitham
+
+9
+
+x equation in the form i = i(z) with z = t . Applying this change of variables to the Whitham equations one obtains
+
+(i
+
+-
+
+z)
+
+ i z
+
+= 0,
+
+i = 1, 2, 3,
+
+(38)
+
+whose solution is i = z or zi = 0. A natural request that follows from the
+
+relations (28) and (29) is that at the right boundary of the oscillatory zone z+, when
+
+1(z+) = 2(z+), the function 3 has to match the Hopf solution that is constant
+
+and equal to zero, namely 3(z+) = 0. Similarly, at the left boundary z- when
+
+2(z-) = 3(z-), the function 1(z-) = c so that it matches the Hopf solution.
+
+From these observations it follows that the solution of (38) for z-  z  z+ is
+
+given by
+
+1(z) = c, 3(z) = 0, z = 2(c, 2, 0).
+
+(39)
+
+In order to determine the values z± it is sufficient to let 2  c and 2  0 respectively in the last equation in (39). Using the relations (28) and (29) one has 2(c, c, 0) = 4c and 2(c, 0, 0) = -6c so that
+
+z- = -6c, or x-(t) = -6ct and z+ = 4c, or x+(t) = 4ct.
+
+According to Gurevich and Pitaevski for -6ct < x < 4t and t 1, the asymptotic solution of the Korteweg de Vries equation with step initial data (37) is given by the modulated travelling wave solution (30), namely
+
+
+
+u(x,t; ) c - 2 + 22 cn2
+
+c
+
+K(m)
+
+(x - 2t(c + 2)) +
+
+0 + K(m); m , (40)
+
+
+
+
+
+with m = 2(x,t) , c
+where 2(x,t) is given by (39). The phase 0 in (40) has not been described by Gurevich and Pitaevski. Finally in the remaining regions of the (x,t > 0) one has
+
+u(x,t, )
+
+c for x < -6ct, 0 for x > 4ct.
+
+This heuristic description has been later proved in a rigorous mathematical way
+(see the next section). We remark that at the right boundary x+(t) of the oscillatory zone, when 2  c, 1  c and 3  0, the cnoidal wave (40) tends to a soliton, cn(z; m)  sechz as m  1.
+Using the relation x+(t) = 4ct, the limit of the elliptic solution (40) when 2  1  c gives
+
+u(x,t, )
+
+2c sech2
+
+x
+
+-
+
+x+ (t )
+
+ c
+
++
+
+1
+
+log
+
+16c
+
+
+
+2
+
+c - 2
+
++ ~0 , 
+
+(41)
+
+where the logarithmic term is due to the expansion of the complete elliptic integral
+K(m) as in (27) and c - 2 = O(). The determination of the limiting value of the phase ~0 requires a deeper analysis [11]. The important feature of the above formula is that if the argument of the sech term is approximately zero near the
+point x+(t), then the height of the rightmost oscillation is twice the initial step c.
+
+10
+
+u
+
+t=12 1.6
+
+1.2
+
+0.8
+
+0.4
+
+0
+
+-100 -80
+
+-60
+
+-40
+
+-20
+
+0
+
+20
+
+40
+
+60
+
+80
+
+100
+
+x
+
+Figure 1: In black the initial data (a smooth step) and in blue KdV solution at time t = 12 and  = 1. One can clearly see the height of the rightmost oscillation (approximately a soliton) is about two times the height of the initial step
+
+This occurs for a single step initial data (see figure 1) while for step-like initial data as in figure 2 this is clearly less evident.
+The Gurevich Pitaevsky problem has been studied also for perturbations of the KdV equation with forcing, dissipative or conservative non integrable terms [24],[37],[38] and applied to the evolution of solitary waves and undular bores in shallow-water flows over a gradual slope with bottom friction [25].
+3.1 Long time asymptotics
+The study of the long time asymptotic of the KdV solution was initiated around 1973 with the work of Gurevich and Pitaevski [31] for step-initial data and Ablowitz and Newell [1] for rapidly decreasing initial data. By that time it was clear that for rapidly decreasing initial data the solution of the KdV equation splits into a number of solitons moving to the right and a decaying radiation moving to the left. The first numerical evidence of such behaviour was found by Zabusky and Kruskal [42]. The first mathematical results were given by Ablowitz and Newell [1] and Tanaka [51] for rapidly decreasing initial data. Precise asymptotics on the radiation part were first obtained by Zakharov and Manakov, [61], Ablowitz and Segur [2] and Buslaev and Sukhanov [7], Venakides [57]. Rigorous mathematical results were also obtained by Deift and Zhou [17], inspired by earlier work by Its [36]; see also the review [14] and the book [49] for the history of the problem. In [2], [32] the region with modulated oscillations of order O(1) emerging in the long time asymptotics was called collisionless shock region. In the physics and applied mathematics literature such oscillations are also called dispersive shock waves, dissipationless shock wave or undular bore. The phase of the oscillations was obtained in [16]. Soon after the Gurevich and Pitaevski's paper, Khruslov [40] studied the long time asymptotic of KdV via inverse scattering for step-like initial data. In more recent works, using the techniques introduced in [17], the long time asymptotic of KdV solution has been obtained for step like initial data improving some error estimates obtained earlier and with the determination of the phase 0 of the oscillations [23], see also [3]. Long time asymptotic of KdV with different boundary conditions at infinity has been considered in [5]. The long time asymptotic of the expansive step has been considered in [46].
+
+11
+
+Here we report from [23] about the long time asymptotics of KdV with step like initial data f (x), namely initial data converging rapidly to the limits
+
+f (x)  0
+
+for x  +
+
+f (x)  c > 0 for x  -,
+
+(42)
+
+but in the finite region of the x plane any kind of regular behaviour is allowed. The initial data has to satisfy the extra technical assumption of being sufficiently smooth. Then the asymptotic behaviour of u(x,t; ) for fixed  and t   has been obtained applying the Deift-Zhou method in [17]:
+
+· in the region x/t > 4c +  , for some  > 0, the solution is asymptotically given by the sum of solitons if the initial data contains solitons otherwise the solution is approximated by zero at leading order;
+
+· in the region -6c + 1 < x/t < 4c - 2, for some 1, 2 > 0, (collision-less shock region) the solution u(x,t; ) is given by the modulated travelling wave
+(40), or using  -function by (33), namely
+
+E(m) 2k2 u(x,t; ) = 2(x,t)-c+2c K(m) + (2)2
+
+log 
+
+kx - t + 0 ;  2 
+
+where
+
+
+
+c k =  K(m) ,
+
+ = 2k(c + 2),
+
+m = 2(x,t) c
+
++ o(1) (43)
+
+with 2 = 2(x,t) determined by (39). In the above formula the prime in the
+log  means derivative with respect to the argument, namely (log  (z0; )) = d2 dz2 log  (z + z0; ))|z=0. The phase 0 is
+
+k 0 = 
+
+c
+
+log
+
+|T¯
+
+ (i z)T1(i z)|dz
+
+,
+
+2 z(c - z)(z - 2)
+
+(44)
+
+where T and T1 are the transmission coefficients of the Schro¨dinger equation
+
+2
+
+d2 dx2
+
+
+
++
+
+f
+
+(x)
+
+=
+
+-
+
+
+
+from
+
+the
+
+right
+
+and
+
+left
+
+respectively.
+
+The remarkable feature of formula (43) is that the description of the collision-
+
+less shock region for step-like initial data coincides with the formula ob-
+
+tained by Gurevich and Pitaevsky for the single step initial data (37) up to a
+
+phase factor. Indeed the initial data is entering explicitly through the trans-
+
+mission coefficients only in the phase 0 of the oscillations.
+
+· In the region x/t < -6t -3, for some constant 3 > 0, the solution is asymptotically close to the background c up to a decaying linear oscillatory term.
+
+We remark that the higher order correction terms of the KdV solution in the large t limit can be found in [2], [7], [23], [61]. For example in the region x < -6tc the solution is asymptotically close to the background c up to a decaying linear oscillatory term. We also remark that the boundaries of the above three regions of the (x,t) plane have escaped our analysis. In such regions the asymptotic description of the KdV solution is given by elementary functions or Painleve´ trascendents see [50] or the more recent work [6].
+The technique introduced by Deift-Zhou [17] to study asymptotics for integrable equations has proved to be very powerful and effective to study asymptotic
+
+12
+
+behaviour of many other integrable equations like for example the semiclassical limit of the focusing nonlinear Schro¨dinger equation [39], the long time asymptotics of the Camassa-Holm equation [6] or the long time asymptotic of the perturbed defocusing nonlinear Schro¨dinger equation [18].
+
+u
+
+3
+
+2
+
+1
+
+0
+
+-1
+
+-100 -80
+
+-60
+
+-40
+
+-20
+
+0
+
+20
+
+40
+
+60
+
+80
+
+100
+
+x
+
+u
+
+3
+
+2
+
+1
+
+0
+
+-1
+
+-100 -80
+
+-60
+
+-40
+
+-20
+
+0
+
+20
+
+40
+
+60
+
+80
+
+100
+
+x
+
+Figure 2: On top the step-like initial data and on bottom the solution at time t = 12. One can clearly see the soliton region containing two solitons and the collision-less shock region where modulated oscillations are formed.
+
+3.2 Small  asymptotic
+The idea of the formation of an oscillatory structure in the limit of small dispersion of a dispersive equation belongs to Sagdeev [48]. Gurevish and Pitaevskii in 1973 called the oscillations, arising in the small dispersion limit of KdV, dispersive shock waves in analogy with the shock waves appearing in the zero dissipation limit of the Burgers equation. A very recent experiment in a water tank has been set up where the dispersive shock waves have been reproduced [55].
+The main steps for the description of the dispersive shock waves are the following:
+· as long as the solution of the Cauchy problem for Hopf equation vt + 6vvx = 0 with the initial data v(x, 0) = f (x) exists, then the solution of the KdV equation u(x,t; ) = v(x,t) + O(2). Generically the solution of the Hopf equation obtained by the method of characteristics
+
+v(x,t) = f ( ), x = f ( )t +  ,
+
+(45)
+
+develops a singularity when the function  =  (x,t) given implicitly by the map x = f ( )t +  is not uniquely defined. This happens at the first time when f ( )t + 1 = 0 and f ( ) = 0 (see Figure 3). These two equations
+
+13
+
+0.5
+
+0
+
+u
+
+-0.5
+
+-1
+
+-8
+
+-6
+
+-4
+
+-2
+
+0
+
+2
+
+4
+
+x
+
+Figure 3: In blue the solution of the KdV equation for the initial data f (x) = -sech2(x) at the time t = 0.55 for  = 10-1. In black the (multivalued) solution of the Hopf
+equation for the same initial data and for several times: t = 0, t = tc = 0.128, t = 0.35 and t = 0.55.
+
+and (45) fix uniquely the point (xc,tc) and uc = v(xc,tc). At this point, the gradient blow up: vx(x,t)|xc,tc  .
+· The solution of the KdV equations remains smooth for all positive times. Around the time when the solution of the Hopf equation develops its first singularity at time tc, the KdV solution, in order to compensate the formation of the strong gradient, starts to oscillate, see Figure 3. For t > tc the solution of the KdV equation u(x,t; ) is described as   0 as follows:
+­ there is a cusp shape region of the (x,t) plane defined by x-(t) < x < x+(t) with x-(tc) = x+(tc) = xc. Strictly inside the cusp, the solution u(x,t; ) has an oscillatory behaviour which is asymptotically described by the travelling wave solution (33) where the parameters  j =  j(x,t), j = 1, 2, 3, evolve according to the Whitham modulation equations.
+­ Strictly outside the cusp-shape region the KdV solution is still approximated by the solution of the Hopf equation, namely u(x,t; ) = v(x,t) + O(2).
+Later the mathematicians Lax-Levermore [44] and Venakides [58], [59] gave a rigorous mathematical derivation of the small dispersion limit of the KdV equation by solving the corresponding Cauchy problem via inverse scattering and doing the small  asymptotic. Then Deift, Venakides and Zhou [15] obtained an explicit derivation of the phase 0. The error term O(2) of the expansion outside the oscillatory zone was calculated in [12]. For analytic initial data, the small  asymptotic of the solution u(x,t; ) of the KdV equation is given for some times t > tc and within a cusp x-(t) < x < x+(t) in the (x,t) plane by the formula (33) where  j =  j(x,t) solve the Whitham modulations equations (22). The phase 0 in the argument of the theta-function will be described below. In the next section we will explain how to construct the solution of the Whitham equations.
+3.2.1 Solution of the Whitham equations
+The solution 1(x,t) > 2(x,t) > 3(x,t) of the Whitham equations can be considered as branches of a multivalued function and it is fixed by the following conditions.
+
+14
+
+· Let (xc,tc) be the critical point where the solution of the Hopf equation develops its first singularity and let uc = v(xc,tc). Then at t = tc
+
+1(xc,tc) = 2(xc,tc) = 3(xc,tc) = uc;
+
+· for t > tc the solution of the Whitham equations is fixed by the boundary value problem ( see Fig.4)
+­ when 2(x,t) = 3(x,t), then 1(x,t) = v(x,t); ­ when 1(x,t) = 2(x,t), then 3(x,t) = v(x,t), where v(x,t) solve the Hopf equation.
+From the integrability of the KdV equation, one has the integrability of the Whitham equations [22]. This is a non trivial fact. However we give it for granted and assume that the Whitham equations have an infinite family of commuting flows:
+
+ s
+
+i
+
++
+
+wi
+
+ x
+
+i
+
+=
+
+0,
+
+i = 1, 2, 3.
+
+The compatibility condition of the above flows with the Whitham equations (22),
+
+implies that
+
+ t
+
+ s
+
+i
+
+=
+
+ s
+
+ t
+
+i
+
+.
+
+From these compatibility conditions it follows
+
+that
+
+wi
+
+1 -wj
+
+ j
+
+wi
+
+=
+
+i
+
+1 -j
+
+ j
+
+i,
+
+i= j
+
+(46)
+
+where the speeds i's are defined in (22). Tsarev [56] showed that if the wi = wi(1, 2, 3) satisfy the above linear
+overdetermined system, then the formula
+
+x = it + wi, i = 1, 2, 3,
+
+(47)
+
+that is a generalisation of the method of characteristics, gives a local solution of the Whitham equations (22). Indeed by subtracting two equations in (47) with different indices we obtain
+
+(i -  j)t + wi - w j = 0,
+
+or
+
+t = - wi - w j . i -  j
+
+(48)
+
+Taking the derivative with respect to x of the hodograph equation (47) gives
+
+3  i t +  wi   j = 1.
+j=1   j   j  x
+
+Substituting in the above formula the time as in (48) and using (46), one get that only the term with j = i surveys, namely
+
+ i t +  wi  i = 1.  i  i  x In the same way, making the derivative with respect to time of (47) one obtains
+
+ i t +  wi  i  i
+
+ i t
+
++
+
+i
+
+=
+
+0.
+
+The above two equations are equivalent to the Whitham system (22). The transformation (47) is called also hodograph transform. To complete the integration
+
+15
+
+one needs to specify the quantities wi that satisfy the linear overdetermined system (46). As a formal ansatz we look for a conservation law of the form
+
+sk + x(kq) = 0,
+
+with k the wave number and the function q = q(1, 2, 3) to be determined (recall that q = 2(1 + 2 + 3) for the Whitham equations (22)). Assuming that the i evolves independently, such ansatz gives wi of the form
+
+ 1
+wi = 2
+
+3
+vi - 2 k
+k=1
+
+ q + q,  i
+
+i = 1, 2, 3.
+
+(49)
+
+Plugging the expression (49) into (46), one obtains equations for the function q = q(1, 2, 3)
+
+ q -  q = 2(i -  j)  2q , i = j, i, j = 1, 2, 3.
+
+(50)
+
+ i   j
+
+ i  j
+
+Such system of equations is a linear over-determined system of Euler-Poisson Darboux type and it was obtained in [33] and [53]. The boundary conditions on the i specified at the beginning of the section fix uniquely the solution. The integration of (50) was performed for particular initial data in several different works (see e.g. [37], or [47], [33]) and for general smooth initial data in [53],[54]. The boundary conditions require that when 1 = 2 = 3 =  , then q( ,  ,  ) = hL( ) where hL is the inverse of the decreasing part of the initial data f (x). The resulting function q(1, 2, 3) is [53]
+
+q(1, 2, 3)
+
+=
+
+1 2 2
+
+1 -1
+
+1 -1
+
+dµd
+
+hL(
+
+1+µ 2
+
+(
+
+1+
+2
+
+1
+
+1-
+
++1-2 2) + µ 1-2
+
+1-µ 2
+
+3)
+
+.
+
+(51)
+
+For initial data with a single negative hump, such formula is valid as long as 3 > fmin which is the minimum value of the initial data. When 3 goes beyond the hump one needs to take into account also the increasing part hR of the inverse the initial data f , namely [54]
+
+d -1 d hR( ) +  d hL( )
+
+1 1
+
+3  -  -1  - 
+
+q(1, 2, 3) = 2 2
+
+. (52) (1 -  )( - 2)( - 3)
+
+Equations (47) define  j, j = 1, 2, 3, in an implicit way as a function of x and t. The actual solvability of (47) for  j =  j(x,t) was obtained in a series of papers by Fei-Ran Tian [52] [54] (see Fig. 4). The Whitham equations are a systems of hyperbolic equations, and generically their solution can suffer blow up of the gradients in finite time. When this happen the small  asymptotic of the solution of the KdV equation is described by higher order  -functions and the so called multi-phase Whitham equations [27]. So generically speaking the solvability of system (47) is not an obvious fact. The main results of [52],[53] concerning this issue are the following:
+
+· if the decreasing part of the initial data, hL is such that hL (uc) < 0 (generic condition) then the solution of the Whitham equation exists for short times
+t > tc.
+
+16
+
+0.5
+
+0
+
+u
+
+-0.5
+
+-1
+
+-5
+
+-4
+
+-3
+
+-2
+
+-1
+
+0
+
+1
+
+2
+
+x
+
+Figure 4: The thick line (green, red and black) shows the solution of the Whitham
+equations 1(x,t)  2(x,t)  3(x,t) at t = 0.4 as branches of a multivalued function for the initial data f (x) = -sech2(x). At this time, 3 goes beyond the negative hump of the initial data and formula (52) has been used. The solution of the Hopf equation
+including the multivalued region is plotted with a dashed grey line, while the solution of the KdV equation for  = 10-2 is plotted with a blue line. We observe that the
+multivalued region for the Hopf solution is sensible smaller then the region where the
+oscillations develops, while the Whitham zone is slightly smaller.
+
+· If furthermore, the initial data f (x) is step-like and non increasing, then under some mild extra assumptions, the solution of the Whitham equations exists for short times t > tc and for all times t > T where T is a sufficiently large time.
+
+These results show that the Gurevich Pitaevski description of the dispersive shock
+
+waves is generically valid for short times t > tc and, for non increasing initial data,
+
+for all times t > T where T is sufficiently large. At the intermediate times, the
+
+asymptotic description of the KdV solution is generically given by the modulated
+
+multiphase solution of KdV (quasi-periodic in x and t ) where the wave parameters
+
+evolve according to the multi-phase Whitham equations [27]. The study of these
+
+intermediate times has been considered in [30], [4],[3].
+
+To complete the description of the dispersive shock wave we need to specify
+
+the phase of the oscillations in (54). Such phase was derived in [15] and takes the
+
+form
+
+0 = -kq,
+
+(53)
+
+where k = 
+
+1 - 3 K(m)
+
+is
+
+the
+
+wave
+
+number
+
+and
+
+the
+
+function
+
+q
+
+=
+
+q(1, 2, 3)
+
+has
+
+been defined in (51) or (52). The simple form (53) of the phase was obtained in
+
+[28]. Finally the solution of the KdV equation u(x,t; ) as   0 is described as
+
+follows
+
+· in the region strictly inside the cusp x-(t) < x < x+(t) it is given by the asymptotic formula
+
+u(x,t, )
+
+=
+
+1
+
++
+
+2
+
++
+
+3
+
++ 2
+
++
+
+2 2
+
+2  x2
+
+log 
+
+kx
+
+-
+
+t - 2 
+
+kq)
+
+;
+
+
+
++ O()
+
+(54)
+
+17
+
+u u
+
+t=0.3 0.5
+
+0
+
+-0.5
+
+-1
+
+-2.6
+
+-2.4
+
+-2.2
+
+-2
+
+-1.8
+
+-1.6
+
+-1.4
+
+x
+
+t=0.4 0.6
+
+0.4
+
+0.2
+
+0
+
+-0.2
+
+-0.4
+
+-0.6
+
+-0.8
+
+-1
+
+-3.8 -3.6 -3.4 -3.2
+
+-3
+
+-2.8 -2.6 -2.4 -2.2
+
+-2
+
+-1.8
+
+x
+
+Figure 5: The solution of the KdV equation and its approximations for the initial data f (x) = -sech2(x) and  = 10-2 at two different times t = 0.3 and t = 0.4. The blu dash-dot line is the KdV solution, the black line is the elliptic asymptotic formula (54) which is on top of the KdV solution, the black dash line is the solution of the Hopf equation while the green, red and aviation blue lines are the solution of the Whitham equations 1  2  3.
+
+where  j =  j(x,t) is the solution of the Whitham equation constructed in this section. The wave number k, the frequency  and the quantities  and  are defined in (31), (34) and (24) respectively and q is defined in (51) and (52). When performing the x-derivative in (54) observe that
+
+x(kx - t - kq) = k,
+
+because of (47) and (49). · For x > x+(t) +  and x < x-(t) -  for some positive  > 0, the KdV
+solution is approximated by
+u(x,t, ) = v(x,t) + O(2)
+
+where v(x,t) is the solution of the Hopf equation.
+
+Let us stress the meaning of the formula (54): such formula shows that the
+
+leading order behaviour of the KdV solution u(x,t; ) in the limit   0 and for
+
+generic initial data is given in a cusp-shape region of the (x,t) plane by the periodic
+
+travelling wave of KdV. However to complete the description one still needs to
+
+solve an initial value problem, for three hyperbolic equations, namely the Whitham
+
+equations, but the gain is that these equations are independent from .
+
+A first approximation of the boundary x±(t) of the oscillatory zone for t - tc
+
+small, has been obtained in [28] by taking the limit of (47) when 1 = 2 and 2 = 3. This gives
+
+x+ (t ) x- (t )
+
+
+
+4 10
+
+3
+
+xc + 6uc(t - tc) +
+
+(t - tc) 2 ,
+
+3 -hL (uc)
+
+36 2
+
+3
+
+xc + 6uc(t - tc) -
+
+(t - tc) 2 ,
+
+-hL (uc)
+
+18
+
+where hL is the decreasing part of the initial data. Such formulas coincide with the one obtained in [31] for cubic initial data.
+We conclude pointing out that in [28] a numerical comparison of the asymptotic formula (54) with the actual KdV solution u(x,t; ) has been considered for the intial data f (x) = -sech2x. Such numerical comparison has shown the existence of transition zones between the oscillatory and non oscillatory regions that are described by Painleve´ trascendant and elementary functions [9],[10],[11]. Looking for example to Fig. 5 it is clear that the KdV oscillatory region is slightly larger then the region described by the elliptic asymptotic (54) where the oscillations are confined to x-(t)  x  x+(t).
+Of particular interest is the solution of the KdV equation near the region where the oscillations are almost linear, namely near the point x-(t). It is known [52, 30] that taking the limit of the hodograph transform (47) when 2 = 3 =  and 1 = v, one obtains the system of equations
+
+ 
+
+x-(t) = 6tv(t) + hL(v(t)),
+
+6t +  ( (t); v(t)) = 0,
+
+(55)
+
+   ( (t); v(t)) = 0,
+
+that determines uniquely x-(t) and and v(t) >  (t). In the above equation the
+
+function
+
+1  ( ; v) =
+
+v hL(y)dy ,
+
+(56)
+
+2 v-  y-
+
+and hL is the decreasing part of the initial data. The behaviour of the KdV solution is described near the edge x-(t) by linear oscillations, where the envelope of the oscillations is given by the Hasting Mcleod solution to the Painleve´ II equation:
+
+q (s) = sq + 2q3(s).
+
+(57)
+
+The special solution in which we are interested, is the Hastings-McLeod solution [34] which is uniquely determined by the boundary conditions
+
+q(s) = -s/2(1 + o(1)), q(s) = Ai(s)(1 + o(1)),
+
+as s  -,
+
+(58)
+
+as s  +,
+
+(59)
+
+where Ai(s) is the Airy function. Although any Painleve´ II solution has an infinite number of poles in the complex plane, the Hastings-McLeod solution q(s) is smooth for all real values of s [34] .
+The KdV solution near x-(t) and in the limit   0 in such a way that
+
+x - x-(t)
+
+lim
+ 0
+
+2/3 ,
+
+xx- (t )
+
+remains finite, is given by [10]
+
+u(x, t ,
+
+)
+
+=
+
+v(t)
+
+-
+
+4 1/3 c1/3
+
+q
+
+(s(x, t ,
+
+ ))
+
+cos
+
+(x, t ) 
+
+2
++ O( 3 ).
+
+(60)
+
+where
+
+v
+(x,t) = 2 v -  (x - x-) + 2 (hL(y) + 6t) y -  dy
+
+
+19
+
+u
+
+0.8 0.6 0.4 0.2
+0 ï0.2 ï0.4 ï0.6 ï0.8
+ï1 ï3.6
+
+ï3.4
+
+ï3.2
+
+ï3
+
+ï2.8
+
+ï2.6
+
+ï2.4
+
+ï2.2
+
+x
+
+Figure 6: The solution of the KdV equation in blue and its approximation (60) in green for the initial data f (x) = -sech2(x) and  = 10-2 at t = 0.4. One can see that
+the green and blue lines are completely overlapped when the oscillations are small.
+
+and
+
+c=-
+
+v
+
+-
+
+
+
+2 2
+
+
+
+(
+
+;
+
+v)
+
+>
+
+0,
+
+s(x,
+
+t,
+
+
+
+)
+
+=
+
+-
+
+x c1/3
+
+- x-(t) v- 
+
+2/3
+
+.
+
+Note that the leading order term in the expansion (60) of u(x,t, ) is given by v(t) that solves the Hopf equation while the oscillatory term is of order 1/3 with oscillations of wavelength proportional to  and amplitude proportional to the Hastings-McLeod solution q of the Painleve´ II equation. From the practical point of view it is easier to use formula (60), then (54) since one needs to solve only an ODE (the Painleve´ II equation) and three algebraic equations, namely (55). One can see from figure (6) that the asymptotic formula (60) gives a good approx-
+2
+imation (up to an error O( 3 )) of the KdV solution near the leading edge where the oscillations are linear, while inside the Whitham zone, it gives a qualitative description of the oscillations [29].
+Another interesting asymptotic regime is obtained when one wants to describe the first few oscillations of the KdV solution in the small dispersion limit. In this case the so called Painleve´ I2 asymptotics should be used. Furthermore we point out that it is simpler to solve one ODE, rather then the Whitham equations. For example, near the critical point xc and near the critical time the following asymptotic behaviour has been conjectured in [20] and proved in [9]
+
+u(x,t, )
+
+uc +
+
+2 2 2
+
+1/7
+U
+
+x
+
+-
+
+xc - 6uc(t
+
+(8
+
+
+
+6
+
+)
+
+1 7
+
+-
+
+tc
+
+)
+
+;
+
+6(t (4
+
+- 3
+
+tc)
+
+4
+
+)
+
+1 7
+
++ O 4/7 ,
+
+(61)
+
+where  = -hL (uc), and U = U(X, T ) is the unique real smooth solution to the fourth order ODE [13]
+
+X =TU-
+
+U3 6
+
++
+
+1 24
+
+(UX2
+
++
+
+2U
+
+UXX )
+
++
+
+1 240 UX X X X
+
+,
+
+(62)
+
+20
+
+which is the second member of the Painleve´ I hierarchy (PI2 ). The relevant solution is uniquely [?] characterized by the asymptotic behavior
+
+U(X , T ) = (6|X |)1/3  1 62/3T |X |-1/3 + O(|X |-1), 3
+
+as X  ±, (63)
+
+for each fixed T  R. Such Painleve´ solution matches, the elliptic solution (54) for
+1
+the cubic inital data f (x) = -x 3 for large times [8]. Such solution of the PI2 has been conjectured to describe the initial time of the formation of dispersive shock waves for general Hamiltonian perturbation of hyperbolic equations [21].
+We conclude by stressing that the asymptotic descriptions reviewed in this chapter for the KdV equation can be developed for other integrable equations like the nonlinear Schro¨dinger equation, [39] the Camass-Holm equation [6] or the modified KdV equation [41].
+
+Acknowledgements
+T.G. acknowledges the support by the Leverhulme Trust Research Fellowship RF2015-442 from UK and PRIN Grant Geometric and analytic theory of Hamiltonian systems in finite and infinite dimensions of Italian Ministry of Universities and Researches.
+
+References
+[1] Ablowitz, M. J. and Newell, A. C. The decay of the continuous spectrum for solutions of the Korteweg-de Vries equation. J. Mathematical Phys. 14 (1973), 1277 - 1284.
+[2] Ablowitz, M. J. and Segur, H. Asymptotic solutions of the Korteweg-de Vries equation. Stud. Appl. Math. 57 (1977), 13 - 44.
+[3] Ablowitz, M.J. and Baldwin, D. E. Interactions and asymptotics of dispersive shock wavesKorteweg-de Vries equation. Phys. Lett. A 377 (2013), no. 7, 555 - 559.
+[4] Ablowitz, M. J.; Baldwin, D. E.; Hoefer, M. A. Soliton generation and multiple phases in dispersive shock and rarefaction wave interaction. Phys. Rev. E (3) 80 (2009), no. 1, 016603, 5 pp.
+[5] Bikbaev, R. F. and Sharipov, R. A. The asymptotic behavior, as t   of the solution of the Cauchy problem for the Korteweg de Vries equation in a class of potentials with finite-gap behavior as  ±. Theoret. and Math. Phys. 78 (1989), no. 3, 244 - 252
+[6] Boutet de Monvel, A.; Its, A.; Shepelsky, D. Painleve´-type asymptotics for the Camassa-Holm equation. SIAM J. Math. Anal. 42 (2010), no. 4, 1854 1873.
+[7] Buslaev, V.S. and Sukhanov, V.V., Asymptotic behavior of solutions of the Korteweg de Vries equation. J. Sov. Math. 34 (1986), 1905-1920 (in English).
+[8] Claeys, T. Asymptotics for a special solution to the second member of the Painlev I hierarchy. J. Phys. A 43 (2010), no. 43, 434012, 18 pp.
+
+21
+
+[9] Claeys, T. and Grava, T. Solitonic asymptotics for the Korteweg-de Vries equation in the small dispersion limit. SIAM J. Math. Anal. 42 (2010), no. 5, 2132 - 2154.
+[10] Claeys, T.; Grava, T. Painleve´ II asymptotics near the leading edge of the oscillatory zone for the Korteweg-de Vries equation in the small-dispersion limit. Comm. Pure Appl. Math. 63, (2010), no. 2, 203 - 232.
+[11] Claeys, T. and Grava, T. Universality of the break-up profile for the KdV equation in the small dispersion limit using the Riemann-Hilbert approach. Comm. Math. Phys. 286 (2009), no. 3, 979 - 1009.
+[12] Claeys, T. and Grava, T. The KdV hierarchy: universality and a Painleve´ transcendent. Int. Math. Res. Not. IMRN 22, (2012) 5063 - 5099.
+[13] Claeys, T. and Vanlessen, M. The existence of a real pole-free solution of the fourth order analogue of the Painlev I equation. Nonlinearity 20 (2007), no. 5, 1163 - 1184.
+[14] Deift, P. A.; Its, A. R.; Zhou, X. Long-time asymptotics for integrable nonlinear wave equations. Important developments in soliton theory, 181 - 204, Springer Ser. Nonlinear Dynam., Springer, Berlin, 1993.
+[15] Deift, P.; Venakides S.; Zhou, X., New result in small dispersion KdV by an extension of the steepest descent method for Riemann-Hilbert problems. IMRN 6, (1997), 285 - 299.
+[16] Deift, P.; Venakides, S.; Zhou, X. The collisionless shock region for the longtime behavior of solutions of the KdV equation. Comm. Pure Appl. Math. 47, (1994), no. 2, 199 - 206.
+[17] Deift, P.; Zhou, X. A steepest descent method for oscillatory RiemannHilbert problems. Asymptotics for the MKdV equation. Ann. of Math. (2) 137 (1993), no. 2, 295 - 368.
+[18] Deift, P.; Zhou, X. Perturbation theory for infinite-dimensional integrable systems on the line. A case study. Acta Math. 188 (2002), no. 2, 163 - 262.
+[19] Dobrohotov, S. Ju.; Maslov, V. P. Finite-zone almost periodic solutions in WKB-approximations. Current problems in mathematics, Vol. 15, pp. 394, 228, Akad. Nauk SSSR, Moscow, 1980.
+[20] B. Dubrovin, On Hamiltonian Perturbations of Hyperbolic Systems of Conservation Laws, II: Universality of
+[21] Dubrovin, B.; Grava, T.; Klein, C.; Moro, A. On critical behaviour in systems of Hamiltonian partial differential equations. J. Nonlinear Sci. 25 (2015), no. 3, 631 - 707.
+[22] Dubrovin, B.; Novikov, S. P. Hydrodynamic of weakly deformed soliton lattices. Differential geometry and Hamiltonian theory. Russian Math. Surveys 44 (1989), no. 6, 35 - 124.
+[23] Egorova, I.; Gladka, Z.; Kotlyarov, V.; Teschl, G. Long-time asymptotics for the Kortewegde Vries equation with step-like initial data. Nonlinearity 26 (2013), no. 7, 1839 - 1864.
+[24] El, G. A. Resolution of a shock in hyperbolic systems modified by weak dispersion. Chaos 15 (2005), no. 3, 037103, 21 pp.
+22
+
+[25] El, G. A.; Grimshaw, R. H. J.; Kamchatnov, A. M. Analytic model for a weakly dissipative shallow-water undular bore. Chaos 15 (2005), no. 3, 037102, 13 pp.
+[26] Gardner C. S.; Green J. M; Kruskal M. D.; Miura R. M. Phys. Rev. Lett. 19 (1967), 1095.
+[27] Flaschka, H.; Forest, M.; McLaughlin, D. H., Multiphase averaging and the inverse spectral solution of the Korteweg-de Vries equations. Comm. Pure App. Math. 33 (1980), 739-784.
+[28] Grava, T. and Klein, C. Numerical solution of the small dispersion limit of Korteweg-de Vries and Whitham equations. Comm. Pure Appl. Math. 60 (2007), no. 11, 1623 - 1664.
+[29] Grava, T. and Klein, C. A numerical study of the small dispersion limit of the Korteweg-de Vries equation and asymptotic solutions. Phys. D 241 (2012), no. 23-24, 22462264.
+[30] Grava, T. and Tian, Fei-Ran, The generation, propagation, and extinction of multiphases in the KdV zero-dispersion limit. Comm. Pure Appl. Math. 55 (2002), no. 12, 1569 - 1639.
+[31] Gurevich A. V. and Pitaevskii L. P., Decay of initial discontinuity in the Korteweg de Vries equation. JETP Lett. 17 (1973) 193 - 195.
+[32] Gurevich A. V. and Pitaevskii L. P., Nonstationary structure of a collisionless shock wave. Sov. Phys. JETP 38 (1974) 291- 297.
+[33] Gurevich, A. V., Krylov, A. L and El, G. A. Evolution of a Riemann wave in dispersive hydrodynamics. Soviet Phys. JETP 74 (1992), no. 6, 957 - 962.
+[34] Hastings, S.P. and McLeod J.B., A boundary value problem associated with the second Painleve´ transcendent and the Korteweg-de Vries equation, Arch. Rational Mech. Anal. 73 (1980), 31-51.
+[35] Its, A. R.; Matveev, V. B. Hill operators with a finite number of lacunae. Functional Anal. Appl. 9 (1975), no. 1, 65 - 66.
+[36] Its, A.R. Asymptotics of solutions of the nonlinear Schrddinger equation and isomonodromic deformations of systems of linear differential. Sov. Math. Dokl. 24 (1981), 452 - 456.
+[37] Kamchatnov, A. M. Nonlinear periodic waves and their modulations. An introductory course. World Scientific Publishing Co., Inc., River Edge, NJ, 2000. xiv+383 pp. ISBN: 981-02-4407-X
+[38] Kamchatnov, A. M. On Whitham theory for perturbed integrable equations. Physica D 188, (2004) 247- 261.
+[39] Kamvissis, S.; McLaughlin, K.D. T.-R.; Miller, P. D. Semiclassical soliton ensembles for the focusing nonlinear Schrdinger equation. Annals of Mathematics Studies, 154. Princeton University Press, Princeton, NJ, 2003. xii+265 pp. ISBN: 0-691-11483-8; 0-691-11482-X
+[40] Khruslov E. Y., Decay of initial step-like perturbation of the KdV equation. JETP Lett. 21 (1975), 217 - 218.
+[41] Kotlyarov, V. and Minakov, A. Modulated elliptic wave and asymptotic solitons in a shock problem to the modified Kortwegde Vries equation. J. Phys. A 48 (2015), no. 30, 305201, 35 pp.
+23
+
+[42] Kruskal, M.D.; Zabusky, N. J. Interaction of solitons in a collisionless plasma and the recurrence of initial states. Phys Rev. Lett. 15 (1965), 240 - 243.
+[43] Lawden, D. F., Elliptic functions and applications. Applied Mathematical Sciences, vol. 80, Springer-Verlag, New York, 1989.
+[44] Lax P. D. and Levermore, C. D., The small dispersion limit of the Korteweg de Vries equation, I,II,III. Comm. Pure Appl. Math. 36 (1983), 253 - 290, 571 - 593, 809 - 830.
+[45] Levermore, C.D., The hyperbolic nature of the zero dispersion KdV limit. Comm. Partial Differential Equations 13 (1988), no. 4, 495 - 514.
+[46] Leach, J. A.; and Needham, D. J. The large-time development of the solution to an initial-value problem for the Kortewegde Vries equation: I. Initial data has a discontinuous expansive step. Nonlinearity 21 (2008), 2391 - 2408.
+[47] Novikov, S.; Manakov, S. V.; Pitaevski, L. P.; Zakharov, V. E. Theory of solitons. The inverse scattering method. Translated from the Russian. Contemporary Soviet Mathematics. Consultants Bureau [Plenum], New York, 1984. xi+276 pp. ISBN: 0-306-10977-8
+[48] Sagdeev, R.Z. Collective processes and shock waves in rarefied plasma. Problems in plasma theory, M.A. Leontovich, ed., Vol 5 Atomizdat, (1964), Moscow (in Russian).
+[49] Schuur, P.C. Asymptotic analysis of soliton problems. An inverse scattering approach. Lecture Notes in Mathematics, 1232. Springer-Verlag, Berlin, 1986. viii+180 pp. ISBN: 3-540-17203-3
+[50] Segur, H.; Ablowitz, M.J. Asymptotic solutions of nonlinear evolutions equations and Painleve´ transcendents. Physica D 3, 1, (1981), 165 - 184.
+[51] Tanaka, S.: Kortewegde Vries equation; asymptotic behavior of solutions. Publ. Res. Inst. Math. Sci. 10 (1975), 367 - 379.
+[52] Tian, Fei-Ran, Oscillations of the zero dispersion limit of the Korteweg de Vries equations. Comm. Pure App. Math. 46 (1993) 1093 - 1129.
+[53] Tian, Fei-Ran The Whitham-type equations and linear overdetermined systems of Euler-Poisson-Darboux type. Duke Math. J. 74 (1994), no. 1, 203 - 221.
+[54] Tian, Fei-Ran , The initial value problem for the Whitham averaged system. Comm. Math. Phys. 166 (1994), no. 1, 79 - 115.
+[55] Trillo S.; Klein M.; Clauss G.; Onorato M., Observation of dispersive shock waves developing from initial depressions in shallow water, to appear in Physica D, http://dx.doi.org/10.1016/j.physd.2016.01.007
+[56] Tsarev, S. P., Poisson brackets and one-dimensional Hamiltonian systems of hydrodynamic type. Soviet Math. Dokl. 31 (1985), 488 - 491.
+[57] Venakides S. Long time asymptotics of the Kortewegde Vries equation Trans. Am. Math. Soc. 293 (1986), 411 - 419.
+[58] Venakides, V., The zero dispersion limit of the Korteweg de Vries equation for initial potential with nontrivial reflection coefficient. Comm. Pure Appl. Math. 38 (1985), 125 - 155.
+24
+
+[59] Venakides, S., The Korteweg de Vries equations with small dispersion: higher order Lax-Levermore theory. Comm. Pure Appl. Math. 43 (1990), 335 - 361.
+[60] Whitham, G. B., Linear and nonlinear waves, J.Wiley, New York, 1974. [61] Zakharov, V. E.; Manakov, S. V. Asymptotic behavior of non-linear wave
+systems integrated by the inverse scattering method. Soviet Physics JETP 44 (1976), no. 1, 106 - 112.
+25
+
+

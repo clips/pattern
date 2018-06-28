@@ -1,0 +1,1259 @@
+arXiv:1701.00027v2 [math.AG] 16 Nov 2017
+
+BETTI NUMBERS AND PSEUDOEFFECTIVE CONES IN 2-FANO VARIETIES
+GIOSUÈ EMANUELE MURATORE
+Abstract. The 2-Fano varieties, defined by De Jong and Starr, satisfy some higher dimensional analogous properties of Fano varieties. We propose a definition of (weak)
+k-Fano variety and conjecture the polyhedrality of the cone of pseudoeffective k-cycles
+for those varieties in analogy with the case k = 1. Then, we calculate some Betti numbers of a large class of k-Fano varieties to prove some special case of the conjecture. In particular, the conjecture is true for all 2-Fano varieties of index  n - 2, and also we complete the classification of weak 2-Fano varieties answering Questions 39 and 41 in [AC13].
+1. Introduction
+The study of cones of curves or divisors on smooth complex projective varieties X is a classical subject in Algebraic Geometry and is still an active research topic. However, little is known when we pass to higher dimensions. For example it is a classical result that the cone of nef divisors is contained in the cone of pseudoeffective divisors, but in general Nefk(X)  Effk(X) is not true. These phenomena can appear only if dim X  4 and very few examples are known. In particular [DELV11] gives two examples of such varieties. Furthermore [Ott15] proves that if X is the variety of lines of a very general cubic fourfold in P5, then the cone of pseudoeffective 2-cycles on X is strictly contained in the cone of nef 2-cycles.
+The central subject of this paper will be the k-Fano varieties.
+Definition 1.1. A smooth Fano variety X is k-Fano if the sth Chern character chs(X) is positive (see Definition 2.3) for 1  s  k, and weak k-Fano for k > 1 if X is (k - 1)-Fano and chk(X) is nef.
+There is a large interest in studying varieties with positive Chern characters. For example varieties with positive ch1(X) are Fano, hence uniruled, that is there is a rational curve through a general point. Fano varieties with positive second Chern character were introduced by J. de Jong and J. Starr in [dJS06, dJS07]. They proved a (higher dimensional) analogue of this result: weak 2-Fano varieties have a rational surface through a general point. Furthermore if X is weak 3-Fano then there is a rational threefold through a general point of X (under some hypothesis on the polarized minimal family of rational curves through a general point of X, [AC12, Theorem 1.5(3)]).
+Date: 13 November 2017. 2010 Mathematics Subject Classification. Primary 14J45; Secondary 14M15. Key words and phrases. 2 Fano, Pseff cone.
+1
+
+BETTI NUMBERS AND PSEUDOEFFECTIVE CONES IN 2-FANO VARIETIES
+
+2
+
+Another problem concerns how the geometry of the cones of pseudoeffective k-cycles depends on the positivity of the Chern characters chs(X). Mori's Cone Theorem resolves this problem for k = 1: the positivity of ch1(X) implies the polyhedrality of the cone of pseudoeffective 1-cycles and the extremal rays are spanned by classes of rational curves. By Kleiman's Theorem, a variety with positive ch1(X) is just a Fano variety, that is with c1(X) ample, but this is not enough, in general, for the polyhedrality of cones of pseudoeffective k-cycles for k > 1: Tschinkel showed a Fano variety where Eff2(X) has infinitely many extremal rays. Therefore more positivity is needed in order to obtain polyhedrality of cones of pseudoeffective k-cycles for k > 1.
+In this paper we investigate a possible way of generalizing Mori's result:
+Conjecture 1.2. If X is k-Fano, then Effk(X) is a polyhedral cone.
+The computing of the fourth Betti number is enough to show the polyhedrality of some of the cones of 2-cycles for a large class of varieties: complete intersections in weighted projective spaces, rational homogeneous varieties and most complete intersections in them, etc. This allows us to test the conjecture for many 2-Fano varieties, and in particular we prove that it holds for del Pezzo and Mukai varieties. Using the classification of Araujo-Castravet, we also prove the following.
+Theorem 1.3. Let X be a n-dimensional 2-Fano variety with iX  n - 2. Then Eff2(X) and Eff3(X) are polyhedral.
+Let X be a complete intersection in G(2, 5) or G(2, 6) with two hyperplanes under the Plücker embedding. Araujo and Castravet proved that X is not 2-Fano, but questioned if it is weak 2-Fano [AC13, Proposition 32 and Questions 39,41]. In [dA15, Corollary 5.1] it is proved that a general such X is not 2-Fano by showing that there exists an effective surface S such that [i(S)]N2 = 1,1, where i is the inclusion. In this circumstance we can prove that all the smooth complete intersections of this type are not weak 2-Fano, and this completes the classification given in [AC13, Theorem 3 and 4].
+Theorem 1.4. Let Y = G(2, 5) or G(2, 6), let X be a smooth complete intersection of type (1, 1) in Y under the Plücker embedding. Then X is not weak 2-Fano.
+These ideas can be improved in three very promising directions: to generalize Tschinkel's example to higher dimensions, to prove the conjecture for some Fano 4-folds of index 1, and to use minimal families of rational curves to prove the conjecture for other 2-Fano's.
+I thank Angelo Lopez for all the support he has shown me since the beginning of this work, and Gianluca Pacienza for his help. I also thank Carolina Araujo, Izzet Coskun and Enrico Fatighenti for answering many of my questions.
+2. General facts about cycles
+A variety is a reduced and irreducible algebraic scheme over C. Throughout this paper we will use the following.
+Notation.
+­ X is a variety of dimension n  4. ­ k is an integer such that 1  k  n - 1.
+
+BETTI NUMBERS AND PSEUDOEFFECTIVE CONES IN 2-FANO VARIETIES
+
+3
+
+­ Hi(X, G) and Hi(X, G) are the singular homology and cohomology groups of X for
+
+1  i  2n and coefficients in a group G.
+
+­ bi(X) is the ith Betti number of X for 1  i  2n, that is the rank of Hi(X, Z) or of Hi(X, Z).
+
+­ Zk(X) is the group of k-cycles with integer coefficients.
+
+­ Ratk(X) is the group of k-cycles rationally equivalent to zero.
+
+­ Ak(X) is the Chow group of k-cycles on X, that is Ak(X) = Zk(X)/Ratk(X).
+
+­ A(X) =
+
+n k=0
+
+Ak (X )
+
+is
+
+the
+
+Chow
+
+ring
+
+of
+
+X.
+
+­ Algk(X) is the group of k-cycles algebraically equivalent to zero.
+
+­ Homk(X) is the group of k-cycles homologically equivalent to zero, that is the kernel
+
+of the cycle map cl : Zk(X)  H2k(X, Z).
+
+­ Numk(X) is the group of cycles numerically equivalent to zero, that is the group of
+
+cycles   Zk(X) such that P · cl() = 0 for all polynomials P in Chern classes of
+
+vector bundles on X.
+
+­ Nk(X) is the quotient group Zk(X)/Numk(X), and Nk(X)R := Nk(X)  R.
+
+­ Effk(X)  Nk(X)R is the cone generated by numerical classes of effective k-cycles. ­ Let s  1 be an integer. The sth Chern character of X, chs(X), is the homogeneous
+
+part of degree s of the total Chern character of X. For example, if ci(X) are the
+
+Chern
+
+classes
+
+of
+
+X,
+
+then
+
+ch1 (X )
+
+=
+
+c1 (X ),
+
+ch2 (X )
+
+=
+
+1 2
+
+(c21(X
+
+)
+
+-
+
+2c2
+
+(X
+
+)),
+
+ch3 (X )
+
+=
+
+1 6
+
+(c31(X
+
+)
+
+-
+
+4c1
+
+(X
+
+)c2
+
+(X
+
+)
+
++
+
+3c3
+
+(X
+
+))
+
+We will often use the following well-known facts:
+
+Remark 2.1. There is a chain of inclusions [Ful84, p.374]
+
+Ratk(X)  Algk(X)  Homk(X)  Numk(X)  Zk(X) that gives rise to a diagram
+
+(2.1)
+
+Ak (X )
+
+/ / Zk(X)/Algk(X)
+
+/ / Zk(X)/Ho _ mk(X) k / / Nk(X)
+
+ H2k(X, Z)
+
+We set
+
+(2.2)
+
+k,R : Zk(X)/Homk(X)  R  Nk(X)R
+
+the tensor product of k and idR.
+
+Remark 2.2. By linearity of the intersection product, Nk(X) is torsion free. When X is smooth, the intersection product gives a perfect pairing [Ful84, Definition 19.1]
+
+Nk(X)R  Nn-k(X)R  R.
+
+Definition 2.3. Let X be a smooth variety. A class   Nk(X)R is positive if  ·  > 0 for every   Effn-k(X)\{0}, and it is nef if  ·   0 for every   Effn-k(X). The cone generated by nef classes of k-cycles is Nefk(X).
+
+Kleiman's criterion for amplitude [Laz04a, Theorem 1.4.29] states that the cone of positive (n - 1)-cycles is exactly the cone of numerical classes of ample divisors.
+
+BETTI NUMBERS AND PSEUDOEFFECTIVE CONES IN 2-FANO VARIETIES
+
+4
+
+Lemma 2.4. Let X be a projective variety. Then
+(1) If either rkAk(X) = 1 or b2k(X) = 1, then Effk(X) is a half-line. (2) If either rkAk(X) = 2 or b2k(X) = 2, then Effk(X) is either a half-line or it is
+spanned by two extremal rays.
+
+Proof. In the first case, by diagram (2.1), we have a surjection Z  Nk(X) and, as
+
+Nk (X (2.1),
+
+) is torsion-free, it must there is a surjection Z2
+
+be 
+
+Nk (X ) Nk (X )
+
+= Z. In and then
+
+the second case, again by diagram either Nk(X) = Z or Nk(X) = Z2.
+
+Since Effk(X) generates Nk(X)R, it is either a half-line or it is spanned by two extremal
+
+rays, depending on the rank of Nk(X)R.
+
+Remark 2.5. In a general, a variety X with chk(X) positive may not be k-Fano. For
+
+example,
+
+in
+
+[Mum79]
+
+Mumford
+
+found
+
+a
+
+smooth
+
+surface
+
+S
+
+of
+
+general
+
+type
+
+with
+
+ch2(S)
+
+=
+
+3 2
+
+.
+
+3. Cycles on Fano Varieties
+
+We study here the pseudoeffective cones of k-cycles on some well-known classes of Fano varieties.
+
+3.1. Weighted projective spaces. Let P(w) be the weighted projective space where w = (w0, ..., wn)  Nn0 .
+
+Proposition 3.1. Let X be a n-dimensional smooth complete intersection in a weighted
+
+projective
+
+space.
+
+If
+
+k
+
+=
+
+n 2
+
+then
+
+b2k (X )
+
+= 1.
+
+In
+
+particular
+
+Eff k (X )
+
+is
+
+polyhedral.
+
+Proof. Recall [Dim92, B13] that dim H2i(P(w), Q) = 1 for every 0  i  dim P(w). By
+
+Lefschetz's Hyperplane Theorem [Dim92, B22] we have that H2k(X, Q) = H2k(P(w), Q)
+
+for
+
+2k
+
+<
+
+n,
+
+then
+
+b2k(X) = 1
+
+for
+
+k
+
+<
+
+n 2
+
+.
+
+But
+
+b2n-2k (X )
+
+= b2k(X),
+
+then
+
+it
+
+follows
+
+that,
+
+for
+
+k
+
+=
+
+n 2
+
+,
+
+b2k (X )
+
+=
+
+1
+
+and
+
+by
+
+Lemma
+
+2.4
+
+that
+
+Eff k (X )
+
+is
+
+a
+
+half-line.
+
+Furthermore, if X is a k-Fano complete intersection in a projective space, then we can solve Conjecture 1.2, even for weak Fano.
+
+Theorem 3.2. Let X be a n-dimensional weak k-Fano complete intersection in a projective space. If 1  s  k, then b2s(X)  2. In particular Effs(X) is polyhedral.
+
+Proof. Let X be of type (d1, ..., dc) in Pn+c, with di  2 for 1  i  c. By Proposition
+
+3.1,
+
+we
+
+can
+
+suppose
+n
+
+n
+
+even
+n
+
+and
+
+s
+
+=
+
+n 2
+
+.
+
+We
+
+know
+
+from
+
+[AC13,
+
+3.3.1]
+
+that
+
+ch n (X) 2
+
+is
+
+nef
+
+if and only ifnd12 + ... + dc2  n + c + 1. Since n  4, it follows easily that c = 1. On the
+
+other hand d12  n + 2 is possible only for d1 = 2, that is X is an n-dimensional quadric.
+
+But bn(X) = 2 [Rei72, p.20] and the theorem follows by Lemma 2.4.
+
+3.2. Rational homogeneous varieties. Let G be a reductive linear algebraic group defined over C, B a Borel subgroup of G. We consider the set of simple B-positive roots and denote by S the corresponding set of reflections in the Weyl group W . Then the pair (W, S) is a Coxeter system in the sense of [Bou68, Chapitre IV, Définition 3]. Let l : W  N0 be the length function relative to the system S of generators of W . Furthermore we fix a subset  of S and denote by W the subgroup of W generated by  and by P a subgroup of G associated to . Then the quotient G/P is a projective variety, which is called a rational homogeneous variety. Any rational homogeneous variety
+
+BETTI NUMBERS AND PSEUDOEFFECTIVE CONES IN 2-FANO VARIETIES
+
+5
+
+is a Fano variety [BH58], and the action of G on G/P by left multiplication is transitive.
+Let w0 (respectively, w) be the unique element of maximal length of W (respectively, W). A simple calculation shows that dim G/P = l(w0) - l(w). The element w0 and w are characterized by the property [Bou68, Chapitre IV, Exercise 22]
+
+(3.1) (3.2)
+
+l(ww0) = l(w0) - l(w), w  W l(ww) = l(w) - l(w), w  W
+
+that imply immediately w02 = 1 and w2 = 1. It follows that, for every w  W
+l(w0w) = l((w0w)-1) = l(w-1w0-1) = l(w-1w0) = l(w0) - l(w-1) = l(w0) - l(w).
+Furthermore, set W  = {w  W/l(ws) = l(w) + 1 s  }. We have, for every (w, w¯)  W  × W,
+
+(3.3)
+
+l(ww¯) = l(w) + l(w¯).
+
+Proposition 3.3. Let X be a smooth n-dimensional variety and let G be an affine group which acts transitively on X. Suppose that, for every k = 1, ..., n - 1, there exists a finite family of subvarieties {a}aIk of dimension k such that
+(1) {[a] /a  Ik} = H2k(X, Z) or Ak(X), and (2) a  Ik, b  In-k such that a · c = b,c c  In-k.
+Then Nefk(X) = Effk(X) = Effk(X) is polyhedral.
+Proof. We will suppose that the classes of the subvarieties {a}aIk generate H2k(X, Z), the case Ak(X) being similar. Let a be the class of a in Nk(X). Let   Nefk(X). By (2.2) there is a class   Zk(X)/Homk(X)  R  H2k(X, R) such that k,R() = . By (1) we have that  = aIk a[a] and then  = ak([a]) = aa. Let a  Ik and let b  In-k be as in (2). Then  · b = a  0 because  is nef and b is effective. Therefore   Effk(X), then Nefk(X)  Effk(X). Let A a subvariety of X of dimension k, and let B be a subvariety of X of codimension k. By Kleiman's Theorem [Kle74] there is an element g  G such that gA is rationally equivalent to A and generically transverse to B. Then A · B = (gA) · B = #((gA)  B)  0, so Effk(X)  Nefk(X). It is clear that Nefk(X) is generated by {a/a  Ik}. Since Nefk(X) is closed and, as seen above, generated by the a, we get that Nefk(X) = Effk(X) is polyhedral.
+
+Proposition 3.4. Let X be a rational homogeneous variety. Then Nefk(X) = Effk(X) = Effk(X) is polyhedral.
+
+Proof. The description of the Chow ring of any rational homogeneous variety given in [Köc91, Corollary(1.5)] is
+
+A(X) =
+
+Z[Xw ]
+
+wW 
+
+where Xw is the closure of the set BwP/P , with dimension l(w) [Köc91, Proposition(1.3)]. Let Ik = {w  W /l(w) = k}. Given w  W  we claim that w0ww  Idim X-k. Indeed for all s  , using (3.1) and (3.3), we have
+
+l(w0wws) = l(w0) - l(wws) = l(w0) - l(w) - l(ws) = l(w0) - l(w) - l(w) + l(s) = l(w0) - l(ww) + 1 = l(w0ww) + 1
+
+BETTI NUMBERS AND PSEUDOEFFECTIVE CONES IN 2-FANO VARIETIES
+
+6
+
+Similarly we can prove that l(w0ww) = l(w0) - l(w) - l(w). Now given w  Ik we have, by [Köc91, Proposition(1.4)], that (2) of Proposition 3.3 is satisfied.
+
+The pseudoeffective cone is also polyhedral in the case when the action of G on X has finitely many orbits, see [FMSS95, Corollary p.2].
+Among the rational homogeneous varieties, the following are particularly interesting.
+
+Definition of r-planes
+
+3.5. Let r, s be two integers such that G(r, s) is the scheme of r-dimensional
+
+2
+
+
+
+r
+
+
+
+s 2
+
+subspaces
+
+. The Grassmann of Cs. Let  be
+
+variety a non-
+
+degenerate symmetric bilinear form on Cs. The orthogonal Grassmannian of isotropic
+
+r-planes OG(r, s) is the scheme of r-dimensional subspaces of Cs isotropic with respect
+
+to . The scheme OG(r, 2m) has two isomorphic connected components if r = m or
+
+m - 1. In these two cases, we will denote by OG+(r, 2m) a connected component of OG(r, 2m). Let  be a non-degenerate symplectic bilinear form on Cs. The symplectic
+
+Grassmannian of isotropic r-planes SG(r, s) is the scheme of r-dimensional subspaces of
+
+Cs isotropic with respect to .
+
+Remark 3.6. Let S be the universal subbundle of G(r, s). The Plücker embedding is the embedding given by the very ample line bundle rS. The varieties OG(r, s) and SG(r, s) can be embedded in G(r, s) as zero sections of, respectively, Sym2S and 2S.
+
+3.2.1. Complete intersection of rational homogeneous varieties.
+
+Remark 3.7. In [AC13, Proposition 34], it is stated that the smooth complete intersection
+of OG+(k, 2k) of type (2, 2) under the Plücker embedding is a weak 2-Fano variety. This should be read as (2).
+
+Remark 3.8. Let X be a smooth complete intersection of G(2, 5) of type (1, 1) under the
+Plücker embedding, let Z be the variety of lines through a general point of X. [AC13, Example 30] says that Z has homology class equal to 2 + 1,1. This should be read as 21,1 + 2.
+
+Remark 3.9. By Serre duality (pG(2,5)(-m)) = (6G-(2p,5)(m)), and for m = 1, 2, 3 we have (G(2,5)(-m)) = (5G(2,5)(m)) = 0 because all the groups Hp(G(2, 5), 5G(2,5)(m)) are zero by [Sno86, Theorem p. 171(3)]. If m = 1, 2 we have (2G(2,5)(-m)) =
+(4G(2,5)(m)) = 0, because p  0 Hp(G(2, 5), 4G(2,5)(m)) = 0 by [Sno86, Theorem
+p.p. 165,169]. It can easily be seen that (G(2,5)) = -1 and (2G(2,5)) = 2.
+
+Lemma 3.10. Let X be a smooth complete intersection of type (1, 1) in a Grassmann variety G(2, 5) under the Plücker embedding. Then b4(X) = 2.
+
+Proof. By [Laz04b, Example 7.1.5], all rows of the Hodge Diamond of X, except the
+middle row, are equal to those of the Hodge Diamond of G = G(2, 5). Since X is Fano, h0,4(X) = 0 then
+
+(3.4) (3.5) (3.6)
+
+(X ) = -1 - h1,3(X) (2X ) = h2,2(X) b4(X) = h2,2(X) + 2h1,3(X)
+
+BETTI NUMBERS AND PSEUDOEFFECTIVE CONES IN 2-FANO VARIETIES
+
+7
+
+Note that by Serre duality and adjunction formula, for any integer m h4(OX (-m)) = h0(OX (m)  OG(2 - 5)|X ) = h0(OX (m - 3))
+then by Kodaira Vanishing Theorem, (OX (-1)) = (OX (-2)) = 0. Take the Koszul resolution of the sheaf OX
+
+(3.7)
+
+0  OG(-2)  OG(-1)2  OG  OX  0
+
+and tensor it by G
+
+(3.8)
+
+0  G(-2)  G(-1)2  G  G|X  0
+
+then, by Remark 3.9,
+
+(G|X ) = (G(-2)) - 2(G(-1)) + (G) = -1
+
+If we tensor (3.8) by OG(-1) we have
+
+(G|X(-1)) = (G(-3)) - 2(G(-2)) + (G(-1)) = 0 From the canonical sequence
+
+(3.9)
+
+0  OX (-1)2  G|X  X  0
+
+we get (X ) = (G|X ) - 2(OX (-1)) = -1, then h1,3(X) = 0 by (3.4). If, instead, we tensor (3.7) by 2G, that is
+
+0  2G(-2)  2G(-1)2  2G  2G|X  0 we get, by Remark 3.9,
+
+(2G|X ) = (2G(-2)) - 2(2G(-1)) + (2G) = 2
+
+By [Har77, Exercise II.5.16d] and (3.9) we get
+
+(2X ) = (2G|X) - 2(G|X (-1)) - 3(OX (-2)) = 2 Then by (3.5) and (3.6) we get h2,2(X) = 2 and b4(X) = 2.
+
+Proposition 3.11. Let X be a n-dimensional weak 2-Fano complete intersection in a Grassmann variety G(r, s) under the Plücker embedding. Then, b4(X)  2. In particular Eff2(X) is polyhedral.
+
+Proof. Assume that X is of type (d1, ..., dc). If n > 4, by [Laz04b, Theorem 7.1.1], we
+
+have b4(X) = b4(G(r, s))  2 and we can apply Lemma 2.4. If n = 4, using [AC13,
+
+Proposition 31], we have the following conditions: c = r(s - r) - 4 and
+
+c i=1
+
+di
+
+
+
+s
+
+-
+
+1.
+
+It is easy to see that this leads to the following cases
+
+G(r, s) G(2, 7) G(3, 6)
+G(2, 6)
+
+Type
+(1, 1, 1, 1, 1, 1) (1, 1, 1, 1, 1) (1, 1, 1, 1) (1, 1, 1, 2)
+
+G(r, s) G(2, 5)
+
+Type
+(1, 1) (1, 2) (1, 3) (2, 2)
+
+BETTI NUMBERS AND PSEUDOEFFECTIVE CONES IN 2-FANO VARIETIES
+
+8
+
+None of them is weak 2-Fano by [AC13, Proposition 31 and 32(iv)], and Theorem 1.4.
+
+Now we can prove Theorem 1.4.
+
+Proof. Let OY (1) be the Plücker line bundle and let U  P(OY (1)2) be the open set parametrizing the smooth complete intersections in Y of bidegree (1, 1). For t  U , we denote by Xt the corresponding variety. Let X := {(x, t)  Y × U : x  Xt} and consider the family
+X pr1 / Y
+pr2
+ U
+Suppose Y = G(2, 5). Let i : Xt  Y be the inclusion, the map i : H4(Y, Z)  H4(Xt, Z) is injective with torsion free cokernel by [Laz04b, Theorem 7.1.1 and Example 7.1.2], since b4(Y ) = b4(Xt) = 2 by Lemma 3.10, we have that i : H4(Y, Z)  H4(Xt, Z) is an isomorphism. By [dA15, Corollary 5.1], for a very general t there exists a surface St such that [i(St)]N2 = 1,1. Then there exist at, bt  Z such that St = at2|Xt + bt1,1|Xt. Since
+(2|Xt )2 = (22) · 12 = (3,1 + 2,2) · 12 = 2 (1,1|Xt )2 = (12,1) · 12 = 2,2 · 12 = 1 2|Xt · 1,1|Xt = (2 · 1,1) · 12 = 3,1 · 12 = 1
+Using the condition [i(St)]N2 = 1,1 = 2,2, we have
+0 = 2,2 · 2 = St · 2|Xt = 2at + bt 1 = 2,2 · 1,1 = St · 1,1|Xt = at + bt
+then at = -1 and bt = 2. Let S := pr1(-2 + 21,1), then the surface S|Xt is such that [St] = [S|Xt], and since we see that it is effective for a general t, hence it is effective for all1 t. Let t  U , then Xt is not weak 2-Fano since using [AC13, Proposition 32]
+
+ch2(Xt)
+
+·
+
+S|Xt
+
+=
+
+1 2
+
+(2|Xt
+
+-
+
+1,1|Xt ) ·
+
+(-2|Xt
+
++
+
+21,1|Xt )
+
+=
+
+-
+
+1 2
+
+.
+
+Suppose Y = G(2, 6). By [Laz04b, Theorem 7.1.1] we have that H4(Y, Z) = H4(Xt, Z), then b8(Xt) = b4(Xt) = 2. Now consider i : H8(Y, Z)  H8(Xt, Z), where i : Xt  Y is the inclusion. From
+
+1This is a well-known fact for experts. A good reference is [Ott15, Proposition 3].
+
+BETTI NUMBERS AND PSEUDOEFFECTIVE CONES IN 2-FANO VARIETIES
+
+9
+
+4|Xt · 2|Xt = (4 · 2) · 12 = 4,2 · 12 = 4,3 · 1 = 1 2,2|Xt · 2|Xt = (2,2 · 2) · 12 = 4,2 · 12 = 4,3 · 1 = 1 4|Xt · 1,1|Xt = (4 · 1,1) · 12 = 0 · 12 = 0 2,2|Xt · 1,1|Xt = (2,2 · 1,1) · 12 = (2,2 · (12 - 2)) · 12
+= (2,2 · 12 - 2,2 · 2) · 12 = (3,2 · 1 - 4,2) · 12 = (4,2 + 3,3 - 4,2) · 12 = (3,3) · 12 = 4,3 · 1 = 1
+it can easily been seen that 4|Xt and 2,2|Xt are a basis of the torsion free part of H8(Xt, Z). Then [St] = t + at4|Xt + bt2,2|Xt for some torsion element t, where as before St is the surface described in [dA15, Corollary 5.1] for very general t  U . Using the condition [i(St)]N2 = 1,1 = 3,3, we have
+0 = 3,3 · 2 = St · 2|Xt = at + bt 1 = 3,3 · 1,1 = St · 1,1|Xt = bt then at = -1 and bt = 1. Let S := pr1(-4 + 2,2), then [St] = [S|Xt], that is S|Xt is effective for all t. Let t  U , then Xt is not weak 2-Fano since using [AC13, Proposition 32]
+ch2(Xt) · S|Xt = (2|Xt - 1,1|Xt ) · (-4|Xt + 2,2|Xt ) = -1.
+We now deal with complete intersections in orthogonal Grassmannians, so let us recall the useful notation in [Cos11]. Given a connected component X  OG(r, s), we will write s = 2m + 1 -  with   {0, 1} and 2  r  m. Let t be an integer such that 0  t  r, and t  m (mod 2) if 2r = s. Given a sequence of integers  = (1, ..., t) of length t such that
+m -   1 > ... > t > -. Let ~ = (~t+1, ..., ~m) be the unique sequence of length m - t such that
+· m - 1  ~t+1 > ... > ~m  0, · ~j + i = m -  for every i = 1, .., t and j = t + 1, ..., m. The Schubert varieties in X are parametrized by pairs (, µ), where µ is any subsequence of ~ of length r - t. Given an isotropic flag of subvector spaces F·
+0  F1  F2  ...  Fm  Fm-1  Fm-2  ...  F1  Cs, (,µ)(F·) is defined as the closure of the locus
+{[W ]  X/ dim(W  Fm+1--i ) = i for 1  i  t; dim(W  Fµj ) = j for t < j  r .
+Let us define another sequence  of length t in this way: ·  =  if either  = 0 or  = 1 and t  m (mod 2); otherwise
+
+BETTI NUMBERS AND PSEUDOEFFECTIVE CONES IN 2-FANO VARIETIES
+
+10
+
+·  =   {b} where b = min{a  N/0  a  m - 1, a / , a + µj = m - 1 j = t + 1, ..., k}.
+Let ~ be the unique sequence associated to  as above. Then the pair (, µ) is a subsequence of (, ~). Suppose (, µ) = (i1 , ..., it, ~it+1, ..., ~ir ) and let the discrepancy of  and µ be the non-negative number
+r
+dis(, µ) = (m - r + j - ij).
+j=1
+
+Then the codimension of a Schubert cycle (,µ)(F·) is
+
+t
+codim((,µ)(F·)) = i + dis(, µ).
+i=1
+Let (,µ)(F·) be of codimension k and set (,µ) = (,µ)(F·)  H2k(X, Z). The set of all (,µ) of codimension k is a basis of H2k(X, Z) (by the Ehresmann's Theorem [Ehr34]).
+
+Lemma 3.12. Let X be a connected component of OG(r, s), 2  r  m =
+
+s 2
+
+,
+
+we
+
+have
+
+ 1 r = m  b4(X) = 3 1  m - r  2, s even
+
+2 otherwise
+
+Proof. We have to count the number of sequences (, µ) such that
+
+t
+i + dis(, µ) = 2.
+i=1
+For 1  j  r let cj = m - r + j - ij. It can easily be seen that
+
+m - r  c1  c2  ....  cr  0
+
+and we can write
+r
+dis(, µ) = cj.
+i=1
+We are in one of the following cases:
+
+(1)
+
+t i=1
+
+i
+
+=
+
+0
+
+and
+
+dis(, µ)
+
+=
+
+2,
+
+or
+
+(2)
+
+t i=1
+
+i
+
+=
+
+1
+
+and
+
+dis(, µ)
+
+=
+
+1,
+
+or
+
+(3)
+
+t i=1
+
+i
+
+=
+
+2
+
+and
+
+dis(, µ)
+
+=
+
+0.
+
+Let s be odd. Then
+
+Case (1) t must be 0. If m - r  1 then c1 = c2 = 1, and, if m - r > 1, we have also the possibility c1 = 2. These cases correspond to
+
+(, µ) =
+
+(, (r, r - 1, r - 3, ..., )) (, (r + 1, r - 2, r - 3, ..., )).
+
+BETTI NUMBERS AND PSEUDOEFFECTIVE CONES IN 2-FANO VARIETIES
+
+11
+
+Case (2) Only one possibility if m - r = 1, that is  = (1) and c2 = 1. This case corresponds to (, µ) = ((1), (r - 2, r - 3, ..., )). No other possibilities if m - r = 1.
+Case (3) It must be  = (2), then i1 = 1 and since cj = 0 j  1, c1 = m - r + 1 - 1 = 0 implies m = r. This is the case (, µ) = ((2), (m - 1, m - 3, ...)).
+Let s be even. If s = 2r, then the discrepancy is 0 because cj  m - r j  1, then it is possible only the case 3, that is
+
+(, µ) =
+
+((2), (m - 1, m - 2, m - 4)) (, µ) = ((2), (m - 2, m - 4))
+
+m odd m even.
+
+Suppose m > r. Let m be even, then
+Case (1) It must be  = , then  =  =  and ~ = (m - 1, m - 2, m - 3, m - 4, ...). If m - r  1 then c1 = c2 = 1, and, if m - r  2, we have also the possibility c1 = 2. These cases corresponds to
+
+(, µ) =
+
+(, (r, r - 1, r - 3, ..., )) (, µ) = (, (r + 1, r - 2, r - 3, ..., )).
+
+Case (2) It must be  = (1, 0), then we can have  = (0) or  = (1). Suppose  = (0), ~ = (m - 2, m - 3, ...), and we have to choose a µ such that
+b = 1 in order to have  =  {1} which implies ~ = (m - 3, m - 4, ...). This can happen only if m - 2 / µ, that is, it is enough to choose µ as a subsequence of (m-3, m-4, ...). This case implies that i1 = 2, then c1 = m-r+1-2 = m-r-1, then it must be m - r = 2. Since cj = 0 j  2, that corresponds to the case
+(, µ) = ((0), (m - 4, m - 5, ..., )).
+Suppose  = (1), ~ = (m - 1, m - 3, ...), and we have to choose a µ such that b = 0 in order to have  =  {0} which implies ~ = (m - 3, m - 4, ...). This can happen only if m - 1 / µ, that is, it is enough to choose µ as a subsequence of (m - 3, m - 4, ...). This case implies that i1 = 1, then c1 = m - r + 1 - 1 = m - r, then it must be m - r = 1. Since cj = 0 j  2, that corresponds to the case
+(, µ) = ((1), (m - 3, m - 4, m - 5, ..., )).
+Case (3) It must be  = (2, 0), then we can have  = (0) or  = (2). If  = (2), then c1 = m - r, then the discrepancy is not 0. So  = (0), ~ = (m - 2, m - 3, ...), cj = 0 j  1, and we have to choose a µ
+such that b = 2 in order to have  = {2} which implies ~ = (m-2, m-4, ...). This can happen only if m - 2  µ and m - 3 / µ. That is, the sequence
+((0), µ) = ((0), (~i1 , ..., ~ir ))
+seen as a subsequence of ((2, 0), (m - 2, m - 4, ...)) = (, ~) must satisfy i1 = 2. The condition cj = 0 implies ij = m - r + j, then i1 = m - r + 1 = 2 implies m - r = 1. Then, if m - r = 1, we have the sequence
+
+(, µ) = ((2), (m - 2, m - 4, ...)).
+
+Let m be odd, then
+
+BETTI NUMBERS AND PSEUDOEFFECTIVE CONES IN 2-FANO VARIETIES
+
+12
+
+Case (1) It must be  = (0), then we can have  =  = (0) or  = . Suppose  =  = (0), this implies ~ = (m - 2, m - 3, m - 4, ...) and c1 = m - r.
+Then -if m - r  3, then this case in not possible since the first summand of the
+discrepancy (which it must be 2) is m - r, -if m - r = 2, then cj = 0 for j  2, that is ij = m - r + j for j  2, then
+(, µ) = ((0), (~m-r+2, ~m-r+3, ..., )) = ((0), (r - 2, r - 3, ...)),
+-if m - r = 1, then cj = 0 for j  3 and c2 = 1, that is
+(, µ) = ((0), (~m-r+1, ~m-r+3, ..., )) = ((0), (r - 1, r - 3, ...)).
+Suppose  = , ~ = (m-1, m-2, ...), and we have to choose a µ such that b = 0 in order to have  =   {0} which implies ~ = (m - 2, m - 3, m - 4, ...). This can happen only if m - 1 / µ, that is, it is enough to choose µ as a subsequence of (m - 2, m - 3, m - 4, ...). If m - r  1 we have c1 = c2 = 1, that corresponds to the case
+(, µ) = (, (r, r - 1, r - 3, ..., )).
+But, in order to make m - 1 / µ, we must have r = m - 1, then this case only happen if m - r  2. If m - r  2, we have also the possibility c1 = 2, that corresponds to the case
+(, µ) = (, (r + 1, r - 2, r - 3, ..., )).
+But, in order to make m - 1 / µ, r + 1 = m - 1, then this case only happen if m - r  3. Case (2) It must be  = (1), then we can have  =  = (1) or  = .
+Suppose  =  = (1), then ~ = (m - 1, m - 3, m - 4, ...), c1 = m - r, and cj = 0 for j  2. So, if m - r = 1, we have the sequence
+(, µ) = ((1), (~m-r+2, ~m-r+3, ..., )) = ((1), (m - 3, m - 4, ...)).
+Suppose  = , ~ = (m - 1, m - 2, ...), c1 = 1, cj = 0 j  2, and we have to choose a µ such that b = 1 in order to have  =   {1} which implies
+~ = (m - 1, m - 3, m - 4, ...).
+This can happen only if m - 1  µ and m - 2 / µ. That is, the sequence
+(, µ) = (, (~i1 , ..., ~ir ))
+seen as a subsequence of
+((1), (m - 1, m - 3, m - 4, ...)) = (, ~)
+must satisfy i1 = 2. The condition c1 = 1 implies 1 = m - r + 1 - i1, then 1 = m - r + 1 - 2 that is m - r = 2, while the condition cj = 0 j  2 implies ij = m - r + j. Then, if m - r = 2, we have the sequence
+(, µ) = ((), (m - 1, m - 4, m - 5, ...)).
+
+BETTI NUMBERS AND PSEUDOEFFECTIVE CONES IN 2-FANO VARIETIES
+
+13
+
+Case (3) It must be  = (2), then we can have  =  = (1) or  = . If  = (2), then c1 = m - r, then the discrepancy is not 0. So  = , ~ = (m - 1, m - 2, ...), cj = 0 j  1, and we have to choose a µ
+such that b = 2 in order to have  =   {2} which implies ~ = (m - 1, m - 2, m - 4, ...).
+This can happen only if m - 1, m - 2  µ and m - 3 / µ. That is, the sequence (, µ) = (, (~i1 , ..., ~ir ))
+seen as a subsequence of ((2), (m - 1, m - 2, m - 4, ...)) = (, ~)
+must satisfy i1 = 2 and i2 = 3. The condition cj = 0 implies ij = m - r + j, then i1 = m - r + 1 = 2 and i2 = m - r + 2 = 3 imply m - r = 1. Then, if m - r = 1, we have the sequence
+(, µ) = ((), (m - 1, m - 2, m - 4, ...)).
+
+Lemma 3.13. b6(OG+(r, 2r)) = 2.
+
+Proof. We have to calculate the number of Schubert cycles of dimension 6, that is the
+
+number of sequences r - 1  1 > ... > t  0 such that
+
+t i=1
+
+i
+
+=
+
+3,
+
+t
+
+
+
+r
+
+(mod 2).
+
+We
+
+get
+
+· If r is odd,  = (3) and  = (2, 1, 0); · If r is even,  = (3, 0) and  = (2, 1).
+
+We now deal with complete intersections in symplectic Grassmannians SG(r, s) with
+
+2
+
+r
+
+
+
+m=
+
+s 2
+
+.
+
+We
+
+use
+
+a
+
+notation
+
+that
+
+is
+
+slightly
+
+different
+
+from
+
+[Cos13].
+
+Let
+
+t
+
+be
+
+an
+
+integer such that 0  t  r. Given a sequence of integers  = (1, ..., t) of length t such
+
+that
+
+m  1 > ... > t > 0 let ~ = (~t+1, ..., ~m) be the unique sequence of length m - t such that
+· m - 1  ~t+1 > ... > ~m  0, · ~j + i = m for every i = 1, .., t and j = t + 1, ..., m.
+
+The Schubert varieties in SG(r, s) are parametrized by pairs (, µ), where µ is any subsequence of ~ of length r - t. Given an isotropic flag of subvector spaces F·
+
+0  F1  F2  ...  Fm  Fm-1  Fm-2  ...  F1  Cs (,µ)(F·) is defined as the closure of the locus
+
+{[W ]  SG(r, s)/ dim(W  Fm+1-i ) = i for 1  i  t; dim(W  Fµj ) = j for t < j  r}.
+
+BETTI NUMBERS AND PSEUDOEFFECTIVE CONES IN 2-FANO VARIETIES
+
+14
+
+Suppose (, µ) = (1, ..., t, ~it+1, ..., ~ir ), the codimension of (,µ)(F·) is
+t
+codim((,µ)(F·)) = i + dis(, µ).
+i=1
+The set all (,µ) = (,µ)(F·) of codimension k is a basis of H2k(SG(r, s), Z) by Ehresmann's Theorem. The proof of the following lemma is the same of the case of OG(r, 2m + 1).
+
+Lemma
+
+3.14.
+
+Let
+
+2
+
+
+
+r
+
+
+
+m
+
+=
+
+s 2
+
+,
+
+then
+
+b4(SG(r, s)) =
+
+2 1
+
+m-r  1 r=m
+
+3.3. Other examples.
+
+Proposition 3.15. Let s, r be positive integers such that 2  r 
+
+s 2
+
+, and
+
+s 2
+
+- r = 1, 2
+
+if s is even. Let s = 2r (respectively, s = 2r), let X be a n-dimensional weak 2-Fano
+
+complete intersection in a connected component of the orthogonal Grassmann variety
+
+OG(r, s) under the Plücker (respectively, half-spinor) embedding, with X very general if
+
+X  OG(2, 7). Then Eff2(X) is polyhedral.
+
+Proof. Assume that X is of type (d1, ..., dc). If n > 4, by [Laz04b, Theorem 7.1.1] and
+
+Lemma 3.12, we have b4(X)  2 and we can apply Lemma 2.4. Then we have n = 4
+
+and c =
+
+r(2s-3r-1) 2
+
+-
+
+4.
+
+If 2r = s, by [AC13, Proposition 34] and Remark 3.7, we
+
+see that X is weak 2-Fano if and only if either di = 1 and c  4, or X of type (2).
+
+Therefore we get r = 4 and X of type (1, 1). By [AC13, Proposition 34] we have that
+
+KX = -c1(X) = -4H, where H is the half-spinor embedding. But then, by [KO73, Corollary p.37], X is a smooth quadric in P5 and then b4(X) = 2 by [Rei72, p.20], so we
+
+apply by Lemma 2.4.
+
+If 2r = s, since c1(OG(r, s)) = (s - r - 1)1 we get that
+
+c i=1
+
+di
+
+ s - r - 2.
+
+It
+
+is
+
+easy to see that this leads to the following cases
+
+OG(r, s) OG(3, 7) OG(2, 7)
+OG+(2, 6)
+
+Type
+(1, 1) (1, 1, 1)
+(2) (1)
+
+But OG(3, 7) = OG+(4, 8), then the first case is a quadric. Let X111 be the variety (1, 1, 1) in OG(2, 7). This is the variety (b8) in the classification given in [K¨95]. Indeed,
+
+for the reader's convenience, we point out that X111 is the zero-locus of a global section
+
+of the bundle
+
+2S 3  Sym2S
+
+where S is (1, 0; 0, 0, 0, 0, 0) in Küchle's notation (see [K¨95, Section 2.5]). So h1,3(X111) > 0 by [K¨95, Theorem 4.8]. Now apply [Spa96, Theorem 2] to conclude that the space of
+
+BETTI NUMBERS AND PSEUDOEFFECTIVE CONES IN 2-FANO VARIETIES
+
+15
+
+algebraic cycles of X111 is induced by the space of algebraic cycles of OG(2, 7). Then
+
+Z2(X111)/Alg2(X111)  R
+
+is at most 2-dimensional. Hence Eff2(X111) is polyhedral by (2.1) and Lemma 2.4. The
+
+last two varieties do not satisfy the condition
+
+s 2
+
+- r = 1, 2, anyway, they are not weak
+
+2-Fano by [AC13, Example 21]. Indeed, OG+(2, 6) is the zero section of the bundle
+
+OP3(1)  OP3(1) in P3 × P3 [Kuz15, Proposition 2.1], and it can easily be seen that the
+
+Plücker embedding is given by the divisor (1, 1), then the two varieties are isomorphic
+
+to, respectively, a complete intersection of type (1, 1) and (1, 2) in P3 × P3 under the
+
+embedding given by OP3(1)  OP3(1).
+
+Proposition 3.16. Let X be a smooth n-dimensional weak 2-Fano complete intersection in a symplectic Grassmann variety SG(r, s) under the Plücker embedding. Then, b4(X)  2. In particular Eff2(X) is polyhedral.
+
+Proof. Assume that X is of type (d1, ..., dc). If n > 4, by [Laz04b, Theorem 7.1.1] and
+
+Lemma 3.14, we have b4(X) = b4(SG(r, s))  2 and we can apply Lemma 2.4. If n = 4,
+
+since and
+
+c1(SG(r, s)) = (s - r + 1)1 we
+
+c i=1
+
+di
+
+
+
+s - r.
+
+It
+
+is
+
+easy
+
+to
+
+see
+
+have the that this
+
+following conditions: leads to the following
+
+c
+
+=
+
+r(2s-3r+1) 2
+
+cases:
+
+-
+
+4
+
+SG(r, s) SG(3, 6) SG(2, 6)
+
+Type
+(1, 1) (1, 2) (1, 1, 1) (1, 1, 2)
+
+The variety SG(2, 6) is a section of 2(S) = OG(2,6)(1), as we said in Remark 3.6. Thus the last two case are, respectively, (1, 1, 1, 1) and (1, 1, 1, 2) in G(2, 6). The first two cases are not weak 2-Fano by [AC13, Proposition 36], the last two by [AC13, Proposition 32(i)].
+
+4. Fano manifolds of dimension n and index iX > n - 3
+A very important invariant of a Fano variety X is its index: this is the maximal integer iX such that -KX is divisible by iX in P ic(X).
+Fano varieties of high index have been classified: [KO73] proved that iX  n + 1, iX = n + 1 if and only if X = Pn, and iX = n if and only if X  Pn+1 is a smooth hyperquadric. Furthermore the case iX = n - 1 (the so called Del Pezzo varieties) has been classified by Fujita in [Fuj82a, Fuj82b], and the case iX = n - 2 (the so called Mukai varieties) by Mukai (see [Muk89] and [IP99]).
+Araujo and Castravet [AC13, Theorem 3] succeeded to classify 2-Fano Del Pezzo and Mukai varieties. They proved:
+
+BETTI NUMBERS AND PSEUDOEFFECTIVE CONES IN 2-FANO VARIETIES
+
+16
+
+Theorem 4.1. Let X be a 2-Fano variety of dimension n  3 and index iX  n - 2. Then X is isomorphic to one of the following.
+· Pn. · Complete intersection in projective spaces:
+- Quadric hypersurfaces X  Pn+1 with n > 2; - Complete intersections of type (2, 2) in Pn+2 with n > 5; - Cubic hypersurfaces X  Pn+1 with n > 7; - Quartic hypersurfaces X  Pn+1 with n > 15; - Complete intersections of type (2, 3) in Pn+2 with n > 11; - Complete intersections of type (2, 2, 2) in Pn+3 with n > 9. · Complete intersection in weighted projective spaces: - Degree 4 hypersurfaces in P(2, 1, ..., 1) with n > 11; - Degree 6 hypersurfaces in P(3, 2, 1, ..., 1) with n > 23; - Degree 6 hypersurfaces in P(3, 1, ..., 1) with n > 26; - Complete intersections of type (2, 2) in P(2, 1, ..., 1) with n > 14. · G(2, 5). · OG+(5, 10) and its linear sections of codimension c < 4. · SG(3, 6). · G2/P2.
+Here G2/P2 is a 5-dimensional homogeneous variety for a group of type G2. Using the results in the previous sections we obtain:
+Theorem 4.2. Let X be a n-dimensional 2-Fano variety with iX  n - 2. Then Eff2(X) and Eff3(X) are polyhedral.
+Proof. In the case Pn and its complete intersections, we can invoke Theorem 3.2. Since none of the complete intersections in P(w) of the list has dimension 4, we can use Proposition 3.1. Also G(2, 5), OG+(5, 10), SG(3, 6) and G2/P2 are rational homogeneous varieties, then their cone of pseudoeffective 2-cycles is polyhedral by Proposition 3.4. Whereas the complete intersections of OG+(5, 10) have polyhedral cone of pseudoeffective 2-cycles by Proposition 3.15.
+In Theorem 4.1, the only complete intersection of dimension 6 in a weighted projective space is the smooth quadric Q  P7, and by [Rei72, p.20] b6(Q) = 2 then Eff3(X) is polyhedral by Lemma 2.4. For the other complete intersections we can use Proposition 3.1, whilst for the rational homogeneous varieties we can use Proposition 3.4. Also for the complete intersections in OG+(5, 10) we have b6(X) = 2, because b6(OG+(5, 10)) = 2 by Lemma 3.13 and we can use [Laz04b, Theorem 7.1.1].
+Then Conjecture 1.2 is true also for 3-Fano varieties of index  n - 2.
+
+[AC12] [AC13] [BH58]
+
+References
+Carolina Araujo and Ana-Maria Castravet, Polarized minimal families of rational curves and higher Fano manifolds, Amer. J. Math. 134 (2012), no. 1, 87­107. MR 2876140
+, Classification of 2-Fano manifolds with high index, A celebration of algebraic geometry, Clay Math. Proc., vol. 18, Amer. Math. Soc., Providence, RI, 2013, pp. 1­36. MR 3114934 A. Borel and F. Hirzebruch, Characteristic classes and homogeneous spaces. I, Amer. J. Math. 80 (1958), 458­538. MR 0102800
+
+BETTI NUMBERS AND PSEUDOEFFECTIVE CONES IN 2-FANO VARIETIES
+
+17
+
+[Bou68] N. Bourbaki, Éléments de mathématique. Fasc. XXXIV. Groupes et algèbres de Lie. Chapitre
+
+IV: Groupes de Coxeter et systèmes de Tits. Chapitre V: Groupes engendrés par des réflexions.
+
+Chapitre VI: systèmes de racines, Actualités Scientifiques et Industrielles, No. 1337, Hermann,
+
+Paris, 1968. MR 0240238
+
+[Cos11] Izzet Coskun, Restriction varieties and geometric branching rules, Adv. Math. 228 (2011),
+
+no. 4, 2441­2502. MR 2836127
+
+[Cos13]
+
+, Symplectic restriction varieties and geometric branching rules, A celebration of alge-
+
+braic geometry, Clay Math. Proc., vol. 18, Amer. Math. Soc., Providence, RI, 2013, pp. 205­
+
+239. MR 3114942
+
+[dA15] Rafael Lucas de Arruda, On Varieties of Lines on Linear Sections of Grassmannians,
+
+arXiv:1505.06488 (2015).
+
+[DELV11] Olivier Debarre, Lawrence Ein, Robert Lazarsfeld, and Claire Voisin, Pseudoeffective and nef
+
+classes on abelian varieties, Compos. Math. 147 (2011), no. 6, 1793­1818. MR 2862063
+
+[Dim92] Alexandru Dimca, Singularities and topology of hypersurfaces, Universitext, Springer-Verlag,
+
+New York, 1992. MR 1194180
+
+[dJS06] A. J. de Jong and Jason Michael Starr, A note on Fano manifolds whose second Chern
+
+character is positive, arXiv:math/0602644 (2006).
+
+[dJS07] A. J. de Jong and Jason Starr, Higher Fano manifolds and rational surfaces, Duke Math. J.
+
+139 (2007), no. 1, 173­183. MR 2322679
+
+[Ehr34] Charles Ehresmann, Sur la topologie de certains espaces homogènes, Ann. of Math. (2) 35
+
+(1934), no. 2, 396­443. MR 1503170
+
+[FMSS95] W. Fulton, R. MacPherson, F. Sottile, and B. Sturmfels, Intersection Theory on Spherical
+
+Varieties, J. Algebraic Geom. 4 (1995), no. 1, 181­193. MR 1299008
+
+[Fuj82a] Takao Fujita, Classification of projective varieties of -genus one, Proc. Japan Acad. Ser. A
+
+Math. Sci. 58 (1982), no. 3, 113­116. MR 664549
+
+[Fuj82b]
+
+, On polarized varieties of small -genera, Tohoku Math. J. (2) 34 (1982), no. 3,
+
+319­341. MR 676113
+
+[Ful84] William Fulton, Intersection Theory, Ergebnisse der Mathematik und ihrer Grenzgebiete
+
+(3) [Results in Mathematics and Related Areas (3)], vol. 2, Springer-Verlag, Berlin, 1984.
+
+MR 732620
+
+[Har77] Robin Hartshorne, Algebraic Geometry, Springer-Verlag, New York-Heidelberg, 1977, Grad-
+
+uate Texts in Mathematics, No. 52. MR 0463157
+
+[IP99] V. A. Iskovskikh and Yu. G. Prokhorov, Fano varieties, Algebraic geometry, V, Encyclopaedia
+
+[K¨95]
+
+Math. Sci., vol. 47, Springer, Berlin, 1999, pp. 1­247. MR 1668579 Oliver Küchle, On Fano 4-fold of index 1 and homogeneous vector bundles over Grassmanni-
+
+ans, Math. Z. 218 (1995), no. 4, 563­575. MR 1326986
+
+[Kle74] Steven L. Kleiman, The transversality of a general translate, Compositio Math. 28 (1974),
+
+287­297. MR 0360616
+
+[KO73] Shoshichi Kobayashi and Takushiro Ochiai, Characterizations of complex projective spaces
+
+and hyperquadrics, J. Math. Kyoto Univ. 13 (1973), 31­47. MR 0316745
+
+[Köc91] Bernhard Köck, Chow motif and higher Chow theory of G/P , Manuscripta Math. 70 (1991),
+
+no. 4, 363­372. MR 1092142
+
+[Kuz15] A. G. Kuznetsov, On Küchle varieties with Picard number greater than 1, Izv. Ross. Akad.
+
+Nauk Ser. Mat. 79 (2015), no. 4, 57­70. MR 3397419
+
+[Laz04a] Robert Lazarsfeld, Positivity in algebraic geometry. I, Ergebnisse der Mathematik und ihrer
+
+Grenzgebiete. 3. Folge. A Series of Modern Surveys in Mathematics [Results in Mathematics
+
+and Related Areas. 3rd Series. A Series of Modern Surveys in Mathematics], vol. 48, Springer-
+
+Verlag, Berlin, 2004, Classical setting: line bundles and linear series. MR 2095471
+
+[Laz04b]
+
+, Positivity in algebraic geometry. II, Ergebnisse der Mathematik und ihrer Grenzge-
+
+biete. 3. Folge. A Series of Modern Surveys in Mathematics [Results in Mathematics and
+
+Related Areas. 3rd Series. A Series of Modern Surveys in Mathematics], vol. 49, Springer-
+
+Verlag, Berlin, 2004, Positivity for vector bundles, and multiplier ideals. MR 2095472
+
+BETTI NUMBERS AND PSEUDOEFFECTIVE CONES IN 2-FANO VARIETIES
+
+18
+
+[Muk89] [Mum79] [Ott15] [Rei72] [Sno86] [Spa96]
+
+Shigeru Mukai, Biregular classification of Fano 3-folds and Fano manifolds of coindex 3, Proc. Nat. Acad. Sci. U.S.A. 86 (1989), no. 9, 3000­3002. MR 995400 D. Mumford, An algebraic surface with K ample, (K2) = 9, pg = q = 0, Amer. J. Math. 101 (1979), no. 1, 233­244. MR 527834 John Christian Ottem, Nef cycles on some hyperkähler fourfolds, arXiv:1505.01477 (2015). Miles Reid, The complete intersection of two or more quadrics, Dissertation Trinity Collage, Cambridge (1972). Dennis M. Snow, Cohomology of twisted holomorphic forms on Grassmann manifolds and quadric hypersurfaces, Math. Ann. 276 (1986), no. 1, 159­176. MR 863714 Jeroen G. Spandaw, A Noether-Lefschetz theorem for vector bundles, Manuscripta Math. 89 (1996), no. 3, 319­323. MR 1378596
+
+Università Degli Studi Roma Tre, Dipartimento di Matematica e Fisica, Largo San Murialdo 1, 00146 Roma Italy.
+Université de Strasbourg, CNRS, IRMA, 7 Rue René Descartes, 67000 Strasbourg France.
+E-mail address: gmuratore@mat.uniroma3.it
+
+

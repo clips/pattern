@@ -1,0 +1,3183 @@
+Minimalist approach to the classification of symmetry protected topological phases
+Zhaoxi Xiong
+Department of Physics, Harvard University, Cambridge, MA 02138, USA$ Department of Physics, University of California, Berkeley, CA 94720, USA,$$
+
+arXiv:1701.00004v1 [cond-mat.str-el] 30 Dec 2016
+
+Abstract
+A number of proposals with differing predictions (e.g. Borel group cohomology, oriented cobordism, group supercohomology, spin cobordism, etc.) have been made for the classification of symmetry protected topological (SPT) phases. Here we treat various proposals on an equal footing and present rigorous, general results that are independent of which proposal is correct. We do so by formulating a minimalist Generalized Cohomology Hypothesis, which is satisfied by existing proposals and captures essential aspects of SPT classification. From this Hypothesis alone, formulas relating classifications in different dimensions and/or protected by different symmetry groups are derived. Our formalism is expected to work for fermionic as well as bosonic phases, Floquet as well as stationary phases, and spatial as well as on-site symmetries.
+Keywords: symmetry protected topological phases, generalized cohomology theories
+
+Contents
+
+1 Introduction
+
+3
+
+2 Generalities
+
+5
+
+2.1 Particle content, dimensionality, and symmetry action . . . . . . . . . . . . . . . . . . . . 5
+
+2.2 Mathematical notation and conventions . . . . . . . . . . . . . . . . . . . . . . . . . . . . 6
+
+2.3 Definition of SPT phases . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 6
+
+2.4 Elementary properties of SPT phases . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 9
+
+3 The Generalized Cohomology Hypothesis
+
+10
+
+4 Justification of the Hypothesis
+
+11
+
+4.1 Additivitiy and functoriality . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 11
+
+4.2 Ubiquity of generalized cohomology theories . . . . . . . . . . . . . . . . . . . . . . . . . . 12
+
+4.3 Existing proposals as special cases . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 12
+
+4.4 Rationale behind classifying spaces . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 13
+
+4.5 Lattice models for arbitrary generalized cohomology theory . . . . . . . . . . . . . . . . . 13
+
+4.6 Physical interpretations of -spectrum . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 14
+
+$Since September 2016 $$Until August 2016
+Corresponding author
+Email address: zxiong@g.harvard.edu (Zhaoxi Xiong)
+
+5 Consequences of the Hypothesis: Mathematical Results
+
+14
+
+5.1 Relationship between reduced and unreduced generalized cohomology theories . . . . . . 15 5.2 A generalized Ku¨nneth formula for Z × G . . . . . . . . . . . . . . . . . . . . . . . . . . . 15 5.3 A generalization to semidirect product Z G . . . . . . . . . . . . . . . . . . . . . . . . . 16
+
+5.4 A generalization to arbitrary product G1 × G2 . . . . . . . . . . . . . . . . . . . . . . . . 16 5.5 A generalization to arbitrary semidirect product G1 G2 . . . . . . . . . . . . . . . . . . 17
+
+6 Consequences of the Hypothesis: Physical Implications
+
+17
+
+6.1 Unification of old and new definitions of SPT phases . . . . . . . . . . . . . . . . . . . . . 18
+
+6.2 Strong and weak topological indices in the interacting world . . . . . . . . . . . . . . . . . 19
+
+6.3 Hierarchy of strong and weak topological indices . . . . . . . . . . . . . . . . . . . . . . . 21
+
+6.4 Pumping, Floquet eigenstates, and classification of Floquet SPT phases . . . . . . . . . . 22
+
+6.5 Applications to space group-protected SPT phases . . . . . . . . . . . . . . . . . . . . . . 25
+
+6.6 Obstruction-free enlargement of symmetry group . . . . . . . . . . . . . . . . . . . . . . . 26
+
+7 Summary and Outlook
+
+27
+
+A Existing Classification Proposals as Generalized Cohomology Theories
+
+29
+
+A.1 Borel group cohomology proposal . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 29
+
+A.2 Oriented cobordism proposal . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 29
+
+A.3 Kitaev's bosonic proposal . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 30
+
+A.4 Freed's bosonic proposal . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 31
+
+A.5 Group supercohomology proposal . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 31
+
+A.6 Spin cobordism proposal . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 32
+
+A.7 Kitaev's fermionic proposal . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 32
+
+A.8 Freed's fermionic proposal . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 32
+
+B Field-Theoretic Argument for Weak-Index Interpretation
+
+32
+
+B.1 Kitaev's construction . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 33
+
+B.2 A generalization to translational symmetry . . . . . . . . . . . . . . . . . . . . . . . . . . 33
+
+B.3 Weak-index interpretation . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 33
+
+C Categorical Viewpoint
+
+34
+
+C.1 Paraphrase of the Generalized Cohomology Hypothesis . . . . . . . . . . . . . . . . . . . . 34
+
+C.2 Further examples . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 35
+
+D Additivity and Functoriality of the Group Cohomology Construction
+
+36
+
+D.1 1-dimensional case . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 36
+
+D.2 Higher-dimensional case . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 40
+
+E Proofs
+
+40
+
+E.1 Some lemmas . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 41
+
+E.2 Main proofs . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 42
+
+F Mathematical Background
+
+43
+
+F.1 Notions in algebraic topology . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 43
+
+F.2 Categories, functors, and natural transformations . . . . . . . . . . . . . . . . . . . . . . . 46
+
+F.3 Technical conventions . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 48
+
+F.4 Generalized cohomology theories . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 49
+
+2
+
+1. Introduction
+The quest for a complete understanding of phases of matter has been a driving force in condensed matter physics. From the Landau-Ginzburg-Wilson paradigm [1] to topological insulators and superconductors [2­6] to topological orders [7] to symmetry protected topological (SPT) phases [8] to symmetry enriched topological phases [9­12], we have witnessed an infusion of ideas from topology into this centuryold field. SPT phases are a relatively simple class of non-symmetry-breaking, gapped quantum phases and have been a subject of intense investigation in recent years [13]. As an interacting generalization of topological insulators and superconductors and intimate partner of topological orders [14], they exhibit such exotic properties as the existence of gapless edge modes, and harbor broad applications. They have also been increasingly integrated into other novel concepts such as many-body localization and Floquet phases [15­29].
+Despite tremendous progress [30­53], a complete classification of SPT phases remains elusive. This is especially true when fermions, high (e.g.  3) spatial dimensions, or continuous symmetry groups are involved. A number of proposals have been made for the general classification of SPT phases: the Borel group cohomology proposal [33], the oriented cobordism proposal [35], Freed's proposal [38, 39], and Kitaev's proposal [40, 42] in the bosonic case; and the group supercohomology proposal [34], the spin cobordism proposal [36], Freed's proposal [38, 39], and Kitaev's proposal [42, 43] in the fermionic case. These proposals give differing predictions in certain dimensions for certain symmetry groups, and while more careful analysis [45­53] has uncovered previously overlooked phases and brought us closer than ever to our destination, we believe that we can do much more.
+In this paper, we will take a novel, minimalist approach to the classification problem of SPT phases, by appealing to the following principle of Mark Twain's [54]:
+Distance lends enchantment to the view.
+In this spirit, we will not commit ourselves to any particular construction of SPT phases, specialize to specific dimensions or symmetry groups, or investigate the completeness of any of the proposals above. Instead, we will put various proposals under one umbrella and present results that are independent of which proposal is correct. This will begin with the formulation of a hypothesis, we dub the Generalized Cohomology Hypothesis, that encapsulates essential attributes of SPT classification. These attributes will be shown to be possessed by various existing proposals and argued, on physical grounds, to be possessed by the unknown complete classification should it differ from existing ones. The results we present will be rigorously derived from this Hypothesis alone. Because we are taking a "meta" approach, we will not be able to produce the exact classification in a given dimension protected by a given symmetry group. We will be able, however, to relate classifications in different dimensions and/or protected by different symmetry groups. Such relations will be interpreted physically ­ this may require additional physical input, which we will keep to a minimum and state explicitly. A major advantage of this formalism is the universality of our results, which, as we said, are not specific to any particular construction.
+What will enable us to relate different dimensions and symmetry groups is ultimately the fact that the Hypothesis is a statement about all dimensions and all symmetry groups simultaneously. Furthermore, due to a certain "symmetry" the Hypothesis carries, the relations we derive will hold in arbitrarily high dimensions. Finally, the Hypothesis is supposed to apply to fermionic phases as well as bosonic phases. Thus our formalism is not only independent of construction, but also independent of physical dimension and particle content, that is, bosons vs. fermions.
+More specifically, the Hypothesis will be based on a prototype offered by Kitaev [40, 42, 43]. We will add a couple of new ingredients (additivity and functoriality; see below) and formulate the ideas in a language amenable to rigorous treatment. While the Hypothesis is informed by Refs. [40, 42, 43], our philosophy is fundamentally different. The goal of Refs. [40, 42, 43] was to classify SPT phases in  3 dimensions by incorporating into the Hypothesis current understanding of the classification of invertible topological orders. The goal of this paper is to make rigorous, maximally general statements about the classification of SPT phases by refraining from incorporating such additional data. The approach of Refs. [40, 42, 43] was concrete, whereas ours is minimalist.
+Here is a preview of some of the fruits of this minimalist undertaking.
+3
+
+(i) We will be able to relate the original definition of SPT phases [8, 31] to the one currently being developed by Refs. [35, 38, 39, 41, 42, 55], which is in terms of invertibility of phases and uniqueness of ground state on arbitrary spatial slices. According to the latter definition, the classification of SPT phases can be nontrivial even without symmetry. (For instance, the integer quantum Hall state represents an SPT phase in that sense.) We will show that SPT phases in the old sense are not only a subset, but in fact a direct summand1, of SPT phases in the new sense. More precisely,
+
+d-dimensional G-
+
+d-dimensional G-
+
+d-dimensional
+
+protected SPT phases = protected SPT phases  invertible topo- ,
+
+(1)
+
+in the new sense
+
+in the old sense
+
+logical orders
+
+where invertible topological orders are synonymous with SPT phases (in the new sense) without symmetry, and d and G are arbitrary. We will also see the two definitions are nicely captured by two natural variants of a mathematical structure that we will introduce. These claims depend only on the Hypothesis, and are expounded upon in Sec. 6.1.
+
+(ii) We will be able to relate the classification of translationally invariant SPT phases to the classification
+
+of usual SPT phases. (From now on, SPT phases will mean SPT phases in the new sense.) The
+
+former are protected by a discrete spatial translational symmetry Z as well as an internal symmetry
+
+G, whereas the latter are protected by G alone. It is conceivable that translational symmetry will
+
+refine the classification, but it is not clear whether every usual SPT phase will have a translationally
+
+invariant representative, whether every usual SPT phase will split into multiple phases, or whether
+
+all usual SPT phases will split into the same number of phases. To all three questions, we will give
+
+affirmative answers. More precisely, we will prove that there is a decomposition
+
+
+
+
+
+d-dimensional
+
+(d-1)-dimensional d-dimensional
+
+(Z × G)-protected SPT phases
+
+= Gph-apsreostected
+
+SPT 
+
+G-protected SPT phases
+
+,
+
+(2)
+
+such that forgetting the translational symmetry corresponds to projecting from the left-hand side onto the second direct summand in the right-hand side. These claims depend only on the Hypothesis and the belief that it applies to translational symmetries as well as internal symmetries for a suitable definition of translationally invariant SPT phases. These are the subject of Sec. 6.2.
+
+(iii) We will go on to argue, through a field-theoretic construction in App. B, that the inclusion of the first summand in the right-hand side into the left-hand side corresponds to a layering construction, where one produces a d-dimensional translationally invariant phase by stacking identical copies of a usual (d - 1)-dimensional phase.
+
+(iv) We will generalize the relation above to d-dimensional SPT phases protected by discrete translation
+
+in n directions. We will see a hierarchy of lower-dimensional classifications enter the decomposition,
+
+with
+
+n k
+
+direct summands in dimension d - k. (The relation above corresponds to n = 1.) This is
+
+discussed in Sec. 6.3.
+
+(v) We will reinterpret the Z above as discrete temporal translational symmetry. Accordingly, there
+
+will be a decomposition
+
+
+
+
+
+
+
+d-dimensional G- (d - 1)-dimensional G- d-dimensional G- 
+
+protected Floquet SPT phases
+
+= pSrPoTtecptheadse(sstationary)  parryo)teScPteTd p(shtaasteiosn- .
+
+(3)
+
+We will give physical meaning to the projection maps onto the two direct summands in the righthand side, in terms of pumping and Floquet eigenstates, respectively. What the relation tells us is
+
+1The direct sum is with respect to an abelian group structure of classification that we will describe later. Note that we could have used the direct product notation × for groups, but the direct sum notation  is more common for abelian groups in the mathematical literature.
+4
+
+that a d-dimensional Floquet SPT phase can pump any (d - 1)-dimensional stationary SPT phase we want, that it can represent any d-dimensional (stationary) SPT phase we want, and that it is completely determined by these two pieces of information. Except for the pumping interpretation, these claims depend only on the Hypothesis and the belief that it applies to discrete temporal translational symmetry as well as internal symmetries for a suitable definition of Floquet SPT phases. These are discussed in Sec. 6.4.
+(vi) We will show that a similar decomposition exists for semidirect products Z G, and more generally G1 G2, whose applications to space group-protected SPT phases will be discussed in Sec. 6.5.
+(vii) An enlargement of symmetry group can not only refine a classification but also eliminate certain phases, for a priori there may be obstructions to lifting an action of a smaller symmetry group over to a larger symmetry group. In Sec. 6.6, we will give a sufficient condition for the absence of such obstructions. More specifically, given G  G, if one can find another subgroup G  G such that G G = G, including the special case of direct product, then every G -protected SPT phase will be representable by some G-protected SPT phase. This claim follows immediately from the Hypothesis.
+(viii) There are other results derived from the Hypothesis that we would rather defer to a subsequent paper due to our incomplete understanding. They are summarized in Sec. 7.
+This paper is organized as follows. In Sec. 2, we establish conventions, define SPT phases, and comment on two elementary properties of SPT phases, additivity and functoriality, that will play a role in the Hypothesis. In Sec. 3, we introduce necessary mathematical concepts and formulate the Generalized Cohomology Hypothesis. In Sec. 4, we justify the Hypothesis on physical grounds. In Sec. 5, we present mathematical forms of the results we derived from the Hypothesis. In Sec. 6, we explore physical implications of these results. In Sec. 7, we summarize the paper, advertise further preliminary results, and suggest future directions.
+A variety of topics are covered in the appendices. In App. A, we explain in more detail how existing proposals for the classification of SPT phases satisfy the Hypothesis. In App. B, we propose a fieldtheoretic construction to corroborate the weak-index interpretation in Sec. 6.2. In App. C, we present an equivalent but more succinct version of the Hypothesis using the terminology of category theory. In App. D, we explicitly show that the group cohomology construction [33] is additive and functorial. In App. E, we supply proofs to various lemmas and propositions in the paper. App. F is a review of notions in algebraic topology, category theory, and generalized cohomology theories.
+Acknowledgments. I am grateful to my advisor, Ashvin Vishwanath, for his guidance and support. I also want to thank Ammar Husain, Ryan Thorngren, Benjamin Gammage, and Richard Bamler for introducing me to the subject of generalized cohomology theories; Hoi-Chun Po, Alexei Kitaev, Christian Schmid, Yen-Ta Huang, Yingfei Gu, Dominic Else, Shengjie Huang, Shenghan Jiang, Drew Potter, and Chong Wang for numerous inspiring discussions; and Judith H¨oller, Alex Takeda, and Byungmin Kang for their invaluable comments on an early draft of the paper. This work was supported in part by the 2016 Boulder Summer School for Condensed Matter and Materials Physics through NSF grant DMR-13001648.
+2. Generalities
+2.1. Particle content, dimensionality, and symmetry action
+Locality is defined differently for fermionic systems than for bosonic (i.e. spin) systems [56]. For this reason, classifications of bosonic phases and fermionic phases are traditionally done separately. While we will follow that tradition, our formalism works identically in the two cases. Therefore, we can omit the qualifiers "fermionic" and "bosonic" and simply speak of "SPT phases."
+By the dimension of a physical system, we always mean the spatial dimension. When it comes to mathematical construction, it is convenient to allow dimensions to be negative. If a purely mathematical result in this paper appears to contain a free variable d, then it should be understood that this result is
+5
+
+valid for all d  Z. If a physical result appears to contain a free variable d, then it should be understood that this result is valid for all d  Z for which all dimensions involved are non-negative.
+For simplicity, we assume all symmetry actions to be linear unitary. A generalization to antilinear antiunitary actions is possible (see Sec. 7) but beyond the purview of this paper.
+We allow all topological groups satisfying the basic technical conditions in App. F.3 to be symmetry groups. Thus, a symmetry group can be finite or infinite, and discrete or non-discrete (also called "continuous"). In the non-discrete case, one must define what it means for a symmetry group G to act on a Hilbert space H , that is whether we want a representation  : G  U (H ) to be continuous, measurable2, or something else, where U (H ) denotes the space of unitary operators on H [33]. Conceivably, the Hypothesis can hold for one definition but fail for another, so some care is needed.
+It is possible that the validity of the Hypothesis requires further restrictions on symmetry groups and symmetry actions, such as compactness and on-siteness, but there is a growing body of evidence [15­17, 30, 31, 57­65] against the necessity of such restrictions. It appears that discrete temporal translation [15­ 17], discrete spatial translation [30, 31], and other space group actions [57­65] may well fit into the same framework as on-site symmetry actions. In particular, Refs. [64, 65] maintained that the classification of d-dimensional G-protected topological phases is the same whether G is spatial or internal, provided that orientation-reversing symmetry operations (e.g. parity) are treated antiunitarily. In any case, on-site actions by finite groups are in the safe zone. We emphasize that the derivation of the mathematical results in Sec. 5 from the Hypothesis is independent of these considerations.
+2.2. Mathematical notation and conventions We denote bijections and homeomorphisms by , isomorphisms of algebraic structures by =, homo-
+topy or pointed homotopy by , and homotopy equivalences or pointed homotopy equivalences by . We denote the one-point set, the unit interval (i.e. [0, 1]), the boundary of the unit interval (i.e. {0, 1}), the n-sphere, the n-disk, and the boundary of the n-disk by pt, I, I, Sn, Dn, and Dn, respectively.
+Unless stated otherwise, "map" always means continuous map, "group" always means topological group, and "homomorphism" between groups always means continuous homomorphism. For experts, the technical conventions in App. F.3 are observed throughout, except in Apps. F.1-F.3.
+2.3. Definition of SPT phases
+2.3.1. Old definition of SPT phases Traditionally, the definition of SPT phases goes as follows [8, 31]. First, one defines a trivial system
+to be a local, gapped system whose unique ground state is a product state. Then, one defines a shortrange entangled (SRE) system to be a local, gapped3 system that can be deformed to a trivial one via local, gapped systems. Finally, one defines a G-protected SPT phase to be an equivalence class of Gsymmetric, non-symmetry-breaking4 SRE systems with respect to the following equivalence relation: two such systems are equivalent if they can be deformed into each other via G-symmetric, non-symmetrybreaking SRE systems.
+2.3.2. New definition of SPT phases Explicit as the definition above is, we shall adopt a different definition that will turn out to be
+extremely convenient for our formalism, at the expense of including more phases. The set of SPT phases in the old sense will be shown to sit elegantly inside the set of SPT phases in the new sense, undisturbed, and they can be readily recovered. The definition spelled out below is based on the ideas in Refs. [35, 38, 39, 41, 42, 55].
+To begin, let us assume that the terms "system," "local," "gapped," "G-symmetric," "non-symmetrybreaking," and "deformation" have been defined. Given two arbitrary systems a and b of the same
+2The measurability of (d + 1)-cochains as postulated in Ref. [33] reduces to the measurability of  when d = 0. 3We do not consider a system with accidental degeneracy in the thermodynamic limit to be gapped. 4Note that "G-symmetric" is an adjective qualifying Hamiltonians while "non-symmetry-breaking" is an adjective qualifying ground states.
+6
+
+SET #5
+
+SET #7
+SET #8 SET #9
+SET #10 SET #11
+SET #12
+
+(SETs in the old sense)
+
+SET #6 SPT #3
+SPT #4 SPT #5
+SPT #6 SET #13
+
+SET #3
+SET #4 SPT #1
+SPT #2 SET #15
+SET #16
+
+SET #1
+SET #2 SET #17
+SET #18
+
+SET #14
+Figure 1: (color online). Schematic illustration of the structure of the space of d-dimensional, G-symmetric, non-symmetrybreaking, local, gapped systems. Each deformation class, shown as a patch here, is called a G-protected topological phase. Each invertible (respectively non-invertible) class, shown as a gray or black (respectively pink) patch, is called an SPT (respectively SET) phase. The identity class, shown as a black patch, is called the trivial SPT phase. Dashed circles are meant to indicate, by forgetting the symmetry, that more systems will be allowed and that distinct phases can become one.
+
+dimension, we write a + b (no commutativity implied; this is just a notation) for the composite system formed by stacking b on top of a. However the aforementioned terms may be defined, it seems reasonable to demand the following:
+(i) a + b is well-defined.
+(ii) If both a and b are local, gapped, G-symmetric, or non-symmetry-breaking, then a + b is also local, gapped, G-symmetric, or non-symmetry-breaking, respectively.
+(iii) A deformation of either a or b also constitutes a legitimate deformation of a + b.
+We will speak of deformation class, which, as usual, is an equivalence class of systems with respect to the equivalence relation defined by deformation (possibly subject to constraints, as discussed in the next paragraph)5.
+Now, let G be a symmetry group and d be a non-negative integer. Consider the set Md(G) of deformation classes of d-dimensional, local, gapped, G-symmetric, non-symmetry-breaking systems. We have seen that there is a binary operation on the set of such systems, given by stacking, which descends to a binary operation on Md(G), owing to property (iii). We define the trivial d-dimensional G-protected SPT phase to be the identity of Md(G) with respect to the said binary operation. We define a ddimensional G-protected SPT phase to be an invertible element of Md(G). We define a d-dimensional G-protected symmetry enriched topological (SET) phase to be a non-invertible element of Md(G). In general, we call an element of Md(G) a d-dimensional G-protected topological phase. An illustration of these concepts appears in Fig. 1.
+In mathematical jargon, SPT phases are thus the group of invertible elements of the monoid Md(G) of d-dimensional G-protected topological phases. We will see later that Md(G) is commutative. This means that the d-dimensional G-protected SPT phases form not just a group, but an abelian group. This is elaborated upon in Sec. 2.4.1.
+
+5If a deformation is defined to be a path in a space of systems that comes with a topology, then a deformation class is nothing but a path component of the space.
+7
+
+LRE systems
+
+LRE systems
+
+LRE systems
+
+SRE systems
+(LRE in the old sense)
+
+LRE systems
+
+LRE systems
+
+SRE systems
+
+SRE systems
+(LRE in the old sense)
+
+LRE systems
+
+LRE systems
+
+LRE systems
+
+LRE systems
+
+Figure 2: (color online). Schematic illustration of the structure of the space of d-dimensional local, gapped systems. Each deformation class, shown as a patch here, is called a topological order. Each invertible (respectively non-invertible) class, shown as a gray or black (respectively pink) patch, is called an invertible (respectively intrinsic) topological order. The identity class, shown as a black patch, is called the trivial topological order, which is in particular invertible. A system is called SRE (respectively LRE) if it belongs to an invertible (respectively intrinsic) topological order.
+Note that we have made no mention of SRE systems so far. Instead, SPT and SET phases naturally fall out of the binary operation given by stacking. The uniqueness of identity and inverses and the abelian group structure of SPT phases come about for free. This is in line with the minimalism we are after and is we think the beauty of the definition.
+Let us introduce special names for the special case of trivial symmetry group G = 0. The trivial SPT phase in this case can be called the trivial topological order ; an SPT phase, an invertible topological order ; an SET phase, an intrinsic topological order ; and any element of Md(0), a topological order. We may call a system short-range entangled (SRE) if it represents an invertible topological order, and long-range entangled (LRE) otherwise. An illustration of these concepts appears in Fig. 2.
+2.3.3. Comparison between old and new definitions of SPT phases To make contact with the old definition of SPT phases [8, 31], we note that all trivial systems in the
+old sense represent the identity element of Md(0), where 0 denotes the trivial group. Hence, SRE systems in the old sense are precisely those SRE systems in our sense that happen to lie in this identity class. Similarly, SPT phases in the old sense are precisely those SPT phases in our sense that, by forgetting the symmetry, represent the said identity class. This shows that the SPT phases in the old sense are a subset of the SPT phases in our sense. One of our results in this paper is that the former form a subgroup, in fact a direct summand, of the latter. These are illustrated in Figs. 1 and 2.
+What is also clear is that the classification of SPT phases (according to our definition; same below) can be nontrivial even for the trivial symmetry group. This amounts to saying that there can exist nontrivial invertible topological orders, or that the set of SRE systems are partitioned into more than one deformation classes in the absence of symmetry. Examples of systems that represent nontrivial invertible topological orders are given in Table 1. While this may seem to contradict the original idea [8] of symmetry protection, it is the new notion of short-range entanglement not the old one that is closely related and potentially equivalent to the condition of unique ground state on spatial slices of arbitrary topology, and in two dimensions, the condition of no nontrivial anyonic excitations [13, 35, 38, 39, 41, 42, 55], both of which are more readily verifiable, numerically and experimentally, than the deformability to product states.
+
+8
+
+Table 1: Examples of systems that represent nontrivial invertible topological orders [42]. They are legitimate representatives of SPT phases according to our definition but fall outside the realm of Refs. [8, 31].
+
+Particle content Dimension System
+
+Fermion
+
+0
+
+An odd number of fermions
+
+Fermion
+
+1
+
+The Majorana chain [66]
+
+Fermion
+
+2
+
+(p + ip)-superconductors [67­69]
+
+Boson
+
+2
+
+The E8-model [45, 70, 71]
+
+2.4. Elementary properties of SPT phases
+In this subsection, we discuss two elementary properties of the classification of SPT phases that will play a role in the Hypothesis. These follow essentially from the definition and should be features of any classification proposal.
+2.4.1. Additivity Additivity says that the d-dimensional G-protected SPT phases form a discrete6 abelian group with
+respect to stacking. To see this, we first note that stacking of d-dimensional G-protected topological phases is tautologically associative (Fig. 3). We then note that any G-symmetric system with a product state as the unique gapped ground state, which always exists, represents an identity with respect to stacking. Since SPT phases are invertible by definition, a discrete group structure is defined.
+This leaves commutativity. We recall, in order to compare systems defined on different Hilbert spaces, that one would usually allow for "embedding" of smaller Hilbert spaces into larger Hilbert spaces7. This is known as an isometry [30, 31, 72, 73]. Given two Hilbert spaces H1 and H2 ­ these are supposed to be associated to individual sites of two different systems ­ the Hilbert spaces H1  H2 and H2  H1 are isomorphic. Embedding them into (H1  H2)  (H2  H1) = C2  H1  H2, we can then interpolate between the two in a canonical, symmetry-preserving fashion. Therefore, the resulting phase is independent of the order of stacking.
+Note that the above also shows that the d-dimensional G-protected topological phases form a discrete commutative monoid Md(G).
+(Some definitions of SPT phases admit the coexistence of multiple trivial phases [61, 74], but this can always be salvaged by declaring the identity under stacking to be the true trivial phase, which is unique by elementary group theory.)
+2.4.2. Functoriality
+Functoriality says that every homomorphism  : G  G between any symmetry groups G and G induces a homomorphism  from the discrete abelian group of d-dimensional G-protected SPT phases to the discrete abelian group of d-dimensional G -protected SPT phases. Note that the direction of mapping is reversed. Implicit here is the assumption that the coherence relation (  ) =    be satisfied for all composable homomorphisms  and .
+Let us first understand this in the special case where G is a subgroup of G and  is the inclusion. A d-dimensional G-protected SPT phase is represented by a d-dimensional, local, gapped, G-symmetric, non-symmetry-breaking system. By forgetting all symmetry operations outside the subgroup G , we can view this same system as a representative of a d-dimensional G -protected SPT phase. Since this applies to paths of systems as well, we get a well-defined map from the set of d-dimensional G-protected SPT phases to the set of d-dimensional G -protected SPT phases. This is the induced map . It is easy to check that  preserves discrete abelian group structure. Moreover, such maps can be composed. For instance, we can further forget G entirely to obtain a map into the set of d-dimensional invertible
+
+6Recall that "group" in this paper means "topological group." This is why we need the adjective "discrete" here, as the
+abelian group of SPT phases is not endowed with a topology. 7More precisely, we want to "embed" representations of the symmetry group rather than Hilbert spaces.
+
+9
+
+c b
+a
+
+c
+
+a+b
+
+(a+b)+c
+
+c
+
+b
+
+b+c
+
+a
+
+a+(b+c)
+a
+
+Figure 3: (color online). Stacking is associative. Given three systems, a (green), b (blue), and c (orange), combining a and b first and then c (upper panel) produces the same system as combining b and c first and then a (lower panel) does.
+
+G-SPT #3 G-SPT #4 G-SPT #5 G-SPT #6
+
+G-SPT #1 G-SPT #2
+
+G'-SPT #3 G'-SPT #4
+G'-SPT #5 G'-SPT #6
+
+G'-SPT #1 G'-SPT #2
+
+G as symmetry group
+
+G'G as symmetry group
+
+no symmetry
+
+Figure 4: (color online). Given G  G, a representative of a d-dimensional G-protected SPT phase can also be viewed as a representative of a d-dimensional G -protected SPT phase, which in turn can be viewed as a representative of a d-dimensional invertible topological order, by forgetting first the symmetry operations outside G and then G itself. This defines a map from the set of d-dimensional G-protected SPT phases to the discrete abelian group of d-dimensional G -protected SPT phases, and then to the set of d-dimensional invertible topological orders.
+
+topological orders. Forgetting symmetry operations in two steps is clearly equivalent to forgetting them all at once, which is the origin of the coherence relation (  ) =   . These are illustrated in Fig. 4.
+The general case where  : G  G is an arbitrary homomorphism only requires a small modification. A d-dimensional G-protected SPT phase is represented by a triple H , , H^ , where H^ is a Hamiltonian
+and  : G  U (H ) is a representation of G on some Hilbert space H . By precomposing , we obtain a representation    : G - G - U (H ) of G . Then the triple H ,   , H^ represents a d-dimensional G -protected SPT phase. This defines the map .
+Note that the same argument also shows that every homomorphism  : G  G between any symmetry groups G and G induces a homomorphism  : Md(G)  Md(G ) between the monoids of d-dimensional G- and G -protected topological phases.
+3. The Generalized Cohomology Hypothesis
+In this section, we will state the Generalized Cohomology Hypothesis, which is the foundation of our formalism. Intuitively, the Hypothesis says that the classifications of SPT phases in different dimensions protected by different symmetry groups are intertwined in some intricate fashion, so that all information can be encoded into what is called an -spectrum. And just like proteins are produced from genes through the processes of transcription and translation, the classifications of d-dimensional G-protected SPT phases for varying d and G can be produced from the -spectrum through the classifying space construction and homotopy theory.
+An -spectrum is by definition a sequence of pointed topological spaces Fd indexed by integers d  Z together with pointed homotopy equivalences Fd Fd+1, where Fd+1 is the loop space of Fd+1 (see App. F.1). As discussed in Sec. 4.6, Fd is believed to be the space of d-dimensional SRE states, and the pointed homotopy equivalences Fd Fd+1 can be given physical interpretations as well. Note that
+10
+
+shifting d turns an -spectrum into another -spectrum. This is responsible for the validity of the results in Secs. 5 and 6 in arbitrarily high dimensions.
+Definition 3.1. An (unreduced) generalized cohomology theory h has an -spectrum (Fd)dZ as its data. Given an integer d, it assigns to each topological space X the discrete abelian group hd(X) := [X, Fd], i.e. the homotopy classes of maps from X to Fd.8
+Definition 3.2. A reduced generalized cohomology theory h~ has an -spectrum (Fd)dZ as its data. Given an integer d, it assigns to each pointed topological space X the discrete abelian group h~d(X) := X, Fd , i.e. the homotopy classes of pointed maps from X to Fd.
+Different choices of -spectrum can give wildly different generalized cohomology groups hd(X)'s and h~d(X)'s. This is the degree of freedom that will allow us to encompass various inequivalent classification proposals. Furthermore, unreduced and reduced theories come hand in hand and can be recovered from each other.
+The discrete abelian group structure on hd(X) is defined via the bijection hd(X) := [X, Fd]  [X, Fd+1]. Given two classes [c1] , [c2]  hd(X) represented by maps c1, c2 : X  Fd+1, we define [c1] + [c2] by concatenating the loops c1(x) and c2(x) for each x. Further replacing Fd+1 by 2Fd+2, one can show that [c1] + [c2] = [c2] + [c1]. The reduced case is similar.
+hd is also functorial, in that every map f : X  Y induces a homomorphism f  : hd(Y )  hd(X) so that (f  g) = g  f  for all composable f and g. Given a class [c]  hd(Y ) represented by a map c : Y  Fd, we define f  ([c]) by precomposing f with c. The reduced case is similar.
+Before stating the Generalized Cohomology Hypothesis, we recall there is a so-called classifying space functor B (see App. F.4). It assigns a pointed topological space BG to each group G, and a pointed map B : BG  BG to each homomorphism  : G  G. As a result, the composition hd(B-) of B and hd assigns a discrete abelian group hd(BG) to each group G, and a homomorphism  : hd(BG)  hd(BG ) to each homomorphism  : G  G. The reduced case is similar. We are now ready to state the
+Generalized Cohomology Hypothesis. There exists an (unreduced) generalized cohomology theory h such that, given any dimension d  0 and symmetry group G, hd(BG) classifies d-dimensional G-protected SPT phases (see Sec. 2.3.2), with its discrete abelian group structure corresponding to stacking (see Sec. 2.4.1) and its functorial structure corresponding to replacing symmetry groups (see Sec. 2.4.2).
+4. Justification of the Hypothesis
+Before taking off from the Hypothesis, we must explain how we arrived at it. We devote this section to the justification of the Hypothesis.
+4.1. Additivitiy and functoriality We have seen that every generalized cohomology theory is additive and functorial. This is encouraging,
+as additivity and functoriality are basic to the classification of SPT phases and should be features of any classification proposal.
+8This differs from the standard definition in two ways, even when the Brown representability theorem is assumed: first, the representing -spectrum is part of the data; and second, we are not considering pairs of spaces. These differences, however, are completely innocuous.
+11
+
+Table 2: Classic examples of generalized cohomology theories and spectra that represent them [75, 76]. Here, K(A, n) denotes
+
+the n-th Eilenberg-Mac Lane space of A (see App. F.4), and U denotes the infinite unitary group U () =
+
+ i=1
+
+U
+
+(i).
+
+Theory
+
+Spectrum
+
+Standard notation Explicit expression
+
+Ordinary cohomology theory with coefficient group A Real K-theory
+Complex K-theory
+Stable cohomotopy Oriented cobordism Unoriented cobordism Spin cobordism Pin± cobordism
+
+Eilenberg-Mac Lane spectrum of A Real K-theory spectrum
+Complex K-theory spectrum Sphere spectrum
+Thom spectrum of SO
+Thom spectrum of O
+Thom spectrum of Spin Thom spectrum of P in±
+
+HA or H· (-; A)
+KO
+KU
+S MSO MO M Spin M P in±
+
+Fn =
+
+K(A, n), pt,
+
+n0 n<0
+
+Periodic: Fn Fn+8
+
+Fn =
+
+Z × BU, U,
+
+n even n odd
+
+Fn
+
+=
+
+limm Sn+m
+-
+
+Fn
+
+=
+
+limm
+-
+
+M
+
+S
+
+On+m
+
+Fn
+
+=
+
+limm
+-
+
+M
+
+On+m
+
+Fn
+
+=
+
+limm
+-
+
+M
+
+S
+
+pinn+m
+
+Fn
+
+=
+
+limm
+-
+
+M
+
+P
+
+in± n+m
+
+4.2. Ubiquity of generalized cohomology theories
+To give a feeling of the ubiquity of generalized cohomology theories, we have listed some classic examples in Table 2. Note that the first entry already hosts infinitely many possibilities, corresponding to different A's. Other entries have obvious generalizations to other structure groups. Furthermore, one can synthesize new generalized cohomology theories from old ones in at least two ways. The first way is to take products of -spectra degree-wise: given (Fd)dZ and (Fd )dZ, we define
+
+Fd := Fd × Fd ,
+
+(4)
+
+so that
+
+[X, Fd] = [X, Fd]  [X, Fd ] ,
+
+(5)
+
+X, Fd = X, Fd  X, Fd .
+
+(6)
+
+The second way is to take the smash product of the corresponding CW-spectra of two given -spectra [75].
+It therefore would not be surprising if SPT phases were classified by a generalized cohomology theory of some sort. Better yet, the above operations on spectra could allow one to improve approximate classifications upon, for instance, the discovery of a class of systems exhibiting new physical effects9.
+
+4.3. Existing proposals as special cases
+One of the main motivations for the Hypothesis is the fact that it is satisfied by various existing proposals for the classification of SPT phases [40, 42, 43]. These include the Borel group cohomology proposal [33], the oriented cobordism proposal [35], and Kitaev's proposal [40, 42] in the bosonic case; and the group supercohomology proposal [34], the spin cobordism proposal [36], and Kitaev's proposal [42, 43] in the fermionic case. (Freed's proposals appear to be more nuanced; see the original papers [38, 39].) Their spectra are summarized in Table 3. We have checked, for finite symmetry groups, that the additive and functorial structures of the Borel group cohomology proposal indeed correspond to stacking phases and replacing symmetry groups, respectively; see App. D. The same can only be done to a lesser extent for non-finite groups or for the other proposals, where explicit lattice models are unavailable. Exactly how these proposals fit into our framework will be expounded upon in App. A.
+The first entry in Table 3 may look odd, since Borel group cohomology as defined in Ref. [33] is an algebraic structure not a topological one. The equivalence between the two relies on the well-known natural isomorphism Hgdr+ou1p (G; A) = Hd+1 (BG; A) for any coefficient A and discrete group G [77]. See App. A.1 for detail.
+
+9We thank Christian Schmid for suggesting this.
+12
+
+Table 3: Generalized cohomology theories that have been proposed to classify SPT phases, and spectra that represent them.
+
+Here, we reused the notation in Table 2. CP  = i-th homotopy group and the i-th k-invariant [78],
+
+ ir=es1pCecPtiivdeleyn.otTehsethCePinfininiteFp0,roZje2citnivefesrmpaicoen,icanFd0,Zi 2anind
+
+ki denote fermionic
+
+the F1,
+
+and Z in bosonic F2 have to do with Berry's phase, fermion parity, the Majorana chain, and the E8-model, respectively
+
+(cf. Table 1) [40, 42, 43]. More details of these proposals can be found in App. A.
+
+Classification proposal
+
+Spectrum
+
+Further information
+
+Borel group cohomology as in Ref. [33] Group supercohomology as in Ref. [34]
+Oriented cobordism as in Ref. [35] Spin cobordism as in Ref. [36] Kitaev's bosonic proposal [40, 42]
+Kitaev's fermionic proposal [42, 43]
+
+Shifted HZ "Twisted product" of HZ2 and shifted HZ
+Related to M SO Related to M Spin Constructed from physical knowledge
+Constructed from physical knowledge
+
+Fd =
+
+K (Z, d + 2) , pt,
+
+d  -2, d < -2.
+
+In particular, F0 CP .
+
+Fd can be constructed as a Postnikov tower:
+
+
+
+Z2, i = d,
+
+i (Fd )
+
+=
+
+ Z,
+
+i = d + 2,
+
+kd+1 =   Sq2,
+
+ 0, otherwise,
+
+where Sq2 is the Steenrod square and  is the Bock-
+
+stein homomrphism associated with 0  Z -2 Z  Z2  0 [78]. In particular, F0 CP  × Z2 and F1 K(Z, 3) × K(Z2, 1).
+See App. A.
+
+See App. A.
+
+Fd is uniquely determined in low dimensions:
+
+ K(Z, 2) CP ,
+
+d = 0,
+
+
+
+Fd
+
+=
+
+ K(Z, 3), K(Z, 4) ×
+
+Z,
+
+d = 1, d = 2,
+
+  K(Z, 5) × K(Z, 1)
+
+K(Z, 5) × S1, d = 3.
+
+See App. A. F0 = K(Z, 2) × Z2 CP  × Z2 is uniquely determined, and Fd>0 are partially determined. See App. A.
+
+4.4. Rationale behind classifying spaces
+The use of classifying spaces BG signifies a gauge-theory nature of SPT phases. More precisely, it suggests, for the purpose of classifying G-protected SPT phases, that it suffices to look at gauge theories with structure group G even though most systems are not gauge theories. An element [c] of hd (BG) can be thought of as a generalized topological term, or more precisely, a characteristic class [79].
+Let us elucidate this with a familiar example: the first Chern class c1, which assigns an element c1() of H2(X; Z) to each U (1)-bundle  over X. In a physical context, X would be a Brillouin zone,  would be a family of Bloch wave functions over it, and c1() would be expressed as Berry's curvature [80]. In general, however, X can vary, and c1 has an important property called naturality: if  is a bundle over X, f : Y  X is a map, and f  is the pull-back bundle over Y , then c1 (f ) = f  (c1()), where the f  in the right-hand side is the induced homomorphism f  : H2 (Y ; Z)  H2 (X; Z). Thus, the first Chern class of a pull-back bundle is determined by that of the original bundle. Since every U (1)-bundle over any space X is the pull-back along some map f : X  BU (1) of the universal bundle U(1) : EU (1)  BU (1) over the classifying space BU (1) (see App. F.4), we can regard c1 simply as an element of H2 (BU (1); Z).
+In the general case, different gauge field configurations in a G-gauge theory over a manifold X can be thought of as different principal G-bundles over X. Reversing the logic in the previous paragraph, we see that a generalized cohomology class [c]  hd (BG) would assign an element [c] () of hd (X) to each gauge field configuration  over X. Just like the first Chern class can be integrated over X to produce the first Chern number, the element [c] () can also sometimes be paired with the fundamental class of X to produce a characteristic number. The latter is supposed to be the topological action (or action amplitude) evaluated at the gauge field configuration .
+4.5. Lattice models for arbitrary generalized cohomology theory
+Esoteric as generalized cohomology theories may seem, Refs. [42, 43] have actually outlined a way to construct lattice models given any such theory h. It can be thought of as a generalization of the group cohomology construction [33] where additional degrees of freedom are placed on the d-simplices of a d-dimensional system. The input is now a map c : BG  Fd instead of a (d + 1)-cocycle. More details of the construction can be found in App. B.1.
+13
+
+Time
+
+=
+=
+Space
+Figure 5: (color online). An illustration in the d = 0 case of the process that defines the map f in the pumping interpretation of -spectrum, where only a finite segment of an infinite or periodic system is drawn.
+4.6. Physical interpretations of -spectrum Refs. [40, 42, 43] proposed a physical interpretation of the spaces Fd in the -spectrum: Fd is the
+space of d-dimensional SRE states (i.e. ground states of SRE systems), and the basepoint of Fd is a particular d-dimensional trivial SRE state (e.g. a product state). There are two interpretations of the pointed homotopy equivalences Fd Fd+1 as discussed below.
+4.6.1. Dimension reduction interpretation A pointed homotopy equivalence Fd Fd+1 consists of a pair of maps f : Fd Fd+1 : g such that
+f  g  id and g  f  id. Recall that each element of Fd+1 is by definition a loop in Fd+1 based at the basepoint of Fd+1. In the dimension reduction interpretation [43], g is defined by first interpreting a loop l in Fd+1 as a pattern of (d + 1)-dimensional SRE states (with the endpoints of l corresponding to spatial infinity) and then taking the domain wall, where we note, because l is based at the basepoint of Fd+1, that the pattern is trivial far away from the domain wall. The spirit here is similar to that of the Jackiw-Rebbi soliton [81], for which the pattern is given by the spatially dependent mass term. The other map, f , is defined by inserting a d-dimensional SRE state | into a (d + 1)-dimensional trivial bulk and spreading it out in the normal direction, which then becomes a pattern of (d + 1)-dimensional SRE states and can be identified with an element of Fd+1. Note that the dimension reduction interpretation is compatible with the identification of the discrete abelian group structure of hd(BG) with stacking. Namely, concatenating loops in Fd+1 corresponds to stacking d-dimensional SRE states, and vice versa. That neither g nor f takes us out of the space of SRE (i.e. invertible-up-to-homotopy) states can be argued for by considering the reverse loop ¯l and the (up-to-homotopy) inverse ¯ of | , respectively.
+4.6.2. Pumping interpretation In the pumping interpretation [40, 42], g : Fd+1  Fd is defined by interpreting a loop l in Fd+1 as
+an adiabatic evolution and measuring the d-dimensional SRE state that is pumped across an imaginary cut. On the other hand, f : Fd  Fd+1 is defined by assigning the following adiabatic evolution to a given a d-dimensional SRE state | . Namely, we first create an alternating stack of | and ¯ and then annihilate them with neighbors, as depicted in Fig. 5. In the d = 0 case, this is reminiscent of the Chalker-Coddington model [82], although Ref. [82] was considering dynamics of real electrons not adiabatic evolution of SRE states. Note that the pumping interpretation is compatible with the identification of the discrete abelian group structure of hd(BG) with stacking. Namely, concatenating loops in Fd+1 corresponds to stacking d-dimensional SRE states. That neither f nor g takes us out of the space of SRE states can be argued for by considering ¯ and the loop formed by concatenating l and ¯l, respectively.
+5. Consequences of the Hypothesis: Mathematical Results
+In this section, we discuss mathematical consequences of the Hypothesis. Their physical implications will be explored in Sec. 6. We stress that the results here depend on nothing beyond the Hypothesis. In fact, they are properties of all generalized cohomology theories.
+14
+
+In what follows, we will denote by (Fd)dZ an arbitrary -spectrum, and by h and h~ the unreduced and reduced generalized cohomology theories it defines, respectively.
+
+5.1. Relationship between reduced and unreduced generalized cohomology theories Lemma 5.1. Let G be any group and 0 be the trivial group. There is a natural split short exact sequence,
+
+s
+
+0
+
+h~d (BG) i hd (BG) p hd (B0)
+
+0
+
+(7)
+
+with s induced by the epimorphism G 0, p induced by the monomorphism 0  G, and i given by forgetting basepoints.
+
+Proof. See App. E.
+
+Corollary 5.2. Let G be any group and 0 be the trivial group. There is a natural isomorphism,
+
+hd(BG) = h~d(BG)  hd(B0).
+
+(8)
+
+5.2. A generalized Ku¨nneth formula for Z × G Proposition 5.3. Let G be any group. There is a natural commutative diagram,
+
+0
+
+hd-1 (BG) ~ h~d (B(Z × G)) ~ h~d (BG)
+
+0
+
+(9)
+
+0
+
+hd-1 (BG)  hd (B(Z × G))  hd (BG)
+
+0
+
+where ~ and  are induced by the monomorphism G  Z × G, g  (0, g), the two vertical maps are obtained by forgetting basepoints, ~ is the composition of the obvious maps
+
+[BG, Fd-1] = [BG, Fd] = S1 × BG / ({s0} × BG) , Fd
+
+(10)
+
+S1 × BG, Fd
+
+=
+
+B (Z × G) , Fd
+
+and  is the unique map making the diagram commute. Here, s0 is the basepoint of S1. In diagram (9), each row is a naturally split short exact sequence, with splitting induced by the epimorphism Z × G G, (i, g)  g.
+
+Proof. See App. E.
+
+Corollary 5.4. Let G be any group. There are natural isomorphisms,
+
+h~d (B(Z × G)) = hd-1 (BG)  h~d (BG) ,
+
+(11)
+
+hd (B(Z × G)) = hd-1 (BG)  hd (BG) .
+
+(12)
+
+When h is the ordinary cohomology H·(-; R) with coefficient ring R, Eq. (12) reduces to the familiar Ku¨nneth formula H·(S1 × BG; R) = H·(S1; R) R H·(BG; R), where we recall that Hi(S1; R) = R if i = 0, 1 and 0 otherwise. Eq. (12) is also easy to understand when h is a product of ordinary cohomology theories, i.e. h·(-) = i H·+di (-; Ri) for arbitrary shifts di and rings Ri. In general, h can be a "twisted" product of ordinary theories, and may not have a cup product, so it is not obvious why Eq. (12) should hold. A handwavy argument would be to replace every R in the usual Ku¨nneth formula by h·(pt) and note that h·(BZ) = h·(S1) = h·(pt)  h·-1(pt) as graded discrete abelian groups.
+15
+
+5.3. A generalization to semidirect product Z G In this subsection we generalize Proposition 5.3 to arbitrary semidirect products Z G. Recall, given
+any semidirect product Z G, that the composition of the canonical monomorphism G  Z G and the canonical epimorphism Z G G is the identity on G. It follows that the induced map BG  B (Z G) is an embedding.
+
+Proposition 5.5. Let G be any group and Z G be any semidirect product. There is a natural commutative diagram,
+
+0
+
+h~d (B (Z G) /BG) ~ h~d (B(Z G)) ~ h~d (BG)
+
+0
+
+(13)
+
+0
+
+h~d (B (Z G) /BG)  hd (B(Z G))  hd (BG)
+
+0
+
+where ~ and  are induced by the monomorphism G  Z G, g  (0, g), the two vertical maps are obtained by forgetting basepoints, ~ is induced by the quotient map B (Z G)  B (Z G) /BG, and  is the unique map making the diagram commute. Here, BG denotes its homeomorphic image in B (Z G) under the induced map BG  B (Z G). In diagram (13), each row is a naturally split short exact sequence, with splitting induced by the epimorphism Z G G, (i, g)  g.
+
+Proof. See App. E.
+
+Corollary 5.6. Let G be any group and Z phisms,
+h~d (B(Z G)) = hd (B(Z G)) =
+
+G be any semidirect product. There are natural isomor-
+
+h~d (B (Z G) /BG)  h~d (BG) ,
+
+(14)
+
+h~d (B (Z G) /BG)  hd (BG) .
+
+(15)
+
+5.4. A generalization to arbitrary product G1 × G2 In this subsection we generalize Proposition 5.3 to arbitrary products G1 × G2.
+
+Proposition 5.7. Let G1 and G2 be any groups. There is a natural commutative diagram,
+h~d (B (G1 × G2)) = h~d (BG1)  h~d (BG1  BG2)  h~d (BG2)
+(16) hd (B (G1 × G2)) = h~d (BG1)  h~d (BG1  BG2)  hd (BG2)
+
+with the vertical maps obtained by forgetting basepoints, such that the canonical inclusions
+
+h~d (BG1)  h~d (B (G1 × G2)) ,
+
+(17)
+
+h~d (BG2)  h~d (B (G1 × G2)) ,
+
+(18)
+
+hd (BG2)  hd (B (G1 × G2))
+
+(19)
+
+are induced by the canonical epimorphisms G1 × G2 G1, G1 × G2 G2, and G1 × G2 G2, respectively, and that the canonical projections
+
+h~d (B (G1 × G2))
+
+h~d (BG1) ,
+
+(20)
+
+h~d (B (G1 × G2))
+
+h~d (BG2) ,
+
+(21)
+
+hd (B (G1 × G2))
+
+hd (BG2)
+
+(22)
+
+are induced by the canonical monomorphisms G1  G1 × G2, G2  G1 × G2, and G2  G1 × G2, respectively.
+
+16
+
+Proof. See App. E.
+
+Corollary 5.8. Let G1 and G2 be any groups and 0 be the trivial group. There are natural isomorphisms,
+
+h~d (B (G1 × G2)) = h~d (BG1)  h~d (BG1  BG2)  h~d (BG2) ,
+
+(23)
+
+and
+
+hd (B (G1 × G2)) = h~d (BG1)  h~d (BG1  BG2)  hd (BG2)
+
+(24)
+
+= hd (BG1)  h~d (BG1  BG2)  h~d (BG2)
+
+(25)
+
+= h~d (BG1)  h~d (BG1  BG2)  h~d (BG2)  hd (B0) .
+
+(26)
+
+5.5. A generalization to arbitrary semidirect product G1 G2
+In this subsection we generalize Propositions 5.3, 5.5, and 5.7 to arbitrary semidirect products G1 G2. Recall, given any semidirect product G1 G2, that the composition of the canonical monomorphism G2  G1 G2 and the canonical epimorphism G1 G2 G2 is the identity on G2. It follows that the induced map BG1  B (G1 G2) is an embedding.
+
+Proposition 5.9. Let G1 G2 be any semidirect product of any groups G1 and G2. There is a natural commutative diagram,
+
+0
+
+h~d (B (G1 G2) /BG2) ~ h~d (B(G1 G2)) ~ h~d (BG2)
+
+0
+
+(27)
+
+0
+
+h~d (B (G1 G2) /BG2)  hd (B(G1 G2))  hd (BG2)
+
+0
+
+where ~ and  are induced by the canonical monomorphism G2  G1 G2, the two vertical maps are obtained by forgetting basepoints, ~ is induced by the quotient map B (G1 G2)  B (G1 G2) /BG2, and  is the unique map making the diagram commute. Here, BG2 denotes its homeomorphic image in B (G1 G2) under the induced map BG2  B (G1 G2). In diagram (27), each row is a naturally split short exact sequence, with splitting induced by the canonical epimorphism G1 G2 G2.
+
+Proof. See App. E.
+
+Corollary 5.10. Let G1 G2 be any semidirect product of any groups G1 and G2. There are natural isomorphisms,
+
+h~d (B (G1 G2)) = h~d (B (G1 G2) /BG2)  h~d (BG2) ,
+
+(28)
+
+hd (B (G1 G2)) = h~d (B (G1 G2) /BG2)  hd (BG2) .
+
+(29)
+
+6. Consequences of the Hypothesis: Physical Implications
+In this section we discuss physical implications of the mathematical results in Sec. 5. We stress that the results below are not specific to any classification proposal or physical dimension, and apply to the fermionic case as well as the bosonic case. Some of our results serve as comprehensive generalizations of special cases (which are typically proposal-, dimension-, or particle content-specific) that already exist in the literature, while others are entirely new. Occasionally, in order to paint a full physical picture, it is necessary to bring in assumptions in addition to the Hypothesis or take leaps of faith, but such assumptions or leaps will be kept to a minimum and always stated explicitly.
+In what follows, we denote by h the generalized cohomology theory appearing in the Hypothesis, by h~ the corresponding reduced theory, and by (Fd)dZ their defining -spectrum.
+17
+
+6.1. Unification of old and new definitions of SPT phases
+In Sec. 2.3, we reviewed the old definition of SPT phases [8, 31], and formalized a new definition of SPT phases based on ideas in Refs. [35, 38, 39, 41, 42, 55]. The old definition is in terms of deformability to product states, whereas the new one is in terms of invertibility of phases, which is closely related and potentially equivalent [35, 38, 39, 41, 42, 55] to the condition of unique ground state on arbitrary spatial slice and, in two dimensions, the condition of no nontrivial anyonic excitations.
+We have seen in Sec. 2.3.3 that d-dimensional G-protected SPT phases in the old sense form a subset of those in the new sense. Here we would like to make their relationship more explicit.
+Physical Result 1. If SPT phases (in the new sense) are classified by a generalized cohomology theory h as in the Hypothesis, then d-dimensional invertible topological orders (i.e. d-dimensional SPT phases protected by the trivial symmetry group) are classified by hd(pt).
+
+Proof. This is a simple application of the Hypothesis: set G to be the trivial group 0 and recall that the classifying space of the trivial group, B0, is homotopy equivalent to the one-point set, pt.
+The merit of Physical Result 1 lies in the fact that the value on a point, hd (pt), is basic to any generalized cohomology theory h. Given an h, hd (pt) is usually the simplest to compute. Conversely, from hd (pt), one can deduce important information about hd (X) for any X (which was the basis of the approach in Refs. [40, 42, 43]; see Apps. A.3 and A.7).
+Physical Result 2. If SPT phases in the new sense are classified by an unreduced generalized cohomology theory h as in the Hypothesis, then SPT phases in the old sense are classified by the corresponding reduced theory h~, where the same remarks about additivity and functoriality apply.
+
+Proof. As remarked in Sec. 2.3.3, SPT phases in the old sense are precisely those SPT phases in the new sense that, by forgetting the symmetry, represent the trivial topological order. Thus, by the functoriality part of the Hypothesis, they are precisely the kernel of the map p in Lemma 5.1, which is naturally isomorphic to h~d (BG) by exactness.
+We would like to point out that the converse of Physical Result 2 is not automatic. That is, had we formulated the Hypothesis for SPT phases in the old sense in terms of h~, then it would not have been nearly as easy, if not impossible, to deduce that SPT phases in the new sense are classified by h.
+
+Physical Result 3. There is a natural isomorphism of abelian groups,
+
+d-dimensional G-
+
+d-dimensional G-
+
+d-dimensional
+
+protected SPT phases = protected SPT phases  invertible topo- .
+
+(30)
+
+in the new sense
+
+in the old sense
+
+logical orders
+
+Proof. We have seen in Physical Result 1 that hd (pt) = hd (B0) classifies d-dimensional invertible topological orders, and in Physical Result 2 that h~d (BG) classifies d-dimensional G-protected SPT phases in the old sense. The desired natural isomorphism then follows from Corollary 5.2.
+We note that the special case of Physical Result 3 where h is the spin cobordism theory in Ref. [36] has been pointed out by Ref. [36].
+The next result gives more information about the isomorphism in Physical Result 3.
+
+18
+
+Physical Result 4. The isomorphism in Physical Result 3 is such that the canonical injection
+
+i:
+
+d-dimensional G-protected SPT phases in the old sense
+
+
+
+d-dimensional G-protected SPT phases in the new sense
+
+(31)
+
+is given by inclusion, and that the canonical projection
+
+p:
+
+d-dimensional G-protected SPT phases in the new sense
+
+d-dimensional invertible topological orders
+
+(32)
+
+is given by forgetting symmetry G.
+
+Proof. Recall that Corollary 5.2 came from Lemma 5.1. We have seen in Physical Result 1 that hd (B0) classifies d-dimensional invertible topological orders, and in Physical Result 2 that ker p classifies ddimensional G-protected SPT phases in the old sense. The first half of Physical Result 4 is then trivial, whereas the second half follows from the functoriality part of the Hypothesis.
+6.2. Strong and weak topological indices in the interacting world
+As observed already in the 1-dimensional bosonic case [30, 31], the classification of SPT phases can be modified by an additionally imposed discrete spatial translational symmetry. Two translationally invariant systems that are inequivalent in the presence of translational symmetry may be deformable to each other via non-translationally invariant paths. A priori, it is also not obvious that there are no intrinsically non-translationally invariant SPT phases.
+Here we would like to clarify the relationship between classifications in the presence and absence of discrete translational symmetry. We will begin with discrete translation Z in only one direction and take G to be a symmetry it commutes with (hence forming Z × G). We shall assume that the Hypothesis is valid in this setup (see Sec. 2.1).
+
+Physical Result 5. Let Z act as discrete spatial translations. Then there is a natural isomorphism
+
+of abelian groups,
+
+
+
+
+
+d-dimensional
+
+(d-1)-dimensional d-dimensional
+
+(Z × G)-protected SPT phases
+
+= Gph-apsreostected
+
+SPT 
+
+G-protected SPT phases
+
+.
+
+(33)
+
+Proof. This is an immediate consequence of the second isomorphism in Corollary 5.4. The next two results give more information about the isomorphism.
+
+Physical Result 6. The isomorphism in Physical Result 5 is such that the canonical projection
+
+:
+
+d-dimensional (Z × G)protected SPT phases
+
+d-dimensional Gprotected SPT phases
+
+.
+
+(34)
+
+is given by forgetting translational symmetry.
+
+Proof. Recall that Corollary 5.4 came from Proposition 5.3. The claim then follows from the funtoriality part of the Hypothesis.
+
+19
+
+Physical Result 7. It seems plausible that the isomorphism in Physical Result 5 is such that the canonical injection
+
+:
+
+(d - 1)-dimensional Gprotected SPT phases
+
+
+
+d-dimensional (Z × G)protected SPT phases
+
+(35)
+
+is given by the layering construction where one produces a d-dimensional (Z × G)-symmetric system by stacking identical copies of a (d - 1)-dimensional G-symmetric system.
+
+Arguments. A special case of Physical Result 5 has been observed in the group cohomology classification of 1-dimensional bosonic SPT phases, where  is indeed given by such a layering construction; see Sec. VB4 of Ref. [30] and Sec. IVC3 of Ref. [31]. As for arbitrary generalized cohomology theories in arbitrary dimensions, a field-theoretic construction is proposed in App. B to justify this interpretation of .
+Therefore, in parallel with the notions of strong and weak topological insulators [83], we can divide d-dimensional (Z × G)-protected SPT phases into strong ones and weak ones, according to whether they can be produced through the layering construction, or equivalently whether they become trivial upon forgetting the translational symmetry. We shall call the first and second direct summands in the righthand side of Eq. (33) the weak topological index and the strong topological index, respectively. Their counterparts in Ref. [83] would be Z2  Z2  Z2 and Z2, respectively. Despite the similarities, there is a crucial distinction between our Physical Results 5-7 and Ref. [83]: the former deal with possibly interacting bosonic or fermionic systems, whereas the latter dealt with free fermion systems.
+The next two addenda tell us how Physical Result 5 interacts with Physical Result 3.
+Addendum to Physical Result 6.  does not mix different invertible topological orders. In particular, it takes SPT phases in the old sense to SPT phases in the old sense.
+
+Proof. The invertible topological order an SPT phase represents is obtained by forgetting all symmetry operations. We have seen that  is given by forgetting Z. Since forgetting first Z and then G is equivalent to forgetting Z × G in one step,  must preserve invertible topological orders. The second half of the addendum also follows independently from the commutativity of the second square in Eq. (9).
+Addendum to Physical Result 7.  can never produce d-dimensional (Z × G)-protected SPT phases with nontrivial invertible topological orders.
+
+Proof. This follows from the commutativity of the first square in Eq. (9).
+This addendum is independent of the arguments for Physical Result 7. If one believes in those arguments, however, then what the addendum is saying is that the layering construction can never produce nontrivial invertible topological orders.
+Now, let us spell out the implications of Physical Results 5-7 in detail.
+Physical Result 8. Let Z act as discrete spatial translations and assume the interpretation of  in Physical Result 7 is valid. Then we have the following:
+(i) Every d-dimensional G-protected SPT phase can be canonically represented by a d-dimensional (Z × G)-protected SPT phase.
+
+20
+
+(ii) The layering construction turns equivalent (d - 1)-dimensional systems into equivalent ddimensional systems, and is hence well-defined at the level of phases.
+(iii) The layering construction commutes with addition of phases and replacement of G.
+(iv) The layering construction turns trivial, nontrivial, or distinct (d - 1)-dimensional G-protected SPT phases into trivial, nontrivial, distinct d-dimensional (Z × G)-protected SPT phases, respectively.
+(v) Every d-dimensional (Z × G)-protected SPT phase obtained through the layering construction becomes trivial upon forgetting Z.
+(vi) Every d-dimensional (Z × G)-protected SPT phase that becomes trivial upon forgetting Z can be obtained through the layering construction.
+(vii) If two d-dimensional (Z × G)-protected SPT phases become the same phase upon forgetting Z, then their difference can be obtained through the layering construction.
+(viii) A (Z × G)-protected SPT phase is uniquely determined by its strong and weak topological indices, and every combination of strong and weak topological indices is allowed.
+
+Proof. All statements follow from the exactness of the second row of Eq. (9), except for the one about replacement of G, which depends on naturality, and the one about canonical representative, which depends on splitting.
+
+The results here have been observed in the group cohomology classification of 1-dimensional bosonic SPT phases; see Sec. VB4 of Ref. [30] and Sec. IVC3 of Ref. [31]. Note that 0-dimensional G-protected SPT phases are nothing but isomorphism classes of 1-dimensional unitary representations of G, which are classified by Hg1roup (G; U (1)) = H2 (BG; Z) (only finite groups were considered in Refs. [30, 31]).
+
+6.3. Hierarchy of strong and weak topological indices
+We now perform a sanity check on Physical Results 5-8 by imposing discrete spatial translational symmetry in multiple linearly independent directions. With translational symmetry in two directions, for example, we have
+
+d-dim (Z × Z × G)-SPT phases
+
+= {(d - 1)-dim (Z × G)-SPT phases}  {d-dim (Z × G)-SPT phases}
+
+
+
+
+
+
+
+
+
+(d - 2)-dim (d - 1)-dim (d - 1)-dim d-dim
+
+= Gph-aSsPeTs
+
+  Gph-aSsPeTs
+
+  Gph-aSsPeTs
+
+
+
+G-SPT phases
+
+,
+
+(36)
+
+where we have abbreviated "d-dimensional G-protected SPT phases" to "d-dim G-SPT phases." In the last line, the last direct summand is a strong index arising from forgetting translational symmetry in both directions; the second and third direct summands are weak indices corresponding to stacking identical copies of 1-codimensional phases in two different ways; the first direct summand is a "very weak" index corresponding to stacking 2-codimensional phases two-dimensionally. This decomposition can be generalized to translation in n directions in a straightforward fashion.
+
+21
+
+Physical Result 9. Let Zn act as discrete spatial translations in n linearly independent directions. Then there is a natural isomorphism of abelian groups,
+
+{d-dim (Zn × G)-SPT phases} = {(d - n)-dim G-SPT phases}
+
+
+
+(d - n + 1)-dim G-SPT phases
+
+···
+
+(d - n + 1)-dim G-SPT phases
+
+n n-1
+
+= n times
+
+···
+
+
+
+(d-k)-dim GSPT phases
+
+···
+
+(d-k)-dim GSPT phases
+
+n
+k
+
+times
+
+···
+
+
+
+(d-1)-dim GSPT phases
+
+···
+
+(d-1)-dim GSPT phases
+
+n 1
+
+= n times
+
+ {d-dim G-SPT phases} ,
+
+(37)
+
+where
+
+n k
+
+:=
+
+n! k!(n-k)!
+
+.
+
+Proof. Iterate Physical Result 5.
+
+We thus see a hierarchy of topological indices in different codimensions. There is a single strong topo-
+
+logical index, in 0 codimension (i.e. d dimensions), which arises from forgetting translational symmetry in
+
+all n directions. There are
+
+n k
+
+weak topological indices in k codimensions (i.e. d - k dimensions), which
+
+correspond to stacking identical copies of k-codimensional phases in
+
+n k
+
+different ways. This hierarchy is
+
+visualized in Fig. 6.
+
+6.4. Pumping, Floquet eigenstates, and classification of Floquet SPT phases
+
+Here we would like to reinterpret the Z in Physical Results 5-8 as a discrete temporal translational symmetry. Accordingly, we shall call a (Z × G)-protected SPT phase a G-protected Floquet SPT phase. As usual, we allow for interactions.
+
+A few words about the definition of Floquet SPT phases are in order. In essence, what we would like
+
+to define as a G-protected Floquet SPT phase is a deformation class of Floquet eigenstates, rather than a
+
+deformation class of periodic Hamiltonians [16]. A Floquet eigenstate is invariant under both the Floquet
+
+operator exp
+
+-i
+
+T 0
+
+H^ (t)dt
+
+and the G-action, which makes it clear what it would mean to forget the
+
+discrete temporal translational symmetry. In principle, different Floquet eigenstates of the same periodic
+
+Hamiltonian can represent different G-protected Floquet SPT phases, and different periodic Hamiltonians
+
+can have common Floquet eigenstates. We shall assume that the Hypothesis is valid for discrete temporal
+
+translational symmetry with respect to this notion of Floquet SPT phases (see Sec. 2.1).
+
+The results below mirror the results in Sec. 6.2.
+
+Physical Result 10. Let G act in a way that commutes with the group Z of discrete temporal translations. There is a natural isomorphism of abelian groups,
+
+d-dimensional G-protected Floquet SPT phases
+
+=
+
+(d - 1)-dimensional Gprotected SPT phases
+
+
+
+d-dimensional Gprotected SPT phases
+
+.
+
+(38)
+
+22
+
+G
+
+· · · Zn-3 × G Zn-2 × G Zn-1 × G Zn × G
+
+·
+
+···
+
+·
+
+·
+
+·
+
+·
+
+d
+
+·
+
+···
+
+·
+
+·
+
+·
+
+d-1
+
+·
+
+···
+
+·
+
+·
+
+d-2
+
+·
+
+···
+
+·
+
+...
+
+...
+
+·
+
+d-3 ...
+d-n
+
+Figure 6: Illustration of the hierarchy of strong and weak topological indices. Different rows and columns correspond to different dimensions and symmetry groups, respectively. Zn acts as discrete spatial translations in n linearly independent directions, where n  d. Each dot denotes an abelian group of SPT phases of the appropriate dimension protected by the appropriate symmetry group. An upper-rightward move corresponds to the layering construction in the relevant direction ( in Physical Result 7). A horizontal leftward move corresponds to forgetting translational symmetry in the relevant direction ( in Physical Result 6). A horizontal rightward move corresponds to taking the canonical SPT phase with one additional translational symmetry [the splitting of the second row in Eq. (9)]. Each path along solid arrows from the leftmost column to the rightmost dot contributes a topological index, with the horizontal path responsible for the strong topological index and the rest responsible for the weak topological indices.
+Proof. Same as Physical Result 5.
+
+Physical Result 11. The isomorphism in Physical Result 10 is such that the canonical projection
+
+:
+
+d-dimensional G-protected Floquet SPT phases
+
+d-dimensional Gprotected SPT phases
+
+.
+
+(39)
+
+is given by forgetting temporal translational symmetry.
+
+Proof. Same as Physical Result 6.
+
+Physical Result 12. It seems plausible that the isomorphism in Physical Result 10 is such that the canonical projection
+
+:
+
+d-dimensional G-protected Floquet SPT phases
+
+(d - 1)-dimensional Gprotected SPT phases
+
+(40)
+
+is given by measuring what (d-1)-dimensional G-protected SPT phase is pumped across an imaginary cut in a d-dimensional system in one Floquet cycle.
+
+Arguments. A special case of Physical Result 10 has been observed in the classification of 1-dimensional Floquet SPT phases within the group cohomology framework [15­17], where it was argued that  should have such a pumping interpretation, at least when G is finite abelian.
+We note that special cases of Physical Results 10-12 where h is the group cohomology theory in Ref. [33] have appeared in classifications of 1-dimensional bosonic Floquet SPT phases [15­17], in which
+
+23
+
+the fermionic case was also discussed. The next two addenda tell us how Physical Result 10 interacts with Physical Result 3.
+Addendum to Physical Result 11.  does not mix different invertible topological orders. In particular, it takes Floquet SPT phases in the old sense to SPT phases in the old sense.
+Proof. Same as Addendum to Physical Result 6.
+Addendum to Physical Result 12. Every (d-1)-dimensional G-protected SPT phase, with trivial or nontrivial invertible topological order, can be produced via  from a d-dimensional G-protected Floquet SPT phase with trivial invertible topological order.
+Proof. Same as Addendum to Physical Result 7. This addendum is independent of the arguments for Physical Result 12.
+Now, let us spell out the implications of Physical Results 10-12 in detail.
+Physical Result 13. Let G act in a way that commutes with the group Z of discrete temporal translations and assume the interpretation of  in Physical Result 12 is valid. Then we have the following:
+(i) Equivalent Floquet systems pump equivalent stationary systems across the cut. That is, pumping is well-defined at the level of phases.
+(ii) Every d-dimensional G-protected SPT phase can be obtained by forgetting the discrete temporal translational symmetry of some canonical d-dimensional G-protected Floquet SPT phase, which pumps the trivial (d - 1)-dimensional G-protected SPT phase across the cut.
+(iii) Every (d - 1)-dimensional G-protected SPT phase can be obtained through pumping from some canonical d-dimensional G-protected Floquet SPT phase, which becomes trivial upon forgetting the discrete temporal translational symmetry.
+(iv) Pumping commutes with addition of phases. That is, the (d - 1)-dimensional G-protected SPT phase pumped across the cut by the sum of two d-dimensional G-protected Floquet SPT phases is equal to the sum of the (d - 1)-dimensional G-protected SPT phases that are pumped across the cut by the two d-dimensional G-protected Floquet SPT phases respectively.
+(v) Pumping commutes with replacement of G. That is, given a homomorphism  : G  G and a d-dimensional G-protected Floquet SPT phase [c], if we write  [c] for the d-dimensional G protected Floquet SPT phase induced from [c] via , then the (d - 1)-dimensional G -protected SPT phase pumped across the cut by  [c] is equal to the one induced via  from the (d - 1)dimensional G-protected SPT phase that is pumped across the cut by [c].
+(vi) A d-dimensional G-protected Floquet SPT phase is uniquely determined by
+(a) the d-dimensional G-protected SPT phase obtained by forgetting the discrete temporal translational symmetry and
+(b) the (d - 1)-dimensional G-protected SPT phase pumped across the cut, and every combination of d- and (d - 1)-dimensional G-protected SPT phases is allowed.
+24
+
+Proof. All statements follow from the exactness and splitting of the second row of Eq. (9), except for the one about replacement of G, which depends on naturality.
+One can imagine combining ideas in Secs. 6.2 and 6.4 to treat cases where both spatial and temporal translational symmetries are present, cases where only a combination of spatial and temporal translations is a symmetry, etc., i.e., in a loose sense, spacetime crystals [84­86].
+6.5. Applications to space group-protected SPT phases A growing body of evidence [30, 31, 57­65] has emerged suggesting that the Generalized Cohomology
+Hypothesis is applicable to most, perhaps all, non-on-site symmetries as well as on-site ones. Namely, if G is a symmetry group acting in a microscopically unitary, possibly non-on-site, but orientation-preserving fashion, then the classification of d-dimensional G-protected SPT phases is given by hd (BG) for the same generalized cohomology theory h one would use to classify SPT phases protected by on-site unitary symmetries10. Systematic investigation of this principle has been put forth by Refs. [64, 65]. In Ref. [64], the principle was demonstrated for bosonic SPT phases in 1, 2, and 3 dimensions through a tensor network construction. In Ref. [65], it was demonstrated through a space group "gauging" procedure proposed therein. The principle is in accord with previously discovered special cases [30, 31, 57­63]. While some discrepancies exist [59, 60, 62, 74], we suspect they are due to the inhomogeneous definitions of space group-protected SPT phases in the literature; they also involve effectively antiunitary symmetry operations, which are beyond the purview of this paper.
+With these remarks out of the way, let us see what implications the results in Sec. 5 have on SPT phases protected by space group symmetries.
+Physical Result 14. Let SG be a space group with all orientation-reversing elements removed. Let P G be its point group. If SG is symmorphic, then every d-dimensional P G-protected SPT phase can be canonically represented by a d-dimensional SG-protected SPT phase.
+Proof. When symmorphic, SG = T G P G, where T G is the translational group. Apply Proposition 5.9.
+Put differently, when a space group is symmorphic, lifting the translational symmetry can never lead to "intrinsically new" phases. Note that one is not obligated to retain all orientation-preserving elements in the symmetry group of a physical lattice. It is perfectly fine to let G contain only rotations about a particular axis, for instance.
+Physical Result 15. Let G0 be a group that acts in an on-site fashion and SG be a space group with all orientation-reversing elements removed. Then every d-dimensional SG-protected SPT phase can be canonically represented by a d-dimensional (G0 SG)-protected SPT phase.
+Proof. Apply Proposition 5.9.
+Again, Physical Result 15 says, given an on-site symmetry and a space group symmetry, that lifting the former can never lead to "intrinsically new" phases. Note that there is no condition on symmorphism. An example of G0 and SG that do not commute is this: suppose G0 = Zn is generated by spin rotation
+10The claim is actually more general, in that one can allow for orientation-reversing (e.g. parity) or microscopically antiunitary (e.g. time-reversal) symmetry operations, as long as both are treated antiunitarily [64, 65]. In our framework, this would give rise to a nontrivial action on the -spectrum, thereby necessitating twisted generalized cohomology theories. Since we are only concerned with effectively unitary symmetry actions, we have simplified the claim a little.
+25
+
+about
+
+the
+
+y-axis
+
+by
+
+an
+
+angle
+
+of
+
+2 n
+
+,
+
+and
+
+SG
+
+=
+
+Z2
+
+is
+
+generated
+
+by
+
+spatial
+
+rotation
+
+about
+
+the
+
+z-axis
+
+by
+
+an
+
+angle of ; then the two does not commute as long as n > 2.
+
+When G0 happens to commute with SG, we have the following additional result.
+
+Physical Result 16. With the same set-up as in Physical Result 15, if SG commutes with G0, then every d-dimensional G0-protected SPT phase can be canonically represented by a d-dimensional (G0 × SG)-protected SPT phase.
+
+Proof. Apply Proposition 5.7 or 5.9.
+On the other hand, if SG happens to be symmorphic, we have the following result.
+Physical Result 17. With the same set-up as in Physical Result 15, if SG is symmorphic, then every d-dimensional P G-protected SPT phase can be canonically represented by a d-dimensional (G0 P G)-protected SPT phase, in fact a d-dimensional (G0 SG)-protected one, where P G is the point group.
+Proof. When SG is symmorphic, the total symmetry group is G0 SG = (G0 × T G) P G, where T G is the translational group. Apply Proposition 5.9.
+This says, given an on-site symmetry and a symmorphic space group symmetry, that lifting the on-site symmetry and the translational symmetry can never lead to "intrinsically new" phases.
+Finally, let us see how Physical Results 14-17 interact with Physical Result 3.
+Addendum to Physical Results 14-17. If the phase being represented has trivial invertible topological order, then so does the canonical phase that represents it.
+
+Proof. This follows from the commutativity of the second square in Eq. (13).
+6.6. Obstruction-free enlargement of symmetry group Here we would like to discuss the enlargement of symmetry groups in general. Let G  G be
+a subgroup. As one replaces G by G, one expects to refine the classification of SPT phases. It is also possible, however, for certain G -protected SPT phases to be eliminated, for a priori there may be obstructions to lifting an action of G over to G. Here we give a sufficient condition for the absence of such obstructions.
+Physical Result 18. Given G  G, if there exists a subgroup G  G such that G is a semidirect product G G , then every d-dimensional G -protected SPT phase can be representable by a ddimensional G-protected SPT phase.
+
+Proof. The condition is equivalent to the existence of a homomorphism  : G  G such that    = id, where  : G  G is the inclusion. This implies that    : hd (BG )  hd (BG)  hd (BG ) is the identity. In particular,  : hd (BG)  hd (BG ) is surjective.
+Note that direct products are considered to be special cases of semidirect products. Moreover, there are many equivalent criteria for when G is such a semidirect product:
+
+26
+
+(i) There exists a normal subgroup G  G such that every element g  G can be written as g = g g for some unique g  G and g  G .
+(ii) There exists a normal subgroup G  G such that every element g  G can be written as g = g g for some unique g  G and g  G .
+(iii) There exists a surjective homomorphism G G that is the identity on G .
+As a special case, the enlargement from the trivial symmetry group to any symmetry group G is always obstruction-free. That is, every invertible topological order can be represented some G-protected SPT phase. This fact has been surreptitiously incorporated into Fig. 4.
+7. Summary and Outlook
+We have taken a novel, minimalist approach to the classification problem of SPT phases, where instead of directly classifying SPT phases, we looked for common ground among various existing classification proposals, which gave conflicting predictions in certain cases. The key in this approach was the formulation of a Generalized Cohomology Hypothesis that was satisfied by various proposals and captured essential aspects of SPT classification. We took the Hypothesis as the starting point and derived rigorous, general results from it. These results were born to be independent of which proposal is correct (or whether any proposal is correct at all, as long as the unknown complete classification satisfies the Hypothesis, which seems plausible on independent grounds). They typically give relations between classifications of SPT phases in different dimensions and/or protected by different symmetry groups. They hold in arbitrarily high dimensions and apply equally to fermionic and bosonic SPT phases. Our formalism works not only for on-site symmetries but also, as we argued, for discrete temporal translation, discrete spatial translation, and other space group symmetries. In a sense, what we have accomplished was not a classification, but rather a meta-, or second-order classification of SPT phases, and the merit of this approach lies in the unprecedented universality of our results.
+We believe the results presented herein are only the tip of an iceberg. Generalized cohomology theories, and by extension infinite loop spaces and stable homotopy theory [75, 76], are well-studied mathematical subjects with plenty of theorems one can draw from. An effort to understand these subjects should prove worthwhile. As another step in the same direction, we will derive and interpret the following results in an upcoming paper:
+(i) Given coprime positive integers m and n, we have h~d (BZmn) = h~d (B (Zm × Zn)) = h~n (BZm)  h~n (BZn) regardless of h~.
+(ii) There exist nontrivial discrete groups G for which h~d (BG) = 0 for all d regardless of h~.
+(iii) There exist non-isomorphic finite groups G1, G2 for which hd (BG1) = hd (BG2) regardless of h, at least in low dimensions with an additional, well-founded physical input.
+Let us conclude with some interesting open questions.
+(i) How would our results generalize if effectively antiunitary symmetries were allowed, which would give rise to group actions on the -spectrum and necessitate twisted generalized cohomology theories?
+(ii) Does the multiplicative structure of a multiplicative generalized cohomology theory have a physical meaning11?
+(iii) Do generalized cohomology groups in negative dimensions have a physical meaning12?
+(iv) Can the Hypothesis be derived from "first principles"?
+11We thank Ammar Husain for suggesting this. 12We thank Ashvin Vishwanath for suggesting this.
+27
+
+(v) What is the counterpart of generalized cohomology theories for topological orders, or more generally G-protected topological phases?
+28
+
+A. Existing Classification Proposals as Generalized Cohomology Theories
+In this appendix, we explain how various proposals for the classification of SPT phases can be viewed as generalized cohomology theories. Below, we denote by K(A, n) the n-th Eilenberg-Mac Lane space of A (see App. F.4).
+
+A.1. Borel group cohomology proposal
+Ref. [33] proposed that d-dimensional G-protected bosonic SPT phases are classified by Hgdr+ou1p (G; U (1)) when G is finite and acts in an on-site, unitary fashion. Here, Hg·roup denotes group cohomology. For infinite or continuous groups, Ref. [33] conjectured a classification by a Borel group cohomology group HBd+or1el (G; U (1)), which is naturally isomorphic to Hd+2 (BG; Z) [87]. Here, H· (-; Z) is the ordinary (topological) cohomology theory with Z coefficient [78]. Ordinary cohomology theories are the most ordinary kind of generalized cohomology theories. We know from Table 2 that they are represented by Eilenberg-Mac Lane spectra. Taking into account the shift in dimension, we thus have
+
+HBd+or1el (G; U (1)) = Hd+2 (BG; Z) = [BG, K(Z, d + 2)] .
+
+(41)
+
+It can be seen either at the level of -spectrum or by inspecting Definitions F.55 and F.56 that a shift in
+dimension turns generalized cohomology theories into generalized cohomology theories. We will prove in App. D that the discrete abelian group and functorial structures of Hgdr+ou1p (G; U (1))
+for finite G correspond to stacking phases and replacing symmetry groups, respectively. This cannot be
+done for continuous or infinite discrete groups since no explicit construction was given in those cases. It only remains to show that the Hd+2 (BG; Z) reduces to Hgdr+ou1p (G; U (1)) in physical dimensions
+d  0 when G is finite. By comparing the definitions of group cohomology and cellular cohomology, one finds a natural isomorphism Hgdr+ou1p (G; U (1)) = Hd+1 (BG; U (1)) for discrete groups and in particular
+finite groups. Since Hd+1(-; A) = Hd+1(-; A) for all d  0 and coefficients A, the following lemma
+completes the proof.
+
+Lemma A.1. For each n  Z, there is a natural transformation,
+
+Hn (X; U (1))  Hn+1 (X; Z) ,
+
+(42)
+
+that is an isomorphism when X = BG and G is a finite13.
+
+Proof. See App. E.
+
+A.2. Oriented cobordism proposal Ref. [35] proposed that d-dimensional G-protected bosonic SPT phases are classified by
+
+Hom (M SOd+1 (BG) , U (1))
+
+(43)
+
+when G is finite and acts in an on-site, unitary fashion. Here, M SO· (X) denotes the n-th oriented bordism group, which is a discrete abelian group, of topological space X. Continuous symmetry groups were not dealt with in Ref. [35]. In fact, the proposal was to further quotient out a subgroup of "continuous theta-parameters," but we may as well do a classification with such parameters allowed and quotient them out at the end of the day. Ref. [35] also assumed a "vanishing thermal Hall response," but that is a matter of what the word "system" means, which was put in a black box in Sec. 2.3.2.
+To prove that the oriented cobordism proposal is a generalized cohomology theory, it is best to use the algebraic definitions F.55 and F.56 of generalized cohomology theories, and the analogous algebraic definitions [78] of generalized homology theories, rather than the topological definitions 3.2 and 3.1. By inspecting these algebraic definitions, one can convince themselves that the functor Hom (-, U (1)) turns
+
+13This result was stated informally without proof in Ref. [71].
+29
+
+generalized homology theories into generalized cohomology theories. The only axiom that is perhaps
+nontrivial to check is the exactness axiom, for which one should invoke the fact that U (1) is an injective Z-module. Knowing that oriented bordism M SO· is a generalized homology theory [75, 76, 88], we conclude that the oriented cobordism proposal is a generalized cohomology theory.
+It can only be partially verified that that the additive and functorial structures of the oriented cobor-
+dism proposal correspond to stacking phases and replacing symmetry groups, respectively, as no lattice
+model was given in Ref. [35]. Eq. (43) is different from the standard oriented cobordism group M SOd+1 (BG) [35], and hence is
+not represented by the Thom spectrum M SO in the sense of Theorem F.57. It is, however, still related
+to the Thom spectrum M SO as oriented bordism groups M SOd+1 (BG) can be defined in terms of it [75, 76, 88].
+
+A.3. Kitaev's bosonic proposal
+Kitaev's proposal [40, 42] is unique among all existing classification proposals for bosonic SPT phases. He took the Generalized Cohomology Hypothesis as a fundamental assumption and tried to construct an -spectrum from physical knowledge. The key observation there was that hd (pt)'s simultaneously classify invertible topological orders (see Physical Result 1) and determine homotopy groups of the -spectrum:
+
+hd (pt) = i (Fi+d) =: -d (F ) , i
+
+(44)
+
+Homotopy groups carry important information about a topological space. The additional information needed to determine the homotopy type of a space is given by so-called k-invariants [78], and they are sometimes unique for trivial reasons. Given the homotopy groups and k-invariants of a space, the reconstruction proceeds by building a Postnikov tower from the bottom up [78].
+Refs. [40, 42] assumed that
+
+F0  CP , h1 (pt) = 0, h2 (pt) = Z, h3 (pt) = 0,
+
+(45)
+
+where CP  is the space of rays of (the direct limit of) finite-dimensional Hilbert spaces (recall Sec. 4.6), and h2 (pt) is generated by the E8-model [45, 70, 71]. Physically, 2(CP ) = Z can be identified with the integral of the Berry curvature, and h2 (pt) = Z can be identified with chiral central charge [40, 42]. Accordingly, the homotopy groups of the -spectrum are
+
+i < -3 -3 -2 -1 0 1 2 > 2
+
+i (F ) ?
+
+0 Z 0 00Z 0
+
+Having a single nontrivial homotopy group, the homotopy type of F1 can be trivially determined:
+
+F1 = K(Z, 3),
+
+(46)
+
+since there is no k-invariant to worry about. It turns out that the homotopy type of F2 can also be
+
+determined:
+
+F2 = K(Z, 4) × Z,
+
+(47)
+
+but for that one must utilize the fact that F2 F3 is a loop space. Though not mentioned in Refs. [40,
+
+42], we can go on to determine the homotopy type of F3. It has two nontrivial homotopy groups in positive dimensions and one potentially nontrivial k-invariant, which takes value in H6 (K (Z, 1) ; Z).
+
+Incidentally, H6 (K (Z, 1) ; Z) = 0, so this k-invariant must be trivial as well, and the homotopy type of
+
+F3 can be determined:
+
+F3 = K(Z, 5) × K(Z, 1) K(Z, 5) × S1.
+
+(48)
+
+A similar argument (H7 (K (Z, 2) ; Z) = 0 plus the fact that it is a loop space) shows that
+
+F4 = K(Z, 6) × K(Z, 2) × -4 (F ) K(Z, 6) × CP  × h4 (pt) ,
+
+(49)
+
+but h4 (pt) is unknown. All higher dimensional Fd's require further input. It can only be partially verified that that the additive and functorial structures of Kitaev's bosonic
+proposal correspond to stacking phases and replacing symmetry groups, respectively, as the lattice model given in Ref. [71] was schematic.
+
+30
+
+A.4. Freed's bosonic proposal We refer the reader to Refs. [38, 39] in view of the complexity of the proposal.
+
+A.5. Group supercohomology proposal
+Ref. [34] proposed, when G is finite and acts in an on-site, unitary fashion, that d-dimensional Gprotected fermionic SPT phases are classified by a group supercohomology group whose cochains of are pairs14
+
+d : Gd+1  U (1),
+
+(51)
+
+nd-1 : Gd  Z2  U (1).
+
+(52)
+
+We believe that the proposal amounts to using the -spectrum with the homotopy groups
+
+
+
+Z2, i = d,
+
+i-d (F ) := i (Fd) = Z0,,
+
+i = d + 2, otherwise,
+
+(53)
+
+and the k-invariants (see App. A.3) defined as follows. Having at most two nontrivial homotopy groups, each Fd has at most one nontrivial k-invariant, kd+1. If we denote by  and  the Bockstein homomorphisms [78] associated with the first and second rows of the commutative diagram
+
+0
+
+Z ×2 Z mod 2 Z2
+
+0
+
+×
+
+1 2
+
+eix
+
+0
+
+Z
+
+R ei2x U (1)
+
+0
+
+(54)
+
+and by  the map induced by the last vertical map, then kd+1 is defined to be the unique map making the following diagram commute:
+
+Hd (-; Z2)
+Sq2
+
+kd+1 
+
+Hd+3 (-; Z)
+
+
+Hd+2 (-; Z2)  Hd+2 (-; U (1))
+
+(55)
+
+where Sq2 is the Steenrod square [78], which Ref. [33] mentioned in passing. In other words,
+
+kd+1 =   Sq2.
+
+(56)
+
+One can think of the resulting theory as some sort of "twisted product" between Hd+2 (-; Z) and Hd (-; Z2), which should correspond to d and nd-1, respectively (recall Lemma A.1). Indeed, if all kd+1's were trivial, then Fd would simply be a product K(Z, d + 2) × K(Z2, d) and the generalized cohomology group would simply be Hd+2 (-; Z)  Hd (-; Z2). In reality, this is true in d = 0, 1 but not necessarily higher dimensions. Thus, we have
+
+F0 = K(Z, 2) × Z2 CP  × Z2,
+
+(57)
+
+F1 = K(Z, 3) × K(Z2, 1) K(Z, 3) × RP ,
+
+(58)
+
+14The cochains in Ref. [34] are actually triples (d, nd-1, ud-1)  HomZ Z Gd+1 , U (1) × HomZG Z Gd , H1 Zf2 , U (1) × HomZG Z Gd , Hg1roup Gf , U (1) ,
+(50) where Gf is the full symmetry group including fermion parity, but at the level of equivalence classes, ud-1 is irrelevant. See App. C of Ref. [34].
+31
+
+while Fd with d  2 has to be obtained as a pull-back along kd+1:
+
+Fd
+
+P K(Z, d + 3)
+
+(59) K(Z2, d) kd+1 K(Z, d + 3)
+
+where the vertical arrow on the right is the path space fibration (see App. F.1).
+
+A.6. Spin cobordism proposal We refer the reader to Ref. [36] in view of the complexity of the proposal.
+
+A.7. Kitaev's fermionic proposal
+Kitaev's proposal [42, 43] for the classification of fermionic SPT phases was in close analogy with the bosonic case discussed in App. A.3. Again, he took the Generalized Cohomology Hypothesis as a fundamental assumption and tried to construct an -spectrum from physical knowledge. This time, it was assumed that
+
+F0  CP  × Z2, h1 (pt) = Z2, h2 (pt) = Z,
+
+(60)
+
+where CP  is the space of rays of (the direct limit of) finite-dimensional Hilbert spaces (recall Sec. 4.6), the Z2 in F0 is fermion parity, the Z2 in h1 (pt) is generated by the Majorana chain [66], and Z is generated by (p + ip)-superconductors [67­69]. Physically, 2(CP ) = Z can be identified with the integral of the Berry curvature. Accordingly, the homotopy groups of the -spectrum are
+
+i < -2 -2 -1 0 1 2 > 2
+
+i (F ) ?
+
+Z Z2 Z2 0 Z 0
+
+Unfortunately, without further input, one can only determine the homotopy type of Fd for d  0. As for F1, there are two path components, which are homotopy equivalent since F1 is a loop space. The component containing the basepoint has two nontrivial homotopy groups and one potentially nontrivial
+k-invariant,
+
+k2  H4 (K (Z2, 1) ; Z) = Z2.
+
+(61)
+
+Thus there are two possibilities:
+
+F1 = X3 × Z2,
+
+(62)
+
+where X3 is either K(Z, 3)×K(Z2, 1) corresponding to k2 = 0, or a more complicated space corresponding to k2 = 0. If one borrows k2 from App. A.5, then k2 = 0, and F1 = K (Z, 3) × K (Z2, 1) × Z2 K(Z, 3) × CP  × Z2.
+It can only be partially verified that that the additive and functorial structures of Kitaev's fermionic
+
+proposal correspond to stacking phases and replacing symmetry groups, respectively, as the lattice model given in Ref. [71] was schematic.
+
+A.8. Freed's fermionic proposal We refer the reader to Refs. [38, 39] in view of the complexity of the proposal.
+
+B. Field-Theoretic Argument for Weak-Index Interpretation
+In this Appendix, we present a field-theoretic argument for Physical Result 7. To do so, we must first stipulate how to associate physical phases to cohomology classes (Apps. B.1 and B.2). Then we can check if the map  in Physical Result 7 on the mathematical side corresponds to the layering construction on the physical side (App. B.3).
+The arguments below apply equally to the fermionic and the bosonic cases.
+
+32
+
+B.1. Kitaev's construction
+We follow the prescription of Refs. [42, 71] to associate (d - 1)-dimensional SPT phases protected by on-site unitary symmetry G to cohomology classes [c]  hd-1 (BG). The construction is essentially a nonlinear sigma model with target space BG. There are some subtleties discussed in Refs. [42, 71] that we will sweep under the rug here.
+To wit, we first associate to each map c : BG  Fd-1 and spatial slice X the state
+
+| (c, X) =
+
+|m  | (c, m) Dm,
+
+(63)
+
+Map(X,BG)
+
+where m is a chiral field over X with target space BG, and |(c  m) is a pattern of SRE states that looks like c (m(x))  Fd-1 around x  X. Then, to each cohomology class [c]  hd-1 (BG), we associate the (d - 1)-dimensional G-protected SPT phase represented by a system whose unique ground state on
+a spatial slice X is | (c, X) , where c is any representative of [c].
+
+B.2. A generalization to translational symmetry
+We propose a generalization of the construction in Refs. [42, 71] that will enable us to associate d-dimensional SPT phases protected by discrete spatial translational symmetry Z and on-site unitary symmetry G to cohomology classes [c ]  hd (B (Z × G)).
+More specifically, over a spatial slice Y = R × X, where R is the direction along which discrete spatial translational symmetry is assumed, we let there be two fields: a chiral field m with target aspace BG and a background field ei with target space S1  U (1)15. The latter can be thought of as the vacuum
+expectation value of an order parameter characterizing the translational symmetry breaking. It should thus be constant over X and wind around S1 periodically along R:
+
+(x0 + 1) = (x0) + 2,
+
+(64)
+
+which guarantees that ei(x0+1) = ei(x0). Here, x0 and x are the coordinates for R and X, respectively. We have dropped x from the arguments of  for brevity.
+Now, we associate to each map c : S1 × BG  Fd and spatial slice Y = R × X the state
+
+| (c , , X) =
+
+|m  | (c , , m ) Dm ,
+
+(65)
+
+Map(Y ,Fd )
+
+where | (c , , m ) is the pattern of SRE states that looks like c ei(x0), m (x0, x) around (x0, x)  R × X. Then, to each cohomology class [c ]  hd (B (Z × G)) = hd S1 × BG , we associate the ddimensional (Z × G)-protected SPT phase represented by a system whose unique ground state on a spatial slice Y = R × X is | (c , , X) , where c is any representative of [c ].
+
+B.3. Weak-index interpretation
+Take any [c]  hd-1 (BG) and let [c ]  hd (B (Z × G)) be its image under . Since Fd-1 cohomology class [c] can be represented by a map
+
+Fd, the
+
+c : BG  Fd,
+
+(66)
+
+which sends each point of BG to a loop in Fd, or equivalently a map
+
+c : S1 × BG  Fd
+
+(67)
+
+subject to the constraint that it sends all of {s0} × BG to the basepoint of Fd, where s0 denotes the basepoint of S1. On the other hand, since B (Z × G) S1 × BG, the cohomology class [c ] can also be
+
+represented by a map
+
+c : S1 × BG  Fd,
+
+(68)
+
+15We thank Ryan Thorngren for suggesting the idea of a background field.
+33
+
+Trivial Trivial Trivial Trivial
+
+Figure 7: (color online). A stack of identical copies of | (c, X) (blue) separated by trivial slabs (gray).
+
+0
+
+1
+
+2
+
+6
+
+ 4
+
+3 6
+4
+
+
+
+2
+
+2
+
+0
+
+0
+
+0
+
+1
+
+2
+
+3
+
+
+
+Figure 8: (color online). We deform  from the dashed blue curve to the solid red curve, so that transitions occur within intervals of size much less than the short-distance cutoff for m .
+
+but without any constraint. One can show that  can be defined by setting
+
+c = c.
+
+(69)
+
+We now argue, by tinkering with the background field, that | (c, , X) can be obtained by stacking identical copies of | (c, X) separated by trivial slabs (see Fig. 7). To that end, let us assume, in the spirit of Ref. [43], that there is a short distance cutoff for the chiral field m . We deform  according to Fig. 8: we create a series of plateaus and squeeze transitions between them to within a distance much less than from integral values of x0. Symmetry is preserved during the deformation, presumably so is the gap. Since the constant loop in Fd corresponds to a trivial (d - 1)-dimensional state, the | (c, , X) must now look trivial away from integral values of x0. This effectively decouples layers corresponding to different transitions between plateaus, each of which is nothing but a copy of | (c, X) . We have achieved the factorization
+
+| (c, , X) = · · ·  | (c, X)  |trivial  | (c, X)  |trivial  · · · .
+
+(70)
+
+C. Categorical Viewpoint
+In this appendix, we revisit the Generalized Cohomology Hypothesis from a categorical perspective. As we will see, the Hypothesis can be stated more succinctly in categorical language (see App. F.2 for background).
+
+C.1. Paraphrase of the Generalized Cohomology Hypothesis The classification of SPT phases can be viewed as a sequence of contravariant functors
+
+SPT d : Grp  Ab
+
+(71)
+
+indexed by nonnegative integers d  N. Given a group G, SPT d (G) is the discrete abelian group of ddimensional G-protected SPT phases. Given a group homomorphism , SPT d() is the map defined by pulling back representations, as in Sec. 2.4.2. We can paraphrase the Generalized Cohomology Hypothesis as follows:
+
+34
+
+Generalized Cohomology Hypothesis (Categorical Version). There exists a generalized cohomology theory h such that there are natural isomorphisms
+
+SPT d(G) = hd(BG), d  N.
+
+(72)
+
+Note the left-hand side is defined physically while the right-hand side is purely mathematical. The Hypothesis bridges physics and mathematics.
+But life is not always as good as natural isomorphisms. In practice, what one can do is to propose a construction, which can be viewed as a family of maps
+
+hd (BG)  SPT d (G) .
+
+(73)
+
+Such maps may or may not be bijective, but they had better be homomorphisms between discrete
+abelian groups and respect the functorial structure. In other words, they had better form a natural
+transformation for each d. Under certain conditions, this can be achieved through a redefinition of the additive or functorial structures of hd if it is not already the case.
+
+C.2. Further examples Let us exemplify how this categorical lingo can be used. We can say that Ref. [33] proposed a construction (at least for finite groups)
+
+Hd+2 (BG; Z)  SPT d (G) ,
+
+(74)
+
+and proved that the maps were well-defined. They actually form a natural transformation for each d as
+
+per App. D, though the original paper did not set out to prove this.
+
+We can also say that Ref. [35] argued for the existence of natural isomorphisms (at least for finite
+
+groups)
+
+Hom (M SOd+1(BG), U (1))  SPT d(G).
+
+(75)
+
+However, the paper did not give explicit formulas for these maps in the form of lattice models.
+
+Suppose we can define maps
+
+Hom (M SOd+1(BG), U (1))  SPT d(G)
+
+(76)
+
+that at least form a natural transformation for each d. Ref. [35] tried to elucidate the relationship between Ref. [33] and their proposal: "there exist SPT phases which appear to be nontrivial from the group cohomology point of view, but are trivial from the cobordism point of view," and "there also exist SPT phases which are nontrivial from [the cobordism] point of view but are not captured by the group cohomology classification." What was presumed in these remarks was a commutativity diagram for each d:
+
+Hd+2 (BG; Z)
+
+Hom (M SOd+1(BG), U (1))
+
+(77) SPT d(G)
+
+where the vertical arrow is the natural transformation (74), the dashed diagonal arrow is the natural transformation (76), and the horizontal arrow is a certain mathematically obvious natural transformation (assuming G is finite) that we do not intend to explain. The remarks quoted above amount to saying that the horizontal arrow does not have to be either injective or surjective.
+Finally, we can say that what we did in App. B was to specify the horizontal arrows in the diagram below and argue that the diagram commutes:
+
+hd-1 (BG)
+
+SPT d(G)
+
+
+
+layering
+
+(78)
+
+hd (B (Z × G))
+
+SPT d (Z × G)
+
+We used Kitaev's construction [43] for the upper horizontal arrow and proposed a generalized construction for the lower horizontal arrow.
+
+35
+
+D. Additivity and Functoriality of the Group Cohomology Construction
+In this subsection we will show, within the group cohomology construction [33] of bosonic SPT phases (for finite groups), that adding cohomology classes corresponds to stacking SPT phases (see Sec. 2.4.1), and that the map induced by a homomorphism between symmetry groups corresponds to replacing the symmetry group (see Sec. 2.4.2). We will begin with the 1-dimensional case.
+
+D.1. 1-dimensional case
+
+Let us review the construction in Ref. [33], specializing to 1 dimension. Take a finite symmetry
+
+group G. Consider a ring with N sites and associate to each site the |G|-dimensional Hilbert space CG,
+
+which has orthonormal basis {|g |g  G} and on which G acts according to g |gi = |ggi . We define
+
+| := 1
+|G|
+
+gG |g and P^i := I(i-1)  | |  I(N-i). Then the Hamiltonian
+
+N
+
+H^ (0) := - P^i
+
+(79)
+
+i=1
+
+is local, preserves the symmetry, and has a unique, gapped ground state,
+
+|(0) = | N .
+
+(80)
+
+Given a 2-cocycle   HomG G3, U (1) , we define a diagonal, local unitary operator,
+
+U^ () :=
+
+N -1
+
+ (1, g1, gN )-1
+
+ (1, gi, gi+1) |{gi} {gi}| .
+
+g1,...,gN G
+
+i=1
+
+(81)
+
+Then the Hamiltonian corresponding to  is given by
+
+H^ () := U^ ()H^ (0)U^ (),
+
+(82)
+
+which is local and symmetry-preserving because H^ (0) and U^ () are. It has a unique, gapped ground state,
+
+|() =
+
+1
+
+N -1
+
+ (1, g1, gN )-1
+
+ (1, gi, gi+1) |g1, . . . , gN .
+
+|G|N g1,...,gN G
+
+i=1
+
+(83)
+
+D.1.1. Adding cohomology classes = stacking SPT phases
+Envision two rings as in App. D.1, corresponding to 2-cocycles  and  , respectively. Stacking one ring on top of the other produces another 1-dimensional system. With an augmented Hilbert space CG  CG associated to each (composite) site, this composite system is no longer given by the group cohomology
+construction per se. It is, nevertheless, in the same phase as a system constructed as such, namely the one corresponding to the sum  of  and  , as we show below16. Thus, the mathematical addition of
+cocycles, and hence cohomology classes, corresponds precisely to the physical stacking of SPT phases.
+To show that the composite system with the Hamiltonian
+
+H^ ()  H^ ( ) = U^ ()H^ (0)U^ ()  U^ ( )H^ (0)U^ ( )
+
+(84)
+
+is in the same phase as the system with the Hamiltonian
+
+H^ ( ) = U^ ( )H^ (0)U^ ( ),
+
+(85)
+
+16Recall that there is an additive structure on the set of 2-cocycles, defined by ( ) (g0, g1, g2) := (g0, g1, g2)(g0, g1, g2). Addition of cocycles is written multiplicatively because, in physics, the composition law of U (1) is usually considered multiplicative rather than additive.
+36
+
+(a)
+
+(b)
+
+Figure 9: (color online). Two 1-dimensional systems, which consist of vertices labeled 1 through 10 (blue) and 1 through 10 (red), respectively, are stacked together to form a new 1-dimensional system. With the introduction of an auxiliary vertex 0 (magenta), a cone is formed for each system. The ground states |() and |( ) are then given by "integrating"  and  over the two cones, respectively ­ this is a standard procedure in topological quantum field theories [89]. The coefficients in Eq. (86) and Eq. (88) are the "integrals" of  over the shaded "surfaces" (i.e. chains) in (a) and (b), respectively. The two are equal because the chains in (a) and (b) are homologous.
+
+we first tensor the latter with a trivial ancillary ring, yielding H^ ( )  H^ (0). Since H^ ( )  H^ (0) is related to H^ ()  H^ ( ) by conjugation by the unitary operator
+
+U^ 1 := U ( )U ()  U ( )
+
+=
+
+{gi},{gi}
+
+ (1, g1, gN ) N-1  (1, gi, gi+1)  (1, g1, gN ) i=1  1, gi, gi+1
+
+{gi} {gi}
+
+{gi} {gi}
+
+,
+
+(86)
+
+it suffices to find a path from I to U^ 1 via local unitary operators that preserve the symmetry. Here, {gi}
+
+and {gi} are variables on the first and the second rings, respectively. By the cocycle condition d = 0,
+
+we have
+
+ 
+
+(1, gi, gj) 1, gi, gj
+
+=
+
+ 
+
+(gi, gi, gj)  gi, gj , gj 
+
+1, gj, gj (1, gi, gi)
+
+(87)
+
+for all i and j, which enables us to rewrite
+
+U^ 1 = {gi},{gi}
+
+ (g1, gN , gN ) N-1  (gi, gi, gi+1)  (g1, g1, gN ) i=1  gi, gi+1, gi+1
+
+{gi} {gi}
+
+{gi} {gi}
+
+.
+
+(88)
+
+Geometrically, this amounts to replacing the chain shown in Fig. 9(a) by the chain shown in Fig. 9(b). In this new form, U^ 1 would preserve the symmetry even if  failed to satisfy the cocycle condition. Take a
+path t in the space of 2-cochains that begins at the trivial 2-cochain and ends at  . Then
+
+U^ t := {gi},{gi}
+
+t (g1, gN , gN ) N-1 t (gi, gi, gi+1) t (g1, g1, gN ) i=1 t gi, gi+1, gi+1
+
+{gi} {gi}
+
+{gi} {gi}
+
+,
+
+(89)
+
+for 0  t  1, is a path from I to U^ 1 via local unitary operators that preserve the symmetry, as desired.
+
+D.1.2. Induced cohomology class = replaced symmetry group
+Consider two possible symmetry groups G and G and a homomorphism  : G  G between them.
+A 2-cocycle  of G determines a 1-dimensional system representing a G-protected SPT phase via the construction in App. D.1. It has the Hilbert space CG associated to each site, the G-action g |gi = |ggi , and the Hamiltonian H^ (). We denote this system by CG, , H^ () .
+Precomposing  with , we obtain a G -action on CG:
+
+(  )g |gi = (g ) |gi = |(g )gi .
+
+(90)
+
+The Hamiltonian H^ () commutes with    since it does with . Thus the same physical system can also be viewed as a representative of a G -protected SPT phase. Physically, this amounts to forgetting
+
+37
+
+those symmetry operations in G that are not in the image of , and relabelling those in the image of 
+by elements of G in a possibly redundant manner. We denote this system by CG,   , H^ () .
+On the other hand, the mathematical structure of group cohomology is such that every homomorphism  : G  G gives rise to an induced homomorphism  from the discrete abelian group of 2-cocycles of G to the discrete abelian group of 2-cocycles of G . More explicitly, this  sends a 2-cocycle  of G to
+the 2-cocycle
+
+ : G × G × G  U (1)
+
+(g0, g1, g2)   ((g0), (g1), (g2))
+
+(91)
+
+of G . For the given  and , the 2-cocycle  determines, via the construction in App. D.1, a system that represents a G -protected SPT phase. We denote this system by CG ,  , H^ () .
+A good construction of SPT phases should have functoriality built into its mathematical structure. It would therefore be ideal if the systems CG ,  , H^ () and CG,   , H^ () were actually the same,
+which is unfortunately false unless  is an isomorphism. They are, however, in the same G -protected SPT phase, as we now show.
+To that end, let us recall that every group homomorphism can be factored as the composition of a surjective homomorphism and an inclusion. Thus it suffices to consider these two special cases.
+First, suppose  : G  G is an inclusion. We will deform the system CG,   , H^ () into the
+
+system CG ,  , H^ () step by step. To begin, let S be a set of representatives of the right cosets of G in G. That is,
+
+G s1  G s2 = , s1 = s2  S,
+
+(92)
+
+sSG s = G.
+
+(93)
+
+We can assume that the identity 1  G is contained in S. Given any g  G, there is a unique pair
+
+(g , s)  G × S for which g s = g. We can thus rewrite every basis state |g in the form |g  |s and
+
+pretend that the Hilbert space CG is the tensor product of CG and CS. The G -action    on CG then
+
+goes over into
+
+(  )g (|gi  |s ) = |g gi  |s .
+
+(94)
+
+Next, we choose a path W^ t of unitary operators on CG  CS that acts trivially on CG for all t  [0, 1],
+
+equals I at t = 0, and sends |gi
+
+ 1
+|S|
+
+sS |s to |gi  |1 at t = 1. Since W^ t commutes with the
+
+G -action for all t, so does the family of local unitary operators
+
+U^ t
+
+:=
+
+U^ ()W^
+
+N t
+
+U^ ().
+
+(95)
+
+The path U^ t |() establishes an equivalence between |() = U^ 0 |() and
+
+U^ 1 |()
+
+=
+
+U^ ()W^
+
+N 1
+
+U^
+
+(
+
+)U^
+
+(
+
+)
+
+|(0)
+
+=
+
+U^
+
+()W^ 
+
+N 1
+
+|(0)
+
+N
+
+=
+
+U^ () W^ 1
+
+1
+
+|g
+
+|G| g G
+
+ |s 
+sS
+
+
+
+N
+
+= U^ ()  1
+
+|g  |1  .
+
+(96)
+
+|G | g G
+
+38
+
+Restoring the old notation, the last expression reads
+
+U^ ()
+
+ ({gi}) |{gi} =
+
+ ({gi})
+
+N -1
+
+ (1, g1, gN )-1
+
+ (1, gi, gi+1)
+
+|{gi} ,
+
+g1,...,gN G |G |N
+
+g1,...,gN G |G |N
+
+i=1
+
+(97)
+
+where  ({gi}) = 1 if gi  G for all i and 0 otherwise. But this is related to the ground state
+
+| () =
+
+1 |G |N g1,...,gN G
+
+N -1
+
+ (1, g1, gN )-1
+
+ 1, gi, gi+1
+
+i=1
+
+|{gi}
+
+(98)
+
+of CG ,  , H^ () by a symmetry-preserving isometry (the one induced by the inclusion CG  CG), and hence equivalent to it.
+Next, suppose  : G  G is a surjective homomorphism. We will deform the system CG ,  , H^ ()
+
+into the system CG,   , H^ () step by step. To begin, let R = ker(), and T be a set of representatives of the left cosets of R in G . That is,
+
+t1R  t2R = , t1 = t2  T, tT tR = G .
+
+(99) (100)
+
+Given any g  G , there is a unique pair (t, r)  T × R for which tr = g . We can thus rewrite every basis state |g in the form |t  |r and pretend that the Hilbert space CG is the tensor product of CT and CR. In this new form, the G -action satisfies
+
+g (|t  |R ) = |g .t  |R ,
+
+(101)
+
+where |R
+
+= 1
+|R|
+
+rR |r and g .t is the unique element of T for which (g .t) = (g )(t). The
+
+ground state |() of CG ,  , H^ () goes over into
+
+1 |G |N
+t1,...,tN T
+r1,...,rN R
+
+N -1
+
+() (1, t1r1, tN rN )-1
+
+() (1, tiri, ti+1ri+1)
+
+i=1
+
+|{ti}
+
+ |{ri}
+
+=
+
+1
+
+N -1
+ (1, (t1), (tN ))-1  (1, (ti), (ti+1)) |{ti}  |{ri}
+
+|G |N t1,...,tN T
+
+i=1
+
+
+
+r1,...,rN R
+
+
+
+=
+
+ 
+
+1 |T |N t1,...,tN T
+
+N -1
+ (1, (t1), (tN ))-1  (1, (ti), (ti+1))
+i=1
+
+ |{ti}   |R N .
+
+(102)
+
+Removing the trivial ancilla |R N , we obtain the equivalent state
+
+1
+
+N -1
+ (1, (t1), (tN ))-1  (1, (ti), (ti+1)) |{ti} .
+
+|T |N t1,...,tN T
+
+i=1
+
+(103)
+
+Since  gives a bijection between T and G, we can relabel the states |ti by elements of G, yielding
+
+1
+
+N -1
+ (1, (t1), (tN ))-1  (1, (ti), (ti+1)) |{(ti)}
+
+|T |N t1,...,tN T
+
+i=1
+
+=
+
+1
+
+N -1
+
+ (1, g1, gN )-1
+
+ (1, gi, gi+1) |{gi} .
+
+|G|N g1,...,gN G
+
+i=1
+
+(104)
+
+This is nothing but the ground state |() of CG,   , H^ () .
+
+39
+
+D.2. Higher-dimensional case
+Take a finite symmetry group G. Consider a triangulated d-dimensional oriented closed manifold M together with a total ordering of the vertices17, which we accordingly label by 1, 2, . . ., N . We denote by 0, . . . , d the vertices of a d-simplex , with 0 < · · · < d. The ordering 0 < · · · < d determines an orientation of , which may or may not agree with that of M . We set O() = 1 if it does and O() = -1 otherwise. Given a (d + 1)-cocycle , the construction in Ref. [33] of H^ () and |() is the same as in App. D.1 except that the unitary operator (81) should be replaced by
+
+U^ () :=
+
+ (1, g0 , . . . , gd )O() |{gi} {gi}| ,
+
+{gi} 
+
+(105)
+
+where  runs over the d-simplices of M .
+
+D.2.1. Adding cohomology classes = stacking SPT phases Take any d-cocycle  of G. Since d = 0, we have
+
+d
+d
+k=0
+
+1, g0 , . . . , gk , gk , . . . , gd (-1)k = 1
+
+for all g0 , . . . , gd , g1 , . . . , gd  G. Expanding the left-hand side, one can show that
+
+
+
+O()
+
+ (1, g0 , . . . , gd )
+
+=
+
+ 1, g0 , . . . , gd
+
+
+
+d
+
+O()
+
+ (g0, . . . , gk, gk, . . . , gd)(-1)k
+
+.
+
+k=0
+
+(106) (107)
+
+The proof in App. D.1.1 can be immediately generalized to d dimensions by substituting Eq. (107) for Eq. (87), where the vertices of the composite system may be ordered either so that 1 < 1 < 2 < 2 < · · · < N < N or so that 1 < · · · < N < 1 < · · · < N .
+
+D.2.2. Induced cohomology class = replaced symmetry group To generalize the proof in App. D.1.2 to d dimensions, one simply replaces all expressions of the form
+
+N -1
+(1, g1, gN )-1 (1, gi, gi+1),
+i=1
+
+(108)
+
+where  is some 2-cocycle and {gi} is some indexed family of elements of either G or G, by corresponding
+
+expressions of the form
+
+ (1, g0 , . . . , gd )O() ,
+
+(109)
+
+
+
+where  runs over the d-simplices of M .
+
+E. Proofs In this appendix we collect proofs for mathematical results in this paper. We begin with some lemmas.
+
+17Ref. [33] considered "branching structures" instead of total orderings of vertices, but this distinction is inconsequential.
+
+40
+
+E.1. Some lemmas
+Lemma E.1. Let (Fn) be an -spectrum and (X, x0) be a pointed CW-complex. There is a natural split short exact sequence,
+
+s
+
+0
+
+X, Fn i [X, Fn] p [{x0} , Fn]
+
+0
+
+(110)
+
+with s induced by the projection X forgetting basepoints.
+
+{x0}, p induced by the inclusion {x0}  X, and i given by
+
+Proof. The long exact sequence of reduced cohomology groups of the pair ((X × I) / (X × I) , ({x0} × I) / ({x0} × I))
+breaks into short exact sequences, since there is an obvious retraction (X × I) / (X × I)  ({x0} × I) / ({x0} × I) .
+Now apply the suspension-loop adjunction and use the fact that Fn Fn+1.
+
+(111) (112)
+
+Lemma E.2. Let (Fn) be an -spectrum and (X, A) be a CW-pair with basepoint x0 together with a retraction  : X A. There is a natural commutative diagram,
+
+0
+
+0
+
+0
+
+0
+
+X/A, Fn ~ X, Fn
+
+~
+
+A, Fn
+
+0
+
+i
+
+i
+
+0
+
+X/A, Fn  [X, Fn]  [A, Fn]
+
+0
+
+p
+
+p
+
+0
+
+[{x0} , Fn]
+
+[{x0} , Fn]
+
+0
+
+(113)
+
+0
+
+0
+
+consisting of exact rows and columns, with ~ and  induced by the quotient map X X/A, ~ and  induced by the inclusion A  X, and i and p as in Lemma E.1. Furthermore,  induces splittings ~ and  of the first and second rows, which fit into the commutative diagram
+
+X, Fn ~ A, Fn
+
+i
+
+i
+
+[X, Fn]  [A, Fn]
+
+(114)
+
+Proof. The exactness of the columns follows from Lemma E.1. The split exactness of the first row follows from the fact that the long exact sequence of reduced cohomology groups of (X, A) breaks into short exact sequences due to the existence of a retraction. The split exactness of the second row follows from diagram chasing. Commutativity and naturality are trivial to check.
+
+Lemma E.3. Let (Fn) be an -spectrum and X, Y be pointed CW-complexes. There exists an isomor-
+
+phism,
+
+X × Y, Fn = X  Y  (X  Y ), Fn ,
+
+(115)
+
+whose composition,
+
+~ : X × Y, Fn -= X, Fn  X  Y, Fn  Y, Fn ,
+
+(116)
+
+41
+
+with the obvious isomorphism X  (X  Y )  Y, Fn = X, Fn  X  Y, Fn  Y, Fn
+
+is such that the canonical inclusions
+
+X, Fn  X × Y, Fn , X  Y, Fn  X × Y, Fn ,
+Y, Fn  X × Y, Fn
+
+are induced by the canonical projections X × Y X, X × Y X  Y , and X × Y and that the canonical projections
+
+X × Y, Fn X × Y, Fn
+
+X, Fn , Y, Fn
+
+are induced by the canonical inclusions X  X × Y and Y  X × Y , respectively.
+
+(117)
+(118) (119) (120) Y , respectively,
+(121) (122)
+
+Proof. Recall there is a stable splitting (Proposition 4I.1 of [78]),
+
+(X × Y )  (X  (X  Y )  Y ) .
+
+(123)
+
+Now apply the suspension-loop adjunction and use the fact that Fn Fn+1. The rest can be verified straightforwardly.
+
+Lemma E.4. Let (Fn) be an -spectrum and X, Y be pointed CW-complexes. There exists an isomorphism  fitting into a natural commutative diagram
+
+X × Y, Fn
+
+~ =
+
+i
+
+[X × Y, Fn]
+
+ =
+
+X, Fn  X  Y, Fn  Y, Fn
+id  id i
+X, Fn  X  Y, Fn  [Y, Fn]
+
+where i is as in Lemma 5.1, ~ is as in Lemma E.3, and the canonical injection and projection
+
+(124)
+
+[Y, Fn]  [X × Y, Fn] , [X × Y, Fn] [Y, Fn]
+are induced by the canonical projection X × Y Y and injection Y  X × Y , respectively.
+
+(125) (126)
+
+Proof. Extend the columns into short exact sequences according to Lemma E.1. Then apply the Five Lemma to ~-1 and the putative -1.
+
+E.2. Main proofs Proof of Lemma 5.1. Set X = BG in Lemma E.1.
+
+Proof of Proposition 5.3. This is a special case of Proposition 5.9.
+
+Proof of Proposition 5.5. This is a special case of Proposition 5.9.
+
+Proof of Proposition 5.7. Set X = BG1 and Y = BG2 in Lemma E.4.
+Proof of Proposition 5.9. In Lemma E.2, set X = B (G1 G2), A = BG2, and  to be induced by the canonical epimorphism G1 G2 G2.
+
+42
+
+Proof of Lemma A.1. The desired natural transformation is the Bockstein homomorphism associated
+
+with the short exact sequence
+
+0  Z  R  U (1)  0
+
+(127)
+
+of abstract (i.e. without topology) abelian groups, which gives rise to a natural long exact sequence,
+
+· · ·  Hn (X; Z)  Hn (X; R)  Hn (X; U (1))  Hn+1 (X; Z)  Hn+1 (X; R)  Hn (X; U (1))  · · · (128)
+The lemma will be established once we prove that
+
+Hn (BG; R) = 0
+
+(129)
+
+for all n  Z and finite groups G. By the universal coefficient theorem, this amounts to showing that Ext1 Hn (BG; Z) , R = Hom Hn (BG; Z) , R = 0. The Ext group is trivial because R is a field. The
+Hom group is trivial because Hn (BG; Z) is pure torsion, as per Remarks 3.6 and 3.7 and Corollary 5.4 in Chap. II of Ref. [77].
+
+F. Mathematical Background
+F.1. Notions in algebraic topology The definitions and constructions below are standard in algebraic topology. See e.g. Ref. [78] for detail.
+Definition F.1 (pointed topological space). A pointed topological space (X, x0) is a nonempty topological space X together with a privileged point x0  X called the basepoint. When the choice of x0 is clear from the context, one may simply write X instead of (X, x0).
+Recall from Sec. 2.2 that "map" always means continuous map.
+Definition F.2 (pointed map). A pointed map between pointed topological spaces is a map that preserves basepoint.
+Definition F.3 (topological group). A topological group is a topological space with a group structure such that both the multiplication and the inversion maps are continuous.
+As in the main text (see Sec. 2.2), we will abbreviate "topological group" to simply "group" and assume that homomorphisms between topological groups are continuous.
+Construction F.4. Given a topological space X, we can form the quotient space X/A from X by collapsing a subspace A  X. The image of A is the default basepoint of X/A.
+Construction F.5. Given two pointed topological spaces (X, x0) and (Y, y0), we define the wedge sum X  Y to be (X Y ) / {x0, y0}. That is, it is formed from the disjoint union X Y by identifying x0 and y0.
+Construction F.6. Given two pointed topological spaces (X, x0) and (Y, y0), we define the smash product X  Y to be (X × Y ) / ((X × {y0})  ({x0} × Y )). It can be viewed as (X × Y ) / (X  Y ).
+Construction F.7. Given a topological space X, we form the suspension SX from X × I by collapsing X × {0} to a point and X × {1} to another point.
+Construction F.8. Given a pointed topological space (X, x0), we define the reduced suspension X to be (X × I) / ((X × I)  ({x0} × I)). Equivalently, it can be formed from SX by further collapsing {x0} × I. It can also be viewed as S1  X.
+
+43
+
+A
+
+X
+
+X/A
+
+(a)
+
+(X,x0) (Y,y0)
+
+XVY
+
+(b)
+
+{x0}xI {x0}xY
+
+XxY
+Xx{y0} XY (c)
+
+Xx{1} XxI
+Xx{0} SX X (d)
+
+Figure 10: (color online). Illustration of the (a) quotient, (b) wedge sum, (c) smash product, (d) suspension, and reduced suspension constructions.
+
+These constructions are illustrated in Fig. 10.
+
+Definition F.9 (homotopy). A homotopy between two maps f0, f1 : X  Y is a map f : X × I  Y such that
+
+f (x, 0) = f0(x), f (x, 1) = f1(x), x.
+
+(130)
+
+When such a map exists, f0 and f1 are said to be homotopic, and we write f0  f1. This defines an equivalence relation, an equivalence class with respect to which is called a homotopy class. The set of homotopy classes of maps from X to Y is denoted by [X, Y ].
+
+Definition F.10 (pointed homotopy). A pointed homotopy between two pointed maps f0, f1 : (X, x0)  (Y, y0) is a map f : X × I  Y such that
+
+f (x, 0) = f0(x), f (x, 1) = f1(x), x, f (x0, t) = y0, t.
+
+(131) (132)
+
+When such a map exists, f0 and f1 are said to be homotopic in the pointed sense, and we write f0  f1. This defines an equivalence relation, an equivalence class with respect to which is called a pointed homotopy class. The set of pointed homotopy classes of maps from (X, x0) to (Y, y0) is denoted by X, Y .
+
+Example F.11. The n-th homotopy group of a pointed topological space (Y, y0) is n(Y ) := Sn, Y . In particular, the fundamental group is 1(Y ) := S1, Y , while the set of path components is 0(Y ) := [pt, Y ]  S0, Y .
+
+Definition F.12 (homotopy equivalence). A homotopy equivalence between topological spaces X and Y is a pair of maps f : X Y : g such that both g  f and f  g are homotopic to the identities. When such maps exist, X and Y are said to be homotopy equivalent, and we write X Y . This defines an equivalence relation, an equivalence class with respect to which is called a homotopy type.
+
+Definition F.13 (pointed homotopy equivalence). A pointed homotopy equivalence between pointed
+topological spaces (X, x0) and (Y, y0) is a pair of pointed maps f : (X, x0) (Y, y0) : g such that both g  f and f  g are homotopic to the identities in the pointed sense. When such maps exist, (X, x0) and (Y, y0) are said to be homotopy equivalent in the pointed sense, and we write (X, x0) (Y, y0). This defines an equivalence relation, an equivalence class with respect to which is called a pointed homotopy
+type.
+
+A single map f : X  Y or pointed map f : (X, x0)  (Y, y0) is sometimes said to be a homotopy equivalence or pointed homotopy equivalence, respectively, if a g with the above properties exists. Thus f is a homotopy equivalence or pointed homotopy equivalence if and only if it represents an invertible map in [X, Y ] or X, Y , respectively. A homotopy equivalence or pointed homotopy equivalence is precisely an isomorphism in the homotopy category (see App. F.2).
+
+Construction F.14. Given topological spaces X and Y , we can form the space Map(X, Y ) of maps from X to Y , endowed with the compact-open topology [78].
+
+44
+
+e2
+
+e0
+
+e2 e0
+
+(a)
+
+e12
+
+e1
+
+e0
+
+e22 (b)
+
+e21 e1 e0
+e22
+
+Figure 11: S2 can be constructed either (a) by attaching a single 2-cell e2 to a single 0-cell e0, or (b) by attaching a
+single 1-cell e1 (equator) to a single 0-cell e0 and then attaching two 2-cells e21 (northern hemisphere) and e22 (southern hemisphere).
+
+Construction F.15. Given pointed topological spaces (X, x0) and (Y, y0), we can form the space Map (X, Y ) of pointed maps from (X, x0) to (Y, y0), endowed with the compact-open topology.
+Example F.16. Provided that X is sufficiently well-behaved (e.g. locally compact; see Proposition A.14 of Ref. [78]), a homotopy or pointed homotopy can alternatively be defined to be a path in the space Map(X, Y ) or Map (X, Y ), respectively. In this case, [X, Y ] and X, Y can be viewed as the sets of path components of Map(X, Y ) and Map (X, Y ), respectively.
+Example F.17 (path space). The path space P Y of a pointed topological space (Y, y0) is defined to be the space Map ((I, 0), (Y, y0)). Intuitively, it is the space of paths in Y with y0 as the initial point. There is a canonical map P Y  Y sending a path p to its endpoint p(1). The default basepoint of P Y is the constant path.
+Example F.18 (loop space). The loop space Y of a pointed topological space (Y, y0) is defined to be the space Map (S1, s0), (Y, y0) . It can be viewed as the preimage of y0 with respect to the map P Y  Y . Intuitively, it is the space of loops in Y based at y0. The default basepoint of Y is the constant loop.
+Theorem F.19. The sequence Y  P Y  Y , where the first map is the inclusion and the second map is as in Example F.17, is a fibration. It is called the path space fibration.
+The definition of topological space is general enough to harbor wild examples. It is common in algebraic topology to work with better-behaved spaces, such as CW-complexes.
+Construction F.20. Let us construct a topological space X inductively, as follows. Begin with a discrete topological space X0, called the 0-skeleton. For each n  1, we form the n-skeleton Xn by "gluing" the boundaries of a family of n-disks to Xn-1 along some maps  : Dn  Xn-1. That is, we form the disjoint union Xn-1 ( Dn) and then identify x  Dn with (x)  Xn-1 for all x and . Finally, define X = nXn and declare a set in X to be open if and only if its intersections with all Xn's are open.
+The homeomorphic image en of the interior of a Dn is called an n-cell. A point in X0 is called a 0-cell. Note that the 's need not be injective.
+Definition F.21 (CW-complex). A CW-complex is a topological space constructed as in Construction F.20, with the partition into cells retained as part of the data.
+Example F.22. There are two common CW structures on S2 as illustrated in Fig. 11.
+
+Example F.23. All closed manifolds of dimension = 4 can be given CW structures (the 4-dimensional case is an open question) [90, 91].
+
+45
+
+Definition F.24 (CW-group). A CW-group G is a CW-complex together with a topological group structure with the following properties [77, 92, 93]:
+(i) the inversion map sends n-cells to n-cells;
+(ii) g1, g2  G contained in some n1- and n2-cells respectively, g1g2 is contained in a cell of dimension  n1 + n2.
+These properties imply that the identity is a 0-cell.
+
+Example F.25. All discrete groups can be viewed as CW-groups with each group element viewed as a 0-cell.
+
+Example F.26. O(n), U (n), Sp(n), and SO(n) can all be given CW-group structures [94].
+
+F.2. Categories, functors, and natural transformations The definitions below are standard in category theory. See e.g. Ref. [95] for detail.
+
+Definition F.27 (category). A category C consists of
+(i) a class Obj(C) of objects;
+(ii) a class Mor(C) of morphisms (or arrows);
+(iii) a function dom : Mor(C)  Obj(C) called domain (or source) and a function cod : Mor(C)  Obj(C) called codomain (or target) ­ we denote by HomC (a, b) or simply Hom (a, b), called the hom-class, the class of morphisms with domain a and codomain b, and use f : a  b to indicate that dom(f ) = a and cod(f ) = b ­
+(iv) a function
+
+id : Obj(C)  Mor(C) a  ida
+called identity; (v) for each triple (a, b, c) of objects, a map
+
+(133)
+
+Hom (a, b) × Hom (b, c)  Hom (a, c) (f, g)  g  f or gf
+
+(134)
+
+called composition ­ we say two morphisms f, g are composable if g  f is defined ­
+
+such that the following axioms are satisfied: 1. associativity: (h  g)  f = h  (g  f ) for all composable morphisms f, g, h; 2. identity: ida  Hom (a, a) and idb f = f ida = f for all objects a, b and morphisms f  Hom (a, b).
+
+Example F.28. The category Set of sets has as objects the class of all sets, and as morphisms the class of all functions between sets. That is, Obj(Set) consists of all sets, and given sets a, b, Hom(a, b) consists of all functions from a to b. The composition is the usual composition of functions. Given a, ida is the constant function on a.
+
+Example F.29. The category Top of topological spaces has as objects all topological spaces, and as morphisms all maps between them.
+
+46
+
+Example F.30. The category Top of pointed topological spaces has as objects all pointed topological spaces, and as morphisms all pointed maps between them.
+Example F.31. The category Top2 of topological pairs has as objects all pairs (X, A) of topological spaces with A  X, and as HomTop2 ((X, A) , (Y, B)) all maps f : X  Y such that f (A)  B.
+Example F.32. The category Grp of groups has as objects all groups, and as morphisms all homomorphisms between them.
+Example F.33. The category Ab of discrete abelian groups has as objects all discrete abelian groups, and as morphisms all homomorphisms between them.
+Example F.34. The homotopy category Toph of topological spaces has as objects all topological spaces, and HomToph(X, Y ) := [X, Y ].
+Example F.35. The homotopy category Toph of pointed topological spaces has as objects all pointed topological spaces, and HomToph(X, Y ) := X, Y .
+Definition F.36. A monomorphism, epimorphism, or isomorphism is a morphism that is left-cancellative, right-cancellative, or invertible (in the two-sided sense), respectively. Recall that f is called left- or rightcancellative if f  g1 = f  g2  g1 = g2 or g1  f = g2  f  g1 = g2, respectively.
+Example F.37. A monomorphism, epimorphism, or isomorphism in Set is an injective, surjective, or bijective function, respectively.
+Example F.38. A monomorphism, epimorphism, or isomorphism in Top is an injective, surjective, or bijective map, respectively.
+Example F.39. A monomorphism, epimorphism, or isomorphism in Grp is an injective, surjective, or bijective homomorphism, respectively.
+Example F.40. An isomorphism in Toph or Toph is a homotopy equivalence or pointed homotopy equivalence, respectively.
+Definition F.41 (covariant functor). A covariant functor (or functor) F from category C to category D, often written F : C  D, consists of
+(i) a function F : Obj(C)  Obj(D); (ii) a function F : Mor(C)  Mor(D);
+such that the following axioms are satisfied: (i) F maps HomC(a, b) into HomD (F (a), F (b)) for all a, b  Obj(C); (ii) F (ida) = idF(ida) for all a  Obj(C);
+(iii) F(g  f ) = F(g)  F(f ) for all composable f, g  Mor(C).
+When F is clear from the context, one often writes f instead of F(f ).
+Definition F.42 (contravariant functor). A contravariant functor (or cofunctor) F from category C to category D, often written F : C  D (or F : Cop  Dop), consists of
+1. a function F : Obj(C)  Obj(D);
+47
+
+2. a function F : Mor(C)  Mor(D); such that the following axioms are satisfied:
+1. F maps HomC(a, b) into HomD (F (b), F (a)) for all a, b  Obj(C); 2. F (ida) = idF(ida) for all a  Obj(C); 3. F(g  f ) = F(f )  F(g) for all composable f, g  Mor(C). When F is clear from the context, one often writes f  instead of F(f ).
+
+Example F.43. The forgetful functor For : Top  Top is a covariant functor that assigns to each
+pointed topological space (X, x0) the topological space X with the basepoint forgotten, and to each pointed map f : (X, x0)  (Y, y0) the same f viewed as a map between unpointed topological spaces.
+
+Example F.44. The loop space functor  : Top  Top is a covariant functor that assigns to each (X, x0)  Top the loopspace X, and to each pointed map f : (X, x0)  (Y, y0) the map f : X  Y given by composition with f . That is, it sends a loop l : (S1, s0)  (X, x0) in (X, x0) to the loop f  l : (S1, s0)  (Y, y0) in (Y, y0).
+
+Example F.45. The classifying space functor B : Grp  Top is a covariant functor that assigns to each topological group G its classifying space BG, and to each homomorphism  : G  G a pointed map  : BG  BG (see App. F.4).
+
+Definition F.46 (natural transformation). Let F, G : C  D be covariant functors. A natural transformation T from F to G, often written T : F  G, is an assignment of a morphism T (a) : F(a)  G(a) to each a  Obj(C) such that the following diagram commutes for all a, b  Obj(C) and all f  HomC(a, b):
+
+F (a) T (a) G(a)
+
+F (f )
+
+G(f )
+
+F (b) T (b) G(b)
+
+(135)
+
+A natural transformation between contravariant functors is defined the same way but with the vertical arrows in the diagram reversed.
+
+Definition F.47 (natural isomorphism). A natural isomorphism T is a natural transformation with all T (a) being isomorphisms.
+
+F.3. Technical conventions It is not only mathematically customary, but also physically justifiable, to work with "nice" categories
+of topological spaces and groups, because after all, pathological spaces and groups may be unphysical. Throughout the paper, apart from Apps. F.1-F.3, the following conventions shall be observed (adapted from Ref. [77]):
+(i) Unless a topological construction makes it impossible18, all topological spaces shall be CW-complexes, and the basepoints of all pointed topological spaces shall be 0-cells.
+(ii) All subspaces of CW-complexes shall be subcomplexes.
+
+18For instance, the path or loop space of a pointed CW-complex may or may not be a pointed CW-complex. It is, however, always pointed homotopy equivalent to one [96].
+48
+
+(iii) All groups shall be CW-groups.
+(iv) All subgroups shall be subcomplexes.
+(v) All binary products of topological spaces shall be compactly generated products.
+(vi) All objects in Top, Top , Top2, Toph, Toph , and Grp shall be unpointed or pointed CWcomplexes or CW-groups, as appropriate.
+The CW approximation theorem implies that every topological space is weakly homotopy equivalent to a CW complex [78]. The following theorem (a generalization of Proposition 4.22 of Ref. [78]) then indicates that restricting to CW-complexes is hardly a loss of generality. It was also the reason why we were able to freely switch between homotopy equivalent spaces on numerous occasions in the main text.
+
+Theorem F.48. Let f : Y  Z be a homotopy equivalence, or more generally weak homotopy equivalence, between topological spaces Y and Z. Then the induced maps
+
+f : [X, Y ]  [X, Z] ,
+f : X, Y  X, Z , f  : [Z, X]  [Y, X] , f : Z, X  Y, X
+
+(136) (137) (138) (139)
+
+are bijections for all CW-complexes X.
+
+F.4. Generalized cohomology theories
+Definition F.49 (Eilenberg-Mac Lane space). Let G be a discrete group and n be a non-negative integer. If n > 1, we further require G to be abelian. A space X is called an Eilenberg-Mac Lane space K(G, n) if
+
+i(X) =
+
+G, 0,
+
+i = n, i = n,
+
+(140)
+
+for non-negative integers i. K(G, n) exists and is unique up to homotopy equivalence. This allows us to abuse the terminology and speak of the Eilenberg-Mac Lane space K(G, n).
+
+Example F.50. RP , Z, S1, and CP  are K(Z2, 1), K(Z, 0), K(Z, 1), and K(Z, 2), respectively.
+
+Definition F.51 (classifying space). Let G be a group. A space BG is called a classifying space of G if there exists a principal G-bundle G : EG  BG satisfying either of the following equivalent conditions [77]:
+(i) Given any X, every principal G-bundle over X is isomorphic to the pull-back of G along a unique homotopy class of maps f : X  BG.
+(ii) The map
+
+is a bijection.
+
+[X, BG] 
+
+isomorphism classes of principal G-bundles over X
+
+[f ]  [f (G)]
+
+(141)
+
+BG exists and is unique up to homotopy equivalence.
+
+49
+
+Table 4: Examples of classifying spaces. Recall that BG is unique only up to homotopy equivalence. Given here are the
+
+most widely used models for G : EG  BG.
+
+G EG
+
+Z
+
+R
+
+BG S1  U (1)
+
+G : EG  BG x  ei2x
+
+U (1) S =  n=1S2n-1   n=1Cn CP  =  n=0CP n Identify (z1, . . . , zn)  z1ei, . . . , znei
+
+Z2
+
+S =  n=0Sn
+
+RP  =  n=0RP n Identify antipodes
+
+Some simple examples of classifying spaces are given in Table 4. It turns out [77, 78] that
+
+i (BG) = i-1(G).
+
+(142)
+
+Thus if G is a discrete group, then BG is a K(G, 1). More generally, if a group G is a K(G , n) as a topological space for some discrete G , then BG is a K(G , n + 1). This is consistent with Example F.50 and Table 4.
+
+Construction F.52 (explicit construction of classifying spaces). There is an explicit construction of  : EG  BG based on the usual geometric realization [77, 97]. It has the following properties:
+(i) Each EG is a CW-complex and each BG is a pointed CW-complex. (ii) B : Grp  Top is a covariant functor. (iii) B(G1 × G2) is homeomorphic to BG1 × BG2. (iv) B (G1 G2) homotopy equivalent to BG1 ×G2 EG2. (v) BG can be given an abelian group structure if G is abelian.
+This will be our default model for BG.
+
+The last property enables us to iterate the construction to produce B2G, B3G, . . . when G is an abelian group. If G is in addition discrete, then BnG is a K(G, n).
+
+Definition F.53 (-spectrum). An -spectrum [75, 76, 78] is a family of pointed topological spaces
+
+indexed by integers,
+
+. . . , F-2, F-1, F0, F1, F2, . . .
+
+(143)
+
+together with pointed homotopy equivalences
+
+for all n.
+
+Fn - Fn+1
+
+(144)
+
+One can show that Fn determines all Fm's with m < n up to pointed homotopy equivalence. Moreover, shifting the index n turns an -spectrum into another -spectrum.
+
+Example F.54 (Eilenberg-Mac Lane spectrum). Given any discrete abelian group A, the EilenbergMac Lane spaces K(A, n) form an -spectrum, called the Eilenberg-Mac Lane spectrum of A [75, 76, 78]. More precisely, the Eilenberg-Mac Lane spectrum of A consists of
+
+Fn =
+
+K(A, n), pt,
+
+n  0, n < 0.
+
+(145)
+
+50
+
+A generalized cohomology theory [75, 76] is a theory that satisfies the first six of the seven EilenbergSteenrod axioms [98, 99] plus Milnor's additivity axiom [100]. Inclusion of the seventh, dimension axiom of Eilenberg and Steenrod's would force the theory to be an ordinary one. Here we define generalized cohomology theories in an equivalent but more compact way [78].
+
+Definition F.55 (reduced generalilzed cohomology theory). A reduced generalized cohomology theory consists of
+
+(i) a family of contravariant functors indexed by integers n;
+
+h~n : Top  Ab
+
+(146)
+
+(ii) a natural transformation, called the coboundary map,
+
+ : h~n(A)  h~n+1(X/A)
+
+(147)
+
+for topological pairs (X, A), for each n;
+
+such that the following axioms are satisfied: (i) homotopy: pointed homotopic maps in Top induce identical homomorphisms in Ab; (ii) exactness: given any pair (X, A), there is a long exact sequence
+
+· · · - h~n (X/A) -q h~n(X) -i h~n(A) - h~n+1 (X/A) -q h~n+1(X) -i h~n+1(A) - · · · (148)
+
+where i : A  X is the inclusion map and q : X X/A is the quotient map;
+
+(iii) wedge: given any family of pointed spaces, (X), the inclusion maps X  X induce an
+
+isomorphism
+
+h~n (X) -= h~n (X) .
+
+(149)
+
+
+
+Definition F.56 (unreduced generalized cohomology theory). An (unreduced) generalized cohomology theory consists of
+
+(i) a family of contravariant functors indexed by integers n;
+
+hn : Top2  Ab
+
+(150)
+
+(ii) a natural transformation, called the coboundary map,
+
+ : hn (A, )  hn+1 (X, A)
+
+(151)
+
+for topological pairs (X, A), for each n;
+
+such that the following axioms are satisfied: (i) homotopy: homotopic maps in Top2 induce identical homomorphisms in Ab; (ii) exactness: given any pair (X, A), there is a long exact sequence
+
+· · · - hn (X, A) -j hn (X, ) -i hn (A, ) - hn+1 (X, A) -j hn (X, ) -i hn (A, ) - · · · (152)
+
+where i : (A, )  (X, ) and j : (X, )  (X, A) are the inclusion maps.
+
+51
+
+(iii) excision: given a triple (X, A, B) with B  A  X, the quotient map (X, A)  (X/B, A/B) induces
+
+an isomorphism
+
+hn (X/B, A/B) -= hn (X, A) ;
+
+(153)
+
+(iv) additivity: given any family of pairs, (X, A), the inclusion maps (X, A)  (
+
+induce an isomorphism
+
+hn ( X, A) -= hn (X, A) .
+
+
+
+X,
+
+A) (154)
+
+Every reduced generalized cohomology theory canonically determines an unreduced generalized cohomology theory, and vice versa, as follows. Given a reduced theory h~, we define an unreduced theory h
+
+according to
+
+hn (X, A) := h~n (X/A) ,
+
+(155)
+
+with the convention X/ := X pt. Given an unreduced theory h, we define a reduced theory h~ according
+
+to
+
+h~n(X) := hn(X, pt).
+
+(156)
+
+To make contact with Definitions 3.1 and 3.2, we need the pivotal Brown representability theorem (see e.g. Ref. [101] or Theorems 4.58 and 4E.1 of Ref. [78]).
+
+Theorem F.57 (Brown representability theorem). Every -spectrum (Fn)nZ defines a reduced generalized cohomology theory h~ according to
+
+h~n (X) := X, Fn .
+
+(157)
+
+Conversely, every reduced generalized cohomolog theory can be represented by an -spectrum this way.
+
+Definitions 3.1 and 3.2 differ from Definitions F.56 and F.55 in two subtle ways, even when the
+
+Brown representability theorem is assumed. First, Definitions 3.1 and 3.2 treated -spectrum as part
+
+of the data of a generalized cohomology theory, but in reality different -spectra can represent the
+
+same theory (although, in the category of spectra, a representing spectrum is determined by the theory
+
+up to isomorphism, in view of the Yoneda lemma). It was because of the physical interpretations of
+
+-spectrum that we decided to treat it as part of the data. Second, in Definition 3.1, an unreduced
+
+generalized cohomology theory was only evaluated on individual spaces not pairs. The connection is
+
+given by
+
+hn(X) := hn(X, ).
+
+(158)
+
+It is then easy to show that
+
+hn(X) = [X, Fn]
+
+(159)
+
+for any -spectrum (Fn) that represents the corresponding reduced theory h~, in accord with Definition 3.1.
+
+Table 2 contains some classic generalized cohomology theories alongside with -spectra that represent
+
+them.
+
+References
+[1] L. D. Landau, E. M. Lifshitz, Statistical Physics, Pergamon, London, 1958.
+[2] X.-L. Qi, T. L. Hughes, S.-C. Zhang, Topological field theory of time-reversal invariant insulators, Phys. Rev. B 78 (2008) 195424. doi:10.1103/PhysRevB.78.195424. URL http://link.aps.org/doi/10.1103/PhysRevB.78.195424
+[3] A. P. Schnyder, S. Ryu, A. Furusaki, A. W. W. Ludwig, Classification of topological insulators and superconductors in three spatial dimensions, Phys. Rev. B 78 (2008) 195125. doi:10.1103/PhysRevB.78.195125. URL http://link.aps.org/doi/10.1103/PhysRevB.78.195125
+
+52
+
+[4] A. Kitaev, Periodic table for topological insulators and superconductors, AIP Conference Proceedings 1134 (1) (2009) 22­30. doi:http://dx.doi.org/10.1063/1.3149495. URL http://scitation.aip.org/content/aip/proceeding/aipcp/10.1063/1.3149495
+[5] M. Z. Hasan, C. L. Kane, Colloquium: Topological insulators, Rev. Mod. Phys. 82 (2010) 3045­3067. doi:10.1103/ RevModPhys.82.3045. URL http://link.aps.org/doi/10.1103/RevModPhys.82.3045
+[6] X.-L. Qi, S.-C. Zhang, Topological insulators and superconductors, Rev. Mod. Phys. 83 (2011) 1057­1110. doi: 10.1103/RevModPhys.83.1057. URL http://link.aps.org/doi/10.1103/RevModPhys.83.1057
+[7] X.-G. Wen, Quantum Field Theory of Many-Body Systems: From the Origin of Sound to an Origin of Light and Electrons, Oxford University Press, New York, 2007.
+[8] X. Chen, Z.-C. Gu, X.-G. Wen, Local unitary transformation, long-range quantum entanglement, wave function renormalization, and topological order, Phys. Rev. B 82 (2010) 155138. doi:10.1103/PhysRevB.82.155138. URL http://link.aps.org/doi/10.1103/PhysRevB.82.155138
+[9] A. Mesaros, Y. Ran, Classification of symmetry enriched topological phases with exactly solvable models, Phys. Rev. B 87 (2013) 155115. doi:10.1103/PhysRevB.87.155115. URL http://link.aps.org/doi/10.1103/PhysRevB.87.155115
+[10] L.-Y. Hung, X.-G. Wen, Quantized topological terms in weak-coupling gauge theories with a global symmetry and their connection to symmetry-enriched topological phases, Phys. Rev. B 87 (2013) 165107. doi:10.1103/PhysRevB. 87.165107. URL http://link.aps.org/doi/10.1103/PhysRevB.87.165107
+[11] Y.-M. Lu, A. Vishwanath, Classification and properties of symmetry-enriched topological phases: Chern-Simons approach with applications to Z2 spin liquids, Phys. Rev. B 93 (2016) 155121. doi:10.1103/PhysRevB.93.155121. URL http://link.aps.org/doi/10.1103/PhysRevB.93.155121
+[12] L.-Y. Hung, Y. Wan, K matrix construction of symmetry-enriched phases of matter, Phys. Rev. B 87 (2013) 195103. doi:10.1103/PhysRevB.87.195103. URL http://link.aps.org/doi/10.1103/PhysRevB.87.195103
+[13] X.-G. Wen, Zoo of quantum-topological phases of matter (Oct. 2016). arXiv:1610.03911. URL http://arxiv.org/abs/1610.03911
+[14] M. Barkeshli, P. Bonderson, M. Cheng, Z. Wang, Symmetry, defects, and gauging of topological phases (2014). arXiv:1410.4540.
+[15] C. W. von Keyserlingk, S. L. Sondhi, Phase structure of one-dimensional interacting floquet systems. i. abelian symmetry-protected topological phases, Phys. Rev. B 93 (2016) 245145. doi:10.1103/PhysRevB.93.245145. URL http://link.aps.org/doi/10.1103/PhysRevB.93.245145
+[16] D. V. Else, C. Nayak, Classification of topological phases in periodically driven interacting systems, Phys. Rev. B 93 (2016) 201103. doi:10.1103/PhysRevB.93.201103. URL http://link.aps.org/doi/10.1103/PhysRevB.93.201103
+[17] A. C. Potter, T. Morimoto, A. Vishwanath, Classification of interacting topological floquet phases in one dimension, Phys. Rev. X 6 (2016) 041001. doi:10.1103/PhysRevX.6.041001. URL http://link.aps.org/doi/10.1103/PhysRevX.6.041001
+[18] R. Roy, F. Harper, Abelian floquet symmetry-protected topological phases in one dimension, Phys. Rev. B 94 (2016) 125105. doi:10.1103/PhysRevB.94.125105. URL http://link.aps.org/doi/10.1103/PhysRevB.94.125105
+[19] C. W. von Keyserlingk, S. L. Sondhi, Phase structure of one-dimensional interacting floquet systems. ii. symmetrybroken phases, Phys. Rev. B 93 (2016) 245146. doi:10.1103/PhysRevB.93.245146. URL http://link.aps.org/doi/10.1103/PhysRevB.93.245146
+[20] C. W. von Keyserlingk, V. Khemani, S. L. Sondhi, Absolute stability and spatiotemporal long-range order in floquet systems, Phys. Rev. B 94 (2016) 085112. doi:10.1103/PhysRevB.94.085112. URL http://link.aps.org/doi/10.1103/PhysRevB.94.085112
+[21] D. V. Else, B. Bauer, C. Nayak, Pre-thermal Time Crystals and Floquet topological phases without disorder (2016). arXiv:1607.05277.
+[22] Y. Gannot, Effects of disorder on a 1-d floquet symmetry protected topological phase (2015). arXiv:1512.04190.
+53
+
+[23] I.-D. Potirniche, A. C. Potter, M. Schleier-Smith, A. Vishwanath, N. Y. Yao, Floquet symmetry-protected topological phases in cold atomic systems (2016). arXiv:1610.07611.
+[24] R. Roy, F. Harper, Floquet topological phases with symmetry in all dimensions (2016). arXiv:1610.06899.
+[25] D. V. Else, B. Bauer, C. Nayak, Floquet Time Crystals, Phys. Rev. Lett. 117 (2016) 090402. doi:10.1103/ PhysRevLett.117.090402. URL http://link.aps.org/doi/10.1103/PhysRevLett.117.090402
+[26] A. C. Potter, T. Morimoto, Dynamically enriched topological orders in driven two-dimensional systems (2016). arXiv: 1610.03485.
+[27] H. C. Po, L. Fidkowski, T. Morimoto, A. C. Potter, A. Vishwanath, Chiral Floquet Phases of Many-body Localized Bosons (2016). arXiv:1609.00006.
+[28] R. Vasseur, A. J. Friedman, S. A. Parameswaran, A. C. Potter, Particle-hole symmetry, many-body localization, and topological edge modes, Phys. Rev. B 93 (2016) 134207. doi:10.1103/PhysRevB.93.134207. URL http://link.aps.org/doi/10.1103/PhysRevB.93.134207
+[29] A. C. Potter, R. Vasseur, Symmetry constraints on many-body localization (2016). arXiv:1605.03601.
+[30] X. Chen, Z.-C. Gu, X.-G. Wen, Classification of gapped symmetric phases in one-dimensional spin systems, Phys. Rev. B 83 (2011) 035107. doi:10.1103/PhysRevB.83.035107. URL http://link.aps.org/doi/10.1103/PhysRevB.83.035107
+[31] N. Schuch, D. P´erez-Garc´ia, I. Cirac, Classifying quantum phases using matrix product states and projected entangled pair states, Phys. Rev. B 84 (2011) 165139. doi:10.1103/PhysRevB.84.165139. URL http://link.aps.org/doi/10.1103/PhysRevB.84.165139
+[32] X. Chen, Z.-X. Liu, X.-G. Wen, Two-dimensional symmetry-protected topological orders and their protected gapless edge excitations, Phys. Rev. B 84 (2011) 235141. doi:10.1103/PhysRevB.84.235141. URL http://link.aps.org/doi/10.1103/PhysRevB.84.235141
+[33] X. Chen, Z.-C. Gu, Z.-X. Liu, X.-G. Wen, Symmetry protected topological orders and the group cohomology of their symmetry group, Phys. Rev. B 87 (2013) 155114. doi:10.1103/PhysRevB.87.155114. URL http://link.aps.org/doi/10.1103/PhysRevB.87.155114
+[34] Z.-C. Gu, X.-G. Wen, Symmetry-protected topological orders for interacting fermions: Fermionic topological nonlinear  models and a special group supercohomology theory, Phys. Rev. B 90 (2014) 115141. doi:10.1103/PhysRevB.90. 115141. URL http://link.aps.org/doi/10.1103/PhysRevB.90.115141
+[35] A. Kapustin, Symmetry Protected Topological Phases, Anomalies, and Cobordisms: Beyond Group Cohomology (2014). arXiv:1403.1467.
+[36] A. Kapustin, R. Thorngren, A. Turzillo, Z. Wang, Fermionic symmetry protected topological phases and cobordisms, Journal of High Energy Physics 2015 (12) (2015) 52. doi:10.1007/JHEP12(2015)052. URL http://dx.doi.org/10.1007/JHEP12(2015)052
+[37] A. Kapustin, A. Turzillo, Equivariant Topological Quantum Field Theory and Symmetry Protected Topological Phases (2015). arXiv:1504.01830.
+[38] D. S. Freed, Short-range entanglement and invertible field theories (2014). arXiv:1406.7278.
+[39] D. S. Freed, M. J. Hopkins, Reflection positivity and invertible topological phases (2016). arXiv:1604.06527.
+[40] A. Kitaev, Toward a topological classification of many-body quantum states with short-range entanglement, in: Topological Quantum Computing Workshop, Simons Center for Geometry and Physics, Stony Brook University, Stony Brook, New York, 2011. URL http://scgp.stonybrook.edu/archives/1087
+[41] A. Kitaev, Conclusion: Toward a topological classification of many-body quantum states with short-range entanglement, in: Topological Quantum Computing Workshop, Simons Center for Geometry and Physics, Stony Brook University, Stony Brook, New York, 2011. URL http://scgp.stonybrook.edu/archives/1087
+[42] A. Kitaev, On the Classification of Short-Range Entangled States, in: Topological Phases of Matter Program Seminar, Simons Center for Geometry and Physics, Stony Brook University, Stony Brook, New York, 2013. URL http://scgp.stonybrook.edu/archives/7874
+54
+
+[43] A. Kitaev, Homotopy-theoretic approach to SPT phases in action: Z16 classification of three-dimensional supercon-
+
+ductors, in: Symmetry and Topology in Quantum Matter Workshop, Institute for Pure & Applied Mathematics,
+
+University of California, Los Angeles, California, 2015.
+
+URL
+
+http://www.ipam.ucla.edu/programs/workshops/symmetry-and-topology-in-quantum-matter/?tab=
+
+schedule
+
+[44] A. Husain, G-Extensions of Quantum Group Categories and Functorial SPT (2016). arXiv:1605.08398.
+
+[45] Y.-M. Lu, A. Vishwanath, Theory and classification of interacting integer topological phases in two dimensions: A Chern-Simons approach, Phys. Rev. B 86 (2012) 125119. doi:10.1103/PhysRevB.86.125119. URL http://link.aps.org/doi/10.1103/PhysRevB.86.125119
+
+[46] Y.-M. Lu, A. Vishwanath, Erratum: Theory and classification of interacting integer topological phases in two dimensions: A Chern-Simons approach [Phys. Rev. B 86 , 125119 (2012)], Phys. Rev. B 89 (2014) 199903. doi:10.1103/PhysRevB.89.199903. URL http://link.aps.org/doi/10.1103/PhysRevB.89.199903
+
+[47] A. Vishwanath, T. Senthil, Physics of Three-Dimensional Bosonic Topological Insulators: Surface-Deconfined Criticality and Quantized Magnetoelectric Effect, Phys. Rev. X 3 (2013) 011016. doi:10.1103/PhysRevX.3.011016. URL http://link.aps.org/doi/10.1103/PhysRevX.3.011016
+
+[48] C. Wang, T. Senthil, Boson topological insulators: A window into highly entangled quantum phases, Phys. Rev. B 87 (2013) 235122. doi:10.1103/PhysRevB.87.235122. URL http://link.aps.org/doi/10.1103/PhysRevB.87.235122
+
+[49] F. J. Burnell, X. Chen, L. Fidkowski, A. Vishwanath, Exactly soluble model of a three-dimensional symmetryprotected topological phase of bosons with surface topological order, Phys. Rev. B 90 (2014) 245122. doi:10.1103/ PhysRevB.90.245122. URL http://link.aps.org/doi/10.1103/PhysRevB.90.245122
+
+[50] C. Wang, A. C. Potter, T. Senthil, Classification of Interacting Electronic Topological Insulators in Three Dimensions, Science 343 (6171) (2014) 629­631. arXiv:http://science.sciencemag.org/content/343/6171/629.full.pdf, doi: 10.1126/science.1243326. URL http://science.sciencemag.org/content/343/6171/629
+
+[51] C. Wang, T. Senthil, Interacting fermionic topological insulators/superconductors in three dimensions, Phys. Rev. B 89 (2014) 195124. doi:10.1103/PhysRevB.89.195124. URL http://link.aps.org/doi/10.1103/PhysRevB.89.195124
+
+[52] C. Wang, T. Senthil, Erratum: Interacting fermionic topological insulators/superconductors in three dimensions [Phys. Rev. B 89 , 195124 (2014)], Phys. Rev. B 91 (2015) 239902. doi:10.1103/PhysRevB.91.239902. URL http://link.aps.org/doi/10.1103/PhysRevB.91.239902
+
+[53] M. Cheng, Z. Bi, Y.-Z. You, Z.-C. Gu, Towards a Complete Classification of Symmetry-Protected Phases for Interacting Fermions in Two Dimensions (2015). arXiv:1501.01313.
+
+[54] Quote by Mark Twain, which, however, seems to originate from a poem by Thomas Campbell.
+
+[55] B. Swingle, J. McGreevy, Renormalization group constructions of topological quantum liquids and beyond, Phys. Rev. B 93 (2016) 045127. doi:10.1103/PhysRevB.93.045127. URL http://link.aps.org/doi/10.1103/PhysRevB.93.045127
+
+[56] Z.-C. Gu, Z. Wang, X.-G. Wen, Classification of two-dimensional fermionic and bosonic topological orders, Phys. Rev. B 91 (2015) 125149. doi:10.1103/PhysRevB.91.125149. URL http://link.aps.org/doi/10.1103/PhysRevB.91.125149
+
+[57] X. Chen, Z.-C. Gu, X.-G. Wen, Complete classification of one-dimensional gapped quantum phases in interacting spin systems, Phys. Rev. B 84 (2011) 235128. doi:10.1103/PhysRevB.84.235128. URL http://link.aps.org/doi/10.1103/PhysRevB.84.235128
+
+[58] C.-T. Hsieh, O. M. Sule, G. Y. Cho, S. Ryu, R. G. Leigh, Symmetry-protected topological phases, generalized laughlin argument, and orientifolds, Phys. Rev. B 90 (2014) 165134. doi:10.1103/PhysRevB.90.165134. URL http://link.aps.org/doi/10.1103/PhysRevB.90.165134
+
+[59] C.-T. Hsieh, T. Morimoto, S. Ryu, CPT theorem and classification of topological insulators and superconductors, Phys. Rev. B 90 (2014) 245111. doi:10.1103/PhysRevB.90.245111. URL http://link.aps.org/doi/10.1103/PhysRevB.90.245111
+
+55
+
+[60] Y.-Z. You, C. Xu, Symmetry-protected topological states of interacting fermions and bosons, Phys. Rev. B 90 (2014) 245120. doi:10.1103/PhysRevB.90.245120. URL http://link.aps.org/doi/10.1103/PhysRevB.90.245120
+[61] Y. Fuji, F. Pollmann, M. Oshikawa, Distinct Trivial Phases Protected by a Point-Group Symmetry in Quantum Spin Chains, Phys. Rev. Lett. 114 (2015) 177204. doi:10.1103/PhysRevLett.114.177204. URL http://link.aps.org/doi/10.1103/PhysRevLett.114.177204
+[62] G. Y. Cho, C.-T. Hsieh, T. Morimoto, S. Ryu, Topological phases protected by reflection symmetry and cross-cap states, Phys. Rev. B 91 (2015) 195142. doi:10.1103/PhysRevB.91.195142. URL http://link.aps.org/doi/10.1103/PhysRevB.91.195142
+[63] T. Yoshida, T. Morimoto, A. Furusaki, Bosonic symmetry-protected topological phases with reflection symmetry, Phys. Rev. B 92 (2015) 245122. doi:10.1103/PhysRevB.92.245122. URL http://link.aps.org/doi/10.1103/PhysRevB.92.245122
+[64] S. Jiang, Y. Ran, Anyon condensation and a generic tensor-network construction for symmetry protected topological phases (2016). arXiv:1611.07652.
+[65] R. Thorngren, D. V. Else, Gauging spatial symmetries and the classification of topological crystalline phases (2016). arXiv:1612.00846.
+[66] A. Y. Kitaev, Unpaired Majorana fermions in quantum wires, Physics-Uspekhi 44 (10S) (2001) 131. URL http://stacks.iop.org/1063-7869/44/i=10S/a=S29
+[67] G. E. Volovik, Fermion zero modes on vortices in chiral superconductors, Journal of Experimental and Theoretical Physics Letters 70 (9) (1999) 609­614. doi:10.1134/1.568223. URL http://dx.doi.org/10.1134/1.568223
+[68] N. Read, D. Green, Paired states of fermions in two dimensions with breaking of parity and time-reversal symmetries and the fractional quantum hall effect, Phys. Rev. B 61 (2000) 10267­10297. doi:10.1103/PhysRevB.61.10267. URL http://link.aps.org/doi/10.1103/PhysRevB.61.10267
+[69] D. A. Ivanov, Non-Abelian Statistics of Half-Quantum Vortices in p-Wave Superconductors, Phys. Rev. Lett. 86 (2001) 268­271. doi:10.1103/PhysRevLett.86.268. URL http://link.aps.org/doi/10.1103/PhysRevLett.86.268
+[70] A. Kitaev, Anyons in an exactly solved model and beyond, Annals of Physics 321 (1) (2006) 2 ­ 111, january Special Issue. doi:http://dx.doi.org/10.1016/j.aop.2005.10.005. URL http://www.sciencedirect.com/science/article/pii/S0003491605002381
+[71] A. Kitaev, Toward Topological Classification of Phases with Short-range Entanglement, in: Topological Insulators and Superconductors Workshop, Kavli Institute for Theoretical Physics, University of California, Santa Barbara, California, 2011. URL http://online.kitp.ucsb.edu/online/topomat11/
+[72] G. Vidal, Entanglement Renormalization, Phys. Rev. Lett. 99 (2007) 220405. doi:10.1103/PhysRevLett.99.220405. URL http://link.aps.org/doi/10.1103/PhysRevLett.99.220405
+[73] G. Vidal, Entanglement Renormalization: an introduction (2009). arXiv:0912.1651.
+[74] H. Song, S.-J. Huang, L. Fu, M. Hermele, Topological phases protected by point group symmetry (2016). arXiv: 1604.08151.
+[75] J. F. Adams, Stable Homotopy and Generalised Homology, University of Chicago press, Chicago, 1995.
+[76] J. F. Adams, Infinite Loop Spaces (AM-90): Hermann Weyl Lectures, The Institute for Advanced Study.(AM-90), Vol. 90, Princeton University Press, Princeton, 1978.
+[77] A. Adem, R. J. Milgram, Cohomology of Finite Groups, 2nd Edition, Springer-Verlag Berlin Heidelberg, New York, 2004, Chap. II.
+[78] A. Hatcher, Algebraic Topology, Cambridge University Press, Cambridge, 2002.
+[79] J. Milnor, J. D. Stasheff, Characteristic Classes, Vol. 76, Princeton University Press, 2016.
+[80] D. J. Thouless, M. Kohmoto, M. P. Nightingale, M. den Nijs, Quantized Hall Conductance in a Two-Dimensional Periodic Potential, Phys. Rev. Lett. 49 (1982) 405­408. doi:10.1103/PhysRevLett.49.405. URL http://link.aps.org/doi/10.1103/PhysRevLett.49.405
+56
+
+[81] R. Jackiw, C. Rebbi, Solitons with fermion number 1/2, Phys. Rev. D 13 (1976) 3398­3409. doi:10.1103/PhysRevD. 13.3398. URL http://link.aps.org/doi/10.1103/PhysRevD.13.3398
+[82] J. T. Chalker, P. D. Coddington, Percolation, quantum tunnelling and the integer hall effect, Journal of Physics C: Solid State Physics 21 (14) (1988) 2665. URL http://stacks.iop.org/0022-3719/21/i=14/a=008
+[83] L. Fu, C. L. Kane, E. J. Mele, Topological Insulators in Three Dimensions, Phys. Rev. Lett. 98 (2007) 106803. doi:10.1103/PhysRevLett.98.106803. URL http://link.aps.org/doi/10.1103/PhysRevLett.98.106803
+[84] A. Shapere, F. Wilczek, Classical Time Crystals, Phys. Rev. Lett. 109 (2012) 160402. doi:10.1103/PhysRevLett. 109.160402. URL http://link.aps.org/doi/10.1103/PhysRevLett.109.160402
+[85] F. Wilczek, Quantum Time Crystals, Phys. Rev. Lett. 109 (2012) 160401. doi:10.1103/PhysRevLett.109.160401. URL http://link.aps.org/doi/10.1103/PhysRevLett.109.160401
+[86] T. Li, Z.-X. Gong, Z.-Q. Yin, H. T. Quan, X. Yin, P. Zhang, L.-M. Duan, X. Zhang, Space-Time Crystals of Trapped Ions, Phys. Rev. Lett. 109 (2012) 163001. doi:10.1103/PhysRevLett.109.163001. URL http://link.aps.org/doi/10.1103/PhysRevLett.109.163001
+[87] T. Austin, C. C. Moore, Continuity properties of measurable group cohomology, Mathematische Annalen 356 (3) (2013) 885­937. doi:10.1007/s00208-012-0868-z. URL http://dx.doi.org/10.1007/s00208-012-0868-z
+[88] M. F. Atiyah, Bordism and cobordism, Mathematical Proceedings of the Cambridge Philosophical Society 57 (2) (1961) 200208. doi:10.1017/S0305004100035064. URL https://www.cambridge.org/core/article/bordism-and-cobordism/093BD983A50F36ACEC5D61178D9AA525
+[89] M. Atiyah, Topological quantum field theories, Publications Math´ematiques de l'Institut des Hautes E´tudes Scientifiques 68 (1) (1988) 175­186. doi:10.1007/BF02698547. URL http://dx.doi.org/10.1007/BF02698547
+[90] R. Kirby, L. Siebenmann, Foundational Essays on Topological Manifolds, Smoothings, and Triangulations, Princeton University Press, Princeton, 1977.
+[91] M. Freedman, F. Quinn, Topology of 4-Manifolds, Princeton University Press, Princeton, 1990.
+[92] J. Milnor, Construction of Universal Bundles, I, Annals of Mathematics 63 (2) (1956) 272­284. URL http://www.jstor.org/stable/1969609
+[93] J. Milnor, Construction of Universal Bundles, II, Annals of Mathematics 63 (3) (1956) 430­436. URL http://www.jstor.org/stable/1970012
+[94] N. E. Steenrod, D. B. A. Epstein, Cohomology Operations, Princeton University Press, Princeton, 1962, Chap. IV.
+[95] S. Mac Lane, Categories for the Working Mathematician, 2nd Edition, Springer Science+Business Media, New York, 1971. doi:10.1007/978-1-4757-4721-8.
+[96] J. Milnor, On Spaces Having the Homotopy Type of a CW-Complex, Transactions of the American Mathematical Society 90 (2) (1959) 272­280. URL http://www.jstor.org/stable/1993204
+[97] G. Segal, Classifying spaces and spectral sequences, Publications Math´ematiques de l'IHE´S 34 (1968) 105­112.
+[98] S. Eilenberg, N. E. Steenrod, Axiomatic approach to homology theory, Proceedings of the National Academy of Sciences 31 (4) (1945) 117­120.
+[99] S. Eilenberg, N. Steenrod, Foundations of Algebraic Topology, Princeton University Press, Princeton, 2015.
+[100] J. Milnor, On axiomatic homology theory, Pacific J. Math. 12 (1) (1962) 337­341. URL http://projecteuclid.org/euclid.pjm/1103036730
+[101] J. F. Davis, P. Kirk, Lecture Notes in Algebraic Topology, American Mathematical Society, Providence, 2001, Sec. 8.8.
+57
+
+

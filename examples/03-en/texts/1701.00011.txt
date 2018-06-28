@@ -1,0 +1,224 @@
+Draft version January 3, 2017 Preprint typeset using LATEX style emulateapj v. 01/23/15
+
+arXiv:1701.00011v1 [astro-ph.GA] 30 Dec 2016
+
+ULTRA-DIFFUSE AND ULTRA-COMPACT GALAXIES IN THE FRONTIER FIELDS CLUSTER ABELL 2744
+Steven Janssens1, Roberto Abraham1, Jean Brodie2, Duncan Forbes3, Aaron J. Romanowsky2,4, and Pieter van Dokkum5
+Draft version January 3, 2017
+ABSTRACT
+We report the discovery of a large population of Ultra-diffuse Galaxies (UDGs) in the massive galaxy cluster Abell 2744 (z = 0.308) as observed by the Hubble Frontier Fields program. Since this cluster is  5 times more massive than Coma, our observations allow us to extend 0.7 dex beyond the high-mass end of the relationship between UDG abundance and cluster mass reported by van der Burg et al. (2016). Using the same selection criteria as van der Burg et al. (2016), A2744 hosts an estimated 2133 ± 613 UDGs, ten times the number in Coma. As noted by Lee & Jang (2016), A2744 contains numerous unresolved compact objects, which those authors identified predominantly as globular clusters. However, these objects have luminosities that are more consistent with ultracompact dwarf (UCD) galaxies. The abundances of both UCDs and UDGs scale with cluster mass as a power law with a similar exponent, although UDGs and UCDs have very different radial distributions within the cluster. The radial surface density distribution of UCDs rises sharply toward the cluster centre, while the surface density distribution of the UDG population is essentially flat. Together, these observations hint at a picture where some UCDs in A2744 may have once been associated with infalling UDGs. As UDGs fall in and dissolve, they leave behind a residue of unbound ultra-compact dwarfs.
+
+1. INTRODUCTION
+It is now known that the Universe is not nearly as deficient in massive low surface brightness galaxies as was once thought, and that such `ultra-diffuse galaxies' (UDGs) can be found in large numbers in rich clusters of galaxies (van Dokkum et al. 2015a,b; Koda et al. 2015; van der Burg et al. 2016). The largest UDGs have sizes similar to the Milky Way (half-light radii around 3 kpc) but only 1/100 to 1/1000 as many stars. These systems were originally discovered using the Dragonfly Telephoto Array (Abraham & van Dokkum 2014), which is highly optimized for the detection of low surface brightness structures, but the detection of most UDGs is within the capability of conventional telescopes.
+The discovery of UDGs has generated tremendous interest in the community, from observers who are rapidly enlarging the UDG samples (e.g. Koda et al. 2015; Mihos et al. 2016; van der Burg et al. 2016), from simulators who must now try to understand the origin and evolution of these galaxies (e.g. Yozin & Bekki 2015; Amorisco & Loeb 2016), and even from alternative gravity researchers who claim their existence challenges dark matter models (Milgrom 2015). The existence of so many presumably `delicate' UDGs in rich clusters (Koda et al. (2015) put their number at  800 in Coma) poses the immediate question of why they are not being ripped apart by the tidal field of their host clusters. They may be short-lived
+janssens@astro.utoronto.ca 1 Department of Astronomy and Astrophysics, University of
+Toronto, 50 St. George Street, Toronto, ON, Canada M5S 3H4 2 University of California Observatories, 1156 High Street,
+Santa Cruz, CA 95064, USA 3 Centre for Astrophysics and Supercomputing, Swinburne
+University, Hawthorn VIC 3122, Australia 4 Department of Physics and Astronomy, San Jos´e State Uni-
+versity, One Washington Square, San Jose, CA 95192, USA 5 Department of Astronomy, Yale University, 260 Whitney Av-
+enue, New Haven, CT 06511, USA
+
+and be on their first infall and about to be shredded, but this seems unlikely given their predominantly red stellar populations and smooth morphologies. However, two UDGs in Virgo show extended tidal debris and appear to be in the process of being tidally stripped (Mihos et al. 2015, 2016). If they have survived for several orbits in a rich cluster, then simple stability arguments suggest that they must have significantly higher masses than implied by their stellar populations; in fact, in order to survive, their dark matter fractions need to be > 98% (van Dokkum et al. 2015a) within their half-light radii, suggesting they are `failed' L galaxies. At least two objects in Coma, Dragonfly 17 (Peng & Lim 2016) and Dragonfly 44 (van Dokkum et al. 2016) show strong evidence (high velocity dispersions or large globular cluster populations, or both) for being resident within very massive halos. So for at least two UDGs the `failed giant' picture appears to be plausible. However, these may be extreme cases (Amorisco et al. 2016; Rom´an & Trujillo 2016b), with more typical UDGs being better described as `inflated dwarfs', whose anomalously large sizes are due to extreme feedback-driven outflows (Di Cintio et al. 2017), unusually high spins (Amorisco & Loeb 2016), or tidal disruption (Collins et al. 2014). At present, very little is known about the characteristics of UDGs, and it is not clear what fraction of them are `failed giants', `inflated dwarfs', or some other phenomenon.
+Another relatively newly discovered population of lowmass objects lies at the opposite end of the selection function from UDGs. These `ultra-compact dwarfs' (UCDs) have characteristics reminiscent of both the nuclei of low-mass galaxies (Georgiev & B¨oker 2014), and massive globular clusters (GCs), and they may well have a connection to both populations (see, e.g., Mieske et al. 2002, 2012; Brodie et al. 2011; Norris et al. 2014; Zhang et al. 2015). UCDs seem to occur mostly in dense environments (both near the centres of clusters and near
+
+2
+
+Janssens et al.
+
+massive galaxies), suggesting that environmental factors (e.g. tidal stripping) drives their formation (e.g., Bekki et al. 2003; Pfeffer & Baumgardt 2013).
+With an eye towards better understanding the nature of both UDGs and UCDs, in this paper we investigate the `extreme' galaxy populations in Abell 2744 using data obtained with the Hubble Space Telescope (HST ) Frontier Fields (FF) program. A2744, also known as the Pandora Cluster, is one of the most massive (virial mass  5 × 1015 M , Boschin et al. 2006; Medezinski et al. 2016) and most disturbed galaxy clusters known (Owers et al. 2011). Its intracluster light fraction is high at 19 ± 3% (Jim´enez-Teja & Dupke 2016), with a mass surface density of  10 M pc-2 and a stellar population consistent with the disruption of L galaxies (Montes & Trujillo 2014). These properties suggest A2744 is an ideal location to search for UDGs and UCDs at a lookback time of 3.5 Gyr and we seek to learn whether its extreme characteristics may have left an imprint in its population of UDG and UCD galaxies.
+In this paper, we adopt a CDM cosmology with m = 0.3,  = 0.7, H0 = 70 km s-1 Mpc-1, and a redshift for A2744 of z = 0.308, which corresponds to m-M = 41.02 and 1 arcsec = 4.536 kpc. All magnitudes are in the AB system. Galactic extinction corrections from the Schlafly & Finkbeiner (2011) extinction maps were applied to all magnitudes.6
+2. DATA
+The HST FF program has produced the deepest images to date of galaxy clusters and gravitational lensing for six clusters along with six parallel blank fields offset from each cluster (Lotz et al. 2016). Each cluster and parallel field were observed for 70 orbits with the Advanced Camera for Surveys (ACS) in F435W, F606W and F814W, and 70 orbits with the Wide Field Camera 3 (WFC3) in F105W, F125W, F140W and F160W. The filters with the deepest coverage are F814W, F105W and F160W. We use the higher resolution 30 mas scale v1.0 images with the "self-calibration" applied to the ACS images and the time variable sky correction applied to the WFC3 images (Koekemoer et al., in prep). The 30 mas images properly sample the ACS point spread function (PSF).
+We note that despite being offset 6 west of A2744's core, the parallel field is well within A2744's virial radius (R200 = 9 = 2.5 Mpc, Medezinski et al. 2016). To supply background corrections, we relied on the HST eXtreme Deep Field (XDF, Illingworth et al. 2013). This is the deepest image of the sky to date in the optical/near-IR, and was obtained by stacking data from 19 different HST programs spanning 10 years covering the Hubble UltraDeep Field. The XDF has ACS coverage in F435W, F606W, F775W, F814W and F850LP, and WFC3 coverage in F105W, F125W, F140W and F160W. Only 60 mas scale images are available for all filters.
+3. METHODOLOGY
+3.1. Object Detection
+For the A2744 cluster and parallel field, we ran SExtractor (Bertin & Arnouts 1996) in dual image mode
+6 Using the online calculator at https://ned.ipac.caltech. edu/forms/calculator.html.
+
+on the 30 mas images using the F814W image as the detection image for all bands. To detect extended low surface-brightness objects, DETECT MINAREA was set to 20 pixels, and DETECT THRESH and ANALYSIS THRESH were both set to 0.7 times the background RMS. Backgrounds were measured in local annuli 24 pixels thick.
+The XDF's F814W depth is relatively shallow, so instead we used F775W as the detection band. The 60 mas pixels are 4 times the area so DETECT MINAREA was set to 5 pixels.
+3.2. Point Spread Functions
+PSFEx (Bertin 2011) was used to fit the PSF across the F814W A2744 cluster and parallel field images. Stars were selected from a more conservative SExtractor catalog with DETECT MINAREA = 5 and DETECT THRESH = 1.0 using the cuts 1.0 < FWHM < 6.0 pixels, S/N > 5 and e < 0.3. For the XDF, we again used the F775W image with the same parameters as the A2744 FF, except we used FWHM < 3.1 pixels to select the PSF stars.
+3.3. Ultra-diffuse Galaxy Selection
+UDG candidates were selected based on their half-light radii and peak surface-brightness. Our approach is essentially that adopted by (van der Burg et al. 2016, hereafter vdB16), with minor adaptations needed to account for the fact that our observations are based on data obtained with HST. In brief, we followed a four-stage process: (1) Low-surface brightness candidates were selected using SExtractor. (2) Candidates were then filtered on the basis of colour to isolate systems with rest-frame colours consistent with quiescent galaxies at the redshift of A2744. (3) Structural parameters were obtained for the remaining candidates in order to extract systems with sizes larger than 1.5 kpc, absolute r-band mean surface brightnesses between 23.8  µ e,abs  26.3 mag arcsec-2 and S´ersic index n  4. (4) Obvious image artifacts were discarded using visual inspection. We now describe each of these four steps in some detail.
+1. In the first step of our selection procedure, we conservatively selected all objects large enough to conceivably be a UDG using the following SExtractor parameter cuts: FLAGS < 4 (allowing blended objects and objects with nearby neighbours) and FLUX RADIUS > 7.4 pixels, corresponding to 1.0 kpc at z = 0.308.
+2. UDGs are known to be red (van Dokkum et al. 2015a; vdB16). So in the second step we used A2744's red sequence to define a colour cut which allowed us to isolate the UDG candidates in the A2744 cluster and parallel fields. This was done by applying a linear fit to the bright end of the F814W - F105W red sequence defined using Astrodeep (Merlin et al. 2016; Castellano et al. 2016) photometric redshifts 0.2 < zphot < 0.4 and selecting objects with colours between 0.15 and -0.5 of the red sequence. No such cut was applied to data from the XDF (and, as will be shown below, none was needed, as the XDF contains very few UDGs).
+3. The next step in our UDG galaxy selection relied on structural parameter fits to further isolate UDG
+
+UDGs and UCDs in A2744
+
+3
+
+101
+
+107
+
+Mas1s0[8M ]
+
+109
+
+Re [kpc]
+
+100
+27 26 25 24 23 22 21 20 19
+µ e,abs (r) [mag arcsec-2]
+
+A2744 XDF Coma (Yagi16)
+11 12 13 14 15 16 17 18
+Mr
+
+Figure 1. Left: GALFIT circularized effective radii and the absolute mean surface brightness within Re of extended objects in A2744
+(cluster and parallel fields, purple dots) and the XDF (blue triangles), as well as Coma UDGs from Yagi et al. (2016) (grey crosses). We select UDGs with Re  1.5 kpc, 23.8  µ e,abs  26.3 mag arcsec-2 and S´ersic index n  4. Right: Sizes and absolute magnitudes, along with corresponding stellar masses, of visually-checked UDGs.
+
+Mr = - 15. 3 µ = 24. 53 Re = 1. 79 n = 1. 02
+
+Mr = - 17. 1 µ = 24. 94 Re = 4. 94 n = 3. 06
+
+Mr = - 16. 2 Re = 2. 34
+
+µ = 24. 17 n = 1. 43
+
+Mr = - 16. 0 Re = 2. 57
+
+µ = 24. 63 n = 0. 91
+
+Mr = - 15. 9 µ = 24. 85 Re = 2. 69 n = 1. 06
+
+Mr = - 14. 5 µ = 25. 06 Re = 1. 56 n = 1. 37
+
+Figure 2. Examples of GALFIT fits for six UDGs. For each galaxy, from left to right are the F814W image, the GALFIT model and
+the residual image. The best fit S´ersic parameters are shown, where Mr is the absolute r-band magnitude, Re is the circularized effective radius in kpc, µ is the absolute r-band mean surface brightness within Re in mag arcsec-2, and n is the S´ersic index. The images are 4.5 × 4.5 .
+
+candidates. We ran GALFIT (Peng et al. 2002) on each candidate to fit a single component S´ersic model to each F814W image (F775W for the XDF). We used the SExtractor segmentation map to mask other detections and models were convolved with a PSF defined by using PSFEx to produce a model PSF at the location of each UDG candidate. The resulting effective radii were circularized using Re,c = Re b/a. Surface brightness
+
+was characterized using µ e,abs, the absolute mean surface-brightness within Re (Graham & Driver 2005). We transformed our surface brightnesses from F814W (F775W for the XDF) to r assuming a star-formation history given by a simple stellar population (SSP) with [Fe/H] = -0.6, an age of 6.7 Gyr at z = 0.308, and a Chabrier (2003) IMF. Following vdB16, we used cuts of Re,c  1.5 kpc, 23.8  µ e,abs  26.3 mag arcsec-2 and S´ersic in-
+
+N Number of UDGs
+
+4
+107 100 80 60 40
+
+Mass [M108]
+
+Janssens et al.
+
+109
+
+104
+
+103
+
+102
+
+101
+
+A2744 vdB16 Coma (Yagi+16) Fornax (Muñoz+15) Román+16a Román+16b
+
+20
+011 12 13 14 15 16 17
+MF814W
+Figure 3. Histogram of compact stellar systems in the central 300 kpc of A2744. Absolute F814W magnitudes have been converted into stellar masses assuming [Fe/H] = -0.6, old ages and a Chabrier (2003) IMF. Using a GC upper mass cutoff of 2×106 M , all of the detected compact systems are UCDs.
+dex n  4 to produce a set of UDG candidates.7 Since UDGs are round (Burkert 2016), we also removed objects with axis ratios b/a  0.3 to remove edge-on disks and lensing arcs. A total of 65 UDG candidates were found in the A2744 cluster field, 63 in the parallel field, and 30 in the XDF.
+4. Each candidate was visually inspected and classified into the following categories: (i) UDG; (ii) Possible UDG/poorly fit object; (iii) Image artifact. Most objects in the third category were due to spurious features in the low signal-to-noise regions at the edges of the frames.
+After the final visual inspection, we find a total of 76 UDGs in A2744 (41 in the cluster field, 35 in the parallel field), while just 4 UDGs are found in the XDF. All but one of our visually inspected UDGs have a photo-z in the Astrodeep catalog, and 63 have zphot < 1. The circularized sizes and mean surface brightness of all objects in our sample are shown in the left panel of Figure 1. The black lines show our size and surface brightness cuts (Step 2 in our procedure above). For comparison, we also show the Coma UDGs from Yagi et al. (2016) in light grey. Since the purpose of the XDF observations was to determine the level of background contamination from field UDGs, the physical sizes of XDF objects were calculated assuming they are at the same redshift as A2744. The right-hand panel of Figure 1 shows the sizes, absolute r magnitudes and stellar masses of A2744 UDG candidates, along with those in Coma from Yagi et al. (2016) for comparison. We calculated stellar masses from the F814W magnitudes using the same SSP as above. Examples of six UDGs are shown in Figure 2.
+3.4. Ultra-compact Dwarf Selection
+
+100
+
+N  M 0. 93 ± 0. 16
+
+1011 1012 1013 1014 1015 1016
+
+M200 [M ]
+
+Figure 4. Abundance of UDGs with halo mass. We show our estimate of the total number of UDGs in A2744 along with values from the literature (see text for details). Also shown is the best fit relation from vdB16 which has a power-law slope of 0.93 ± 0.16.
+
+At z = 0.308, UCDs are unresolved by HST. They are also expected to be predomininantly found near the brightest cluster galaxies (BCGs). Therefore, to detect point sources near the BCGs, we applied a 15 pixel median filter to the A2744 cluster image and subtracted this off to remove low-frequency power (e.g. from intracluster light and galaxy halos) from the image. SExtractor was then run in dual image mode using the median filtered image as the detection image using DETECT MINAREA = 5 and DETECT THRESH = 1.0. Point sources were identified on the basis of image concentration, C3-7, given by the difference in an object's magnitude determined with 3 pixel and 7 pixel diameter apertures. Point sources were obtained using the cuts FLAGS < 4 and C3-7 < 1.25 magnitudes. Object magnitudes were determined using 4 pixel (0.12 ) diameter apertures. An aperture correction of 0.88 magnitudes was applied by first finding the correction from a 0.12 to a 1 diameter aperture using our PSFEx PSF, and then correcting from a 1 diameter to infinity using Table 5 in Sirianni et al. (2005). The luminosity (mass) distribution of UCD candidates in A2744 is shown in Figure 3.
+
+4. ULTRA-DIFFUSE AND ULTRA-COMPACT GALAXIES IN ABELL 2744
+The WFC3 coverage of A2744 and its parallel field contain 76 systems that are classified as UDGs using the objective criteria noted above. The observations sample only a small portion of A2744 within R200, so this number must be corrected for geometrical incompleteness. Since, as shown below, the radial surface density of UDGs appears relatively flat, we simply divide the number of observed UDGs by the fraction of A2744 observed within R200 and subtract off the expected number of background UDGs in this area. Therefore, after applying a geometrical and background correction, A2744 contains 2133 ± 613 UDGs. This is about 10 times the number that exist in Coma8.
+Recently, vdB16 showed that the number of UDGs
+
+7 Note that 23.8  µ e,abs  26.3 mag arcsec-2 corresponds to 24  µ e  26.5 mag arcsec-2 at z = 0.055, the mean redshift of the clusters studied in vdB16.
+
+8 Note that we adopt a considerably more stringent definition for UDGs than that used by Koda et al. (2015). Using their definition and correcting for incompleteness yields over 800 UDGs in Coma.
+
+UDGs and UCDs in A2744
+
+5
+
+in nearby clusters scales nearly linearly (in log space) with the mass of the cluster (interior to M200, the number of UDGs scales as M 0.93). Adding A2744 (M200 = 5×1015 M ) allows us to extend this relation by 0.7 dex, as shown in Figure 4, which overplots our A2744 number on top of the relation of vdB16. We include UDGs in Coma and Fornax by applying our selection to the Yagi et al. (2016) and Mun~oz et al. (2015) catalogs, respectively, the numbers in A168 and UGC842 (Rom´an & Trujillo 2016a), and three Hickson Compact Groups (Rom´an & Trujillo 2016b). For Fornax, the catalog covers the inner 350 kpc, so we apply a geometrical incompleteness correction9 out to R200 = 700 kpc (Drinkwater et al. 2001). A2744 contains about twice the number of UDGs predicted by the vdB16 relationship, although the errors are large and the deviation from the relationship is not significant.
+Recently, Lee & Jang (2016) studied compact (FWHM 400 pc) objects within the A2744 cluster field (using the parallel field for background subtraction). These sources are concentrated around the brightest cluster galaxies, confirming their membership of A2744. They detected thousands of sources ranging from a faint limit of around F814W  29.5 to F814W  27. By fitting a standard globular cluster luminosity function with a peak at F814W = 33.0 (some 3.5 mags below the detection limit) and extrapolating to F814W = 27, they concluded that A2744 contained 147 ± 26 UCDs, and a total number of 385, 044 ± 24, 016 globular clusters. However, the assumption of a standard Gaussian GCLF extrapolated to bright magnitudes implies that a significant number of their GCs have masses greater than 2×106 M (a widely accepted upper mass cutoff for a GC), and it seems much more likely to us that the vast majority of the objects identified by Lee & Jang (2016) are UCDs. We note that within 300 kpc of the Fornax cluster centre, the number of UCDs with masses > 107 M is 24 (Pfeffer et al. 2014), and similarly in Virgo, there are 31 (Zhang et al. 2015). Scaling by the relative cluster masses and the predicted relation of Pfeffer et al., one expects between 360 and 720 UCDs in A2744. This is inconsistent with the 147 UCDs identified by Lee & Jang (2016). However, our estimate of 385 ± 32 (Figure 3) UCDs with masses between 107 and 108 M within 300 kpc of the cluster centre10 (including a background correction from the parallel field) lies between these two extremes. Two UDGs in Virgo, VLSB-A and VLSB-D, appear to be in the process of being tidally disrupted and host compact nuclei with properties similar to UCDs, hinting at a transformation from UDG to UCD (Mihos et al. 2016). At least one UDG in A2744 appears to be nucleated (top right of Figure 2). In addition, the abundance of UCDs is predicted to scale with cluster mass in a manner similar to that of UDGs (NUCD  M 0.87, Pfeffer et al. 2014). Although the abundance scaling relationships for UDGs and UCDs appear to be similar, Figure 5 shows that UDGs and UCDs have markedly different radial distributions within the cluster. The projected surface den-
+9 Mun~oz et al. (2015) find a flat radial surface density profile of all dwarfs out to  350 kpc. We assume UDGs follow the same profile and that it continues to be flat to R200.
+10 We use the location of the BCG nearest the X-ray peak as the cluster centre (Owers et al. 2011).
+
+103
+
+0.10r [R200]
+
+1.00
+
+All Galaxies
+
+UDGs
+
+102
+
+UCDs
+
+n [arcmin-2]
+
+101
+
+100
+
+100
+
+101
+
+r [arcmin]
+
+Figure 5. Radial surface density distribution of UDGs (green), UCDs (red), and Astrodeep (Merlin et al. 2016; Castellano et al. 2016) galaxies with photometric redshifts 0.2 < zphot < 0.4 and stellar masses > 5 × 107 M (blue) in A2744. A background correction of 0.37 arcmin-2 was subtracted off the UDG profile (from the XDF), and a correction of 76 arcmin-2 was applied to the UCD profile (from the parallel field). The grey regions denote radii not covered by WFC3.
+
+sity distribution of UCDs is very cuspy, rising sharply toward the centre, whereas the surface density distribution of UDGs is essentially flat. In fact, vdB16 find the projected surface density of UDGs in their clusters to be consistent with zero UDGs within a central spherical region of r = 0.15 × R200. This points to a picture where some UCDs in A2744 may have once been nuclei or satellites of infalling UDGs, but that the latter are ultimately destroyed by tidal forces. As UDGs fall in and dissolve (and, presumably, blend into the intra-cluster light), they leave behind a residue of unbound, but long lived, UCDs.
+
+Based on observations made with the NASA/ESA Hubble Space Telescope, obtained from the data archive at the Space Telescope Science Institute. STScI is operated by the Association of Universities for Research in Astronomy, Inc. under NASA contract NAS 5-26555. These observations are associated with the Frontier Fields program. We thank NSERC for financial support, and acknowledge support from the NSF (AST-1616595, AST-1518294, AST-1515084 and AST-1616710). DF thanks the ARC for financial support via DP130100388 and DP160101608.
+Facilities: HST (ACS, WFC3)
+REFERENCES
+Abraham, R. G., & van Dokkum, P. G. 2014, PASP, 126, 55 Amorisco, N. C., & Loeb, A. 2016, MNRAS, 459, L51 Amorisco, N. C., Monachesi, A., & White, S. D. M. 2016,
+arXiv:1610.01595 Bekki, K., Couch, W. J., Drinkwater, M. J., & Shioya, Y. 2003,
+MNRAS, 344, 399 Bertin, E., & Arnouts, S. 1996, A&AS, 117, 393 Bertin, E. 2011, Astronomical Data Analysis Software and
+Systems XX, 442, 435 Boschin, W., Girardi, M., Spolaor, M., & Barrena, R. 2006, A&A,
+449, 461 Brodie, J. P., Romanowsky, A. J., Strader, J., & Forbes, D. A.
+2011, AJ, 142, 199
+
+6
+
+Janssens et al.
+
+Burkert, A. 2016, arXiv:1609.00052 Castellano, M., Amor´in, R., Merlin, E., et al. 2016, A&A, 590,
+A31 Chabrier, G. 2003, PASP, 115, 763 Collins, M. L. M., Chapman, S. C., Rich, R. M., et al. 2014, ApJ,
+783, 7 Di Cintio, A., Brook, C. B., Dutton, A. A., et al. 2017, MNRAS,
+466, L1 Drinkwater, M. J., Gregg, M. D., & Colless, M. 2001, ApJL, 548,
+L139 Georgiev, I. Y., & B¨oker, T. 2014, MNRAS, 441, 3570 Graham, A. W., & Driver, S. P. 2005, PASA, 22, 118 Illingworth, G. D., Magee, D., Oesch, P. A., et al. 2013, ApJS,
+209, 6 Jim´enez-Teja, Y., & Dupke, R. 2016, ApJ, 820, 49 Koda, J., Yagi, M., Yamanoi, H., & Komiyama, Y. 2015, ApJL,
+807, L2 Lee, M. G., & Jang, I. S. 2016, ApJ, 831, 108 Lotz, J. M., Koekemoer, A., Coe, D., et al. 2016,
+arXiv:1605.06567 Medezinski, E., Umetsu, K., Okabe, N., et al. 2016, ApJ, 817, 24 Merlin, E., Amor´in, R., Castellano, M., et al. 2016, A&A, 590,
+A30 Mieske, S., Hilker, M., & Infante, L. 2002, A&A, 383, 823 Mieske, S., Hilker, M., & Misgeld, I. 2012, A&A, 537, A3 Mihos, J. C., Durrell, P. R., Ferrarese, L., et al. 2015, ApJL, 809,
+L21 Mihos, J. C., Harding, P., Feldmeier, J. J., et al. 2016,
+arXiv:1611.04435 Milgrom, M. 2015, MNRAS, 454, 3810
+
+Montes, M., & Trujillo, I. 2014, ApJ, 794, 137 Mun~oz, R. P., Eigenthaler, P., Puzia, T. H., et al. 2015, ApJL,
+813, L15 Norris, M. A., Kannappan, S. J., Forbes, D. A., et al. 2014,
+MNRAS, 443, 1151 Owers, M. S., Randall, S. W., Nulsen, P. E. J., et al. 2011, ApJ,
+728, 27 Peng, C. Y., Ho, L. C., Impey, C. D., & Rix, H.-W. 2002, AJ,
+124, 266 Peng, E. W., & Lim, S. 2016, ApJL, 822, L31 Pfeffer, J., & Baumgardt, H. 2013, MNRAS, 433, 1997 Pfeffer, J., Griffen, B. F., Baumgardt, H., & Hilker, M. 2014,
+MNRAS, 444, 3670 Rom´an, J., & Trujillo, I. 2016a, arXiv:1603.03494 Rom´an, J., & Trujillo, I. 2016b, arXiv:1610.08980 Schlafly, E. F., & Finkbeiner, D. P. 2011, ApJ, 737, 103 Sirianni, M., Jee, M. J., Ben´itez, N., et al. 2005, PASP, 117, 1049 van der Burg, R. F. J., Muzzin, A., & Hoekstra, H. 2016, A&A,
+590, A20, vdB16 van Dokkum, P. G., Abraham, R., Merritt, A., et al. 2015a,
+ApJL, 798, L45 van Dokkum, P. G., Romanowsky, A. J., Abraham, R., et al.
+2015b, ApJL, 804, L26 van Dokkum, P., Abraham, R., Brodie, J., et al. 2016, ApJL, 828,
+L6 Yagi, M., Koda, J., Komiyama, Y., & Yamanoi, H. 2016, ApJS,
+225, 11 Yozin, C., & Bekki, K. 2015, MNRAS, 452, 937 Zhang, H.-X., Peng, E. W., Co^t´e, P., et al. 2015, ApJ, 802, 30
+
+

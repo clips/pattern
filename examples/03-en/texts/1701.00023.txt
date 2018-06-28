@@ -1,0 +1,818 @@
+arXiv:1701.00023v1 [quant-ph] 30 Dec 2016
+
+Transient chaos - a resolution of breakdown of quantum-classical correspondence in optomechanics
+Guanglei Wang1, Ying-Cheng Lai1,2,3,*, and Celso Grebogi3
+1School of Electrical, Computer, and Energy Engineering, Arizona State University, Tempe, Arizona 85287, USA 2Department of Physics, Arizona State University, Tempe, Arizona 85287, USA 3Institute for Complex Systems and Mathematical Biology, King's College, University of Aberdeen, Aberdeen AB24 3UE, UK *Ying-Cheng.Lai@asu.edu
+ABSTRACT
+Recently, the phenomenon of quantum-classical correspondence breakdown was uncovered in optomechanics, where in the classical regime the system exhibits chaos but in the corresponding quantum regime the motion is regular - there appears to be no signature of classical chaos whatsoever in the corresponding quantum system, generating a paradox. We find that transient chaos, besides being a physically meaningful phenomenon by itself, provides a resolution. Using the method of quantum state diffusion to simulate the system dynamics subject to continuous homodyne detection, we uncover transient chaos associated with quantum trajectories. The transient behavior is consistent with chaos in the classical limit, while the long term evolution of the quantum system is regular. Transient chaos thus serves as a bridge for the quantum-classical transition (QCT). Strikingly, as the system transitions from the quantum to the classical regime, the average chaotic transient lifetime increases dramatically (faster than the Ehrenfest time characterizing the QCT for isolated quantum systems). We develop a physical theory to explain the scaling law.
+Introduction
+The quantum-classical correspondence is a fundamental and fascinating problem in physics. For a specific physical process in a quantum system, if a large number of energy levels are involved (e.g., in the high energy regime), the evolution of the expected values of the observables will be governed by the classical Newtonian dynamics. This is the usual quantum-classical correspondence. Exceptions can occur when only a few lower energy levels are involved, e.g., at low temperatures, such that the quantum features of the ground state are manifested on a macroscopic scale,1 leading to fascinating phenomena such as Bose-Einstein condensation, superconductivity, and superfluids. In this paper, we report our discovery of transient chaos as a natural paradigm to explain the recently discovered phenomenon of the breakdown of quantum-classical correspondence in optomechanics.
+A prototypical optomechanical system consists of an optical cavity with a fixed mirror and a nanoscale, mechanically movable cantilever, as shown schematically in Fig. 1. The basic physics is that the radiation pressure from the optical field changes the position of the movable mirror, which in return modulates the resonance frequency of the optical cavity, leading to a coupling between the optical and mechanical degrees of freedom.2,3 In addition to this prototypical setting, alternative configurations for realizing the optical-mechanical coupling exist, such as those based on the whispering-gallery modes,4 microtoroid5
+
+Figure 1. A schematic figure of the optomechanical system.
+and microsphere3 resonators. Optomechanics is thus not only fundamentally important, as it provides a setting to understand the physics of optical-mechanical interactions,3,6,7 but also practically significant with applications ranging from ultra-precision measurements,2, 8, 9 light-matter entanglement,10­12 mechanical memory,13 tunable optical coupler,14 classical state preparation through squeezing,15,16 optical transparency,17 and photon shuttling18 to creation of nonclassical light19,20 and cooling of microscopic or mesoscopic objects.21,22 The classical equations of motion of an optomechanical system are nonlinear, rendering possible chaotic behaviors.23, 24
+In a recent work,25 it was demonstrated that, in the classical regime where the system exhibits chaos, in the corresponding quantum regime the motion becomes regular and no signatures of chaos appear to exist. This is the so-called quantum-classical correspondence breakdown in optomechanics. A conventional approach to studying the correspondence is to compare the quantum Wigner function distribution with the classical phase space distribution,20, 26, 27 both being average quantities. However, a recent work28 demonstrated an optimal state estimation for cavity optomechanical systems through Kalman filtering, which allows us to obtain the conditional system state in the presence of experimental noise. In addition, observation of quantum trajectories obeying quantum state diffusion through heterodyne detection in a coupled system between a superconducting qubit and an off-resonant cavity was reported,29 as well as other types of quantum trajectories.30­40 Thus, rather than focusing on the average properties of the system, we study the individual quantum trajectories of the system as related to the continuous weak measurement to probe into the quantum-classical correspondence breakdown.
+Our aim is to uncover, through systematic classical and quantum simulations, the dynamical and physical mechanisms responsible for the breakdown phenomenon. The standard treatment3 of an optomechanical system consists of quantizing the cavity optical field and the oscillations of the cantilever as two mutually interacting quantum boson fields while treating the driving laser field classically. Dissipation
+2/21
+
+associated with the optical and mechanical fields can be incorporated into the quantum Langevin equations from the quantum input-output theory41 or by solving the quantum Master equation with the Lindblad operators. When chaos occurs in the classical limit, the system is typically in a high energy state with hundreds of photons and phonons, rendering infeasible direct simulation of the quantum Master equation. An effective framework is the method of quantum state diffusion (QSD), which generates quantum trajectories to approximate the time evolution as governed by the quantum Master equation.42­44 The QSD method has been instrumental to homodyne detection and the study of quantum-classical correspondence in dissipative quantum chaos.45­47 Here, using the QSD method, we calculate the dynamical trajectories of the system in the quantum regime. Our computations extending to the long time scales (which were not attempted in previous works) suggest that transient chaos48 associated with quantum trajectories is ubiquitous. (To our knowledge, in spite of reports of chaos,3,23,24 there were no prior results of transient chaos in optomechanical systems.) In particular, before approaching a regular final state, the quantum system exhibits a behavior that is consistent with the classical chaotic behavior. Thus, in short and in long time scales, the time evolutions of the system in the quantum regime would appear to be chaotic and regular, respectively. This means that, in short time scales a quantum-classical correspondence does exist, but its breakdown occurs in the long time limit. A striking finding is that, as the classical regime is approached, the average transient lifetime increases dramatically (faster than the Ehrenfest time - see Discussion). As the quantum system becomes "more classical," the quantum-classical correspondence holds significantly longer, providing a natural resolution for the breakdown phenomenon.
+
+Results
+
+Hamiltonian. In the rotating frame of the driving laser field, the Hamiltonian of a generic optomechanical
+
+system is:3
+
+H = h¯ [-0 + g0(b + b)]aa + h¯ mbb + h¯ L(a + a),
+
+(1)
+
+where a and a are the creation and annihilation operators for the optical field, b and b are the corre-
+sponding phonon operators for the mechanical cantilever, 0 = d - cav is the detuning between the
+driving laser and the optical cavity field, and m is the resonant frequency of the mechanical mode. The
+quantity L is the classical amplitude of the driving laser field, which is related to its power P through |L|2 = 2P/(h¯ d), where  is the quality factor of the optical cavity. The basic physics behind the optomechanical coupling49 is that a change in the position of the cantilever, which is proportional to (b + b), can lead to a change in the resonant frequency of the optical field with a strength factor g0, where g0  (cav/l0) h¯ /(2mm), with l0 being the nominal cavity length.
+
+Calculation of classical trajectories. A conventional approach to investigating the dynamics of an optomechanical system is to use the quantum input-output theory41 to obtain the standard quantum Langevin equations in the Heisenberg picture. While dissipation and fluctuations of the photon and phonon fields have been taken into account, these are operator equations with stochastic fluctuations. In the classical limit (h¯  0), i.e., bad cavity limit, the quantum correlations between the operators are negligible as compared with their averages, so we have12 (b + b)a  b + b a . Under this approximation, the operator equations can be replaced by those for the corresponding mean values, leading to the semiclassical Langevin equations. The deterministic dynamics of the system can be assessed by neglecting the small fluctuations in the photon and phonon fields. The resulting deterministic equations are:
+
+d a /dt =i(0 a + g0 a b + b - L) - (1/2) a d b /dt = - i(g0| a |2 + m b ) - (m/2) b ,
+
+(2)
+
+3/21
+
+(a) 3
+2
+
+q
+
+(b)
+2 0
+
+1
+
+-2
+
+p
+
+10
+
+20
+
+30
+
+40
+
+50
+
+0
+
+2
+
+(c)
+
+-1
+
+2
+
+p
+
+0 -2
+
+-2
+
+-3
+
+-3 -2 -1 0 1 2 3 10
+
+20
+
+30
+
+40
+
+50
+
+q
+
+2
+
+Figure 2. From the deterministic classical equation, (a) a representative chaotic trajectory and (b,c) the corresponding time series for q and p. The dashed circle in (a) indicates a coexisting periodic attractor.
+
+where m is the dissipation rate. A property of the classical equations is that, if b and a are replaced by g0b and a/L, respectively, the resulting equations contain the parameter P  g20L2, where g0 and L no longer appear as individual parameters. If other parameters are kept constant, the dynamics of the classical
+system is solely determined by the power of the driving laser field, i.e., P, with g0 and L as scaling factors. Intuitively, this can be understood by noting that, when a quantum system approaches its classical limit, h¯ vanishes so that the quantum strength factors g0  h¯ and L  1/ h¯ (both containing h¯ ) are degenerate into a single parameter P that does not contain h¯ . However, in the stochastic Langevin equations, the
+strengths of the quantum fluctuations associated with the photon and phonon fields are proportional to g0 and 1/L, respectively. In the moderate and deep quantum regimes away from the classical limit, as g0 is increased, the deterministic Langevin equations are less meaningful due to the more pronounced quantum
+fluctuations. The classical equations are nonlinear, so chaos can arise, as uncovered in previous experimental23,24
+and theoretical25,50,51 works. To demonstrate the chaotic behavior, we use the same parameter setting as in the recent work of Bakemeier et al.:25 /m = 1.0, m/m = 10-3, 0/m = -0.7, and P~ = 8L2g20/m4 = 1.5. Figure 2(a) shows a representativechaotic orbit in the two-dimensional subspace of the variables q = (g0/ 2m) b + b and p = (-ig0/ 2m) b - b , where the evolution time  is made dimensionless through   mt. The corresponding chaotic time series is shown in Fig. 2(b-c).
+
+Calculation of quantum trajectories. The quantum evolution of the optomechanical system can be
+
+calculated by using the quantum Master equation, which incorporates the effects of photon and phonon
+
+dissipation through the Lindblad operators. In particular, at zero temperature the quantum Master equation is3, 52
+
+d/dt = -(i/h¯ )[H, ] + mD[b, ] + D[a, ]
+
+(3)
+
+where the Lindblad operator is given by
+
+D[L, ] = LL - (LL + LL)/2,
+
+(4)
+
+4/21
+
+and L stands for either a or b. The quantum Master equation describes the time evolution of an ensemble of identical quantum systems. The dimension of the optomechanical system is (NaNb)2, where Na and Nb denote the highest photon and phonon Fock states, respectively. An approach to reducing the dimension to
+(NaNb) is to "unravel" the deterministic quantum Master equation through the stochastic wavefunction equation for quantum trajectories.42­44,53 The deterministic property is retained through the ensemble
+average of many realizations of the system starting from the same initial condition. Among the many
+unraveling schemes for generating quantum trajectories, the QSD approach is convenient and efficient
+
+with results that can be related to the record of homodyne detection, an important measurement tool in optomechanics.28 The QSD equation is given by54, 55
+
+|d
+
+ = - (i/h¯ )H| dt + (a -
+
+a )|
+
+  (d1 + 
+
+a dt) - (1/2)(aa -
+
+aa )| dt
+
++ M(b - b )|  (d2 + M b dt) - (1/2)M(bb - bb )| dt,
+
+(5)
+
+where O = |O| is the expectation value of operator O for the specific wave function | . The QSD equation (5) is in fact a Stratonovich type of stochastic equations. (The Ito form of QSD has also been established and widely used.42­45, 56) In the QSD equation, the terms d j ( j = 1, 2) are complex Gaussian white noise for the photon and phonon fluctuations, which satisfy
+Md j = Mdid j = 0 and Mdid j = i jdt,
+where M stands for the ensemble average. The density operator can be reconstructed through the mean over the projectors of the ensemble quantum states
+
+^ = M| |.
+
+(6)
+
+ In an optomechanical system, the quantum effects can be characterized by the parameters g0  h¯ and L  1/ h¯ . Figure 3(a) shows, for g0/m = 0.1, a typical quantum trajectory calculated from the QSD equation in the (q, p) plane. This is a periodic, limit-cycle trajectory, despite being noisy due to the
+
+quantum fluctuations. The corresponding time series q(2) is shown in Fig. 3(c). Since the value of the laser power P is fixed, the corresponding classical behavior is that shown in Fig. 2, which is chaotic. The
+
+remarkable phenomenon is that, the quantum trajectory in Fig. 3(a) is characteristically different from
+
+the classical trajectory in Fig. 2(a): the former is regular while the latter is chaotic! This is the recently discovered phenomenon of quantum-classical correspondence breakdown in optomechanical systems.25
+
+Transient chaos in the quantum regime. We find that the breakdown can be naturally viewed as a manifestation of transient chaos. We note from Fig. 3(c) that, before the periodic quantum state is reached, there is a relatively short time interval during which the quantum evolution is characteristically different, which is a transient phase. The quantum trajectory of the system in the transient phase is shown in Fig. 3(b), which appears chaotic. The striking finding is that, the transient quantum trajectory is remarkably consistent (in fact coincides) with the corresponding classical trajectory (the red background trajectory in Fig. 3(b), which overlaps with the quantum trajectory almost completely). As we tune the parameter g0/m towards the classical regime, the duration of the transient phase increases. The extreme situation is that the transient time becomes so long that the system stays in a chaotic state for any practical time. An example is shown in Fig. 3(d) for g0/m = 0.05.
+How does the average chaotic transient lifetime T depend on the quantum strength parameter g0? Here, the quantity T is the average time required for the system to transition from a chaotic attractor in the classical limit to a coexisting periodic attractor in the quantum regime, as induced by quantum
+
+5/21
+
+(a) 3
+2
+
+(b) 3
+2
+
+1
+
+1
+
+p
+
+0
+
+p
+
+0
+
+-1
+
+-1
+
+-2
+
+-2
+
+-3 -3 -2 -1 0 1 2 3
+q
+(c)
+2
+
+-3
+-3 -2 -1 0 1 2 3
+q
+
+q
+
+0
+
+-2 0
+(d)
+2
+
+50
+
+100
+
+150
+
+200
+
+250
+
+300
+
+2
+
+q
+
+0
+
+-2
+
+0
+
+50
+
+100
+
+150
+
+200
+
+250
+
+300
+
+2
+
+Figure 3. For g0/m = 0.1, (a) an asymptotic quantum trajectory calculated from the QSD method, (b) the quantum trajectory in the transient phase, overlapped with the corresponding classical trajectory, (c) the corresponding time series. The asymptotic quantum trajectory is regular, in spite of the quantum fluctuations. However, the transient quantum trajectory is chaotic and coincides well with the classical trajectory (gray). (d) An example of a very long chaotic transient in the quantum regime for g0/m = 0.05.
+
+6/21
+
+Figure 4. QSD Results: Dependence of average chaotic transient lifetime, T , on g0 on a linear-linear plot and on a double logarithmic versus logarithmic scale (inset). All points are result of averaging 100 QSD realizations.
+fluctuations. For example, for a specific trajectory in Fig. 3(c), the transition occurs at 2  55, so the transition time is T = 55/2. (Note that the evolution time  is made dimensionless through   mt). From Fig. 3(c), we also see a dramatic change in the amplitude before and after the transition, and this can be exploited for efficiently computing the average transition time from a large number of quantum trajectories. In general, the time from the beginning to the end of the transition can be neglected as compared with the typically long transient time, especially when the effective Planck constant is reduced. As shown in Fig. 4, as g0 is decreased so that the quantum effect becomes progressively weaker, T increases dramatically. A qualitative explanation for Fig. 4 is the following. The classical trajectories are calculated from the deterministic, semiclassical Langevin equation in the Heisenberg picture with dissipation, where quantum fluctuations are neglected. The quantum trajectories are obtained from the QSD method, an unraveling of the general quantum Master equation in the Schro¨dinger picture using the Lindblad operators. The quantum fluctuations in QSD not only play the role of noise in the classical deterministic system, but more importantly, they can induce characteristic changes in the system dynamics. Say we fix the laser power so that the classical dynamics remains chaotic. What will happen when the quantum effects (fluctuations) become increasingly pronounced? Mathematically, as g0 is increased, it is necessary to decrease L to keep the driving laser power constant. This effectively enhances the ratios /L and m/L in the QSD equation, which are the relative noise-to-driving ratios. As noise becomes more pronounced, the probability that the system can stay in the deterministic chaotic set is decreased, reducing the chaotic transient lifetime.
+To further test the proposition that noise or quantum fluctuations can drive the quantum system away from the classical chaotic invariant set, we calculate the quantum trajectories but with the noise term excluded. We find that, without random fluctuations, the quantum trajectories follow the classical chaotic set all the time. This result confirms that it is the quantum fluctuations which eventually drive the quantum trajectories out of the classical chaotic set, generating transient chaos. The weaker the quantum fluctuations, the longer the average transient lifetime will be. The quantum-classical transition is thus induced by quantum fluctuations, which resembles the phenomenon of noise-induced transition in classical
+7/21
+
+systems that can be treated using the classical Kramer rate theory.57 The transient chaos associated with quantum-classical transition is also relevant to the quantum activation process,58 a transition process induced by noise between coexisting asymptotic states in a quantum system. We remark that, in a related work,59 it was reported that quantum isoperiodic stable structures can be retained by the information from the classical isoperiodic stable structures in presence of noise.
+Scaling of transient lifetime and physical understanding. The Kramer theory or the quantum activation theory stipulates that the escape rate  generally follows the scaling as
+
+ = exp(-Eb/Enoise),
+
+where Eb denotes the threshold energy for activation,  is a prefactor, and Enoise is the strength of the fluctuation, e.g., on the order of kBT~ due to the thermal environment or h¯  in the deep quantum regime, where T~ represents temperature. At low temperatures, the quantum fluctuations are dominated by the
+zero-point energy.
+Figure 4 shows the relation between the average chaotic transient lifetime T and the magnitude g0 of the quantum fluctuations on a double logarithmic scale. The relation can be well fitted by a straight line,
+as shown in the inset of Fig. 4, which indicates the scaling law:
+
+ln T  (g0/)-s,
+
+(7)
+
+where -s (s > 0) is the slope of the linear fit. The scaling law is characteristic of superpersistent chaotic transients in nonlinear dynamical systems.60­64 The physical meaning is that, as the quantum fluctuations are reduced so that the classical description becomes more accurate, the chaotic behavior becomes significantly more persistent in that its lifetime increases faster than the Ehrenfest time.
+To better understand the scaling behavior of the average transient lifetime, we exploit the quantum Langevin equations:
+
+dq/d =p,
+
+
+
+d p/d =(
+
+2/8)P~| 
+
+|2
+
+-
+
+q
+
+-
+
+M
+
+p
+
++
+
+g0
+
+,
+
+(8)
+
+d/d =i(0 + 2q - 1) - /2 + ( /2/L)in.
+
+In general, a Langevin equation can be analyzed using the corresponding Fokker-Planck equation, where the stochastic component of the former contributes to the diffusion term in the evolution of the probability distribution of the latter. For the Fokker-Planck equation, a general solution cannot be written down explicitly except for one-dimensional systems. In this case, the steady state distribution has the form Ws(x) = N exp [-U(x)/D], where U(x) is the effective potential, D is the noise amplitude proportional to g20, and N is a normalization constant. The mean first passage time over a barrier, i.e., the diffusion time from a local minimum U(a) over a saddle point U(b), obeys the following scaling law65 with D: TMFP  e[U(b)-U(a)]/D. However, to predict the exact form of the scaling law from the general multivariable Fokker-Plack equation is difficult. An alternative is to calculate the average chaotic transition lifetime (or the mean first passage time) from the Langevin equations. The results are shown in Fig. 5. Due to the relative simplicity of the Langevin equation as compared with the QSD equation, it is possible to probe more deeply into the classical regime with much longer transition lifetime. We find that, in the g0 regime where both types of results are available, the agreement is excellent. In particular, solutions of the Langevin equation gives
+ln ln T / ln g0  -1.
+
+8/21
+
+Figure 5. Results from classical Langevin equation: (a) Dependence of the average chaotic transient lifetime, T , on g0 on a linear-linear plot. Inset: the same plot but on a double logarithmic versus logarithmic scale. The magenta dash-dot curve is a fit of the superpersistent chaotic transients behavior while the red dash curve is a fit of the Ehrenfest scaling. In the inset the red straight curve shows the slope of the supperpersistent chaotic transients behavior is about -sc  -0.96. All points are result of averaging 10000 Langevin equation realizations.
+In Fig. 5(a), we show the fitting curve of the Ehrenfest scaling (red dash) as well as the superpersistent chaotic transition behavior (magenta dash-dot). For the Ehrenfest scaling, we use the least-squares method to fit T = C0 · g- on a double logarithmic scale. For the superpersistent scaling, it is not straightforward to fit the relation T = C1 · eC2/gs. We thus set C1 = 1 and fit the simulation results in terms of log [log ( T )] versus log g0. We see that the magenta curve fits better than the red curve, especially in the middle region. For small values of g0/0, the Ehrenfest scaling exhibits larger deviations from the simulation results as compared with the superpersistent transient scaling.
+For the QSD results (Fig. 4), we estimate the slope of the fitting line of ln ln ( T ) with ln g0 and obtain the absolute value of about 0.7, which is smaller than the result from the Langevin equation. There can be multiple reasons for the difference. For example, for a large value of g0/0, the trajectories tend to approach the periodic attractor from the beginning. However, the transition process takes time, so the state at an arbitrary instant of time during the transition is actually recorded. When the transition time is comparable with the transient time, error can occur. Considering that our system is higher than one dimensional and the simulations were done with the full quantum state diffusion equation, the difference in the slope may not be unreasonable. In particular, in high dimensions the slope should have a smaller absolute value because of the existence of more "paths" to cross the saddle point (there is only one route in one dimension), facilitating the transition.
+A natural question is whether the reverse process, i.e., transition from the periodic orbit to the chaotic orbit, can happen. In nonlinear dynamics, periodic attractors are usually more stable than chaotic attractors. Heuristically, a system in which a periodic and a chaotic attractors coexist can be viewed as particle motion in a mechanical system with two asymmetric potential wells subject to unbounded (e.g., Gaussian) noise, where the periodic attractor corresponds to the deep well and the chaotic attractor is associated with the shallow well, as schematically shown in Fig. 6(a). The probability for the particle to "hop" into the shallow
+9/21
+
+2
+
+1.5
+
+1
+
+0.5
+
+0
+
+-0.5
+
+-1
+
+-1.5
+
+-2
+
+-3
+
+-2
+
+-1
+
+0
+
+1
+
+2
+
+3
+
+2
+
+1
+
+0
+
+-1
+
+-2
+
+-3
+
+250
+
+300
+
+350
+
+400
+
+450
+
+500
+
+550
+
+600
+
+Figure 6. (a) A mechanical picture illustrating the noise-induced transition between chaotic and periodic attractors, where the periodic attractor is more stable than the chaotic attractor. For g0/m = 0.056, representation in the q - p space (b), where the red stars represent the transition process from the inner chaotic attractor to the outer periodic attractor while the magenta circles represent the transition in the opposite direction. (c) The corresponding time series, where the blue and red colors are for q and p, respectively.
+
+10/21
+
+well from the deep well is considerably smaller than that in the opposite direction. In optomechanical systems, this kind of backward transition can occur but it is rare. One such case is shown in Figs. 6(b) and 6(c), where the transition occurs at g0/0 = 0.056. For smaller values of g0, it is highly unlikely that the trajectory can switch into the periodic attractor. Even if this occurs, the probability for the trajectory to escape the periodic attractor will be exponentially small due to the higher potential barrier. For large values of g0, transition in both directions can occur, as shown in Fig. 6(c).
+Our reasoning based on separating the deterministic and stochastic components of the Langevin equation does not depend on the specific details of the system, suggesting that the fast growing behavior in the average transient lifetime and the associated scaling law are generic.
+Discussion
+To summarize, we investigate the fundamental problem of quantum-classical correspondence in optomechanical systems from the perspective of dynamical evolution. When the classical system exhibits chaos, the evolution of the quantum system contains two phases: chaotic motion in the (relatively) short time scale and regular motion in the long time scale. The transient chaotic behavior of the quantum system corresponds precisely to that in the classical limit - in this sense there is a well-defined quantum-classical correspondence. The long term behavior of the quantum system, however, is characteristically different from the classical behavior - in this sense there is a breakdown25 of the quantum-classical correspondence. As the classical regime is approached, the chaotic transient lifetime increases dramatically (faster than the Ehrenfest time for isolated systems - see below). Our finding of transient chaos in optomechanical systems, besides being a remarkable phenomenon by itself, provides a natural resolution for the paradoxical breakdown of quantum-classical correspondence.
+In general, the problem of quantum-classical correspondence can be addressed through the approach of quantum-classical transition (QCT). It is known that, unlike special relativity where Einstein's theory can be smoothly transformed to Newtonian mechanics in the limit v/c  0, the approach of a quantum system to the classical limit h¯  0 is singular. In the classical world, chaos exists in both dissipative and Hamiltonian systems, and chaotic dynamics are often studied in the phase space. However, to our knowledge, attempts to find chaos in the Schro¨dinger equation or in the quantum Liouville equation have not been convincingly successful. One reason is that isolated quantum systems are fundamentally linear. Another reason is that, the uncertainty principle forbids arbitrarily fine scale structures in the phase space. Indeed, in bounded and isolated (or closed) quantum systems the most complicated dynamics are quasiperiodic. Even though the transient behavior of a quantum system can be similar to that in the corresponding classical system, any classical features will be lost after a time scale called the Ehrenfest time: tE  h¯ - , where  is determined by the details of the system. Strictly, the Ehrenfest time holds for the idealized situation where the underlying system is fully closed. With the development of the quantum theory and advances in experimental techniques, the quantum dynamics of other types of situations have been considered, such as unconditioned open and conditioned open systems.66,67 In the former case, the system is coupled to the environment but no information about the system is extracted, while for the latter information about the state of the system is extracted from it. For an unconditioned open system, the dynamical evolution is governed by the quantum Master equation, which is still linear. However, for a conditioned open system, its dynamical evolution follows a stochastic quantum equation that contains a nonlinear term representing the conditioning due to the measurement.
+In the study of QCT, there are two general approaches to addressing the quantum-classical correspondence. The first is to focus on the agreement between the distribution functions, i.e., the quantum Wigner and the classical distribution functions - the weak form of QCT.26,27 The second approach, the strong
+11/21
+
+Table 1. An overview of distinct QCT regimes.
+
+System Equation Dynamics Characteristic Time
+
+Conventional QCT Isolated
+Schro¨ dinger Linear
+Ehrenfest time  h¯ -
+
+Weak QCT Unconditioned Open
+Master Linear Unknown at present
+
+Strong QCT Conditioned Open Quantum Trajectory Stochastic Nonlinear Eq. (7) discovered in this paper
+
+form of the QCT,67,68 is to examine the localization of the quantum trajectory on the classical orbits, in which chaos can emerge naturally. To assess the degree of localization, continuous measurements of the system are required, introducing a nonlinear term in the quantum equation, so this approach is applicable only to conditioned open systems.
+Table 1 presents an overview of the status of the knowledge about QCT, with knowns and unknowns specified. An outstanding issue concerns the scaling of the transition time in the strong QCT regime. In particular, the question is whether the QCT time follows the same scaling law as the Ehrenfest time. We address this issue in this paper by exploiting optomechanical systems subject to continuous heterodyne detection, which fundamentally exhibits a strong form of QCT. Qualitatively, our main finding is that transient chaos effectively serves as a bridge for the QCT. Quantitatively, we uncover a scaling law for the transition time which is different from that for the Ehrenfest time associated with the conventional QCT for isolated systems. With the advances in experimental techniques, there is now ability to observe quantum trajectories.25,29 We expect the main results of this paper to be experimentally testable.
+We make a few further remarks pertinent to our results.
+Remark 1: Transient chaos in quantum systems - what does it mean? A quantum system is fundamentally linear. How can then a quantum trajectory be chaotic, even transiently? This paradox can be resolved, as follows. The Schro¨dinger (quantum Master) equation describes the time evolution of an individual system in an ensemble of identical systems, from which the mean value of any physical quantity, |O^| [Tr(O^)] for an operator O^, can be obtained. This is an ideal evolution process during which no further disturbance or measurement should be made; for otherwise the wavefunction will collapse into an eigenstate determined by the whole system, including the measurement apparatus. Based on the quantum trajectory theory, the time evolution of the mean value can also be produced from the QSD calculations through the ensemble average. When there is chaos in the classical limit, the ensemble averaging process can make the time evolution of the mean value periodic. That is, even when QSD calculation gives that a single quantum trajectory is chaotic in the transient phase, the ensemble average of many such trajectories can still be regular.
+Remark 2: Effect of measurement. A single quantum trajectory, however, is not physically meaningless. For a dissipative quantum system, the Master equation can yield the best prediction about the dynamical evolution of an ensemble of the system in absence of any measurement. The single trajectory calculated from quantum methods, such as QSD and quantum jump theory, has the physical meaning of conditioned realization of an individual system under a particular observation record, through homodyne/heterodyne detection and photodetector.69,70 This makes the quantum trajectories subjectively real.70 In the continuously conditioned measurement theory, any measurement introduces a factor called the detector efficiency, 0    1, into the QSD simulation,71­74 which models the situation where the beam-splitter transmittivity is less than unity.71 Mathematically, this factor can be taken into account by decomposing the photon fluctuation term into two uncorrelated terms of strength  and 1 - ,
+12/21
+
+respectively.71,74 In the limit   1, this form of stochastic equation is reduced to the equation simulated in our work, which corresponds to perfect detection.
+Remark 3: Effect of temperature. Our treatment of the breakdown of quantum-classical correspondence in optomechanical systems as a problem of strong QCT assumes the low temperature limit. As we argue and demonstrate, the transition from chaos to a regular state is mediated by quantum fluctuations or noise. Naturally we expect that thermal noise would play a similar role. In particular, if we focus on the classical system subject to thermal noise, a transition from a chaotic attractor to a periodic one can occur, accompanied by transient chaos.
+In an optomechanical system, the fundamental physical constant h¯ cannot be changed in experiments. The degree of quantum fluctuations can be controlled by adjusting or engineering other parameters, e.g., the mass of the cantilever, while keeping the system at low temperature. Weaker quantum fluctuations corresponding to smaller values of g0 can be realized using a heavier cantilever. In this case, the quantum system would behave chaotically for a relatively long time, due to the exponentially long transient lifetime. We note that, in the high temperature regime, the strength of the quantum fluctuations scales as  g20(2n¯ + 1), where n¯  kbT /h¯ m. This indicates a counter-balancing effect between temperature T and mass m as  T /m. Consequently, at high temperatures a system of relatively large mass can still behave chaotically for a long time.
+Remark 4: Emergence of chaos in the quantum regime. In the works of Habib et al.,68, 75 the occurrence of chaos in the quantum regime was reported. The underlying mechanism lies in continuous measurement, which is key to resolving the quantum-classical correspondence, as demonstrated in our work.
+A pertinent question is, since the transition time from classical chaotic to quantum regular motions can be quite short, why would there be chaos in the deep quantum regime as studied by Habib et al.? In these works, a toy model was studied and the main idea was to vary the effective Planck constant h¯ (e.g., from 10-2 to 16) and the measurement strength k to calculate the quantum Lyapunov exponent  and compare its values with those of the classical exponent Cl. It was found68, 75 that, for h¯ = 10-2, the classical results can be recovered through continuous changes in the measurement strength. Furthermore, non-negative values of  were obtained before the classical limit, indicating that chaos may exist in the regime far away from the classical limit.
+The optomechanical systems we studied are experimentally realizable, for which there are realistic criteria to determine if the system is in a classical or in a quantum regime. In particular, to characterize an optomechanical system, a number of key dimensionless parameters can be used - see, e.g., Eq. (119) in Ref.3 The most relevant parameter is g0/ - the "quantumness" parameter, where g0/ > 1 represents the strong couping regime in which the optical device can detect the change of even one phonon. In our work, we used g0/ in the range 10-2  10-1. To determine whether this regime is quantum, we refer to Fig. 9 in Ref.,3 which summarizes the experimental parameters for various quantum realizations. For example, in Ref.,22 the parameter values g0/2 = 910 kHz and /2 = 500 MHz were used, which lead to g0/ = 1.82 × 10-3. In Ref.,76 the values g0/2 = 3.4 kHz and /2  1 MHz were used, giving rise to g0/  10-3. In addition, in experimental studies of conditioned measurement of optomechanical systems,28 the value of g0/ used was about 10-5 but contributions from quantum noise were also taken into account. (In these experimental works, the aim was not finding chaos in the quantum regime.) Referring to the values of g0/ realized in these experiments, we see that the systems studied in our work are in the quantum regime even for e.g., g0/ = 0.045. Thus, there is no conflict between our result and that of Habib et al.68,75 Considering the fact that many quantum trajectories in our system localize on the classical chaotic attractor for thousands of periods and this time can be made significantly longer
+13/21
+
+through small changes in the the parameter g0/, from the point of view of experiments, there is chaos in the quantum regime in our system. However, we emphasize that the main point of our work is not that we find chaos in the quantum regime. Our goal is to address the issue of quantum to classical transition quantitatively through a scaling analysis of the transition time. It is for this purpose that we use the notions of "classical limit" versus "quantum regime."
+Remark 5: appearance of chaos in the quantum regime in absence of classical chaos. There were recent reports of emergence of chaos in the quantum regime in absence of classical chaos.77,78 In these works, the quantum versus classical "weights" of the system is controlled by the effective Planck constant, where the classical limit is reached when the constant approaches zero. In our system, the parameter g0 plays the same role. In classical nonlinear dynamical systems, chaos is common and noise can induce transition among different attractors - these phenomena are usually system and parameter dependent. A main point of our work is that quantum fluctuations can effectively serve as noise and induce transitions, with transient time depending on the fluctuation strength. We note that B. Pokharel et al.77 used quantum tunneling to explain their results. In our work we focused on the case where the classical limit is chaotic, and we observe transitions in both directions: from chaotic to regular motions and vice versa, and we argue that the transition probabilities in the opposite directions can be drastically different. In general, even for a set of parameters for which the asymptotic classical dynamics is regular, there can be transient chaos in relatively short time scales due to nonattracting chaotic invariant sets. When there is noise, there can be transitions between the regular attractor and the nonattracting chaotic set, leading to a combined chaotic attractor. In a general sense, quantum tunneling can induce transitions among different states and, as a result, chaos in the quantum regime can occur in open systems subject to continuous measurement. In this sense, our work does not contradict that of B. Pokharel et al.77
+Remark 6: "suppression" of classical chaos. Equation (2) holds in classical limit for which quantum fluctuations do not exist. In the quantum regime, the fluctuations are naturally incorporated into the quantum trajectory calculations. To account for the quantum fluctuations in the semiclassical theory, we use the quantum Langevin equation.52 Note that Eq. (8) is a set of rescaled equations so that the fluctuation or "noise" strength is nothing but g0. However, the noisy version of Eq. (2) can be studied so as to reveal the equivalence between the effects of classical noise and quantum fluctuations. We focus on the noise-to-driving ratio, a quantity that increases with g0. In the quantum Duffing oscillator model,78 when the parameter  is increased, the amplitude of the driving (g/ ) cos (t) is reduced. For very large value of  , the quantum Lyapunov exponent becomes negative while the exponent in the classical limit remains positive, indicating a transition from chaos to a periodic behavior. We observed similar results in our optomechanical systems, i.e., the quantum fluctuations can suppress classical chaos.
+Mathematically, suppression of classical chaos can be treated as a phenomenon of quantum fluctuation induced transition. In our optomechanical system the periodic attractor is apparently more stable than the chaotic attractor, which also appears to be the case in the quantum Duffing system studied by J. K. Eastman et al.78 in the parameter regime where there is chaos in the classical limit. For small values of g0 where the quantum fluctuations are weak, the classical chaotic behavior can last for a long time, as quantified by the scaling law uncovered in our paper. For relatively large values of g0, the transition time from chaos to a periodic behavior becomes significantly shorter. In our paper we also discuss the reverse transition and point out that the probability is negligibly small, as shown in Figs. 6(b,c). While the reverse transition can occur with a larger probability for very strong noise, in optomechanical systems such strong noise cannot be realized with quantum fluctuations only.10, 12, 20
+14/21
+
+Methods
+
+Historically, the method of quantum trajectory represented an efficient way to solve the master equation, and certain types of quantum trajectories can correspond to the result of conditioned measurement.29­40 Mathematically, an ensemble of quantum systems whose state vectors are governed by a stochastic differential equation can have a density operator that satisfies a unique deterministic master equation. In contrast, a specific master equation can correspond to many different stochastic equations or different unravellings such as the QSD equation, the quantum jump equation, or the orthogonal jump equation.79 While all the unravellings can be used to simulate the master equation, they have a different physical meaning. The most commonly calculated quantum trajectories are those from the QSD equation and the quantum jump equation, corresponding to homodyne and photon counting detection, respectively.
+For a general Lindblad form of the master equation:
+
+d dt
+
+^
+
+=
+
+- i [H^ , h¯
+
+^ ]
+
++
+
+(L^ j
+
+j^ L^ j
+
+-
+
+1 2
+
+L^ j L^
+
+j^
+
+-
+
+1 2
+
+L^ j L^
+
+j),
+
+the QSD equation is:53, 79
+
+  |
+
+=
+
+-
+
+i h¯
+
+H^ |
+
+dt +
+
+j
+
+(
+
+L^ j
+
+
+
+L^
+
+j
+
+-
+
+1 2
+
+L^ j L^
+
+j
+
+-
+
+1 2
+
+L^ j
+
+
+
+L^ j
+
+ )|
+
+dt +
+
+(L^ j - L^ j  )| d j,
+j
+
+(9)
+
+and the quantum jump equation is:
+
+|
+
+=
+
+-
+
+i h¯
+
+H^ |
+
+1
+
+dt
+
++
+
+( j
+
+2
+
+L^ j L^ j
+
+
+
+-
+
+1 2
+
+L^ j L^
+
+j)|
+
+dt + ( j
+
+L^ j - 1)| dNj. L^ j L^ j 
+
+(10)
+
+The QSD equation Eq. (9) is in the Ito form, which historically was called the nonlinear stochastic Langevin-Ito equation. Generally, for the Langevin equations of N variables of the form
+
+qi = hi({q},t) + gi j({q},t) j(t),
+
+where {q} = q1, q2, . . . , qN and i(t) = 0, i(t) j(t ) = 2i j (t - t ), the corresponding probability density function W ({x},t) satisfies the Fokker-Planck equation80
+
+W
+
+({x}, t ) t
+
+=
+
+(-
+
+  xi
+
+Di({x}, t )
+
++
+
+
+
+2 xi x
+
+j
+
+Di
+
+j ({x}, t ))W,
+
+where the drift and diffusion coefficients are defined as
+
+Di({x},
+
+t
+
+)
+
+
+
+D(i 1)({x},
+
+t)
+
+=
+
+l im 0
+
+1 
+
+qi(t + ) - xi
+
+|qk(t)=xk
+
+=
+
+hi({x},
+
+t
+
+)
+
++
+
+gk
+
+j({x},
+
+t
+
+)
+
+  xk
+
+gi
+
+j
+
+({x},
+
+t),
+
+Di j({x},t)  D(i2)({x},t) =
+
+1
+
+1
+
+2 lim0 
+
+[qi(t + ) - xi][q j(t + ) - x j]
+
+|qk(t)=xk = gik({x},t)g jk({x},t).
+
+Note that qi(t + )( > 0) is a solution of the Langevin equation, which has the sharp value qk(t) = xk
+
+(k = 1, 2 . . . , N) at time t.
+
+The quantity D(in)({x},t) =
+
+1 n!
+
+l im 0
+
+1 
+
+[q(t + ) - x]n
+
+|qk(t)=xk
+
+is the Kramers-
+
+Moyal expansion coefficients. For a process described by the Langevin equation with  -correlated
+
+Gaussian noise, all the Kramers-Moyal coefficients D(n) with n  3 vanish.80 The physical significance is
+
+that the deterministic component of the Langevin equations contributes to the drift part in the evolution
+
+15/21
+
+of the probability distribution while the stochastic component contributes to both the drift and diffusion evolution of the probability distribution.
+In general, QSD represents a conditioned measurement experiment and the wave functions that it generates are normally localized about a point in the phase space. This fact can be exploited to improve the computational efficiency.81 Say a wave function is localized about the point (q, p). We can represent it using the so-called excited coherent basis states, |q, p, n = D(q, p)|n , instead of a large number of Fock states. Physically, this means that we exploit a moving basis that separates the wavefunction representation into a classical part (q, p) and a quantum part |q, p, n , which is effectively a mixed representation. The excited coherent states are defined through the coherent state displacement operator:
+
+D(q, p) = exp i (pQ^ - qP^). h¯
+
+where Q^ and P^ are the position and momentum operators. The displacement operator can be defined using
+
+the creation/annihilation operator as
+
+D() = ea^-a^,
+
+and the matrix element in Fock state is
+
+m|D( )|n
+
+=
+
+e
+
+1 2
+
+| |2
+
+m! n!
+
+(-
+
+)n-mLmn-m(|
+
+|2),
+
+where Lmn-m(||2) is the associate Laguerre polynomials. Suppose at t = t0 the state of the system is localized about (q0, p0), i.e.,
+
+(q0, p0) = ( (t0)|Q^|(t0) , (t0)|P^|(t0) ).
+
+After one time step, we have
+
+(q1, p1) = ( (t0 +  t)|Q^|(t0) +  t , (t0 +  t)|P^|(t0 +  t) ) = (q0, p0)
+
+We then shift the basis from (q0, p0) to (q1, p1), which can be done through
+
+|(t0 + t) = D(- q, - p)|(t0) .
+
+Besides the wavefunction, we need to transform the operators into the new basis as well. The procedure is straightforward due to certain properties of the displacement operator:
+
+D()a^D() = a^ +  D()a^D() = a^ + 
+
+which changes the transformation of the Hamiltonian and the operators from two matrix multiplications to one matrix addition. In spite of the need to perform base transformation at each time step, the overall computational speed is faster than that with the Fock state calculation.
+
+References
+1. Feymann, R. P. The Feymann Lecture on Physics, vol. III (Addison-Wesley, 1989). 2. Marquardt, F. & Girvin, S. M. Optomechanics. Physics 2, 40 (2009).
+
+16/21
+
+3. Aspelmeyer, M., Kippenberg, T. J. & Marquardt, F. Cavity optomechanics. Rev. Mod. Phys. 86, 1391­1452 (2014).
+4. Aveline, D. C., Strekalov, D. V. & Yu, N. Micro-slotted whispering gallery mode resonators for optomechanical applications. Appl. Phys. Lett. 105 (2014).
+5. Grudinin, I. S., Lee, H., Painter, O. & Vahala, K. J. Phonon laser action in a tunable two-level system. Phys. Rev. Lett. 104, 083901 (2010).
+6. Li, M. et al. Harnessing optical forces in integrated photonic circuits. Nature 456, 480­484 (2008).
+7. Li, M., Pernice, W. H. P. & Tang, H. X. Tunable bipolar optical interactions between guided lightwaves. Nat. Photon. 3, 464­468 (2009).
+8. Schliesser, A., Arcizet, O., Riviere, R., Anetsberger, G. & Kippenberg, T. J. Resolved-sideband cooling and position measurement of a micromechanical oscillator close to the Heisenberg uncertainty limit. Nat. Phys. 5, 509­514 (2009).
+9. Verlot, P., Tavernarakis, A., Briant, T., Cohadon, P.-F. & Heidmann, A. Backaction amplification and quantum limits in optomechanical measurements. Phys. Rev. Lett. 104, 133602 (2010).
+10. Vitali, D. et al. Optomechanical entanglement between a movable mirror and a cavity field. Phys. Rev. Lett. 98, 030405 (2007).
+11. Groblacher, S., Hammerer, K., Vanner, M. R. & Aspelmeyer, M. Observation of strong coupling between a micromechanical resonator and an optical cavity field. Nature 460, 724­727 (2009).
+12. Mari, A. & Eisert, J. Gently modulating optomechanical systems. Phys. Rev. Lett. 103, 213603 (2009).
+13. Bagheri, M., Poot, M., Li, M., Pernice, W. & Tang, H. X. Dynamic manipulation of mechanical resonators in the high amplitude regime through optical backaction. Nat. Nanotech. 6, 726­732 (2011).
+14. Fong, K. Y., Pernice, W., Li, M. & Tang, H. X. Tunable optical coupler controlled by opto-mechanical interactions. Opt. Exp. 19, 15098 (2011).
+15. Poot, M., Fong, K. Y. & Tang, H. X. Classical non-gaussian state preparation through squeezing in an optoelectromechanical resonator. Phys. Rev. A 90, 063809 (2014).
+16. Poot, M., Fong, K. Y. & Tang, H. X. Deep feedback-stabilized parametric squeezing in an optoelectromechanical system. New J. Phys. 17, 043056 (2015).
+17. Fan, L.-R., Fong, K. Y., Poot, M. & Tang, H. X. Cascaded optical transparency in multimode-cavity optomechanical systems. Nat. Commun. 6, 5850 (2015).
+18. Li, H. & Li, M. Optomechanical photon shuttling between photonic cavities. Nat. Nanotech. 9, 913­919 (2014).
+19. Brooks, D. W. C. et al. Non-classical light generated by quantum-noise-driven cavity optomechanics. Nature 488, 476­480 (2009).
+20. Qian, J., Clerk, A. A., Hammerer, K. & Marquardt, F. Quantum signatures of the optomechanical instability. Phys. Rev. Lett. 109, 253601 (2012).
+21. Teufel, J. D. et al. Sideband cooling of micromechanical motion to the quantum ground state. Nature 475, 359­363 (2011).
+17/21
+
+22. Chan, J. et al. Laser cooling of a nanomechanical oscillator into its quantum ground state. Nature 478, 89­92 (2011).
+23. Carmon, T. & Vahala, K. J. Modal spectroscopy of optoexcited vibrations of a micron-scale on-chip resonator at greater than 1 GHz frequency. Phys. Rev. Lett. 98, 123901 (2007).
+24. Carmon, T., Cross, M. C. & Vahala, K. J. Chaotic quivering of micron-scaled on-chip resonators excited by centrifugal optical pressure. Phys. Rev. Lett. 98, 167203 (2007).
+25. Bakemeier, L., Alvermann, A. & Fehske, H. Route to chaos in optomechanics. Phys. Rev. Lett. 114, 013601 (2015).
+26. Katz, I., Retzker, A., Straub, R. & Lifshitz, R. Signatures for a classical to quantum transition of a driven nonlinear nanomechanical resonator. Phys. Rev. Lett. 99, 040404 (2007).
+27. Katz, I., Lifshitz, R., Retzker, A. & Straub, R. Classical to quantum transition of a driven nonlinear nanomechanical resonator. New J. Phys. 10, 125023 (2008).
+28. Wieczorek, W. et al. Optimal state estimation for cavity optomechanical systems. Phys. Rev. Lett. 114, 223601 (2015).
+29. Campagne-Ibarcq, P. et al. Observing quantum state diffusion by heterodyne detection of fluorescence. Phys. Rev. X 6, 011002 (2016).
+30. Gleyzes, S. et al. Quantum jumps of light recording the birth and death of a photon in a cavity. Nature 446, 297­300 (2007).
+31. Yu, Y. et al. Quantum jumps between macroscopic quantum states of a superconducting qubit coupled to a microscopic two-level system. Phys. Rev. Lett. 101, 157001 (2008).
+32. Vamivakas, A. et al. Observation of spin-dependent quantum jumps via quantum dot resonance fluorescence. Nature 467, 297­300 (2010).
+33. Neumann, P. et al. Single-shot readout of a single nuclear spin. Science 329, 542­544 (2010).
+34. Vijay, R., Slichter, D. H. & Siddiqi, I. Observation of quantum jumps in a superconducting artificial atom. Phys. Rev. Lett. 106, 110502 (2011).
+35. Murch, K., Weber, S., Macklin, C. & Siddiqi, I. Observing single quantum trajectories of a superconducting quantum bit. Nature 502, 211­214 (2013).
+36. Hatridge, M. et al. Quantum back-action of an individual variable-strength measurement. Science 339, 178­181 (2013).
+37. Vool, U. et al. Non-poissonian quantum jumps of a fluxonium qubit due to quasiparticle excitations. Phys. Rev. Lett. 113, 247001 (2014).
+38. Frunzio, L., Mirrahimi, M., Devoret, M. & Schoelkopf, R. Tracking photon jumps with repeated quantum non-demolition parity measurements. Nature 511, 24 (2014).
+39. Weber, S. et al. Mapping the optimal route between two quantum states. Nature 511, 570­573 (2014).
+40. de Lange, G. et al. Reversing quantum trajectories with analog feedback. Phys. Rev. Lett. 112, 080501 (2014).
+41. Gardiner, C. W. & Zoller, P. Quantum Noise (Springer, 2000).
+42. Gisin, N. & Percival, I. C. The quantum-state diffusion model applied to open systems. J. Phys. A Math. Gen. 25, 5677 (1992).
+18/21
+
+43. Gisin, N. & Percival, I. C. Quantum state diffusion, localization and quantum dispersion entropy. J. Phys. A Math. Gen. 26, 2233 (1993).
+44. Gisin, N. & Percival, I. C. The quantum state diffusion picture of physical processes. J. Phys. A Math. Gen. 26, 2245 (1993).
+45. Brun, T. A., Percival, I. C. & Schack, R. Quantum chaos in open systems: a quantum state diffusion analysis. J. Phys. A Math. Gen. 29, 2077 (1996).
+46. Bhattacharya, T., Habib, S., Jacobs, K. & Shizume, K.  -function-kicked rotor: Momentum diffusion and the quantum-classical boundary. Phys. Rev. A 65, 032115 (2002).
+47. Kapulkin, A. & Pattanayak, A. K. Nonmonotonicity in the quantum-classical transition: Chaos induced by quantum effects. Phys. Rev. Lett. 101, 074101 (2008).
+48. Lai, Y.-C. & Te´l, T. Transient Chaos: Complex Dynamics on Finite-Time Scales (Springer, New York, 2011).
+49. Law, C. K. Interaction between a moving mirror and radiation pressure: A Hamiltonian formulation. Phys. Rev. A 51, 2537­2541 (1995).
+50. Wang, G., Huang, L., Lai, Y.-C. & Grebogi, C. Nonlinear dynamics and quantum entanglement in optomechanical systems. Phys. Rev. Lett. 112, 110406 (2014).
+51. Ma, J. et al. Formation and manipulation of optomechanical chaos via a bichromatic driving. Phys. Rev. A 90, 043839 (2014).
+52. Ludwig, M., Kubala, B. & Marquardt, F. The optomechanical instability in the quantum regime. New J. Phys. 10, 095013 (2008).
+53. Schack, R. & Brun, T. A. A C++ library using quantum trajectories to solve quantum master equations. Comp. Phys. Commun. 102, 210 ­ 228 (1997).
+54. Dio´si, L., Gisin, N. & Strunz, W. T. Non-Markovian quantum state diffusion. Phys. Rev. A 58, 1699­1712 (1998).
+55. Strunz, W. T., Dio´si, L. & Gisin, N. Open system dynamics with Non-Markovian quantum trajectories. Phys. Rev. Lett. 82, 1801­1805 (1999).
+56. Brun, T. A. Continuous measurements, quantum trajectories, and decoherent histories. Phys. Rev. A 61, 042107 (2000).
+57. Ha¨nggi, P., Talkner, P. & Borkovec, M. Reaction-rate theory: fifty years after Kramers. Rev. Mod. Phys. 62, 251­341 (1990).
+58. Dykman, M. I. Critical exponents in metastable decay via quantum activation. Phys. Rev. E 75, 011101 (2007).
+59. Carlo, G. G. Quantum isoperiodic stable structures and directed transport. Phys. Rev. Lett. 108, 210605 (2012).
+60. Grebogi, C., Ott, E. & Yorke, J. Fractal basin boundaries, long-lived chaotic transients, and unstableunstable pair bifurcation. Phys. Rev. Lett. 50, 935­938 (1983).
+61. Grebogi, C., Ott, E. & Yorke, J. Super persistent chaotic transients. Ergod. Theor. Dyn. Syst. 5, 341­372 (1985).
+62. Crutchfield, J. R. & Kaneko, K. Are attractors relevant to turbulence? Phys. Rev. Lett. 60, 2715­2718 (1988).
+19/21
+
+63. Lai, Y.-C. & Winslow, R. L. Geometric properties of the chaotic saddle responsible for supertransients in spatiotemporal chaotic dynamical systems. Phys. Rev. Lett. 74, 5208­5211 (1995).
+64. Do, Y. & Lai, Y.-C. Superpersistent chaotic transients in physical space: advective dynamics of inertial particles in open chaotic flows under noise. Phys. Rev. Lett. 91, 224101 (2003).
+65. Gardiner, C. W. Handbook of Stochastic Methods (Springer-Verlag, New York, 1997), first edn. 66. Habib, S. Nonlinear quantum dynamics. In Non-Linear Dynamics and Fundamental Interactions,
+43­56 (Springer, 2006). 67. Bhattacharya, T., Habib, S. & Jacobs, K. Continuous quantum measurement and the emergence of
+classical chaos. Phys. Rev. Lett. 85, 4852­4855 (2000). 68. Habib, S., Jacobs, K. & Shizume, K. Emergence of chaos in quantum systems far from the classical
+limit. Phys. Rev. Lett. 96, 010403 (2006). 69. Plenio, M. B. & Knight, P. L. The quantum-jump approach to dissipative dynamics in quantum optics.
+Rev. Mod. Phys. 70, 101­144 (1998). 70. Wiseman, H. M. Quantum trajectories and quantum measurement theory. Quan. Semiclass. Opt. J.
+Euro. Opt. Soc. B 8, 205 (1996). 71. Wiseman, H. M. & Milburn, G. J. Quantum theory of field-quadrature measurements. Phys. Rev. A
+47, 642­662 (1993). 72. Wiseman, H. M. & Milburn, G. J. Interpretation of quantum jump and diffusion processes illustrated
+on the bloch sphere. Phys. Rev. A 47, 1652­1666 (1993). 73. Doherty, A. C. & Jacobs, K. Feedback control of quantum systems using continuous state estimation.
+Phys. Rev. A 60, 2700­2711 (1999). 74. Brun, T. A. & Goan, H.-S. Realistic simulations of single-spin nondemolition measurement by
+magnetic resonance force microscopy. Phys. Rev. A 68, 032301 (2003). 75. Ghose, S., Alsing, P., Deutsch, I., Bhattacharya, T. & Habib, S. Transition to classical chaos in a
+coupled quantum system through continuous measurement. Phys. Rev. A 69, 052116 (2004). 76. Verhagen, E., Dele´glise, S., Weis, S., Schliesser, A. & Kippenberg, T. J. Quantum-coherent coupling
+of a mechanical oscillator to an optical cavity mode. Nature 482, 63­67 (2012). 77. Pokharel, B. et al. Dynamical complexity in the quantum to classical transition. arXiv preprint
+arXiv:1604.02743 (2016). 78. Eastman, J. K., Hope, J. J. & Carvalho, A. R. Emergence of chaos controlled by quantum noise. arXiv
+preprint arXiv:1604.03494 (2016). 79. Percival, I. Quantum state diffusion (Cambridge University Press, 1998). 80. Risken, H. Fokker-planck equation (Springer, 1984). 81. Schack, R., Brun, T. A. & Percival, I. C. Quantum state diffusion, localization and computation. J.
+Phys. A Math. Gen. 28, 5401 (1995).
+Acknowledgements
+We thank Dr. L. Huang and Mr. H.-Y. Xu for helpful discussions. This work was supported by AFOSR under Grant No. FA9550-15-1-0151 and by ONR under Grant No. N00014-15-1-2405.
+20/21
+
+Author contributions
+G.L.W., Y.C.L. and C.G. conceived and designed the research. G.L.W. did the simulation. All participate in the result analysis. Y.C.L. wrote the paper with help from G.L.W.
+Completing financial interests:
+The authors declare no competing financial interests.
+21/21
+
+

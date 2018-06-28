@@ -1,0 +1,1119 @@
+arXiv:1701.00090v3 [math.OC] 13 Apr 2017
+
+Two-stage robust optimization for orienteering problem with stochastic weights
+Ke Shanga,b, Felix T.S. Chanc, Stephen Karungarua,, Kenji Teradaa, Zuren Fengb, Liangjun Keb
+aDepartment of Information Science and Intelligent Systems, The University of Tokushima, Japan bState Key Laboratory for Manufacturing Systems Engineering, Xi'an Jiaotong University, Xi'an, China cDepartment of Industrial and Systems Engineering, The Hong Kong Polytechnic University, Hung Hom, Hong Kong
+Abstract
+In this paper, the two-stage orienteering problem with stochastic weights (OPSW) is considered, where the first-stage problem is to plan a path under the uncertain environment and the second-stage problem is recourse action to make sure that the length constraint is satisfied after the uncertainty is realized. Two recourse models are introduced based on two different uncertainty realization ways, one is based on sequentially realized weights which leads to the recourse model proposed by Evers et al. (2014) and the other is based on concurrently realized weights which leads to a new recourse model with less variables and less constraints and is computationally more efficient. Subsequently two two-stage robust models are introduced for OPSW based on the two different recourse models, and the relationships between the two-stage robust models and their corresponding static robsut models are investigated. Theoretical conclusions are drawn which show that the two-stage robust models are equivalent to their corresponding static robust models with the box uncertainty set defined, and the two two-stage robust models are also equivalent to each other even though they are based on different recourse models. A case study is presented by comparing the two-stage robust models with an one-stage robust model for OPSW. The numerical results of the comparative studies show the effectiveness and superiority of the proposed two-stage robust models for dealing with the two-stage OPSW. Keywords: two-stage robust optimization, stochastic orienteering problem, integer recourse, box uncertainty set
+
+Department of Information Science and Intelligent Systems, The University of Tokushima, Japan Email address: karunga@is.tokushima-u.ac.jp (Stephen Karungaru)
+Preprint submitted to
+
+April 14, 2017
+
+1. Introduction
+The orienteering problem (OP) is a routing problem which has been widely studied in the past few decades. It was first introduced by Golden et al. (1987) and has been developed in terms of the problem variants, solution algorithms and applications. The original OP aims at planning a path which starts and ends at the depot location, and visits a subset of nodes in order to maximize the total collected score while the length of the path cannot exceed a predefined budget, and each node can only be visited at most one time. The OP has a wide practical application background. A few examples such as Unmanned Aerial Vehicle (UAV) mission planning (Mufalli et al. (2012); Evers et al. (2014)), tourist trip design problem (Vansteenwegen and Van Oudheusden (2007); Gavalas et al. (2014)) and mobile crowdsourcing problem (Howe (2008); Yuen et al. (2011)). More detailed surveys on OP are given in Vansteenwegen et al. (2011); Gunawan et al. (2016).
+The stochastic orienteering problem (SOP) is a variant of OP, which assumes that some parameters in OP are stochastic and uncertain such as the score associated with each node and the weight (or distance) associated with each arc. SOP is more appropriate than OP in practical situations. For example, in a practical environment traffic congestion affects the travel time between nodes. Ilhan et al. (2008) first considered uncertainties in the score of nodes and the resulting SOP is called OP with stochastic profits (OPSP). Campbell et al. (2011); Evers et al. (2014) considered uncertainties in the travel and service times and the resulting SOP is called OP with stochastic travel and service times (OPSTS) or OP with stochastic weights (OPSW). Other variants include the dynamic stochastic OP (DSOP) with stochastic time-dependent travel times (Lau et al. (2012); Varakantham and Kumar (2013)) and the stochastic OPTW (SOPTW) with stochastic waiting time (Zhang et al. (2014)).
+In this paper, we focus on the OPSW where the uncertainties lie in the weights of the arcs. Some works on OPSW have been done in recent years. Campbell et al. (2011) considered the OPSTS in which a penalty is incurred if a commitment to a node is made but not completed. A variant of VNS for the OPSTS is proposed and its performance is evaluated by comparing with a dynamic programming (DP) approach. Evers et al. (2014) introduced a two-stage stochastic programming model for the OPSW. The first-stage problem is to plan a path. The second-stage problem is a recourse action after the uncertain weights realized, which aborts the execution of the first-stage path and enforces a direct return to the depot. The objective is to maximize the first-stage path score plus the expected loss of the score due to the recourse action. They presented a Sample Average Approximation (SAA) approach and an OPSW heuristic to solve the problem and the performance of the two approaches were evaluated. Evers et al. (2014) applied the robust optimization (RO) methodology to build robust models for UAV mission planning with uncertain fuel usage between targets, which is an OPSW in nature. The performance of the robust models are studied in terms of the different uncertainty sets and the feasibility of the robust solutions.
+Inspired by the recourse model proposed by Evers et al. (2014), we consider the two-stage OPSW, i.e. OPSW with recourse action. The first-stage problem is to plan a path with the stochastic weights
+2
+
+unrevealed. The second-stage problem is a recourse action to avoid the violation of the length budget after the uncertainty realized. The recourse action is to abort the execution of the first-stage path and enforce a direct return to the depot. This kind of recourse action is necessary especially in the UAV mission planning. The UAV has to return to the depot safely in the uncertain environment. We notice that the realization way of the uncertainty is not unique. For example, the uncertain weights of the first-stage path can be realized sequentially during the path execution, or the uncertain weights of the first-stage path can be realized concurrently at the beginning of the path execution. Different realization ways for the uncertainty can lead to different recourse models. We thus define two realization ways of the uncertainty: Sequential realization and Concurrent realization. The Sequential realization way leads to the recourse model proposed by Evers et al. (2014), and the Concurrent realization way leads to a new model with less variables and less constraints, which is computationally more attractive.
+Two-stage robust optimization (RO), also known as adjustable RO and can be extended to the multistage situation, was initially introduced by Ben-Tal et al. (2004). Compared with traditional one-stage RO, two-stage RO divides the decision variables into "here and now" decisions and "wait and see" decisions, which is more flexible and is suitable for modeling two-stage problems. It has been successfully applied to different applications such as unit commitment (An and Zeng (2015); Wang et al. (2016)), network flow (Atamtu¨rk and Zhang (2007); Ord´on~ez and Zhao (2007)) and portfolio optimization (Takeda et al. (2008)). In this paper, we apply the two-stage RO paradigm to the two-stage OPSW for the first time and introduce two two-stage RO models based on two different recourse models. The two-stage RO models introduced in this paper are with binary recourse decisions and this kind of problem has largely resisted solution so far (Hanasusanto et al. (2015)). Computing an optimal adjustable robust solution is often intractable since it requires computing a solution for all possible realizations of the uncertainties (Feige et al. (2007)). Instead of solving the two-stage RO model directly, Bertsimas et al. (2015) studied the performance of the static solutions for two-stage adjustable robust linear optimization problems and presented a tight characterization of the conditions under which a static robust solution is optimal for the two-stage robust problem. From this point of view, we introduce two static robust models for the OPSW which correspond to the two two-stage robust models respectively, and study their performance and the relationships with the two-stage robust models. We prove that with the box uncertainty set defined, the two-stage robust models are equivalent to their corresponding static robust models, and the two two-stage robust models are also equivalent to each other even though they are based on different recourse models. These conclusions we obtained indicate that the two-stage robust models for OPSW can be solved to optimality by solving their corresponding static robust models, and also we only need to use one static robust model, which is based on the second recourse model, to deal with two different uncertainty realization ways.
+The main contributions of this paper are summarized as follows:
+1. Two recourse models are presented for the two-stage OPSW: one is the recourse model with Sequential realization and the other is the recourse model with Concurrent realization.
+3
+
+2. Two two-stage robust models are presented for the first time for the OPSW based on the two different recourse models.
+3. Three theorems are established which show the equivalence between the two-stage robust models and their corresponding static robust models.
+4. The two-stage robsut models for OPSW are evaluated numerically by comparing with one-stage robust model for OPSW.
+The remainder of the paper is organized as follows. First the deterministic OP is described in Section 2. Section 3 describes the two-stage OPSW and introduces two recourse models with different uncertainty realization ways. Section 4 introduces two two-stage robust models for OPSW and draws some theoretical conclusions of the equivalence between the two-stage robust models and their corresponding static robust models. A case study is presented in Section 5 and we conclude the whole paper in Section 6.
+
+2. The deterministic OP
+
+In a deterministic OP, a set of vertices N is given with |N | as its cardinality. Each vertex i  N has a score si associated with it. Denote 0 as the depot location where 0 / N and N + = N  {0}. The goal is to plan a path with length limit L, that starts and ends at the depot and visits some vertices in order to maximize the sum of the collected scores. Each vertex is visited at most one time.
+Suppose all nodes N + are on a complete graph G = (N +, A) where A is the set of arcs connecting the vertices in N +. The weight of each arc (i, j)  A is dij, representing the Euclidean distance from i to j. Let xij be a binary decision variable, where xij = 1 if and only if arc (i, j) is visited by the path, otherwise xij = 0. An auxiliary variable ui is used to denote the position of node i in the path. The formulation of the deterministic OP is as follows:
+(DOP):
+
+maximize subject to
+
+si
+
+xij
+
+iN jN +\{i}
+
+dij xij  L
+(i,j)A
+
+x0i = xi0 = 1
+
+iN
+
+iN
+
+xij =
+
+xji  1, j  N
+
+iN +\{j}
+
+iN +\{j}
+
+ui - uj + 1  (1 - xij)|N |, i, j  N
+
+1  ui  |N |, i  N
+
+xij  {0, 1}, (i, j)  A
+
+(1a) (1b) (1c) (1d) (1e) (1f ) (1g)
+
+Constraint (1b) is the path length constraint. Constraint (1c) guarantees that the path starts and ends at the depot. Constraint (1d) is the flow conservation constraint ensuring that a vertex is visited at most
+
+4
+
+once. Constraint (1e) ensures the connectivity of the path. Constraint (1f) and (1g) are the boundary and integrality constraints on the auxiliary variables and decision variables respectively.
+3. The two-stage orienteering problem with stochastic weights
+Suppose the weight of each arc (i, j) is stochastic and uncertain, denote the stochastic weight of arc (i, j) as d~ij. In this paper, we consider d~ij as a symmetrically distributed random variable on the interval [d¯ij - d^ij, d¯ij + d^ij], where d¯ij is the expected value of d~ij and d^ij is the maximum deviation of d~ij from its expected value. For simplicity and convenience, we use dij to denote the realizations of d~ij.
+We consider the two-stage OPSW, i.e. OPSW with recourse action. In the two-stage OPSW, the first-stage problem is to plan a path with the stochastic weights unrevealed. Due to the randomicity and uncertainty of the stochastic weights, the first-stage path may violate constraint (1b) after the uncertainty is realized. So the second-stage problem is a recourse action to avoid constraint violation after the uncertainty is realized. The recourse action is to abort the execution of the first-stage path and enforce a direct return to the depot.
+The ways that the uncertainty realized are not unique. Different realization ways for the uncertainty will lead to different recourse models. We introduce two realization ways for the uncertainty in two-stage OPSW: Sequential realization and Concurrent realization. Sequential realization means that the stochastic weights of the first-stage path are realized sequentially during the path execution. For example, the first-stage path is executed to node i and the next node is j, then the stochastic weight d~ij is realized and the stochastic weights of all other unvisited arcs remain unrevealed. Concurrent realization means that all the stochastic weights of the first-stage path are realized concurrently at the beginning of the path execution and the stochastic weights of all other arcs remain unrevealed.
+Based on the above two realization ways for uncertainty, we now present two recourse models for two-stage OPSW.
+3.1. Recourse model with Sequential realization The recourse model with sequentially realized weights was initially introduced by Evers et al. (2014). In
+this model, the uncertain weights of the first-stage path are realized sequentially during the path execution. The uncertainty realization rule is: suppose the first-stage path is executed to node i and the next node is j, then the stochastic weight d~ij is realized and the stochastic weights of all other unvisited arcs remain unrevealed. Then the recourse action is to abort the execution of the first-stage path and enforce a direct return to the depot from node i at the moment that the remaining length budget is insufficient to support a visit to the next node j plus the expected return length from the next node j to the depot. Evers et al. (2014) assumed that a certain amount of extra length budget is available to cover the maximum deviation from the expected length on any of the arcs to the depot, this safety stock not being part of the length limit L used in the model.
+5
+
+Denoting the first-stage path as vector x which contains all xij, and the weight realizations as vector d which contains all dij. Let xijk be a binary variable, xijk = 1 if arc (i, j) is the kth arc in the first-stage path, otherwise xijk = 0; let yi be a binary variable, yi = 1 if node i is in the first-stage path but cannot be reached as a result of the recourse action, otherwise yi = 0; let zk be a binary variable, zk = 1 if the kth node in the first-stage path cannot be reached as a result of the recourse action, otherwise zk = 0. With the first-stage path x and the weight realizations d, the recourse problem of the two-stage OPSW with sequentially realized weights is formulated as follows:
+(Recourse-Sequential):
+
+RS(x, d) = max subject to
+
+- siyi
+iN
+
+x0j1  x0j , j  N
+
+xijk  xij +
+
+xli(k-1) - 1, i, j  N, k = 1, ..., |N |
+
+lN +
+
+K
+
+dij xijk +
+
+d¯j0xijK  L + M zK , K = 1, ..., |N |
+
+k=1 (i,j)A
+
+(i,j)A
+
+zk  zk-1, k = 2, ..., |N |
+
+yj 
+
+xijk + zk - 1, j  N, k = 1, ..., |N |
+
+iN +
+
+xijk  {0, 1}, i, j  N +, k = 1, ..., |N |
+
+yi  {0, 1}, i  N
+
+zk  {0, 1}, k = 1, ..., |N |
+
+(2a) (2b) (2c)
+(2d)
+(2e) (2f ) (2g) (2h) (2i)
+
+where the objective function (2a) is to minimize the loss in the collected score as a result of the recourse action. Constraint (2b) identifies the first arc in the path. Constraint (2c) identifies the order of the other arcs in the path. Constraint (2d) determines the nodes of the first-stage path x that can and cannot be reached based on d, where M is a sufficiently large number. Constraint (2e) makes sure that all nodes in the path after the first node that cannot be reached, cannot be reached either. Constraint (2f) identifies the nodes in the first-stage path that cannot be reached, based on their indexes. A detailed explanation of the model is given in Evers et al. (2014).
+With the first-stage path x and the weight realizations d, the objective value of the sequential recourse problem can be calculated not only by solving the Recourse-Sequential model, but also by an efficient Forward Checking algorithm which is described in Algorithm 1. With Algorithm 1, the objective value of the Recourse-Sequential model can be obtained in time O(n) where n is the number of nodes in the first-stage path.
+
+6
+
+Algorithm 1 Forward Checking algorithm for Recourse-Sequential model Input: The first-stage path x and the weight realizations d
+
+Output: The objective value of RS(x, d)
+
+1: Denote the first-stage path x as a node sequence (v0, v1, ..., vn, v0) where v0 is the depot and vk is the kth node.
+
+2: violation = F alse
+
+3: for k = 1 to n do 4: Length = dist(v0, v1, ..., vk) + d¯vkv0 where dist(v0, v1, ..., vk) = dv0v1 + ... + dvk-1vk . 5: if Length > L then
+
+6:
+
+violation = T rue
+
+7:
+
+break for loop
+
+8: end if
+
+9: end for
+
+10: if violation == T rue then
+
+11: Loss = svk + svk+1 + ... + svn 12: else
+
+13: Loss = 0
+
+14: end if
+
+15: RS(x, d) = -Loss
+
+3.2. Recourse model with Concurrent realization
+We now introduce a recourse model with concurrently realized weights. In this model, all the stochastic weights of the first-stage path are realized concurrently at the beginning of the path execution and the stochastic weights of all other arcs remain unrevealed. Then the recourse action is to find a node i in the first-stage path and enforce a direct return to the depot from node i so that the length of the subpath from the depot to node i plus the expected return length from node i to the depot is within the length limit L and the loss in the collected score is minimized. Here, we also assume that a certain amount of extra length budget is available to cover the maximum deviation from the expected length on any of the arcs to the depot. This safety stock is not part of the length limit L used in the model.
+We introduce a new binary variable yij; yij = 1 if arc (i, j) is in the first-stage path but is cancelled by the recourse action, yij = 0 if arc (i, j) is in the first-stage path and is not cancelled by the recourse action, or arc (i, j) is not in the first-stage path. Then the recourse problem of the two-stage OPSW with concurrently realized weights can be formulated as follows:
+
+7
+
+(Recourse-Concurrent):
+
+RC(x, d) = max subject to
+
+- sj
+
+yij
+
+jN iN +\{j}
+
+yij  xij, (i, j)  A
+
+yij 
+
+yjk, j  N
+
+iN +\{j}
+
+kN +\{j}
+
+
+
+
+
+dij xij -
+
+dij yij + 
+
+yjk -
+
+yij  d¯j0  L
+
+(i,j)A
+
+(i,j)A
+
+jN kN +\{j}
+
+iN +\{j}
+
+yij  {0, 1}, (i, j)  A
+
+(3a) (3b) (3c)
+(3d) (3e)
+
+where the objective function (3a) is to minimize the loss in the collected score as a result of the recourse action. Constraint (3b) ensures that the cancelled arcs are from the first-stage path. Constraint (3c) ensures that the cancelled arcs compose a subpath of the first-stage path starting at a vertex of the first-stage path and ending at the depot. Constraint (3d) ensures that the modified path after the recourse action is within the length limit.
+With the first-stage path x and the weight realizations d, the objective value of the concurrent recourse problem can be calculated not only by solving the Recourse-Concurrent model, but also by an efficient Backward Checking algorithm which is described in Algorithm 2. With Algorithm 2, the objective value of the Recourse-Concurrent model can be obtained in time O(n) where n is the number of nodes in the first-stage path.
+
+4. Two-stage robust optimization for OPSW
+In this section, we apply the two-stage RO methodology to model the two-stage OPSW. In the twostage OPSW, the first-stage "here and now" decisions are the binary decision variables xij described in Section 2. The second-stage "wait and see" decisions are the binary decision variables yi and zk in the Recourse-Sequential model or the binary decision variables yij in the Recourse-Concurrent model.
+In the two-stage RO for OPSW, an uncertainty set needs to be defined for the stochastic weights. We consider the box uncertainty set which is defined by the -norm of the uncertain vector. The reasons that we choose the box uncertainty set for the two-stage RO for OPSW are as follows:
+1. It is simple compared with the polyhedral uncertainty set and the ellipsoidal uncertainty set which is defined by 1-norm and 2-norm respectively (Bertsimas et al. (2004); Ben-Tal et al. (2009)), and the derived robust counterpart has the same computational complexity as the original model.
+2. With the box uncertainty set, we can draw some interesting conclusions in the following subsections which describe the equivalence between the two-stage robust models and their corresponding static robust models.
+
+8
+
+Algorithm 2 Backward Checking algorithm for Recourse-Concurrent model Input: The first-stage path x and the weight realizations d
+
+Output: The objective value of RC(x, d)
+
+1: Denote the first-stage path x as a node sequence (v0, v1, ..., vn, v0) where v0 is the depot and vk is the kth node.
+
+2: violation = T rue
+
+3: for k = n to 1 do 4: Length = dist(v0, v1, ..., vk) + d¯vkv0 where dist(v0, v1, ..., vk) = dv0v1 + ... + dvk-1vk . 5: if Length  L then
+
+6:
+
+violation = F alse
+
+7:
+
+break for loop
+
+8: end if
+
+9: end for
+
+10: if k = n and violation == F alse then
+
+11: Loss = svk+1 + ... + svn 12: else if k = n and violation == T rue then
+
+13: Loss = sv1 + ... + svn 14: else
+
+15: Loss = 0
+
+16: end if
+
+17: RC(x, d) = -Loss
+
+Without loss of generality, the box uncertainty set U for the stochastic weights is defined as follows:
+
+U = d  RM : dij = d¯ij + ijd^ij, i, j  N +,   Z
+
+(4)
+
+where d is a M dimensional vector with M = |N +| × |N +|,   RM is the vector of primitive uncertainties, and Z is a convex set which is defined as follows:
+
+Z =   RM :    
+
+(5)
+
+where   [0, 1] is the parameter controlling the size of Z. Next, we introduce two two-stage RO models for OPSW based on the Recourse-Sequential model and
+the Recourse-Concurrent model respectively.
+
+4.1. Two-stage robust model for OPSW with Recourse-Sequential model Based on the Recourse-Sequential model and the two-stage RO paradigm, we introduce the following
+two-stage RO model for OPSW:
+
+9
+
+(Two-stage-Sequential):
+
+maximize subject to
+
+si
+
+xij + min RS(x, d)
+
+dU
+
+iN jN +\{i}
+
+(d¯ij - d^ij )xij  L
+(i,j)A
+
+(1c) - (1g)
+
+(6a) (6b) (6c)
+
+where RS(x, d) is the Recourse-Sequential model and U is the box uncertainty set. Constraint (6b) is the length limit on the first-stage path. Without constraint (6b), the first-stage path can be arbitrarily long providing there exists unvisited nodes, and these nodes can be included in the first-stage path even some nodes in any particular case cannot be reached. By adding constraint (6b), we limit the length of the firststage path in the most optimistic situation, i.e. all arc weights equal to their minimum values. With this constraint, the size of the solution space can be reduced while the problem optimality is maintained.
+The two-stage robust model for OPSW introduced above is an 0-1 integer programming problem with 0-1 integer recourse. Next, we present its corresponding static robust model in which the second-stage "wait and see" decisions become "here and now". The corresponding static robust model of the Two-stage-Sequential model is formulated as follows:
+(Static-Sequential):
+
+maximize subject to
+
+si
+
+xij - siyi
+
+iN jN +\{i}
+
+iN
+
+(1c) - (1g), (6b)
+
+(7a) (7b)
+
+(2b) - (2c), (2e) - (2i)
+
+K
+
+dij xijk +
+
+d¯j0xijK  L + M zK , K = 1, ..., |N |, d  U
+
+k=1 (i,j)A
+
+(i,j)A
+
+(7c) (7d)
+
+In the above static robust model, the second-stage decision variables yi and zk are "here and now" and do not depend on the realizations of uncertain d. Both first-stage decisions xij and second-stage decisions yi and zk are selected before the uncertain d is known. An optimal static robust solution to Static-Sequential can be computed efficiently with the box uncertainty set U. What interests us is the relationship between the two-stage robust model Two-stage-Sequential and its corresponding static robust model Static-Sequential.
+In the following, we establish a theorem which describes the equivalence of the Two-stage-Sequential model and the Static-Sequential model.
+
+Theorem 1. The two-stage robust model Two-stage-Sequential and its corresponding static robust model Static-Sequential are equivalent.
+
+Proof. It is clear that the optimal solution of the static robust model Static-Sequential is a feasible solution of the two-stage robust model Two-stage-Sequential. All we need to show is that the optimal solution of
+
+10
+
+the two-stage robust model Two-stage-Sequential is a feasible solution of the static robust model Static-
+
+Sequential.
+
+We prove by apagoge. Denote (xij, xijk, yi, zk) as the optimal solution of the two-stage robust model Twostage-Sequential. Suppose the optimal solution is infeasible for the static robust model Static-Sequential,
+
+which means
+
+K
+
+d  U and K ,
+
+dij xijk +
+
+d¯j0xijK > L + M zK
+
+(8)
+
+k=1 (i,j)A
+
+(i,j)A
+
+Because M is a sufficiently large number, so the above condition is only satisfied by zK = 0. This means
+
+that the K th node in the first-stage path of the two-stage robust model Two-stage-Sequential is reachable,
+
+but this node is unreachable under the context of the static robust model Static-Sequential.
+
+Now we consider the second-stage problem RS(x, d ) where x is the first-stage optimal solution, and
+
+denote the optimal solution as (yi, zk). Then for K ,
+
+K
+
+dij xijk +
+
+d¯j0xijK  L + M zK
+
+(9)
+
+k=1 (i,j)A
+
+(i,j)A
+
+Comparing constraints (8) and (9), it is clear that zK must be 1. This means the K th node in the first-stage path is unreachable with d . Denote the K th node in the first-stage path as node j, then the
+
+second-stage optimal value RS(x, d )  - iN siyi - sj. Because we are optimizing mindU RS(x, d), (yi, zk) is not the optimal second-stage solution, so this is a contradiction. Thus the hypothesis cannot be established, which means (xij, xijk, yi, zk) is feasible for the static robust model Static-Sequential.
+We conclude that the optimal solution of the two-stage robust model Two-stage-Sequential is a feasible
+
+solution of the static robust model Static-Sequential. Because the two models have the same objective
+
+function value with the same solutions, then the optimal solution of the two-stage robust model Two-stage-
+
+Sequential is also the optimal solution of the static robust model Static-Sequential, this implies the two
+
+models are equivalent.
+
+Remark. The proof of Theorem 1 does not need the support of the box uncertainty set. We can still draw this conclusion even if the uncertainty set U is an arbitrary uncertainty set.
+Based on Theorem 1, the two-stage robust model Two-stage-Sequential can be solved to optimality by solving its corresponding static robust model Static-Sequential. Comparing the static robust model StaticSequential with the original deterministic OP model DOP, many new integer variables are added which makes the static robust model Static-Sequential computationally expensive. Evers et al. (2014) proved that the relaxation model with 0  xijk  1 and 0  yi  1 of the second-stage problem RS(x, d) is equivalent to the original RS(x, d), and the resulting relaxation model provides a substantial decrease in the computation time. This conclusion can be easily applied to the static robust model Static-Sequential which leads to the following proposition:
+Proposition 1. The relaxation model with 0  xijk  1 and 0  yi  1 of the static robust model StaticSequential is equivalent to the original static robust model Static-Sequential.
+
+11
+
+Proof. This conclusion can be drawn by following the proof way of Theorem 1 in Evers et al. (2014).
+
+4.2. Two-stage robust model for OPSW with Recourse-Concurrent model Based on the Recourse-Concurrent model and the two-stage RO paradigm, we introduce the following
+two-stage RO model for OPSW: (Two-stage-Concurrent):
+
+maximize subject to
+
+si
+
+xij + min RC(x, d)
+
+dU
+
+iN jN +\{i}
+
+(1c) - (1g), (6b)
+
+(10a) (10b)
+
+where RC(x, d) is the Recourse-Concurrent model and U is the box uncertainty set. We also consider the corresponding static robust model of Two-stage-Concurrent instead of solving the
+two-stage robust model directly, the corresponding static robust model of Two-stage-Concurrent is formulated as follows:
+(Static-Concurrent):
+
+maximize subject to
+
+si
+
+xij - sj
+
+yij
+
+iN jN +\{i}
+
+jN iN +\{j}
+
+(1c) - (1g), (6b)
+
+(11a) (11b)
+
+(3b) - (3c), (3e)
+
+
+
+
+
+dij xij -
+
+dij yij + 
+
+yjk -
+
+yij d¯j0  L, d  U
+
+(i,j)A
+
+(i,j)A
+
+jN kN +\{j}
+
+iN +\{j}
+
+(11c) (11d)
+
+We can readily see that the optimal solution of the static robust model Static-Concurrent is feasible to the two-stage robust model Two-stage-Concurrent. With the help of the box uncertainty set, the following theorem can be established which shows that Two-stage-Concurrent and Static-Concurrent are equivalent.
+
+Theorem 2. The two-stage robust model Two-stage-Concurrent and its corresponding static robust model Static-Concurrent are equivalent.
+
+Proof. It is clear that the optimal solution of the static robust model Static-Concurrent is a feasible solution
+
+of the two-stage robust model Two-stage-Concurrent. All we need to show is that the optimal solution of
+
+the two-stage robust model Two-stage-Concurrent is a feasible solution of the static robust model Static-
+
+Concurrent.
+
+We prove by apagoge. Denote (xij, yij) as the optimal solution of the two-stage robust model Two-stageConcurrent. Suppose the optimal solution is infeasible for the static robust model Static-Concurrent, which
+
+means
+
+
+
+
+
+d  U,
+
+dij xij -
+
+dij yij +
+
+
+
+yjk -
+
+yij  d¯j0 > L
+
+(i,j)A
+
+(i,j)A
+
+jN kN +\{j}
+
+iN +\{j}
+
+(12)
+
+12
+
+Denote du = d¯ + d^, according to the definition of the box uncertainty set U , we know that du  U and du d where is the element-wise inequality. Based on inequality (12), it is clear that
+
+
+
+
+
+duij xij -
+
+duij yij +
+
+
+
+yjk -
+
+yij  d¯j0 > L
+
+(i,j)A
+
+(i,j)A
+
+jN kN +\{j}
+
+iN +\{j}
+
+(13)
+
+Denote d  U as the optimal value of d that achieves optimal solution (xij, yij) in the two-stage robust model Two-stage-Concurrent, then
+
+
+
+
+
+dij xij -
+
+dij yij +
+
+
+
+yjk -
+
+yij  d¯j0  L
+
+(i,j)A
+
+(i,j)A
+
+jN kN +\{j}
+
+iN +\{j}
+
+(14)
+
+and
+
+
+
+
+
+dij xij -
+
+dij yij +
+
+
+
+yjk -
+
+yij d¯j0 > L, y  Y and y = y
+
+(i,j)A
+
+(i,j)A
+
+jN kN +\{j}
+
+iN +\{j}
+
+(15)
+
+
+
+
+
+  
+
+yij  yij , i, j
+
+  
+
+
+
+
+
+where Y = y : iN+\{j} yij  kN+\{j} yjk, j is the set which contains all recourse actions with
+
+
+
+
+
+
+
+
+
+ 
+
+yij  {0, 1}, i, j
+
+ 
+
+less cancelled arcs comparing with y.
+
+Based on the fact that du d and using inequality (15), we have
+
+
+
+
+
+duij xij -
+
+duij yij +
+
+
+
+yjk -
+
+yij d¯j0 > L, y  Y and y = y
+
+(i,j)A
+
+(i,j)A
+
+jN kN +\{j}
+
+iN +\{j}
+
+(16)
+
+Combining inequalities (13) and (16), we can observe that: for the second-stage problem RC(x, du), the recourse action needs to cancel more arcs than y to satisfy the length constraint, which means RC(x, du) < - jN sj iN+\{j} yij. Because we are optimizing mindU RC(x, d), y is not the optimal second-stage solution, so this is a contradiction. Hence, the hypothesis cannot be established, which means (xij, yij) is feasible for the static robust model Static-Concurrent.
+
+We conclude that the optimal solution of the two-stage robust model Two-stage-Concurrent is a feasible
+
+solution of the static robust model Static-Concurrent. Because the two models have the same objective
+
+function value with the same solutions, then the optimal solution of the two-stage robust model Two-stage-
+
+Concurrent is also the optimal solution of the static robust model Static-Concurrent, this implies the two
+
+models are equivalent.
+
+Based on Theorem 2, the two-stage robust model Two-stage-Concurrent can be solved to optimality by solving its corresponding static robust model Static-Concurrent.
+
+4.3. The relationship between Two-stage-Sequential and Two-stage-Concurrent Until now, we have introduced two two-stage robust models Two-stage-Sequential and Two-stage-Concurrent,
+and also proved that these two models are equivalent to their corresponding static robust models respectively.
+
+13
+
+In this subsection, we further investigate the relationships between Two-stage-Sequential and Two-stageConcurrent.
+First, we investigate the static models Static-Concurrent and Static-Sequential. Comparing static model Static-Concurrent with static model Static-Sequential, model Static-Concurrent has less decision variables and less constraints and is computationally more attractive. The two static models are based on different recourse models. Next, we show that model Static-Sequential and model Static-Concurrent are equivalent with the support of the box uncertainty set.
+
+Theorem 3. The static robust models Static-Concurrent and Static-Sequential are equivalent.
+
+Proof. First, suppose (xij, xijk, yi, zk) is the optimal solution of the static robust model Static-Sequential, and we introduce decision variable yij which is described in Recourse-Concurrent model for model StaticSequential, then the optimal solution (xij, xijk, yi, zk) can be mapped to an optimal solution (xij, yij) of model Static-Sequential, and it is clear that (xij, yij) is feasible to the static robust model Static-Concurrent.
+Then, suppose (xij, yij) is the optimal solution of the static robust model Static-Concurrent, and we introduce variables xijk, yi, zk which is described in Recourse-Sequential model for model Static-Concurrent, then the optimal solution (xij, yij) can be mapped to an optimal solution (xij, xijk, yi, zk) of model StaticConcurrent, we now show that (xij, xijk, yi, zk) is feasible to the static robust model Static-Sequential.
+Suppose zK = 0 and zK +1 = 1, then this means the nodes in the first-stage path become unreachable from the (K + 1)th node. Then, the length constraint (11d) in the static robust model Static-Concurrent is
+
+equivalent to
+
+K
+
+dij xijk +
+
+d¯j0xijK  L, d  U
+
+k=1 (i,j)A
+
+(i,j)A
+
+(17)
+
+Based on the definition of the box uncertainty set U, inequality (17) is equivalent to
+
+K
+
+(d¯ij + d^ij )xijk +
+
+d¯j0xijK  L
+
+k=1 (i,j)A
+
+(i,j)A
+
+(18)
+
+We transform the left hand side of the above inequality as follows:
+
+K
+
+(d¯ij + d^ij )xijk +
+
+d¯j0xijK
+
+k=1 (i,j)A
+
+(i,j)A
+
+K -1
+=
+
+(d¯ij + d^ij )xijk +
+
+(d¯ij + d^ij )xijK +
+
+d¯j0xijK
+
+k=1 (i,j)A
+
+(i,j)A
+
+(i,j)A
+
+K -1
+
+
+(d¯ij + d^ij )xijk +
+
+(d¯ij + d¯j0)xijK
+
+k=1 (i,j)A
+
+(i,j)A
+
+K -1 1
+>
+
+(d¯ij + d^ij )xijk +
+
+d¯j0xij(K -1)
+
+k=1 (i,j)A
+
+(i,j)A
+
+where relation 1 is due to the triangle inequality.
+
+(19)
+
+14
+
+Based on (18) and (19) we have
+
+K -1
+
+(d¯ij + d^ij )xijk +
+
+d¯j0xij(K -1)  L
+
+k=1 (i,j)A
+
+(i,j)A
+
+which implies
+
+K -1
+
+dij xijk +
+
+d¯j0xij(K -1)  L, d  U
+
+k=1 (i,j)A
+
+(i,j)A
+
+Following the above transformation recursively, finally we can get
+
+(20) (21)
+
+K
+
+dij xijk +
+
+d¯j0xijK  L, K = 1, ..., K , d  U
+
+k=1 (i,j)A
+
+(i,j)A
+
+(22)
+
+So the optimal solution (xij, xijk, yi, zk) is feasible to the static robust model Static-Sequential. We conclude that the optimal solution of the static robust model Static-Sequential is a feasible solution
+
+of the static robust model Static-Concurrent, and the optimal solution of the static robust model Static-
+
+Concurrent is a feasible solution of the static robust model Static-Sequential. Then the two models have the
+
+same optimal solution, this implies the two models are equivalent.
+
+The following corollary shows the equivalence between two two-stage robust models.
+
+Corollary 1. The two-stage robust models Two-stage-Sequential and Two-stage-Concurrent are equivalent.
+
+Proof. Based on Theorem 1, Theorem 2 and Theorem 3, we can draw this conclusion.
+
+Based on Theorems 1-3 and Corollary 1, we know that the four models Two-stage-Sequential, StaticSequential, Two-stage-Concurrent and Static-Concurrent are equivalent to each other. It is an interesting conclusion that Two-stage-Sequential and Two-stage-Concurrent are equivalent with the box uncertainty set defined even though they are based on different recourse models. We can use the Two-stage-Concurrent model to deal with the two-stage OPSW with sequentially realized weights, and the Two-stage-Concurrent model is computationally more efficient than the Two-stage-Sequential model.
+
+5. Case study
+In this section, a case study is presented to illustrate the effectiveness of the proposed two-stage robust models for OPSW.
+5.1. Test instance The test instance used in our experiments is based on problem set 3 from Tsiligirides (1984) which was
+originally used for the deterministic OP. Problem set 3 contains 20 instances with the same 33 nodes and 20 varying length limits. We only consider 3 length limits: 80, 90 and 100. In the instance, the end point is ignored and the start point is kept as the depot location. The problem set can be found with URL: http://www.mech.kuleuven.be/en/cib/op.
+15
+
+To generate the uncertain instances for OPSW, we use the Euclidean distances between nodes as the expected weights d¯ij. Two kinds of uncertain instances are generated with the deviation values d^ij chosen as 0.2d¯ij and 0.5d¯ij respectively. Then, based on different length limits and different deviation values, we can get a total of 6 uncertain instances for OPSW.
+
+5.2. Experiments In order to evaluate the effectiveness of the proposed two-stage robust models, we use one-stage robust
+model for OPSW as a comparison. In the one-stage robust model, all the decision variables are "here and now" and there are no recourse decision variables considered in the model. The one-stage robust model follows the traditional RO paradigm and is formulated as follows:
+(One-stage-RO):
+
+maximize
+
+si
+
+xij
+
+iN jN +\{i}
+
+(23a)
+
+subject to (1c) - (1g)
+
+(23b)
+
+dijxij  L, d  U
+(i,j)A
+
+(23c)
+
+As proven in Section 4, the Static-Concurrent model is equivalent to the two-stage robust models Two-
+
+stage-Sequential and Two-stage-Concurrent and is computationally more efficient than the Static-Sequential
+
+model. So we use Static-Concurrent model to solve the two-stage OPSW with sequential or concurrent
+
+realized weights. We generate 1000 scenarios for the d^ij = 0.2d¯ij and d^ij = 0.5d¯ij cases respectively for simulation purposes.
+Suppose the uncertain weights d~ij are uniformly distributed on interval [d¯ij - d^ij, d¯ij + d^ij]. Then the realizations dij are sampled uniformly on the interval [d¯ij - d^ij, d¯ij + d^ij].
+For each uncertain instance, the Static-Concurrent model and the One-stage-RO model are solved by
+
+CPLEX 12.6 with  = 0, 0.1, ..., 1 respectively. The robust solutions obtained by the Static-Concurrent
+
+model and the One-stage-RO model are then simulated with the 1000 scenarios for the two-stage OPSW
+
+with Recourse-Sequential and Recourse-Concurrent actions. The objective values of the second-stage recourse
+
+problems are calculated by Algorithm 1 and Algorithm 2. The mean objective values and the standard
+
+deviations of the robust solutions are statistically summarized.
+
+5.3. Numerical results Tables 1-6 show the numerical results of the 6 instances with different length limits and different deviation
+values. The Obj. in the tables represents the objective value obtained by the One-stage-RO model or the Static-Concurrent model. First we can observe that the objective values of the robust solutions are decreasing as parameter  increases for both the one-stage and two-stage RO models. As  increases, the size of the uncertainty set U is increasing which means the protection level is increasing, and the resulting robust solution is more conservative.
+
+16
+
+Table 1: Numerical results of the instance with L = 80 and d^ij = 0.2d¯ij
+
+One-stage RO
+
+Two-stage RO
+
+
+
+Sequential
+
+Concurrent
+
+Sequential
+
+Concurrent
+
+Obj.
+
+Obj.
+
+Mean Std. Mean Std.
+
+Mean Std. Mean Std.
+
+0.00 710.00 680.19 41.66 681.63 41.43 710.00 693.76 27.37 695.29 24.89 0.10 690.00 676.52 28.56 677.93 27.62 700.00 691.55 19.85 692.43 18.59 0.20 690.00 688.48 7.08 688.82 6.36 690.00 685.64 18.87 685.70 18.79 0.30 680.00 679.58 6.02 679.58 6.02 680.00 679.93 1.38 679.94 1.34 0.40 670.00 670.00 0.00 670.00 0.00 670.00 679.77 1.50 679.78 1.47 0.50 660.00 660.00 0.00 660.00 0.00 660.00 660.00 0.00 660.00 0.00 0.60 650.00 650.00 0.00 650.00 0.00 650.00 650.00 0.00 650.00 0.00 0.70 640.00 640.00 0.00 640.00 0.00 640.00 640.68 5.17 640.68 5.17 0.80 630.00 630.00 0.00 630.00 0.00 640.00 640.00 0.00 640.00 0.00 0.90 630.00 630.00 0.00 630.00 0.00 630.00 630.00 0.00 630.00 0.00 1.00 620.00 620.00 0.00 620.00 0.00 630.00 630.00 0.00 630.00 0.00
+
+Table 2: Numerical results of the instance with L = 80 and d^ij = 0.5d¯ij
+
+One-stage RO
+
+Two-stage RO
+
+
+
+Sequential
+
+Concurrent
+
+Sequential
+
+Concurrent
+
+Obj.
+
+Obj.
+
+Mean Std. Mean Std.
+
+Mean Std. Mean Std.
+
+0.00 710.00 652.47 77.39 657.90 73.04 710.00 652.47 77.39 657.90 73.04 0.10 680.00 662.97 40.82 664.29 39.68 680.00 680.41 25.69 681.26 24.96 0.20 660.00 658.71 8.26 658.85 7.74 660.00 655.91 17.83 656.05 17.58
+
+0.30 640.00 639.83 0.40 620.00 620.00 0.50 610.00 610.00 0.60 590.00 590.00 0.70 570.00 570.00 0.80 570.00 570.00 0.90 550.00 550.00 1.00 540.00 540.00
+
+2.07 0.00 0.00 0.00 0.00 0.00 0.00 0.00
+
+639.86 620.00 610.00 590.00 570.00 570.00 550.00 540.00
+
+2.00 0.00 0.00 0.00 0.00 0.00 0.00 0.00
+
+640.00 630.00 610.00 600.00 580.00 570.00 560.00 550.00
+
+639.48 629.99 631.71 600.00 580.00 600.00 593.93 570.00
+
+6.43 0.32 19.40 0.00 0.00 0.00 24.90 0.00
+
+639.54 629.99 633.11 600.00 580.00 600.00 596.25 570.00
+
+6.15 0.32 19.23 0.00 0.00 0.00 28.57 0.00
+
+For both the one-stage and two-stage robust models, the mean objective values with concurrent recourse are greater than or equal to the corresponding mean objective values with sequential recourse. The reason is that the concurrent recourse has more information on the uncertainty realizations than the sequential
+17
+
+Table 3: Numerical results of the instance with L = 90 and d^ij = 0.2d¯ij
+
+One-stage RO
+
+Two-stage RO
+
+
+
+Sequential
+
+Concurrent
+
+Sequential
+
+Concurrent
+
+Obj.
+
+Obj.
+
+Mean Std. Mean Std.
+
+Mean Std. Mean Std.
+
+0.00 770.00 744.96 35.74 748.44 33.24 770 728.16 44.97 729.68 45.17 0.10 760.00 750.74 25.94 751.33 25.31 760 754.09 17.22 754.47 16.44 0.20 750.00 746.09 17.02 746.51 16.21 750 752.69 10.43 752.93 9.90 0.30 740.00 739.80 2.36 739.85 2.25 740 747.12 5.07 747.26 4.81 0.40 730.00 730.00 0.00 730.00 0.00 730 730.00 0.00 730.00 0.00 0.50 720.00 720.00 0.00 720.00 0.00 720 720.00 0.00 720.00 0.00 0.60 710.00 710.00 0.00 710.00 0.00 710 710.00 0.00 710.00 0.00 0.70 700.00 700.00 0.00 700.00 0.00 710 736.43 4.83 736.71 4.74 0.80 690.00 690.00 0.00 690.00 0.00 690 690.00 0.00 690.00 0.00 0.90 680.00 680.00 0.00 680.00 0.00 690 700.00 0.00 700.00 0.00 1.00 670.00 670.00 0.00 670.00 0.00 680 680.00 0.00 680.00 0.00
+
+Table 4: Numerical results of the instance with L = 90 and d^ij = 0.5d¯ij
+
+One-stage RO
+
+Two-stage RO
+
+
+
+Sequential
+
+Concurrent
+
+Sequential
+
+Concurrent
+
+Obj.
+
+Obj.
+
+Mean Std. Mean Std.
+
+Mean Std. Mean Std.
+
+0.00 770.00 722.34 58.05 727.46 57.50 770 719.97 59.25 725.56 58.42 0.10 740.00 718.99 48.56 721.56 43.38 740 730.86 38.69 733.30 36.30 0.20 720.00 718.37 10.40 718.43 10.37 720 716.06 16.54 716.74 15.18
+
+0.30 690.00 689.98 0.40 670.00 670.00 0.50 650.00 650.00 0.60 640.00 640.00 0.70 620.00 620.00 0.80 610.00 610.00 0.90 600.00 600.00 1.00 580.00 580.00
+
+0.45 0.00 0.00 0.00 0.00 0.00 0.00 0.00
+
+689.98 670.00 650.00 640.00 620.00 610.00 600.00 580.00
+
+0.45 0.00 0.00 0.00 0.00 0.00 0.00 0.00
+
+700 699.83 2.88 699.88 2.57 680 683.83 12.27 684.13 13.68 660 679.90 1.18 679.92 1.09 640 701.27 26.59 702.86 26.30 630 630.00 0.00 630.00 0.00 610 650.00 13.75 650.21 14.85 600 649.83 26.63 652.74 31.74 590 604.88 13.09 608.52 16.38
+
+recourse, so the concurrent recourse can make a better recourse decision and achieve a lower loss of the collected score. However, the gaps between the mean objective values with sequential recourse and concurrent recourse are very small which means that the difference between the two recourse actions is small.
+18
+
+Table 5: Numerical results of the instance with L = 100 and d^ij = 0.2d¯ij
+
+One-stage RO
+
+Two-stage RO
+
+ Obj.
+
+Sequential Mean Std.
+
+Concurrent Obj.
+Mean Std.
+
+Sequential Mean Std.
+
+Concurrent Mean Std.
+
+0.00 800 0.10 800 0.20 790 0.30 790 0.40 780 0.50 780 0.60 760 0.70 760 0.80 740 0.90 740 1.00 730
+
+795.39 7.86 795.68 7.84 800 798.06 5.57 798.14 5.53 800 789.83 1.86 789.83 1.86 790 789.98 0.45 789.99 0.32 790 780.00 0.00 780.00 0.00 790 780.00 0.00 780.00 0.00 780 760.00 0.00 760.00 0.00 770 760.00 0.00 760.00 0.00 760 740.00 0.00 740.00 0.00 750 740.00 0.00 740.00 0.00 740 730.00 0.00 730.00 0.00 730
+
+776.88 797.02 789.77 789.89 790.00 780.00 770.00 760.00 769.39 740.00 730.00
+
+45.66 7.11 1.86 1.70 0.00 0.00 0.00 0.00 2.39 0.00 0.00
+
+778.99 797.20 789.78 789.89 790.00 780.00 770.00 760.00 769.48 740.00 730.00
+
+41.13 7.05 1.83 1.70 0.00 0.00 0.00 0.00 2.22 0.00 0.00
+
+Table 6: Numerical results of the instance with L = 100 and d^ij = 0.5d¯ij
+
+ Obj.
+0.00 800 0.10 790 0.20 780 0.30 750 0.40 730 0.50 710 0.60 690 0.70 670 0.80 650 0.90 630 1.00 620
+
+One-stage RO
+
+Sequential
+
+Concurrent
+
+Mean Std. Mean Std.
+
+Obj.
+
+Two-stage RO
+
+Sequential
+
+Concurrent
+
+Mean Std. Mean Std.
+
+778.79 43.57 779.34 43.51 800 787.07 19.79 787.63 18.57 774.72 40.31 776.13 38.69 790 776.04 34.31 778.05 32.25 777.50 14.56 778.10 12.25 780 778.71 8.64 778.81 8.18 749.71 4.56 749.77 4.15 760 759.72 3.15 759.79 2.84 730.00 0.00 730.00 0.00 730 749.27 3.57 749.33 3.44 710.00 0.00 710.00 0.00 710 710.00 0.00 710.00 0.00 690.00 0.00 690.00 0.00 690 719.75 2.29 719.81 2.02 670.00 0.00 670.00 0.00 670 718.05 38.05 720.08 38.58 650.00 0.00 650.00 0.00 660 720.00 0.00 720.00 0.00 630.00 0.00 630.00 0.00 640 650.00 0.00 650.00 0.00 620.00 0.00 620.00 0.00 630 640.00 0.00 640.00 0.00
+
+Comparing the mean objective values of the one-stage RO and two-stage RO with the sequential recourse or concurrent recourse, the two-stage RO achieves better values than the one-stage RO in most cases. This is because that the two-stage RO considers the recourse decisions into the model but the one-stage RO only
+19
+
+considers the first-stage decisions. We also notice that the one-stage RO can achieve better mean objective values than the two-stage RO in some cases. Figures 1-3 show visual comparisions between the one-stage RO and two-stage RO with sequential recourse. The comparisions between the one-stage RO and two-stage RO with concurrent recourse are visually similar. The figures clearly show that the two-stage RO dominates the one-stage RO in most cases, which show the effectiveness and superiority of the proposed two-stage robust models for dealing with the two-stage OPSW.
+In Tables 1-6 we also report the standard deviations of the simulated robust solutions for both the onestage RO and the two-stage RO. The standard deviations can reflect the stabilities of the obtained robust solutions. From the tables we can see that as parameter  increasing, the standard deviations tend to decrease, which means the robust solutions are more stable with a larger uncertainty set. We can also observe that the two-stage RO can mostly achieve better mean objective values and lower or small standard deviation values at the same time comparing with the one-stage RO. This further indicates that the proposed two-stage robust models can efficiently tackle the two-stage OPSW.
+Figure 1: Comparision between the one-stage RO and two-stage RO with sequential recourse, L = 80, d^ij = 0.2d¯ij (left), d^ij = 0.5d¯ij (right)
+6. Conclusions In this paper, we considered the OPSW with recourse actions. Based on different uncertainty realization
+ways, we presented two recourse models: one is the Recourse-Sequential model and the other is the RecourseConcurrent model. The Recourse-Concurrent model has less decision variables and less constraints and is computationally more attractive. We applied the two-stage RO paradigm to the OPSW and introduced two two-stage RO models based on two recourse models. We theoretically proved that with the box uncertainty set defined, the two-stage robust models are equivalent to their corresponding static robust models and the two two-stage robust models are also equivalent to each other. Subsequently, the two-stage robust models for
+20
+
+Figure 2: Comparision between the one-stage RO and two-stage RO with sequential recourse, L = 90, d^ij = 0.2d¯ij (left), d^ij = 0.5d¯ij (right)
+Figure 3: Comparision between the one-stage RO and two-stage RO with sequential recourse, L = 100, d^ij = 0.2d¯ij (left), d^ij = 0.5d¯ij (right)
+OPSW can be determined to optimality by solving their corresponding static models. Comparative studies between the two-stage robust models and one-stage robust model for OPSW showed the effectiveness and superiority of the proposed two-stage robust models for tackling the two-stage OPSW.
+We provide the following research directions as our future works: 1. The two-stage robust models for OPSW proposed in this paper are based on the box uncertainty set,
+therefore we can draw theoretical conclusions on the equivalence between the two-stage robust models and their corresponding static robust models. Other uncertainty sets (e.g. the polyhedral uncertianty set) could be defined in the two-stage robust models and the performance of the corresponding static robust models can be studied.
+21
+
+2. The OPSW considered in this paper is with a two-stage setting where the decision variables are classified into two categories. As the planned path is executed dynamically and the nodes are visited sequentially, hence the OPSW can be viewed as a multi-stage decision making problem. So we can apply the multi-stage RO methodology and build a multi-stage robust model for the OPSW with a multi-stage setting.
+Conflict of Interests
+The authors declare that there is no conflict of interest regarding the publication of this manuscript.
+Acknowledgments
+This work was supported by National Natural Science Foundation of China (No. 61573277, 71471158), the Research Grants Council of the Hong Kong Special Administrative Region, China (Project No. PolyU 15201414), the Fundamental Research Funds for the Central Universities, the Open Research Fund of the State Key Laboratory of Astronautic Dynamics under Grant 2015ADL-DW403, and the Scientific Research Foundation for the Returned Overseas Chinese Scholars, State Education Ministry, Natural Science Basic Research Plan in Shaanxi Province of China (No. 2015JM6316). The authors also would like to thank The Hong Kong Polytechnic University Research Committee for financial and technical support.
+References
+L. Evers, K. Glorie, S. Van Der Ster, A. I. Barros, H. Monsuur, A two-stage approach to the orienteering problem with stochastic weights, Computers & Operations Research 43 (2014) 248­260.
+B. L. Golden, L. Levy, R. Vohra, The orienteering problem, Naval research logistics 34 (1987) 307­318. F. Mufalli, R. Batta, R. Nagi, Simultaneous sensor selection and routing of unmanned aerial vehicles for
+complex mission plans, Computers & Operations Research 39 (2012) 2787­2799. L. Evers, T. Dollevoet, A. I. Barros, H. Monsuur, Robust uav mission planning, Annals of Operations
+Research 222 (2014) 293­315. P. Vansteenwegen, D. Van Oudheusden, The mobile tourist guide: an or opportunity, OR insight 20 (2007)
+21­27. D. Gavalas, C. Konstantopoulos, K. Mastakas, G. Pantziou, A survey on algorithmic approaches for solving
+tourist trip design problems, Journal of Heuristics 20 (2014) 291­328. J. Howe, Crowdsourcing: How the power of the crowd is driving the future of business, Random House,
+2008.
+22
+
+M.-C. Yuen, I. King, K.-S. Leung, A survey of crowdsourcing systems, in: Privacy, Security, Risk and Trust (PASSAT) and 2011 IEEE Third Inernational Conference on Social Computing (SocialCom), 2011 IEEE Third International Conference on, IEEE, pp. 766­773.
+P. Vansteenwegen, W. Souffriau, D. Van Oudheusden, The orienteering problem: A survey, European Journal of Operational Research 209 (2011) 1­10.
+A. Gunawan, H. C. Lau, P. Vansteenwegen, Orienteering problem: A survey of recent variants, solution approaches and applications, European Journal of Operational Research (2016).
+T. Ilhan, S. M. Iravani, M. S. Daskin, The orienteering problem with stochastic profits, Iie Transactions 40 (2008) 406­421.
+A. M. Campbell, M. Gendreau, B. W. Thomas, The orienteering problem with stochastic travel and service times, Annals of Operations Research 186 (2011) 61­81.
+H. C. Lau, W. Yeoh, P. Varakantham, D. T. Nguyen, H. Chen, Dynamic stochastic orienteering problems for risk-aware applications, arXiv preprint arXiv:1210.4874 (2012).
+P. Varakantham, A. Kumar, Optimization approaches for solving chance constrained stochastic orienteering problems, in: International Conference on Algorithmic DecisionTheory, Springer, pp. 387­398.
+S. Zhang, J. W. Ohlmann, B. W. Thomas, A priori orienteering with time windows and stochastic wait times at customers, European Journal of Operational Research 239 (2014) 70­79.
+A. Ben-Tal, A. Goryashko, E. Guslitzer, A. Nemirovski, Adjustable robust solutions of uncertain linear programs, Mathematical Programming 99 (2004) 351­376.
+Y. An, B. Zeng, Exploring the modeling capacity of two-stage robust optimization: Variants of robust unit commitment model, IEEE Transactions on Power Systems 30 (2015) 109­122.
+B. Wang, S. Wang, X.-z. Zhou, J. Watada, Two-stage multi-objective unit commitment optimization under hybrid uncertainties, IEEE Transactions on Power Systems 31 (2016) 2266­2277.
+A. Atamtu¨rk, M. Zhang, Two-stage robust network flow and design under demand uncertainty, Operations Research 55 (2007) 662­673.
+F. Ord´on~ez, J. Zhao, Robust capacity expansion of network flows, Networks 50 (2007) 136­145.
+A. Takeda, S. Taguchi, R. H. Tu¨tu¨ncu¨, Adjustable robust optimization models for a nonlinear two-period system, Journal of Optimization Theory and Applications 136 (2008) 275­295.
+G. A. Hanasusanto, D. Kuhn, W. Wiesemann, K-adaptability in two-stage robust binary programming, Operations Research 63 (2015) 877­891.
+23
+
+U. Feige, K. Jain, M. Mahdian, V. Mirrokni, Robust combinatorial optimization with exponential scenarios, in: International Conference on Integer Programming and Combinatorial Optimization, Springer, pp. 439­453.
+D. Bertsimas, V. Goyal, B. Y. Lu, A tight characterization of the performance of static solutions in two-stage adjustable robust linear optimization, Mathematical Programming 150 (2015) 281­319.
+D. Bertsimas, D. Pachamanova, M. Sim, Robust linear optimization under general norms, Operations Research Letters 32 (2004) 510­516.
+A. Ben-Tal, L. El Ghaoui, A. Nemirovski, Robust optimization, Princeton University Press, 2009. T. Tsiligirides, Heuristic methods applied to orienteering, Journal of the Operational Research Society 35
+(1984) 797­809.
+24
+
+

@@ -1,0 +1,3414 @@
+THE KPZ FIXED POINT
+KONSTANTIN MATETSKI, JEREMY QUASTEL, AND DANIEL REMENIK
+ABSTRACT. An explicit Fredholm determinant formula is derived for the multipoint distribution of the height function of the totally asymmetric simple exclusion process with arbitrary initial condition. The method is by solving the biorthogonal ensemble/non-intersecting path representation found by [Sas05; BFPS07]. The resulting kernel involves transition probabilities of a random walk forced to hit a curve defined by the initial data. In the KPZ 1:2:3 scaling limit the formula leads in a transparent way to a Fredholm determinant formula, in terms of analogous kernels based on Brownian motion, for the transition probabilities of the scaling invariant Markov process at the centre of the KPZ universality class. The formula readily reproduces known special self-similar solutions such as the Airy1 and Airy2 processes. The invariant Markov process takes values in real valued functions which look locally like Brownian motion, and is Hölder 1/3- in time.
+
+arXiv:1701.00018v1 [math.PR] 30 Dec 2016
+
+CONTENTS
+
+1. The KPZ universality class
+
+1
+
+2. TASEP
+
+3
+
+2.1. Biorthogonal ensembles
+
+4
+
+2.2. TASEP kernel as a transition probability with hitting
+
+7
+
+2.3. Formulas for TASEP with general initial data
+
+8
+
+3. 1:2:3 scaling limit
+
+10
+
+4. The invariant Markov process
+
+15
+
+4.1. Fixed point formula
+
+15
+
+4.2. Markov property
+
+16
+
+4.3. Regularity and local Brownian behavior
+
+17
+
+4.4. Airy processes
+
+17
+
+4.5. Symmetries and variational formulas
+
+19
+
+4.6. Regularity in time
+
+20
+
+4.7. Equilibrium space-time covariance
+
+20
+
+Appendix A. Path integral formulas
+
+21
+
+Appendix B. Trace class estimates
+
+23
+
+Appendix C. Regularity
+
+29
+
+References
+
+31
+
+1. THE KPZ UNIVERSALITY CLASS
+All models in the one dimensional Kardar-Parisi-Zhang (KPZ) universality class (random growth models, last passage and directed polymers, random stirred fluids) have an analogue of the height function h(t, x) (free energy, integrated velocity) which is conjectured to converge at large time and
+Date: January 3, 2017. This is a preliminary version and will be updated; we welcome comments from readers. 1
+
+THE KPZ FIXED POINT
+
+2
+
+length scales ( 0), under the KPZ 1:2:3 scaling
+
+1/2h(-3/2t, -1x) - Ct,
+
+(1.1)
+
+to a universal fluctuating field h(t, x) which does not depend on the particular model, but does depend on the initial data class. Since many of the models are Markovian, the invariant limit process, the KPZ fixed point, will be as well. The purpose of this article is to describe this Markov process, and how it arises from certain microscopic models.
+
+The KPZ fixed point should not be confused with the Kardar-Parisi-Zhang equation [KPZ86],
+
+th = (xh)2 + x2h + 1/2
+
+(1.2)
+
+with  a space-time white noise, which is a canonical continuum equation for random growth, lending its name to the class. One can think of the space of models in the class as having a trivial, Gaussian fixed point, the Edwards-Wilkinson fixed point, given by (1.2) with  = 0 and the 1:2:4 scaling 1/2h(-2t, -1x) - Ct, and the non-trivial KPZ fixed point, given by (1.2) with  = 0. The KPZ equation is just one of many models, but it plays a distinguished role as the (conjecturally) unique heteroclinic orbit between the two fixed points. The KPZ equation can be obtained from microscopic models in the weakly asymmetric or intermediate disorder limits [BG97; AKQ14; MFQR17; CT15; CN16; CTS16] (which are not equivalent, see [HQ15]). This is the weak KPZ universality conjecture.
+
+However, the KPZ equation is not invariant under the KPZ 1:2:3 scaling (1.1), which is expected to send it, along with all other models in the class, to the true universal fixed point. In modelling, for example, edges of bacterial colonies, forest fires, spread of genes, the non-linearities or noise are often not weak, and it is really the fixed point that should be used in approximations and not the KPZ equation. However, progress has been hampered by a complete lack of understanding of the time evolution of the fixed point itself. Essentially all one had was a few special self-similar solutions, the Airy processes.
+
+Under the KPZ 1:2:3 scaling (1.1) the coefficients of (1.2) transform as   1/2. A naive guess
+
+would then be that the fixed point is nothing but the vanishing viscosity ( 0) solution of the
+
+Hamilton-Jacobi equation
+
+th = (xh)2 + x2h
+
+given by Hopf's formula
+
+h(t,
+
+x)
+
+=
+
+sup{-
+y
+
+ t
+
+(x
+
+-
+
+y)2
+
++
+
+h0(y)}.
+
+It is not: One of the key features of the class is a stationary solution consisting of (non-trivially) time
+
+dependent Brownian motion height functions (or discrete versions). But Brownian motions are not
+
+invariant for Hopf's formula (see [FM00] for the computation). Our story has another parallel in the
+
+dispersionless limit of KdV (  0 in)
+
+th = (xh)2 + x3h
+
+(in integrated form). Brownian motions are invariant for all , at least in the periodic case [QV08].
+But as far as we are aware, the zero dispersion limit has only been done on a case by case basis, with
+no general formulas. All of these lead, presumably, to various weak solutions of the pure non-linear evolution th = (xh)2, which is, of course, ill-posed.
+
+Our fixed point is also given by a variational formula (see Theorem 4.10) involving a residual forcing noise, the Airy sheet. But, unfortunately, our techniques do not allow us to characterize this noise. Instead, we obtain a complete description of the Markov field h(t, x) itself through the exact calculation of its transition probabilities (see Theorem 4.1).
+
+The strong KPZ universality conjecture (still wide open) is that this fixed point is the limit under the scaling (1.1) for any model in the class, loosely characterized by having: 1. Local dynamics; 2. Smoothing mechanism; 3. Slope dependent growth rate (lateral growth); 4. Space-time random forcing with rapid decay of correlations.
+Universal fixed points have become a theme in probability and statistical physics in recent years. 4d, SLE, Liouville quantum gravity, the Brownian map, the Brownian web, and the continuum random tree have offered asymptotic descriptions for huge classes of models. In general, these have been obtained as non-linear transformations of Brownian motions or Gaussian free fields, and their description relies to a
+
+THE KPZ FIXED POINT
+
+3
+
+large degree on symmetry. In the case of 4d, the main tool is perturbation theory. Even the recent theory of regularity structures [Hai14], which makes sense of the KPZ equation (1.2), does so by treating the non-linear term as a kind of perturbation of the linear equation.
+In our case, we have a non-perturbative two-dimensional field theory with a skew symmetry, and a solution should not in principle even be expected. What saves us is the one-dimensionality of the fixed time problem, and the fact that several discrete models in the class have an explicit description using non-intersecting paths. Here we work with TASEP, obtaining a complete description of the transition probabilities in a form which allows us to pass transparently to the 1:2:3 scaling limit1. In a sense, a recipe for the solution of TASEP has existed since the work of [Sas05], who discovered a highly non-obvious representation in terms of non-intersecting paths which in turn can be studied using the structure of biorthogonal ensembles [BFPS07]. However, the biorthogonalization was only implicit, and one had to rely on exact solutions for a couple of special initial conditions to obtain the asymptotic Tracy-Widom distributions FGUE and FGOE [TW94; TW96] and the Baik-Rains distribution FBR [BR01], and their spatial versions, the Airy processes [Joh00; Joh03; Sas05; BFPS07; BFP07; BFP10]. In this article, motivated by the probabilistic interpretation of the path integral forms of the kernels in the Fredholm determinants, and exploiting the skew time reversibility, we are able to obtain a general formula in which the TASEP kernel is given by a transition probability of a random walk forced to hit the initial data.
+We end this introduction with an outline of the paper and a brief summary of our results. Section 2.1 recalls and solves the biorthogonal representation of TASEP, motivated by the path integral representation, which is derived in the form we need it in Appendix A.2. The biorthogonal functions appearing in the resulting Fredholm determinants are then recognized as hitting probabilities in Section 2.2, which allows us to express the kernels in terms of expectations of functionals involving a random walk forced to hit the initial data. The determinantal formulas for TASEP with arbitrary initial conditions are in Theorem 2.6. In Section 3, we pass to the KPZ 1:2:3 scaling limit to obtain determinantal formulas for transition probabilities of the KPZ fixed point. For this purpose it turned out to be easier to use formulas for right-finite initial TASEP data. But since we have exact formulas, we can obtain a very strong estimate (Lemma 3.2) on the propagation speed of information which allows us to show there is no loss of generality in doing so. Section 4 opens with the general formula for the transition probabilities of the KPZ fixed point, Theorem 4.1; readers mostly interested in the physical implications may wish to skip directly there. We then work in Section 4.2 to show that the Chapman-Kolmogorov equations hold. This is done by obtaining a uniform bound on the local Hölder  < 1/2 norm of the approximating Markov fields. The proof is in Appendix C. The rest of Section 4 gives the key properties of the fixed point: regularity in space and time and local Brownian behavior, various symmetries, variational formulas in terms of the Airy sheet, and equilibrium space-time covariance; we also show how to recover some of the classical Airy processes from our formulas. Sections 3 and 4 are done at the level of pointwise convergence of kernels, skipping moreover some of the details. The convergence of the kernels is upgraded to trace class in Appendix B, where the remaining details are filled in.
+So, in a sense, everything follows once one is able to explictly biorthogonalize TASEP. We begin there.
+
+2. TASEP
+The totally asymmetric simple exclusion process (TASEP) consists of particles with positions · · · < Xt(2) < Xt(1) < Xt(0) < Xt(-1) < Xt(-2) < · · · on Z  {-, } performing totally asymmetric nearest neighbour random walks with exclusion: Each particle independently attempts jumps to the neighbouring site to the right at rate 1, the jump being allowed only if that site is unoccupied (see [Lig85] for the non-trivial fact that the process with an infinite number of particles makes sense). Placing a necessarily infinite number of particles at ± allows for left- or right-finite data with no change of notation, the particles at ± playing no role in the dynamics. We follow the standard
+1The method works for several variants of TASEP which also have a representation through biorthogonal ensembles, which will appear in the updated version of this article.
+
+THE KPZ FIXED POINT
+
+4
+
+practice of ordering particles from the right; for right-finite data the rightmost particle is labelled 1. Let
+
+Xt-1(u) = min{k  Z : Xt(k)  u}
+
+denote the label of the rightmost particle which sits to the left of, or at, u at time t. The TASEP height function associated to Xt is given for z  Z by
+
+ht(z) = -2 Xt-1(z - 1) - X0-1(-1) - z,
+
+(2.1)
+
+which fixes h0(0) = 0. We will also choose the frame of reference
+
+X0-1(-1) = 1,
+
+i.e. the particle labeled 1 is initially the rightmost in Z<0.
+The height function is a random walk path ht(z + 1) = ht(z) + ^t(z) with ^t(z) = 1 if there is a particle at z at time t and -1 if there is no particle at z at time t. The dynamics of ht is that local max's become local min's at rate 1; i.e. if ht(z) = ht(z ± 1) + 1 then ht(z)  ht(z) - 2 at rate 1, the rest of the height function remaining unchanged. We can also easily extend the height function to a continuous function of x  R by linearly interpolating between the integer points.
+
+2.1. Biorthogonal ensembles. TASEP was first solved by Schütz [Sch97] using Bethe ansatz. He showed that the transition probability for N particles has a determinantal form
+
+P(Xt(1) = x1, . . . , Xt(N ) = xN ) = det(Fi-j(xN+1-i - X0(N + 1 - j), t))1i,jN (2.2)
+
+with
+
+(-1)n Fn(x, t) = 2i
+
+0,1
+
+dw w
+
+(1
+
+- w)-n wx-n
+
+et(w-1),
+
+where 0,1 is any simple loop oriented anticlockwise which includes w = 0 and w = 1. To mesh with our convention of infinitely many particles, we can place particles X0(j), j  0 at  and X0(j), j > N at -. Remarkable as it is, this formula is not conducive to asymptotic analysis where we want
+
+to consider the later positions of M N of the particles. This was overcome by [Sas05; BFPS07] who
+
+were able to reinterpret the integration of (2.2) over the excess variables as a kind of non-intersecting
+
+line ensemble, and hence the desired probabilities could be obtained from a biorthogonalization problem,
+
+which we describe next.
+
+First for a fixed vector a  RM and indices n1 < . . . < nM we introduce the functions
+
+a(nj, x) = 1x>aj ,
+
+¯a(nj, x) = 1xaj ,
+
+which also regard as multiplication operators acting on the space 2({n1, . . . , nM } × Z) (and later on L2({t1, . . . , tM } × R)). We will use the same notation if a is a scalar, writing
+a(x) = 1 - ¯a(x) = 1x>a.
+
+Theorem 2.1 ([BFPS07]). Suppose that TASEP starts with particles labeled 1, 2, . . . (so that, in particular, there is a rightmost particle)2,3 and let 1  n1 < n2 < · · · < nM  N . Then for t > 0 we
+have
+
+where
+
+P(Xt(nj)  aj, j = 1, . . . , M ) = det(I - ¯aKt¯a) 2({n1,...,nM }×Z)
+
+nj
+
+Kt(ni, xi; nj, xj) = -Qnj-ni (xi, xj) +
+
+nnii-k(xi)nnjj-k(xj ),
+
+k=1
+
+(2.3) (2.4)
+
+2We are assuming here that X0(j) <  for all j  1; particles at - are allowed. 3The [BFPS07] result is stated only for initial conditions with finitely many particles, but the extension to right-finite
+(infinite) initial conditions is straightforward because, given fixed indices n1 < n2 < · · · < nM , the distribution of Xt(n1), . . . , Xt(nM ) does not depend on the initial positions of the particles with indices beyond nM .
+
+THE KPZ FIXED POINT
+
+5
+
+and where4
+
+1 Q(x, y) = 2x-y 1x>y
+
+and
+
+nk (x)
+
+=
+
+1 2i
+
+dw
+
+(1 - w)k
+
+et(w-1),
+
+0
+
+2x-X0(n-k)wx+k+1-X0(n-k)
+
+(2.5)
+
+where 0 is any simple loop, anticlockwise oriented, which includes the pole at w = 0 but not the one
+
+at w = 1. The functions nk (x), k = 0, . . . , n - 1, are defined implicitly by
+
+(1) The biorthogonality relation xZ nk (x)n(x) = 1k= ; (2) 2-xnk (x) is a polynomial of degree at most n - 1 in x for each k.
+
+The initial data appear in a simple way in the nk , which can be computed explicitly. Qm is easy,
+
+Qm(x, y)
+
+=
+
+1 2x-y
+
+x-y-1 m-1
+
+1xy+m,
+
+and moreover Q and Qm are invertible:
+
+Q-1(x, y) = 2 · 1x=y-1 - 1x=y,
+
+Q-m(x, y) = (-1)y-x+m2y-x m . y-x
+
+(2.6)
+
+It is not hard to check [BFPS07, Eq. 3.22] that for all m, n  Z, Qn-mnn-k = mm-k. In particular,
+
+nk = Q-kn0-k, while by Cauchy's residue theorem we have n0 = RX0(n), where y(x) = 1x=y
+
+and
+
+1 R(x, y) =
+2i
+
+dw
+0
+
+e-t(1-w) 2x-y wx-y+1
+
+=
+
+e-t
+
+tx-y 2x-y(x -
+
+y)!
+
+1xy
+
+.
+
+R is also invertible, with
+
+R-1(x, y) = 1 2i
+
+dw
+0
+
+et(1-w) 2x-y wx-y+1
+
+=
+
+et
+
+(-t)x-y 2x-y(x - y)!
+
+1xy
+
+.
+
+Q and R commute, because Q(x, y) and R(x, y) only depend on x - y. So
+
+(2.7)
+
+nk = RQ-kX0(n-k).
+
+(2.8)
+
+The nk , on the other hand, are defined only implicitly through 1 and 2. Only for a few special cases of initial data (step, see e.g. [Fer15]; and periodic [BFPS07; BFP07; BFS08]) were they known, and
+hence only for those cases asymptotics could be performed, leading to the Tracy-Widom FGUE and FGOE one-point distributions, and then later to the Airy processes for multipoint distributions.
+We are now going to solve for the nk for any initial data. Let us explain how this can be done starting just from the solution for step initial data X0(i) = -i, i  1. In addition to the extended kernel formula (2.3), one has a path integral formula (see Appendix A.2 for the proof),
+
+det I - Kt(nm)(I - Qn1-nm a1 Qn2-n1 a2 · · · Qnm-nm-1 am ) L2(R),
+
+(2.9)
+
+where
+
+Kt(n) = Kt(n, ·; n, ·).
+
+(2.10)
+
+Such formulas were first obtained in [PS02] for the Airy2 process (see [PS11] for the proof), and later extended to the Airy1 process in [QR13a] and then to a very wide class of processes in [BCR15].
+
+The key is to recognize the kernel Q(x, y) as the transition probabilities of a random walk (which is why we conjugated the [BFPS07] kernel by 2x) and then a1 Qn2-n1 a2 · · · Qnm-nm-1 am (x, y) as the probability that this walk goes from x to y in nm - n1 steps, staying above a1 at time n1, above a2 at time n2, etc. Next we use the skew time reversibility of TASEP, which is most easily stated in terms
+of the height function,
+
+Pf (ht(x)  g(x), x  Z) = P-g(ht(x)  -f (x), x  Z) ,
+
+(2.11)
+
+4We have conjugated the kernel Kt from [BFPS07] by 2x for convenience. The additional X0(n - k) in the power of 2 in the nk 's is also for convenience and is allowed because it just means that the nk 's have to be multiplied by 2X0(n-k).
+
+THE KPZ FIXED POINT
+
+6
+
+the subscript indicating the initial data. In other words, the height function evolving backwards in time is indistiguishable from minus the height function. Now suppose we have the solution (2.4) for step initial data centered at x0, which means h0 is the peak -|x - x0|. The multipoint distribution at time t is given by (2.9), but we can use (2.11) to reinterpret it as the one point distribution at time (t, x0), starting from a series of peaks. The multipoint distributions can then be obtained by extending the resulting kernel in the usual way, as in (2.4) (see also (A.1)). One can obtain the general formula and then try to justify proceeding in this fashion. But, in fact, it is easier to use this line of reasoning to simply guess the formula, which can then be checked from Theorem 2.1. This gives us our key result.
+
+Theorem 2.2. Fix 0  k < n and consider particles at X0(1) > X0(2) > · · · > X0(n). Let hnk ( , z) be the unique solution to the initial­boundary value problem for the backwards heat equation
+
+ 
+
+(Q
+
+)-1
+
+hnk
+
+(
+
+, z)
+
+=
+
+hnk (
+
++ 1, z)
+
+
+
+hnk (k, z) = 2z-X0(n-k)
+
+ 
+
+hnk (
+
+, X0(n
+
+-
+
+k))
+
+=
+
+0
+
+< k, z  Z; z  Z;
+< k.
+
+Then
+
+nk (z) = (R)-1hnk (0, ·)(z) = hnk (0, y)R-1(y, z).
+yZ
+
+Here Q(x, y) = Q(y, x) is the kernel of the adjoint of Q (and likewise for R).
+
+(2.12a) (2.12b) (2.12c)
+
+Remark 2.3. It is not true that Qhnk ( + 1, z) = hnk ( , z). In fact, in general Qhnk (k, z) is divergent.
+
+Proof. The existence and uniqueness is an elementary consequence of the fact that the dimension of ker(Q)-1 is 1, and it consists of the function 2z, which allows us to march forwards from the initial
+condition hnk (k, z) = 2z-X0(n-k) uniquely solving the boundary value problem hnk ( , X0(n - k)) = 0 at each step. We next check the biorthogonality.
+
+n(z)nk (z) =
+
+R(z, z1)Q- (z1, X0(n - ))hnk (0, z2)R-1(z2, z)
+
+zZ
+
+z,z1,z2Z
+
+= Q- (z, X0(n - ))hnk (0, z) = (Q)- hnk (0, X0(n - )).
+
+zZ
+
+For  k, we use the boundary condition hnk ( , X0(n - k)) = 1 =k, which is both (2.12b) and (2.12c), to get
+
+(Q)- hnk (0, X0(n - )) = hnk ( , X0(n - )) = 1k= . For > k, we use (2.12a) and 2z  ker (Q)-1
+
+(Q)- hnk (0, X0(n - )) = (Q)-( -k-1)(Q)-1hnk (k, X0(n - )) = 0.
+
+Finally, we show that 2-xnk (x) is a polynomial of degree at most k in x. We have
+
+2-xnk (x) = 2-x
+
+et
+
+(-t)y-x 2y-x(y - x)!
+
+h(0n,k)(y)
+
+=
+
+et
+
+(-t)y y!
+
+2-(x+y)h0(n,k)(x
+
++
+
+y).
+
+yx
+
+y0
+
+We will show that 2-xhnk (0, x) is a polynomial of degree at most k in x. From this it follows that
+
+y0
+
+(-t)y y!
+
+2-(x+y)hnk (0,
+
+x
+
++
+
+y)
+
+=
+
+e-t pk (x)
+
+for
+
+some
+
+polynomial
+
+pk
+
+of
+
+degree
+
+at
+
+most
+
+k,
+
+and
+
+thus
+
+we get 2-xnk (x) = pk(x).
+
+To see that 2-xhnk (0, x) is a polynomial of degree at most k, we proceed by induction. Note first that, by (2.12b), 2-xhnk (k, x) is a polynomial of degree 0. Assume now that 2-xhnk ( , x) is a polynomial of
+
+degree at most k - for some 0 <  k. By (2.12a) and (2.6) we have
+
+2-xhnk ( , x) = 2-x(Q)-1hnk ( - 1, x) = 2-(x-1)hnk ( - 1, x - 1) - 2-xhnk ( - 1, x),
+
+which implies that 2-xhnk ( - 1, x) = hnk ( , X0(n - k)) -
+
+x j=X0(n-k)+1
+
+2-j
+
+hnk (
+
+, j),
+
+which
+
+(using
+
+(2.12b) and (2.12c)) is a polynomial of degree at most k - + 1 by the inductive hypothesis.
+
+THE KPZ FIXED POINT
+
+7
+
+2.2. TASEP kernel as a transition probability with hitting. We will restrict for a while to the single time kernel Kt(n) defined in (2.10). The multi-time kernel can then be recovered as (see (A.5))
+
+Kt(ni, ·; nj , ·) = -Qnj-ni 1ni<nj + Qnj-ni Kt(nj).
+
+(2.13)
+
+Let so that
+
+n-1
+G0,n(z1, z2) = Qn-k(z1, X0(n - k))hnk (0, z2),
+k=0
+Kt(n) = RQ-nG0,nR-1.
+
+(2.14) (2.15)
+
+Below the "curve" X0(n - ) =0,...,n-1, the functions hnk ( , z) have an important physical inter-
+
+pretation.
+
+Q(x,
+
+y)
+
+are
+
+the
+
+transition
+
+probabilities
+
+of
+
+a
+
+random
+
+walk
+
+Bm
+
+with
+
+Geom[
+
+1 2
+
+]
+
+jumps
+
+(strictly)
+
+to the right5. For 0   k  n - 1, define stopping times
+
+ ,n = min{m  { , . . . , n - 1} : Bm > X0(n - m)},
+
+with the convention that min  = . Then for z  X0(n - ) we have
+
+hnk (
+
+,
+
+z)
+
+=
+
+PB
+
+ -1
+
+=z
+
+
+
+,n = k
+
+,
+
+which can be proved by checking that (Q)-1hnk ( , ·)¯X0(n- ) = hnk ( + 1, ·)¯X0(n- -1). From the memoryless property of the geometric distribution we have for all z  X0(n - k) that
+
+PB- 1=z  0,n = k, Bk = y = 2X0(n-k)-yPB- 1=z  0,n = k ,
+
+and as a consequence we get, for z2  X0(n),
+
+n-1
+G0,n(z1, z2) = PB- 1=z2  0,n = k (Q)n-k(X0(n - k), z1)
+k=0
+
+n-1
+
+=
+
+PB- 1=z2  0,n = k, Bk = z (Q)n-k-1(z, z1)
+
+k=0 z>X0(n-k)
+
+= PB- 1=z2  0,n < n, Bn-1 = z1 ,
+
+(2.16)
+
+which is the probability for the walk starting at z2 at time -1 to end up at z1 after n steps, having hit the curve X0(n - m) m=0,...,n-1 in between.
+The next step is to obtain an expression along the lines of (2.16) which holds for all z2, and not just z2  X0(n). We begin by observing that for each fixed y1, 2-y2Qn(y1, y2) extends in y2 to a polynomial 2-y2Q(n)(y1, y2) of degree n - 1 with
+
+Q(n)(y1, y2)
+
+=
+
+1 2i
+
+(1 + w)y1-y2-1
+
+dw
+0
+
+2y1-y2 wn
+
+=
+
+(y1 - y2 - 1)n-1 2y1-y2 (n - 1)!
+
+,
+
+(2.17)
+
+where (x)k = x(x - 1) · · · (x - k + 1) for k > 0 and (x)0 = 1 is the Pochhammer symbol. Note that
+
+Q(n)(y1, y2) = Qn(y1, y2),
+
+y1 - y2  1.
+
+(2.18)
+
+Using (2.6) and (2.17), we have Q-1Q(n) = Q(n)Q-1 = Q(n-1) for n > 1, but Q-1Q(1) = Q(1)Q-1 = 0. Note also that Q(n)Q(m) is divergent, so the Q(n) are no longer a group like Qn.
+
+Let
+
+ = min{m  0 : Bm > X0(m + 1)},
+
+(2.19)
+
+where
+
+Bm
+
+is
+
+now
+
+a
+
+random
+
+walk
+
+with
+
+transition
+
+matrix
+
+Q
+
+(that
+
+is,
+
+Bm
+
+has
+
+Geom[
+
+1 2
+
+]
+
+jumps
+
+strictly
+
+to
+
+the left). Using this stopping time and the extension of Qm we obtain:
+
+5We use the notation Bm  to distinguish it from the walk with transition probabilities Q which will appear later.
+
+THE KPZ FIXED POINT
+
+8
+
+Lemma 2.4. For all z1, z2  Z we have G0,n(z1, z2) = 1z1>X0(1)Q(n)(z1, z2) + 1z1X0(1)EB0=z1 Q(n- )(B , z2)1 <n .
+
+Proof. For z2  X0(n), (2.16) can be written as
+
+G0,n(z1, z2) = PB- 1=z2  0,n  n - 1, Bn-1 = z1 = PB0=z1   n - 1, Bn = z2
+
+n-1
+=
+
+PB0=z1  = k, Bk = z Qn-k(z, z2) = EB0=z1 Qn- B , z2 1<n .
+
+k=0 z>X0(k+1)
+
+(2.20)
+
+The last expectation is straightforward to compute if z1 > X0(1), and we get G0,n(z1, z2) = 1z1>X0(1)Qn(z1, z2) + 1z1X0(1)EB0=z1 Qn- B , z2 1 <n
+
+for all z2  X0(n). Let
+G0,n(z1, z2) = 1z1>X0(1)Q(n)(z1, z2) + 1z1X0(1)EB0=z1 Q(n- ) B , z2 1 <n .
+We claim that G0,n(z1, z2) = G0,n(z1, z2) for all z2  X0(n). To see this, note that X0(1)Q(n)¯X0(n) = X0(1)Qn¯X0(n), thanks to (2.18). For the other term, the last equality in (2.20) shows that we only need to check X0(k+1)Q(k+1)¯X0(n) = X0(k+1)Qk+1¯X0(n) for k = 0, . . . , n - 1, which follows again from (2.18). To complete the proof, recall that, by Theorem 2.3, Kt(n) satisfies the following: For every fixed z1, 2-z2Kt(z1, z2) is a polynomial of degree at most n - 1 in z2. It is easy to check that this implies that G0,n = QnR-1KtR satisfies the same. Since Q(k) also satisfies this property for each k = 0, . . . , n, we deduce that 2-z2G0,n(z1, z2) is a polynomial in z2. Since it coincides with 2-z2G0,n(z1, z2) at infinitely many z2's, we deduce that G0,n = G0,n.
+
+Define
+
+St,-n(z1, z2)
+
+:=
+
+(et/2RQ-n)(z1, z2)
+
+=
+
+1 2i
+
+St,n(z1, z2)
+
+:=
+
+e-t/2Q(n)R-1(z1, z2)
+
+=
+
+1 2i
+
+0
+
+dw
+
+(1 - w)n 2z2-z1 wn+1+z2-z1
+
+et(w-1/2),
+
+0
+
+dw
+
+(1
+
+- w)z2-z1+n+1 2z1-z2 wn
+
+et(w-1/2).
+
+(2.21) (2.22)
+
+Formulas (2.21) and (2.22) come, respectively, from (2.5), (2.8) and (2.7), (2.17). The one in (2.21) is
+
+from (2.5) and (2.8). Finally, define
+
+S¯te,pni(X0)(z1, z2) := EB0=z1 [St,n- (B , z2)1 <n] .
+
+(2.23)
+
+The superscript epi refers to the fact that  (defined in (2.19)) is the hitting time of the epigraph of the
+
+curve X0(k + 1) + 1 k=0,...,n-1 by the random walk Bk (see Section 3.1).
+
+Remark 2.5. Mm = St,n-m(Bm, z2) is not a martingale, because QQ(n) is divergent. So one cannot apply the optional stopping theorem to evaluate (2.23). The right hand side of (2.23) is only finite because the curve X0(k + 1) k=0,...,n-1 cuts off the divergent sum.
+
+2.3. Formulas for TASEP with general initial data. We are now in position to state the general solution of TASEP.
+
+Theorem 2.6. (TASEP formulas)
+
+1. (Right-finite initial data) Assume that initially we have X0(j) = , j  0. Then for 1  n1 < n2 < · · · < nM and t > 0,
+
+where
+
+P(Xt(nj)  aj, j = 1, . . . , M ) = det(I - ¯aKt¯a) 2({n1,...,nM }×Z) ,
+
+(2.24)
+
+Kt(ni, ·; nj , ·) = -Qnj-ni 1ni<nj + (St,-ni )X0(1)St,nj + (St,-ni )¯X0(1)S¯te,pnij(X0).
+
+(2.25)
+
+THE KPZ FIXED POINT
+
+9
+
+The path integral version (2.9) also holds.
+
+2. (General initial data) For any X0, (2.24) holds with the kernel Kt replaced by Kt(ni, ·; nj, ·) = -Qnj-ni 1ni<nj + RQ-ni G0,nj R-1, where
+
+G0,n =
+
+Qk-1 - S¯th,ynpo((-X0)-k ) ¯X0N (k)QX0N (k+1)Q(n-k),
+
+k<n
+
+(2.26)
+
+and where f (x) = f (-x), (-X0)-k denotes the curve (-X0(k - m))m0 and S¯th,ynpo((-X0)-k ) is the analog of (2.23), but defined instead in terms of the hitting time of the hypograph of
+-X0(k - m) - 1 m0.
+
+Note that, by translation invariance, the first part of the theorem allows us to write a formula for any right-finite initial data X0 with X0(j) =  for j  . In fact, defining the shift operator
+
+ g(u) = g(u + ),
+
+(2.27)
+
+we have PX0 Xt(nj)  aj, j = 1, . . . , M = P X0 Xt(nj - )  aj, j = 1, . . . , M .
+
+(2.28)
+
+Proof. If X0(1) <  then we are in the setting of the above sections. Formulas (2.24)­(2.25) follow directly from the above definitions together with (2.15) and Lemma 2.4. If X0(j) =  for j = 1, . . . , , then a quick computation using translation invariance and the definition of S¯te,pni(X0) shows that the formula still holds. The path integral formula (2.9), which is proved in Appendix A.2, follows from a variant of [BCR15, Thm. 3.3] proved in Appendix A.
+To prove6 2, we first place the particles with labels i  -N at  and with i  N at -, to get a configuration X0N , apply 1 to it, then take N  . By (2.28), PX0N Xt(nj)  aj, j = 1, . . . , M is the same thing as P-N-1X0N Xt(nj + N + 1)  aj, j = 1, . . . , M . Note that -N-1X0N (i) =  for all i  1, so 1 applies. We have
+PX0N Xt(nj )  aj , j = 1, . . . , M = det I - ¯aKtN ¯a 2({n1,...,nM }×Z)
+where, by (2.13) and (2.15),
+KtN (ni, ·; nj , ·) = -Qnj-ni 1ni<nj + RQ-ni-N-1GN0,nj+N+1R-1
+with GN0,n defined like G0,n but using -N-1X0N for X0. To compute Q-N-1GN0,n+N+1(z1, z2) we use Lemma 2.4 and -N-1X0N (1) =  to get, writing N for the hitting time by Bm of the epigraph of X0N (m - N ) m=0,...,n+N+1, that GN0,n+N+1(z1, z2) equals
+
+n+N k=1
+
+yZ PB0=z1 Bk-1 = y, N > k - 1 ¯X0N (k-N-1)QX0N (k-N)Q(n+N+1-k) (y, z2)
+
+=
+
+n-1 k=-N
+
+yZ PB0=z1 Bk+N = y, N > k + N ¯X0N (k)QX0N (k+1)Q(n-k) (y, z2).
+
+The probability in the above sum equals PB0=y Bk+N = z1, k,N > k + N , where k,N is now the hitting time by Bm of the epigraph of X0N (k - m) m=0,...,k+N , and is in turn given by
+
+(Q)k+N (y, z1) -
+
+k+N =0
+
+y Z PB0=y k,N = , B = y (Q)k+N- (y , z1).
+
+Now we apply Q-N-1 on the z1 variable and then take N   to deduce the formula.
+
+Example 2.7. (Step initial data) Consider TASEP with step initial data, i.e. X0(i) = -i for i  1.
+If we start the random walk in (2.23) from B0 = z1 below the curve, i.e. z1 < 0, then the random walk clearly never hits the epigraph. Hence, S¯te,pni(X0)  0 and the last term in (2.25) vanishes. For the second term in (2.25) we have
+
+(St,-ni )X0(1)St,nj (z1, z2)
+
+=
+
+1 (2i)2
+
+dw
+0
+
+(1 - w)ni (1 - v)nj+z2 et(w+v-1)
+
+dv
+0
+
+2z1-z2 wni+z1+1vnj
+
+, 1-v-w
+
+6This formula will not be used in the sequel, so the reader may choose to skip the proof.
+
+THE KPZ FIXED POINT
+
+10
+
+which is exactly the formula previously derived in the literature (see e.g. [Fer15, Eq. 82]).
+
+Example 2.8. (Periodic initial data) Consider now TASEP with the (finite) periodic initial data
+
+X0(i) = 2(N -i) for i = 1, . . . , 2N . For simplicity we will compute only Kt(n). We start by computing S¯te,pni(X0), and proceed formally. Observe that eBm-m() m0, with () = - log(2e - 1) the
+
+logarithm
+
+of
+
+the
+
+moment
+
+generating
+
+function
+
+of
+
+a
+
+negative
+
+Geom[
+
+1 2
+
+]
+
+random
+
+variable,
+
+is
+
+a
+
+martingale.
+
+Thus if z1  2(N - 1), EB0=z1[eB -()] = ez1. But it is easy to see from the definition of X0
+
+that B is necessarily 2(N -  ) +1. Using this and choosing  = log(e + e2 - e) leads to EB0=z1 [e- ] = e(z1-2N-1) log(e+ e2-e). Formally inverting the moment generating function gives
+
+PB0=z1 (
+
+=
+
+k)
+
+=
+
+1 2i
+
+0 d ke(z1-2N -1) log(+
+
+2-). From this we compute, for z1  2(N - 1),
+
+that S¯te,pni(X0)(z1, z2) equals
+
+1 (2i)2
+
+dw
+
+du
+
+1 2z1-z2
+
+et(w-1/2)
+
+(1
+
+-
+
+w)z2-2N +n+1 wn-1
+
+(1
+
+-
+
+u)2N -z1
+
+(1-w)w (1-u)u
+
+n-1
+-1
+
+w(1 - w) - u(1 - u)
+
+2u - u
+
+1
+
+,
+
+where we have changed variables  - (4u(1 - u))-1. From this we may compute the product St,-n)2(N-1)S¯te,pni(X0)(z1, z2), which equals
+
+1 (2i)3
+
+dv
+
+dw
+
+dw
+
+1 2z1-z2
+
+et(w+v-1)
+
+(1 - v)n vn+1+z1
+
+(1
+
+-
+
+w)z2-2N +n+1 wn-1
+
+v2N+2 2u - 1
+
+(1-w)w (1-u)u
+
+n-1
+-1
+
+×
+
+.
+
+u + v - 1 u w(1 - w) - u(1 - u)
+
+Consider separately the two terms coming from the difference in the numerator of the last fraction. Computing the residue at v = 1 - u for the first term leads exactly to the kernel in [BFPS07, Eq. 4.11].
+The other term is treated similarly, and it is not hard to check that it cancels with the other summand in (2.25), (St,-n)X0(1)St,n(z1, z2).
+
+3. 1:2:3 SCALING LIMIT
+
+For each  > 0 the 1:2:3 rescaled height function is
+
+h(t, x) = 1/2
+
+h-3/2t(2-1x)
+
++
+
+1 2
+
+-3/2t
+
+.
+
+(3.1)
+
+Remark 3.1. The KPZ fixed point has one free parameter7, corresponding to  in (1.2). Our choice of the height function moving downwards corresponds to setting  > 0. The scaling of space by the factor 2 in (3.1) corresponds to the choice || = 1/2.
+
+Assume that we have initial data X0 chosen to depend on  in such a way that8
+
+h0 = lim h(0, ·).
+0
+
+(3.2)
+
+Because the X0(k) are in reverse order, and because of the inversion (2.1), this is equivalent to
+
+1/2
+
+X0(-1x) + 2-1x - 1
+
+--- -h0(-x).
+0
+
+(3.3)
+
+7[JG15] has recently conjectured that the KPZ fixed point is given by th = (xh)2 - (-x2)3/2h + 1/2(-x2)3/4,  > 0, the evidence being that formally it is invariant under the 1:2:3 KPZ scaling (1.1) and preserves Brownian motion. Besides the non-physical non-locality, and the inherent difficulty of making sense of this equation, one can see that it is not correct because it has two free parameters instead of one. Presumably, it converges to the KPZ fixed point in the limit  0. On the other hand, the model has critical scaling, so it is also plausible that if one introduces a cutoff (say, smooth the noise) and then take a limit, the result has  = 0, and possibly even a renormalized . So it is possible that, in a rather uninformative sense, the conjecture could still be true.
+8This fixes our study of the scaling limit to perturbations of density 1/2. We could perturb off any density   (0, 1) by observing in an appropriate moving frame without extra difficulty, but we do not pursue it here.
+
+THE KPZ FIXED POINT
+
+11
+
+The left hand side is also taken to be the linear interpolation to make it a continuous function of x  R. For fixed t > 0, we will prove that the limit
+
+h(t, x; h0) = lim h(t, x)
+0
+
+(3.4)
+
+exists, and take it as our definition of the KPZ fixed point h(t, x; h0). We will often omit h0 from the notation when it is clear from the context.
+
+3.1. State space and topology. The state space in which we will always work, and where (3.2), (3.3) will be assumed to hold and (3.4) will be proved, in distribution, will be9
+UC = upper semicontinuous fns. h : R  [-, ) with h(x)  C(1 + |x|) for some C < 
+with the topology of local UC convergence, which is the natural topology for lateral growth. We describe this topology next.
+Recall h is upper semicontinuous (UC) iff its hypograph hypo(h) = {(x, y) : y  h(x)} is closed in [-, ) × R. [-, ) will have the distance function10 d[-,)(y1, y2) = |ey1 - ey2|. On closed subsets of R × [-, ) we have the Hausdorff distance d(C1, C2) = inf{ > 0 : C1  B(C2) and C2  B(C1)} where B(C) = xC B(x), B(x) being the ball of radius  around x. For UC functions h1, h2 and M = 1, 2, . . ., we take dM (h1, h2) = d(hypo(h1)M , hypo(h2)M ) where M = [-M, M ] × [-, ). We say h - h if h(x)  C(1 + |x|) for a C independent of  and dM (h, h)  0 for each M  1.
+We will also use LC = g : -g  UC (made of lower semicontinuous functions), the distance now being defined in terms of epigraphs, epi(g) = {(x, y) : y  g(x)}.
+
+3.2. For any h0  UC, we can find initial data X0 so that (3.3) holds in the UC topology. This is
+easy to see, because any h0  UC is the limit of functions which are finite at finitely many points, and - otherwise. In turn, such functions can be approximated by initial data X0 where the particles are densely packed in blocks. Our goal is to take such a sequence of initial data X0 and compute
+Ph0(h(t, xi)  ai, i = 1, . . . , M ) which, from (2.1) and (3.4), is the limit as   0 of
+
+PX0
+
+X-3/2t(
+
+1 4
+
+-3/2t
+
+-
+
+-1xi
+
+-
+
+1 2
+
+-1/2ai
+
++
+
+1)
+
+
+
+2-1xi
+
+- 1,
+
+i
+
+=
+
+1, . . . , M
+
+.
+
+(3.5)
+
+We therefore want to consider Theorem 2.6 with
+
+t = -3/2t,
+
+ni
+
+=
+
+1 4
+
+-3/2t
+
+-
+
+-1xi
+
+-
+
+1 2
+
+-1/2
+
+ai
+
++ 1.
+
+(3.6)
+
+While (2.26) is more general, it turns out (2.25) is nicer for passing to limits. There is no loss of generality because of the next lemma, which says that we can safely cut off our data far to the right. For each integer L, the cutoff data is X0,L(n) = X0(n) if n > - -1L and X0,L(n) =  if n  - -1L . This corresponds to replacing h0(x) by h0,L(x) with a straight line with slope -2-1/2 to the right of X0(- -1L )  2L. The following will be proved in Appendix B.5:
+Lemma 3.2. (Finite propagation speed) Suppose that X0 satisfies (3.3). There are 0 > 0 and C <  and c > 0 independent of   (0, 0) such that the difference of (3.5) computed with initial data X0 and with initial data X0,L is bounded by C(e-cL3 1Lc-1/2 + L-1/21L>c-1/2 ).
+
+9The bound h(x)  C(1 + |x|) is not as general as possible, but it is needed for finite propagation speed (see Lemma 3.2). With work, one could extend the class to h(x)  C(1 + |x|),  < 2. Once the initial data has parabolic growth there
+is infinite speed of propagation and finite time blowup. 10This allows continuity at time 0 for initial data which takes values -, such as half-flat (see Section 4.4).
+
+THE KPZ FIXED POINT
+
+12
+
+3.3. The limits are stated in terms of an (almost) group of operators
+
+St,x
+
+=
+
+exp{x2
+
+-
+
+t 6
+
+
+
+3},
+
+x, t  R2 \ {x < 0, t = 0},
+
+(3.7)
+
+satisfying Ss,xSt,y = Ss+t,x+y as long as all subscripts avoid {x < 0, t = 0}. We can think of
+
+them as unbounded operators with domain C0(R). It is somewhat surprising that they even make
+
+sense for x < 0, t = 0, but it is just an elementary consequence of the following explicit kernel
+
+and
+
+basic
+
+properties
+
+of
+
+the
+
+Airy
+
+function11
+
+Ai(z)
+
+=
+
+1 2i
+
+dw
+
+e
+
+1 3
+
+w3
+
+-zw
+
+.
+
+The
+
+St,x
+
+act
+
+by
+
+convolution
+
+St,xf (z) =
+
+ -
+
+dy
+
+St,x(z,
+
+y)f
+
+(y)
+
+=
+
+ -
+
+dy
+
+St,x(z
+
+-
+
+y)f
+
+(y)
+
+where,
+
+for
+
+t
+
+>
+
+0,
+
+1 St,x(z) = 2i
+
+dw
+
+e
+
+t 6
+
+w3
+
++xw2
+
+-zw
+
+=
+
+(t/2)-1/3
+
+e
+
+2x3 3(t/2)2
+
++
+
+2zx t
+
+Ai((t/2)-1/3z
+
++
+
+(t/2)-4/3x2),
+
+(3.8)
+
+and S-t,x = (St,x), or S-t,x(z, y) = S-t,x(z - y) = St,x(y - z). Since
+
+|Ai(z)|
+
+
+
+C e-
+
+2 3
+
+z3/2
+
+for z  0
+
+and
+
+|Ai(z)|  C for z < 0,
+
+St,x is actually a bounded operator on L2(R, dz) whenever x > 0, t = 0. For x  0 it is unbounded,
+
+with domain Dx+ = {f  L2(R) :
+
+ 0
+
+dz
+
+e2z|x/t|f
+
+(z)
+
+<
+
+} if t
+
+>
+
+0 and
+
+Dx-
+
+=
+
+{f
+
+
+
+L2(R)
+
+:
+
+0 -
+
+dz
+
+e-2z|x/t|f
+
+(z)
+
+<
+
+}
+
+if
+
+t
+
+<
+
+0.
+
+Our
+
+kernels
+
+will
+
+always
+
+be
+
+used
+
+with
+
+conjugations
+
+which
+
+put
+
+us
+
+in these spaces.
+
+In addition to St,x we need to introduce the limiting version of S¯te,pni(X0). For g  LC,
+
+S¯etp,xi(g)(v, u) = EB(0)=v St,x- (B( ), u)1 < ,
+
+(3.9)
+
+where B(x) is a Brownian motion with diffusion coefficient 2 and  is the hitting time of the epigraph of g12,13. Note that, trivially, S¯etp,xi(g)(v, u) = St,x(v, u) for v  g(0). If h  UC, there is a similar operator S¯ht,yxpo(h) with the same definition, except that now  is the hitting time of the hypograph of h and S¯ht,yxpo(h)(v, u) = St,x(v, u) for v  h(0).
+
+Lemma 3.3. Under the scaling (3.6) and assuming that (3.3) holds in LC, if we set zi = 2-1xi + -1/2(ui + ai), y = -1/2v, then we have, as  0,
+
+St,xi (v, ui) := -1/2St,-ni (y , zi) - St,xi (v, ui), St,-xj (v, uj ) := -1/2St,nj (y , zj ) - St,-xj (v, uj ), S¯t,,-epxi(j-h-0 )(v, uj ) := -1/2S¯te,pnij(X0)(y , zj ) - S¯etp,-i(x-jh-0 )(v, uj ) pointwise, where h-0 (x) = h0(-x) for x  0.
+
+(3.10) (3.11) (3.12)
+
+The pointwise convergence is of course not enough for our purposes, but will be suitably upgraded to Hilbert-Schmidt convergence, after an appropriate conjugation, in Lemmas B.4 and B.5.
+
+Sketch of the proof of Lemma 3.3. We only sketch the argument, since the results in Appendix B.3 are stronger. We use the method of steepest descent14. From (2.21),
+
+where
+
+1 St,-ni (zi, y) = 2i
+
+e dw, -3/2F (3)+-1F (2)+-1/2F (1)+F (0)
+0
+
+(3.13)
+
+F (3) = t
+
+(w
+
+-
+
+1 2
+
+)
+
++
+
+1 4
+
+log(
+
+1-w w
+
+)
+
+,
+
+F (2) = -xi log 4w(1 - w),
+
+F
+
+(1)
+
+=
+
+(ui
+
+-
+
+v
+
+-
+
+1 2
+
+ai)
+
+log
+
+2w
+
+-
+
+1 2
+
+ai
+
+log
+
+2(1
+
+-
+
+w),
+
+F (0)
+
+=
+
+-
+
+log
+
+1-w 2w
+
+.
+
+(3.14)
+
+11Here is the Airy contour; the positively oriented contour going from e-i/3 to ei/3 through 0. 12It is important that we use B( ) in (3.9) and not g( ) which, for discontinuous initial data, could be strictly smaller. 13St,x-y(B(y), u) is a martingale in y  0. However, one cannot apply the optional stopping theorem
+to conclude that EB(0)=v St,x- (B( ), u)1< = St,x(v, u). For example, if g  0, one can compute
+EB(0)=v St,x- (B( ), u)1< = St,x(-v, u). The minus sign is not a mistake! 14We note that this (or rather Appendix B) is the only place in the paper where steepest descent is used.
+
+THE KPZ FIXED POINT
+
+13
+
+The leading term has a double critical point at w = 1/2, so we introduce the change of variables
+
+w
+
+
+
+1 2
+
+(1
+
+-
+
+1/2w~),
+
+which
+
+leads
+
+to
+
+-3/2F (3)
+
+
+
+t 6
+
+w~3
+
+,
+
+-1F (2)  xiw~2,
+
+-1/2F (1)  -(ui - v)w~.
+
+(3.15)
+
+We also have F (0)  log(2), which cancels the prefactor 1/2 coming from the change of variables. In
+
+view of (3.8), this gives (3.10). The proof of (3.11) is the same, using (2.22). Now define the scaled
+walk B(x) = 1/2 B-1x + 2-1x - 1 for x  Z+, interpolated linearly in between, and let   be the hitting time by B of epi(-h(0, ·)-). By Donsker's invariance principle [Bil99], B converges
+
+locally uniformly in distribution to a Brownian motion B(x) with diffusion coefficient 2, and therefore (using (3.3)) the hitting time   converges to  as well. Thus one can see that (3.12) should hold; a
+
+detailed proof is in Lemmas B.1 and B.5.
+
+We will compute next the limit of (3.5) using (2.24) under the scaling (3.6). To this end we change variables in the kernel as in Lemma 3.3, so that for zi = 2-1xi + -1/2(ui + ai) we need to compute the limit of -1/2 ¯2-1xKt¯2-1x (zi, zj). Note that the change of variables turns ¯2-1x(z) into ¯-a(u). We have ni < nj for small  if and only if xj < xi and in this case we have, under our scaling,
+-1/2Qnj-ni (zi, zj ) - e(xi-xj)2 (ui, uj ),
+as  0. For the second term in (2.25) we have
+
+-1/2(St,-ni )X0(1)St,nj (zi, zj ) = -1
+
+
+-1/2X0(1) dv (St,xi )(ui, -1/2v)St,-xj (-1/2v, uj )
+- (St,xi )-h0(0)St,-xj (ui, uj ).
+
+The limit of the third term in (2.25) is proved similarly. Thus we obtain a limiting kernel
+
+- e(xi-xj)2 (ui, uj )1xi>xj + (St,xi )-h0(0)St,-xj (ui, uj ) + (St,xi )¯-h0(0)S¯etp,-i(x-jh-0 )(ui, uj ), (3.16)
+
+surrounded by projections ¯-a. Our computations here only give pointwise convergence of the kernels, but they will be upgraded to trace class convergence in Appendix B, which thus yields convergence of
+the Fredholm determinants.
+We prefer the projections ¯-a surrounding (3.16) to read a, so we change variables ui - -ui and replace the Fredholm determinant of the kernel by that of its adjoint to get det I - aKhexytpo(h0)a
+with Khexytpo(h0)(ui, uj) = the kernel in (3.16), evaluated at (-uj, -ui) and with xi and xj flipped. But St,x(-u, -v) = (St,x)(v, u), so (St,xj )-h0(0)St,-xi (-uj , -ui) = (St,-xi )¯h0(0)St,xj (ui, uj ). Similarly, we have S¯etp,xi(-h-0 )(-v, -u) = (S¯ht,yxpo(h-0 ))(u, v) for v  -h0(0), and thus we get (St,xj )¯-h0(0)S¯etp,-i(x-ih-0 )(-uj , -ui) = (S¯ht,y-pxoi(h-0 ))h0(0)St,xj (ui, uj ). This gives the following preliminary (one-sided) fixed point formula.
+
+Theorem 3.4. (One-sided fixed point formulas) Let h0  UC with h0(x) = - for x > 0. Given x1 < x2 < · · · < xM and a1, . . . , aM  R,
+
+Ph0(h(t, x1)  a1, . . . , h(t, xM )  aM ) = det I - aKhexytpo(h0)a L2({x1,...,xM }×R) = det I - Kht,yxpMo(h0) + Kht,yxpMo(h0)e(x1-xM )2 ¯a1 e(x2-x1)2 ¯a2 · · · e(xM -xM-1)2 ¯aM
+
+(3.17)
+L2(R)
+(3.18)
+
+with Khexytpo(h0)(xi, ·; xj , ·) = -e(xj-xi)2 1xi<xj + (St,-xi )¯h0(0)St,xj + (S¯ht,y-pxoi(h-0 ))h0(0)St,xj ,
+
+THE KPZ FIXED POINT
+
+14
+
+where St,x is defined in (3.7), S¯ht,yxpo(h0) is defined right after (3.9), and where Kht,yxpo(h0)(·, ·) = Khexytpo(h0)(x, ·; x, ·).
+
+The remaining details in the proof of this result are contained in Section B.4.1, where we also show that the operators appearing in the Fredholm determinant are trace class (after an appropriate conjugation).
+
+3.4. From one-sided to two-sided formulas. Now we derive the formula for the fixed point with general initial data h0 as the limit as L   of the formula with initial data hL0 (x) = h0(x)1xL -  · 1x>L, which can be obtained from the previous theorem by translation invariance. We then take a continuum limit of the operator e(x1-xM )2 ¯a1 e(x2-x1)2 ¯a2 · · · e(xM -xM-1)2 ¯aM on the right side
+of (3.18) to obtain a "hit" operator for the final data as well. From Lemma 3.2, the result is the same as
+
+if we started with two-sided data for TASEP.
+
+The shift invariance of TASEP tells us that h(t, x; hL0 ) d=ist h(t, x - L; LhL0 ), where L is the
+
+shift operator from (2.27). Our goal then is to take L   in the formula given in Theorem 3.4 for
+
+h(t, x - L; LhL0 ). The left hand side of (3.17) becomes det
+
+I - aKLLhL0 a
+
+with
+L2({x1,...,xM }×R)
+
+KLLhL0 (xi, ·; xj, ·) given by
+
+e(xj -xi)2 1xi<xj + e(xj -xi)2 (St,-xj +L)¯LhL0 (0)St,xj -L + (S¯ht,y-pxoj((+LLh0)-0 ))LhL0 (0)St,xj -L .
+
+Since (LhL0 )+0  , we may rewrite the term inside the last brackets as15
+I - (St,-xj +L - S¯ht,y-pxoj((+LLh0)-0 ))LhL0 (0)(St,xj -L - S¯ht,yxpjo-((LLh0)+0 )) = e-xj 2 Khtypo(hL0 )exj 2 , (3.19)
+where Khtypo(h0) is the kernel defined in (4.3). Note the crucial fact that the right hand side depends on L only through hL0 (the various shifts by L play no role; see Section 4.1). It was shown in [QR16] that Khtypo(hL0 ) - Khtypo(h0) as L   (in a sense to be made precise in Appendix B.3). This gives us e(xj -xi)2 e-xj 2 Kthypo(hL0 )exj 2 = e-xi2 Kthypo(hL0 )exj 2 - e-xi2 Khtypo(h0)exj 2 as L   and leads to
+
+Theorem 3.5. (Two-sided fixed point formulas) Let h0  UC and x1 < x2 < · · · < xM . Then
+
+Ph0(h(t, x1)  a1, . . . , h(t, xM )  aM ) = det I - aKhexytpo(h0)a L2({x1,...,xM }×R) = det I - Kht,yxpMo(h0) + Kht,yxpMo(h0)e(x1-xM )2 ¯a1 e(x2-x1)2 ¯a2 · · · e(xM -xM-1)2 ¯aM
+
+(3.20) (3.21)
+
+where Khexytpo(h0) is given by Khexytpo(h0)(xi, ·; xj , ·) = -e(xj-xi)2 1xi<xj + e-xi2 Khtypo(h0)exj2
+
+with Khtypo(h0) the kernel defined in (4.3), and Kht,yxpo(h0) = e-x2 Khtypo(h0)ex2 .
+
+The missing details in the proof of this result are in Appendix B.4.2, where we also show that the operators appearing in the Fredholm determinant are trace class (after an appropriate conjugation).
+
+15At first glance it may look as if the product of e-x2 Khtypo(h)ex2 makes no sense, because Khtypo(h) is given in (4.3) as the identity minus a certain kernel, and applying ex2 to I is ill-defined for x < 0. However, thanks to the second identity in (4.3), the action of ex2 on Khtypo(h) on the left and right is well defined for any x  R. This also justifies the identity in
+(3.19).
+
+THE KPZ FIXED POINT
+
+15
+
+3.5. Our next goal is to take a continuum limit in the ai's of the path-integral formula (3.21) on an
+interval [-L, L] and then take L  . To this end we conjugate the kernel inside the determinant by St/2,xM , leading to Kht,0xM - Kht,0xM St/2,x1 ¯a1 e(x2-x1)2 ¯a2 · · · e(xM -xM-1)2 ¯aM (St/2,-xM ) with Kht,0xM = St/2,xM Kht,yxpMo(h0)(St/2,-xM ) = Kht/y2po(h0). Now we take the limit of term in brackets, letting x1, . . . , xM be a partition of [-L, L] and taking M   with ai = g(xi). As in [QR16] (and
+actually dating back to [CQR13]), we get
+
+St/2,-L¯g(x1)e(x2-x1)2 ¯g(x2) · · · e(xM -xM-1)2 ¯g(xM )(St/2,-L) - St/2,-Lg-L,L(St/2,-L),
+
+(3.22)
+
+where
+
+g 1
+
+,
+
+2 (u1,
+
+u2)
+
+=
+
+PB(
+
+1)=u1
+
+B(s)  g(s)  s  [ 1,
+
+2], B( 2)  du2
+
+/du2, which coincides
+
+with the operator defined in [QR16, Eq. 3.8]. Adapting [QR16, Prop. 3.4], we will show in Appendix
+
+B.4 that St/2,-Lg-L,L(St/2,-L) - I - Ke-pti/(g2) as L  . Our Fredholm determinant is thus now
+
+given by
+
+det I - Kht/y2po(h0) + Kht/y2po(h0)(I - Ke-pti/(g2)) = det I - Kht/y2po(h0)Ke-pti/(g2) .
+
+This is exactly the content of Theorem 4.1.
+
+4. THE INVARIANT MARKOV PROCESS
+
+4.1. Fixed point formula. Given g  LC and x  R, define
+
+Ketpi(g) = I - (St,x - S¯etp,xi(g-x ))¯g(x)(St,-x - S¯etp,-i(xg+x )),
+
+(4.1)
+
+where g+x (y) = g(x + y), g-x (y) = g(x - y), and St,x, S¯etp,xi(g), are defined in (3.8), (3.9). I - Ketpi(g) is the Brownian scattering operator introduced (in the case t = 2) in [QR16]16. It turns out that the
+kernel of the right hand side of (4.1) doesn't even depend on x (see [QR16, Thm. 3.2]). Also, the
+projections ¯g(x) can be removed from the middle because the difference of operators in each factor vanishes in the complementary region. One should think of Ktepi(g) as an asymptotic transformed transition "probability" for a Brownian motion to hit the epigraph of g from below, built as a product of right and left "no hit" operators St,-x - S¯etp,-i(xg+x ) and St,x - S¯etp,xi(g-x ). It is important to note that it is Ketpi(g) that is compact and not that product. Actually, since (St,x)St,-x = I, the kernel can be rewritten as
+(St,x)g(x)St,-x + (S¯etp,xi(g-x ))¯g(x)St,-x + (St,x)¯g(x)S¯etp,-i(xg+x ) - (S¯etp,xi(g-x ))¯g(x)S¯etp,-i(xg+x ), (4.2)
+
+which is more cumbersome, but now each term is trace class after conjugation (see Appendix B.3). There is another operator which uses h  UC, and hits "from above",
+
+Khtypo(h) = I - (St,x - S¯ht,yxpo(h-x ))h(x)(St,-x - S¯ht,y-pxo(h+x )),
+
+(4.3)
+
+which we can also write as
+
+Khtypo(h) = Ktepi(- h) 
+
+(4.4)
+
+using the reflection operator h(x) = h(-x). This means that Khtypo is just Ketpi from an upside down point of view17.
+
+16The derivation in [CQR13; QR16] takes a different route, starting with known path integral kernel formulas for the
+Airy2 process and passing to limits. These known formulas themselves arise from the exact TASEP formulas for step initial data. Here we have started from general initial data and derived Ketpi(g) in a multi-point formula at a later time. Specializing the present derivation to the one-point case, the two routes are linked through time inversion, as explained around (2.9).
+17If g is continuous, we can even write Ketpi/hypo (g) = I - (St,x - S¯et,pxi/hypo(g- x ))(St,-x - S¯et,p-i/xhypo(g+ x )).
+
+THE KPZ FIXED POINT
+
+16
+
+Theorem 4.1. (KPZ fixed point formula) Fix h0  UC, g  LC. Let X0 be initial data for TASEP such that the corresponding rescaled height functions h0  h0 in UC. Then the limit (3.4) for h(t, x) exists (in distribution) in UC and is given by
+
+P(h(t, x)  g(x), x  R) = det
+
+I - Kht/y2po(h0)Ke-pti/(g2)
+
+.
+L2(R)
+
+(4.5)
+
+We fill in the details of this proof in Appendix B.4.3. In particular, we show there that the operator inside the Fredholm determinant is trace class (after conjugation).
+
+Remark 4.2. An earlier attempt [CQR15] based on non-rigorous replica methods gave a formula
+
+which does not appear to be the same (though there is room for two apparently different Fredholm
+
+determinants to somehow coincide). The replica derivation uses both divergent series and an asymp-
+
+totic factorization assumption [PS11] for the Bethe eigenfunctions of the -Bose gas. The divergent series are regularized through the Airy trick, which uses the identity dx Ai(x)enx = en3/3 to obtain
+
+ n=0
+
+(-1)n
+
+en3
+
+/3
+
+"
+
+=
+
+"
+
+dx Ai(x)
+
+ n=0(-1)nenx =
+
+dx
+
+Ai(x)
+
+1 1+ex
+
+.
+
+Although
+
+there
+
+is
+
+no
+
+justifi-
+
+cation, it is widely accepted in the field that the Airy trick gives consistently correct answers in these
+
+KPZ problems. Hence the discrepancy sheds a certain amount of doubt on the factorization assumption.
+
+4.2. Markov property. The sets Ag = {h  UC : h(x)  g(x), x  R}, g  LC, form a generating family for the Borel sets B(UC) and we can define the fixed point transition probabilities ph0(t, Ag) through our fixed point formulas. The first thing to prove is that they are indeed Markov transition
+probabilities, defining the KPZ fixed point as a Markov process.
+It is not hard to see that the resulting ph0(t, A), A  B(UC), are probability measures for each t > 0, and are measurable in t > 0. The measurability is clear from the construction. To see that they are non-degenerate probability measures, note that the space B0(UC)  B(UC) of sets A of the form A = {h  UC, h(xi)  ai, i = 1, . . . , n} generates B(UC), and it is clear from the construction that pn(a1, . . . , an) = Ph0(h(t, xi)  ai, i = 1, . . . , n) is non-decreasing in each ai (cf. (3.5)). To show that pn(a1, . . . , an) - 1 as all ai   one uses the estimate |det(I - K) - 1|  K 1e K 1+1 (with · 1 denoting trace norm, see (B.1)) and (3.17). To see that pn(a1, . . . , an) - 0 as any ai  -, take t = 2 (general t > 0 follows from scaling invariance, Prop. 4.6(i)) and note first that pn(a1, . . . , an)  p1(ai) for any i. By the skew time reversal symmetry and affine invariance of the fixed point (Prop. 4.6) together with (4.6) we know the one dimensional marginals p1(ai) = P(A2(x) - (x - xi)2  -h0(x) + ai  x  R), where A2(x) is the Airy2 process (see Section 4.4), which clearly vanishes as ai  -18.
+From the Fredholm determinant formula (4.5), the transition probabilities satisfy the Feller property: If  is a continuous function on UC, then Pt(h0) := Eh0[(h(t))] := (h)ph0(t, dh) is a continuous function of h0  UC. This is proved in Appendix B.2, based on showing that the kernels are continuous maps from UC into the space of trace class operators.
+Finally, we need to show the Markov property, i.e. Pt t>0 forms a semigroup. While one expects the limit of Markov processes to be Markovian, this is not always the case, and requires some compactness.
+Lemma 4.3. Let p(t, x, A) be Feller Markov kernels on a Polish space S for each  > 0, and p(t, x, A) a measurable family of Feller probability kernels on S, such that for each t > 0,  > 0, there is a compact subset K of S such that p(t, x, KC ) < , p(t, x, KC ) <  and lim0 p(t, x, A) = p(t, x, A) uniformly over x  K. Then p(t, x, A) satisfy the Chapman-Kolmogorov equations
+
+p(s, x, dy)p(t, y, B) = p(s + t, x, B),
+S
+
+B  B(S).
+
+Proof. Fix s, t > 0, x  S,  > 0 and A  B(S), choose a compact K  S and choose 0 so that for all  < 0, p(t, x, KC) + p(t, x, KC) < /3, |p(s, y, A) - p(s, y, A)| < /3 for all
+
+18Suppose h0(x¯) > - and t = 2. Then we can bound p1(ai) by P(A2(x¯) - (x¯ - xi)2  -h0(x¯) + ai) which is a
+
+shifted FGUE. Hence we have pn(a1, . . . , an)
+
+exp{-
+
+1 12
+
+|ai
+
+|3}
+
+as
+
+any
+
+ai
+
+
+
+-,
+
+for
+
+any
+
+non-trivial
+
+h0
+
+
+
+UC.
+
+THE KPZ FIXED POINT
+
+17
+
+y  K, and | S(p(t, x, dy) - p(t, x, dy))p(s, y, A)| < /3. Then S p(t, x, dy)p(s, y, A) - p(t, x, dy)p(s, y, A) is bounded in absolute value by p(t, x, KC) + p(t, x, KC) plus
+
+p(t, x, dy)(p(s, y, A) - p(s, y, A)) + (p(t, x, dy) - p(t, x, dy))p(s, y, A) ,
+
+K
+
+S
+
+all three of which are < /3.
+
+In the next section we show that sets of locally bounded Hölder norm  < 1/2 will work as K, proving the Markov property of the fixed point transition probabilities.
+
+4.3. Regularity and local Brownian behavior. Let C = {h : R  [-, ) continuous with h(x)  C(1 + |x|) for some C < }. Define the local Hölder norm
+
+h
+
+,[-M,M ]
+
+=
+
+sup
+x1=x2[-M,M ]
+
+|h(x2) - h(x1)| |x2 - x1|
+
+and let C  = {h  C with h ,[-M,M] <  for each M = 1, 2, . . .}.
+The topology on UC, when restricted to C , is the topology of uniform convergence on compact sets. UC is a Polish space and the spaces C  are compact in UC. The following theorem says that for any t > 0 and any initial h0  UC, the process will actually take values in C ,  < 1/2.
+
+Theorem 4.4. Fix t > 0, h0  UC and initial data X0 for TASEP such that h0 -U-C h0. Let P be the law of the functions h(t, ·)  C given by (3.1), and P be the distribution of the limit h(t, ·) given by (3.4). Then for each   (0, 1/2) and M < ,
+
+lim lim sup P(
+A 0
+
+h(t)
+
+,[-M,M ]
+
+
+
+A)
+
+=
+
+lim P(
+A
+
+h
+
+,[-M,M]  A) = 0.
+
+Furthermore, h(t, x) is locally Brownian in x in the sense that for each y  R, the finite dimensional distributions of +(x) = -1/2(h(t, y + x) - h(t, y)) and -(x) = -1/2(h(t, y - x) - h(t, y)) converge, as  0, to Brownian motions with diffusion coefficient 2.
+
+The regularity will be proved in Appendix C. The method is the Kolmogorov continuity theorem,
+which reduces regularity to two point functions, which we can estimate using trace norms. The proof of the local Brownian property is exactly the same as [QR13a] (with Khtypo(h0) replacing B0 there) once we have a bound on the trace norm.
+
+4.4. Airy processes. Using Theorem 4.1 we can recover several of the classical Airy processes19 by starting with special initial data and observing the spatial process at time t = 2.
+
+Start by considering the UC function du(u) = 0, du(x) = - for x = u, known as a narrow wedge at u. It leads to the Airy2 process (sometimes simply the Airy process):
+
+h(2, x; du) + (x - u)2 = A2(x) (sometimes simply A(x)). (4.6)
+
+Flat initial data h0  0, on the other hand, leads to the Airy1 process:
+
+h(2, x; 0) = A1(x).
+
+(4.7)
+
+Finally the UC function hh-f(x) = - for x < 0, hh-f(x) = 0 for x  0, called wedge or half-flat initial data, leads to the Airy21 process:
+h(2, x; hh-f) + x21x<0 = A21(x).
+
+Formulas for the n-point distributions of these special solutions were obtained in 2000's in [PS02; Joh03; SI04; Sas05; BFPS07; BFP07; BFS08] in terms of Fredholm determinants of extended kernels,
+
+19Besides the ones we treat here, there are three more basic Airy processes Astat, A1stat and A2stat, obtained by starting from a two-sided Brownian motion, a one-sided Brownian motion to the right of the origin and 0 to the left of the origin, and a one-sided Brownian motion to the right of the origin and - to the left of the origin [IS04; BFS09; BFP10; CFP10]. However, applying Theorem 4.1 in these cases involves averaging over the initial randomness and hence verifying that the resulting formulas coincide with those in the literature is much more challenging.
+
+THE KPZ FIXED POINT
+
+18
+
+and later in terms of path-integral kernels in [CQR13; QR13a; BCR15]. The Airy21 process contains the other two in the limits x  - and x  .
+We now show how the formula for the Airy21 process arises from the KPZ fixed point formula (4.5) (a slightly more direct derivation could be given using (3.20)). The Airy1 and Airy2 processes can be obtained analogously, or in the limits x  ±. We have to take h0(x) = - for x < 0, h(x) = 0 for x  0 in Theorem 4.1. It is straightforward to check that S¯h0ypo(h-0 )  0. On the other hand, as in [QR16, Prop. 3.6] one checks that, for v  0,
+
+S¯ht,y0po(h+0 )(v, u) =
+
+
+Pv(0  dy)St,-y(0, u) = St,0(-v, u),
+
+0
+
+which gives
+
+Kht/y2po(h0) = I - (St/2,0)0[St/2,0 - St/2,0] = (St/2,0)(I + )¯0St/2,0.
+
+Fix x1 < · · · < xM and let g(xi) = ai, g(x) =  for other x's. We clearly have S¯e-pti,(xg1-x1) = 0, while
+S¯e-pti,(-g+xx11)St,xM (v, u) = EB(0)=v e(xM -x1- )2 (B( ), u)1 < = EB(0)=v B(-x1 + xi)  ai some i, B(xM - x1) = v = e(xM -x1)2 (v, u) - ¯a1 e(x2-x1)2 ¯a2 · · · e(xM -xM-1)2 ¯aM (v, u).
+
+This gives us Ke-pti(g) = I - (S-t,x1 )¯a1 e(x2-x1)2 ¯a2 · · · e(xM -xM-1)2 ¯aM S-t,-xM , and we deduce from the fixed point formula (4.5) that P(h(t; xi)  ai, i = 1, . . . , M ) is given by
+
+det I - Kht/y2po(h0) + Kht/y2po(h0)(S-t/2,x1 )¯a1 e(x2-x1)2 ¯a2 · · · e(xM -xM-1)2 ¯aM S-t/2,-xM = det I - K2t/2,1x1 + ¯a1 e(x2-x1)2 ¯a2 · · · e(xM -xM-1)2 ¯aM e(x1-xM )2 K2t,x11
+
+(where we used the cyclic property of the Fredholm determinant) with
+
+K2t/2,1x1 = S-t/2,-x1 Kht/y2po(h0)(S-t/2,x1 ) = (St,-x1 )(I + )¯0St,x1 .
+
+Choosing t = 2 and using (3.8) yields
+
+K22 ,x11(u, v) = +
+
+0
+d e-2x31/3-x1(u-) Ai(u -  + x21) e2x31/3+x1(v-) Ai(v -  + x21)
+-
+0
+d e-2x31/3-x1(u+) Ai(u +  + x21) e2x31/3+x1(v-) Ai(v -  + x21)
+-
+
+which, after simplifying and comparing with [QR13b, Eq. 1.8], is the kernel K2x1 1 in [BCR15, Cor. 4.8]. Therefore P(h(2, xi; h0)  ai, i = 1, . . . , M ) = P A21(xi) - (xi  0)2  ai, i = 1, . . . , M .
+It is worth noting that we have proved a certain amount of universality of the Airy processes which was not previously known (although for one point marginals this appears in [CLW16], and to some extent [QR16]). It can be stated as follows:
+
+Corollary 4.5. Consider TASEP with initial conditions X0,1 and X0,2 and let h0,1 and h0,2 denote the corresponding rescaled height functions (3.1). Assume that h0,1 and h0,2 converge in distribution in UC to the same limit h0 as   0. Then for all t > 0, h,1(t, ·) and h,2(t, ·) have the same (distributional) limit.
+
+So, for example, if h0  d0 in UC, then h(2, ·) - A2 in UC. This was previously known only for the special case X0(i) = -i, i  1.
+
+THE KPZ FIXED POINT
+
+19
+
+4.5. Symmetries and variational formulas. The KPZ fixed point comes from TASEP with an extra
+piece of information, which is a canonical coupling between the processes started with different initial
+data. More precisely, for each h0  UC we have, as described above, a probability measure Ph0 corresponding to the Markov process h(t, ·) with initial data h0. But we actually have produced, for each n = 1, 2, 3, . . . , a consistent family of probability measures Ph10,...,hn0 corresponding to the joint Markov process h1(t, ·), . . . , hn(t, ·) with initial data h10, . . . , hn0 . We do not have explicit joint probabilities, but the coupling is still useful, as noted in the following
+
+Proposition 4.6 (Symmetries of h).
+
+(i) (1:2:3 Scaling invariance)
+
+h(-3t, -2x; h0(-2x)) d=ist h(t, x; h0),  > 0;
+(ii) (Skew time reversal) P h(t, x; g)  -f (x) = P h(t, x; f )  -g(x) , (iii) (Shift invariance) h(t, x + u; h0(x + u)) d=ist h(t, x; h0); (iv) (Reflection invariance) h(t, -x; h0(-x)) d=ist h(t, x; h0); (v) (Affine invariance) h(t, x; f + a + cx) d=ist h(t, x; f ) + a + cx + c2t; (vi) (Preservation of max) h(t, x; f1  f2) = h(t, x; f1)  h(t, x; f2).
+
+f , g  UC;
+
+These properties also allow us to obtain the following two results: Proposition 4.7. Suppose that h0(x)  C(1 + |x|) for some C < . For each t > 0, there exists C¯(t) <  almost surely such that h(t, x)  C¯(t)(1 + |x|).
+
+Proof. By Prop. 4.6(i,v,vi) and (4.7), P(h(2t, x; h0)  C¯(1 + |x|) for some x  R) is bounded above by 2P(t1/3A1(t-2/3x) + t1/3C + t-1/3Cx + t1/3C2  C¯(1 + |x|) for some x  R), which goes to 0 as C¯ .
+
+Proposition 4.8. Let h0  UC. Then for t > 0 we have
+
+
+
+1
+
+-
+
+e-
+
+1 6
+
+t-1
+
+|
+
+maxi
+
+ai|3(1+o1(1))
+
+
+
+Ph0 (h(t, xi)
+
+
+
+ai,
+
+i
+
+=
+
+1, . . . , n)
+
+
+
+e- 4 3 2 t-1/2|maxi ai|3/2(1+o2(1)),
+
+where o1(1) - 0 as maxi ai  -, o2(1) - 0 as maxi ai  , and they depend on h0, t, and the xi's.
+
+Proof. The upper bound is proved in footnote 18 (using also Prop. 4.6(i)). For the lower bound, we can
+estimate as in the previous proof Ph0(h(2t, xi)  ai, i = 1, . . . , n)  2P(t1/3A1(t-2/3xi) + t1/3C + t-1/3Cxi + t1/3C2t  ai, i = 1, . . . , n). This is certainly less than the worst case over the i's, which is given by 1 - FGOE(41/3t-1/3 mini ai - t1/3C - t-1/3Cxi - t1/3C2).
+
+We turn now to the relation between the fixed point and the Airy sheet (conjectured in [CQR15]). We introduce this process first.
+Example 4.9. (Airy sheet) h(2, y; dx) + (x - y)2 = A(x, y) is called the Airy sheet. Fixing either one of the variables, it is an Airy2 process in the other. In some contexts it is better to include the parabola, so we write A^(x, y) = A(x, y) - (x - y)2. Unfortunately, the fixed point formula does not give joint probabilities P(A(xi, yi)  ai, i = 1, . . . , M ) for the Airy sheet20.
+
+By repeated application of Prop. 4.6(vi) to initial data which take finite values h0(xi) at xi, i = 1, . . . , n, and - everywhere else, which approximate h0 in UC as the xi make a fine mesh, and then taking limits, we obtain as a consequence
+
+20The fixed point formula reads P(A^(x, y)  f (x) + g(y), x, y  R) = det I - Kh1ypo(-g)Ke-p1i(f) . Even in the case
+when f , g take two non-infinite values, it gives a formula for P(A^(xi, yj)  f (xi) + g(yj), i, j = 1, 2) but f (xi) + g(yj) only span a 3-dimensional linear subspace of R4. So it does not determine the joint distribution of A^(xi, yj), i, j = 1, 2.
+
+THE KPZ FIXED POINT
+
+20
+
+Theorem 4.10. (Airy sheet variational formula)
+
+h(2t, x; h0) = sup h(2t, x; dy) + h0(y) d=ist sup t1/3A^(t-2/3x, t-2/3y) + h0(y) . (4.8)
+
+y
+
+y
+
+In particular, the Airy sheet satisfies the semi-group property: If A^1 and A^2 are independent copies and t1 + t2 = t are all positive, then
+
+sup t11/3A^1(t1-2/3x, t-1 2/3z) + t12/3A^2(t-2 2/3z, t-2 2/3y) d=ist t1/3A^1(t-2/3x, t-2/3y).
+z
+
+4.6. Regularity in time.
+
+Proposition 4.11. Fix x0  R and initial data h0  UC. For t > 0, h(t, x0) is locally Hölder  in t for any  < 1/3.
+
+Proof. Since t > 0, from the Markov property and the fact that at time 0 < s < t the process is in C  we can assume without loss of generality that s = 0 and h0  C , for some  < 1/2. There is an R <  a.s. such that |A(x)|  R(1 + |x|) and |h0(x) - h0(x0)|  R(|x - x0| + |x - x0|). From
+the variational formula (4.8), |h(t, x0) - h(0, x0)| is bounded by
+
+sup
+
+R(|x
+
+-
+
+x0|
+
++
+
+|x
+
+-
+
+x0|
+
++
+
+t1/3
+
++
+
+t(1-2)/3|x| )
+
+-
+
+1 t
+
+(x0
+
+-
+
+x)2
+
+ R~ t/(2-).
+
+xR
+
+Letting  = /(2 - ) and sending  1/2 we get the result.
+
+Remark 4.12. One doesn't really expect Prop. 4.11 to be true at t = 0, unless one starts with Hölder 1/2- initial data, because of the lateral growth mechanism. For example, we can take h0(x) = x1x>0 with   (0, 1/2) and check using the variational formula that h(t, 0) - h(0, 0)  t/(2-) for small
+t > 0, which can be much worse than Hölder 1/3-. On the other hand, the narrow wedge solution does satisfy h(t, 0; d0) - h(0, 0; d0)  t1/3. At other points h(0, 0; d0) = - while h(t, 0; d0) > - so there is not much sense to time continuity at a point. It should be measured instead in UC, which we
+leave for future work.
+
+4.7. Equilibrium space-time covariance. The only extremal invariant measures for TASEP are the Bernoulli measures and the blocking measures which have all sites to the right of x occupied and those the left of x unoccupied, where clearly no particle can move [Lig76]. The latter have no limit in our scaling. Choosing Bernoulli's with density (1 - 1/2)/2 we obtain by approximation that Brownian motion with drift   R is invariant for the KPZ fixed point, modulo absolute height shifts. More precisely, white noise plus an arbitrary height shift   R is invariant for the distribution valued spatial derivative process u = xh, which could be called the stochastic Burgers fixed point, since it is expected to be the 1:2:3 scaling limit of the stochastic Burgers equation (introduced by [Bur74])
+tu = xu2 + x2u + x
+
+satisfied by u = xh from (1.2). Dynamic renormalization was performed by [FNS77] leading to the dynamic scaling exponent 3/2. The equilibrium space-time covariance function was computed in [FS06] by taking a limit from TASEP:
+
+E[u(t, x)u(0, 0)] = 2-5/3t-2/3gsc(2-1/3t-2/3(2x - t)), where gsc(w) = s2dFw(s) with Fw(s) = s2(FGUE(s + w2)g(s + w2, w)), and where
+
+(4.9)
+
+g(s,
+
+w)
+
+=
+
+e-
+
+1 3
+
+w3
+
+dx dy ew(x+y) Ai(x + y + s) + dx dy ^ w,s(x)s(x, y)^ w,s(y) ,
+
+R2-
+
+R2+
+
+with s(x, y) = (I - P0KAi,sP0)-1(x, y), ^ w,s(y) =
+
+dz ewzAi(y + z + s),
+R-
+
+^ w,s(x) =
+
+R+ dz ewzKAi,s(z, x)ews, KAi,s(x, y) =
+
+d Ai( + x + s) Ai( + y + s).
+R+
+
+Since u(t, x) is essentially a white noise in x for each fixed t, one may wonder how the left hand
+
+side of (4.9) could even make sense. In fact, everything is easily made rigorous: For smooth functions  and  with compact support we define E[ , xh()(t) , xh()(0, ·) ] through , xh()(t, ·) =
+
+THE KPZ FIXED POINT
+
+21
+
+- dx  (x)h()(t, x). From our results they converge to E[ , xh(t, ·) , xh(0, ·) ]. From [FS06] they converge to
+
+1 2
+
+dx
+
+dy
+
+(
+
+1 2
+
+(y
+
++
+
+x))(
+
+1 2
+
+(y
+
+-
+
+x))2-5/3t-2/3gsc(2-1/3t-2/3(2x
+
+-
+
+t)).
+
+R2
+
+This gives the equality (4.9) in the sense of distributions. But since the right hand side is a regular function, the left is as well, and the two sides are equal.
+
+The novelty over [FS06] is the existence of the stationary Markov process having this space-time covariance.
+
+APPENDIX A. PATH INTEGRAL FORMULAS
+
+A.1. An alternative version of [BCR15, Thm. 3.3]. We work in the setting of [BCR15, Sec. 3] and
+prove a version of [BCR15, Thm. 3.3] with slightly different assumptions. Given t1 < t2 < · · · < tn we consider an extended kernel Kext given as follows: For 1  i, j  n and x, y  X ((X, µ) is a
+given measure space),
+
+Kext(ti, x; tj, y) =
+
+Wti,tj Ktj (x, y) -Wti,tj (I - Ktj )(x, y)
+
+if i  j, if i < j.
+
+(A.1)
+
+Additionally, we are considering multiplication operators Nti acting on a measurabe function f on X as Ntif (x) = ti(x)f (x) for some measurable function ti defined on X. M will denote the diagonal operator acting on functions f defined on {t1, . . . , tn}×X as M f (ti, ·) = Ntif (ti, ·).
+We will keep all of the notation and assumptions in [BCR15] except that their Assumption 2(iii) is replaced by
+
+Wti,tj Ktj Wtj ,ti = Kti
+
+(A.2)
+
+for all ti < tj. We are assuming here that Wti,tj is invertible for all ti  tj, so that Wtj,ti is defined as a proper operator21. Moreover, we assume that it satisfies
+
+Wtj,ti Kti = Kext(tj , ·; ti, ·)
+
+for all ti  tj, and that the multiplication operators Uti, Uti introduced in Assumption 3 of [BCR15] satisfy their Assumption 3(iii) with the operator in that assumption replaced by
+
+Uti Wti,ti+1 N ti+1 · · · Wtn-1,tn N tn Ktn - Wti,t1 N t1 Wt1,t2 N t2 · · · Wtn-1,tn N tn Ktn Uti . Note that these inverse operators inherit the semigroup property, so that now we have
+
+for all ti, tj, tk.
+
+Wti,tj Wtj ,tk = Wti,tk
+
+(A.3)
+
+Theorem A.1. Under Assumptions 1, 2(i), 2(ii), 3(i), and 3(ii) of [BCR15, Thm. 3.3] together with (A.2), (A.3) and the alternative Assumption 3(iii) above, we have
+det I - N Kext L2({t1,...,tn}×X) = det I - Ktn + Ktn Wtn,t1 N t1 Wt1,t2 N t2 · · · Wtn-1,tn N tn L2(X),
+
+where N ti = I - Nti .
+
+Proof. The proof is a minor adaptation of the arguments in [BCR15, Thm. 3.3], and we will use throughout it all the notation and conventions of that proof. We will just sketch the proof, skipping several technical details (in particular, we will completely omit the need to conjugate by the operators Uti and Vti, since this aspect of the proof can be adapted straightforwardly from [BCR15]).
+
+21This is just for simplicity; it is possible to state a version of Theorem A.1 asking instead that the product Ktj Wtj,ti be well defined.
+
+THE KPZ FIXED POINT
+
+22
+
+In order to simplify notation throughout the proof we will replace subscripts of the form ti by i, so for example Wi,j = Wti,tj . Let K = N Kext. Then K can be written as
+K = N(W-Kd + W+(Kd - I)) with Kdij = Ki1i=j, Ni,j = Ni1i=j,
+where W-, W+ are lower triangular, respectively strictly upper triangular, and defined by
+Wi-j = Wi,j 1ij , Wi+j = Wi,j 1i<j .
+
+The key to the proof in [BCR15] was to observe that (I + W+)-1) i,j = I1j=i - Wi,i+11j=i+1, which then implies that (W- + W+)Kd(I + W+)-1 i,j = Wi,1K11j=1. The fact that only the first column of this matrix has non-zero entries is what ultimately allows one to turn the Fredholm determinant of an extended kernel into one of a kernel acting on L2(X). However, the derivation of this last identity uses Wi,j-1Kj-1Wj-1,j = Wi,jKj, which is a consequence of Assumptions 2(ii) and 2(iii) in [BCR15], and thus is not available to us. In our case we may proceed similarly by observing that
+(W-)-1) i,j = I1j=i - Wi,i-11j=i-1,
+as can be checked directly using (A.3). Now using the identity Wi,j+1Kj+1Wj+1,j = Wi,jKj (which follows from our assumption (A.2) together with (A.3)) we get
+
+(W- + W+)Kd(W-)-1 i,j = Wi,j Kj - Wi,j+1Kj+1Wj+1,j 1j<n = Wi,nKn1j=n.
+
+(A.4)
+
+Note that now only the last column of this matrix has non-zero entries, which accounts for the difference between our result and that of [BCR15]. To take advantage of (A.4) we write I - K = (I + NW+) I - (I + NW+)-1N(W- + W+)Kd(W-)-1W- . Since NW+ is strictly upper triangular, det(I + NW+) = 1, which in particular shows that I + NW+ is invertible. Thus by the cyclic property
+of the Fredholm determinant, det(I - K) = det(I - K) with
+
+K = W-(I + NW+)-1N(W- + W+)Kd(W-)-1.
+
+Since only the last column of (W- + W+)Kd(W-)-1 is non-zero, the same holds for K, and thus det(I - K) = det(I - Kn,n)L2(X).
+Our goal now is to compute Kn,n. From (A.4) and (A.3) we get, for 0  k  n - i,
+
+(NW+)kN(W- + W+)Kd(W-)-1
+i,n
+
+=
+
+NiWi, 1 N 1 W 1, 2 · · · N W k-1 k-1, k N k W k,nKn,
+
+i< 1<···< kn
+
+while for k > n - i the left-hand side above equals 0 (the case k = 0 is interpreted as NiWi,nKn). As in [BCR15] this leads to
+
+i n-j
+
+Ki,n =
+
+(-1)k
+
+Wi,j Nj Wj, 1 N 1 W 1, 2 N W k-1 k-1, k N k W k,nKn.
+
+j=1 k=0 j= 0< 1<···< kn
+
+Replacing each N by I - N except for the first one and simplifying as in [BCR15] leads to
+
+Ki,n = Wi,i+1N i+1Wi+1,i+2N i+2 · · · Wn-1,nN nKn - Wi,1N 1W1,2N 2 · · · Wn-1,nN nKn.
+
+Setting i = n yields Kn,n = Kn - Wn,1N 1W1,2N 2 · · · Wn-1,nN nKn and then an application of the cyclic property of the determinant gives the result.
+
+THE KPZ FIXED POINT
+
+23
+
+A.2. Proof of the TASEP path integral formula. To obtain the path integral version (2.9) of the TASEP formula we use Theorem A.1. Recall that Qn-mnn-k = mm-k. Then for Kt(n) = Kt(n, ·; n, ·) we may write
+
+nj -1
+
+nj -1
+
+Qnj -ni Kt(nj ) =
+
+Qnj -ni nkj  nkj =
+
+nnii-nj+k  nkj = Kt(ni, ·; nj , ·) + Qnj-ni 1ni<nj .
+
+k=0
+
+k=0
+
+(A.5)
+
+This means that the extended kernel Kt has exactly the structure specified in (A.1), taking ti = ni, Kti = Kt(ni), Wti,tj = Qnj-ni and Wti,tj Ktj = Kt(ni, ·; nj, ·). It is not hard to check that Assump-
+tions 1 and 3 of [BCR15, Thm. 3.3] hold in our setting. The semigroup property (Assumption 2(ii)) is
+trivial in this case, while the right-invertibility condition (Assumption 2(i)) Qnj-niKt(nj, ·; ni, ·) =
+Kt(ni) for ni  nj follows similarly to (A.5). However, Assumption 2(iii) of [BCR15], which translates into Qnj-niKt(nj) = Kt(ni)Qnj-ni for ni  nj, does not hold in our case (in fact, the right hand side does not even make sense as the product is divergent, as can be seen by noting that (0n)(x) = 2x-X0(n); alternatively, note that the left hand side depends on the values of X0(ni+1), . . . , X0(nj) but the right
+
+hand side does not), which is why we need Theorem A.1. To use it, we need to check that
+
+Qnj -ni Kt(nj )Qni-nj = Kt(ni).
+
+(A.6)
+
+In fact, if k  0 then (2.12a) together with the easy fact that hnk ( , z) = hnk--11( - 1, z) imply that (Q)ni-nj hnk+j nj-ni (0, z) = hnk+j nj-ni (nj - ni, z) = hnki (0, z), so that (Q)ni-nj nk+j nj-ni = nki . On the other hand, if ni - nj  k < 0 then we have (Q)ni-nj hnk+j nj-ni (0, z) = (Q)khnk+j nj-ni (k + nj -ni, z) = 0 thanks to (2.12b) and the fact that 2z  ker(Q)-1, which gives (Q)ni-nj nk+j nj-ni = 0. Therefore, proceeding as in (A.5), the left hand side of (A.6) equals
+
+nj -1
+
+nj -1
+
+ni-1
+
+Qnj -ni nkj  (Q)ni-nj nkj =
+
+nnii-nj +k  (Q)ni-nj nkj =
+
+nki  nki
+
+k=0
+
+k=0
+
+k=0
+
+as desired.
+
+APPENDIX B. TRACE CLASS ESTIMATES
+
+In this appendix we prove estimates and convergence of all relevant kernels in trace norm · 1. Thanks to the continuity of the Fredholm determinant with respect to the trace class topology, or more precisely the inequality
+
+|det(I - A) - det(I - B)|  A - B 1e1+ A 1+ B 2
+
+(B.1)
+
+for trace class operators A and B, this will allow us to justify the missing details in Sections 3 and 4. Let Mf (u) = euf (u). From the Fredholm expansion det(I - K) = det(I - M-1KM), so it is enough to prove the convergence of the necessary kernels after conjugation by M-1. Since all of our
+kernels are products of two operators and
+
+AB 1  A 2 B 2
+
+(B.2)
+
+with · 2 the Hilbert-Schmidt norm, it suffices to prove the convergence of each factor in this latter norm. (For the definition of the Fredholm determinant and some background, including the definition and properties of the Hilbert-Schmidt and trace norms, we refer to [Sim05] or [QR14, Sec. 2]). Throughout the section, t > 0 will be fixed and we will not note the dependence of bounding constants on it. These constants will often change from line to line, with C indicating something bounded and c something strictly positive.
+
+THE KPZ FIXED POINT
+
+24
+
+B.1. The fixed point kernel is trace class. Here we prove is that for suitable  > 0, the (conjugated)
+
+fixed point kernel
+
+M (St,0)Kht/y2po(h0)Ke-pti/(g2)St,0M-1
+
+(B.3)
+
+is trace class (note that (St,0)St,0 = I). Using (4.4) we may rewrite (B.3) as
+
+M (St,0)Kht/y2po(h0)St,0
+
+(St,0)Ke-pti/(g2)St,0M-1 = M ( Ke3pt/i(2- h0) )M M-1Ketp/2i(g)M-1 = M-1Ke3pt/i(2- h0)M-1  M-1Kte/p2i(g)M-1 . (B.4)
+
+Thus it suffices to prove that each of the terms in the expansion (4.2) of Ketpi(g) is Hilbert-Schmidt after surrounding by M-1 and M-1. If g   then clearly Ketpi(g) = 0 and there is nothing to prove, so we may assume that g(x) <  for some x  R. The first term in (4.2) is (St,x)g(x)St,-x. We have
+
+M-1(St,x)g(x)
+
+2 2
+
+=
+
+du
+R
+
+
+dv e-2uSt,x(v, u)2  (2)-1e-2g(x)
+g(x)
+
+du e2u St,x(u)2.
+R
+(B.5)
+
+From (3.8) and the decay of the Airy function given just after that we have this is finite as long as  + 2x/t > 0. Similarly g(x)St,-xM-1 2 <  as long as  - 2x/t > 0. This shows that M-1(St,x)g(x)St,xM-1 is a product of Hilbert-Schmidt kernels, and thus Hilbert-Schmidt itself.
+Next we deal with the third term, (St,x)¯g(x)S¯etp,-i(xg+x ), the second one being entirely analogous. We have, assuming  >  > -2x/t,
+
+M-1(St,x)¯g(x)M
+
+
+
+g(x)
+
+2 2
+
+=
+
+du
+
+dv e-2u+2 v St,x(v, u)2
+
+-
+
+-
+
+
+
+= 2( - )-1e2( -)g(x)
+
+du e2u St,x(u)2 < 
+
+-
+
+(B.6)
+
+as before. On the other hand,
+
+M-1¯g(x)S¯etp,-i(xg+x )M-1
+
+2 2
+
+=
+
+g(x)
+dv
+
+
+du e-2 v-2 u Ev[St,-x- (B( ), u)]2 . (B.7)
+
+-
+
+-
+
+This presents a slightly more serious problem because there is no explicit cutoff to control v  -; it will come from the fact that the hitting times increase as v  - together with the decay of the functions St,-x- as   .
+
+Since g(y)  -C(1 + |y|) we have B( )  -C(1 +  ), with a bounded C which may depend on x. And, if we let  be the hitting time of -C(1 + |y|), we have   . We can replace the Airy function in St,-x- (B, u) by the monotone function Ai(z)  Ce-c(z0)-3/2 to bound the right hand side of (B.7) by
+
+g(x)
+
+
+
+
+
+C
+
+dv
+
+du
+
+Pv(  ds) e-2 v-2 u-cs3-c((-C(1+s)-u)0)3/2 .
+
+-
+
+-
+
+0
+
+Integrating by parts and perhaps adjusting the constants a little, we can bound this by
+
+g(x)
+
+
+
+
+
+C
+
+dv
+
+du
+
+Pv(  s) e-2 v-2 u-cs3-c((-C(1+s)-u)0)3/2 .
+
+-
+
+-
+
+0
+
+(B.8)
+
+Now Pv(  s) = Pv sup0ys[B(y) + C(1 + y)] > 0 and by Doob's submartingale inequality, Pv sup0ys[B(y) + C(1 + y)] > 0  Ev e(B(s)+C(1+s)) = exp{(v + C(1 + s)) + 2s2}. Optimising over  we get
+
+Pv(  s)  exp{-(v + C(1 + s))2/8s}.
+
+Plugging this bound into (B.8) one checks the result is finite. To check the final term in (4.2), first note that this last bound did not depend on  > 0, i.e. it also gives a bound on M ¯g(x)S¯etp,-i(xg+x )M-1 2.
+
+THE KPZ FIXED POINT
+
+25
+
+Now
+
+M-1(S¯etp,xi(g-x ))¯g(x)M-1
+
+2 2
+
+=
+
+
+du
+
+g(x)
+dv e-2u-2 vEv[St,-x- (B( ), u)]2 (B.9)
+
+-
+
+-
+
+which is essentially the same thing as (B.7) (the only difference being that  is hitting epi(g-x ) now).
+
+B.2. Feller property. The first thing we need is to show that the hitting times are continuous with respect to our topology. Recall that for g  LC[0, ), we use  to denote the hitting time of epi(g) by the Brownian motion B.
+
+Lemma B.1. Suppose that, as n  , gn  g in LC[0, ) and Bn  B uniformly on compact sets. Let  n be the hitting time of epi(gn) by Bn. Then for any K, T < ,
+
+K
+
+-K
+
+du (Pu( n
+
+
+
+T)
+
+-
+
+Pu(
+
+
+
+T ))2
+
+---
+n
+
+0.
+
+(B.10)
+
+Furthermore, the convergence is uniform over g in sets of bounded Hölder  norm,   (0, 1].
+
+Proof. { n  T } = supx[0,T ]{Bn(x) - gn(x)}  0. Since the supremand converges to B - g in UC, and since
+
+hn --U-C h =
+
+sup hn(x) --- sup h(x),
+
+n0
+
+x[-M,M ]
+
+n0 x[-M,M ]
+
+we have { n  T }  {  T }, and therefore (B.10) by the bounded convergence theorem.
+
+To prove the uniformity, note that if g ,[0,T ]  M and  > 0 then there is a  <  depending
+
+only on  and M so that any f whose epigraph has Hausdorff distance on [0, T ] less than  from g, has
+
+uniform distance on [0, T ] less than . Consider the event An = Bn - gn - B + g ,[0,T ] <  .
+
+Since Pu(Acn) - 0 (uniformly over g ,[0,T ]  M ), it is enough to consider the probabilities
+
+restricted to An. On An, u-  un  u+, where the subscript indicates the dependence on the
+
+starting point. Hence it suffices to show that
+
+K -K
+
+du
+
+P(u+  T ) - P(u-  T ) 2 - 0 uniformly
+
+over g ,[0,T ]  M . We use coupling. Let (B, B) be a pair of coalescing Brownian motions starting at
+
+(u + , u - ) defined by letting B(x) = 2u - B(x) until the first time u they meet, and B(x) = B(x)
+
+for x > u. We have P(u+  T ) - P(u-  T ) = P(B hit but B didn t)  P(u > u+). To get a lower bound on u+, note that g(x)  g(0) - M x so u+  u+ = the hitting time of g(0) - M x by B. Hence P(u+  T ) - P(u-  T )  P(u > u+), which depends only on 
+
+and M and goes to 0 as  0 for u < g(0).
+
+By repeating (B.3) through (B.9) with the difference of kernels and estimating using Lemma B.1, we obtain
+Corollary B.2. Suppose that gn - g in LC[0, ) and g(x) < . Then there exist  >  > 2|x|/t such that as n  , in Hilbert-Schmidt norm,
+M-1(S¯etp,xi(gn))¯gn(x)M - M (S¯etp,xi(g))¯g(x)M , M-1¯gn(x)S¯tep,-i(xgn)M-1 - M-1¯g(x)S¯etp,-i(xg)M-1, .
+In particular, the fixed point kernel (B.3) is a continuous function of (h0, g)  UC × LC into the space of trace class operators, and therefore the fixed point transition probabilities (4.5) are as well.
+The corollary together with Theorem 4.1 show that the map h0 - ph0(t, Ag) is continuous on Ag = {h  UC : h(x)  g(x), x  R} for any g  LC. Since these form a generating family for the Borel sets, every continuous function  on UC can be approximated by finite linear combinations, and therefore the map h0  Pt(h0) is continuous as well, i.e. the Feller property holds.
+
+THE KPZ FIXED POINT
+
+26
+
+B.3. Convergence of the discrete kernels. The functions St,x(z) and St,x(z), defined in (3.11) and (3.12) are not as explicit as their continuum version St,x. The first thing we need to show is that they
+satisfy analogous bounds so the type of estimates in the previous section can be extended to them.
+
+Lemma B.3. If t > 0, x  0, then for any r > 0 there are constants C <  and c > 0 depending on t, r and x such that
+
+|St,-x(u)|  C exp - (2xt-1(u  0) + cu¯3/210<u¯<c-1 + ru¯1u¯>c-1 )1xc-1/2 ,
+
+where
+
+u¯
+
+=
+
+u
+
++
+
+2x2 t
+
+.
+
+On
+
+the
+
+other
+
+hand,
+
+if
+
+t
+
+>
+
+0,
+
+x
+
+>
+
+0
+
+then
+
+for
+
+any
+
+r
+
+>
+
+0
+
+there
+
+are
+
+constants
+
+C
+
+<
+
+
+
+and c > 0 depending on t and r, but not x, such that
+
+|St,-x(u)|  C exp
+
+-
+
+1 2
+
+(log
+
+x)1x>c-1/2
+
+-
+
+(cx3
+
++
+
+2xt-1(u
+
+
+
+0)
+
++
+
+cu¯3/210<u¯<c-1
+
++ ru¯1u¯>c-1 )1xc-1/2
+
+and the same bound holds for St,x(u). Moreover, St,-x and St,-x converge pointwise to St,-x.
+
+Proof.
+
+From (3.13)­(3.15) we have St,-x(u)
+
+=
+
+1 2i
+
+~
+
+e
+
+t 6
+
+w~3-xw~2-uw~+F^(w~)dw~,
+
+where
+
+~
+
+is
+
+a
+
+circle
+
+of
+
+radius
+
+-1/2
+
+centred
+
+at
+
+-1/2
+
+and
+
+F^(w~)
+
+=
+
+-3/2F
+
+(3)
+
++
+
+-1F
+
+(2)
+
++
+
+-1/2F
+
+(1)
+
++
+
+F
+
+(0)
+
+-
+
+log
+
+2
+
+-
+
+t 6
+
+w~3
+
++
+
+xw~2 + uw~. The asymptotics is a little tricky because F^ has a pole at -1/2.
+
+If
+
+2x/t
+
+
+
+1 2
+
+-1/2
+
+we
+
+can
+
+simply
+
+bound
+
+by
+
+putting
+
+absolute
+
+values
+
+inside
+
+the
+
+original
+
+integral
+
+(3.13)
+
+to get St,-x(u)  C
+
+0 e--1x log 4w(1-w)dw
+
+
+
+C
+
+x-1/2,
+
+so we assume
+
+that 0
+
+
+
+2x/t
+
+<
+
+1 2
+
+-1/2.
+
+Changing variables w~ = z + 2x/t gives
+
+St,-x(u)
+
+=
+
+e-
+
+8x3 3t2
+
+-
+
+2ux t
+
+1 2i
+
+dz
+
+e
+
+t 6
+
+z3-u¯z+F^(z+2x/t)
+
+where the integral is over the contour ~ shifted by -2x/t. Then we can use Cauchy's theorem to shift the contour back to ~, without crossing the pole at z = -1/2 - 2x/t. Now we consider the
+integral term. If u¯  0, we can just go back to the original integral (3.13) to see that it is bounded. So assume that u¯ > 0. We deform the contour ~ to the contour /4 from e-i/4 to ei/4 making straight lines through 0. We can do this because of the rapid decay of the real part of the exponent as Re(z)  . Next we change variables to get z  u¯1/2z to get
+
+St,-x(u)
+
+=
+
+u¯1/2 2i
+
+
+
+dz
+
+eu¯3/2(
+
+t 6
+
+z3-z)+F^(u¯1/2z+2x/t).
+
+/4
+
+The critical point is at z = 2t-1 and we can only move there without crossing the pole if
+
+u¯1/2 get a
+
+2t-1 bound
+
+< -1/2/2. St,-x(u) 
+
+If u¯1/2 C e-cu¯3/2
+
+2t-1 <-1/2/4, . If u¯1/2 2t-1 
+
+we simply move to -1/2/4 the best we
+
+the critical point, and we can do is move to ru¯-1/2
+
+and split the integral into a circle around the pole, with left edge at this point, and right edge to the right
+
+of the critical point, plus another contour coming out of the true critical point, and joining the two legs
+
+of
+
+/4.
+
+Critical
+
+point
+
+analysis
+
+of
+
+the
+
+small
+
+circle
+
+gives
+
+a
+
+term
+
+Ce
+
+t 6
+
+r3 e-ru¯
+
+while
+
+the
+
+main
+
+part
+
+gives
+
+another contribution Ce-cu¯3/2.
+
+Lemma B.4. Assume that  >  > 2|x|/t and that as  0,     (-, ) and a  a  (-, ). Then, in Hilbert-Schmidt norm, as  0,
+
+M-1(St,x) - M-1(St,x),  St,-x¯a M - St,-x¯aM , M-1(St,x)¯ M - M-1(St,x)¯M .
+
+(B.11) (B.12) (B.13)
+
+Proof. The square of the Hilbert-Schmidt norm of the left hand side of (B.11) is given by du dv e-2u St,x(v - u) (v) - St,x(v - u)(v) 2.
+R2
+
+THE KPZ FIXED POINT
+
+27
+
+Note the cutoffs e-2u and (v), (v) compensate for the non-integrability of St,x(v - u) and St,x(v - u) as u   and v  -. Hence we can bound the above by (2/2) times
+
+e-2 du e-2u St,x(-u) - St,x(-u) 2 + |e-2 - e-2| du e-2uSt,x(-u)2,
+
+R
+
+R
+
+which vanishes as  0 as long as  + 2x/t > 0 by domination using Lemma B.3.
+
+Similarly, the square of the Hilbert-Schmidt norm of the left hand side of (B.12) is given by
+
+du dv e2v  (u)St,-x(u - v)¯a (v) - (u)St,-x(u - v)¯a(v) 2 .
+R2
+Now the cutoffs (u), (u) and ¯a(v), ¯a(v) compensate for the non-integrability of e2vSt,x(u- v) and e2vSt,x(u - v) as u  - and v  , and one can bound the integral analogously to the previous case to see that it vanishes as  0 (now under the condition  - 2x/t > 0).
+Finally the square of the Hilbert-Schmidt norm of the left hand side of (B.13) is given by
+
+dv du e-2v+2 u St,x(u - v)¯ (u) - St,x(u - v)¯(u) 2.
+R2
+Again the cutoffs (v), (v) and e-2u compensate for the non-integrability of e2 vSt,x(u - v) and e2 vSt,x(u - v) as u   and v  -, and we get a bound of 2/2( - ) times
+
+e2( -) dv e-2v St,x(-v)-St,x(-v) 2 +|e2( -) -e2( -)| du e-2vSt,x(-v)2,
+
+R
+
+R
+
+which vanishes as  0 as long as  >  > 2x/t.
+
+Lemma B.5. Suppose that g - g in LC[0, ) with g(0) <  and a - a. Then there exist  >  > 2|x|/t such that in Hilbert-Schmidt norm, as   0,
+
+M-1¯g(0)S¯t,,-epxi(g)¯a M - M-1¯g(0)S¯tep,-i(xg)¯aM .
+
+(B.14)
+
+Furthermore, the convergence is uniform over g in sets of locally bounded Hölder  norm,   (0, 1].
+
+Proof. Since g - g in LC[0, ) and g(0) < , there exist x  0 with g(x)  g(0). By a slight recentering we can assume that x = 0. By proceeding as in the proof of Lemma B.4 we may replace ¯g(0) and ¯a by ¯g(0) and ¯a; the error terms introduced by this replacement are treated similarly. After this replacement, the square of the Hilbert-Schmidt norm of the left hand side of (B.14)
+is given by,
+
+g(0)
+dv
+
+a
+du Ev St,-x- (B( ) - u) - Ev St,-x-  (B( ) - u)
+
+2e-2 v+2u.
+
+-
+
+-
+
+We are going to use the method of (B.7) to (B.9). It is a little easier here because the term e2u is
+
+helping rather than hurting as the analogue was there, though it doesn't actually make much difference.
+
+We have g(x)  -C(1 + |x|) with a C independent of . Let  be the hitting time of -C(1 + |y|) by the random walk B. Now Pv(  s) = Pv sup0ys[B(y) + C(1 + y)] > 0 and by Doob's
+submartingale inequality,
+
+Pv sup [B(y) + C(1 + y)] > 0  Ev e(B(s)+C(1+s)) = e(v+C(1+s))+-1s log(M(1/2))
+0ys
+
+where
+
+M ()
+
+=
+
+e/(2
+
+-
+
+e-)
+
+is
+
+the
+
+moment
+
+generating
+
+function
+
+of
+
+a
+
+centered
+
+Geom[
+
+1 2
+
+]
+
+random
+
+variable. In the same way, we get Pv(  s)  exp{(v + C(1 + s)) + 2s2}. Optimising over  we
+
+get Pv(  s)  exp{-(v + C(1 + s))2/8s + O(1/2)}. Donsker's invariance principle [Bil99] is
+
+the statement that B  B locally uniformly in distribution. Hence the result follows from Lemma B.1
+
+and Lemma B.3.
+
+B.4. Proof of the fixed point formulas.
+
+THE KPZ FIXED POINT
+
+28
+
+B.4.1. Proof of Theorem 3.4. What remains is to justify the trace class convergence of the kernel in (2.25) to that in (3.16), after conjugating by M-1, with  (and later  ) chosen as in Lemmas B.4 and B.5. The convergence of the second and third terms of (2.25) is direct from (B.11)­(B.13) and (B.14). The convergence of the first term can be proved along the lines of the proof in [BFP07]. This obviously also shows that the extended kernel appearing in (3.17) is trace class after the conjugation.
+The proof of the path integral formula (3.18) is the same as the one for two-sided initial data (3.21), which we prove below.
+
+B.4.2. Proof of Theorem 3.5. Consider first the extended kernel formula (3.20). We need to justify the trace class convergence of the kernel M-1ai e-xi2 Kthypo(hL0 )exj2 aj M, as L  , to the same kernel but with hL0 replaced by h0. Before doing so it will be convenient to undo the steps following (3.16) (or, equivalently, use (4.4)) to go back to the representation in terms of epi operators, which
+leaves us with the operator
+
+M ¯-aj exj 2 Ketpi(- hL0 )e-xi2 ¯-ai M-1.
+
+(B.15)
+
+Recall now that Ketpi(g) = I - Stg where (in the case t = 2) Stg is the Brownian scattering operator introduced in [QR16, Def. 1.16]22. It was proved in [QR16, Thm. 3.2] that for a version of hL0 (x) truncated at |x| > L one has that S2,0¯0S2- hL0 ¯0(S2,0) converges to the same operator but without truncation. It is straightforward now to check that the proof of this result still holds in our case (time 2 can be replaced by general time t > 0, using that our g has a linear bound; the St,0's can be removed without affecting the argument; the projections ¯aj and ¯aj play the same role as the ¯0's; and the operators exj2 and e-xi2 act simply on Ktepi(- hL0 ) without posing any problem), and inspecting the proof reveals that it in fact gives the convergence of (B.15). This argument also shows that the limiting
+operator is trace class (cf. [QR16, Prop. 3.5]),
+To verify the path integral formula (3.21) we go to the epi operator representation as above and
+look at det(I - K) with K as in (B.15) but without the conjugation. This time we are going to use
+[BCR15, Thm. 3.3] directly, so we need to check that K satisfies the assumptions. In the notation of that theorem we have Wxi,xj = e(xj-xi)2 for xi < xj , Kxi = e-xi2 Khtypo(h0)exi2 , Wxj,xi Kxi = e-xj2 Khtypo(h0)exi2 for xi < xj and Nxi = ¯-ai . We set also Vxi = M-1-ai , Vxi = M -ai , Uxi = M-1 and Uxi = M . Assumptions 1 and 3 are not hard to check using the arguments of Appendices B.1 and B.3 together with [BCR15, Lem. 3.1]. Assumption 2 is direct.
+
+B.4.3. Proof of Theorem 4.1. Our first task is to justify the continuum statistics limit (3.22). The
+original proof is in [CQR13, Prop. 3.2], which however assumes a bit more regularity of g. But the
+result is straightforward to extend to our setting using the arguments of Lemmas B.1 and B.5.
+Next we need to justify the trace class limit (after conjugation) of Kt,L := St/2,-Lg[-L,L](St/2,-L) to I - K-epti/(g2). By (B.4), after conjugating the whole kernel appearing in Section 3.5 by MSt,0 we see that it is enough to prove the convergence of M-1Kt,LM-1 with Kt,L = (St/2,-L)g[-L,L]St/2,-L to M-1(I-Ketp/2i(g))M-1. Now I-Kt,L is nothing but Ketp/2i(gL) with gL(x) = g(x)1|x|L+·1|x|>L (see [QR16, Prop. 3.4 and Eqs. 3.11, 3.12]), and we know from Corollary B.2 and the arguments in (B.5)­(B.9) that M-1Ketp/2i(gL)M-1 - M-1Ketp/2i(g)M-1 in trace norm as L   for large enough  . So M-1(I - Kt,L)M-1 - M-1Ketp/2i(g)M-1 1 - 0 with L   as needed.
+
+22A minor difficulty is that [QR16] works under an additional regularity assumpion on the barrier function g. However, it can be checked easily that the more general setting which we are considering here introduces no difficulties in the proof, see for instance Appendix B.1 and the proof of (B.10), and compare with the proof of [QR16, Prop. 3.5].
+
+THE KPZ FIXED POINT
+
+29
+
+B.5. Finite propagation speed. We begin with an alternative formula for G0,n (defined in (2.14)). Lemma B.6. Given any 0 < a < n we have
+
+G0,n(z1, z2) = 1z1>X0(1)Q(n)(z1, z2) + 1z1X0(1)EB0=z1 Q(n-1)(B1 , z2)11<n-a
+
++ 1z1X0(1)
+
+Qn-a-1(z1, y) - EB0=z1 Qn-a-1-n-a (Bn-a , y)1n-an-a-1
+
+yX0(n-a)
+
+× EB0=y Q(a+1-n-a)(Bn-a , z2)1n-aa , (B.16)
+
+where b is the hitting time by Bm of the epigraph of X0(b + m) + 1 m0 and b is the hitting time by Bm of the epigraph of X0(b - m) + 1 m0.
+
+The proof is similar to that of Lemma 2.4, decomposing now the probability of not hitting the epigraph of the curve according to the location of the walk at time a; we omit the details.
+
+We turn now to the proof of Lemma 3.2. First we compute the difference in the probability P(Xt(nj)  aj, j = 1, . . . , M ) if we start with X0,L+k and X0,L+(k+1). To this end we use (2.28) with = (k) = - -1L - k - 1 in both cases. We need to estimate det(I - ¯aKt( ,k)¯a) - det(I - ¯aKt( ,k+1)¯a) where, using (2.13) and (2.15), Kt( ,k)(ni, ·; nj, ·) = -Qnj-ni 1ni<nj + RQ-ni+ Ga0,,n,jk- R-1 with Ga0,,n,jk- the kernel given in Lemma B.6 with  X0,L+k in place of X0. By (B.1), it is enough to estimate ¯ai Kt( ,k)(ni, ·; nj, ·) - Kt( ,k+1)(ni, ·; nj, ·) ¯aj 1 for each i, j. Choose a = nj - 1. We have shown above (Lemma B.4) that M-1-1/2RQ-ni+ M 2 is bounded,
+with a bound which can be made independent of by a suitable choice of ,  (note that here we are working with operators acting on 2(Z); M is the analogue of M when we embed in L2(R)). So by (B.2) all we need is to control M-1-1/2 Gn0,jn-j1-, ,k - Gn0,jn-j1-, ,k+1 R-1M 2.
+Looking at (B.16), the difference of the first term cancels. Consider now the difference corresponding to the second term in (B.16), which we denote as Gn0,jn-j1-, ,k,(2). For both terms in the difference the expectation is computed on the event that 1 < nj - - a - 1, which means 1  -1L + k. By
+definition of 1 and of the initial conditions under consideration, this gives
+
+G0n,jn-j1-, ,k+1,(2)(z1, z2) - Gn0,jn-j1-, ,k,(2)(z1, z2) = EB0=z1 Q(n-1)(B1 , z2)11= -1L +k ,
+
+with 1 defined now as the hitting time of the entire curve  X0(m) m0. By Lemma B.3, the inequality B1  -C(1 + 1), and the previous bounds, we have that
+
+M-1-1/2 Gn0,jn-j 1-, ,k+1,(2)(z1, z2) - Gn0,jn-j 1-, ,k,(2) M 2  C e-cL3 1Lc-1/2 + L-1/21L>c-1/2 Pu(1 =
+
+-1L
+
++ k + 1)
+
+with constants which are uniform in L with the above choices of ,  . An analogous estimate can be obtained for the difference corresponding to the third term in (B.16). Summing over k gives the result.
+
+APPENDIX C. REGULARITY
+
+In this section we obtain the necessary tightness on h(t, x) by obtaining uniform bounds on the local Hölder norm  < 1/2. Note we are working at t fixed and the bounds are as functions of x. Although we do not address it here, in principle one could obtain bounds on the entire rescaled space-time field for TASEP by using the Markov property. We start with a version of the Kolmogorov continuity theorem.
+
+Lemma C.1. Let h(x) be a stochastic process defined for x in an interval [-M, M ]  R, with one and two point distribution functions Fx(a) = P(h(x)  a) and Fx,y(a, b) = P(h(x)  a, h(y)  b). Suppose that there exist C <  and c > 0 such that for all x  [-M, M ],
+
+1 - Ce-ca  Fx(a)  Ceca,
+
+(C.1)
+
+THE KPZ FIXED POINT
+
+30
+
+that there are positive bounded  > 0 and  and a non-negative function G on [0, ) with
+
+ 0
+
+|a|pG(a)da
+
+<
+
+ for all p > 1, and that for all x, y  [-M, M ]
+
+Fx(a) - Fx,y(a, b)  e|x+y||x - y|- G |x - y|-(b - a)
+
+(C.2)
+
+for any |a - b|  1 and some  < c. Then for every  <  and p > 1 there is a C¯ depending only on
+
+, , G,  and p such that
+
+P h ,[-M,M]  R  C¯R-2p.
+
+(C.3)
+
+Proof. Integrating by parts and using (C.1) to control the boundary term, one obtains
+
+E h(x) - h(y) 2p = 2p(2p - 1)
+
+da db |a - b|2(p-1) Fx(a) - Fx,y(a, b) + Ce-cN .
+
+-N abN
+
+(C.4)
+
+for some new C <  which will change from line to line. By (C.2), we have that the left hand side
+
+is bounded by CN |y - x|2p- + Ce-(c-)N . Let  > 0. Choosing N large we can bound this by
+
+C |y
+
+-
+
+x|2p- - .
+
+Then
+
+we
+
+can
+
+take
+
+p
+
+>
+
+1++ 2
+
+to
+
+make
+
+the
+
+exponent
+
+larger
+
+than
+
+1.
+
+The
+
+Kolmogorov
+
+continuity
+
+theorem
+
+[RY99]
+
+then
+
+tells
+
+us
+
+that
+
+for
+
+any
+
+
+
+
+
+[0,
+
+
+
+-
+
+1++ 2p
+
+)
+
+there
+
+is
+
+a
+
+C¯
+
+depending
+
+only
+
+on , p and the C
+
+in (C.4) such that E[
+
+h
+
+2p ,[-M,M
+
+]]
+
+
+
+C¯,
+
+from
+
+which
+
+(C.3)
+
+follows
+
+by
+
+Chebyshev's
+
+inequality.
+
+Lemma C.2. Suppose that h0 -U-C h0. For any   (0, 1/2) and 0  M < ,
+
+lim sup
+A
+
+lim sup
+0
+
+Ph0
+
+(
+
+h(t, ·)
+
+,[-M,M]  A) = 0.
+
+Proof. Fix M > 0 and t > 0. Since h(t) -U-C h(t) we have
+
+lim sup
+N 
+
+lim sup
+0
+
+Ph0
+
+sup h(t, x)  N
+x[-M,M ]
+
+= 0.
+
+Now assume g2 > g1 and x2 > x1 (the other cases can be obtained by symmetry). From (2.9) we have that the two-point function Ph0 h,L(t, x1)  g1, h,L(t, x2)  g2 equals
+det I - Kx,2hypo(h0,L)(I - e(x1-x2) ¯g1 e(x2-x1) ¯g2 )
+L2(R)
+where K,hypo(h0,L) is the rescaled TASEP kernel (under the 1:2:3 scaling (3.6)),  is the generator of the rescaled walk, and the cutoff h0,L is from just after (3.6). We have to control the difference as in (C.2) which we estimate using (B.1) by the trace norm
+
+M Kx,2hypo (h0,L)e(x1-x2) ¯g1 e(x2-x1) g2 M-1 1.
+
+From Appendices B.1 and B.3, MKx,2hypo (h0,L)e(x1-x2) M 2 is uniformly bounded in  > 0 and
+
+L  . We have
+
+g1
+
+M-1¯g1 e(x2-x1) g2 M-1 2 =
+
+dz1
+
+dz2e-2(z1+z2)
+
+e(x2-x1) (z1, z2)
+
+2
+,
+
+-
+
+g2
+
+which is bounded by such a Ce-2(g1+g2)(x2 - x1)- G((x2 - x1)-(z2 - z1)) for any ,  < 1/2. Now from Proposition 4.8 we have (C.1) for any c (in particular c > ). So we can apply Lemma C.1
+
+and deduce the result.
+
+Acknowledgements. JQ and KM were supported by the Natural Sciences and Engineering Research Council of Canada. JQ was also supported by a Killam research fellowship. DR was supported by Conicyt Basal-CMM, by Programa Iniciativa Científica Milenio grant number NC130062 through Nucleus Millenium Stochastic Models of Complex and Disordered Systems, and by Fondecyt Grant 1160174.
+
+THE KPZ FIXED POINT
+
+31
+
+REFERENCES
+
+[AKQ14] [BFP10] [BR01]
+[BG97] [Bil99]
+[BCR15] [BFP07]
+[BFPS07] [BFS08] [BFS09] [Bur74] [CFP10] [CLW16] [CN16] [CQR13] [CQR15] [CT15] [CTS16] [Fer15]
+[FS06] [FNS77] [FM00] [Hai14] [HQ15]
+
+T. Alberts, K. Khanin, and J. Quastel. The intermediate disorder regime for directed polymers in dimension 1 + 1. Ann. Probab. 42.3 (2014), pp. 1212­1256. J. Baik, P. L. Ferrari, and S. Péché. Limit process of stationary TASEP near the characteristic line. Comm. Pure Appl. Math. 63.8 (2010), pp. 1017­1070. J. Baik and E. M. Rains. Symmetrized random permutations. In: Random matrix models and their applications. Vol. 40. Math. Sci. Res. Inst. Publ. Cambridge: Cambridge Univ. Press, 2001, pp. 1­19. L. Bertini and G. Giacomin. Stochastic Burgers and KPZ equations from particle systems. Comm. Math. Phys. 183.3 (1997), pp. 571­607. P. Billingsley. Convergence of probability measures. Second. Wiley Series in Probability and Statistics: Probability and Statistics. A Wiley-Interscience Publication. John Wiley & Sons, Inc., New York, 1999, pp. x+277. A. Borodin, I. Corwin, and D. Remenik. Multiplicative functionals on ensembles of non-intersecting paths. Ann. Inst. H. Poincaré Probab. Statist. 51.1 (2015), pp. 28­58. A. Borodin, P. L. Ferrari, and M. Prähofer. Fluctuations in the discrete TASEP with periodic initial configurations and the Airy1 process. Int. Math. Res. Pap. IMRP (2007), Art. ID rpm002, 47. A. Borodin, P. L. Ferrari, M. Prähofer, and T. Sasamoto. Fluctuation properties of the TASEP with periodic initial configuration. J. Stat. Phys. 129.5-6 (2007), pp. 1055­1080. A. Borodin, P. L. Ferrari, and T. Sasamoto. Transition between Airy1 and Airy2 processes and TASEP fluctuations. Comm. Pure Appl. Math. 61.11 (2008), pp. 1603­1629. A. Borodin, P. L. Ferrari, and T. Sasamoto. Two speed TASEP. J. Stat. Phys. 137.5-6 (2009), pp. 936­977. J. Burgers. The Nonlinear Diffusion Equation: Asymptotic Solutions and Statistical Problems. First. Springer Netherlands, 1974, pp. x+174. I. Corwin, P. L. Ferrari, and S. Péché. Limit processes for TASEP with shocks and rarefaction fans. J. Stat. Phys. 140.2 (2010), pp. 232­267. I. Corwin, Z. Liu, and D. Wang. Fluctuations of TASEP and LPP with general initial data. Ann. Appl. Probab. 26.4 (2016), pp. 2030­2082. I. Corwin and M. Nica. Intermediate disorder directed polymers and the multi-layer extension of the stochastic heat equation. 2016. arXiv:1603.08168. I. Corwin, J. Quastel, and D. Remenik. Continuum statistics of the Airy2 process. Comm. Math. Phys. 317.2 (2013), pp. 347­362. I. Corwin, J. Quastel, and D. Remenik. Renormalization fixed point of the KPZ universality class. J. Stat. Phys. 160.4 (2015), pp. 815­834. I. Corwin and L.-C. Tsai. KPZ equation limit of higher-spin exclusion processes. To appear in Ann. Probab. 2015. arXiv:1505.04158. I. Corwin, L.-C. Tsai, and H. Shen. ASEP(q,j) converges to the KPZ equation. 2016. arXiv:1602.01908. P. L. Ferrari. Dimers and orthogonal polynomials: connections with random matrices. In: Dimer models and random tilings. Vol. 45. Panor. Synthèses. Soc. Math. France, Paris, 2015, pp. 47­79. P. L. Ferrari and H. Spohn. Scaling limit for the space-time covariance of the stationary totally asymmetric simple exclusion process. Comm. Math. Phys. 265.1 (2006), pp. 1­44. D. Forster, D. R. Nelson, and M. J. Stephen. Large-distance and long-time properties of a randomly stirred fluid. Phys. Rev. A 16.2 (1977), pp. 732­749. L. Frachebourg and P. A. Martin. Exact statistical properties of the Burgers equation. J. Fluid. Mech. 417 (Aug. 2000), pp. 323­349. M. Hairer. A theory of regularity structures. Invent. Math. 198.2 (2014), pp. 269­504. M. Hairer and J. Quastel. A class of growth models rescaling to KPZ. 2015. arXiv:1512. 07845.
+
+THE KPZ FIXED POINT
+
+32
+
+[IS04] T. Imamura and T. Sasamoto. Fluctuations of the one-dimensional polynuclear growth model with external sources. Nuclear Phys. B 699.3 (2004), pp. 503­544.
+[JG15] M. Jara and P. Gonçalves. Density fluctuations for exclusion processes with long jumps. 2015. arXiv:1503.05838.
+[Joh03] K. Johansson. Discrete polynuclear growth and determinantal processes. Comm. Math. Phys. 242.1-2 (2003), pp. 277­329.
+[Joh00] K. Johansson. Shape fluctuations and random matrices. Comm. Math. Phys. 209.2 (2000), pp. 437­476.
+[KPZ86] M. Kardar, G. Parisi, and Y.-C. Zhang. Dynamical scaling of growing interfaces. Phys. Rev. Lett. 56.9 (1986), pp. 889­892.
+[Lig76] T. M. Liggett. Coupling the simple exclusion process. Ann. Probability 4.3 (1976), pp. 339­ 356.
+[Lig85] T. M. Liggett. Interacting particle systems. Vol. 276. Grundlehren der Mathematischen Wissenschaften [Fundamental Principles of Mathematical Sciences]. New York: SpringerVerlag, 1985, pp. xv+488.
+[MFQR17] G. Moreno Flores, J. Quastel, and D. Remenik. Intermediate disorder limits for directed polymers with boundary conditions. In preparation. 2017.
+[PS02] M. Prähofer and H. Spohn. Scale invariance of the PNG droplet and the Airy process. J. Stat. Phys. 108.5-6 (2002), pp. 1071­1106.
+[PS11] S. Prolhac and H. Spohn. The one-dimensional KPZ equation and the Airy process. J. Stat. Mech. Theor. Exp. 2011.03 (2011), P03020.
+[QR14] J. Quastel and D. Remenik. Airy processes and variational problems. In: Topics in Percolative and Disordered Systems. Ed. by A. Ramírez, G. Ben Arous, P. A. Ferrari, C. Newman, V. Sidoravicius, and M. E. Vares. Vol. 69. Springer Proceedings in Mathematics & Statistics. 2014, pp. 121­171.
+[QR16] J. Quastel and D. Remenik. How flat is flat in random interface growth? 2016. arXiv:1606. 09228.
+[QR13a] J. Quastel and D. Remenik. Local behavior and hitting probabilities of the Airy1 process. Probability Theory and Related Fields 157.3-4 (2013), pp. 605­634.
+[QR13b] J. Quastel and D. Remenik. Supremum of the Airy2 process minus a parabola on a half line. J. Stat. Phys. 150.3 (2013), pp. 442­456.
+[QV08] J. Quastel and B. Valkó. KdV preserves white noise. Comm. Math. Phys. 277.3 (2008), pp. 707­714.
+[RY99] D. Revuz and M. Yor. Continuous martingales and Brownian motion. Third. Vol. 293. Grundlehren der Mathematischen Wissenschaften [Fundamental Principles of Mathematical Sciences]. Springer-Verlag, Berlin, 1999, pp. xiv+602.
+[SI04] T. Sasamoto and T. Imamura. Fluctuations of the one-dimensional polynuclear growth model in half-space. J. Stat. Phys. 115.3-4 (2004), pp. 749­803.
+[Sas05] T. Sasamoto. Spatial correlations of the 1D KPZ surface on a flat substrate. Journal of Physics A: Mathematical and General 38.33 (2005), p. L549.
+[Sch97] G. M. Schütz. Exact solution of the master equation for the asymmetric exclusion process. J. Statist. Phys. 88.1-2 (1997), pp. 427­445.
+[Sim05] B. Simon. Trace ideals and their applications. Second. Vol. 120. Mathematical Surveys and Monographs. American Mathematical Society, 2005, pp. viii+150.
+[TW94] C. A. Tracy and H. Widom. Level-spacing distributions and the Airy kernel. Comm. Math. Phys. 159.1 (1994), pp. 151­174.
+[TW96] C. A. Tracy and H. Widom. On orthogonal and symplectic matrix ensembles. Comm. Math. Phys. 177.3 (1996), pp. 727­754.
+
+THE KPZ FIXED POINT
+
+33
+
+(K. Matetski) DEPARTMENT OF MATHEMATICS, UNIVERSITY OF TORONTO, 40 ST. GEORGE STREET, TORONTO, ONTARIO, CANADA M5S 2E4
+E-mail address: matetski@math.toronto.edu
+(J. Quastel) DEPARTMENT OF MATHEMATICS, UNIVERSITY OF TORONTO, 40 ST. GEORGE STREET, TORONTO, ONTARIO, CANADA M5S 2E4
+E-mail address: quastel@math.toronto.edu
+(D. Remenik) DEPARTAMENTO DE INGENIERÍA MATEMÁTICA AND CENTRO DE MODELAMIENTO MATEMÁTICO, UNIVERSIDAD DE CHILE, AV. BEAUCHEF 851, TORRE NORTE, PISO 5, SANTIAGO, CHILE
+E-mail address: dremenik@dim.uchile.cl
+
+

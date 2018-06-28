@@ -1,0 +1,174 @@
+PRIMITIVE AUTOMORPHISMS OF A SIMPLE ABELIAN VARIETY
+KEIJI OGUISO
+
+arXiv:1701.00061v1 [math.AG] 31 Dec 2016
+
+Abstract. We shall prove that an automorphism of a simple abelian variety is primitive if and only if it is of infinite order.
+
+1. Introduction
+
+This note provides a supplementary result (Theorem 1.1) of my talk at the sixty-first Al-
+
+gebra Symposium of Mathematical Society of Japan, held at Saga University on September
+
+7­10, 2016. My talk there was based on my previous [Og16-2].
+
+Throughout this note, the base field is assumed to be the complex number field C. Let
+
+M be a smooth projective variety of dimension m  2 and f  Bir (M ).
+
+f is said to be imprimitive if there are a smooth projective variety B with 0 < dim B < m
+
+and a dominant rational map  : M
+
+B with connected fibers such that  is f -
+
+equivariant, i.e., there is fB  Bir (B) satisfying   f = fB  . As  is just a rational
+
+dominant map, smoothness assumption of B is harmless by Hironaka resolution of singu-
+
+larities ([Hi64]). We say that f is primitive if it is not imprimitive.
+
+The notion of primitivity is introduced by De-Qi Zhang [Zh09]. Note that if f is primitive,
+
+then ord (f ) = . Indeed, otherwise, the invariant field C(M )f is of the same transcen-
+
+dental degree m as the rational function field C(M ). Thus we have   C(M )f \ C as
+
+m  1. Then the Stein factorization of  : M P1 is f -equivariant. f is then imprimitive
+
+as m  2.
+
+Assume that f  Aut (M ). The topological entropy htop(f ) of f is a fundamental quantity measuring the complexity of the orbit behaviour under f n (n  0). Let rp be the spectral radius of f |Hp,p(M ). Then, by Gromov-Yomdin's theorem, htop(f ) satisfies
+
+0  htop(f ) = log max0pmrp(f )
+
+In this note, it is harmless to regard this formula as the definition of htop(f ) (See eg. [Og15] and references therein for details).
+The aim of this note is to remark the following:
+
+Theorem 1.1. Let A be a simple abelian variety of dimension m  2 and f  Aut (A). Then f is primitive if and only if ord (f ) = . In particular, the translation automorphism ta (a  A) defined by x  x + a is primitive if a is a non-torsion point of A with fixed zero. Moreover, if in addition A is of CM type, then A admits a primitive automorphism of positive entropy, possibly after replacing A by an isogeny.
+
+The author is supported by JSPS Grant-in-Aid (S) No 25220701, JSPS Grant-in-Aid (S) 15H05738, JSPS Grant-in-Aid (A) 16H02141, JSPS Grant-in-Aid (B) 15H03611, and by KIAS Scholar Program.
+1
+
+2
+
+KEIJI OGUISO
+
+Here and hereafter, an abelian variety A = Cm/ is said to be simple if A has no abelian subvariety B such that 0 < dim B < dim A. A simple abelian variety A is called of CM type if the endomorphism ring E := Endgroup(A)  Q is a CM field with [E : Q] = 2 dim A. By definition, a field E is a CM field if E is a totally imaginary quadratic extension of a totally real number field K. Note that if an abelian variety B is isogenous to a simple abelian variety of CM type, then so is B with the same endomorphism ring as A. However, Autgroup (A)  Autgroup (B) in general (even for elliptic curves of CM type).
+The "only if" part of Theorem 1.1 is clear as already remarked. Theorem 1.1 is a generalization of our earlier work [Og16-2, Theorem 4.3]. The last statement of Theorem 1.1 gives an affrimative answer to a question asked by Gongyo at the symposium.
+Our proof is a fairly geometric one based on works due to Amerik-Campana [AC13] and Bianco [Bi16] and is in some sense close to [Og16-3].
+Acknowledgement. I would like to express my thanks to Professors Tomohide Terasoma, Kota Yoshioka and Fumiharu Kato for their invitation to the symposium, Professor Yoshinori Gongyo for his inspiring question there and Professor Akio Tamagawa for his interest in this work and valuable e-mail correspondence.
+
+2. Proof of Theorem 1.1.
+Let A be a simple abelian variety of dimension m  2 and f  Aut (A) such that ord (f ) = . We first show that f is primitive.
+The following two well-known propositions will be frequently used:
+Proposition 2.1. Let V be a subvariety of A such that dim V < m = dim A and V~ is a Hironaka resolution of V . Then V~ is of general type.
+Proof. See [Ue75, Corollary 10.10].
+Proposition 2.2. Let M be a smooth projective variety of general type defined over a field k of characteristic 0. Then the birational automorphism group Bir (M/k) of M over k is a finite group
+Proof. By the Lefschetz principle, we may reduce to [Ue75, Corollary 14.3].
+Lemma 2.3. Let P be a very general closed point of A. Then the f -orbit {f n(P ) | n  Z} of P is Zariski dense in A.
+Proof. As P is very general, f n is defined at P for all n  Z. By [AC13, Th´eor`eme 4.1], there is a smooth projective variety B and a dominant rational map  : A B such that   f =  and -1((P )) is the Zariski closure of f -orbit of P . It suffices to show that dim B = 0. In what follows, assume to the contray that dim B > 0, we derive a contradiction.
+Let   B be the generic point in the sense of scheme and A be the fiber over . Then by Proposition 2.1 and specialization, a Hironaka resolution of each irreducible component of A is of general type over C(B). By   f = , f faithfully acts on A over C(B). Thus, by Proposition 2.2, f n = id on A for some positive integer n. Thus f n = id on A, as the generic point A of A is in A. This contradicts to ord f = .
+The following general, useful proposition is due to Bianco:
+
+PRIMITIVE AUTOMORPHISMS
+
+3
+
+Proposition 2.4. Let X be a projective variety and g  Bir (X). Assume that  : X B is a g-equivariant dominant rational map to a smooth projective variety B with dim B < dim X. Assume that a Hironaka resolution X~b of the fiber Xb is of general type for a general closed point b  B. Then for any very general closed point P  X, the g -orbit {gn(P )|n  Z} of P is never Zariski dense in X.
+Proof. See [Bi16, Section 4]. See also [Og16-3, Remark 2.6] for a minor clarification.
+The next proposition completes the first part of Theorem 1.1:
+Proposition 2.5. Let A be a simple abelian variety of dimension  2 and f be an automorphism of A of infinite order. Then f is primitive.
+Proof. Let  : A B be an f -equivariant dominant rational map to a smooth projective variety B with dim B < dim A and with connected fibers. If dim B > 0, then by Proposition 2.1, a Hironaka resolution A~b of the fiber Ab over b  B is of general type for general b  B. Then, by Proposition 2.4, the f -orbit of a very general closed point P  A is not Zariski dense. This contradicts to Lemma 2.3. Thus dim B = 0, i.e., f is primitive.
+We shall show the last part of Theorem 1.1. Let A be a simple abelian variety of CM type of dimension m  2. We write E := Endgroup(A)  Q. Then by definition, E is a totally imaginary quadratic extension of a totally real number field K with [K : Q] = m  2. First we make A explicit up to isogeny. As E is a totally imaginary field with [E : Q] = 2m, there are exactly 2m different complex embeddings i : E  C (1  i  2m) such that 2m-i = i. Here - is the complex conjugate of C. Note that there are exactly 2m · m! ways of numberings I of the embeddings here. Choosing one such numbering I, we consider the embedding:
+I := (1, 2, · · · , m) : E  Cm ; a  (1(a), 2(a), . . . , m(a)) .
+Let OE (resp. OK ) be the integral closure of Z in E (resp. in K). Then BI := Cm/I (OE )
+is an abelian variety and A is isogenous to BI for some numbering I (See eg. [Mi06, Chapter I, Section 3]).
+From now, we shall prove that the abelian variety B := BI admits an automorphism of positive entropy.
+Definition 2.6. Let Q be the algebraic closure of Q in C, Z be the integral closure of Z in Q and Z× be the unit group of the ring Z. A real algebraic integer is an element of Z  R. A real algebraic integer  is called a Pisot number if  > 1 and || < 1 for all Galois conjugates  =  of  over Q. A Pisot number  is called a Pisot unit if   Z×.
+Then, by [BDGPS92, Theorem 5.2.2], we have
+Theorem 2.7. For any real number field L, there is a Pisot unit   L such that L = Q().
+As K is (totally) real, there is then a Pisot unit  such that K = Q(). Consider the linear automorphism of Cm defined by:
+f~ : Cd  Cd ; (z1, z2, . . . , zm)  (1()z1, 2()z2, . . . , m()zm) .
+
+4
+
+KEIJI OGUISO
+
+As  is a unit in OK (hence in OE), so are i() in i(OE). Thus f~(I (OE)) = I (OE) by the definition of I . Hence f~ descends to an automorphism f of B. We set f := f.
+As K is totally real, regardless of I, we have
+{i() | 1  i  m} = { := 1, 2, . . . , m} .
+Here the right hand side is the set of all Galois conjugates of  over Q. By the construction of f from f~, the left hand side set also coincides with the set of eigenvalues of f|H0(B, 1B), and therefore, coincides with the set of eigenvalues of f |H0(B, 1B). As B is an abelian variety, we have
+H1,1(B) = H0(B, 1B)  H0(B, 1B) . Here H0(B, 1B) is the complex conjugate of H0(B, 1B)  H1(B, Z)  C. As  is real, it follows that 2 is an eigenvalue of the action of f on H1,1(B). Hence
+htop(f )  r1(f )  2 > 1 .
+Here the last inequality follows from the fact that  > 1. Thus f is of postive entropy. In particular, ord (f ) = . Therefore, f is primitive as well by the first part of Theorem 1.1. This completes the proof of Theorem 1.1.
+
+References
+
+[AC13]
+
+Amerik, E., Campana, F., : Fibrations M´eromorphes Sur Certaines Vari´et´es `a Fibr´e Canonique
+
+Trivial, Pure and Applied Mathematics Quarterly, Special Issue: In honor of Fedor Bogomolov,
+
+4 (2008) 509­545.
+
+[Bi16]
+
+Bianco, F. L., : On the primitivity of birational transformations of irreducible symplectic man-
+
+ifolds, arXiv:1604.05261.
+
+[BDGPS92] Bertin, M.J., Decomps-Guilloux, A., Grandet-Hugot, M., Pathiaux-Delefosse, M., Schreiber,
+
+J., : Pisot and Salem Numbers, Birkh¨auser (1992).
+
+[Hi64]
+
+Hironaka, H., : Resolution of singularities of an algebraic variety over a field of characteristic
+
+zero. I, II., Ann. of Math. 79 (1964) 109­203; 79 (1964) 205­326.
+
+[Mi06]
+
+Milne, J.S., : Complex Multiplication, at: http://www.jmilne.org/math/CourseNotes/CM.pdf
+
+[Og15]
+
+Oguiso, K., : Some aspects of explicit birational geometry inspired by complex dynamics, Pro-
+
+ceedings of the International Congress of Mathematicians, Seoul 2014 (Invited Lectures) Vol.II
+
+(2015) 695­721.
+
+[Og16-1] Oguiso, K., : Simple abelian varieties and primitive automorphisms of null entropy of surfaces
+
+: in K3 Surfaces and their Moduli, Progress in Math., Birkh¨auser Progress in Mathematics 315
+
+(2016) 279­296.
+
+[Og16-2] Oguiso, K., : Pisot units, Salem numbers and higher dimensional projective manifolds with
+
+primitive automorphisms of positive entropy, arXiv:1608.03122.
+
+[Og16-3] Oguiso, K., : A criterion for the primitivity of a birational automorphism of a Calabi-Yau
+
+manifold and an application, arXiv:1612.09016.
+
+[Ue75]
+
+Ueno, K., Classification theory of algebraic varieties and compact complex spaces, Lecture Notes
+
+in Mathematics, 439, Springer-Verlag, 1975.
+
+[Zh09]
+
+Zhang, D.-Q., : Dynamics of automorphisms on projective complex manifolds, J. Differential
+
+Geom. 82 (2009) 691­722.
+
+Mathematical Sciences, the University of Tokyo, Meguro Komaba 3-8-1, Tokyo, Japan and Korea Institute for Advanced Study, Hoegiro 87, Seoul, 133-722, Korea
+E-mail address: oguiso@ms.u-tokyo.ac.jp
+
+

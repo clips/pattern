@@ -1,0 +1,493 @@
+arXiv:1701.00099v3 [nucl-th] 10 Mar 2017
+
+Forward-backward multiplicity correlations at the LHC from independent sources
+Adam Olszewski1 and Wojciech Broniowski1,2
+1Institute of Physics, Jan Kochanowski University, PL-25406 Kielce, Poland
+2The H. Niewodniczan´ski Institute of Nuclear Physics, Polish Academy of Sciences, PL-31342 Cracow, Poland
+It is argued that the superposition approach, where partons are independently emitted from longitudinally extended sources in the early stage, is fully compatible with the experimental results for the forward-backward multiplicity correlations in Pb+Pb collisions at sNN = 2.76 TeV. The pertinent correlation analysis is based on the PhD Thesis of Ref. [1], which includes an unpublished analysis of data taken by the ALICE Collaboration. Our calculations show that in the experimentally covered pseudorapidity range  = 1.2, the initial sources in the backward and forward bins are maximally correlated, which complies to the string-like interpretation of the underlying early-stage production mechanism.
+PACS: 5.75.-q, 25.75Gz, 25.75.Ld
+1. Introduction In this paper we use the method developed in Ref. [2, 3] to confirm that the mechanism of early particle production at the Large Hadron Collider (LHC) may be understood, to a good approximation, in terms of emission from independent sources which extend over a wide longitudinal range. Our analysis is performed with the help of simple formulas from Ref. [2] for the correlation coefficients. It uses the data taken by the ALICE Collaboration for Pb+Pb collisions at sNN = 2.76 TeV in the form presented in the PhD thesis by I. Sputowska [1].
+ Supported by the Polish National Science Center grant 2015/19/B/ST2/00937  adam.olszewski.fiz@gmail.com  Wojciech.Broniowski@ifj.edu.pl
+(1)
+
+2
+
+fbc printed on March 13, 2017
+
+As is well known, the long-range rapidity correlations in hadronic collision experiments reveal information on the dynamics and evolution of the system in its earliest partonic phase. Experimentally, the multiplicity correlations in early pp and pp¯ collisions [4­9] and nuclear collisions [10, 11] were followed by the relativistic heavy-ion and pp experiments at RHIC [12­14] and the LHC [1, 15­18]. Physical pictures, models, and theoretical methods have been constructed along the quest to understand the data [19­47].
+The basic assumptions of the applied superposition framework are following [2, 3]:
+(a) Particle emission occurs independently from longitudinally extended sources.
+(b) The forward (F) and backward (B) bins are sufficiently well separated in pseudorapidity, such that the transition from the initial state to the final hadron distribution does not cause mixing between particles belonging to the F and B bins.
+Actually, our approach takes into account three stages typically distinguished in the evolution of the system: 1) early production of initial particles (forming an entropy density) from sources, 2) hydrodynamic or transport evolution in the intermediate phase, and finally 3) production of hadrons and their subsequent registration in detectors.
+Our derivation assumes for simplicity a single type of sources. In Appendix C we show how and under what conditions the model may be generalized to a case with multiple types of sources
+
+2. Formulas
+As explained in detail in Refs. [2, 3] (cf. also Appendix A in the present work), the above-mentioned stages 1) and 3) involve, from the statistical point of view, folding of statistical distributions, whereas stage 2) results in a linear transformation of the particle (fluid) density. The three stages may be combined to yield a very simple "pocket" formula involving only one free parameter, relating the correlation of the initial sources sF and sB in the F and B bins in spatial rapidity, denoted as (sF , sB), to statistical quantities accessible experimentally. These quantities are the correlation of the numbers of charged hadrons nF and nB in the experimental F and B bins in pseudorapidity, denoted as (nF , nB) (a.k.a. the b coefficient), and the scaled variances of multiplicities in the F and B bins, (nF ) and (nB). For symmetric collisions and for symmetrically arranged pseudorapidity bins
+
+fbc printed on March 13, 2017
+
+3
+
+(nF ) = (nB)  (nA), and we have (see Appendix A)
+
+(sF , sB)
+
+=
+
+(nF , nB)
+
+1
+
+-
+
+ (nA)
+
+,
+
+(1)
+
+where  stands for Pearson's correlation coefficient,  denotes the scaled variance, and  is a phenomenological constant, whose anatomy is discussed in Appendix A. An important feature is that  does not depend on the rapidity separation of the F and B bins, nor (to a good approximation) on the centrality of the collision. Thus, for a given experimental setup (energy of the collision, width of the bins in pseudorapidity, detector acceptance) it is constant. We can rearrange Eq. (1) to extract :
+
+ =  (nA)
+
+1 - (nF , nB) (sF , sB)
+
+.
+
+(2)
+
+It should be stressed that relations (1-2) originate solely from assumptions (a) and (b) specified above and hold for any experimental data sample (e.g., any centrality cut). Thus their verification directly checks assumptions (a) and (b). Two straightforward tests emerge here, each based on one of the above formulas. First, we may use Eq. (2) with the experimental data for (nF , nB) and  (nA), as well as with the assumption (sF , sB) = 1 which should hold for not too large bin separations . If thus obtained  is indeed constant, the test is passed and the superposition model works. Second, we may use a suitably chosen constant value of  in Eq. (1) and obtain (sF , sB) at various centralities and bin separations .
+
+3. Results
+We begin presenting our results with the  parameter obtained from Eq. (2). The experimental quantities  (nA) and  (nF , nB) are extracted from a manual digitalization of the points in Figs. (3.3,3.4) published in the PhD Thesis by I. Sputowska [1]. The ALICE measurements are carried out with two different methods of determining the centrality of the collision, VZERO (empty symbols) and ZDCvsZEM (filled symbols). Essentially, the first method uses the multiplicity of hadrons in the central bin, whereas the other effectively determines the number of spectators (or participants) in the collision. We denote the center and the width of a centrality bin with c¯ and c, respectively.
+Our values for  are presented in Fig. 1 as a function of c for the F and B bin separation  = 1.2 (largest accessible experimentally). This separation is sufficiently large to minimize the mixing between the bins during the evolution of the system (our assumption (b)). At the same time,
+
+4
+
+fbc printed on March 13, 2017
+
+1.2 1.0
+
+
+
+
+
+
+
+
+
+
+
+
+
+ 
+
+
+
+ 
+
+ 
+
+0.8
+
+
+
+0.6 (sF , sB) = 1
+
+ = 1.2
+
+0.4 c = 5 15 25 35 45 55 65 [%]
+
+  
+
+ZDCvsZEM*
+
+0.2
+
+       VZERO*
+
+*PhD Thesis (Sputowska)
+
+0.0
+
+0
+
+2
+
+4
+
+6
+
+8
+
+10
+
+c [%]
+
+Fig. 1. Values of the  parameter obtained from Eq. (2) with the data for Pb+Pb 
+collisions at sNN = 2.76 TeV recorded by the ALICE experiment, digitized by the authors from Figs. (3.3,3.4) of the PhD thesis [1]. The result is plotted as a function of the width of the centrality bin, c, for several centralities of the center of the bin, c¯, and for two centrality selection methods of Ref. [1]: VZERO (empty symbols) and ZDCvsZEM (filled symbols). The very similar values of  conform to the assumption of emission from independent longitudinally-extended sources which are maximally correlated over the pseudorapidity separation  = 1.2 between the forward and backward bins, i.e., (sF , sB) = 1.
+
+it is small enough to expect that the sources are maximally correlated, i.e.,  (sF , sB) = 1. We note that the values for  are within the band 1.1 ± 0.1 for both methods of the centrality determination and for various c and c¯. Taking into account the fact that  (nA) and  (nF , nB) vary significantly (even up to factors of 5, cf. Figs. (3.3,3.4) in Refs. [1]), the fact that the values of  are almost constant is far from trivial and conforms to the superposition mechanism from independent sources.
+Of course, there are departures in  from a strict constant value, and there is a number of factors which cause the effect: some remnant mixing of the bins (caused, e.g., by partons emitted into distant pseudorapidities in the early stage, or resonance decays in the late stage), non-linearity of the hydrodynamic or transport evolution, leading to corrections to the simple Eq. (B.2). Also, there may be nonlinear effects in the early production mechanism, as present, e.g., in the mixed model [48], where wounded nucleons [49] are amended with an admixture of binary collisions. The fact that  is to a good approximation constant shows that these effects are not
+
+fbc printed on March 13, 2017
+
+5
+
+1.2 1.0           0.8
+
+(sF , sB)
+
+0.6  = 1.11
+
+ = 1.2
+
+0.4 c = 5 15 25 35 45 55 65 [%]
+
+  
+
+ZDCvsZEM*
+
+0.2
+
+       VZERO*
+
+*PhD Thesis (Sputowska)
+
+0.0
+
+0
+
+2
+
+4
+
+6
+
+8
+
+10
+
+c [%]
+
+Fig. 2. Same as in Fig. 1 but for the forward-backward correlation of the sources (sF , sB) from Eq. (1), evaluated with the average value of the superposition parameter  = 1.11.
+
+very significant. We also note that the obtained values of  are larger than 1, which complies to the constraint (B.7).
+Next, in Fig. 2 we present the result for the forward-backward correlation of the number of the initial sources, (sF , sB), obtained from the Eq. (1), where we use the average value of  from Fig. 1, namely  = 1.1. The correlation is plotted as a function c for various c¯ and for the data with both VZERO and ZDCvsZEM centrality determination methods for  = 1.2, the same as used in Fig. 1. We note that the resulting values for (sF , sB) are close to 1, in accordance to the hypothesis of a maximum correlation of sources over a moderate pseudorapidity range. The fact that for certain cases the points go slightly above 1 (which is mathematically precluded for the correlation coefficient) is caused by the above-listed effects modifying the simplest superposition model, as well as by experimental errors, not incorporated in our analysis.
+Finally, in Fig. 3 we plot (sF , sB) as a function of the pseudorapidity separation  for the case c = 10%. For this purpose the necessary data were digitized from Figs. (3.1,3.6) of Ref. [1]. As before, we use  = 1.11. We note that in the covered range of  the resulting (sF , sB) is very close to 1 and independent of the centrality c¯.
+
+6
+
+fbc printed on March 13, 2017
+
+1.2
+
+1.0  
+
+ 
+
+ 
+
+ 
+
+ 
+
+0.8
+
+(sF ,sB)
+
+0.6  = 1.11
+
+c = 10%
+
+0.4 c = 5 15 25 35 45 55 65 [%]
+
+  
+
+ZDCvsZEM*
+
+0.2
+
+       VZERO*
+
+0.0 0.4
+
+*PhD Thesis (Sputowska)
+
+0.6
+
+0.8
+
+1.0
+
+1.2
+
+
+
+Fig. 3. Same as in Fig. 2 but plotted for several values of centrality c¯ as a function of the forward-backward pseudorapidity separation .
+
+4. Conclusions
+The main result of our analysis is that the hadron production mechanism based on production from independent sources, strongly correlated over the accessible pseudorapidity range, works very well in Pb+Pb collisions at the LHC. The key test here is the constant value of the  parameter, as exhibited in Fig. 1. It also shows that the data analysis based on standard measures of F-B correlations is by all means useful and allows us for access to physics questions of the particle production mechanism in ultra-relativistic heavyion collisions. Note that the usefulness for the tests of the superposition mechanism explored here holds despite the effect of centrality fluctuations, which may be reduced through the use of other more elaborate correlation measures [16, 40, 43, 45, 50­52].
+The fact that (sF , sB)  1 in the covered range of  < 1.2 and for all values of centrality indicates that the original sources in the early phase of the reaction may indeed be viewed as longitudinally extended objects (strings [19]). If such objects extend over rapidity in such a way that the F and B bins are always covered, then in each event sF = sB and by definition we achieve the maximum correlation, (sF , sB) = 1.
+The analysis presented in this paper was model-independent in the sense that we have only used the assumptions (a) and (b) from Sect. 1, but have not referred to any specific model of the sources and particle production. With the method applied here and further spelled out in Refs. [2, 3], such explicit models may be put to stringent tests with the help of experimental
+
+fbc printed on March 13, 2017
+
+7
+
+forward-backward correlation data.
+
+Appendix A Superposition model
+
+In this Appendix we recall the relevant formulas in the superposition model. A detailed derivation is presented in Ref. [2]. Let the number of produced particles nA in bin A (A = F, B) be composed of independent emissions from sA sources,
+
+sA
+nA = mi,
+i=1
+
+(A.1)
+
+where mi is a random number of particles produced by the ith source. The distribution of mi is assumed to be universal, i.e., independent of the source i. Then one finds the well-known superposition formulas
+
+nA = m sA , var(nA) = var(m) sA + m 2var(sA).
+
+(A.2)
+
+Analogously, for the covariance between two well-separated bins we get immediately
+
+sF
+
+sB
+
+nF nB =
+
+mi mj = m 2 sF sB ,
+
+i=1 j=1
+
+(A.3)
+
+where we have used the fact that mimj = m 2, holding for i and j belonging to two different well-separated bins. As a result,
+
+cov(nF , nB) = m 2cov(sF , sB).
+
+(A.4)
+
+Appendix B
+Three stage approach
+Formulas (A.2,A.4) correspond to a single superposition step. In particular, such steps occur in the partonic phase, where partons are produced from the initial sources (strings), as well as in the late stage, where production of hadrons and their subsequent detection takes place. If superposition steps directly follow one another, the structure of Eqs. (A.2,A.4) remains preserved. For instance, this is the case of the hadron production step followed by the detection step (where the generic random variable mi would
+
+8
+
+fbc printed on March 13, 2017
+
+correspond to the detection of a hadron), hence we may combine these steps into a single one. The intermediate evolution stage (hydrodynamics, transport) also preserves the structure of Eqs. (A.2,A.4) and upon combining the three stages one finally has [2]
+
+nA =  sA , var(nA) =  sA + var(sA), cov(nF , nB) = cov(sF , sB).
+
+(B.1)
+
+Let µ denote the random number of partons produced in the first stage, and m the random number of hadrons produced at final hadronization and registered by the detector. Further, if the number of partons is denoted with pA and the density of hydrodynamic fluid after the evolution as hA, we may approximate the effect of the intermediate phase as
+
+hA = tpA,
+
+(B.2)
+
+where t describes the intermediate evolution.1 As a result, we find
+
+ = tµ m,  = t µ var(m) + t2 m 2var(µ),  = t2 µ 2 m 2.
+
+(B.3)
+
+The inverse relations, relating moments of the sources via the moments on the measured hadrons, read
+
+var(sA) = var(nA) -  nA , cov(sF , sB) = cov(nF , nB),
+where the  parameter is given by relation
+
+(B.4)
+
+  = = (m) + t m (µ).
+ Dividing Eqs. (B.4) side by side yields
+
+(B.5)
+
+ (sF , sB) =
+
+cov(sF , sB) = cov(sF , sB) var(sA) var(nA) -  nA
+
+=
+
+(nF , nB)
+
+1
+
+-
+
+ (nA)
+
+,
+
+(B.6)
+
+which is our key formula (1). Note that it involves only one combination of the parameters of the overlaid distributions and intermediate evolution, .
+
+1 A more general affine variant of Eq. (B.2) is used in Ref. [2], but is does not affect the conclusions.
+
+fbc printed on March 13, 2017
+
+9
+
+The random variable m in Eq. (B.5) corresponds to hadronization of the fluid folded with the detector acceptance. Due to its statistical nature, production of hadrons from the hydrodynamic fluid is well described by a Poisson distribution, whereas detector acceptance is modeled with a Bernoulli distribution. Folding of the Poisson and Bernoulli distributions yields a Poisson distribution, hence (m) = 1. Since all other parameters in Eq. (B.5) are positive, we conclude that
+
+ > 1.
+
+(B.7)
+
+Distributions of µ and m are universal in the sense that they do not depend on the pseudorapidity of the bin or the centrality of the collision. The parameter t, which describes the hydrodynamic or transport response, is also expected to be approximately universal, meaning linear response to the initial condition [53­56]. Therefore we expect  const.
+
+Appendix C Multiple types of sources
+
+Our model uses one type of sources which emit particles m with the same distribution, cf. Eq. (A.1). In this Appendix we show that under certain conditions our general results can be generalized to the case where we have more types of sources. For the simplest case of two kinds of sources
+
+SA
+
+SA
+
+nA = mi + mi ,
+
+i=1
+
+i =1
+
+A = F, B.
+
+Then, we find a generalization of Eq. (1) in the form
+
+(C.1)
+
+where
+
+(uF , uB) =
+
+1-
+
+(nF , nB)
+
+,
+
+SA var(m)+ SA var(m )
+
+SA m + SA m
+
+(nA)
+
+(C.2)
+
+uA = SA m + SA m .
+
+(C.3)
+
+We note the same structure as in Eq. (1), with  replaced with the combination
+
+=
+
+SA var(m) +
+
+SA
+
+var(m
+
+) .
+
+SA m + SA m
+
+(C.4)
+
+This combination is constant in two interesting cases:
+
+10
+
+REFERENCES
+
+1. SA =  SA ,
+2. var(m) =  m , var(m ) =  m ,
+where constants  or  do not depend on centrality or the pseudorapidity separation. In the first case  = (var(m)+var(m ))/( m + m ) = const., whereas in the second case  =  = const.
+The correlation (uF , uB) is a more complicated object which now plays the role of (SF , SB) from Eq. (1,2). In a more general analysis with sources of multiple types we should keep it as is. A simplification occurs, however, when in each event SA SA, i.e., the relative fluctuations are not too large. Then we have (uF , uB) (SF , SB) (SF , SB).
+A physical realization of scenario 1) is the quark-diquark model of Ref. [57] for the A-A collisions, where we expect that (event-by-event) the numbers of wounded quarks and diquarks are proportional to each other. Scenario 2) occurs where the scaled variances of m and m are equal. This is, e.g., the case of the Poisson distributions, or more general negative binomial distributions with the same parameters controlling the scaled variance.
+A generalization of the discussion of this Appendix to more than two types of sources is straightforward, with the sums showing up in the formulas extending from 2 to n kinds.
+In conclusion, the analysis of this paper may be extended to the case where the superposition model involves more types of sources under the condition that the combination (C.4) is (approximately) constant. Conversely, the constant value of  (as to a good approximation occurs in Fig. (1)), does not require the assumption of a single type of sources.
+REFERENCES
+[1] I. Sputowska, Correlations in Particle Production in Nuclear Collisions at LHC Energies, Ph.D. thesis, Institute of Nuclear Physics PAN, Cracow, Poland, Cern Document Server (2016).
+[2] A. Olszewski and W. Broniowski, Phys.Rev. C88, 044913 (2013), arXiv:1303.5280 [nucl-th] .
+[3] A. Olszewski and W. Broniowski, Phys. Rev. C92, 024913 (2015), arXiv:1502.05215 [nucl-th] .
+[4] S. Uhlig, I. Derado, R. Meinke, and H. Preissner, Nucl. Phys. B132, 15 (1978).
+[5] K. Alpgard et al. (UA5), Phys. Lett. B123, 361 (1983).
+[6] G. J. Alner et al. (UA5), Phys. Rept. 154, 247 (1987).
+
+REFERENCES
+
+11
+
+[7] R. E. Ansorge et al. (UA5), Z. Phys. C37, 191 (1988).
+[8] I. Derado et al., Z. Phys. C40, 25 (1988).
+[9] T. Alexopoulos et al. (E735 Collaboration), Phys.Lett. B353, 155 (1995).
+[10] J. B¨achler et al. (NA35), Z. Phys. C56, 347 (1992).
+[11] Y. Akiba et al. (E802), Phys. Rev. C56, 1544 (1997).
+[12] B. B. Back et al. (PHOBOS), Phys. Rev. C74, 011901 (2006), arXiv:nucl-ex/0603026 [nucl-ex] .
+[13] B. Abelev et al. (STAR Collaboration), Phys.Rev.Lett. 103, 172301 (2009), arXiv:0905.0237 [nucl-ex] .
+[14] T. J. Tarnowsky, J.Phys.Conf.Ser. 230, 012025 (2010), arXiv:1005.1895 [nucl-ex] .
+[15] G. Aad et al. (ATLAS), JHEP 07, 019 (2012), arXiv:1203.3100 [hep-ex] .
+[16] J. Jia, S. Radhakrishnan, and M. Zhou, Phys. Rev. C93, 044905 (2016), arXiv:1506.03496 [nucl-th] .
+[17] J. Adam et al. (ALICE), JHEP 05, 097 (2015), arXiv:1502.00230 [nuclex] .
+[18] M. Aaboud et al. (ATLAS), (2016), arXiv:1606.08170 [hep-ex] .
+[19] A. Capella and A. Krzywicki, Phys.Rev. D18, 4120 (1978).
+[20] A. B. Kaidalov and K. A. Ter-Martirosian, Phys. Lett. B117, 247 (1982).
+[21] T. T. Chou and C. N. Yang, Phys. Lett. B135, 175 (1984).
+[22] A. Capella, U. Sukhatme, C.-I. Tan, and J. Tran Thanh Van, Phys. Rept. 236, 225 (1994).
+[23] N. S. Amelin, N. Armesto, M. A. Braun, E. G. Ferreiro, and C. Pajares, Phys.Rev.Lett. 73, 2813 (1994).
+[24] M. Braun, C. Pajares, and V. Vechernin, Phys.Lett. B493, 54 (2000), arXiv:hep-ph/0007241 [hep-ph] .
+
+12
+
+REFERENCES
+
+[25] A. Giovannini and R. Ugoccioni, Phys. Rev. D66, 034001 (2002), arXiv:hep-ph/0205156 [hep-ph] .
+[26] M. Braun, R. Kolevatov, C. Pajares, and V. Vechernin, Eur.Phys.J. C32, 535 (2004), arXiv:hep-ph/0307056 [hep-ph] .
+[27] P. Brogueira, J. Dias de Deus, and J. G. Milhano, Phys. Rev. C76, 064901 (2007), arXiv:0709.3913 [hep-ph] .
+[28] N. Armesto, M. Braun, and C. Pajares, Phys.Rev. C75, 054902 (2007), arXiv:hep-ph/0702216 [HEP-PH] .
+[29] N. Armesto, L. McLerran, and C. Pajares, Nucl. Phys. A781, 201 (2007), arXiv:hep-ph/0607345 .
+[30] V. Vechernin and R. Kolevatov, Phys.Atom.Nucl. 70, 1797 (2007).
+[31] M. Braun, Nucl.Phys. A806, 230 (2008), arXiv:0711.3268 [hep-ph] .
+[32] V. P. Konchakovski, M. Hauer, G. Torrieri, M. I. Gorenstein, and E. L. Bratkovskaya, Phys. Rev. C79, 034910 (2009), arXiv:0812.3967 [nucl-th] .
+[33] A. Bzdak and K. Wo´zniak, Phys. Rev. C81, 034908 (2010), arXiv:0911.4696 [hep-ph] .
+[34] T. Lappi and L. McLerran, Nucl.Phys. A832, 330 (2010), arXiv:0909.0428 [hep-ph] .
+[35] P. Bozek, W. Broniowski, and J. Moreira, Phys. Rev. C83, 034911 (2011), arXiv:1011.3354 [nucl-th] .
+[36] J. Dias de Deus and C. Pajares, Phys. Lett. B695, 211 (2011), arXiv:1011.1099 [hep-ph] .
+[37] A. Bialas and K. Zalewski, Nucl.Phys. A860, 56 (2011), arXiv:1101.1907 [hep-ph] .
+[38] A. Bialas and K. Zalewski, Phys. Lett. B698, 416 (2011), arXiv:1101.5706 [hep-ph] .
+[39] A. Bzdak, Phys.Rev. C85, 051901 (2012), arXiv:1108.0882 [hep-ph] .
+[40] A. Bzdak and D. Teaney, Phys.Rev. C87, 024906 (2013), arXiv:1210.1965 [nucl-th] .
+[41] V. V. Vechernin, (2012), arXiv:1210.7588 [hep-ph] .
+
+REFERENCES
+
+13
+
+[42] A. Bialas, A. Bzdak, and K. Zalewski, Acta Phys.Polon.Supp. 6, 463 (2013).
+[43] S. De, T. Tarnowsky, T. K. Nayak, R. P. Scharenberg, and B. K. Srivastava, Phys. Rev. C88, 044903 (2013), arXiv:1309.7242 [nucl-ex] .
+[44] G.-L. Ma and A. Bzdak, Phys.Lett. B739, 209 (2014), arXiv:1404.4129 [hep-ph] .
+[45] A. Bzdak and P. Bozek, Phys. Rev. C93, 024903 (2016), arXiv:1509.02967 [hep-ph] .
+[46] A. Bzdak and K. Dusling, Phys. Rev. C93, 031901 (2016), arXiv:1511.03620 [hep-ph] .
+[47] V. Vechernin, Nucl. Phys. A939, 21 (2015).
+[48] D. Kharzeev and M. Nardi, Phys. Lett. B507, 121 (2001), arXiv:nuclth/0012025 .
+[49] A. Bialas, M. Bleszyn´ski, and W. Czyz, Nucl. Phys. B111, 461 (1976).
+[50] R. S. Bhalerao, J.-Y. Ollitrault, S. Pal, and D. Teaney, Phys. Rev. Lett. 114, 152301 (2015), arXiv:1410.7739 [nucl-th] .
+[51] R. He, J. Qian, and L. Huo, Phys. Rev. C93, 044918 (2016).
+[52] R. He, J. Qian, and L. Huo, Phys. Rev. C94, 034902 (2016).
+[53] H. Niemi, G. Denicol, H. Holopainen, and P. Huovinen, Phys. Rev. C87, 054901 (2013), arXiv:1212.1008 [nucl-th] .
+[54] A. Bzdak, P. Bozek, and L. McLerran, Nucl.Phys. A927, 15 (2014), arXiv:1311.7325 [hep-ph] .
+[55] P. Bozek, W. Broniowski, E. R. Arriola, and M. Rybczyn´ski, Phys.Rev. C90, 064902 (2014), arXiv:1410.7434 [nucl-th] .
+[56] J. Fu, Phys. Rev. C92, 024904 (2015).
+[57] A. Bialas and A. Bzdak, Phys. Rev. C 77, 034908 (2008) doi:10.1103/PhysRevC.77.034908 [arXiv:0707.3720 [hep-ph]].
+
+

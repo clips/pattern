@@ -1,0 +1,908 @@
+arXiv:1701.00058v1 [math.AC] 31 Dec 2016
+
+THREE FAMILIES OF DENSE PUISEUX MONOIDS
+FELIX GOTTI, MARLY GOTTI, AND HAROLD POLO
+Abstract. A dense Puiseux monoid is an additive submonoid of Q0 whose topological closure is R0. It follows immediately that every Puiseux monoid failing to be dense is atomic. However, the atomic structure of dense Puiseux monoids is significantly complex. Dense Puiseux monoids can be antimatter, atomic, or anything in between, meaning non-atomic with finitely or countably many atoms. In the first part of this paper, we construct infinitely many non-isomorphic atomic Puiseux monoids whose sets of atoms are dense in R0. We dedicate the rest of the paper to study the atomic structure of three families of dense Puiseux monoids: k-primary, p-adic, and multiplicatively cyclic. In particular, we characterize an antimatter subfamily of k-primary Puiseux monoids and a hereditarily atomic subfamily of multiplicatively cyclic Puiseux monoids.
+1. Introduction
+A Puiseux monoid is an additive submonoid of the nonnegative rational numbers. The atomic structure of Puiseux monoids has been recently studied in [6] and [8]. Albeit a natural generalization of numerical semigroups, Puiseux monoids exhibit a complex and striking atomic constitution. For instance, the Puiseux monoid M in Example 2.3 does not have any atoms. Furthermore, for any prescribed nonnegative integer n, there is a non-finitely generated Puiseux monoid with exactly n atoms [6, Proposition 5.4]. There exist also non-atomic Puiseux monoids with infinitely many atoms; see, for instance, [6, Example 3.5]. Moreover, as Theorem 3.5 states, there are atomic Puiseux monoids whose set of atoms is dense in R0 with respect to the standard subspace topology. This variety of unexpected atomic phenomena makes the family of Puiseux monoids a vast source of examples that might be useful to test sharpness of theorems and falsehood of conjectures in the areas of commutative semigroups and factorization theory.
+As addition is a continuous operation with respect to the standard topology of R, the subspace topology inherited by a Puiseux monoid M is intrinsically connected to the algebraic structure of M. In particular, if one is willing to study the atomic decomposition of elements of M, a neighborhood of 0 might provide substantial information. Indeed, if 0 is not a limit point of M, then it is not hard to see that M is atomic. However, when 0 is a limit point of M, the atomic structure of M might become considerably intricate. In particular, when 0 is a limit point of M, the additivity of M
+Date: January 3, 2017. 1
+
+2
+
+F. GOTTI, M. GOTTI, AND H. POLO
+
+implies that M is dense in R0. Thus, M is dense in R0 if and only if 0 is a limit point of M. This observation motivates the following definition.
+
+Definition 1.1. A Puiseux monoid is dense if it has 0 as a limit point.
+
+The atomicity of some families of dense Puiseux monoids has been already studied. For example, every submonoid of the dense Puiseux monoid 1/p | p is prime is atomic ([8, Theorem 5.5]). On the other hand, if r  Q(0, 1), then rn | n is natural is either antimatter or atomic ([8, Theorem 6.2]). In this paper, we focus on the study of three families of dense Puiseux monoids, paying special attention to the atomic structure of their members. Before beginning the exploration of these targeted families, we give evidence of how ubiquitous atoms of a Puiseux monoid could be by finding infinitely many Puiseux monoids whose sets of atoms are dense in R0.
+This paper is structured in the following way. In Section 2, we establish the nomenclature we will be using later. Then, in Section 3, we exhibit infinitely many atomic Puiseux monoids whose sets of atoms are dense in R0. In Section 4, the family of primary Puiseux monoids is generalized, and the atomicity of the resulting monoids is explored. Then, in Section 5, we look into those Puiseux monoids satisfying that the denominators of all its elements are powers of the same prime; we find necessary and sufficient conditions for the atomicity of subfamilies of these monoids. In the latter section, we continue the study of the atomic structure of multiplicatively cyclic Puiseux monoids that was started in [8]. We prove that every multiplicatively cyclic atomic Puiseux monoid is an FF-monoid (defined in Section 2). Finally, we show that every multiplicatively cyclic Puiseux monoid that is atomic is necessarily hereditarily atomic (see Definition 4.1).
+
+2. Preliminary
+In this section, we briefly introduce a few concepts related to our exposition as an excuse to establish the notation we shall be using throughout this paper. For background material on commutative semigroups the reader can consult [9] by Grillet. On the other hand, the monograph [5] of Geroldinger and Halter-Koch offers extensive information on factorization theory of atomic monoids.
+The symbol N (resp., N0) denotes the set of positive integers (resp., nonnegative integers), while P denotes the set of primes. For a real number r, we denote the set {z  Z | z  r} by Zr; in a similar manner we shall use Qr, Q>r, and R0. If r  Q>0, then we call the unique a, b  N such that r = a/b and gcd(a, b) = 1 the numerator and denominator of r and denote them by n(r) and d(r), respectively. For each subset S of Q>0, we call the sets n(S) = {n(r) | r  S} and d(S) = {d(r) | r  S} the numerator set and denominator set of S, respectively.
+Every time the term "monoid" is used in this sequel, we tacitly assume that the monoid in question is commutative and cancellative. Thus, we always use additive
+
+THREE FAMILIES OF DENSE PUISEUX MONOIDS
+
+3
+
+notation on a monoid M; in particular, " + " denotes the operation of M, while 0 denotes the identity element. We use the symbol M· to denote the set M \ {0}. If a, b  M, a divides b in M means that there exists c  M such that b = a + c; in this case we write a |M b. An element a  M \M× is irreducible or an atom if whenever a = u + v for some u, v  M, one has that either u  M× or v  M×. The set of atoms of a monoid is relevant enough to deserve a special notation:
+A(M) = {a  M | a is an atom of M}.
+The monoid M is reduced if M× = {0}. Every monoid in this exposition is reduced. As a result, A(M) is always contained in each generating set. We write M = S when M is generated by S, and say that M is finitely generated if |S| < . If M = A(M) , then we say that M is atomic. By contrast, a monoid is said to be antimatter if A(M) is empty. Antimatter domains, studied by Coykendall et al. in [3], are defined in a similar fashion.
+The free abelian monoid on A(M) is denoted by Z(M) and called factorization monoid of M; the elements of Z(M) are called factorizations. If z = a1 . . . an  Z(M) for some n  N0 and a1, . . . , an  A(M), then n is the length of the factorization z; the length of z is commonly denoted by |z|. The unique homomorphism
+ : Z(M)  M satisfying (a) = a for all a  A(M)
+is called the factorization homomorphism of M. For x  M,
+Z(x) = -1(x)  Z(M )
+is the set of factorizations of x. If x  M satisfies |Z(x)| = 1, then we say that x has unique factorization. By definition, we set Z(0) = {0}. Note that the monoid M is atomic if and only if Z(x) is not empty for all x  M. The monoid M satisfies the finite factorization property if for all x  M the set Z(x) is finite; in this case we also say that M is an FF-monoid. The next proposition follows from [5, Theorem 3.1.4].
+Proposition 2.1. Every finitely generated reduced monoid is an FF-monoid.
+For each x  M, the set of lengths of x is defined by
+L(x) = {|z| : z  Z(x)}.
+The set of lengths is an arithmetic invariant of atomic monoids that has been very well studied in recent years (see [1, 2] and the references therein). If L(x) is a finite set for all x  M, we say that M satisfies the bounded factorization property, in which case, we call M a BF-monoid. Note that every FF-monoid is also a BF-monoid.
+A very special family of atomic monoids is that one comprising all numerical semigroups, cofinite submonoids of the additive monoid N0. Each numerical semigroup has a unique minimal set of generators, which is finite. Moreover, if {a1, . . . , an} is the minimal generating set for a numerical semigroup N, then it follows that A(N) = {a1, . . . , an} and gcd(a1, . . . , an) = 1. As a consequence, every numerical semigroup is
+
+4
+
+F. GOTTI, M. GOTTI, AND H. POLO
+
+atomic and contains only finitely many atoms. The Frobenius number of N, denoted by F (N ), is the minimum natural n such that Zn  N . Readers can find an excellent exposition of numerical semigroups in [4] by Garc´ia-S´anchez and Rosales.
+As mentioned in the introduction, Puiseux monoids are a natural extension of numerical semigroups. Puiseux monoids are not always atomic; for instance consider 1/2n | n  N . However, a Puiseux monoid is atomic provided 0 is not a limit point. We say that a Puiseux monoid M is strongly bounded if it can be generated by a set of positive rationals S such that n(S) is bounded.
+For a prime p, the p-adic valuation on Q is the map defined by vp(0) =  and vp(r) = vp(n(r)) - vp(d(r)) for r = 0, where for n  N the value vp(n) is the exponent of the maximal power of p dividing n. It follows immediately that the p-adic valuation satisfies that
+
+(2.1)
+
+vp(r1 + · · · + rn)  min{vp(r1), . . . , vp(rn)}
+
+for every n  N and r1, . . . , rn  Q>0. We say that a Puiseux monoid M is finite if there exists a finite subset P of P such that vp(r)  0 for all p  P \P and r  M·.
+There are only a few distinguished strongly bounded finite Puiseux monoids that are atomic, as the next theorem indicates.
+
+Theorem 2.2. [6, Theorem 5.8] Let M be a strongly bounded finite Puiseux monoid. Then M is atomic if and only if M is isomorphic to a numerical semigroup.
+
+Example 2.3. For q  P, consider the following Puiseux monoids:
+
+M=
+
+1 qn
+
+nN
+
+and M  =
+
+p/2 p
+
+pP .
+
+It is follows immediately that M is finite, strongly bounded, and antimatter. On the other hand, it is not hard to verify that M is atomic but it is neither finite nor strongly
+bounded.
+
+More information about the family of Puiseux monoids can be found in [6] and [8], where their atomic structure was studied.
+
+3. Density of Puiseux Monoids
+Recall that we defined a dense Puiseux monoid to be a Puiseux monoid having 0 as a limit point. As mentioned in the introduction, a Puiseux monoid is dense if and only if it is topologically dense in R0 with respect to the inherited standard topology.
+Proposition 3.1. An additive submonoid of Q0 is a dense Puiseux monoid if and only if it is topologically dense in R0.
+
+THREE FAMILIES OF DENSE PUISEUX MONOIDS
+
+5
+
+Proof. The forward implication follows immediately. Suppose, conversely, that M is a Puiseux monoid having 0 as a limit point. Let {rn} be a sequence in M· converging to 0. Fix any p  R>0. Let us check that p is a limit point of M. Take  > 0. Because lim rn = 0, there exists n  N such that rn < min{p, }. Let m be the maximum integer such that p - mrn > 0, and take r = mrn. By the maximality of m,
+0 < p - r = p - (m + 1)rn + rn  rn < .
+Since for an arbitrary  we have found r  M \ {p} such that |p - r| < , we gets that p is a limit point of M. Hence M is a dense Puiseux monoid.
+
+The following corollary follows directly from the fact that every Puiseux monoid that does not have 0 as a limit point is atomic.
+
+Corollary 3.2. Every non-atomic Puiseux monoid is topologically dense in R0.
+The rest of this section is dedicated to establishing the fact that there exist infinitely many non-isomorphic Puiseux monoids whose sets of atoms is dense in R0. If two Puiseux monoids M and M are isomorphic, we write M = M. It follows by the next lemma, that two Puiseux monoids are isomorphic if and only if they are rational multiples of each other.
+
+Lemma 3.3. The homomorphisms of Puiseux monoids are precisely those given by rational multiplication.
+
+Proof. Let M and M be two Puiseux monoids, and let  : M  M be a homomorphism. If  is the trivial homomorphism, then it is multiplication by 0. Therefore let us assume that  is not the trivial homomorphism, which implies that M = {0}. As N = M  N0 is a nontrivial submonoid of the additive monoid of nonnegative inte-
+gers, it has a nonempty minimal set of generators, namely {s1, . . . , sk}. Because  is not the zero homomorphism, there exists j  {1, . . . , k} such that (sj) = 0. Take a = (sj)/sj. For x  M · and n1, . . . , nk  N0 satisfying that n(x) = n1s1 + · · · + nksk, the fact that si(sj) = (sisj) = sj(si) for each i = 1, . . . , k implies that
+
+(x)
+
+=
+
+1 d(x)
+
+(n(x))
+
+=
+
+1 d(x)
+
+k i=1
+
+ni(si)
+
+=
+
+1 d(x)
+
+k i=1
+
+nisi
+
+(sj sj
+
+)
+
+=
+
+xa.
+
+Hence the homomorphism  is multiplication by the rational a. On the other hand, it follows immediately that, for all rational r, the map M  M defined by x  rx is a homomorphism as long as rM  M.
+
+Lemma 3.4. Let P and Q be disjoint infinite sets of primes, and let MP = ap | p  P and MQ = bq | q  Q be Puiseux monoids such that for all p  P and q  Q, d(ap) and d(bq) are powers of p and q, respectively. Then MP  MQ.
+
+6
+
+F. GOTTI, M. GOTTI, AND H. POLO
+
+Proof. Suppose, by way of contradiction, that MP = MQ. By Lemma 3.3, there exists a rational r such that MP = rMQ. If q is a prime in Q such that q  n(r), then rbq would be an element of MP such that d(rbq) is a power of q and, therefore, q  P . But this contradicts the fact that P  Q is empty.
+
+In order to generate a dense Puiseux monoid it suffices to take a sequence of positive rationals having 0 as a limit point. Let P = {Pn | n  N} be a collection of infinite subsets of primes such that Pi  Pj is empty for i = j. Now for each j  N, consider the Puiseux monoid Mj = 1/p | p  Pj . Because every Pj is infinite, each Mj is dense. Moreover, Mi  Mj for i = j; this is an immediate consequence of Lemma 3.4. Hence we can conclude that there are countably many non-isomorphic dense Puiseux monoids. The next theorem will strengthen this observation. Although the existence of dense Puiseux monoids is an straightforward fact, there still remains the question as to whether there exists an atomic Puiseux monoid whose set of atoms is dense in R0. It turns out that there are infinitely many atomic Puiseux monoids satisfying this stronger density condition. Without further ado, let us present the main result of this section.
+
+Theorem 3.5. There are infinitely many non-isomorphic Puiseux monoids whose sets of atoms are dense in R0.
+
+Proof. First, let us check that the set S = {m/pn | m, n  N and p  m} is dense in R0 for every p  P. To see this, take   R>0 and then fix  > 0. Now take n, m  N such that 1/pn <  and m/pn <   (m + 1)/pn. It follows immediately that the element s = m/pn of S satisfies that | - m/pn| < . Since  was arbitrarily taken,  is a limit point of S. It is obvious that 0 is also a limit point of S. Hence S is dense in R0.
+Now take {rn} to be a sequence of positive rationals with underlying set R dense in R0. Also, consider the collection P = {Pn | n  N} of infinite sets of primes such that Pi  Pj is empty for i = j. For each j  N, let Pj = {pjk | k  N}. Now for every j  N and pjk  Pj the set
+
+m pnjk
+
+m, n  N and p  m
+
+is dense in R0. Therefore, for every natural k, there exist naturals mk and nk satisfying that |rk - mk/pnjkk| < 1/k. Consider the Puiseux monoid
+
+(3.1)
+
+Mj =
+
+mk pnjkk
+
+kN .
+
+Because distinct generators in (3.1) have powers of distinct primes in their denominators, it follows that Mj is atomic and A(Mj) = {mk/pnjkk | k  N}. Finally, we are led to verify that A(Mj) is dense in R0. To do this take x  R0 and then fix  > 0.
+
+THREE FAMILIES OF DENSE PUISEUX MONOIDS
+
+7
+
+Since R is dense in R0, there exists a natural k large enough such that 1/k < /2 and |x - rk| < /2. Consequently, |rk - mk/pnjkk| < 1/k < /2, which implies that
+
+x
+
+-
+
+mk pnjkk
+
+< |x - rk| +
+
+rk
+
+-
+
+mk pnjkk
+
+< .
+
+This means that A(Mj) is dense in R0, as desired. By Lemma 3.4 the Puiseux monoids in P are pairwise non-isomorphic. Therefore there exist infinitely many atomic Puiseux
+monoids whose sets of atoms are dense in R0.
+
+4. k-primary Puiseux Monoids
+
+There are Puiseux monoids satisfying that each of their submonoids are atomic. These Puiseux monoids are relevant enough to deserve a name.
+
+Definition 4.1. A Puiseux monoid M is hereditarily atomic if every submonoid of M is atomic.
+
+We often show that a monoid is atomic by finding a hereditarily atomic monoid containing it (see, e.g., the proof of Proposition 6.8). It follows immediately that if a Puiseux monoid is not dense, then it is hereditarily atomic. In addition, Proposition 4.4 and Proposition 6.8 provide families of dense hereditarily atomic Puiseux monoids. Note that every hereditarily atomic Puiseux monoid is, in particular, atomic. However, not every atomic Puiseux monoid is hereditarily atomic, as we shall see momentarily.
+
+Example 4.2. Let {pn} be a sequence listing the odd prime numbers. Then consider the Puiseux monoid
+
+M = A , where A =
+
+1 2npn
+
+nN .
+
+Since each odd prime divides exactly one element of the set d(A), it follows that A(M) = A. Thus, M is atomic. On the other hand, the element 1/2n is the sum of pn copies of the atom 1/(2npn) for every n  N and, therefore, the antimatter monoid 1/2n | n  N is a submonoid of M. Hence M fails to be hereditarily atomic.
+
+Definition 4.3. Let P be a nonempty set of primes. A Puiseux monoid M is primary over P if there exists a set of positive rationals S such that M = S and d(S) = P .
+
+Within the scope of this paper, the term primary monoid refers to a Puiseux monoid that is primary over some nonempty set of primes. Let us remark that if a Puiseux monoid M is primary, then there exists a unique P  P such that M is primary over P . We call the monoid 1/p | p is prime the elementary primary Puiseux monoid. It was proved in [8, Section 5] that the elementary primary Puiseux monoid is hereditarily atomic. The next proposition is an immediate consequence of this fact.
+
+8
+
+F. GOTTI, M. GOTTI, AND H. POLO
+
+Proposition 4.4. Every primary monoid is hereditarily atomic.
+
+Let us present a natural way of generalizing the concept of a primary Puiseux monoid, and then provide some insight on the atomicity of this generalized family.
+
+Definition 4.5. For k  N, a Puiseux monoid M is a k-primary monoid if it can be generated by a set S such that d(s) is the product of k distinct primes for all s  S.
+
+Observe that the 1-primary monoids are precisely the primary monoids. For a set
+
+S and a nonnegative integer n, let us denote by
+
+S n
+
+the collection of subsets of S of
+
+cardinality n. The elementary k-primary monoid is the monoid
+
+Mk = Sk , where Sk =
+
+1 p1 · · · pk
+
+{p1, . . . , pk} 
+
+P k
+
+.
+
+We call the elements of Sk elementary generators of Mk. Although Proposition 4.4 might suggest that k-primary monoids are hereditarily atomic, this is far from being the case.
+
+Proposition 4.6. For every k  2, the elementary k-primary monoid is antimatter.
+
+Proof. First, we show that for every natural N and distinct primes p and q there exist m, n  N and p, q  P with q > p > N such that
+
+(4.1)
+
+pq = mqq + npp + pq.
+
+Let p and q be such two distinct primes. Since gcd(p, q) = 1, Dirichlet's theorem
+on arithmetic progressions of primes ensures the existence of a natural m such that p = mq + p is a prime greater than N. Dirichlet's theorem comes into play again to yield a natural n such that q = np + q is a prime. Therefore one finds that
+
+pq = mqq + pq = mqq + p(np + q) = mqq + npp + pq.
+
+Now consider the elementary 2-primary monoid M2. If p and q are distinct primes,
+
+then by the argument given above, there exist m, n  N and p, q  P satisfying
+
+q > p > max{p, q} such that the identity (4.1) holds. Dividing both sides of (4.1) by
+
+pqpq, we obtain
+
+1 pq
+
+=
+
+m
+
+1 pp
+
++
+
+n
+
+1 qq
+
++
+
+1 pq
+
+.
+
+As a consequence, no element of M2 can be an atom, which means that M2 is an antimatter Puiseux monoid.
+
+At this point we are in a position to check the more general fact that, for each
+
+k  2, the elementary k-primary monoid Mk is antimatter. To do this, fix an arbitrary elementary generator (p1 · · · pk)-1 of Mk. As before, there exist m, n  N and p, q  P satisfying that q > p > max{p1, . . . , pk} and
+
+(4.2)
+
+1 p1p2
+
+=
+
+m
+
+1 p1p
+
++
+
+n
+
+1 p2q
+
++
+
+1 pq
+
+.
+
+THREE FAMILIES OF DENSE PUISEUX MONOIDS
+
+9
+
+Multiplying both sides of (4.2) by (p3 · · · pk)-1 we get
+
+1 p1p2 · · · pk
+
+=
+
+m
+
+p1
+
+1 pp3 ·
+
+·
+
+·
+
+pk
+
++
+
+n
+
+1 p2qp3 ·
+
+·
+
+·
+
+pk
+
++
+
+1 pqp3 ·
+
+·
+
+·
+
+pk
+
+.
+
+Hence no element of Mk can be an atom and, thus, Mk is antimatter.
+
+The next example sheds some light upon the fact that k-primary monoids generated by infinitely many elementary generators of the elementary k-primary monoid may not be antimatter.
+
+Example 4.7. Let {pn} be an enumeration of P, and let k be a positive integer. Consider the k-primary monoid
+
+M = A , where A =
+
+k1 i=1 pnk+i
+
+n  N0 .
+
+Because each prime divides exactly one element of the set d(A), it follows that every element of A is an atom of M. Therefore M is atomic.
+
+As Example 4.8 illustrates, a k-primary monoid generated by multiples of the elementary generators of Mk might be atomic.
+
+Example 4.8. Let {pn} be an enumeration of P. For k  N, consider the following k-primary monoid:
+
+M = A , where A =
+
+aS
+
+=
+
+sS
+
+1 ps
+
+S
+
+N k
+
+.
+
+It is not hard to see that d(A) is the set of all possible products of k distinct primes. On
+
+the other hand, if aS = c1aS1 + · · · + cnaSn for some n, c1, . . . , cn  N and S1, . . . , Sn 
+
+N k
+
+,
+
+then
+
+for
+
+every
+
+s
+
+
+
+S
+
+there
+
+exists
+
+j
+
+
+
+{1, . . . , n}
+
+such
+
+that
+
+ps
+
+|
+
+d(aSj ).
+
+Therefore
+
+(4.3)
+
+aS
+
+=
+
+sS
+
+1 ps
+
+
+
+n i=1
+
+ci
+sSi
+
+1 ps
+
+.
+
+Note that equality in (4.3) holds if and only if n = 1, c1 = 1, and S1 = S. Hence A(M) = A, and M is atomic.
+
+5. p-adic Puiseux Monoids
+The simplest representatives of dense Puiseux monoids that are not isomorphic to numerical semigroups are of the form M = 1/pn | n  N , where p is a prime. Although these representatives happen to be antimatter, they contain plenty of submonoids with a very diverse atomic structure. In this section we delve into the atomicity of submonoids of M.
+
+10
+
+F. GOTTI, M. GOTTI, AND H. POLO
+
+Definition 5.1. Let p be a prime. We say that a Puiseux monoid M is p-adic if d(x) is a power of p for all x  M·.
+We use the term p-adic monoid as a short for p-adic Puiseux monoid. Throughout this section, every time that we define a p-adic monoid by specifying a sequence of generators {rn}, we shall implicitly assume that {d(rn)} increases to infinity; this assumption comes without loss of generality because in order to generate a Puiseux monoid we only need to repeat each denominator finitely many times. On the other hand, lim d(rn) =  does not affect the generality of the results we prove in this section for if {d(rn)} is a bounded sequence, then the p-adic monoid generated by {rn} is finitely generated and, therefore, isomorphic to a numerical semigroup.
+Strongly bounded p-adic monoids happen to have only finitely many atoms (cf. Theorem 2.2), as revealed by the next proposition.
+Proposition 5.2. A strongly bounded p-adic monoid has only finitely many atoms.
+Proof. For p  P, let M be a strongly bounded p-adic monoid. Let {rn} be a generating sequence for M with underlying set R satisfying that n(R) = {n1, . . . , nk} for some k, n1, . . . , nk  N. For each i  {1, . . . , k}, take Ri = {rn | n(rn) = ni} and Mi = Ri . The fact that R  M1  · · ·  Mk, along with A(M)  Mi  A(Mi), implies that
+k
+A(M)  A(Mi).
+i=1
+Thus, showing that A(M) is finite amounts to verifying that |A(Mi)| <  for each i = 1, . . . , k. Fix i  {1, . . . , k}. If Mi is finitely generated, then |A(Mi)| < . Let us assume, therefore, that Mi is not finitely generated. This means that there exists a strictly increasing sequence {n} such that Mi = ni/pn | n  N . Because ni/pn = pn+1-n(ni/pn+1), the monoid Mi satisfies that |A(Mi)| = 0. Hence we conclude that A(M) is finite.
+
+We are now in a position to give a necessary condition for the atomicity of p-adic monoids.
+
+Theorem 5.3. Let p  P, and let M be an atomic p-adic monoid satisfying that A(M) = {rn | n  N}. If lim rn = 0, then lim n(rn) = .
+
+Proof. Set an = n(rn) and pn = d(rn) for every natural n. Suppose, by way of contradiction, that lim an = . Then there exists m  N such that an = m for infinitely many n  N. For each positive divisor d of m we define the Puiseux monoid
+
+Md = Sd , where Sd =
+
+akn pkn
+
+akn = m or gcd(m, akn) = d .
+
+THREE FAMILIES OF DENSE PUISEUX MONOIDS
+
+11
+
+Observe that A(M) is included in the union of the Md. On the other hand, the fact that A(M)  Md  A(Md) for every d dividing m implies that
+
+(5.1)
+
+A(M)  A(Md).
+d|m
+
+Because A(M) contains infinitely many atoms, the inclusion (5.1) implies the existence
+
+of a divisor
+
+d of m such that |A(Md)| = .
+
+Set Nd
+
+=
+
+1 d
+
+Md.
+
+Since
+
+d divides
+
+n(q) for
+
+all q  Md, it follows that Nd is also a p-adic monoid. In addition, the fact that Nd is
+
+isomorphic to Md implies that |A(Nd)| = |A(Md)| = . After setting bn = akn/d and
+
+n = kn for every natural n such that either akn = m or gcd(m, akn) = d, we have
+
+Nd =
+
+bn pn
+
+nN .
+
+As an = m for infinitely many n  N, the sequence {n} is an infinite subsequence of
+{n} and, therefore, it increases to infinity. In addition, as lim an/pn = 0, it follows
+that lim bn/pn = 0.
+Now we argue that A(Nd) is finite, which will yield the desired contradiction. Take m = m/d. Since there are infinitely many n  N such that bn = m, it is guaranteed that m/pn  Nd for every n  N. In addition, gcd(m, bn) = 1 for each bn = m. If bn = m for only finitely many n, then Nd is strongly bounded and Proposition 5.2 ensures that A(Nd) is finite. Suppose otherwise that gcd(bn, m) = 1 (i.e., bn = m) for infinitely many n  N. For a fixed i with bi = m take j  N satisfying that gcd(bj, m) = 1 and large enough so that bipj-i > bjm; the existence of such an index j is guaranteed by the fact that lim bn/pn = 0. As bipj-i > bjm > F ( bj, m ), there exist positive integers x and y such that bipj-i = xbj + ym, that is
+
+bi pi
+
+=
+
+x
+
+bj pj
+
++
+
+y
+
+m pj
+
+.
+
+As bj/pj , m/pj  Nd·, it follows that bi/pi / A(Nd). Because i was arbitrarily taken, Nd is antimatter. In particular, A(Nd) is finite, which leads to a contradiction.
+
+The conditions lim rn = 0 and lim n(rn) =  are not enough to guarantee that the non-finitely generated p-adic monoid M is atomic. The next example sheds some light upon this observation.
+
+Example 5.4. For an odd prime p, consider the p-adic monoid
+
+(5.2)
+
+M=
+
+p2n - p2n+1
+
+1
+
+,
+
+p2n + 1 p2n+1
+
+nN .
+
+Observe that the sequence of numerators {p2n - 1, p2n + 1} increases to infinity while the sequence of generators of M converges to zero. Also, notice that for every n  N,
+
+2 p2n
+
+=
+
+p2n - 1 p2n+1
+
++
+
+p2n + 1 p2n+1
+
+ M.
+
+12
+
+F. GOTTI, M. GOTTI, AND H. POLO
+
+Now we can see that M is not atomic; indeed, M is antimatter, which immediately
+
+follows from the fact that
+
+p2n ± 1 p2n ± 1 2
+
+p2n+1 =
+
+2
+
+p2n+1 .
+
+The next proposition yields a necessary and a sufficient condition for the atomicity of p-adic monoids having generating sets whose numerators are powers of the same prime.
+
+Proposition 5.5. Let p and q be two different primes, and let M = rn | n  N be a p-adic monoid such that n(rn) is a power of q for every n  N. Then
+(1) if M is atomic, then lim n(rn) = ; (2) if lim n(rn) =  and {rn} is decreasing, then M is atomic.
+
+Proof. Define the sequences {n} and {n} such that pn = d(rn) and qn = n(rn). To
+check condition (1), suppose, by way of contradiction, that lim n(rn) = . Therefore there is a natural j such that n(rn) = qj for infinitely many n  N. This implies that qj/pn  M for every n  N. Thus, for every x  M· such that n(x) = qm  qj, one
+
+can write
+
+x
+
+=
+
+qm d(x)
+
+=
+
+pqm-j
+
+qj pd(x)
+
+/
+
+A(M ).
+
+As a result, every a  A(M) satisfies that n(a) < qj. This immediately implies that A(M) is finite. As M is atomic with |A(M)| < , it must be finitely generated, which is a contradiction.
+Let us verify condition (2). Consider the subsequence {kn} of naturals satisfying that n(rkn) < n(ri) for every i > kn. It follows immediately that the sequence {n(rkn)} is increasing. We claim that M = rkn | n  N . Suppose that j / {kn}. Because lim n(rn) =  there are only finitely many indices i  N such that n(ri)  n(rj), and it is easy to see that the maximum of such indices, say m, belongs to {kn}. As ri = pm-i qi-mrm, it follows that ri  rkn | n  N . Hence M = rkn | n  N . Therefore it suffices to show that rkn  A(M) for every n  N. If
+
+(5.3)
+
+qkn
+
+t
+
+qki
+
+pkn =
+
+ci pki ,
+
+i=1
+
+for some t, c1, . . . , ct  N0, then t  n, c1 = · · · = cn-1 = 0, and cn  {0, 1}. If cn = 0, then by applying the q-adic valuation map to both sides of (5.3) we immediately
+obtain a contradiction. Thus, cn = 1, which implies that rkn is an atom. Hence M is atomic.
+
+THREE FAMILIES OF DENSE PUISEUX MONOIDS
+
+13
+
+6. Multiplicatively Cyclic Puiseux Monoids
+
+The study of the atomic structure of multiplicatively cyclic Puiseux monoids was initiated in [8]. Our purpose in this section is to continue the exploration of this family of Puiseux monoids. We shall prove that atomic members of this family are FF-monoid and, therefore, hereditarily atomic. We also introduce a natural generalization of this family and explore the atomic structure of its members.
+
+Definition 6.1. For r  Q>0, the multiplicatively r-cyclic monoid is the Puiseux monoid generated by the positive powers of r.
+
+A multiplicatively cyclic monoid is a Puiseux monoid that is multiplicatively r-cyclic for some r  Q>0. The multiplicatively r-cyclic monoid is antimatter when n(r) = 1; otherwise it is atomic [8, Theorem 6.2].
+Given a monoid M and x  M, we define the set of atoms of x to be
+AM (x) = {a  A(M ) : a |M x}.
+When there is no risk of ambiguity, we write A(x) instead of AM (x). The set of atoms of an element can be seen as a local statistic that is naturally related to Z(x).
+
+Lemma 6.2. Let M be an atomic reduced monoid and x  M. Then |A(x)| <  if and only if |Z(x)| < .
+
+Proof. To show the forward implication, take x  M such that AM (x) is a finite set, say AM (x) = {a1, . . . , an}. Consider the submonoid N = a1, . . . , an of M. Since A(M)  N  A(N ) it follows that A(N ) = {a1, . . . , an}. By Proposition 2.1, the monoid N is an FF-monoid. Now the fact that AM (x) = AN (x) implies that |ZM (x)| = |ZN (x)| < . For the reverse implication, note that an atom of A(x) must show up in at least one factorization in Z(x). Hence if Z(x) is finite so is A(x).
+
+Theorem 6.3. Every multiplicatively cyclic atomic monoid is an FF-monoid.
+
+Proof. Take r  Q>0 such that the multiplicatively r-cyclic monoid Mr is atomic. By Lemma 6.2, proving that Mr is an FF-monoid amounts to showing that A(x) is finite
+
+for all x  Mr. Set a = n(r) and b = d(r). Since Mr is atomic either it is cyclic or min{a, b}  2. Arguing that Mr is an FF-monoid when either Mr is cyclic or 2  b < a
+
+is straightforward. Therefore let us assume that 2  a < b.
+
+Suppose, by way of contradiction, that there exists x  Mr such that A(x) contains infinitely many atoms. Let
+
+c1
+
+a b
+
+t1 + · · · + cn
+
+a b
+
+tn  Z(x),
+
+where ci, ti  N for each i = 1, . . . , n. After simplifying if necessary, we can assume that
+
+t1 < · · · < tn and a  ci for any i  {1, . . . , n}. Because Mr is atomic and |A(x)| = ,
+
+there exists
+
+d1
+
+a b
+
+l1 + · · · + dm
+
+a b
+
+lm  Z(x)
+
+14
+
+F. GOTTI, M. GOTTI, AND H. POLO
+
+such that lm > tn, where dj, tj  N for each j = 1, . . . , m. As before we can perform necessary simplifications to have l1 < · · · < lm and a  dj for any j  {1, . . . , m}; observe that such simplifications do not affect the fact that lm > tn. Therefore we have
+
+(6.1)
+
+n
+
+ci
+
+ati bti
+
+=
+
+m
+
+dj
+
+alj blj
+
+.
+
+i=1
+
+j=1
+
+From now on, we will not use the fact that tn < lm, but only that tn = lm. By canceling terms in (6.1) if necessary, we can assume that t1 = l1, say t1 < l1. Since a  c1, there exist a prime p and a natural  such that p | a, p+1  a, and p  c1. The fact that t1 < ti for each i  {2, . . . , n} implies vp(c1at1 /bt1) = vp(x). Taking p-adic valuation in (6.1), one finds that
+
+t1 + ( - 1)  vp
+
+c1
+
+at1 bt1
+
+= vp(x)  min
+
+vp
+
+dj
+
+alj blj
+
+j  {1, . . . , m}  (t1 + 1),
+
+which is a contradiction. Hence |A(x)| <  for all x  Mr. Lemma 6.2 ensures now that Mr is, indeed, an FF-monoid.
+
+Corollary 6.4. Every atomic multiplicatively cyclic Puiseux monoid is a BF-monoid.
+
+To make sure that Corollary 6.4 is not just a restatement of Theorem 6.3, let us exhibit an example of a Puiseux monoid that is a BF-monoid but fails to be an FFmonoid.
+
+Example 6.5. Let P be the set of odd primes, and consider the primary monoid
+
+M = A , where A =
+
+p/2 p
+
+,
+
+p
+
+-
+
+p/2 p
+
+pP .
+
+As M is a primary monoid it is atomic. In addition, it is not hard to verify that A(M) = A. As
+
+1
+
+=
+
+p/2 p
+
++
+
+p
+
+-
+
+p/2 p
+
+for each p  P , we have that |A(1)| = . Also, notice that a  1/3 for every a  A(M). This implies that no element x  M can be the sum of more than 3x atoms, i.e., L(x)  {1, . . . , 3x}. Because |L(x)| < 3x for all x  M the Puiseux monoid M is a BF-monoid that fails to be an FF-monoid.
+
+In [7, Proposition 6.4] it was proved that every positive BF-monoid of an ordered field is hereditarily atomic. As a Puiseux monoid is a positive monoid of the ordered field Q, we obtain the following result.
+
+Proposition 6.6. If a Puiseux monoid is a BF-monoid, then it is hereditarily atomic.
+
+THREE FAMILIES OF DENSE PUISEUX MONOIDS
+
+15
+
+The atomicity of multiplicatively cyclic monoids was described in [8]. If a multiplicatively r-cyclic monoid Mr is not dense (i.e., r  1), it follows immediately that Mr is hereditarily atomic. We can extend now this result to dense Puiseux monoid as a direct consequence of Corollary 6.4 and Proposition 6.6.
+
+Corollary 6.7. Every atomic multiplicatively cyclic monoid is hereditarily atomic.
+
+The fact that atomic multiplicatively cyclic monoids are hereditarily atomic can be further extended to a more general family of Puiseux monoids.
+
+Proposition 6.8. Let k  N and r1, . . . , rk  Q>0 such that gcd(n(r1), . . . , n(rk)) = 1. Then the Puiseux monoid r1n, . . . , rkn | n  N is hereditarily atomic.
+
+Proof. Let us denote r1n, . . . , rkn | n  N by M. Also, take p to be a prime number dividing gcd(n(r1), . . . , n(rk)). We will verify that the Puiseux monoid
+
+M =
+
+p d(r1) . . . d(rk)
+
+n
+
+nN
+
+contains M. For each i = 1, . . . , k there exists qi  N such that n(ri) = pqi. Therefore it follows that
+
+rim =
+
+pqi d(ri)
+
+m
+=
+
+k j=1
+
+d(rj
+
+)m
+
+d(ri)m
+
+qi
+
+p d(r1) . . . d(rk)
+
+m
+ P.
+
+for every natural m. This implies that M is a submonoid of M. By Corollary 6.7, the Puiseux monoid M is hereditarily atomic. Since M is a submonoid of M, it must be
+
+also hereditarily atomic.
+
+Finally, note that the condition on the numerators in Proposition 6.8 is not superfluous as the following example reveals.
+
+Example 6.9. Consider the Puiseux monoid
+
+M=
+
+2 7 · 11
+
+n
+,
+
+3m 7 · 11
+
+n, m  N .
+
+Fix k  N. For such k we can bound the Frobenius number F (N) of the numerical semigroup N = 2k, 3k in the following way,
+
+F ( 2k, 3k ) < (2k - 1)(3k - 1) < 11k.
+
+Therefore there exist ,   N0 such that 2k + 3k = 11k. This implies that
+
+1 7k
+
+=
+
+2k + 3k (7 · 11)k
+
+=
+
+
+
+2 7 · 11
+
+k
++
+
+3 7 · 11
+
+k
+ M.
+
+As 1/7k  M for every k  N, the antimatter Puiseux monoid 1/7k | k  N is a submonoid of M. Hence M is not hereditarily atomic.
+
+16
+
+F. GOTTI, M. GOTTI, AND H. POLO
+
+7. Acknowledgments
+While working on this paper, the first author was supported by the UC Berkeley Chancellor Fellowship and the second author was under the University of Florida Mathematics Department Fellowship.
+References
+[1] J. Amos, S. T. Chapman, N. Hine, and J. Paixao: Sets of Lengths Do not Characterize Numerical Monoids, Integers 7 (2007), A50.
+[2] S. T. Chapman, P. A. Garc´ia-S´anchez, D. Llena, and J. Marshall: Elements in a Numerical Semigroup with Factorizations with the Same Length, Canadian Math. Bull. 54 (2011), 39­43.
+[3] J. Coykendall, D. E. Dobbs, and B. Mullins: On Integral Domains With No Atoms, Communications in Algebra 27 (1999), 5813­5831.
+[4] P. Garc´ia-S´anchez and J. Rosales: Numerical Semigroups, Developments in Mathematics, 20, Springer-Verlag, New York, 2009.
+[5] A. Geroldinger and F. Halter-Koch: Non-Unique Factorizations: Algebraic, Combinatorial and Analytic Theory, Pure and Applied Mathematics, vol. 278, Chapman & Hall/CRC, Boca Raton, 2006.
+[6] F. Gotti: On the Atomic Structure of Puiseux Monoids, Journal of Algebra and Its Applications 16 (2016). [arXiv:1607.01731]
+[7] F. Gotti: Increasing Positive Monoids of Ordered Fields Are FF-monoids. [arXiv:1610.08781] [8] F. Gotti and M. Gotti: Atomicity and Boundedness of Monotone Puiseux Monoids.
+[arXiv:1608.04044] [9] P. A. Grillet: Commutative Semigroups, Advances in Mathematics, vol. 2, Kluwer Academic
+Publishers, Boston, 2001.
+Mathematics Department, UC Berkeley, Berkeley, CA 94720 E-mail address: felixgotti@berkeley.edu
+Mathematics Department, University of Florida, Gainesville, FL 32611 E-mail address: marlycormar@ufl.edu
+Mathematics Department, UC Berkeley, Berkeley, CA 94720 E-mail address: haroldpolo@berkeley.edu
+
+

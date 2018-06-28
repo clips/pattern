@@ -1,0 +1,3723 @@
+WIENER'S LEMMA ALONG PRIMES AND OTHER SUBSEQUENCES
+CHRISTOPHE CUNY, TANJA EISNER, AND BA¥ LINT FARKAS
+
+arXiv:1701.00101v4 [math.FA] 9 Aug 2017
+
+Abstract. Inspired by subsequential ergodic theorems we study the validity of Wiener's lemma and the extremal behavior of a measure µ on the unit circle via the behavior of its Fourier coefficients µ(kn) along subsequences (kn). We focus on arithmetic subsequences such as polynomials, primes and polynomials of primes, and also discuss connections to rigidity and return times sequences as well as measures on R. We also present consequences for orbits of operators and of C0-semigroups on Hilbert and Banach spaces extending the results of Goldstein [31] and Goldstein, Nagy [33].
+
+1. Introduction
+
+Wiener's lemma is a classical result connecting the asymptotic behavior of the Fourier coefficients
+µ(n) = zndµ(z)
+T
+of a complex Borel measure µ on the unit circle T with its values on singletons. Despite its elementary proof, it has found remarkable applications in several areas of mathematics such as ergodic theory, operator theory, group theory and number theory.
+
+Theorem 1.1 (Wiener's Lemma). Let µ be a complex Borel measure1 on the unit
+
+circle T. Then
+
+lim
+N 
+
+1 N
+
+N
+|µ(n)|2
+n=1
+
+=
+
+a
+
+|µ({a})|2.
+atom
+
+(Since
+
+µ(-n)
+
+= µ(n),
+
+one
+
+can
+
+replace
+
+here
+
+1 N
+
+N n=1
+
+by
+
+1 2N +1
+
+N n=-N
+
+.)
+
+As a consequence, one has the following characterization of Dirac measures in
+
+terms of their Fourier coefficients. Here we restrict ourselves to probability measures
+
+and give the proof for the reader's convenience.
+
+Corollary 1.2 (Extremal behavior of Dirac measures). For a Borel probability
+
+measure µ on T the following assertions are equivalent:
+
+(i)
+
+lim
+N 
+
+1 N
+
+N n=1
+
+|µ(n)|2
+
+=
+
+1.
+
+(ii) lim |µ(n)| = 1.
+
+n
+
+(iii) µ is a Dirac measure.
+
+2010 Mathematics Subject Classification. 43A05, 43A25, 47A10, 47B15, 47A35, 37A30, 47D06. Key words and phrases. Wiener's lemma for subsequences, extremal measures, polynomials and primes, ergodic theorems, orbits of operators and operator semigroups. 1By definition finite.
+1
+
+2
+
+CHRISTOPHE CUNY, TANJA EISNER, AND BA¥ LINT FARKAS
+
+Note that by the Koopman≠von Neumann lemma, see Lemma 2.1 (b) below and the paragraph preceding it, (i) is equivalent to |µ(n)|  1 in density as n   i.e., to the existence of a subset J of density 1 with limn,nJ |µ(n)| = 1.
+
+Proof. Let µ be a probability measure on T. If µ({a}) = 1 for some a  T, then µ(n) = an. Whence the implication (iii)(ii) follows, while (ii)(i) is trivial. To
+show (i)(iii), suppose (i). Theorem 1.1 yields
+
+1
+
+=
+
+lim
+N 
+
+1 N
+
+N
+|µ(n)|2
+n=1
+
+=
+
+a
+
+µ({a})2
+atom
+
+
+
+a
+
+µ({a})
+atom
+
+=
+
+1,
+
+implying µ({a})2 = µ({a}) or, equivalently, µ({a})  {0, 1} for every atom a. We
+
+conclude that µ is a Dirac measure.
+
+The previous two results have the following operator theoretic counterparts.
+
+Theorem 1.3 (Goldstein [32], Ballotti, Goldstein [5]). Let T be a (linear) contraction on a Hilbert space H, and for   C denote by P the orthogonal projection onto ker( - T ). Then for every x, y  H
+
+lim
+N 
+
+1 N
+
+N
+|(T nx|y)|2
+n=1
+
+=
+
+|(Px|Py)|2
+T
+
+=
+
+|(Px|y)|2.
+T
+
+It is easy to deduce the previous theorem from Wiener's lemma (and vice versa), even though the original proof of Goldstein went along different lines.
+The following Banach space version of Corollary 1.2 is more complex, see also Lin [47] and Baillon, Guerre-Delabri`ere [4] for related results. Note that in these papers, the results are formulated for C0-semigroups but are also valid for powers of operators with analogous proofs.
+
+Theorem 1.4 (Goldstein, Nagy [33]). Let T be a (linear) contraction on a Banach space E. Suppose for some x  E
+| T nx, x |  | x, x | for every x  E as n  .
+
+Then ( - T )x = 0 for some   T.
+
+The aim of this paper is to study the validity of Wiener's Lemma, Corollary 1.2 and Theorems 1.3, 1.4 along subsequences of N, where we study the equivalences (i)(iii) and (ii)(iii) in Corollary 1.2 separately.
+First of all, some words about terminology. The term complex measure refers to C-valued -additive set function (which is then automatically finite valued, and has finite variation). In this paper only Borel measures will be considered. A subsequence (kn) in N will refer to a function k : N  N which is strictly increasing for sufficiently large indices. Banach and Hilbert spaces will be considered over the complex field C.
+Sequences for which Wiener's lemma and the extremality of Dirac measures work well include certain polynomial sequences, the primes, certain polynomials of primes and certain return times sequences as will be shown below. As an application of the general results we shall prove among others the following, maybe at first glance surprisingly looking, facts. We denote by pn the nth prime.
+1) The only Borel probability measures on T with |µ(pn)|  1 for n   are the Dirac measures (Theorem 4.4).
+
+WIENER'S LEMMA ALONG SUBSEQUENCES
+
+3
+
+2) If T is a (linear) contraction on a Hilbert space and x  H \ {0} is such that |(T pnx|x)|  x 2 as n  , then x is an eigenvector of T to a unimodular eigenvalue (Theorems 4.4 and 5.9).
+3) If T is a power bounded operator on a Banach space E and x  E \ {0} is such that | T pn x, x |  | x, x | as n   for every x  E, then x is an eigenvector of T to a unimodular eigenvalue (Corollary 5.6).
+We also relate our results to rigidity sequences and discover a property of such sequences as a byproduct which appears to be new.
+Our results are inspired by ergodic theory, where the study of ergodic theorems along subsequences has been a rich area of research with connections to harmonic analysis and number theory. Furstenberg [30] described norm convergence of ergodic averages of unitary operators along polynomials. Pointwise convergence of ergodic averages for measure preserving transformations along polynomials and primes, answering a question of Bellow and Furstenberg, was proved by Bourgain [12, 13, 14] and Wierdl [60], with polynomials of primes treated by Wierdl [59] and Nair [52, 51]. To illustrate the wealth of literature on ergodic theorems along subsequences we refer, e.g., to Bellow [8], Bellow, Losert [7], Baxter, Olsen [6], Rosenblatt, Wierdl [56], Berend, Lin, Rosenblatt, Tempelman [9], Boshernitzan, Kolesnik, Quas, Wierdl [11], Krause [42], Zorin-Kranich [64], Mirek [48], Eisner [19], Frantzikinakis, Host, Kra [29], Wooley, Ziegler [62].
+The paper is organized as follows. Section 2 is devoted to an abstract version of Wiener's lemma along subsequences. In Section 3 we study extremal and Wiener extremal subsequences, see Definition 3.1. The case of polynomials, primes and polynomials of primes is treated in Section 4. Section 5 is devoted to applications to orbits of operators on Hilbert and Banach spaces. The continuous parameter case is discussed in Section 6, where parallels and differences to the time discrete case are pointed out.
+Acknowledgment. The authors thank Michael Lin, Rainer Nagel and J¥anos Pintz for helpful comments and references.
+
+2. Wiener's Lemma along subsequences
+
+Recall that a sequence (an) in C is called convergent in density to a  C,
+
+with notation D- limn an = a if there exists a set J  N of density 1 with
+
+limn,nJ an
+
+=
+
+a.
+
+The
+
+density
+
+of
+
+a
+
+set
+
+J
+
+
+
+N
+
+is
+
+defined
+
+by
+
+limn
+
+|J
+
+{1,...,n}| n
+
+,
+
+provided the limit exists.
+
+The following is the classical Koopman≠von Neumann lemma together with a
+
+slight variation.
+
+Lemma 2.1. (a) For a bounded sequence (an) in [0, ) the following are equiva-
+
+lent:
+
+(i) D- limn an = 0.
+
+(ii)
+
+limN 
+
+1 N
+
+N n=1
+
+an
+
+=
+
+0.
+
+(iii)
+
+limN 
+
+1 N
+
+N n=1
+
+a2n
+
+=
+
+0.
+
+(b) For a bounded sequence (bn) in (-, 1] the following are equivalent:
+
+(i) D- limn bn = 1.
+
+(ii)
+
+limN 
+
+1 N
+
+N n=1
+
+bn
+
+=
+
+1.
+
+If bn  0, then these assertions are also equivalent to:
+
+(iii)
+
+limN 
+
+1 N
+
+N n=1
+
+b2n
+
+=
+
+1.
+
+4
+
+CHRISTOPHE CUNY, TANJA EISNER, AND BA¥ LINT FARKAS
+
+Proof. (a), (i)(ii) is the content of the Koopman≠von Neumann lemma, see, e.g., [40] or [21, Ch. 9], whereas (i)(iii) is a direct consequence. (b) follows from (a) by considering an := 1 - bn.
+
+We further recall the following notion from Rosenblatt, Wierdl [56], see also [21, Chapter 21].
+
+Definition 2.2. A subsequence (kn) of N is called good if
+
+for every   T the limit
+
+lim
+
+1
+
+N
+kn =: c()
+
+exists.
+
+N  N
+
+n=1
+
+Moreover, (kn) is called an ergodic sequence if c = 1{1}, the characteristic function of {1}. We call the set  := { : c() = 0} the spectrum of the sequence (kn) in analogy to, e.g., Lin, Olsen, Tempelman [46].
+
+By an application of the spectral theorem it follows that a sequence (kn) is good
+if and only if it is good for the mean ergodic theorem, that is if for every measure preserving system (X, , T ) and every f  L2(X, ) the averages
+
+1
+
+N
+T kn f
+
+N
+
+n=1
+
+converge in L2(X, ), where T denotes the Koopman operator corresponding to the
+
+transformation T defined by f  f  T . A good sequence is then ergodic if and
+
+only if the above limit always equals the orthogonal projection PFix(T )f onto the fixed space Fix(T ) = ker(1 - T ).
+
+Remark 2.3. For each subsequence (kn) of N, the sequence (kn ) is equidistributed in T for almost every   T implying that c() exists and is 0 for Lebesgue almost every   T, see, e.g., Kuipers, Niederreiter [43, Theorem 1.4.1] (or Theorem 2.2 on page 50 of [56], or combine Kronecker's lemma with Carleson's theorem). The
+function c clearly satisfies c(1) = 1, c() = c() and |c()|  1 whenever c() exists. Moreover, if |c()| = 1, then kn converges to c() in density, which follows by Lemma 2.1 (b) applied to an := Re(c()kn ). Thus c is a multiplicative function on the subgroup { : |c()| = 1} of T. The function c : T  C is Borel measurable (if it exists).
+
+We present one more property of the limit function c. For an integer d  0 we set Gd := {  T : d = 1}, the group of dth roots of unity.
+Proposition 2.4. Let (kn) be a good sequence with corresponding limit function c. Then there exists an integer d  0 such that  := {  T : |c()| = 1} = Gd.
+Proof. It follows from Remark 2.3 that  is a group, and it is then well-known that  is either finite or dense in T. We shall prove that it is finite.
+
+Since (kn) is good, c is the pointwise limit of a sequence of continuous functions on a compact space. Hence, by a theorem of Baire, its set of continuity points is
+
+dense in T.
+
+As
+
+mentioned
+
+in
+
+Remark
+
+2.3,
+
+limN 
+
+1 N
+
+N n=1
+
+kn
+
+=
+
+0
+
+for
+
+almost
+
+every  (with respect to the Haar measure on T). If  is not finite, we infer that c
+
+is nowhere continuous, which is impossible.
+
+The following general fact may appear to be well known, but we could not find a reference.
+
+WIENER'S LEMMA ALONG SUBSEQUENCES
+
+5
+
+Proposition 2.5 (Wiener's lemma along subsequences). Let (kn) be a good sequence in N.
+(a) For every complex Borel measure µ on T
+
+lim
+N 
+
+1 N
+
+N
+|µ(kn)|2
+n=1
+
+=
+
+c(12)d(µ ◊ µ)(1, 2).
+T2
+
+(b) The sequence (kn) is ergodic if and only if
+
+lim
+N 
+
+1 N
+
+N
+|µ(kn)|2
+n=1
+
+=
+
+a
+
+|µ({a})|2
+atom
+
+holds for every complex Borel measure µ on T. (c) For an ergodic sequence (kn) and a Borel probability measure µ on T the limit
+above in (b) is 1 if and only if µ is a Dirac measure.
+
+Proof. (a) The proof goes along the same lines as the most elementary and wellknown proof of the Wiener lemma. Observe that, by Fubini's theorem and by Lebesgue's dominated convergence theorem,
+
+1 N
+
+N
+
+|µ(kn)|2
+
+=
+
+1 N
+
+N
+
+n=1
+
+n=1
+
+k1n dµ(1)
+T
+
+2kn dµ(2)
+T
+
+=
+
+T◊T
+
+1 N
+
+N
+(12)kn d(µ
+n=1
+
+◊
+
+µ)(1, 2)
+
+ c(12)d(µ ◊ µ) as N  .
+T2
+
+(b) If now c = 1{1} we see that, by Fubini' theorem, the limit above equals
+
+1{1}(2)dµ(1) dµ(2) = µ({2})dµ(2) =
+
+|µ({a})|2.
+
+TT
+
+T
+
+a atom
+
+For the converse implication suppose (kn) is not ergodic, and let   T\{1} be with
+
+c() = 0.
+
+If Re c() = 0,
+
+then consider the
+
+probability measure µ :=
+
+1 2
+
+(1
+
++
+
+).
+
+We then have
+
+11 T2 c(12)d(µ ◊ µ)(1, 2) = 2 + 4
+
+c() + c()
+
+=
+
+1 2
+
+=
+
+a
+
+|µ({a})|2.
+atom
+
+If
+
+Im c()
+
+=
+
+0,
+
+then
+
+for
+
+the
+
+measure
+
+µ
+
+:=
+
+1 2
+
+(1
+
++
+
+i)
+
+we
+
+have
+
+T2
+
+c(12)d(µ
+
+◊
+
+µ)(1, 2)
+
+=
+
+1 2
+
++
+
+i 4
+
+c() - c()
+
+=
+
+1 2
+
+=
+
+a
+
+|µ({a})|2.
+atom
+
+The proof of (b) is complete.
+
+(c) follows from (b) by a similar arguments as in the proof of Corollary 1.2.
+
+The following questions arise naturally, cf. also Proposition 3.15 below.
+
+Question
+
+2.6.
+
+Does
+
+the
+
+existence
+
+of
+
+limN 
+
+1 N
+
+N n=1
+
+|µ(kn
+
+)|2
+
+for
+
+every
+
+proba-
+
+bility Borel measure µ implies that (kn) is good? Is there a non-ergodic, good
+
+sequence (kn) with Re c() = 0 for each   T \ {1}?
+
+6
+
+CHRISTOPHE CUNY, TANJA EISNER, AND BA¥ LINT FARKAS
+
+Remark 2.7. If one replaces "probability measure" by "complex measure", the an-
+
+swer to the first question is positive. Indeed, it is easy to see that for a subsequence
+
+(kn)nN of N the following assertions are equivalent.
+
+(i) For every finite complex measure (respectively every probability measure) µ
+
+on
+
+T
+
+the
+
+limit
+
+limN 
+
+1 N
+
+N n=1
+
+|µ^(kn)|2
+
+exists;
+
+(ii) For every complex measure (respectively every probability measure) µ and 
+
+on
+
+T
+
+the
+
+limit
+
+limN 
+
+1 N
+
+N n=1
+
+Re(µ^(kn)^(kn))
+
+exists.
+
+Assume that the above equivalent conditions hold for probabilities. Taking  := 1
+
+and
+
+µ
+
+:=
+
+,
+
+we
+
+see
+
+that
+
+the
+
+limit
+
+limN 
+
+1 N
+
+N n=1
+
+Re(kn
+
+)
+
+exists.
+
+If
+
+we
+
+assume
+
+moreover that the conditions hold for finite complex measures, then, taking  := i1
+
+and
+
+µ
+
+:=
+
+,
+
+we
+
+see
+
+that
+
+the
+
+limit
+
+limN 
+
+1 N
+
+N n=1
+
+Im(kn )
+
+exists,
+
+implying
+
+that
+
+(kn) is good.
+
+Corollary 2.8. Let (kn) be a good sequence. For a Borel probability measure µ
+
+lim sup
+N 
+
+1 N
+
+N
+|µ^(kn)|2
+n=1
+
+=
+
+1
+
+(1)
+
+holds if and only if µ is discrete with
+
+c(ab) = 1 for all atoms a, b.
+
+(2)
+
+In this case, the limit superior is a limit, and µ is supported in a coset Gd for some integer d  0.
+
+Proof. Suppose (1) holds. Since (kn) is good, by Proposition 2.5 (a) the above limit superior is actually a limit and
+
+1 N
+
+N
+|µ^(kn)|2
+n=1
+
+-
+N 
+
+c(1Ø2)dµ(1)dµ(2) = 1.
+T◊T
+
+Hence
+
+1 - Re(c(1Ø2)) dµ(1)dµ(2) = 0.
+T◊T
+Since 1 - Re(c(1Ø2))  0 (and |c|  1). We infer that there exists 2  T such that for µ-a.e. 1  T, c(1Ø2) = 1. Hence, µ is supported on 2, which equals 2Gd for some integer d  0 by Proposition 2.4. This shows one implication.
+
+For the converse implication let µ be discrete satisfying (2). Then by Proposition 2.5 (a)
+
+1 N
+
+N
+
+|µ^(kn)|2 =
+
+c(ab)µ({a})µ({b}) =
+
+µ({a})µ({b}) = 1.
+
+n=1
+
+a,b atom
+
+a,b atom
+
+We now consider the case "in between", namely when c() = 0 for all but at most countably many 's. We first introduce the following terminology: For a subset  of T denote by  the subgroup generated . We call two elements 1, 2  T -dependent if their cosets with respect to  coincide: 1  = 2  , otherwise we call them -independent.
+Theorem 2.9. Let (kn) be a good sequence with at most countable spectrum .
+
+WIENER'S LEMMA ALONG SUBSEQUENCES
+
+7
+
+(a) For every complex Borel measure µ on T
+
+lim
+N 
+
+1 N
+
+N
+|µ(kn)|2
+n=1
+
+=
+
+c()
+
+
+
+a
+
+µ({a})µ({a}).
+atom
+
+In particular, for every continuous complex Borel measure µ on T
+
+lim
+N 
+
+1 N
+
+N
+
+|µ(kn)|2 = 0.
+
+n=1
+
+(b) For every Borel probability measure µ on T
+
+lim
+N 
+
+1 N
+
+N
+|µ(kn)|2
+n=1
+
+
+
+µ(a
+aU
+
+
+
+)2,
+
+(3)
+
+where U is a maximal set of -independent atoms. The equality in (3) holds if and only if µ satisfies (2) (but it may not necessarily be discrete).
+
+Proof. (a) By Proposition 2.5 and Fubini's theorem we have
+
+lim
+N 
+
+1 N
+
+N
+
+|µ(kn)|2 =
+
+n=1
+
+c(12)d(µ ◊ µ)(1, 2)
+T2
+
+=
+
+c()µ({1})dµ(1)
+
+T 
+
+= c() µ({1})dµ(1)
+
+
+
+T
+
+= c()
+
+µ({a})µ({a}).
+
+
+
+a atom
+
+(b) Observe (the left-hand side below is greater or equal to zero by (a))
+
+c()
+
+µ({a})µ({a}) 
+
+µ({a}) c()µ({a})
+
+
+
+a atom
+
+a atom
+
+
+
+
+
+µ({a}) µ({a})
+
+a atom
+
+
+
+=
+
+µ({a})µ(a  )
+
+a atom
+
+= µ(a  )2.
+
+aU
+
+The last assertion regarding the equality is clear.
+
+We will see below that there are sequences (kn) satisfying the assumptions of Theorem 2.9 and probability measures satisfying (1) which are not Dirac.
+
+Remark 2.10. Let (kn) be a strictly increasing sequence in N having positive density. If the characteristic function of {kn : n  N} is a Hartmann sequence (i.e., has Fourier coefficients), then (kn) is good with at most countable spectrum (see, e.g., Lin, Olsen, Tempelman [46] or Kahane [39]).
+
+8
+
+CHRISTOPHE CUNY, TANJA EISNER, AND BA¥ LINT FARKAS
+
+By using a result2 of Boshernitzan, which we recall for the sake of completeness, it is possible to show that good sequences with positive upper density have countable spectrum. Actually, his Theorem 41 in Rosenblatt [55] is stated in the case where nk = k for every k  N, but the proof is the same.
+
+Proposition 2.11 (Boshernitzan, see Rosenblatt [55]). Let (an) be a bounded sequence of complex numbers and let (Nm) be a subsequence of N. For every  > 0, the set
+
+T
+
+:
+
+lim inf
+k
+
+1 Nm
+
+Nm
+a
+=1
+
+
+
+is finite.
+
+Recall that the upper density of a subsequence (kn) of N is defined by
+
+d(kn)
+
+:=
+
+lim sup
+N 
+
+|{n
+
+:
+
+kn  N
+
+N }| .
+
+Corollary 2.12. Let (kn) be a good subsequence of N with positive upper density. For every  > 0 the set {  T : |c()|  } is finite. In particular, (kn) has countable spectrum.
+
+Proof. By assumption, there exists a subsequence (Nm)mN of N such that
+
+lim
+m
+
+|{n
+
+:
+
+kn  Nm
+
+Nm}|
+
+=
+
+
+
+>
+
+0.
+
+Then, for A = {kn : n  N} and for every   T we obtain
+
+1 Nm
+
+Nm =1
+
+1A()
+
+-
+m
+
+c().
+
+An application of Proposition 2.11 with a = 1A() finishes the proof.
+
+Remark 2.13. A good sequence need not have positive upper density as, e.g., kn = n2 shows. See Section 4 below for this and other examples. On the other hand, a sequence with positive upper density (and even density) does not have to be good. Indeed, take 2N and change 2n to 2n + 1 if 2n lies in any interval of the form [4, 2∑4],   N. This sequence has density 1/2 but c(-1) does not exist. Modifying this construction it is easy to construct a sequence with density arbitrarily close to 1 which is not good. (Note that 1 cannot be achieved: every sequence with density 1 is automatically good.)
+
+Remark 2.14. Suppose (kn) is a subsequence of N (not necessarily good) such that there is an at most countable set  such that c() exists and equals 0 for every   . By carrying out the same calculation as in the proof of (a) in Proposition 2.5 and using the Koopman≠von Neumann Lemma 2.1 we see that for each continuous measure on T we have µ(kn)  0 in density. It would be interesting to characterize those subsequences (kn) for which a (probability) measure is continuous if and only if µ(kn)  0 in density.
+
+2We thank Michael Lin for bringing the reference [55] to our attention.
+
+WIENER'S LEMMA ALONG SUBSEQUENCES
+
+9
+
+3. (Wiener) extremal subsequences
+
+In this section we characterize subsequences (kn) for which the equivalences (i)(iii) and (ii)(iii) in Corollary 1.2 remain valid and show that (i)(ii) fails in general.
+
+Definition 3.1. Let (kn) be a subsequence of N. We call a Borel probability measure µ Wiener extremal or extremal along (kn) if µ satisfies
+
+lim
+N 
+
+1 N
+
+N
+
+|µ(kn)|2 = 1
+
+or
+
+lim
+n
+
+|µ(kn)|
+
+=
+
+1,
+
+respectively.
+
+n=1
+
+A subsequence (kn) in N is called (Wiener) extremal if every (Wiener) extremal measure is a Dirac measure. If every (Wiener) extremal discrete measure is Dirac,
+
+then we call (kn) (Wiener) extremal for discrete measures.
+
+We first consider Wiener extremal sequences.
+
+Theorem 3.2. For a subsequence (kn) of N consider the following assertions:
+(i) (kn) is Wiener extremal. (ii) (kn) is Wiener extremal for discrete measures. (iii) For each z  T whenever
+
+D- lim zkn  1,
+n
+then z = 1. (iv) c() = 1 implies  = 1. Then (i)(ii)(iii)(iv). Moreover, (i)(ii) if (kn) is good.
+
+Proof. (i)(ii) is trivial and (iii)(iv) follows from Remark 2.3.
+
+(iii)(ii): Assume that there exists a discrete probability measure which is extremal and not Dirac. Let a, b be two different atoms of µ. Since
+
+|µ(n)|  |anµ({a}) + bnµ({b})| +
+
+µ({})  1,
+
+=a,b atom
+
+the extremality of µ implies that |akn µ({a}) + bkn µ({b})| converges in density to µ({a}) + µ({b}) or, equivalently, that |akn - bkn | converges in density to 1. Taking
+z := ab = 1 in (iii), we arrive at a contradiction.
+
+(ii)(iii): Assume that there exists z  T with z = 1 such that zkn converges to 1 in density. Then for the probability measure µ defined by µ({1}) = µ({z}) = 1/2
+
+µ(kn)
+
+=
+
+1
+
++ zkn 2
+
+converges to 1 in density, hence (i) is false.
+
+The last assertion follows immediately from Corollary 2.8.
+
+Replacing, in the above proof, the Ces`aro limit by the classical limit and convergence in density by classical convergence yields the following.
+
+Theorem 3.3. For a sequence (kn) in N consider the following assertions:
+(i) (kn) is extremal. (ii) (kn) is extremal for discrete measures. (iii) G((kn)) := {z : zkn  1} = {1}.
+
+10
+
+CHRISTOPHE CUNY, TANJA EISNER, AND BA¥ LINT FARKAS
+
+Then (i)(ii)(iii). Moreover, (i)(ii) if (kn) is good.
+
+Remark 3.4 (Ergodic sequences). By the above characterizations or by Proposition 2.5 (c), every ergodic sequence is Wiener extremal and hence extremal, too.
+
+We recall the notation Gd =: {  T : d = 1} and observe the following.
+
+Proposition 3.5. Let (kn) be a subsequence of N satisfying
+
+lim inf
+n
+
+(kn+1
+
+-
+
+kn)
+
+<
+
+.
+
+Then any probability measure µ that is extremal along (kn) is discrete with supp(µ)  0Gd for some d  N and some 0  T. As a consequence, the following assertions are equivalent:
+
+(i) (kn) is extremal. (ii) (kn) is extremal for discrete measures. (iii) For every q  N, q  2 there are infinitely many n with kn / qN.
+
+Remark 3.6. Note that assertion (iii) above just means that (kn) is extremal for roots of unity, i.e.,
+lim kn = 1,   T root of unity =  = 1.
+n
+Remark 3.7. A sequence (kn) with lim infn(kn+1 - kn) <  need not be good. An example is given by the sequence 2, 4, . . . , 2n, . . . where along a subsequence of density 0 we insert 2k + 1 right after 2k; or see Remark 2.13 for a not good sequence with positive density. Conversely, a good sequence (even if Wiener extremal) need not have such small gaps: Again kn = n2 is an example. Also, small gaps in (kn) do not imply that (kn) would be extremal, an example is kn = pn + 1, pn the nth prime. See Section 4 for more information.
+
+Proof of Proposition 3.5. By assumption there exists an integer d  N and a subsequence (n)N, such that
+
+kn+1 - kn = d for all   N.
+
+(4)
+
+Let µ be extremal along (kn), and let n  [0, 2) be such that µ^(kn) = ein |µ^(kn)|. Then
+
+(1
+[0,2)
+
+-
+
+cos(knt
+
+-
+
+n))dµ(t)
+
+=
+
+1
+
+-
+
+|µ^(kn)|
+
+-
+n
+
+0.
+
+Hence, (cos(kn ∑ -n ))N admits a subsequence converging µ-a.e. to 1. For simplicity, let us assume that the sequence itself converges µ-a.e. to 1 and that n  0  [0, 2] as   . Similarly, we may assume that (cos(kn+1 ∑ -n+1))N converges µ-a.e to 1 and that n+1  1  [0, 2] as   .
+
+By using (4), we infer that for µ-a.e. t  [0, 2)
+
+dt - 1 + 0 = 0
+
+mod 2.
+
+Hence, µ is a discrete measure with supp(µ)  0Gd for 0 = ei(1-0)/d and the first assertion is proven.
+
+By Theorem 3.3, it remains to show (iii)(i). Let µ be extremal along (kn).
+
+By the above we have µ =
+
+d j=1
+
+cj 0j ,
+
+where
+
+c1, . . . , cd
+
+
+
+0
+
+with
+
+d j=1
+
+cj
+
+=
+
+1,
+
+WIENER'S LEMMA ALONG SUBSEQUENCES
+
+11
+
+0  T and 1, . . . , d being the dth roots of unity. The extremality of µ implies
+
+|µ^(kn)|2 =
+
+d cj kj n 2 =
+
+d
+
+cj cm(j m)kn
+
+-
+n
+
+1.
+
+j=1
+
+j,m=1
+
+By convexity reasons this is possible only if limn(j m)kn = 1 whenever cjcm = 0. Thus (iii) and Remark 3.6 imply j = m whenever cjcm = 0, meaning that µ is Dirac.
+
+Remark 3.8. For a subsequence (kn) and a subset J  N of density 1, (kn)nJ has the same upper density as (kn)nN by
+
+1 N
+
+1
+
+
+
+1 N
+
+1  0 as N  .
+
+kn N ,n/ J
+
+nN,n/J
+
+Lemma 3.9. Let (kn)nN be a subsequence of N with positive upper density. Then lim infn(kn+1 - kn) < .
+
+Proof. Assume that kn+1 - kn   as n  . Let A > 0. There exists M > 0 such that for every n  M , kn+1 - kn  A. Hence, for every n  M we have kn  kM + (n - M )A  (n - M )A. Hence, for every N  N large enough,
+|{n : kn  N }|  N/A + M
+and thus d(kn)  1/A  0 as A  , resulting in a contradiction.
+
+Remark 3.10. It is not difficult to exhibit sequences (kn) with density 0 such that lim infn(kn+1 - kn) < . An important example is the sequence of primes (pn)nN. It is a recent, highly non-trivial result of Zhang that lim infn(pn+1 - pn) < , see [63] or the paper [53] by the Polymath project.
+We have the following characterization of Wiener extremality for sequences with positive upper density. Note that extremality of such sequences was characterized in Proposition 3.5.
+
+Proposition 3.11 (Wiener extremality of sequences with positive upper density). For a subsequence (kn) with positive upper density the following assertions are equivalent:
+(i) (kn) is Wiener extremal. (ii) (kn) is Wiener extremal for discrete measures. (iii) d({n : kn / qN}) > 0 for every q  N, q  2.
+
+Note that assertion (iii) above just means that (kn) is Wiener extremal for roots of unity, i.e.,
+D- lim kn = 1,   T root of unity =  = 1.
+n
+Proof. It suffices to show the implications (ii)(i) and (ii)(iii).
+
+(ii)(i): Suppose that (kn) is Wiener extremal for discrete measures and let µ
+be a Wiener extremal measure along (kn) with decomposition µ = µd + µc into
+discrete and continuous parts. By Lemma 2.1 (b) and Remark 3.8 there exists a subsequence (kn ) of (kn) of positive upper density such that limn |µ^(kn )| = 1. By Theorem 1.1, Lemma 2.1 (a) there is a subsequence (mn) of N of density one
+
+12
+
+CHRISTOPHE CUNY, TANJA EISNER, AND BA¥ LINT FARKAS
+
+with limn |µ^c(mn)| = 0. Denoting by (n) the non-trivial intersection of (mn) with (kn ) we obtain
+
+1
+
+=
+
+lim
+n
+
+|µ^(n)|
+
+=
+
+lim
+n
+
+|µ^d(n)|.
+
+Thus µd is also a probability measure, and therefore µ = µd is Dirac by the as-
+
+sumption.
+
+(ii)(iii): By the equidistribution of (zn) for any irrational z (i.e., z not a root of unity) combined with Lemma 2.1 (b) and Remark 3.8 we obtain the implication:
+
+D- lim zkn = 1 = z is rational.
+n
+
+In particular, by Theorem 3.2 (kn) is not extremal for discrete measures if and only if there exists q  N, q  2 such that the set of n with kn  qN has density one.
+
+Thus, the question of characterizing extremality becomes interesting for sequences of density zero, see Section 4.
+
+Example (Return time sequences). Let (X, µ, T ) be an ergodic measure preserving
+
+probability system, and let T also denote the corresponding Koopman operator on
+
+L2(X, µ) defined by T f = f T . Let A  X with µ(A) > 0. We show that for almost
+
+every x  X the return times sequence (kn) corresponding to {n  N : T nx  A} is Wiener extremal (and hence extremal) whenever T is totally ergodic. Note that
+
+return times sequences play an important role for ergodic theorems, see Bourgain's
+
+celebrated return times theorem in Bourgain, Furstenberg, Katznelson, Ornstein
+
+[16] and a survey by Assani, Presser [3]. Let A,x(n) := |{k  n : T kx  A}|. We have for   T
+
+1 A,x(n)
+
+k
+kn,T kxA
+
+=
+
+1 A,x(n)
+
+n
+1T -kA(x)k
+k=1
+
+=
+
+n A,x(n)
+
+1 n
+
+n
+(T k1A)(x)k.
+k=1
+
+Birkhoff's ergodic theorem and the ergodicity assumption imply that for almost
+
+every x  X
+
+lim
+n
+
+A,x(n) n
+
+=
+
+lim
+n
+
+1 n
+
+n
+(T k1A)(x) = µ(A),
+
+k=1
+
+i.e., the density of (kn) equals µ(A). Hence, by the Wiener≠Wintner theorem, see
+
+[61], for almost every x
+
+c()
+
+=
+
+1 µ(A)
+
+lim
+n
+
+1 n
+
+n
+
+(T k1A)(x)k
+
+=
+
+1 µ(A)
+
+(P
+
+1A)(x)
+
+for all   T,
+
+k=1
+
+where P denotes the orthogonal projection onto ker( - T ). Thus for almost every x the spectrum of the return times sequence is at most countable. We suppose now
+
+that T is totally ergodic and show that (kn) is Wiener extremal. As in the proof
+
+of
+
+Proposition
+
+3.11,
+
+if
+
+limN 
+
+1 N
+
+N n=1
+
+kn
+
+=
+
+1,
+
+then
+
+
+
+is
+
+rational
+
+(i.e.,
+
+a
+
+root
+
+of
+
+unity). But then total ergodicity implies that c() = 0 for  = 1, implying  = 1,
+
+and this shows that (kn) is Wiener extremal. Note that here total ergodicity cannot be replaced by ergodicity. Indeed, the rotation on two points is ergodic, but for A
+
+consisting of one point the return times sequence (kn) = 2N is not extremal.
+
+Example (Return time sequences along polynomials). Let (X, µ, T ) be an invertible totally ergodic system, let T denote also its Koopman operator on L2(X, µ) and let
+µ(A) > 0. Take a polynomial P  Z[∑] with deg(P )  2. We show that the return
+
+WIENER'S LEMMA ALONG SUBSEQUENCES
+
+13
+
+times sequence (kn) along P corresponding to {n  N : T P (n)x  A} is ergodic and hence Wiener extremal and extremal for almost every x. (That the sequence is Wiener extremal is also for true for linear polynomials, which can be easily deduced from the previous example.)
+
+We let A,x,P (n) := |{k  n : T P (k)x  A}| and compute for   T
+
+lim
+n
+
+A,x,P (n) n
+
+=
+
+lim
+n
+
+1 n
+
+n
+(T P (k)1A)(x) = µ(A)
+
+a.e. x  X,
+
+(5)
+
+k=1
+
+where the last equality follows from a.e. convergence of polynomial averages by
+
+Bourgain [12, 13, 14], from the fact that the rational spectrum factor is characteris-
+
+tic for polynomial averages (see e.g. Einsiedler, Ward [18, Sec. 7.4]) and from total
+
+ergodicity.
+
+It is a further result of Bourgain that the limit
+
+lim
+n
+
+1 n
+
+n
+(T P (k)1A)(x)k
+
+(6)
+
+k=1
+
+exists for each   T for a.e. x  X, see [24]. Since deg(P )  2, by the spectral theorem, by the equidistribution of polynomials with at least one irrational nonconstant coefficient and by total ergodicity, the limit in (6) for almost every x  X equals µ(A) for  = 1 and 0 if  = 1. Combining this with (5) gives
+
+lim
+n
+
+1 A,x,P (n)
+
+k
+kn,T P (k)xA
+
+=
+
+lim
+n
+
+n A,x,P (n)
+
+1 n
+
+n
+(T P (k)1A)(x)k
+k=1
+
+= 1 if  = 1, 0 otherwise,
+
+for almost all x  X, meaning that (kn) is ergodic for almost all x  X.
+Example (Double return times sequences). Let (X, µ, T ) be a weakly mixing system and let A, B  X be with µ(A), µ(B) > 0. We show that the double return times sequence (kn) corresponding to {n  N : T nx  A, T 2nx  B} is for almost every x ergodic and hence Wiener extremal and extremal.
+
+By Bourgain [15] the limit
+
+lim
+n
+
+1 n
+
+n
+(T k1A)(x)(T 2k1B)(x)
+
+k=1
+
+exists almost everywhere. Moreover, for weakly mixing systems the above limit equals µ(A)µ(B) a.e., see, e.g., [21, Theorem 9.29]. By Assani, Duncan, Moore [2, Theorem 2.3] (or by a product construction), for almost every x, the limit
+
+lim
+n
+
+1 n
+
+n
+(T k1A)(x)(T 2k1B)(x)n
+
+k=1
+
+exists for each   T and the Host≠Kra factor Z2 is characteristic for such averages (meaning that only the projections of 1A and 1B onto this factor contribute to the limit). Since for weakly mixing systems all Host≠Kra factors coincide with the fixed factor (see e.g. Kra [41, Sect. 6.1,7.3)]), the above limit equals µ(A)µ(B) for  = 1 and to zero otherwise. As before, this shows that the double return times sequence is ergodic for almost every x  X
+
+14
+
+CHRISTOPHE CUNY, TANJA EISNER, AND BA¥ LINT FARKAS
+
+For more ergodic sequences see Boshernitzan, Kolesnik, Quas, Wierdl [11]. Note
+
+that since is not yet
+
+the
+
+pointwise
+
+convergence
+
+of
+
+weighted
+
+averages
+
+along
+
+primes
+
+1 N
+
+studied, the return times sequences along primes of the form {n
+
+:
+
+N n=1
+
+nT
+
+T pn x 
+
+pn
+
+A} are currently out of reach.
+
+Example (An extremal sequence which is not Wiener extremal). Consider the sequence (kn) defined by the following procedure. Take the sequence (2n)nN and for k belonging to a fixed subsequence of indices with density zero (e.g., the primes) insert 2k + 1 between 2k and 2k + 2.
+Clearly, (kn) is good with c(1) = c(-1) = 1 and c() = 0 otherwise. Moreover, for z  T
+
+lim
+N 
+
+1 N
+
+N
+
+|zkn
+
+-
+
+1|
+
+=
+
+0
+
+
+
+lim
+N 
+
+1 N
+
+N
+
+|z2n - 1| = 0  z  {1, -1},
+
+n=1
+
+n=1
+
+whereas limn |zkn - 1| = 0 is equivalent to z = 1. Thus, by Theorems 3.2 and 3.2, (kn) is extremal but not Wiener extremal. Note that an example of a Wiener extremal measure which is not Dirac is µ given by µ({1}) = µ({-1}) = 1/2.
+
+We now go back to Wiener's lemma which in particular implies that a measure
+
+µ
+
+is
+
+continuous
+
+if
+
+and
+
+only
+
+if
+
+limN 
+
+1 N
+
+N n=1
+
+|µ(n)|2
+
+=
+
+0.
+
+This motivates the
+
+following natural question concerning a characterization another kind of extremality
+
+for subsequences.
+
+Question 3.12. For which subsequences (kn) of N and which continuous measures
+
+µ on T does
+
+lim
+N 
+
+1 N
+
+N
+|µ(kn)|2
+n=1
+
+=
+
+0
+
+(7)
+
+hold? For which sequences (kn) does (7) hold for every continuous measure? For
+
+which sequences (kn) does (7) characterize continuous measures µ?
+
+Remark 3.13. Property (7) characterizes continuous measures for ergodic sequences by Proposition 2.5 (b).
+
+Note that by Theorem 2.9, for sequences which are good with at most countable spectrum, (7) holds for all finite continuous measures. The following two examples show however that even for such sequences (7) does not characterize continuous measures in general.
+
+Example. Consider (kn) with kn := 2n + 1, which is of course a good sequence with
+
+spectrum
+
+
+
+=
+
+{-1, 1}
+
+and
+
+c(-1)
+
+=
+
+-1.
+
+Let
+
+µ
+
+=
+
+1 2
+
+(1
+
++
+
+-1).
+
+Then
+
+we
+
+obtain
+
+that
+
+lim
+N 
+
+1 N
+
+N
+
+|µ(2n + 1)|2 = 0.
+
+n=1
+
+The following observation conjectures a connection between the two kinds of extremality.
+
+Remark 3.14. Consider the following assertions about a sequence (kn):
+
+(i)
+
+(kn)
+
+is
+
+Wiener
+
+extremal
+
+for
+
+discrete
+
+measures
+
+and
+
+1 N
+
+N n=1
+
+|µ(kn
+
+)|2
+
+
+
+0
+
+as
+
+N   for each continuous measure µ.
+
+(ii) (kn) is Wiener extremal.
+
+WIENER'S LEMMA ALONG SUBSEQUENCES
+
+15
+
+(iii)
+
+(kn)
+
+is
+
+Wiener
+
+extremal
+
+for
+
+discrete
+
+measures
+
+and
+
+1 N
+
+N n=1
+
+|µ(kn
+
+)|2
+
+
+
+1
+
+as
+
+N   for each continuous measure µ.
+
+(iv) (kn) is Wiener extremal for discrete measures.
+
+Then we have the implications (i)  (ii)  (iii)  (iv). Moreover, for good
+
+sequences we have also (iv)  (ii), i.e., the last three statements are equivalent.
+
+Proof. (i)  (ii) follows immediately from the decomposition into the discrete and the continuous part and the triangle inequality (note that by the Koopman≠von Neumann Lemma 2.1 we can remove the square in (i)), whereas the implications (ii) (iii)  (iv) are trivial. The last assertion is Theorem 3.2.
+
+We finally discuss connection to rigidity sequences. Recall that for   T a sequence (kn) is called a -rigidity sequence if there is a continuous probability measure µ on T with µ(kn)   as n  . Moreover, 1-rigidity sequences are called rigidity sequences. Note that, although for every   T, -rigid (along some subsequence) continuous measures are typical in the Baire category sense in all probability measures, see Nadkarni [50], to check whether a given sequence (kn) is rigid or -rigid is often a challenge. For more details on such sequences, their properties, examples and connections to ergodic and operator theory we refer to Nadkarni [50, Ch. 7], Eisner, Grivaux [23], Bergelson, del Junco, Leman¥czyk, Rosenblatt, [10], Aaronson, Hosseini, Leman¥czyk [1], Grivaux [36], Fayad, Kanigowski [27], and [20, Section 4.3].
+Theorem 2.9 (a) and Corollary 2.8 imply in particular a possibly unexpected necessary property of rigidity sequences.
+
+Proposition 3.15. (a) Suppose the sequence (kn) is such that there exists a continuous measure µ on T with
+
+lim sup
+N 
+
+1 N
+
+N
+|µ(kn)|2
+n=1
+
+>
+
+0.
+
+Then either (kn) is not good, or good with uncountable spectrum. (b) -rigidity sequences are not good.
+
+For a consequence for prime numbers, polynomials and polynomials of primes see Proposition 4.5 below.
+
+Example. The sequence (2n) is a rigidity sequence, see Eisner, Grivaux [23] and Bergelson, del Junco, Leman¥czyk, Rosenblatt [10], and, as every lacunary sequence, is not good for the mean ergodic theorem, see Rosenblatt, Wierdl [56, Section II.3]. More examples are sequences satisfying kn|kn+1 or limn kn+1/kn = , although limn kn+1/kn = 1 is possible, for details see the two above mentioned papers, [10] and [23].
+
+4. Wiener's Lemma along polynomials and primes
+In this section we consider arithmetic sequences such as values of polynomials, primes and polynomials on primes, inspired by ergodic theorems along such sequences by Bourgain, Wierdl, and Nair, see [12, 13, 14, 60, 59, 52, 51]. Note that all these sequences have density zero (if the degree of the polynomial is greater or equal to two).
+
+16
+
+CHRISTOPHE CUNY, TANJA EISNER, AND BA¥ LINT FARKAS
+
+The following lemma is classical, see Vinogradov [58], Hua [38], Rhin [54], and Rosenblatt, Wierdl [56, Section II.2]. We present here a quick way to derive it for polynomials of primes from a recent powerful result of Green and Tao [35, Prop. 10.2] on the orthogonality of the modified von Mangoldt function to nilsequences.
+
+Lemma 4.1. Let kn = P (n), n  N, or kn = P (pn), n  N, where P is an integer polynomial and pn denotes the nth prime. Then c() = 0 for every irrational   T
+(not a root of unity).
+
+Proof (for polynomials of primes). Let
+
+(n) := log n, 0,
+
+if n is prime, otherwise,
+
+let   N and let
+
+W = W :=
+
+p.
+
+p prime, p
+
+For r < W coprime to W consider the modified -function
+
+r, (n)
+
+:=
+
+(W W
+
+)
+
+(W
+
+n
+
++
+
+r),
+
+n  N,
+
+for the Euler totient function . Let now P be an integer polynomial and bn := (n)P (n). Since (P (n))nN can be represented as a Lipschitz nilsequence for a connected, simply connected Lie group, see Green, Tao, Ziegler [34, Appendix C], it follows from Green and Tao [35, Prop. 10.2], see [19, Lemma 3.2 (b), Cor. 2.2], that
+
+lim
+N 
+
+1 N
+
+N
+
+bn
+
+=
+
+lim
+
+
+1 W
+
+lim
+N 
+
+1 N
+
+N
+bW n+r
+
+n=1
+
+r<W, (r,W )=1
+
+n=1
+
+=
+
+lim
+
+
+1 (W
+
+)
+
+lim
+N 
+
+1 N
+
+N
+r,(n)P (W n+r)
+
+r<W, (r,W )=1
+
+n=1
+
+=
+
+lim
+
+
+1 (W
+
+)
+
+lim
+N 
+
+1 N
+
+N
+P (W n+r).
+
+(8)
+
+r<W, (r,W )=1
+
+n=1
+
+Since P (W ∑ +r) for 0 < r < W are again integer polynomials and  is irrational (not a root of unity), the sequences (P (W n+r))nN are all equidistributed in T, see e.g. Kuipers, Niederreiter [43, Theorem 1.3.2], and hence the right hand side of (8)
+equals zero. By a classical equality, see e.g. [19, Lemma 3.1],
+
+lim
+N 
+
+1 N
+
+N
+
+bn
+
+=
+
+lim
+N 
+
+1 N
+
+N
+
+(n)P (n)
+
+=
+
+lim
+N 
+
+1 N
+
+N
+
+P (pn) = c()
+
+n=1
+
+n=1
+
+n=1
+
+implying the assertion.
+
+Since for every P  Z[x] and every q  N, the sequence (P (n)) is q-periodic
+modulo q, the following form of the limit function c can be calculated for the above classes of arithmetic sequences. Here and later we denote e(x) := e2ix for x  R.
+
+WIENER'S LEMMA ALONG SUBSEQUENCES
+
+17
+
+∑ For (P (n))
+
+c()
+
+=
+
+ 1
+
+q
+
+q
+0,r=1
+
+e(P
+
+(r)b/q),
+
+ = e(b/q), (b, q) = 1,  irrational.
+
+(9)
+
+∑ For (P (pn)) the prime number theorem in arithmetic progressions, see
+
+e.g. Davenport [17], implies
+
+
+
+c()
+
+=
+
+
+
+1 (q)
+
+0,
+
+r{1,...,q},(r,q)=1
+
+e(P
+
+(r)b/q),
+
+ = e(b/q), (b, q) = 1,  not a root of unity.
+
+(10)
+
+For more information on the limit in (9) see Kunszenti-Kov¥acs [44], KunszentiKov¥acs, Nittka, Sauter [45].
+An immediate corollary of Lemma 4.1 together with Corollary 2.8 is the following variant of Wiener's lemma.
+
+Theorem 4.2 (Wiener's lemma along polynomials and primes). Let kn = P (n) or kn = P (pn) for n  N, where P is an integer polynomial and pn denotes the nth
+prime. Then every finite, positive measure µ on T satisfies
+
+lim
+N 
+
+1 N
+
+N
+|µ(kn)|2
+n=1
+
+=
+
+c(e(a/q))
+
+a/qQ
+
+
+
+µ({})µ({e(a/q)})
+atom
+
+(11)
+
+ µ({e(Q)})2,
+U
+
+where U is a maximal set of rationally independent atoms of µ. Moreover, the equality in the above holds if and only if c(e(a/q)) = 1 holds for
+every a, q such that 1 = e(a/q)2 for some atoms 1, 2 of µ.
+
+Remark 4.3. For example, the equality in the inequality (11) holds if µ has no atoms or just one atom 1, in which case the limit equals 0 or µ({1})2, respectively.
+
+Theorem 4.4. Let P  Z[x] be a polynomial.
+(a) The sequence (P (n)) is Wiener extremal  it is extremal  for all q  2 there is an r with P (r) = 0 mod q.
+(b) The sequence (pn) of primes is Wiener extremal and hence extremal, too. (c) The sequence (P (pn)) is Wiener extremal  it is extremal  for all q  2
+there is an r coprime to q with P (r) = 0 mod q.
+
+Proof. Assertion (b) and the equivalence of Wiener extremality with the number theoretic characterization in (a) and (c) follow directly from the formulas for the limit functions (9), (10) and Theorem 3.2.
+Since Wiener extremality implies extremality, it remains to show that in (a) and (c) extemality implies the number theoretic characterization. For (a), assume that there exists q  {2, 3, . . .} such that P (r)  qN for all r  N. Consider the measure µ := (e(1/q) + e(-1/q))/2. Then
+µ^(P (r)) = (e(P (r)/q) + e(-P (r)/q))/2 = 1 for every r,
+
+so (P (n)) is not extremal. The corresponding implication in (c) follows analogously.
+
+18
+
+CHRISTOPHE CUNY, TANJA EISNER, AND BA¥ LINT FARKAS
+
+Example. We now show that for sequences of the form kn = P (pn), where pn
+
+denotes the nth prime, there are discrete measures µ which are not Dirac with
+
+limN 
+
+1 N
+
+N n=1
+
+|µ(kn)|2
+
+=
+
+1.
+
+Indeed,
+
+let
+
+P
+
+be
+
+some
+
+integer
+
+polynomial
+
+such
+
+that
+
+there exists q  N with the property that P (r) = 0 mod q for every r  N coprime
+
+to q. Then we have in particular P (p)/q  N for every prime p and therefore
+
+c(a/q)
+
+=
+
+lim
+N 
+
+1 N
+
+N
+e(P (pn)a/q)
+n=1
+
+=
+
+1
+
+for every a  {1, . . . , q}. Thus, the limit of the Wiener averages along such (kn) is 1 for µ being discrete with aq = 1 for every atom a  T.
+By Theorem 4.4 the sequences (n2) and (p2n) are both Wiener extremal. Note, however, that (n2 + 5) is Wiener extremal, while (p2n + 5) is trivially not. More examples are listed below.
+
+In the following examples we apply the criteria from the previous theorem to various polynomials.
+
+Example. Consider the polynomial P (x) = x2 + a, a  N. Then for any a the sequence (P (n)) is extremal (for q  2 take r = 0 or r = 1 in the characterization). We claim that (P (pn)) is extremal if and only if each prime divisor of a+1 is greater than 3. If 2|a + 1, then P (pn) are all even so that the sequence cannot be extremal. If 3|a + 1, then take q = 3. P (1)  a + 1  0 mod q, and P (2)  a + 1  0 mod q. Hence (P (pn)) cannot be extremal.
+Suppose the prime divisors of a+1 are all different form 2, 3. Let q  2 be arbitrary. If q |a + 1 = P (1), then r = 1 is a good choice for the criteria in Theorem 4.4. If q|a + 1, then P (2) = 3 + a + 1, so that if q|P (2), then q|3 would follow, which is impossible.
+A concrete examples are (n2 + 4) and (p2n + 4) both being extremal, while (n2 + 2) is extremal and (p2n + 2) is not.
+Example. Consider the polynomial P (x) = xk + 2. Then for any k  N, k  1 the sequence (P (n)) is extremal. We claim that (P (pn)) is extremal if and only if k is odd. Indeed, 3|P (2) iff k is even. (For q take r = 1, unless q = 3 in which case take r = 2.)
+
+Example. Consider the polynomial P (x) = ax+b. The sequence (an+b) is extremal iff (a, b) = 1. The sequence (apn + b) is extremal iff a + b  0 mod 2 and (a, b) = 1. Indeed, that a, b are relatively prime is clearly necessary, while the choice q = 2 in Theorem 4.4 shows that the other condition needs to be fulfilled if (apn + b) is extremal. Conversely, suppose that both conditions hold, and let q  2 be arbitrary. If q |a + b, then we are done with r = 1. If q|a + b, then q is odd, i.e., (q, 2) = 1 and P (2) = 2a + b  0 mod q, because otherwise q|a and q|b, a contradiction.
+
+Finally, a direct consequence of Proposition 3.15 is the following.
+
+Proposition 4.5. (a) Let P  Z[x] be as in Theorem 4.4 (a). Then (P (n)) is not a -rigidity sequence for any   T.
+(b) (pn) is not a -rigidity sequence for any   T. (c) Let P  Z[x] be as in Theorem 4.4 (b). Then (P (pn)) is not a -rigidity
+sequence for any   T.
+
+WIENER'S LEMMA ALONG SUBSEQUENCES
+
+19
+
+More precisely, for (kn) any of the preceding sequences and for every continuous measure µ on T we have
+
+lim
+N 
+
+1 N
+
+N
+
+|µ(kn)|2 = 0.
+
+(12)
+
+n=1
+
+Note that it has been observed by Eisner, Grivaux [23] and Bergelson, del Junco, Leman¥czyk, Rosenblatt [10] that (P (n)) and (pn) are not rigidity sequences, but for (P (pn)) this property seems to be new.
+
+Example. Consider the sequence (pn) of primes. We have seen that (pn) is good
+
+with
+
+
+
+e(Q)
+
+and
+
+c(-1)
+
+=
+
+-1.
+
+Let
+
+µ
+
+=
+
+1 2
+
+(1
+
++ -1).
+
+Then
+
+we
+
+have
+
+c(e(b/q))
+
+µ({e(b/q)a})µ({a})
+
+b/qQ
+
+a atom
+
+= µ({1})2 + µ({-1})2 + 2 Re c(-1)µ({1})µ({-1}) = (1/2 - 1/2)2 = 0.
+
+So µ is a discrete measure with
+
+lim
+N 
+
+1 N
+
+N
+|µ(pn)|2
+n=1
+
+=
+
+0.
+
+This shows that for the sequence (kn) = (pn) the validity of (12) for a probability measure µ does not imply that µ is continuous.
+
+5. Orbits of operators and operator semigroups
+
+In this section we study orbits of power bounded linear operators along subsequences and obtain generalizations and extensions of some results of Goldstein and Nagy.
+
+Theorem 5.1. Let (kn) be a good subsequence in N with at most countable spectrum, and let T  L(H) be a linear contraction on the Hilbert space H. Then for any x, y  H
+
+lim
+
+1
+
+N
+|(T kn x|y)|2 =
+
+N  N
+
+c() (Pax|y)(Pay|x),
+
+n=1
+
+T
+
+aT
+
+where P denotes the orthogonal projection onto ker( - T ).
+
+Note that by assumption, the summands above are non-zero for at most countably many  and a.
+
+Let T be a linear contraction on a Hilbert space H. We decompose H orthogonally as H = Huni  Hcnu into unitary and completely non-unitary subspaces both of them being T , T -invariant, see Sz.-Nagy, Foia∏s [57], or [21, App. D]. The corresponding orthogonal projections are denoted by Puni and Pcnu, respectively. By a result of Foguel [28] the operator T is weakly stable on Hcnu, i.e., T n  0 in the weak operator topology (see also [21, App. D] and [20, Section II.3.2]).
+
+Proof of Theorem 5.1. We apply the spectral theorem on Huni and obtain the scalar spectral measures µx,y on T:
+
+(T kx|y) = zkdµx,y = µx,y(k) for all k  Z, x, y  Huni.
+T
+
+20
+
+CHRISTOPHE CUNY, TANJA EISNER, AND BA¥ LINT FARKAS
+
+We have
+
+(T kx|y) = (T kPunix|Puniy) + (T k(I - Puni)x|(I - Puni)y).
+
+This implies
+
+N
+
+N
+
+|(T kn x|y)|2 = |(T kn Punix|Puniy)|2
+
+n=1
+
+n=1
+
+N
++ |(T kn (I - Puni)x|(I - Puni)y)|2
+
+n=1
+
+N
++ 2 Re (T kn Punix|Puniy)((I - Puni)y|T kn (I - Puni)x).
+
+n=1
+
+Since for any w  Hcnu we have T kw  0 weakly as k  , we conclude
+
+lim
+N 
+
+1 N
+
+N
+
+|(T
+
+kn x|y)|2
+
+=
+
+lim
+N 
+
+1 N
+
+N
+
+|(T kn Punix|Puniy)|2
+
+n=1
+
+n=1
+
+1
+
++
+
+lim
+N 
+
+N
+
+N
+
+|(T kn (I - Puni)x|(I - Puni)y)|2
+
+n=1
+
++
+
+lim
+N 
+
+1 N
+
+2
+
+Re
+
+N
+
+(T kn Punix|Puniy)((I - Puni)y|T kn (I - Puni)x)
+
+n=1
+
+=
+
+lim
+N 
+
+1 N
+
+N
+
+|(T kn Punix|Puniy)|2
+
+n=1
+
+= lim 1 N  N
+
+N
+
+|µPunix,Puniy (kn)|2
+
+n=1
+
+= c()
+
+µPunix,Puniy ({a})µPuniy,Punix({a})
+
+T
+
+a atom
+
+= c() (Pax|y)(Pay|x),
+
+T
+
+aT
+
+and that was to be proven.
+
+Next, we need the following easy lemma.
+
+Lemma 5.2. Let T be a contraction on a Hilbert space H, let x  H and (kn) be a subsequence in N such that
+lim |(T kn x|x)| = x 2.
+n
+Then there is some sequence (n) in T with limn nT knx = x. In particular, one has
+lim |(T kn x|y)| = |(x|y)| for all y  H.
+n
+Proof. For every n  N, let n  T be such that n(T kn x|x) = |(T knx|x)|. Since T is a contraction, we have
+0  nT knx - x 2  2 x 2 - 2 Re(n(T kn x|x)) = 2 x 2 - 2|(T knx|x)|
+
+WIENER'S LEMMA ALONG SUBSEQUENCES
+
+21
+
+and the right hand side converges to zero by assumption. Thus
+
+lim
+n
+
+nT kn x - x
+
+=0
+
+holds, and the assertion follows.
+
+The following proposition characterizes (Wiener) extremal sequences for discrete measures via extremal properties of Hilbert space contractions or of general power bounded Banach space operators with relatively compact orbits.
+
+Remark 5.3. Let E be a Banach space and T  L(E) be a power bounded operator on E. Recall that the set of all vectors with relatively compact orbits include eigenvectors and is a closed linear subspace of E, see, e.g. Engel, Nagel [26, Proposition A.4] or [21, Ch. 16]. Thus every vector from the Kronecker (or reversible)
+subspace Er := lin{x  E : T x = x for some   T} has relatively compact orbits. On the other hand, every x with relatively compact orbit can be decomposed as x = xr + xs, where xr  Er and xs is strongly stable, i.e., satisfies limn T nxs = 0, see e.g., [20, Thm. I.1.16]. (This decomposition is usually called the Jacobs≠de Leeuw≠Glicksberg decomposition.)
+
+Proposition 5.4. Let (kn) be a subsequence in N.
+(a) The following assertions are equivalent: (i) (kn) is Wiener extremal for discrete measures. (ii) For every Hilbert space H, every contraction T  L(H) and every x  H \ {0} with relatively compact orbit
+
+lim
+
+1
+
+N
+|(T kn x|x)|2 =
+
+x4
+
+N  N
+
+n=1
+
+(13)
+
+implies that x is an eigenvector to a unimodular eigenvalue. (iii) For every power bounded operator T on a Banach space E and every
+x  E \ {0} with relatively compact orbit,
+
+lim
+N 
+
+1 N
+
+N
+
+| T kn x, x |2 = | x, x |2
+
+for all x  E
+
+n=1
+
+(14)
+
+implies that x is an eigenvector to a unimodular eigenvalue. (b) The analogous equivalence holds for extremal sequences for discrete measures
+when (13) is replaced by
+
+and (14) is replaced by
+
+lim |(T kn x|x)| = x 2
+n
+
+lim | T knx, x | = | x, x | for all x  E.
+n
+Proof. (a) To show (ii)  (i), let µ be a discrete probability measure with
+
+lim
+N 
+
+1 N
+
+N
+|µ^(kn)|2
+n=1
+
+=
+
+1.
+
+22
+
+CHRISTOPHE CUNY, TANJA EISNER, AND BA¥ LINT FARKAS
+
+Consider the Hilbert space L2(T, µ) and the multiplication operator T on it given by (T f )(z) = zf (z). The assumption on µ implies
+
+lim
+N 
+
+1 N
+
+N
+
+|(T
+
+kn 1|1)|2
+
+=
+
+lim
+N 
+
+1 N
+
+N
+
+|µ^(kn)|2 = 1 =
+
+1 4.
+
+n=1
+
+n=1
+
+Moreover, by 1 = a atom 1{a}, T 1{a} = a1{a} and by Remark 5.3 1 has relatively compact orbits.
+By (ii), there exists   T with T 1 = 1, hence a atom a1{a} = a atom 1{a}. This implies 1 = 1{}, i.e., µ is Dirac.
+
+(i)  (iii): We may assume without loss of generality that E is spanned by the orbit of x under T . By Remark 5.3, T has relatively compact orbits on E.
+Let   T. Since T has relatively compact orbits as well, the mean ergodic projections
+
+P
+
+:=
+
+lim
+N 
+
+1 N
+
+N
+
+nT n
+
+n=1
+
+onto ker( - T ) exist, where the limit is understood strongly, see, e.g., [20, Section I.2.1] or [21, Ch. 16]. Note that these projections are bounded and commute with T.
+By Remark 5.3 (see [20, Theorem I.1.20], or [21, Ch. 16] for details) E can be decomposed into the reversible part Er and the stable part Es, both being T -invariant, where
+
+Er = lin{y  E : T y = y for some   T},
+
+Es
+
+=
+
+{y
+
+
+
+E
+
+:
+
+lim
+n
+
+T ny
+
+= 0}.
+
+Denote by Pr and Ps the corresponding projections (which commute with T ) and decompose x = xr + xs with xr  Er and xs  Es. We have for every x  E
+
+1 N
+
+N
+
+|
+
+T kn xs, x
+
+|2
+
+=
+
+1 N
+
+N
+
+|
+
+PsT kn x, x
+
+|2
+
+=
+
+1 N
+
+N
+| T kn x, Psx |2
+
+n=1
+
+n=1
+
+n=1
+
+ | x, Psx |2 = | xs, x |2
+
+as N  , which together with the strong stability of T on Es implies xs = 0. So that x = xr  Er.
+Next we argue similarly to the proof of Lemma 6 in Goldstein, Nagy [33]. Let
+, µ  T be such that Px = 0 and Pµx = 0. By the Hahn≠Banach theorem there exists z  E such that Px, z = 0 and Px - Pµx, z = 0, i.e., Px, z = Pµx, z = 0. Observe
+
+1 N
+
+N
+
+|nk Px, z
+
++ µnk
+
+Pµx, z
+
+|2
+
+=
+
+1 N
+
+N
+
+| T nk Px + T nk Pµx, z |2
+
+n=1
+
+n=1
+
+=
+
+1 N
+
+N
+
+| T nk x, (P + Pµ )z |2
+
+n=1
+
+ | x, (P + Pµ )z |2 = | Px, z + Pµx, z |2
+
+WIENER'S LEMMA ALONG SUBSEQUENCES
+
+23
+
+or, equivalently,
+
+1 N
+
+N
+
+|(µ)kn + 1|2  4
+
+n=1
+
+as N  . By Theorem 3.2 we have  = µ, and therefore x is an eigenvector to a
+
+unimodular eigenvalue.
+
+(iii)  (ii) follows from Lemma 5.2.
+
+The proof of (b) is, with obvious modifications, the same as for part (a). In particular, one has to apply Theorem 3.3 in place of Theorem 3.2.
+
+For certain sequences including the primes and sequences with positive upper density we have the following extension to power bounded operators on Banach spaces.
+
+Theorem 5.5. Let (kn) be extremal for discrete measures with lim infn(kn+1 - kn) < . Then for every bounded operator T on a Banach space E and every
+
+x  E \ {0},
+
+lim | T knx, x | = | x, x | for all x  E
+
+(15)
+
+n
+
+implies that x is an eigenvector with unimodular eigenvalue.
+
+Proof. Let E, T, x be as in the statement. By assumption there exists an integer
+d  N and a subsequence (n) such that kn+1 -kn = d for all   N. Applying (15) with (T )dx, we infer that for every x  E, limn | T kn+dx, x | = | T dx, x |. By the property of (n) and by the assumption we deduce | T dx, x | = | x, x | for every x  E. By the Hahn≠Banach theorem, there exists   C, such that T dx = x. Moreover, we must have || = 1. This implies that T is power bounded on the invariant subspace E0 := lin{T jx : j = 0, . . . , d-1} and that x has relatively compact orbit. Proposition 5.4 (b) finishes the proof.
+
+Corollary 5.6. Denote by pn the nth prime. For every bounded operator T on a Banach space E and every x  E \ {0},
+lim | T pn x, x | = | x, x | f or every x  E
+n
+implies that x is an eigenvector with unimodular eigenvalue. As a consequence, limn T pn = I in the weak operator topology implies T = I.
+Proof. By Theorem 4.4 the sequence (pn) is extremal, and by the celebrated result of Zhang [63] (pn) has bounded gaps. So the previous theorem applies.
+
+We now characterize Wiener extremal sequences (kn) via extremal properties of powers T kn of Hilbert space contractions T .
+
+Theorem 5.7. For a subsequence (kn) of N the following are equivalent:
+
+(i) (kn) is Wiener extremal. (ii) For every Hilbert space H, every linear contraction T on H and every x 
+
+H \ {0}, if
+
+lim
+N 
+
+1 N
+
+N
+
+|(T knx|x)|2 =
+
+x 4,
+
+n=1
+
+(16)
+
+then x is an eigenvector of T with unimodular eigenvalue.
+
+24
+
+CHRISTOPHE CUNY, TANJA EISNER, AND BA¥ LINT FARKAS
+
+Proof. (ii)  (i): Let µ be a probability measure and consider the Hilbert space
+
+L2(T, µ) and the unitary operator T defined by (T f )(z) = zf (z). Then µ(n) =
+
+(T n1|1).
+
+If
+
+1 N
+
+N n=1
+
+|µ(kn
+
+)|2
+
+=
+
+1
+
+=
+
+1 22, then by the assumption 1 is an eigen-
+
+function of T to some unimodular eigenvalue , meaning that µ = .
+
+(i)  (ii): We can assume x = 1 and decompose H = Hcnu  Huni. We first show that x  Huni which is, with a similar argument, due to Foguel [28, Theorem 1.3]. Observe
+
+|(T nx|x)|2 = |(T nPcnux|x)|2 + |(T nPunix|x)|2 + 2 Re(T nPcnux|x)(x|T nPunix).
+
+Here the first and the last terms converge to 0 as n  , because T is weakly stable on Hcnu. From this we obtain
+
+1
+
+=
+
+lim
+N 
+
+1 N
+
+N
+
+|(T knx|x)|2
+
+=
+
+lim
+N 
+
+1 N
+
+N
+
+|(T kn Punix|Punix)|2.
+
+n=1
+
+n=1
+
+In particular Punix = x = 1, implying x = Punix. So we can assume that
+
+H = Huni, and consider the spectral measure µx for the unitary operator T . Then
+
+µx(kn)
+
+=
+
+(T knx|x),
+
+and
+
+1 N
+
+N n=1
+
+|µ(kn
+
+)|2
+
+
+
+1.
+
+By the assumption that (kn) is
+
+Wiener extremal, we obtain that µx is a Dirac measure, meaning that x is an
+
+eigenvector to an unimodular eigenvalue.
+
+Proposition 5.8. If (kn) has positive upper density, then the assertions in Theorem 5.7 are equivalent to
+
+(iii) For every Banach space E, every power bounded operator T  L(E) and every x  E \ {0} with relatively weakly compact orbit, if
+
+lim
+
+1
+
+N
+| T kn x, x |2 = | x, x |2
+
+for every x  E,
+
+(17)
+
+N  N
+
+n=1
+
+then x is an eigenvector of T with unimodular eigenvalue.
+
+Proof. Indeed, (iii)(ii) follows from Lemma 5.2. To show the implication (i)(iii) we assume without loss of generality that T is a contraction (by taking an equivalent norm). Let (kn) be Wiener extremal and E, T and x be as in (iii). We can also assume that E is spanned by the orbit of x under T by restriction to this subspace if necessary. By e.g. Engel, Nagel [26, Proposition A.4] or [21, Sec. 16.2], every orbit of T on E is relatively weakly compact and therefore T admits the Jacobs≠de Leeuw≠Glicksberg decomposition E = Er  Es, where
+
+Er = lin{y  E : T y = y for some   T},
+
+Es
+
+=
+
+{y
+
+
+
+E
+
+:
+
+lim T mn y
+n
+
+=
+
+0
+
+weakly
+
+for
+
+some
+
+(mn)
+
+with
+
+density
+
+1},
+
+see e.g. [20, pp. 9≠11] or [21, Ch. 16] for details. Let Q be the corresponding projection onto Er, which commutes with T . Applying (17) to Qx instead of x we see that Qx satisfies (17) as well. Since the orbit of Qx is relatively compact and
+Wiener extremality implies Wiener extremality for discrete measures, T Qx = Qx
+for some   T by Proposition 5.4. It remains to show that Qx = x.
+
+Let xs := x-Qx  Es and let (mn) be the sequence of density 1 with limn T mnxs = 0 weakly. Applying (17) to (I - Q)x instead of x we see that xs also satisfies (17). By Lemma 2.1 (b) and Remark 3.8, for a fixed x  E with x = 1 and xs, x = xs there exists a subsequence (kn ) of (kn) with positive upper density
+
+WIENER'S LEMMA ALONG SUBSEQUENCES
+
+25
+
+such that limn | T kn xs, x | = | xs, x |. Let (n) denote the intersection of (kn ) with (mn) (which has positive upper density). We have
+
+0
+
+=
+
+lim |
+n
+
+T n xs, x
+
+|
+
+=
+
+|
+
+xs, x
+
+|
+
+=
+
+xs .
+
+The proof is complete.
+
+Analogously we obtain the following characterization of extremal sequences, where we restate Theorem 5.5 for the sake of completeness.
+
+Theorem 5.9. For a subsequence (kn) of N the following are equivalent: (i) (kn) is extremal. (ii) For every Hilbert space H, for every T linear contraction on H, and for every x  H \ {0}, if lim |(T kn x|x)| = x 2,
+n
+then x is an eigenvector of T with unimodular eigenvalue.
+Moreover, if (kn) satisfies lim infn(kn+1 -kn) <  (for example, has positive upper density), then the above are equivalent to:
+(iii) For every bounded operator T on a Banach space E and every x  E \ {0},
+lim | T kn x, x | = | x, x | for every x  E
+n
+implies that x is an eigenvector of T with unimodular eigenvalue.
+
+The implication (i) (iii) of Theorem 5.9 extends Theorem 1.4 by Goldstein, Nagy to subsequences.
+We finally provide a characterization of identity operators in terms of convergence of T nk to identity in the spirit of Gelfand's T = I Theorem, see e.g., [26, Theorem B.17].
+
+Theorem 5.10. Let (kn) be a subsequence of N.
+(a) Consider the following assertions: (i) (kn) is extremal. (ii) Every Hilbert space contraction T with
+
+lim T kn = I
+n
+
+(18)
+
+in the weak operator topology is the identity I itself.
+
+Then (i)(ii); and (i)(ii) if (kn) is good. Moreover, one can replace "Hilbert space contraction T " by "bounded operator T on a Banach space" whenever
+
+(kn) satisfies lim infn(kn+1 - kn) < . (b) The analogous statement holds when in (a) one replaces "extremal" by "Wiener
+
+extremal" in condition (i), while in (ii) (18) is replaced by
+
+D- lim T kn = I.
+n
+Moreover, one can replace "Hilbert space contraction T " by "Banach space operator T with weakly relatively compact orbits" whenever (kn) has positive upper density.
+
+Proof. (a) (i)(ii): By Theorem 5.9 any x  E \ {0} is an eigenvector of T for some eigenvalue   T. So that kn  1 as n  , but then by Theorem 3.3  = 1
+follows.
+
+26
+
+CHRISTOPHE CUNY, TANJA EISNER, AND BA¥ LINT FARKAS
+
+(ii)(i): Assume that (kn) is good. If (kn) is not extremal, then by Theorem 3.3 there is   T with  = 1 with kn  1 as n  . The diagonal operator T := diag(1, ) on E := C2 provides a counterexample to (ii).
+The proof of (b) is analogous, where one uses Theorem 5.7 and 3.2 in place of Theorems 5.9 and 3.3, respectively, as well as Proposition 5.8.
+
+For examples of sequences for which the equivalences in Theorems 5.7, 5.9 and 5.10 hold see Remarks 3.4, 3.8 and Theorem 4.4.
+The following result shows Wiener extremality of polynomial sequences for power bounded operators on Hilbert spaces.
+
+Proposition 5.11. Let P  Z[∑] be with P (N0)  N0 such that (P (n)) is extremal, i.e., satisfies the equivalent conditions in Theorem 4.4 (a). Let further H be a Hilbert space and T  L(H) be a power bounded operator on H. Then
+
+D- lim T P (n)x = x weakly = x  Fix(T ).
+n
+In particular, D- limn T P (n) = I in the weak operator topology implies T = I.
+
+Proof. By ter Elst, Mu®ller [25, Theorem 2.4],
+
+lim
+N 
+
+1 N
+
+N
+T P (n)x
+n=1
+
+=
+
+0
+
+whenever x  Hrat, where Hrat is the closed linear span of eigenvectors of T corresponding to rational   T. Thus by assumption we have x  Hrat. Applying the projection Pker(-T ) to the equality D- limn T P (n)x = x, we see that Pker(-T )x = 0 for every  = 1 by Theorem 4.4(a), proving x  Fix(T ).
+
+6. The continuous parameter case
+
+In this section we investigate finite Borel measures on R, the validity of the corresponding version of Wiener's lemma for eventually monotone functions and subsequences, extremal functions and sequences, and some implications for orbits of C0-semigroups on Banach spaces. Many proofs go analogously to the case of T and thus will be omitted. A substantial difference between the discrete and the continuous parameter case is discussed in Subsection 6.4 below.
+In the following, f : [0, )  R will be a measurable, locally integrable and eventually monotone function with lim f (t) = ±.
+t
+
+6.1. General results and extremal functions. We call f good if the limit
+
+c()
+
+:=
+
+lim
+ 
+
+1 
+
+
+e(f (t))dt
+0
+
+exists for every   R. We further call f ergodic if it is good with c = 1{0}. Note
+
+that c satisfies c(0) = 1, c(-) = c() for all   R, and is multiplicative on the
+
+subgroup { : |c()| = 1} of R. These assertions can be proved analogously to
+
+Remark 2.3. For a good function f we call the set  := { : c() = 0} its spectrum.
+
+It
+
+is
+
+not
+
+true
+
+in
+
+general
+
+that
+
+for
+
+f
+
+as
+
+above,
+
+lim 
+
+1 
+
+ 0
+
+e(f (t))dt
+
+=
+
+0
+
+for
+
+Lebesgue-a.e.   R (take for instance f = log). However, this is the case if we
+
+assume moreover f to be good. In particular, we have an analogue of Proposition
+
+2.4 for good functions.
+
+WIENER'S LEMMA ALONG SUBSEQUENCES
+
+27
+
+Proposition 6.1. Let f be good. Then c vanishes almost everywhere with respect to the Lebesgue measure m. Moreover, there exists   R such that {  R : |c()| = 1} = Z.
+
+Proof. Let   L1(m). Then,   ^() = R e(t)(t)dt  C0(R). Hence, by dominated convergence,
+
+c(t)(t)dt =
+R
+
+R
+
+lim
+ 
+
+1 
+
+
+e(tf ())(t)d
+0
+
+dt
+
+=
+
+lim
+ 
+
+1 
+
+
+^(f ())d = 0.
+0
+
+Since the latter holds for every   L1(m), c must vanish m-almost everywhere.
+
+The second statement may be proved as Proposition 2.4.
+
+As in the discrete case, we have the following abstract version of Wiener's lemma along functions.
+
+Proposition 6.2. (Wiener's lemma along functions, R-version) Let f be good.
+
+(a) For every complex Borel measure µ on R
+
+lim
+ 
+
+1 
+
+
+|µ^(f (t))|2dt =
+0
+
+c( - )d(µ ◊ µ)(, ).
+R2
+
+(b) The function f is ergodic if and only if
+
+lim 1
+
+
+|µ^(f (t))|2dt =
+
+|µ({a})|2
+
+   0
+
+a atom
+
+holds for every complex Borel measure µ on R. (c) For an ergodic function f and a Borel probability measure µ on R the limit
+above is 1 if and only if µ is a Dirac measure.
+
+We deduce the following analogue of Corollary 2.8.
+
+Corollary 6.3. Let f be good. For a probability measure µ on R
+
+lim
+ 
+
+1 
+
+
+|µ^(f (t))|2dt = 1
+0
+
+holds if and only if µ is discrete with the property
+
+c(a - b) = 1 for all atoms a, b.
+
+(19)
+
+In this case, there exists ,   R such that µ is supported on Z + .
+
+For A  R, denote by A the additive subgroup generated by A. We call 1, 2  R A-dependent if their cosets coincide: 1 + A = 2 + A .
+
+Theorem 6.4. For a good function f with at most countable spectrum  the following assertions hold:
+
+(a) For every complex Borel measure µ on R
+
+lim
+ 
+
+1 
+
+
+|µ^(f (t))|2dt = c()
+
+µ({a - })µ({a}).
+
+0
+
+
+
+a atom
+
+In particular, for every continuous complex Borel measure µ on R
+
+lim
+ 
+
+1 
+
+
+|µ^(f (t))|2dt = 0.
+0
+
+28
+
+CHRISTOPHE CUNY, TANJA EISNER, AND BA¥ LINT FARKAS
+
+(b) For every Borel probability measure µ on R
+
+lim
+ 
+
+1 
+
+
+|µ^(f (t))|2dt 
+
+µ(a +  )2,
+
+0
+
+aU
+
+(20)
+
+where U is a maximal set of -independent atoms. The equality in (20) holds if and only if µ satisfies (19) (but is not necessarily discrete).
+
+With
+
+the
+
+continuous
+
+notion
+
+of
+
+density
+
+defined
+
+by
+
+d(A)
+
+:=
+
+limt
+
+m(A[0,t]) t
+
+(m
+
+the Lebesgue measure) and a continuous version of the Koopman≠von Neumann
+
+lemma, see, e.g., [20, Lemma III.5.2], one defines extremal and Wiener extremal
+
+functions analogously to Definition 3.1 using the Fourier transform of (finite, Borel)
+
+measures on R. Moreover, one has the analogous characterization of such functions
+
+as in Section 3, where (iii) in Theorem 3.3 (and Theorem 3.2, respectively) is
+
+replaced by:
+
+e(f (t))  1 (in density) implies  = 0.
+
+6.2. Orbits of C0-semigroups. We now consider orbits of strongly continuous (C0-)semigroups on Banach spaces. For a thorough introduction to the theory of C0-semigroups see, e.g., Engel, Nagel [26]. The following result is a time continuous analogue of Theorem 5.1.
+
+Theorem 6.5. Let f be good with at most countable spectrum, and let (T (t))t0 be a C0-semigroup of contractions with generator A on a Hilbert space H. Then for any x, y  H
+
+lim
+ 
+
+1 
+
+
+
+|(T (f (t))x|y)|2dt = c() (Pa-x|y)(Pay|x) ,
+
+0
+
+R
+
+aR
+
+where P denotes the orthogonal projection onto
+
+ker(i - A) = ker(e(t) - T (t)).
+t0
+
+Also Lemma 5.2, Proposition 5.4 and Theorems 5.7, 5.9 and 5.10 transfer to this situation with the natural and obvious changes. In particular, unimodular
+eigenvalues of the operator T should be replaced by imaginary eigenvalues a  iR of the generator A (which correspond to unimodular eigenvalues eta of each T (t)). We refer, e.g., to [20] for the continuous parameter version of the tools needed, such
+as the decomposition into a unitary and a completely non-unitar part, the Jacobs≠
+de Leeuw≠Glicksberg decomposition for semigroups with relatively compact orbits, etc. Furthermore, we refer to Mustafayev [49, p. 317] for an argument showing the strong continuity of the lifted semigroup (T~(t))t0 for the proof of the continuous analogue of (ii)(iii) in Theorem 5.7.
+
+6.3. Subsequences. Let now (kn) be an eventually strictly monotone sequence in R with limn kn = ±. Consider the function f : [0, )  R which is constant kn on the interval [n - 1, n) for n = 1, 2, . . . and is otherwise 0. We see that
+
+1 N
+
+N 0
+
+e(f (t))dt
+
+=
+
+1 N
+
+N
+e(kn),
+n=1
+
+1 N
+
+N 0
+
+|µ^(f (t))|2dt
+
+=
+
+1 N
+
+N
+|µ^(kn)|2,
+n=1
+
+WIENER'S LEMMA ALONG SUBSEQUENCES
+
+29
+
+thus we are in the setting of subsequences as before, with the difference that the subsequences are now real. We call a subsequence (kn) in R good if the corresponding f is good, i.e., the limit
+
+c()
+
+:=
+
+lim
+N 
+
+1 N
+
+N
+
+e(kn)
+
+n=1
+
+exists for every   R. We further call (kn) ergodic if it is good with c = 1{0}. For subsequences in N these notions coincide with the ones in Section 2. Moreover, the
+
+spectrum of (kn) defined as {  R : c() = 0} coincides with the spectrum of the corresponding function f .
+Analogously, we define R-extremal and R-Wiener extremal sequences using ex-
+
+tremality or Wiener extremality of f , respectively. Thus (kn) is R-extremal or R-Wiener extremal if and only if it has the corresponding properties from Definition 3.1.
+
+As for functions, the results of Sections 2, 3 and 5 transfer verbatim up to natural
+
+and obvious changes. For example, as in the discrete case, we have the following
+
+abstract Wiener lemma along subsequences.
+
+Proposition 6.6 (Wiener's lemma along subsequences, R-version). Let (kn) be a good sequence in R.
+
+(a) For every complex Borel measure µ on R
+
+lim
+N 
+
+1 N
+
+N
+|µ^(kn)|2
+n=1
+
+=
+
+c(t - s)d(µ ◊ µ)(t, s).
+R2
+
+(b) The sequence (kn) is ergodic if and only if
+
+lim
+N 
+
+1 N
+
+N
+
+|µ^(kn)|2 =
+
+|µ({a})|2
+
+n=1
+
+a atom
+
+holds for every complex Borel measure µ on R.
+
+(c) For an ergodic sequence (kn) and a Borel probability measure µ on R the limit above is 1 if and only if µ is a Dirac measure.
+
+6.4. Arithmetic sequences. In this subsection we study examples of R-extremal and R-Wiener extremal sequences. The situation here is very different from the time discrete case.
+We begin with the following observation.
+
+Example (Sequences from a copy of Z). Assume that there is a > 0 such that
+
+(kn)  aZ. Then (kn) is not R-extremal and hence not R-Wiener extremal even
+
+for
+
+discrete
+
+measures.
+
+Indeed,
+
+consider
+
+µ
+
+:=
+
+1 2
+
+(1/a
+
++
+
+-1/a).
+
+Then
+
+µ
+
+is
+
+not
+
+Dirac
+
+with
+
+µ^(kn) =
+
+R
+
+e(kn)dµ()
+
+=
+
+e(kn/a) + e(-kn/a) 2
+
+=
+
+1
+
+for all n  N.
+
+More generally, any measure  in conv{k/a : k  Z} provides a similar example.
+
+As a corollary, unlike the discrete case, polynomials with rationally dependent
+coefficients, primes or such polynomials of primes, though being good with count-
+able spectrum, are not R-extremal and hence not R-Wiener extremal. Note that for such sequences (kn) the periodic unitary group of translations on L2([0, a]) satisfies
+
+30
+
+CHRISTOPHE CUNY, TANJA EISNER, AND BA¥ LINT FARKAS
+
+T (an) = I for every n  Z and thus presents a counterexample to the continuous
+
+analogues of (ii) and (iii) in Proposition 5.4, Theorems 5.7, 5.9 and 5.10 and 1)≠4)
+
+from the introduction.
+
+On the other hand, polynomials with rationally dependent non-constant coeffi-
+
+cients and rationally independent constant term are R-Wiener extremal and hence
+
+R-extremal. Indeed, without loss of generality let kn = P (n) + b for a polynomial
+
+P with coefficients from aZ and b being rationally independent from a. Since the
+
+spectrum of (kn) is countable, it suffices to show that c() = 1 implies  = 0 by a
+
+continuous analogue of Theorem 3.2. As in Section 4 one can prove that
+
+c()
+
+=
+
+e(b)
+
+lim
+N 
+
+1 N
+
+N
+
+e
+
+n=1
+
+P
+
+(n) a
+
+a
+
+=
+
+  
+
+1 q
+
+q r=1
+
+e(b)e( P
+
+(r)d aq
+
+),
+
+0,
+
+if
+
+a
+
+=
+
+d q
+
+
+
+Q,
+
+if a / Q.
+
+So that c() = 1 implies a = d/q  Q for some d  Z, q  N and (b + P (r))d  aZ for all r  {1, . . . , q}. Since a, b are rationally independent, d =  = 0. Analogously, for such polynomials P the sequence (P (pn)) (pn denoting the nth prime) is RWiener extremal and hence R-extremal, too.
+Consider finally P  R[∑] with rationally independent non-constant coefficients. Then for kn := P (n), n  N, we have by Weyl's equidistribution theorem
+c() = 0 for all  = 0,
+i.e., (P (n)) is ergodic. Thus by Proposition 6.6 (c) (P (n)) is R-Wiener extremal and hence R-extremal. Moreover, a suitable modification of Lemma 4.1 using Weyl's equidistribution theorem for polynomials (and the fact that the product of finitely many nilsequences is again a nilsequence) shows that for such polynomials the sequence (P (pn)) is ergodic, and hence R-Wiener extremal.
+
+6.5. Orbits of C0-semigroups revisited. We thus have the following continuous parameter versions of the results from the introduction being the generalizations of the respective results of Goldstein [31] and Goldstein, Nagy [33]. (For the Jacobs≠de Leeuw≠Glicksberg decomposition for C0-semigroups with relatively compact orbits see, e.g., [20, Theorem I.1.20].)
+
+Theorem 6.7. Let (kn) be of the form (P (n)) or (P (pn)), where P  R[∑] has either rationally independent non-constant coefficients, or rationally dependent nonconstant coefficients which are rationally independent from the constant coefficient, and we suppose that the leading coefficient of P is positive.
+(a) Let (T (t))t0 be a C0-semigroup of contractions with generator A on a Hilbert space H. Then for any x, y  H
+
+lim
+N 
+
+1 N
+
+N
+|(T (kn)x|y)|2
+n=1
+
+=
+
+|(Pax|y)|2,
+aR
+
+where Pa denotes the orthogonal projection onto ker(a - T ). Moreover,
+
+lim
+N 
+
+1 N
+
+N
+
+|(T (kn)x|x)|2 =
+
+x4
+
+n=1
+
+for x = 0 implies that x is an eigenvector of A with imaginary eigenvalue.
+
+WIENER'S LEMMA ALONG SUBSEQUENCES
+
+31
+
+(b) Let E be a Banach space and (T (t))t0 be a bounded C0-semigroup on E with generator A. Then
+
+lim
+N 
+
+1 N
+
+N
+
+| T (kn)x, x |2 = | x, x |2
+
+for every x  E
+
+n=1
+
+for x  E \ {0} with relatively compact orbit implies that x is an eigenvector of A with imaginary eigenvalue.
+
+For example, (a) and (b) in Theorem 6.7 fail for (n2) or (pn) but hold for (n2 + ) or (pn + 2).
+We finish with the following extremality property of primes being a continuous analogue of Corollary 5.6, with analogous proof.
+
+Theorem 6.8. Let a > 0 and b  R be rationally independent. Then for every C0semigroup (T (t))t0 on a Banach space E with generator A and every x  E \ {0},
+
+lim |
+n
+
+T (apn
+
++ b)x, x
+
+|
+
+=
+
+|
+
+x, x
+
+|
+
+f or every x  E
+
+implies that x is an eigenvector of A with imaginary eigenvalue. As a consequence, limn T (apn + b) = I in the weak operator topology implies T (t) = I for every t  0.
+
+References
+[1] J. Aaronson, M. Hosseini, and M. Leman¥czyk, IP-rigidity and eigenvalue groups, Ergodic Theory Dynam. Systems 34 (2014), no. 4, 1057≠1076.
+[2] I. Assani, D. Duncan, R. Moore, Pointwise characteristic factors for WienerWintner double recurrence theorem, Ergodic Theory Dynam. Systems 36 (2016), no. 4, 1037≠1066.
+[3] I. Assani and K. Presser, A survey of the return times theorem, Ergodic theory and dynamical systems, De Gruyter Proc. Math., De Gruyter, Berlin, 2014, pp. 19≠58.
+[4] J.-B. Baillon and S. Guerre-Delabri`ere, Optimal properties of contraction semigroups in Banach spaces, Semigroup Forum 50 (1995), no. 2, 247≠250.
+[5] M. E. Ballotti and J. A. Goldstein, Wiener's theorem and semigroups of operators, Infinite-dimensional systems (Retzhof, 1983), Lecture Notes in Math., vol. 1076, Springer, Berlin, 1984, pp. 16≠22.
+[6] J. R. Baxter and J. H. Olsen, Weighted and subsequential ergodic theorems, Canad. J. Math. 35 (1983), no. 1, 145≠166.
+[7] A. Bellow and V. Losert, The weighted pointwise ergodic theorem and the individual ergodic theorem along subsequences, Trans. Amer. Math. Soc. 288 (1985), no. 1, 307≠345.
+[8] A. Bellow, Sur la structure des suites "mauvaises universelles" en th¥eorie ergodique, C. R. Acad. Sci. Paris S¥er. I Math. 294 (1982), no. 1, 55≠58.
+[9] D. Berend, M. Lin, J. Rosenblatt, and A. Tempelman, Modulated and subsequential ergodic theorems in Hilbert and Banach spaces, Ergodic Theory Dynam. Systems 22 (2002), no. 6, 1653≠1665.
+[10] V. Bergelson, A. del Junco, M. Leman¥czyk, and J. Rosenblatt, Rigidity and non-recurrence along sequences, Ergodic Theory Dynam. Systems 34 (2014), no. 5, 1464≠1502.
+
+32
+
+CHRISTOPHE CUNY, TANJA EISNER, AND BA¥ LINT FARKAS
+
+[11] M. Boshernitzan, G. Kolesnik, A. Quas, and M. Wierdl, Ergodic averaging sequences, J. Anal. Math. 95 (2005), 63≠103.
+[12] J. Bourgain, An approach to pointwise ergodic theorems, Geometric aspects of functional analysis (1986/87), Lecture Notes in Math., vol. 1317, Springer, Berlin, 1988, pp. 204≠223.
+[13] J. Bourgain, On the pointwise ergodic theorem on Lp for arithmetic sets, Israel J. Math. 61 (1988), no. 1, 73≠84.
+[14] J. Bourgain, Pointwise ergodic theorems for arithmetic sets, Inst. Hautes E¥ tudes Sci. Publ. Math. (1989), no. 69, 5≠45, With an appendix by the author, Harry Furstenberg, Yitzhak Katznelson, and Donald S. Ornstein.
+[15] J. Bourgain, Double recurrence and almost sure convergence, J. Reine Angew. Math. 404 (1990), 140≠161.
+[16] J. Bourgain, H. Furstenberg, Y. Katznelson, and D. S. Ornstein, Appendix on return-time sequences, Inst. Hautes E¥tudes Sci. Publ. Math. (1989), no. 69, 42≠45.
+[17] H. Davenport, Multiplicative number theory, third ed., Graduate Texts in Mathematics, vol. 74, Springer-Verlag, New York, 2000, Revised and with a preface by Hugh L. Montgomery.
+[18] M. Einsiedler, T. Ward, Ergodic Theory: With a View Towards Number Theory. Graduate Texts in Mathematics, 259, Springer-Verlag, London, 2011.
+[19] T. Eisner, Nilsystems and ergodic averages along primes, preprint, arXiv:1601.00562, 2016.
+[20] T. Eisner, Stability of operators and operator semigroups, Operator Theory: Advances and Applications, vol. 209, Birkh®auser Verlag, Basel, 2010.
+[21] T. Eisner, B. Farkas, M. Haase, R. Nagel, Operator Theoretic Aspects of Ergodic Theory, Graduate Texts in Mathematics, Springer, 2015.
+[22] T. Eisner, B. Farkas, R. Nagel, and A. Ser¥eny, Weakly and almost weakly stable C0-semigroups, Int. J. Dyn. Syst. Differ. Equ. 1 (2007), no. 1, 44≠57.
+[23] T. Eisner and S. Grivaux, Hilbertian Jamison sequences and rigid dynamical systems, J. Funct. Anal. 261 (2011), no. 7, 2013≠2052.
+[24] T. Eisner, B. Krause, (Uniform) convergence of twisted ergodic averages, Ergodic Theory Dynam. Systems 36 (2016), no. 7, 2172≠2202.
+[25] A. F. M. ter Elst, V. Mu®ller, A van der Corput-type lemma for power bounded operators, Math. Z. 285 (2017), no. 1-2, 143≠158.
+[26] K.-J. Engel and R. Nagel, One-parameter semigroups for linear evolution equations, Graduate Texts in Mathematics, vol. 194, Springer-Verlag, New York, 2000, With contributions by S. Brendle, M. Campiti, T. Hahn, G. Metafune, G. Nickel, D. Pallara, C. Perazzoli, A. Rhandi, S. Romanelli and R. Schnaubelt.
+[27] B. Fayad and A. Kanigowski, Rigidity times for a weakly mixing dynamical system which are not rigidity times for any irrational rotation, Ergodic Theory Dynam. Systems 35 (2015), no. 8, 2529≠2534.
+[28] S. R. Foguel, Powers of a contraction in Hilbert space, Pacific J. Math. 13 (1963), 551≠562.
+[29] N. Frantzikinakis, B. Host, and B. Kra, Multiple recurrence and convergence for sequences related to the prime numbers, J. Reine Angew. Math. 611 (2007), 131≠144.
+[30] H. Furstenberg, Recurrence in ergodic theory and combinatorial number theory, Princeton University Press, Princeton, N.J., 1981, M. B. Porter Lectures.
+
+WIENER'S LEMMA ALONG SUBSEQUENCES
+
+33
+
+[31] J. A. Goldstein, Extremal properties of contraction semigroups on Hilbert and Banach spaces, Bull. London Math. Soc. 25 (1993), no. 4, 369≠376.
+[32] J. A. Goldstein, Applications of operator semigroups to Fourier analysis, Semigroup Forum 52 (1996), no. 1, 37≠47, Dedicated to the memory of Alfred Hoblitzelle Clifford (New Orleans, LA, 1994).
+[33] J. A. Goldstein and B. Nagy, An extremal property of contraction semigroups in Banach spaces, Illinois J. Math. 39 (1995), no. 3, 441≠449.
+[34] B. Green, T. Tao, and T. Ziegler, An inverse theorem for the Gowers U s+1[N ]norm, Ann. of Math. (2) 176 (2012), no. 2, 1231≠1372.
+[35] B. Green and T. Tao, Linear equations in primes, Ann. of Math. (2) 171 (2010), no. 3, 1753≠1850.
+[36] S. Grivaux, IP-Dirichlet measures and IP-rigid dynamical systems: an approach via generalized Riesz products, Studia Math. 215 (2013), no. 3, 237≠259.
+[37] F. Hiai, Weakly mixing properties of semigroups of linear operators, Kodai Math. J. 1 (1978), no. 3, 376≠393.
+[38] L.-K. Hua, Die Abscha®tzung von Exponentialsummen und ihre Anwendung in der Zahlentheorie, Enzyklop®adie der mathematischen Wissenschaften: Mit Einschluss ihrer Anwendungen, Bd. I, vol. 2, B. G. Teubner Verlagsgesellschaft, Leipzig, 1959.
+[39] J.-P. Kahane, Sur les coefficients de Fourier-Bohr, Studia Math. 21 (1961/1962), 103≠106.
+[40] B. O. Koopman and J. von Neumann, Dynamical systems of continuous spectra, Proc. Nat. Acad. Sci. U.S.A. 18 (1932), 255≠263.
+[41] B. Kra, Ergodic methods in additive combinatorics, Additive Combinatorics, 103, CRM Proc. Lecture Notes, 43, Amer. Math. Soc., Providence, RI, 2007.
+[42] B. Krause, Polynomial ergodic averages converge rapidly: Variations on a theorem of Bourgain, preprint, arXiv:1402.1803v1, 2014.
+[43] L. Kuipers and H. Niederreiter, Uniform distribution of sequences, WileyInterscience [John Wiley & Sons], New York-London-Sydney, 1974, Pure and Applied Mathematics.
+[44] D. Kunszenti-Kov¥acs, On the limit of square-Ces`aro means of contractions on Hilbert spaces, Arch. Math. (Basel) 94 (2010), no. 5, 459≠466.
+[45] D. Kunszenti-Kov¥acs, R. Nittka, and M. Sauter, On the limits of Cesa`ro means of polynomial powers, Math. Z. 268 (2011), no. 3-4, 771≠776.
+[46] M. Lin, J. Olsen, and A. Tempelman, On modulated ergodic theorems for Dunford-Schwartz operators, Proceedings of the Conference on Probability, Ergodic Theory, and Analysis (Evanston, IL, 1997), vol. 43, 1999, pp. 542≠567.
+[47] P.-K. Lin, A remark on contraction semigroups on Banach spaces, Bull. London Math. Soc. 27 (1995), no. 2, 169≠172.
+[48] M. Mirek, p(Z)-boundedness of discrete maximal functions along thin subsets of primes and pointwise ergodic theorems, Math. Z. 279 (2015), no. 1-2, 27≠59.
+[49] H. S. Mustafayev, Mixing type theorems for one-parameter semigroups of operators, Semigroup Forum 92 (2016), no. 2, 311≠334.
+[50] M. G. Nadkarni, Spectral theory of dynamical systems, Texts and Readings in Mathematics, vol. 15, Hindustan Book Agency, New Delhi, 2011, Reprint of the 1998 original.
+[51] R. Nair, On polynomials in primes and J. Bourgain's circle method approach to ergodic theorems, Ergodic Theory Dynam. Systems 11 (1991), no. 3, 485≠499.
+
+34
+
+CHRISTOPHE CUNY, TANJA EISNER, AND BA¥ LINT FARKAS
+
+[52] R. Nair, On polynomials in primes and J. Bourgain's circle method approach to ergodic theorems. II, Studia Math. 105 (1993), no. 3, 207≠233.
+[53] Polymath, D. H. J. Variants of the Selberg sieve, and bounded intervals containing many primes, Res. Math. Sci. 1 (2014), Art. 12, 83 pp.
+[54] G. Rhin, Sur la r¥epartition modulo 1 des suites f (p), Acta Arith. 23 (1973), 217≠248.
+[55] J. M. Rosenblatt, Norm convergence in ergodic theory and the behavior of Fourier transforms, Canad. J. Math. 46 (1994), no. 1, 184-199.
+[56] J. M. Rosenblatt and M. Wierdl, Pointwise ergodic theorems via harmonic analysis, Ergodic theory and its connections with harmonic analysis (Alexandria, 1993), London Math. Soc. Lecture Note Ser., vol. 205, Cambridge Univ. Press, Cambridge, 1995, pp. 3≠151.
+[57] B. Sz.-Nagy and C. Foia∏s, Sur les contractions de l'espace de Hilbert. IV, Acta Sci. Math. Szeged 21 (1960), 251≠259.
+[58] I. M. Vinogradov, The method of trigonometrical sums in the theory of numbers, Dover Publications, Inc., Mineola, NY, 2004, Translated from the Russian, revised and annotated by K. F. Roth and Anne Davenport, Reprint of the 1954 translation.
+[59] M. Wierdl, Almost everywhere convergence and recurrence along the primes, Ph.D. thesis, Ohio State University, 1989.
+[60] M. Wierdl, Pointwise ergodic theorem along the prime numbers, Israel J. Math. 64 (1988), no. 3, 315≠336 (1989).
+[61] N. Wiener and A. Wintner, Harmonic analysis and ergodic theory, American Journal of Mathematics, 63 415≠426 (1941).
+[62] T. D. Wooley and T. D. Ziegler, Multiple recurrence and convergence along the primes, Amer. J. Math. 134 (2012), no. 6, 1705≠1732.
+[63] Y. Zhang, Bounded gaps between primes, Ann. of Math. (2) 179 (2014), no. 3, 1121-1174.
+[64] P. Zorin-Kranich, Variation estimates for averages along primes and polynomials, J. Funct. Anal. 268 (2015), no. 1, 210≠238.
+
+Institut de Sciences Exactes et Appliqu¥ees, University of New-Caledonia, New-Caledonia E-mail address: christophe.cuny@univ-nc.nc
+Institute of Mathematics, University of Leipzig P.O. Box 100 920, 04009 Leipzig, Germany E-mail address: eisner@math.uni-leipzig.de
+School of Mathematics and Natural Sciences, University of Wuppertal Gauﬂstraﬂe 20, 42119 Wuppertal, Germany E-mail address: farkas@math.uni-wuppertal.de
+
+

@@ -1,0 +1,373 @@
+arXiv:1701.00088v1 [cond-mat.soft] 31 Dec 2016
+
+Exactly solvable model for self-assembly of hard core - soft shell particles at interfaces
+Alina Ciach and Jakub Pe¸kalski Institute of Physical Chemistry, Polish Academy of Sciences,
+Kasprzaka 44/52, 01-224 Warsaw, Poland
+Abstract
+A lattice model with soft repulsion followed by attraction is developed for a monolayer of hybrid core-shell particles self-assembling at an interface. The model is solved exactly in one dimension. One, two or three periodic structures and variety of shapes of the pressure-density isotherms may occur in different versions of the model. For strong interactions the isotherm consists of vertical segments separated by plateaus. The range of order depends strongly on the strength of attraction and on the density. Our results agree with experimental observations.
+1
+
+Hybrid hard-core soft-shell particles (HCSS) consisting of solid cores encapsulated in a cross-linked hydrogel network can self-assemble into ordered patterns on air-water or oilwater interfaces [1­7]. Highly ordered arrays of particles with cores having desired properties can find applications in various fields, e.g. in surface patterning [8], photovoltaics [9], plasmonics [10], sensing [11] and emulsion stabilization [2], and the question how to obtain desired ordered patterns draws increasing attention.
+The patterns and the degree of order depend on the core and shell properties, as well as on the surface pressure. For pure poly-N-isopropylacrylamide (PNIPAM) particles [12] and for hybrid Au@PNIPAM particles with small Au cores [1], similar patterns at the airwater interface and similar surface pressure - area isotherms were obtained. In both systems the particles form a hexagonal lattice. The surface pressure p increases with a moderate slope for a large range of decreasing area; the moderate increase of p is followed by a rapid increase, a plateau and another rapid increase in a compressed monolayer. In the case of silica@PNIPAM particles with relatively large silica cores adsorbed at the water-oil interface [6], more complex patterns are formed at large pressure. Moreover, the surface pressure - area isotherms are quite different than in the cases of the pure PNIPAM and Au@PNIPAM particles. The isotherms of the silica@PNIPAM particles have a characteristic shape of alternating segments with very large and quite small slope. The pressure range at the steep parts of p() depends on the shell thickness. Notably, the nearly vertical segments of p occur for the area fraction of the particles, , corresponding to quite small area fraction of their cores. A natural question arises why for a few values of  a very large increase of p is required to induce any increase of the area fraction, while for area fractions intermediate between these distinguished values the compressibility of the monolayer is very large. The fundamental question if the different patterns correspond to thermodynamically stable phases, and the plateaus indicate phase transitions remains open.
+To the best of our knowledge there have been no attempts to develop a theory for the self-assembly of the HCSS particles adsorbed at an interface that would guide experimental studies. Here we construct a coarse-grained model based on experimental observations. Model systems with two dimensional (2D) patterns can be studied either by simulations or by approximate theoretical methods. The simulations of self-assembling systems are strongly influenced by finite size effects, and in theoretical studies the approximations may lead to incorrect results. In order to avoid possible inaccuracies resulting from approximations, we
+2
+
+introduce a one-dimensional (1D) lattice model that can be solved exactly. To construct a coarse-grained model for the HCSS particles adsorbed at an interface, we
+take into account that at low area fraction the particles form a hexagonal lattice, and when  further decreases, then the ordered structure remains unchanged, and coexists with voids [6]. This suggests an attractive potential with a well-defined minimum at the separation r = a. One source of the attraction may be a water "cap" formed above the hydrophilic polymers grafted on the nanoparticle [6]. The caps lead to undulated interface with increased area, and this area increase is larger for particles at large separations than for particles whose shells overlap. The minimization of the surface-tension contribution to the free energy leads to effective attraction between the particles when their distance is larger than their diameter a. Attraction might result from the van der Waals interactions between the monomers too [13]. On the other hand, when the shells of the two particles overlap, they repel each other. The repulsion increases with decreasing distance between the particles. Because the polymeric chains become compressed near the hard cores, the distance of the closest approach of two core-shell particles, , is larger than the diameter of the solid core, and depends on the number and length of the grafted polymeric chains, and on cross-linking.
+Based on the above facts, we conclude that the effective interaction between the particles consists of the steric repulsion at the distances r smaller than , next of a soft repulsion for  < r < a, and finally of an attraction for r > a [6].
+In Ref. [6] monolayers of three types of HCSS particles with the same silica cores and diameters a  450nm, 680nm for the smallest and the largest shell were investigated. Based on the histograms for the nearest-neighbor distance in monolayers under large pressure [14], we can expect that in each case a/  2 - 3, and the potential has a shape shown schematically in Fig.1.
+We assume that the incompressible cores of the particles occupy lattice sites with the lattice constant . The steric repulsion leads to forbidden multiple occupancy of the lattice sites. We assume that the nearest-neighbors on the lattice repel each other with the strength Jr > 0 (soft shell). In order to compare shells with different thicknesses, we consider two variants of the model. In the first one the second neighbors attract each other and the corresponding potential has the strength -Ja, with Ja > 0. For larger separations the effective potential vanishes. On the 1D lattice the potential is given by
+3
+
+Vn(r) / Vn(ra)
+
+4
+
+3
+
+2
+
+1
+
+0
+
+1
+
+1
+
+2
+
+3
+
+4
+
+5
+
+r []
+
+FIG. 1: Schematic illustration of the effective potential between the HCSS particles adsorbed at an interface. In the lattice model only discrete values of r/, indicated by the symbols, are considered; dashed and solid lines correspond to models I and II respectively.
+
+
+
+ 
+
+Jr
+
+for |x| = 1,
+
+
+
+
+
+Vn(x) = -Ja for |x| = n,
+
+(1)
+
+
+
+  
+
+0
+
+otherwise,
+
+with n = 2 (model I). The positions and distances between the particles on the 1D lattice
+
+are denoted by x = r/ and x = r/, and take integer values. In the second variant of
+
+the model the potential changes sign for the second neighbors, and is given by Eq.(1) with
+
+n = 3 (model II).
+
+We consider an open system with fixed chemical potential of the particles, µp, and fixed
+
+temperature T . We assume that the lattice consists of L sites labeled from 1 to L, and
+
+consider periodic boundary conditions (L + 1  1, 0  L). We introduce an occupation
+
+operator ^(x) which is equal to 1 or 0 when the site x is occupied or not, respectively.
+
+Hence, the configuration of the system is given by {^(x)}  (^(1), ..., ^(L)). Since each site
+
+can be either occupied or empty, there are 2L configurations, and each of them occurs with
+
+the probability
+
+P [{^(x)}]
+
+=
+
+e- H [{^(x)}] 
+
+,
+
+(2)
+
+where
+
+=
+
+e- H [{^(x)}]
+
+(3)
+
+{^(x)}
+
+4
+
+is the Grand Partition function,  = (kBT )-1, kB is the Boltzmann constant and H is the thermodynamic Hamiltonian which contains the energy and the chemical potential term,
+
+H[{^}] = 1 L
+
+L
+
+L
+
+^(x)V (x - x)^(x) - µ ^(x).
+
+(4)
+
+2
+
+x=1 x=1
+
+x=1
+
+The energy of adsorption of a single particle at the interface, h, is included in µ = µp + h. The grand potential is given by
+
+ = -pL = -kBT ln 
+
+(5)
+
+where p is the 1D pressure. We also calculate the dimensionless number density  = ^(x) (length fraction of the cores) and the correlation function,
+
+g(x) =
+
+^(x)^(x + x) ^(x) ^(x + x)
+
+,
+
+(6)
+
+with the probability distribution (2). Because of translational invariance, ^(x) is independent of x, and g depends only on x.
+In the first step we determine the ground state (GS), i.e. the structure at T = 0. For T = 0, the grand potential reduces to the minimum of H[{^(x)}]/L. We find the minimum of H[{^(x)}]/L by comparison of H[{^(x)}]/L for empty and fully occupied lattice, and for different periodic structures.
+In the second step we consider T > 0, using the transfer matrix method [15]. For the interaction range n
+
+2n
+
+ = T rTL/n =
+
+Li /n,
+
+(7)
+
+i=1
+
+where T is the 2n × 2n transfer matrix, and i are the eigenvalues of T numbered such that |i|  |i+1| [15]. In the thermodynamic limit
+
+p
+
+=
+
+kB T n
+
+ln 1.
+
+(8)
+
+The matrix T is a finite matrix with positive elements, therefore 1 is non-degenerate. Thus, for given µ Eq.(8) yields a unique value of pressure, p(µ). The average density (µ) can be expressed in terms of the matrix P transforming T to its eigenbasis [15]. By eliminating µ from p(µ) and (µ), we obtain p(). The correlation function can be expressed in terms of P
+
+5
+
+and i [15]. For large separations the correlations decay exponentially, with the correlation
+
+length  given by [15]
+
+-1
+
+=n
+
+ln
+
+1 |2|
+
+.
+
+(9)
+
+When 2 is real and positive, the decay is monotonic. Because T is not symmetric, pairs of complex-conjugate eigenvalues for i > 1 may occur. The pair of complex-conjugate
+
+eigenvalues for i = 2, 3 leads to oscillatory decay of correlations, with the asymptotic form
+
+for x  1
+
+g(x) = Aie-x/ cos x + i + 1,
+
+(10)
+
+where the wave number  is the phase of the complex eigenvalue 2 = |2|ei, and Ai and i depend on P and on i = mod(x, n) [15].
+Let us start by discussing the GS. It turns out that in model I only one periodic structure with alternating empty and occupied sites, ·o·o·o..., and the unit cell (·o) may occur. By · we denote an occupied site, i.e. the uncompressible core of the particle. The GS of model I is shown in Fig.2a in variables (µ¯ = µ/Ja, J¯ = Jr/Ja). In model II, three periodic structures
+
+11 2
+8
+1 5
+
+µ µ
+
+0 2
+
+-1
+
+-1
+
+-2
+
+0
+
+1
+
+2
+
+J
+
+-4 01234567
+J
+
+FIG. 2: (a) GS of model I and (b) GS of model II. The coexistence lines are: (a) µ¯ = -1 for empty lattice - (·o) and µ¯ = 2J¯- 1 for (·o) - full occupancy; (b) µ¯ = -1 for empty lattice - (·oo); µ¯ = J¯- 1 for (·oo) - (··o); µ¯ = 2 for (·oo) -(·o); µ¯ = 2J¯- 4 for (·o) - (··o) and finally µ¯ = 2J¯- 1 for (··o) - full occupancy. µ¯ = µ/Ja and J¯ = Jr/Ja.
+
+may occur (Fig.2b). In the structure with  = 1/3, an occupied site is followed by two empty sites, and the unit cell is (·oo). In the structure with  = 2/3, two occupied sites are followed by one empty site, and the unit cell is (··o). The phase (·o) with  = 1/2 occurs
+
+6
+
+only when J¯  3. To distinguish the densities of the periodically ordered GS structures, we use the notation p, i.e. p = 1/3, 1/2, 2/3.
+The results for p() are shown in Figs.3,4. In both models, nearly vertical segments for   p are separated by nearly horizontal segments for  = p, when the interactions are sufficiently strong. For model I, there exists only one segment of the p() curve with a very large slope (apart from   1), consistent with the single periodic phase at T = 0.
+
+8
+
+Ja = 1.0 kBT
+
+7
+
+Ja = 2.0 kBT
+
+6
+
+Ja = 3.0 kBT
+
+Ja = 4.0 kBT
+
+5
+
+Ja = 5.0 kBT
+
+4
+
+p [kBT/]
+
+2 1
+
+0
+
+1
+
+
+
+FIG. 3: The pressure-density isotherms in model I for J¯ = 2.
+
+p [kBT/]
+
+50 Ja = 2.5 kBT 40 Ja = 5.0 kBT
+Ja = 10 kBT 30
+
+50 J = 2 J=3
+40 J = 4.5
+J= 30
+
+20
+
+20
+
+10
+
+10
+
+00
+
+1/3 1/2 2/3
+
+1 00
+
+1/3 1/2 2/3
+
+1
+
+
+
+
+
+FIG. 4: The pressure-density isotherms in model II. (a) J¯ = 5 (b) Ja = 10kBT .
+
+In model II, the nearly vertical segments of p() are present for   1/3, 2/3, consistent with the GS structures (·oo) and (··o). When J¯ > 3, a third "step" at  = 1/2 appears (Fig.4b). For fixed J¯, the pressure range for   p increases with increasing Ja (Fig.4a),
+7
+
+whereas for fixed Ja/(kBT ) and increasing J¯ the pressure range increases significantly only at the central step. This behavior is consistent with the GS, where the (·o) phase is stable for the range of the chemical potential that increases for increasing J¯. Quite surprisingly, when Ja/(kBT ) is fixed and J¯ > 3, p() is nearly independent of J¯ for  < 1/2.
+We have found that g(x) is given by (10), with the period of oscillations 2/  2 for   1/2 and 2/  3 otherwise, in agreement with the GS structures. The correlation length is very large for  = p, and increases rapidly for increasing Ja (Fig.5). However, when  departs slightly from p,  decreases by orders of magnitude and becomes independent of Ja for 1/3 <  < 2/3. Slight deviations from p lead to dramatic decrease of order in this range of density. For  < 1/3 or  > 2/3,  decreases much more slowly for  departing form p. Moreover,  depends very strongly on Ja and very weakly on J¯ for  < 1/3 or  > 2/3.
+
+104
+
+104
+
+103
+
+103
+
+
+
+102
+
+102
+
+101
+
+101
+
+100
+
+100
+
+0
+
+1/3 1/2 2/3
+
+10
+
+1/3 1/2 2/3
+
+1
+
+
+
+
+
+FIG. 5: The correlation length  (in  units) in model II for J¯ = 5 (left panel) and for J¯ = 2 (right panel) with Ja = 5kBT (black solid line) and Ja = 10kBT (red dashed line). The number density  is dimensionless.
+
+We have obtained remarkably rich behavior from the very simple model (1). One, two or three periodic structures with the corresponding vertical segments of p() can occur, depending on the ranges and strengths of the repulsive and attractive parts of the potential. Phase transitions and long-range order are absent for T > 0 in 1D models with finite range of interactions. Our results obtained in such a model show that the plateaus in the p() curve can be present even in the absence of true thermodynamic phase transitions. The short-range order in the disordered phase mimics the long-range order of the phase stable
+
+8
+
+at lower T (at T = 0 in 1D), and the range of this order can be orders of magnitude larger than .
+The strength of attraction plays a key role in formation of ordered patterns and in the shape of the pressure-area isotherm for small densities. In contrast, for densities larger than the close packing density of the soft particles, the repulsion determines the shape of p() and the range of order.
+Our results agree surprisingly well with experiments. The isotherm obtained in Ref.[1] for small Au cores has the shape that agrees with the isotherm shown in Fig.4a for Ja = 2.5kBT . For increasing density, the sequence of very small, moderate, very large, very small, and again very large slope of the pressure is found in both cases. The alternating steep and shallow segments obtained in Ref.[6] for larger silica cores agree with the curves obtained in our model for stronger attraction. In Ref. [6] and in our model (Fig.5), the samples with density larger than the density of close packing are less ordered. Increase of the particle diameter a leads to increase of both, the range of order for small area fractions, and the pressure range at the corresponding vertical segment of the isotherm [6]. In our model such behavior is found for increasing Ja (Figs.5,4a). This observation indicates that the attraction increases with increasing a, and supports the conjecture that the attraction in Ref. [6] results from the surface-tension contribution to the free energy.
+Our results indicate that if ordered structures are desired, one should try to increase the strength of the attractive part of the interactions, and choose area fraction of particles approaching the close-packing density from below. For denser systems the density should be fixed with extremely high precision to achieve large correlation length.
+Models with repulsive shoulder followed by attractive well were studied before in different contexts [16­19]. In particular, multiple phase transitions[16, 17] and water anomalies were obtained [18, 19]. Our results show that a potential of this kind (Fig.1) is also able to reproduce the main features of the HCSS particles self-assembling at interfaces.
+The isotherms very similar to Fig.3 were obtained for the 1D model with short-range attraction and long-range repulsion (SALR) [15], and for the 1D model of aqueous solution of amphiphilic molecules [20]. In model I and in Ref. [15, 20] a single phase with periodic arrangement of the particles, clusters or micelles was found in the GS. The periodic order is reflected in a very large slope of the pressure for the density or concentration optimal for the periodic structure, independently of the kind of ordering objects and the source of competing
+9
+
+interactions. Such universal properties can be correctly predicted by generic models, and models like the one introduced in this work can guide future experiments.
+We acknowledge the financial support by the National Science Center grant 2015/19/B/ST3/03122. JP acknowledges the financial support by the National Science Center under Contract Decision No. DEC-2013/09/N/ST3/02551.
+[1] N. Vogel et al., Langmuir 28, 8985 (2012). [2] K. O. Nazli et al., Chemistry 19, 5586 (2013). [3] K. Volk, J. P. Fitzgerald, M. Retsch, and M. Karg, Adv. Mater. 27, 7332 (2015). [4] T. Honold et al., J. Mater. Chem. C 3, 11449 (2015). [5] K. Geisel, A. A. Rudov, I. I. Potemkin, and W. Richtering, Langmuir 31, 13145 (2015). [6] A. Rauh et al., Soft Matter (2017), 10.1039/C6SM01020B. [7] M. Karg, Macromol. Chem. Phys. 217, 242 (2016). [8] M. Rey et al., Nano Lett. 16, 157 (2016). [9] H. A. Atwater and A. Polman, Nat. Mater. 9, 205 (2010). [10] M. A. Noginov et al., Nature 460, 1110 (2009). [11] K. A. Willets and R. P. V. Duyne, Annu Rev Phys Chem. 58, 267 (2007). [12] K. Nakahama and K. Fujimoto, Langmuir 18, 10095 (2002). [13] A. Chremos and J. F. Douglas, Soft Matter 12, 9527 (2016). [14] A. Rauh et al., Soft Matter (2017), 10.1039/C6SM01020B Electronic Supplementary Informa-
+tion. [15] J. Pe¸kalski, A. Ciach, and N. G. Almarza, J. Chem. Phys. 138, 144903 (2013). [16] P. C. Hemmer and G. Stell, Phys. Rev. Lett. 24, 1284 (1970). [17] J. M. Kincaid, G. Stell, and C. K. Hall, J. Chem. Phys. 65, 2161 (1976). [18] A. B. de Oliveira, P. A. Netz, T. Colla, and M. C. Barbosa, J. Chem. Phys. 124, 084505
+(2006). [19] E. Lomba, N. G. Almarza, C. Martin, and C. McBride, J. Chem. Phys. 126, 244510 (2007). [20] J. Pe¸kalski, P. Rogowski, and A. Ciach, Mol. Phys 113, 1022 (2014).
+10
+
+

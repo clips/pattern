@@ -1,0 +1,1637 @@
+Finite-size analysis of the detectability limit of the stochastic block model
+Jean-Gabriel Young,1,  Patrick Desrosiers,1, 2 Laurent H´ebert-Dufresne,3 Edward Laurence,1 and Louis J. Dub´e1,  1D´epartement de Physique, de G´enie Physique, et d'Optique, Universit´e Laval, Qu´ebec (Qu´ebec), Canada G1V 0A6
+2Centre de recherche de l'Institut universitaire en sant´e mentale de Qu´ebec, Qu´ebec (Qu´ebec), Canada G1J 2G3 3Santa Fe Institute, Santa Fe, New Mexico, USA, 87501 (Dated: June 28, 2017)
+It has been shown in recent years that the stochastic block model (SBM) is sometimes undetectable in the sparse limit, i.e., that no algorithm can identify a partition correlated with the partition used to generate an instance, if the instance is sparse enough and infinitely large. In this contribution, we treat the finite case explicitly, using arguments drawn from information theory and statistics. We give a necessary condition for finite-size detectability in the general SBM. We then distinguish the concept of average detectability from the concept of instance-by-instance detectability and give explicit formulas for both definitions. Using these formulas, we prove that there exist large equivalence classes of parameters, where widely different network ensembles are equally detectable with respect to our definitions of detectability. In an extensive case study, we investigate the finite-size detectability of a simplified variant of the SBM, which encompasses a number of important models as special cases. These models include the symmetric SBM, the planted coloring model, and more exotic SBMs not previously studied. We conclude with three appendices, where we study the interplay of noise and detectability, establish a connection between our information-theoretic approach and random matrix theory, and provide proofs of some of the more technical results.
+
+arXiv:1701.00062v2 [physics.soc-ph] 27 Jun 2017
+
+I. INTRODUCTION
+Mesoscopic analysis methods [1] are among the most valuable tools available to applied network scientists and theorists alike. Their aim is to identify regularities in the structure of complex networks, thereby allowing for a better understanding of their function [1­3], their structure [4, 5], their evolution [6, 7], and of the dynamics they support [8­10]. Community detection is perhaps the best-known method of all [1, 2], but it is certainly not the only one of its kind [3]. It has been shown, for example, that the separation of nodes in a core and a periphery occurs in many empirical networks [11], and that this separation gives rise to more exotic mesoscopic patterns such as overlapping communities [12]. This is but an example--there exist multitudes of decompositions in structures other than communities that explain the shape of networks both clearly and succinctly [13].
+The stochastic block model (SBM) has proven to be versatile and principled in uncovering these patterns [14­ 16]. According to this simple generative model, the nodes of a network are partitioned in blocks (the planted partition), and an edge connects two nodes with a probability that depends on the partition. The SBM can be used in any of two directions: Either to generate random networks with a planted mesoscopic structure [8, 10] or to infer the hidden mesoscopic organization of real complex networks, by fitting the model to network datasets [13, 14, 17]--perhaps its most useful application.
+Stochastic block models offer a number of advantages over other mesoscopic pattern detection methods [3].
+ jean-gabriel.young.1@ulaval.ca  ljd@phy.ulaval.ca
+
+One, there is no requirement that nodes in a block be densely connected, meaning that blocks are much more general objects than communities. Two, the sound statistical principles underlying the SBM naturally solve many hard problems that arise in network mesoscopic analysis; this includes the notoriously challenging problem of determining the optimal number of communities in a network [18­20], or of selecting among the many possible descriptions of a network [1, 20, 21].
+Another advantage of the statistical formulation of the SBM is that one can rigorously investigate its limitations. It is now known, for example, that the SBM admits a resolution limit [18] akin to the limit that arises in modularity­based detection method [22]. The limitations that have attracted the most attention, however, are the detectability limit and the closely related concept of consistency limit [23]. The SBM is said to be detectable for some parameters if an algorithm can construct a partition correlated with the planted partition [24], using no information other than the structure of a single--infinitely large--instance of the model. It is said to be consistent if one can exactly recover the planted partition. Therefore, consistency begets detectability, but not the other way around. Understanding when and why consistency (or detectability) can be expected is important, since one cannot trust the partitions extracted by SBM if it operates in a regime where it is not consistent (or detectable) [23].
+Due to rapid developments over the past few years, the locations of the boundaries between the different levels of detectability are now known for multiple variants of the SBM, in the limit of infinite network sizes. If the average degree scales at least logarithmically with the number of nodes, then the SBM is consistent [25, 26], unless the constant multiplicative factor is too small, in which case
+
+2
+
+the SBM is then detectable, but not consistent. If the average degree scales slower than logarithmically, then the SBM is at risk of entering an undetectable phase where no information on the planted partition can be recovered from the network structure [27, 28]. This happens if the average degree is a sufficiently small constant independent of the number of nodes.
+These asymptotic results are, without a doubt, extremely useful. Many efficient algorithms have been developed to extract information out of hardly consistent infinite instances [28­31]. Striking connections between the SBM and other stochastic processes have been established in the quest to bound the undetectable regime from below [23, 26, 32, 33]. But real networks are not infinite objects. Thus, even though it has been observed that there is a good agreement between calculations carried out in the infinite-size limit and empirical results obtained on small networks [31], it is not immediately clear that the phenomenology of the infinite case carries over, unscathed, to the finite case.
+In this paper, we explicitly investigate detectability in finite networks generated by the SBM. We understand detectability in the information-theoretic sense [33]; our analysis is therefore algorithm­independent, and yields the boundaries of the region of the parameter space where the planted partition is undetectable, even for an optimal algorithm (with possibly exponential running time).
+The combination of this information-theoretic point of view with our finite-size analysis leads to new insights and results, which we organize as follows. We begin by formally introducing the SBM and the necessary background in Sec. II. We use this section to briefly review important notions, including inference (Sec. II B), as well as the consistency and detectability of the infinite SBM (Sec. II C). In Sec. III, we present a necessary condition for detectability, and show that it is always met, on average, by finite instances of the SBM. We then establish the existence of a large equivalence class with respect to this notion of average detectability. In Sec. V, we introduce the related concept of ­detectability and investigate the complete detectability distribution, beyond its average. In Sec. VI, we apply the perfectly general framework of Secs. III­V to a constrained variant of the SBM: the general modular graph model of Ref. [34]. The results of this section hold for a broad range of models, since the general modular graphs encompass the symmetric SBM, the planted coloring model, and many other models as special cases. We gather concluding remarks and open problems in Sec. VII. Three appendices follow. In the first, we investigate the interplay between noise and our notion of average detectability (Appendix A); in the second, we establish a connection between our framework and random matrix theory (Appendix B); in the third, we give the details of two technical proofs encountered in the main text (Appendix C).
+
+II. STOCHASTIC BLOCK MODEL
+
+A. Definition of the model
+
+The stochastic block model is formally defined as fol-
+
+lows: Begin by partitioning a set of n nodes in q blocks
+
+of fixed sizes n = (n1, ..., nq), with n =
+
+q r=1
+
+nr
+
+.
+
+Denote
+
+this partition by B = {B1, ..., Bq}, where Br is the set
+
+of nodes in the rth block. Then, connect the nodes in
+
+block Br to the nodes in block Bs with probability prs. In other words, for each pair of nodes (vi, vj), set the element aij of the adjacency matrix A to 1 with probability p(vi)(vj) and to 0 otherwise, where (vi) is the block of vi. Note that for the sake of clarity, we will obtain all of our results for simple graphs, where edges are undi-
+
+rected and self-loops (edges connecting a node to itself)
+
+are forbidden [35]. This implies that prs = psr and that aii = 0.
+We will think of this process as determining the out-
+
+come of a random variable, whose support is the set of
+
+all networks of n nodes. Due to the independence of
+
+edges, the probability (likelihood) of generating a par-
+
+ticular network G is simply given by the product of
+
+n 2
+
+Bernoulli random variables, i.e.,
+
+P(G|B, P ) = [1 - p(vi)(vj)]1-aij [p(vi)(vj)]aij , (1)
+i<j
+
+where P is the q × q matrix of connection probabilities of element prs (sometimes called the affinity or density matrix), and i < j is a shorthand for "i, j : 1  i < j  n." It is easy to check that the probability in Eq. (1) is properly normalized over the set of all networks of n distinguishable nodes.
+A useful alternative to Eq. (1) expresses the likelihood in terms of the number of edges between each pair of blocks (Br, Bs) rather than as a function of the adjacency matrix [17]. Notice how the number of edges mrs appearing between the sets of nodes Br and Bs is at most equal to
+
+mmrsax =
+
+nr 2
+
+if r = s,
+
+nrns otherwise.
+
+(2)
+
+Each of these mmrsax edges exists with probability prs. This implies that mrs is determined by the sum of mmrsax Bernoulli trials of probability prs, i.e., that mrs is a binomial variable of parameter prs and maximum mmrsax. The probability of generating a particular instance G can therefore be written equivalently as
+
+P(G|B, P ) = (1 - p ) rs mm rsax-mrs (prs)mrs . (3)
+rs
+where {mrs} and {mmrsax} are jointly determined by the partition B and the structure of G, and r  s denotes "r, s : 1  r  s  q."
+Having a distribution over all networks of n nodes, one can then compute average values over the ensemble. For
+
+3
+
+example, the average degree of node vi is given by
+
+ki =
+
+p(vi)r(nr - (vi)r) ,
+
+(4)
+
+r
+
+where ij is the Kronecker Delta. The expression correctly depends on the block B(vi) of vi; nodes in different blocks will, in general, have different average degree.
+Averaging over all nodes, one finds the average degree of
+the network
+
+k
+
+=
+
+2 n
+
+mmrsaxprs .
+
+(5)
+
+rs
+
+This global quantity determines the density of the SBM when n  . The SBM is said to be dense if k = O(n), i.e., if prs is a constant independent of n. It is said to be sparse if k = O(1), i.e., if prs = crs/n goes to zero as n-1. In the latter case, a node has a constant number of connections even in an infinitely large network--a feature found in most large scale real networks [36].
+For finite instances, it will often be more useful to consider the average density directly. It is defined as the number of edges in G, normalized by the number of possible edges, i.e.,
+
+
+
+=
+
+k n-1
+
+=
+
+(mmrsax/mmax)prs 
+
+rsprs , (6)
+
+rs
+
+rs
+
+where mmax = rs mmrsax, and
+
+rs := mmrsax/mmax .
+
+(7)
+
+The dense versus sparse terminology is then clearer: The density of sparse networks goes to zero as O(n-1), while dense networks have a nonvanishing density  = O(1).
+
+B. Inference
+Depending on the elements of P , the SBM can generate instances reminiscent of real networks with, e.g., a community structure [3] (prr > prs) or a core-periphery organization [11] (p11 > p12 > p22 and p22  0). However, the SBM really shines when it is used to infer the organization in blocks of the nodes of real complex networks--this was, after all, its original purpose [14].
+To have inferred the mesoscopic structure of a network (with the SBM) essentially means that one has found the partition B and density matrix P  that best describes it. In principle, it is a straightforward task, since one merely needs to (a) assign a likelihood P(B, P |G) to each pair of partition and parameters [see Eqs. (1)­(3)], then (b) search for the most likely pair (B, P ). Since there are exponentially many possible partitions, this sort of enumerative approach is of little practical use. Fortunately, multiple approximate and efficient inference tools have been proposed to circumvent this fundamental problem. They draw on ideas from various fields such as statistical physics [13, 28, 31], Bayesian statistics [17, 37], spectral theory [29, 30, 38, 39], and graph theory [40], to name a few, and they all produce accurate results in general.
+
+C. Detectability and consistency
+One could expect perfect recovery of the parameters and partition from most of these sophisticated algorithms. This is called the consistency property. It turns out, however, that all known inference algorithms for the SBM, as diverse as they might be, fail on this account. And their designs are not at fault, for there exists an explanation of this generalized failure.
+Consider the density matrix of elements prs =  (r, s). It is clear that the block partition is irrelevant--the generated network cannot and will not encode the planted partition. Thus, no algorithm will be abe to differentiate the planted partition from other partitions. It is then natural to assume that inference will be hard or impossible if prs =  + rs(n), where rs(n) is a very small perturbation for networks of n nodes; there is little difference between the uniform case and this perturbed case. In contrast, if the elements of P are widely different from one another, e.g., if prr = 1 and prs = 0 for r = s, then easy recovery should be expected.
+Understanding where lies the transition between these qualitatively different regimes has been the subject of much recent research (see Ref. [23] for a recent survey). As a result, the regimes have been clearly separated as follows: (i) the undetectable regime, (ii) the detectable (but not consistent) regime and (iii) the consistent regime (and detectable). It has further been established that the scaling of  with respect to n determines which regime is reached, in the limit n  .
+The SBM is said to be strongly consistent if its planted partition can be inferred perfectly, with a probability that goes to 1 as n   (it is also said to be in the exact recovery phase). Another close but weaker definition of consistency asks that the probability of misclassifying a node goes to zero with n   (the weakly consistent or almost exact recovery phase). These regimes prevail when P scales at least as fast as P = log(n)C/n, where C is a q × q matrix of constants [25, 26, 41]. Predictably, most algorithms (e.g., those of Refs. [17, 40, 41]) work well in the exact recovery phase regime, since it is the easiest of all .
+In the detectable (but not consistent) regime, exact recovery is no longer possible (the partial recovery phase). The reason is simple: through random fluctuations, some nodes that belong to, say, block B1, end up connecting to other nodes as if they belonged to block B2. They are thus systematically misclassified, no matter the choice of algorithms. This occurs whenever P = C/n, or P = f (n)C/n, with f (n) a function of n that scales slower than log(n).
+The discovery of the third regime--the undetectable regime--arguably rekindled the study of the fundamental limits of the SBM [27, 28]. In this regime, which occurs when P = C/n and C is more or less uniform, it is impossible to detect a partition that is even correlated with the planted one. That is, one cannot classify nodes better than at random, and no information on the planted par-
+
+4
+
+tition can be extracted. Thus, some parametrizations of the SBM are said to lie below the detectability limit. This limit was first investigated with informal arguments from statistical physics [27, 28, 31, 34, 42], and has since been rigorously formalized in Refs. [33, 43], among others.
+There exist many efficient algorithms that are reliable close to the detectability limit; noteworthy examples include belief propagation [28, 31, 44], and spectral algorithms based on the ordinary [29] and weighted [32] non backtracking matrix, as well as matrices of self-avoiding walks [30]. But when the number of blocks is too large, most of these algorithms are known to fail well above the information-theoretic threshold, i.e., the point where it can be proven that the partition is detectable given arbitrary computational power. It has been therefore conjectured in Ref. [31], that there exists multiple troublesome phases for inference: A truly undetectable regime, and a regime where detection is not achievable efficiently. In the latter, it is thought that one can find a good partition, but only by enumerating all partitions--a task of exponential complexity.
+In this contribution, however, we will not focus on this so-called hard regime. As far as we are concerned, detectability will be understood in terms of information, i.e., we will delimit the boundaries of the informationtheoretically undetectable regime.
+III. DETECTABILITY OF FINITE NETWORKS
+
+with the planted partition.
+
+This idea can be translated into a mathematical state-
+
+ment by way of a likelihood test. For a SBM of average
+
+density , call the ensemble of Erdos-R´enyi graphs of
+
+density  the ensemble of equivalent random networks.
+
+Much like the SBM (see Sec. II), its likelihood Q(G|) is
+
+given by the product of the density of
+
+n 2
+
+independent
+
+and identically distributed Bernoulli variables, i.e.,
+
+Q(G|) = aij (1 - )aij = m(1 - )mmax-m , (8)
+i<j
+
+where m := rs mrs is the total number of edges in G. The condition is then the following: Given a network
+G generated by the SBM of average density  and density matrix P , one can detect the planted partition B if the SBM is more likely than its equivalent random ensemble of density , i.e.,
+
+
+
+=
+
+P(G|B, P ) Q(G|)
+
+>
+
+1
+
+.
+
+(9)
+
+A similar condition has been used in Refs. [43] and [33] to pinpoint the location of the detectability limit in infinite and sparse instances of the SBM. Nothing forbids its application to the finite-size problem; we will see shortly that it serves us well in the context of finite-size detectability.
+
+Detectability and consistency are well-separated phases of the infinite stochastic block model. A minute perturbation to the parameters may potentially translate into widely different qualitative behaviors. The picture changes completely when one turns to finite instances of the model. Random fluctuations are not smoothed out by limits, and transitions are much less abrupt. We argue that, as a result, one has to account for the complete distribution of networks to properly quantify detectability, i.e., define detectability for network instances rather than parameters. This, in turn, commands a different approach that we now introduce.
+A. Hypothesis test and the detectability limit
+Consider a single network G, generated by the SBM with some planted partition B and matrix P = r11 + , where 11 is a matrix of ones, r a constant, and a matrix of (small) fluctuations. Suppose that the average density equals , and consider a second density matrix 11 for which the block structure has no effect on the generative process. If an observer with complete knowledge of the generative process and its parameters cannot tell which density matrix, P or 11 , is the most likely to have generated G, then it is clear that this particular instance does not encode the planted partition. As a result, it will be impossible to detect a partition correlated
+
+B. Normalized log-likelihood ratio
+
+The (equivalent) normalized log-likelihood ratio
+
+L
+
+:=
+
+log  mmax
+
+(10)
+
+will be more practical for our purpose. This simple transformation brings the line of separation between models from  = 1 to L = 0, and prevents the resulting quantity from becoming too large. More importantly, it changes products into sums and allows for a simpler expression,
+
+L=
+rs
+
+mrs mmax
+
+log
+
+prs(1 - ) (1 - prs)
+
++rslog
+
+1 - prs 1-
+
+. (11)
+
+We will focus, for the remainder of this paper, on the
+case where network instances G of n nodes are drawn from the SBM of parameters (B, P ). In this context, L
+can is a random variable whose support is the networks
+of n nodes with labeled nodes (see Fig. 1). Since P , , , and mmax are all parameters, L can also be seen as a
+weighted sum of binomial distributed random variables mrs  Bin(mmrsax, prs), with a constant offset. Its average will be a prediction of the detectability for the ensemble (Sec. IV), and the probability Pr(L < 0; P , , mmax) will
+give the fraction of instances that are undetectable for the
+selected parameters (Sec. V).
+
+5
+
+Pr(L = ) prs
+
+B6 (a)
+
+0.6 B6 (b)
+
+0.17
+
+B5
+
+B5
+
+B4
+
+0.4 B4
+
+0.16
+
+B3
+
+B3
+
+B2
+
+0.2 B2
+
+0.15
+
+B1
+
+B1
+
+0.0
+
+0.14
+
+B1 B2 B3 B4 B5 B6
+
+B1 B2 B3 B4 B5 B6
+
+much better explanation of the data than H0; therefore, L measures how easy it is to select between P and Q, given full knowledge of the generative process, and inference algorithms will perform better when the ratio is larger. Many empirical results will validate this interpretation (see Sec. VI).
+IV. AVERAGE DETECTABILITY
+
+A. Average normalized log-likelihood
+
+0.10
+(e)
+0.05
+
+0.10
+(f )
+0.05
+
+0.00
+
+0.00
+
+0.200
+
+0.205 
+
+0.210
+
+-10-4
+
+0
+
+10-4
+
+
+
+FIG. 1. Stochastic block model with (a, c, e) non uniform density matrix and (b, d, f) nearly uniform density matrix. (a, b) Density matrix of the two ensembles. Notice the difference in scale. (c, d) One instance of each ensemble, with n = [50, 50, 50, 100, 200, 200]. Each color denotes a block [45]. (e, f) Empirical distribution of the normalized log-likelihood obtained from 100 000 samples of L. The bins in which the instances (c, d) fall are colored in red. Notice that a negative log-likelihood ratio is associated with some instances in (f).
+
+C. Interpretation of L: Information-theoretic bound and inference difficulty
+Because likelihood ratio tests can be understood as quantifying the amount of evidence for a hypothesis (compared to a null hypothesis), there will be two interpretations of L.
+On the one hand, the condition L > 0 will provide a lower bound on detectability; if L(G, B, P ) < 0, then we can safely say that the instance G is informationtheoretically undetectable. However, L(G, B, P ) > 0 does not necessarily mean that the instance is information-theoretically detectable. This is due to the fact that the condition L > 0 is necessary but not sufficient, since we assume a complete knowledge of the generative process in calculating L.
+On the other hand, we will interpret L operationally as a measure of the difficulty of the inference problem (not in the computational sense). A large ratio of a hypothesis H to its null model H0 implies that the hypothesis is a
+
+The average of a log-likelihood ratio is also known as the Kullback-Leibler (KL) divergence D(·||·) of two hypotheses [46], i.e.,
+
+L(, P )
+
+=
+
+{G}
+
+P(G|B, P mmax
+
+)
+
+log
+
+P(G|B, P Q(G|)
+
+)
+
+=
+
+D(P||Q) mmax
+
+,
+
+(12)
+
+where the sum runs over all n nodes networks. Since the KL divergence is always greater or equal to zero, with equality if and only if P = Q, and since L > 0 is only a necessary condition for detectability, the average L will not be enough to conclude on detectability of the SBM, except for the case P = Q [47]. Results pertaining to L will therefore be best interpreted in terms of inference difficulty.
+However, even if the average log-likelihood ratio is always positive (assuming P = Q), it can be extremely close to zero for density matrix P "close" to 11 [Fig. 1 (f)]. In fact, as we will see in Sec. V, L(, P )  0 implies that there are instances for which L < 0. Therefore, whenever the average is small, we may also take it as a sign that the planted partition of some instances are truly undetectable.
+
+B. Compact form
+
+While Eq. (12) has a precise information-theoretic interpretation, there exists an equivalent form, both more compact and easier to handle analytically. It is given by
+
+L(, P ) = h() - rsh(prs) ,
+
+(13)
+
+rs
+
+where
+
+h(p) = -(1 - p) log(1 - p) - p log(p)
+
+(14)
+
+is the binary entropy of p  [0, 1]. This expression can be obtained in a number of ways, the most direct of which is to take the average of Eq. (11) over all symmetric matrices m = (m11, m12, . . . , mqq) with entries in N and upper bounds given by mmax = (mm11ax, mm12ax, . . . , mmqqax). That is to say, we use the interpretation where L is a weighted
+
+6
+
+sum of binomial distributed random variable, instead of the interpretation where it is a random variable over the networks of n nodes (see Sec. III B). The probability mass function associated to m is then Pr[m] = rs Pr[mrs], where Pr[mrs] is the binomial distribution of parameter prs and upper bound mmrsax. Due to the linearity of expectations, it is straightforward to check that the average of the first sum of Eq. (11) equals
+
+m
+
+Pr[m]
+
+rs
+
+mrs mmax
+
+log
+
+prs 1 -   1 - prs
+
+= log
+rs
+
+prs 1 -   1 - prs
+
+mmrsaxprs mmax
+
+.
+
+Recalling Eq. (6), one then finds
+
+L(, P ) = - rs (1 - prs) log(1 - )+prs log 
+rs
++ rs[(1 - prs) log(1 - prs)+prs log prs]
+rs
+= h() - rs h(prs) .
+rs
+
+where rs is defined in Eq. (7) with the normalization rs rs = 1. Notice how this expression does not de-
+pend on B anymore. In this context, the only role of the planted partition is to fix the relative block sizes . Thus, the average log-likelihood L of two models with different planted partitions but identical  is the same (up to a size-dependent constant).
+With these two expressions for L in hand [Eqs. (12) and (13)], we can now build an intuition for what the easiest and most difficult detectability problems might look like. The KL divergence is never negative, and Eq. (13) shows that the maximum of L is h(1/2); the average of the normalized log-likelihood is thus confined to the interval
+
+0  L(, P )  h(1/2) .
+
+(15)
+
+An example of parameters that achieves the upper bound
+would be the SBM of density matrix p11 = p22 = 1, p12 = 0, with n = [n/2, n/2], i.e., the "ensemble" of disconnected n/2­cliques (which contains a single instance).
+An example of parameters that achieves the lower bound would be P = Q, but also   0 [see Eq. (13)].
+
+C. Equivalent stochastic block models
+
+We now use Eq. (13) to uncover hidden connections between different regimes of the SBM. Notice how this expression induces equivalence classes in the parameter space of the model, with respect to L , i.e., subsets of parameters that all satisfy
+
+ = L(P , ) ,
+
+(16)
+
+where  is a constant that defines the equivalence class. In the next paragraphs, we will characterize these
+equivalence classes in two complementary ways. First, we will look for global transformations that preserve  and map parameters (, P ) to some other--not necessarily close--pair of parameters ( , P ). Provided that they satisfy a number of standard constraints, these transformations will be shown to correspond to the symmetry group of the set of hypersurfaces L(, P ) = . Second, we will consider Eq. (16) explicitly and use it to obtain an approximate hypersurface equation. This equation will be used in later sections to determine the location of the hypersurfaces that separate the parameter space of the SBM in different detectability phases.
+
+1. Global transformations: The symmetry group of the SBM
+
+We first look for the set of ­preserving global transformations, i.e., all transformations T (f1, f2) of the form
+
+ = f1(), P = f2(P )
+
+(17)
+
+valid at every point of the parameter space. This is
+
+a broad definition and it must be restricted if we are
+
+to get anything useful out of it. Intuitively, we do not
+
+want these transformations to change the space on which
+
+they operate, so it is natural to ask that they be space-
+
+preserving. Under the (reasonable) constraint that these
+
+transformations are invertible as well, we can limit our
+
+search for ­preserving transformations to the symmetry
+
+group of the parameter space.
+
+We will be able to harness known results of geome-
+
+try and algebra once the parameter space of the SBM
+
+is properly defined. This space is in fact the Cartesian
+
+product of two parameter spaces: The parameter space of  and that of P . Since there is q = q(q + 1)/2 free
+
+parameters in both  and P , the complete space is of dimension 2q - 1. It is the product of the q­dimensional
+
+hypercube--in which every point corresponds to a choice of P --, and the (q - 1)­dimensional simplex--in which
+
+every point corresponds to a choice of . The lat-
+
+ter is a simplex due to the normalization rs rs =
+
+(mmax)-1 Now, the
+
+rs mmrsax = 1. symmetry group
+
+of
+
+the
+
+q­dimensional
+
+hy-
+
+percube and that of the (q -1)­dimensional regular sim-
+
+plex are well-known [48]: They are respectively the hy-
+
+peroctahedral group Bq and the symmetric group Sq . Their action on  and P can be described as
+
+rs  rs = (r,s) , prs  prs = rs + (1 - 2rs)p(r,s) ,
+where rs = {0, 1}, and where both (r, s) and (r, s) are permutations of the indexes (r, s). While the symmetries of L(, P ) are automatically symmetries of the parameters, the converse is not true. We therefore look
+
+7
+
+for transformations T that satisfy
+
+L(, P ) = L f1(), f2(P ) .
+
+(18)
+
+It turns out that this constraint is satisfied if and only if  =  and rs =  (r, s), i.e., for transformations of the form
+
+rs  rs = (r,s) , prs  prs =  + (1 - 2)p(r,s) ,
+
+(19a) (19b)
+
+with  = {0, 1} (see Appendix C 1 for a detailed proof). The permutation component of the symmetry is not to be confused with the symmetries generated by relabeling blocks: The latter only leads to q! different symmetries, whereas the former correctly generates q! q! symmetries, or a total of 2q! symmetries once they are compounded with prs  1 - prs. The symmetries come about because the ordering of summation of the terms rsh(prs) in Eq. (13) does not matter, and both h() and h(prs) are preserved when prs  1 - prs.
+As an example of symmetry, let us focus on the special transformation prs  1 - prs (r, s) with (r, s) = (r, s), i.e., the only transformation that does not change the block structure of the model. Since networks generated by these parameters can be seen as complement of one another (i.e., an edge present in G is absent from G , and vice-versa), we may call this transformation the graph complement transformation. The fact that it preserves detectability can be understood on a more intuitive level with the following argument. Suppose that we are given an unlabeled network G generated by the SBM and that we are asked to confirm or infirm the hypothesis that it was, in fact, generated by the SBM. Even if nothing is known about the generative process, we can take the complement of the network--a trivial (and reversible) transformation. But this should not help our cause. After all, this transformation cannot enhance or worsen detectability since no information is added to or removed from G in the process. So we expect that  be preserved, and it is. Because all other symmetries affect the block structure through a change of , what the above result shows is that there is no other "information-preserving" transformation that can be applied to G without a prior knowledge of its planted partition.
+
+2. Hypersurfaces and detectability regions
+We now turn to the problem of finding compact and explicit formulas that describe the hypersurfaces of constant L in the parameter space [see Eq. (16)]. In so doing we will have to be mindful of the fact that the scale mmax intervenes in the calculation, even though it is absent from our expression for L . This can be made explicit by rewriting Eq. (16) as log  /mmax = ; it is easy to see that any given hypersurface will be comparatively closer to the region L = 0 in larger networks. We focus on the universal behavior of the hypersurfaces
+
+and remove all references to the scale of the problem by defining  := mmax--predictions for real systems can be recovered by reverting to the correct scale.
+While Eq. (16) is easily stated, it is not easily solved for, say, {prs}. The average normalized log-likelihood ratio involves a sum of logarithmic terms; the hypersurface equation is thus transcendental. To further complicate matters, there are 2q - 1 = q(q - 1) - 1 degrees of freedom and the number of free parameters grow quadratically with q. As a result, little can be said of truly general instances of the SBM--at least analytically. All is not hopeless, however, because there are approximation methods that work well when the number of free parameters is not too large. We sketch the idea here and apply it to a simpler variant of the SBM in the case study of Sec. VI.
+Expanding the binary entropy functions h(prs) around prs =  r  s drastically simplifies the hypersurface equation. Leaving the term h() untouched, we find from Eq. (16)
+
+ = h() - rs
+rs
+
+
+h() +
+k=1
+
+1 kh(x) k! xk
+
+(prs
+x=
+
+- )k
+
+.
+
+Due to the normalization of {rs}rs, all terms in h() cancel out, and the definition rs rsprs =  allows us to eliminate the first order terms as well. We are
+therefore left with
+
+2(1 - ) = rs(prs - )2 + O[(prs - )3] , (20)
+rs
+
+where  is fixed and (, P ) take on values constrained by both Eqs. (6) and (20). We then resort to a change of parameters and choose (P , ) as one of the parameters. Selecting the q -1 other parameters rs such that prs = (P , ) + rs(P , ), we obtain the form
+
+2(1 - ) = rs(rs)2 .
+
+(21)
+
+rs
+
+Hypersurfaces are therefore ellipsoids when prs   (r, s).
+Besides the simplicity of Eq. (21), there are two addi-
+tional arguments for dropping the higher order terms in
+Eq. (20). One, the series is invariant under the symmetry prs  1 - prs (r, s) only if we limit ourselves to the second-order expression: It is easily verified that
+
+ k h(x) xk
+
+(prs - )k
+x=
+
+= (-1)k(k - 2)!
+
+(
+
+1 - 1)k-1
+
+-
+
+1 ()k-1
+
+(prs - )k
+
+is off by a sign for odd powers of k under the mapping prs  1 - prs, which also implies   1 - . Two, the true hypersurfaces enclose sets of parameters which are
+convex with respect to P , and so does the hypersurface
+
+8
+
+implicitly defined in Eq. (20). The convexity of the hypersurface follows from the fact that the sublevel set of a convex function encloses a convex set [49], and from the observation that L is convex with respect to P [this is easy to show with Eq. (13) and the log-sum inequality; see Appendix C 2]. The convexity of the approximate level set is trivial to the second order, since it is an ellipsoid [Eq. (21)]. However, the approximate level set need not be convex when higher order terms are included. Together, these two observations tell us that while not exact, Eq. (20) captures the important qualitative features of the problem and that it is not necessarily true of approximate solutions with only a few extra terms.
+V. DETECTABILITY DISTRIBUTION
+In the previous section, we have computed the average L and used it to obtain equivalence among the parameters, with respect to detectability. We have also shown that L > 0 for most parameters, i.e., that we could not use the necessary condition L > 0 to conclude on the undetectability of the finite SBM, on average. As we will now argue, this conclusion must be further refined; the full distribution of L leads to a more accurate picture of detectability.
+
+()
+
+400
+300
+200
+100
+0
+16000 14000 12000 10000
+8000 6000 4000 2000
+0
+
+() (gaussian KDE) () (CLT) () (numerical)
+
+0.200
+
+0.205 
+
+() (gaussian KDE) () (CLT) () (numerical)
+
+-10-4
+
+0
+
+
+
+(a)
+0.210
+(b)
+10-4
+
+()
+
+FIG. 2. Accuracy of the CLT approximation for the (a) non uniform and (b) nearly uniform SBM of Fig. 1. Both histograms aggregate 100 000 samples of L. The prediction of the CLT is shown in red [see Eqs. (23b)­(23e)]. We plot for comparison the Gaussian kernel density estimate (KDE) of () (dashed black line, hidden by the CLT curve). Equation (25) predicts (a) = 1 and (b) = 0.981(2); for the sample shown, numerical estimates yield ^(a) = 1 and ^(b) = 0.980(7).
+
+A. The whole picture: ­detectability
+
+Consider a parametrization (B, 11 + ) of the SBM that yields L  0. Turning to the distribution of L for this parametrization, one expects to find L < 0 with non-zero probability (unless the distribution of L concentrates on L = 0). Therefore, L could be indicative of detectability for some fraction of the networks generated by the SBM.
+Let us formalize this notion and introduce the concept of ­detectability. We will say that the ensemble of networks generated with the SBM of parameters (B, P ) is ­detectable if
+
+Pr(L < 0; B, P ) = 1 -  .
+
+(22)
+
+That is,  gives the fraction of networks in the ensemble which evades the necessary condition for undetectability. If   0, then detection is impossible, in the sense that most instances are best described by the null hypothesis Q. If   1, then most instances contain statistical evidence for B; detection cannot be ruled out on the basis of the log-likelihood test.
+We must compute the complete distribution or the cumulative distribution function of L to determine . An exact result is out of reach since the outcome of L is determined by a weighted sum of independent binomial variables with non-identical distributions. In the following paragraphs, we give an approximate derivation based on the central limit theorem--it agrees extremely well with empirical results for all but the smallest networks.
+
+B. Approximate equation for 
+
+Equation (11) gives the normalized log-likelihood ratio as a sum of independent binomial random variables; it can be written as
+
+L=
+
+mrs mmax
+
+xrs
+
++
+
+C
+
+rs
+
+(23a)
+
+where the constants xrs and C are given by
+
+xrs = log
+
+prs 1 -   1 - prs
+
+,
+
+C=
+
+rs log
+
+1 - prs 1-
+
+,
+
+rs
+
+(23b) (23c)
+
+and where mrs  Bin(prs, mmrsax).
+The central limit theorem (CLT) predicts that the distribution of an appropriately rescaled and centered transformation of L will converge to the normal distribution N (0, 1) if the number of summed random variables q = q(q + 1)/2 goes to infinity. In the finite case, q obviously violates the conditions of the CLT, but it nonetheless offers a good approximation of the distribution of L (see Fig. 2).
+To apply the CLT, we first define the centered and
+
+9
+
+normalized variable Z = (L - C - µq )/Sq , where
+
+Sq2 =
+rs
+
+xrsmrs 2 mmax
+
+-
+
+=
+
+rs mmax
+
+prs(1 - prs)x2rs
+
+rs
+
+xrsmrs mmax
+
+2
+(23d)
+
+is the sum of the variances of the q scaled binomial variables xrsmrs/mmrsax, and where
+
+µq =
+
+xrs mmax
+
+mrs
+
+=
+
+rsprsxrs
+
+rs
+
+rs
+
+ h() - rsh(prs) - C (23e)
+rs
+
+is the sum of their means [we have used Eq. (13) in the last step]. The CLT then tells us that Z  N (0, 1), approximately.
+Recall that the cumulative distribution function of a normal random variable can be expressed in terms of the error function as
+
+Pr(Z
+
+<
+
+z)
+
+=
+
+1 2
+
+1 + erf
+
+z 2
+
+.
+
+(24)
+
+Now, assuming that Z is indeed normally distributed we can use the fact that Pr(L < 0) is equivalent to Pr[Z < -(C + µq )/Sq ] to compute . Writing µq + C as L [see Eq. (23e)], we find
+
+
+
+
+
+1 2
+
+1 + erf
+
+L 2Sq
+
+,
+
+(25)
+
+i.e., an (approximate) equation in closed form for . Crucially, Eq. (25) predicts that  can never be smaller
+than 1/2. This comes about because (i) L > 0 and (ii) Sq is a sum of variances, i.e., a positive quantity. There are therefore two possible limits which will yield L /Sq  0 and  = 1/2: Either L = 0 or Sq 0. Some care must be exerted in analyzing the case L = 0; Eqs. (11) and (12) tell us that the distribution of L is concentrated on 0 when its average is exactly equal to 0. We conclude that  = 1/2 is never reached but only approached asymptotically, for parameters that yield L = , with  small but different from zero. The consequence of   1/2 is that at most half of the instances of the SBM can be declared undetectable on the account of the condition L < 0.
+
+C. Relation between average detectability and ­detectability
+We can immediately reach a few conclusions on the interplay between the notions of average and ­ detectability. First, the symmetries of L , (see Sec. IV C 1) translates into symmetries for . To see
+
+this, first notice that Sq is conserved under the mapping prs  1 - prs
+[xrs(prs, )]2  [-xrs(1 - prs, 1 - )]2 , prs(1 - prs)  (1 - prs)prs .
+
+and that a permutation of the indexes (r, s) only changes the order of summation of the terms of Sq . Second, hypersurfaces of constant average detectability need not be hypersurfaces of constant ­detectability.
+To investigate this second important aspect of the connection between average detectability and ­ detectability, let us further approximate Eq. (25). The MacLaurin series of the error function is, to the first order,
+
+ = 1 1 + 2 L - O
+
+2
+
+ Sq
+
+ 1 L + 1 . 2 Sq 2
+
+L 3/Sq3
+
+, (26)
+
+This is a reasonably accurate calculation of  when L is small, i.e., close to the average undetectable regime. (Recall that we do not allow diverging Sq for the reasons stated in Sec. V B). It then becomes clear that on the hypersurfaces where L =  is constant (and close to 0),
+
+ 2
+
+
+
+-
+
+1 2
+
+Sq =  ,
+
+(27)
+
+is conserved rather than  itself. Equation (27) embodies a trade-off between accuracy () and variance (Sq ): In the regions of the hypersurface of constant L where the variance is large,  must be comparatively small, and vice-versa.
+
+D. 1­detectability
+
+Now, turning to the complementary case where L --
+
+and consequently --is close to its maximum, we obtain a
+
+simple criterion for 1­detectability based the asymptotic
+
+behavior of erf(x). It is reasonable to define a (small)
+
+threshold T beyond which erf(x > T ) = 1 for all practi-
+
+cal purposes. The error function goes asymptotically to
+
+1 with large values of its argument, but reaches its max-
+
+imum of erf(x) = 1 very quickly, so quickly, in fact, that erf(5) is numerically equal to 1 to the 10th decimal place.
+
+Asking that the argument of erf(x) in Eq. (25) be
+
+greater than this practical threshold, we obtain the in-
+
+equality
+
+
+
+L  2T Sq
+
+(28)
+
+for 1­detectability. Whenever the inequality holds, the associated ensemble is 1­detectable with a tolerance threshold T , i.e., we can say that for all practical purposes, there are no instances of the SBM that are necessarily [50] undetectable.
+
+10
+
+VI. CASE STUDY: GENERAL MODULAR GRAPHS
+The stochastic block model encompasses quite a few well-known models as special cases; noteworthy examples include the planted partition model [40, 51], the closely related symmetric SBM (SSBM) [26, 28, 52], the coreperiphery model [11], and many more. These simplified models are important for two reasons. One, they are good abstractions of structural patterns found in real networks, and a complete understanding of their behavior with respect to detectability is therefore crucial. Two, they are simple enough to lend themselves to a thorough analysis; this contrasts with the general case, where simple analytical expressions are hard to come by.
+In the paragraphs that follow, we investigate the general modular graph model (GMGM) [34], a mathematically simple, yet phenomenologically rich simplified model. Thanks to its simpler parametrization, we obtain easily interpretable versions of the expressions and results derived in Secs. III­V.
+
+A. Parametrization of general modular graphs
+
+The GMGM can be seen as constrained version of the
+SBM, in which pairs of blocks assume one of two roles:
+Inner or outer pairs. If a pair of blocks (Br, Bs) is of the "inner type", then one sets prs = pin. If a pair of blocks (Br, Bs) is of the "outer type", then one sets prs = pout. The resulting density matrices can therefore be expressed
+as
+
+P = (pin - pout)W + pout11 ,
+
+(29)
+
+where W is a q × q indicator matrix [wrs = 1 if (Br, Bs) is an inner pair], and where 1 is a length q vector of ones. A non-trivial example of a density matrix of this form is shown in Fig. 3 (a). The figure is meant to illustrate just how diverse the networks generated by the GMGM may be, but it is also important to note that the results of this section apply to any ensemble whose density matrix can be written as in Eq. (29). This includes, for example, the q­block SSBM, a special case of the GMGM obtained by setting W = Iq and {nr = n/q}r=1,..,q (see Ref. [23] for a discussion of the SSBM).
+While the parametrization in terms of pin and pout is simple, we will prefer an arguably more convoluted parametrization which is also more revealing of the natural symmetries of the GMGM (in line with the transformation proposed in Sec. IV C 2). The first natural parameter is the average density, which can be computed from Eqs. (6) and (29) and which equals
+
+ = rs[wrspin + (1 - wrs)pout] ,
+rs
+= pin + (1 - )pout ,
+
+(30a)
+
+where  := rs rswrs is the fraction of potential edges that falls between block pairs of the inner type. The second natural parameter is simply the difference
+
+ = pin - pout .
+
+(30b)
+
+The absolute value of  quantifies the distance between the parameters of the GMGM and that of the equivalent random ensemble; its sign tells us which type of pairs is more densely connected. In this natural parametrization, the density matrix takes on the form P = 11 + (1 - )W , i.e., a uniform matrix of  with perturbation proportional to (1-) for the inner pairs. It might appear that we have increased the complexity of the model description, since the additional parameter  now appears in the definition of the density matrix. It is, however, not the case, because we could consider the
+combined parameter  = (1-). Therefore, Eqs. (30a) and (30b), together with W and n, suffice to unambiguously parametrize the model.
+
+B. Average detectability of general modular graphs
+The average normalized log-likelihood ratio L is tremendously simplified in the natural parametrization of the GMGM; it is straightforward to show that the ratio takes on the compact (and symmetric) form
+
+L(, ; ) =  h() - h  + (1 - ) + (1 - ) h() - h  -  , (31)
+
+by using prs = wrspin + (1 - wrs)pout together with the inverse of Eqs. (30a) and (30b),
+
+pin =  + (1 - ) , pout =  -  .
+
+(32a) (32b)
+
+In Fig. 3 (b), we plot L(, ; ) in the (, ) space-- hereafter the density space--for the indicator matrix W shown in Fig. 3 (a) (and unequal block sizes, see caption). Unsurprisingly, L is largest when the block types are clearly separated from one another, i.e., when || is the largest. Notice, however, how large separations are not achievable for dense or sparse networks. This is due to the fact that not all (, ) pairs map to probabilities (pin, pout) in [0, 1]. The region of the density space that does yield probabilities is the interior of the quadrilateral whose vertices are, in (, ) coordinates: (0, 0), (, 1), (1, 0), (1 - , -1). Changing the value of  skews this accessible region and, presumably, the functions that are defined on it, such as L(, ; ) .
+We also show on Fig. 3 (b) two members of the level set defined by L(, ; ) = . As mentioned previously, the exact functional form of this family of hypersurfaces (here simply curves) seems elusive, but an approximate
+
+11
+
+ L  
+
+B5 (a) B4 B3 B2 B1
+B1 B2 B3 B4 B5
+
+1.0 (b)
+0.5
+
+0.0
+
+-0.5
+
+-1.0
+
+0.0
+
+0.5
+
+
+
+0.8 0.6 0.4 0.2 0.0 1.0
+
+0.10 (c)
+0.05
+
+0.00
+
+-0.05
+
+-0.10
+
+0.0
+
+0.5
+
+
+
+1.0 0.9 0.8 0.7 0.6 0.5 1.0
+
+FIG. 3. (color online) Detectability in the general modular graph model. All figures use the same indicator matrix W [panel
+(a)] and the size vector n = [10, 30, 20, 20, 20] (n = 100 nodes). (a) Example of density matrix P allowed in the GMGM. Dark
+squares indicate block pairs of the inner type and light squares indicate pairs of the outer type. (b) Average detectability in the
+density space of the GMGM. Both the numerical solution of L =  (solid black line) and the prediction of Eq. (34) (dashed
+white line) are shown, for  = 0.05 and 0.3. (c) (, ; ) in the density space of the GMGM; notice the change of ­axis. Solid white lines are curves where (, ; ) = , with  = 0.7 (central curve) and  = 0.99 (outer curve). Equation (25) is used to compute both  and .
+
+solution is available. Using the method highlighted in Sec. IV, we find, to the second order,
+2(1 - )  rs(prs - )2
+rs
+= [(1 - )]2 + (1 - )()2 . (33)
+Equation (33) fixes the relative value of all parameters on the line where L = . Solving for , we find
+
+(; , ) = ±
+
+2
+
+(1 (1
+
+- -
+
+) )
+
+,
+
+(34)
+
+also shown on Fig. 3 (b) for comparison. Figure 3 highlights the accuracy of our approximation
+when  is small. But it also highlights its inaccuracy when  is large;  1 forces (; , ) to pass through a region where   1, i.e., a region where the omitted terms on the right-hand-side of Eq. (33) contribute heavily. Fortunately, this is not so problematic, since most detectability related phenomena--phase transitions, undetectable instances, etc.--arise near  = 0, i.e., where the approximation works.
+
+C. ­detectability of general modular graphs
+While L(, ; ) takes on a particularly compact form once we substitute {prs} by the natural parameters of the GMGM, the same cannot be said of (, ; , n). Some analytical progress can be made by, e.g., noticing that only two types of terms are involved in the calculation of Sq , but, ultimately, the resulting expression is no more useful than the simple Eqs. (25) and (26). We will, therefore, omit the calculation of .
+In Fig. 3 (c) we plot (, ; , n) in the density space [using Eq. (25)]. We also display the numerical solutions of (, ; , n) =  for two values of . The figure
+
+highlights just how quickly  goes to 1 as a function of , even for the fairly small system sizes considered: We find that   0.99 for any value of , as soon as  > 0.06. The condition in Eq. (9) is therefore a weak one. It allows us to determine that some parameters are overwhelmingly undetectable, but only when  is very close to 0.
+Figure 3 also shows how increases in variance translate into decreases in accuracy [see Eq. (27)]: Following a line of constant (and relatively small) , one can see that  is minimized close to  = 1/2, i.e., near the maximum of variance. This is characteristic of many parametrizations of the SBM and GMGM; it turns out that, for fixed n, impossible detection problems are not confined to vanishing densities. In fact, values of  closer to 1/2 are associated with a comparatively larger interval of  for which detection is impossible.
+
+D. Symmetries of general modular graphs
+
+In Secs. IV and V, we have proved that there are 2q! transformations that preserve L(, ; ) and (, ; , n). We could therefore go about computing the symmetries of the GMGM by listing all of these transformations in terms of (, , ). But since there are only three free parameters in the GMGM, we can also choose an alternative route and directly solve L(, ; ) = L(a1 + b1, a2 + b2; a3 + b3) by, e.g., obtaining a linear system from the Taylor series of L(, ; ) . This simpler approach yields the following set of ­preserving transformations for the model:
+
+(, , )  (, , ) , (, , )  (, -, 1 - ) , (, , )  (1 - , , 1 - ) , (, , )  (1 - , -, ) .
+
+(35a) (35b) (35c) (35d)
+
+12
+
+It is straightforward to check that these transformations form a group, whose product is the composition of two transformations. A Cayley table reveals that the group is isomorphic to the Klein four-group Z2 × Z2.
+One immediately notices a large gap between the number of symmetries predicted by the calculations of Sec. IV C 1 (2q!) and the number of symmetries appearing in Eq. (35) (4, independent of q). The gap is explained by the fact that every symmetry of the general SBM maps onto one of the four transformations listed in Eq. (35) [53] A sizable fraction of the symmetries reduce to Eq (35a), since permutations (r, s) cannot modify the natural parameters of the GMGM: The type of block pair (Br, Bs)--characterized by prs--is permuted alongside its share of potential edges rs. Another important fraction of the symmetries is accounted for by the "graph complement transformation": Any transformation P = 11 - P plus a permutation reduces to Eq. (35d). This leaves two symmetries, which happen to be artifacts of our choice of nomenclature. To see this, rename pair types, i.e., call inner pairs "outer pairs" and vice-versa. Neither the density  nor || will change. But both the sign of  and the value of  will be altered. With this in mind, it becomes clear that Eq. (35b) corresponds to the permutation symmetry, and that Eq. (35c) corresponds to the graph complement symmetry, both up to a renaming of the types.
+
+E. Where the framework is put to the test: Inference
+
+1. Procedure
+
+It will be instructive to put our framework to the test and compare its predictions with numerical experiments that involve inference, i.e., the detection of the planted partition of actual instances of the GMGM. We will use the following procedure: (i) generate an instance of the model, (ii) run an inference algorithm on the instance, and (iii) compute the correlation of the inferred and planted partition (see below for a precise definition). The average detectability L should bound the point where the average correlation becomes significant, and ­detectability should give an upper bound on the fraction of correlated instances.
+Even for the small size considered, it is impossible to compute all quantities involved in the process exactly; we therefore resort to sub-sampling. We use an efficient algorithm [54] based on the Metropolis-Hastings algorithm of Ref. [17], which, unlike belief propagation [28], works well for dense networks with many short loops. The principle of the algorithm is to construct an ergodic chain of partitions B0, ..., BT , and to sample from the chain to approximate the probability
+
+µri (G) =
+
+Pr(B|G, P , n)((vi) = r)
+
+(36)
+
+{B }
+
+that node vi is in block Br, given a network G and some parameter P and n. It is easy to see that one can then maximize the probability of guessing the partition correctly by assigning nodes according to [31]
+
+^(vi) = argmaxr(µri ) .
+
+(37)
+
+We choose a simple set of moves that yields an ergodic
+chain over all {B}: at each step, we change the block of
+a randomly selected node vi from (vi) = Br to a randomly and uniformly selected block Bs, with probability min{1, A}, where
+
+A=
+
+prs(1 - prr) kr(i) pss(1 - prs) ks(i)
+
+prr(1 - prs)
+
+prs(1 - pss)
+
+×
+
+1 - prs nr-1 1 - pss ns
+
+1 - prr
+
+1 - prs
+
+×
+l=r,s
+
+pls(1 - prl) kl(i) 1 - pls
+
+prl(1 - pls)
+
+1 - prl
+
+nl
+,
+
+(38)
+
+and kl(i) the number of neighbors of node vi in block Bl [17]. The space of all partitions is obviously connected by this move set, and the possibility of resampling a configuration ensures that the chain is aperiodic. Furthermore, since transition probabilities are constructed according to the prescription Metropolis-Hastings, the chain is ergodic and samples from P(B|G, P , n). Note that we assume that P is known when we compute Eq. (36). Learning the parameters can be done separately, see Ref. [31], for example.
+In the spirit of Refs. [28, 31], we initialize the algorithm with the planted partition itself. This ensures that we will achieve the information-theoretic threshold, even if efficient inference is impossible [31]. To see this, first consider the case where the planted partition is information-theoretically detectable. In this case, the chain will concentrate around the initial configuration, and the marginal distribution [Eq. (36)] will yield a distribution correlated with the planted partition. We will have to proceed with care, however, since two scenarios may occur in the information-theoretically undetectable phase. If there is no hard phase--e.g., when q = 2 [32]--, the algorithm will show no particular preference for the initial configuration and wander away toward partitions uncorrelated with the planted partition. But if there is a hard phase, one will have to wait for a period that diverges exponentially in the system size before the sampler becomes uncorrelated with its initial state [31]. This complicates convergence diagnosis and can lead one to conclude that correlated inference is possible even though it's not. To avoid these difficulties, we will simply restrict ourselves to the cases where the hard phase does not exist [23].
+Once the estimated partition B^ is obtained via Eq. (37), we compute its correlation with B--the planted partition--using a measure that accounts for finite-size
+
+13
+
+effects. The so-called relative normalized mutual information (rNMI) of Ref. [55] appears a good choice. Much like the well-known NMI [56, 57], the rNMI is bounded to the [0, 1] interval, and rNMI(Bp, B^) = 1 means that the planted partition Bp and the inferred partition B^ are identical. Unlike the NMI, rNMI(Bp, B^) = 0 signals the absence of correlation between the two partitions, even in finite networks.
+2. Results
+In Fig. 4 (a), we plot rNMI(Bp, B^) in the density space of the GMGM. We use the parameters W = I, and n = [n/2, n/2] (i.e., the SSBM), since the resulting ensemble is conjectured to be the hardest of all, with respect to detectability [31]. Two important parallels can be drawn between the results shown in Fig. 4 (a) and the functional form of L(, ; ) and (, ; , n) [shown in Figs. 3 (b) and 3 (c) for a different GMGM]. First, notice how the boundary that marks the onset of the (theoretically) 1­detectable region partitions the density space in two qualitative regimes: A regime where perfect detection is possible for all instances, and a region where it is not. There is, of course, some level of arbitrariness involved in selecting the threshold T [see Eq. (28)]. But the fact that a line of constant  partitions the space is a hint that while L < 0 is not sufficient for undetectability, there exists a level of significant  for which L properly separates detectable and undetectable instances.
+The second important parallel concerns hypersurfaces of constant L and their connection with rNMI . We have argued in Sec. IV that L is a good predictor of the accuracy of an optimal inference algorithms (with potentially exponential complexity). It should, therefore, not be surprising that there is an hypersurface of constant L which also partitions the density space in two qualitative regions [58]: One where rNMI  0 and one where rNMI is clearly greater than zero. On this hypersurface, the average level of significance is the same for all parametrizations of the GMGM; our results show that the inference algorithm achieves correspondingly uniform accuracy for all parameters on the surface.
+One could argue that these parallels are not so obvious in Fig. 4 (a); we therefore focus on a subset of the density space in Figs. 4 (b) and 4 (c) to make our case clearer. In these figures, we plot the same information, but only for networks of constant density  = 0.25 and size n = 100 (b) and n = 500 (c). We also show the probability Pr(rNMI(Bp, B^) > 0) that the inferred partition is correlated with the planted partition. This a direct measurement of the fraction of detectable instances, which we compare against (; , , n). It never reaches 0, because random fluctuations produce correlated partitions even when P = Q (the rNMI corrects for the average correlation). If L > 0 were a necessary and sufficient condition for detectability, then (; , , n) and
+
+ rNMI
+
+1.0
+
+0.5
+
+0.0
+
+-0.5
+
+(a)
+-1.0
+
+0.0
+
+0.5
+
+
+
+1.0
+
+1.0
+0.5
+0.0 1.0
+
+0.5
+
+()
+
+rNMI
+
+(b)
+0.0
+
+Pr(rNMI > 0)
+
+-0.3 -0.2 -0.1 0.0 0.1 0.2 0.3 0.4 0.5 
+
+1.0
+
+0.5
+(c)
+0.0
+
+() rNMI Pr(rNMI > 0)
+
+-0.3 -0.2 -0.1 0.0 0.1 0.2 0.3 0.4 0.5 
+
+FIG. 4. Inference of the GMGM. All figures show results for the special case q = 2, W = I2, and n = [n/2, n/2], corresponding to the q = 2 SSBM [23]. All empirical results are averaged over 104 independent instances of the SBM. (a) Average rNMI of the planted and the inferred partition in the density space of the model of size n = 100. Solid red lines mark the boundariesof the 1­detectability region, with tolerance threshold T = 4 2; see Eq. (28). Dotted black lines show the two solutions of (;  = 1/2n, ); see Eq. (34). White lines show the finite-size Kesten-Stigum (KS) bound, before it is adjusted for the symmetries of the problem. (b, c) Phase transition at constant  = 0.25 for networks of n = 100 nodes (b) and n = 500 nodes (c). Circles indicate the fraction of instances for which a correlated partition could be identified, while diamonds show the average of the rNMI (lines are added to guide the eye). Blue solid curves show (; , , n); see Eq. (25). The shaded region lies below the
+finite-size KS bound  = ±q /n (here with q = 2). The dotted lines show the two solutions of (;  = 1/2n,  = 1/2).
+
+Pr(rNMI > 0|, , , n) would correspond perfectly. But since L > 0 is only a necessary condition, () acts as an upper bound rather than an exact expression, i.e.,
+
+14
+
+Pr(rNMI > 0; ) can never be greater than (). Two further observations must be made. First, it is
+known that in the sparse two-blocks SSBM, the transition between the information-theoretically undetectable and detectable regions occurs on the so-called Kesten-Stigum (KS) bound--located at  = ±q /n for finite-size instances (this is not generally true, but the equivalence holds when q = 2 [32]). Despite the fact that this bound was derived for infinite ensembles, it holds very well in the finite case, as shown in Figs. 4 (b) and 4 (c). But the finite-size approach has the potential to be more precise. Building upon the interpretation of L as a measure of the average difficulty of the inference problem, we set a threshold L = 1/2n on the average detectability. For this choice of threshold, the approximate hypersurface equation predicts a transition at
+ = ±2 (1 - )/n ,
+very close to the KS bound, but with a correction for nonvanishing densities. Interestingly, one can motivate this choice of threshold with random matrix theory [52, 59, 60] (see Appendix B for details) or the theory of low-rank matrix estimation [61]. The uncorrected and corrected bounds are shown on Fig. 4 (a). The corrected bound is qualitatively accurate in all density regimes, unlike the KS bound.
+Second, in asymptotic theories, the SBM is either said to be undetectable with overwhelming probability, or the converse. The finite-size approach is more nuanced in the sense that it accounts for random fluctuations, which are also manifest in empirical results [see the curves Pr(rNMI(Bp, B^) > 0)]. While ­detectability is not perfect, as is argued above, it nonetheless goes through a smooth transition instead of an abrupt one. This reflects the continuous nature of the finite-size transition.
+
+correspondence with the finite-size information-theoretic threshold (as well as with random matrix theory, see Appendix B), we have presented numerical evidence that the hypersurface L = 1/2n separates detectable from undetectable instances in a special case of the SBM.
+The unifying theme of this contribution has been the idea that L quantifies both detectability and consistency in the finite-size SBM. This interpretation leaves many questions open for future works. Perhaps the most important of all: Can one determine the threshold within the framework of the theory itself, for general SBM?
+A second important question pertains to sufficiency: Can one modify the condition to make it necessary and sufficient? Or is a completely different approach needed? In asymptotic analyses of the limit, one can use different conditions to bound the limit from above and below, as is done in Ref. [33]. Can a similar approach be fruitfully applied to finite instances?
+In closing, let us mention a few of the many possible generalizations of the methods introduced. First, it will be important to verify how our approach behaves in the limit n  . How this limit is taken will matter. In particular, we believe that our framework has much to say about the limit where q  , since it does not assume Poisson distributed degree, unlike other asymptotic theories of the limit. Second, we see no major obstacle to a generalization of our methods to other generative models of networks with a mesoscopic structure. This includes, for example, the consistency of graphons, a subject whose study has been recently undertaken [62]. Changing the null model from the equivalent random network ensemble to the configuration model [63, 64] could even allow an extension to degree-corrected SBM [65].
+ACKNOWLEDGMENTS
+
+VII. CONCLUSION
+Building upon ideas from statistical theory, we have developed a framework to study the information-theoretic detectability threshold of the finite-size SBM. Our analysis relies on two different interpretations of the loglikelihood ratio L of the SBM and its equivalent random ensemble. We have used the rigorous interpretation of L to put a necessary condition on detectability. We have then computed the distribution of L, and proved that up to half of the instances of the finite-size SBM could be declared undetectable on the basis of this simple test alone. We have further argued that the average of L could be interpreted as a proxy for the performance of an optimal inference algorithm (with possibly exponential running time). This interpretation has proved to be fruitful; starting with a compact form for L , we have established the existence of a large equivalence class with respect to average detectability. In Appendix A, we have shown that L can also be used to prove that, quite naturally, detectability decreases when the datasets are noisy. Using a
+
+We thank Charles Murphy and Guillaume St-Onge for useful discussions and comments. This work has been supported by the Fonds de recherche du Qu´ebec-Nature et technologies (J.-G.Y., P.D), the Conseil de recherches en sciences naturelles et en g´enie du Canada (L.J.D.), the James S. McDonnell Foundation Postdoctoral Fellowship (L.H.-D.), and Grant No. DMS-1622390 from the National Science Foundation (L.H.-D.). P.D. and E.L. are grateful to D. C^ot´e (P.D., E.L) and P. Mathieu (E.L.) for financial support.
+Appendix A: Detectability and noise
+One almost never has a perfect knowledge of the structure of real networks. The culprit can lie at the level of data collection, storage, transmission--or a combination of the above--, but the outcome is the same: Some edges are spurious and others are omitted [66]. To model imperfect knowledge, we will suppose that instances of the SBM first go through a noisy channel where
+
+15
+
+T modifications--random edge removals or additions-- are applied to the structure. Only then are we asked to tell which of hypotheses P and Q is the most likely. It should be clear that it will be more difficult to separate the two hypotheses, since noise is not necessarily aligned with the planted partition.
+We will approach the problem with the following universal perturbation process (UPP): At each step t of this process, a new random edge is added with probability c; otherwise, a random edge is removed. If a new edge must be added, then it is selected uniformly from the set of nonedges. If an edge must be removed, then it is selected uniformly from the set of edges already present in the network. This randomization step is then repeated T times. We call this process universal because one can map arbitrary perturbation patterns onto one or successive UPPs with different parameters c.
+To prove that L decreases as a result of any sufficiently long UPP, we will show that the total derivative
+
+d dt
+
+L
+
+=
+
+rs
+
+L prs
+
+dprs(t) dt
+
+(A1)
+
+is negative everywhere. In so doing, we assume that the process can be approximated as a continuous one (both with regards to "time" t and discrete quantities such as mrs). Admittedly, a more rigorous approach would be needed to settle the matter unequivocally, but we argue that the method presented in this appendix gives a good intuition for the problem.
+Without specifying the dynamics, and using Eq. (13), one can compute
+
+L prs
+
+= rs log
+
+prs 1 -   1 - prs
+
+= rsxrs ,
+
+(A2)
+
+where xrs is identical to Eq. (23b). This leaves the prs(t) terms, whose expressions are determined by the perturbation dynamics. For the UPP, the evolution of
+
+{mrs(t)}rs is determined by the set of differential equations
+
+m rs(t)
+
+=
+
+-
+
+(1
+
+- c)[mrs(t)] rs mrs(t)
+
++
+
+c [mmrsax mmax -
+
+- mrs(t)] rs mrs(t)
+
+.
+
+(A3)
+
+The first term accounts for edge removal events, which
+occur with probability (1 - c) and involve edges that
+connect nodes in blocks (Br, Bs) with probability mrs/ mrs(t). A similar argument leads to the second term, which accounts for edge creation events.
+Equation (A3) can be transformed into an equation for prs(t) by dividing through by mmrsax, and then using the definitions prs(t) = mrs(t)/mmrsax and (t) =
+rs mrs(t)/mmax. We find
+
+prs(t) =
+
+n 2
+
+-1
+
+c
+
+1 - prs(t) 1 - (t)
+
+- (1 - c)
+
+prs(t) (t)
+
+, (A4)
+
+which, upon substitution in Eq. (A1), yields
+
+dL dt
+
+=
+
+rs log
+
+f (prs) f ()
+
+rs
+
+f (c)f () f (prs)
+
+-
+
+1
+
+,
+
+(A5)
+
+where  = [2(1 - c)prs]/[n(n - 1)] is a nonnegative factor, and where we have defined f (x) = x/(1 - x). It
+turns out that the sum is not only globally negative but
+that each term is also individually negative; i.e.,
+
+- log
+
+f () f (prs)
+
+f (c)f () f (prs)
+
+-
+
+1
+
+0
+
+r  s. (A6)
+
+This comes about because the sign of the logarithm always matches that of the bracket.
+To prove this statement, we treat five different cases and use the following identities repeatedly:
+
+f (x) f (y)
+
+<
+
+1
+
+= x < y ,
+
+f (c)f () f (prs)
+
+>1
+
+= c >
+
+(1
+
+-
+
+prs(1 - ) prs) + prs(1
+
+-
+
+)
+
+.
+
+The cases are:
+
+(A7) (A8)
+
+1. If  = prs: The logarithm equals 0 and the upper bound of Eq. (A6) holds.
+
+2. If prs <  and c < 1/2: The logarithm is positive [see Eq. (A7)]. The bracket is also positive, since the inequality in Eq. (A8) can be rewritten as (1 - )prs  (1 - prs) using the fact that c < 1/2. This simplifies to prs  , in line with our premise.
+3. If prs <  and c  1/2: The logarithm is positive. Using our premise, we conclude that f ()/f (prs) > 1 and f (c)  1. Therefore, f (c)f ()/f (prs) > 1, i.e., the bracket is positive.
+
+4. If prs >  and c  1/2: The logarithm is negative. Using our premise, we conclude that f ()/f (prs) < 1 and f (c)  1. Therefore, f (c)f ()/f (prs) < 1, i.e., the bracket is negative.
+
+5. If prs >  and c > 1/2: The logarithm is negative. The bracket is also negative, since the converse of the inequality in Eq. (A8) can be rewritten as (1 - )prs  (1 - prs) using the fact that c > 1/2. This simplifies to prs  , in line with our premise.
+This list covers all cases and therefore completes the proof that d L /dt  0, i.e., that average detectability decreases as a result of the application of a UPP.
+
+Appendix B: Connection with random matrix theory
+
+In Refs. [52, 60] it is argued that SBM is not efficiently detectable when the extremal eigenvalues of the modularity matrix of its instances merge with the so-called "continuous eigenvalue band." It is proved in Ref. [52] that this occurs when
+
+n(pin
+
+-
+
+pout)
+
+=
+
+±
+
+1 n
+
+2n(pin + pout) ,
+
+(B1)
+
+for the two-block SSBM with Poisson distributed degrees. Furthermore, in this case, there is no so-called hard phase [32], meaning that the above limit affords a comparison with the prediction if our information theoretic framework.
+Since we are concerned with the finite case, let us first modify this result to account for binomial distributed degrees instead. It turns out that the corrected condition is found by substituting the expectations of Poisson variables [in the right-hand-side of Eq. (B1)] by that of binomial variables. This leads to
+
+(pin
+
+-
+
+pout)
+
+=
+
+±
+
+1 n
+
+2n[pin(1 - pin) + pout(1 - pout)] ,
+
+(B2)
+
+or, in terms of the natural parameters of the GMGM,
+
+ = ±
+
+n
+
+4 -
+
+1
+
+(1
+
+-
+
+)
+
+.
+
+(B3)
+
+This equation bears a striking similarity with Eq. (34), our approximate equation for curves of constant L . In fact, for the two-block SSBM (  1/2), the latter reads
+
+ = ± 8(1 - ) .
+
+(B4)
+
+One obtains an exact equivalence between the two expressions by setting  = 1/2(n - 1)  1/2n. The fact that modularity based spectral methods cannot infer a correlated partition if    [Eq. (B3)] can thus be understood as stemming from a lack of statistical evidence for the SBM.
+
+Appendix C: Detailed proofs
+
+1. Symmetries of the average detectability
+
+Theorem 1 (­preserving symmetries). All transformations T (, P ) of the parameter space of the SBM that are (i) reversible, (ii) space-preserving, and (iii) valid at ev-
+ery point of the parameter space can be written as
+
+prs  prs = rs + (1 - 2rs)p(r,s) , rs  rs = (r,s) ,
+
+(C1a) (C1b)
+
+where rs  {0, 1} and where  and  are permutations that acts on the set {(r, s) | 1  r,  s  g }. Under the additional constraint that L(, P ) be preserved by {T }
+and equal to , one must have
+
+ =  and rs =  (r, s) .
+
+Let us first introduce new notations to clarify the proof
+
+of Theorem 1. First, we define vectors |p and | whose
+
+entries are the q =
+
+q 2
+
++ q entries of the upper triangle
+
+(and diagonal) of P and . In this notation, we write the
+
+average density as |p and the average detectability as
+
+L(, P ) = |u(, P ) ,
+
+(C2)
+
+16
+
+where |u(, P ) is q­dimensional vector parametrized by (, P ), whose entries are given by
+
+urs(, P ) = prs log
+
+prs |p
+
++
+
+(1
+
+-
+
+prs)
+
+log
+
+1- 1-
+
+prs |p
+
+.
+
+We also introduce  and , two q ×q permutation ma-
+trices such that  | rs = (r,s) and  |p rs = p(r,s), where |a ij is the element (i, j) of vector |a . In this notation, Eqs. (C1) are given by
+
+|  | =  | , |p  |p =  |1 + (I - 2) |p
+  |1 + (I - 2 ) |p ,
+
+where  is a diagonal matrix with element rs on the diagonal, where I is the identity matrix, and where  = -1 is also a diagonal matrix.
+Proof. The proof of the first part of Theorem 1 (form of the transformations) is given in the main text, see Sec. IV C 1.
+To prove the second part of the theorem (constrained transformations), we look for the subset of all transformations of the form shown in Eq. (C1) that also preserve L , i.e., transformations T in Sq × Bq that map (, P ) to ( , P ) and that satisfy
+
+|u(, P ) =  |u( , P ) .
+
+It is easy to check that if  =  and  = I with   {0, 1}, then the average density and the normalized log-likelihood are both preserved. Therefore, if the transformations are of the proposed form, then  is preserved.
+To complete the proof we must show that L is conserved only if  = I and  = . First, we note that by the properties of the scalar product and permutation matrices, we have the following obvious symmetry
+
+|u = |u ,
+
+which is valid for all permutation matrices . We use this symmetry to "shift" all permutation matrices to the second part of the scalar product representation of L , i.e., we write
+|u   |u = |u = |-1u .
+
+Now, from Eq. (C2), it is clear that we will have L(, P ) = L( , P ) if and only if
+
+|u - -1u = 0 ,
+
+(C3)
+
+where |u := |u( , P ) . Since |u - -1u is analytic in , we can expand it by using Taylor series; this creates an infinite series of constraints that must all be satisfied. In particular, the condition in Eq. (C3) will be satisfied only if
+|u - -1u = |0 .
+
+17
+
+This is true if and only if, for all (r, s), one has
+
+prs log
+
+prs |p
+
++
+
+(1
+
+-
+
+prs)
+
+log
+
+1- 1-
+
+prs |p
+
+= p¯rs log
+
+p¯rs |p¯
+
++
+
+(1
+
+-
+
+p¯rs)
+
+log
+
+1- 1-
+
+p¯rs |p¯
+
+,
+
+(C4)
+
+where |p¯ = -1 |p . Here, |p¯ is the transformed vector
+
+|p , on which the inverse of permutation (r, s) is also
+
+applied.
+
+Let us now suppose that  tends to the point ~, which
+
+is such that ~rs = 0 for all (r, s) except for (r, s) = (a, b) (i.e., ~ab = 1). In this limit, Eq. (C4) is trivially satisfied when (r, s) = (a, b) but not otherwise. Let us
+
+suppose (r, s) = (a, b) and expand the equation around
+
+pab
+
+= p¯ab =
+
+1 2
+
+.
+
+From this second series expansion, one
+
+concludes that the equality is satisfied if either p¯ab = pab
+
+or p¯ab = 1 - pab. In both cases, the indices must match,
+
+which implies that (a, b) = -1  (a, b). By repeating
+
+the same argument for all (a, b), we conclude that  = .
+
+Thus, the map T : (, P )  ( , P ) is a symmetry only
+
+if  = .
+
+This leaves the proof that  = I. Let us, by contra-
+
+diction, assume that rs differs from one set of indices to the other and define the sets A and B by
+
+A = {(r, s) : rs = 0} and B = {(r, s) : rs = 1} . Then one can write
+
+ = |p = p A + p B ,
+
+(C5)
+
+where p X := (r,s)X rsprs. Returning to Eq. (C4) for (r, s)  A and using the newfound fact that  = 
+
+which implies p¯rs = rs + (1 - 2rs)prs (no more permutations), we find
+
+prs
+
+log
+
+prs 
+
++
+
+(1
+
+-
+
+prs) log
+
+1 - prs 1-
+
+= prs log
+
+p
+
+prs A+ p
+
+B +(1-prs) log 1 -
+
+1 - prs p A- p
+
+.
+B
+
+This can only be true if  = p A + p B, i.e., if A =  or B = . Therefore, rs =  (r, s), with   {0, 1}.
+
+2. Convexity of L
+Theorem 2. L(, P ) is convex with respect to P .
+This property of L is--perhaps surprisingly--not a consequence of the convexity of the KL divergence. Instead, it follows from the log-sum inequality.
+Proof. We prove that L(, P ) is convex with respect to P by showing that it satisfies the convexity condition
+L(, (1 - t)P + tQ)  (1 - t) L(, P ) + t L(, Q) , (C6)
+explicitly for all t  [0, 1]. Again, for the sake of clarity, we will use the notation developed in the previous section, and, in particular, write the density as  = |p . We write each term on the left-hand-side of Eq. (C6) as
+
+rs
+
+[(1
+
+-
+
+t)prs
+
++
+
+tqrs]
+
+log
+
+(1
+
+(1 -
+
+- t)
+
+t)prs |p
+
++ +
+
+tqrs t |q
+
++ [(1 - t)(1 - prs) + t(1 - qrs)] log
+
+(1 - t)(1 - prs) + t(1 - qrs) (1 - t)(1 - |p ) + t(1 - |q
+
+)
+
+It is easy to see that the log-sum inequality
+
+(a
+
++
+
+a¯)
+
+log
+
+a b
+
++ +
+
+a¯ ¯b
+
+
+
+a
+
+log
+
+a b
+
++
+
+a¯
+
+log
+
+a¯ ¯b
+
+can be applied to both parts of Eq. (C 2) to separate
+
+terms by their coefficients (1 - t) and t. Repeating the same operation on all terms yields the inequality in Eq. (C6).
+
+[1] M. A. Porter, J.-P. Onnela, and P. J. Mucha, Notices of the AMS 56, 1082 (2009).
+[2] S. Fortunato, Phys. Rep. 486, 75 (2010). [3] M. E. J. Newman, Nat. Phys. 8, 25 (2012). [4] C. Seshadhri, T. G. Kolda, and A. Pinar, Phys. Rev. E.
+85, 056109 (2012).
+
+[5] T. P. Peixoto, Phys. Rev. X 4, 011047 (2014). [6] J.-G. Young, L. H´ebert-Dufresne, A. Allard, and L. J.
+Dub´e, Phys. Rev. E 94, 022317 (2016). [7] L. H´ebert-Dufresne, A. Allard, V. Marceau, P.-A. No¨el,
+and L. J. Dub´e, Phys. Rev. Lett. 107, 158702 (2011). [8] A. Nematzadeh, E. Ferrara, A. Flammini, and Y.-Y.
+
+18
+
+Ahn, Phys. Rev. Lett. 113, 088701 (2014). [9] M. Rosvall and C. T. Bergstrom, Proc. Natl. Acad. Sci.
+U.S.A. 105, 1118 (2008). [10] L. H´ebert-Dufresne, A. Allard, P.-A. No¨el, J.-G. Young,
+and E. Libby, arXiv:1607.04632 (2016). [11] S. P. Borgatti and M. G. Everett, Soc. Networks 21, 375
+(2000). [12] J. Yang and J. Leskovec, Proc. IEEE 102, 1892 (2014). [13] T. P. Peixoto, Phys. Rev. E 85, 056122 (2012). [14] P. W. Holland, K. B. Laskey, and S. Leinhardt, Soc.
+Networks 5, 109 (1983). [15] P. W. Holland and S. Leinhardt, JASA 76, 33 (1981). [16] H. C. White, S. A. Boorman, and R. L. Breiger, Am. J.
+Sociol. , 730 (1976). [17] T. A. Snijders and K. Nowicki, Journal of Classification
+14, 75 (1997). [18] T. P. Peixoto, Phys. Rev. Lett. 110, 148701 (2013). [19] M. E. J. Newman and G. Reinert, Phys. Rev. Lett. 117,
+078301 (2016). [20] T. Kawamoto and Y. Kabashima, arXiv:1606.07668
+(2016). [21] T. P. Peixoto, Phys. Rev. X 5, 011033 (2015). [22] S. Fortunato and M. Barthelemy, Proc. Natl. Acad. Sci.
+U.S.A. 104, 36 (2007). [23] E. Abbe, arXiv:1703.10146 (2017). [24] By correlated, it is meant that the two partitions are
+more similar than two randomly constructed partitions. Our choice of measure will be made explicit at a later stage. [25] P. J. Bickel and A. Chen, Proc. Natl. Acad. Sci. U.S.A. 106, 21068 (2009). [26] E. Abbe, A. S. Bandeira, and G. Hall, IEEE Transactions on Information Theory 62, 471 (2016). [27] J. Reichardt and M. Leone, Phys. Rev. Lett. 101, 078701 (2008). [28] A. Decelle, F. Krzakala, C. Moore, and L. Zdeborova´, Phys. Rev. Lett. 107, 065701 (2011). [29] F. Krzakala, C. Moore, E. Mossel, J. Neeman, A. Sly, L. Zdeborova´, and P. Zhang, Proc. Natl. Acad. Sci. U.S.A. 110, 20935 (2013). [30] L. Massouli´e, in Proceedings of the 46th Annual ACM Symposium on Theory of Computing (ACM, New York, 2014) pp. 694­703. [31] A. Decelle, F. Krzakala, C. Moore, and L. Zdeborova´, Phys. Rev. E 84, 066106 (2011). [32] E. Mossel, J. Neeman, and A. Sly, arXiv:1311.4115 (2013). [33] J. Banks, C. Moore, J. Neeman, and P. Netrapalli, in Proceedings of the 29th Annual Conference on Learning Theory (2016) pp. 383­416. [34] T. Kawamoto and Y. Kabashima, Phys. Rev. E 95, 012304 (2017). [35] There is no obstacle to a generalization to the directed case (with or without self-loops). [36] M. E. J. Newman, Networks: An Introduction (Oxford University Press, Oxford, 2010). [37] S. van der Pas and A. van der Vaart, arXiv:1608.04242 (2016). [38] M. E. J. Newman, Phys. Rev. E 94, 052315 (2016). [39] M. E. J. Newman, Phys. Rev. E 88, 042822 (2013). [40] A. Condon and R. M. Karp, Rand. Struct. Alg. 18, 116
+
+(2001). [41] E. Abbe and C. Sandon, in Proceedings of the 2015 IEEE
+56th Annual Symposium on Foundations of Computer Science (IEEE, Washington DC, 2015) pp. 670­688. [42] X. Zhang, R. R. Nadakuditi, and M. E. J. Newman, Phys. Rev. E 89, 042816 (2014). [43] E. Mossel, J. Neeman, and A. Sly, Probab. Theory Related Fields 162, 431 (2015). [44] P. Zhang, C. Moore, and M. E. J. Newman, Phys. Rev. E 93, 012303 (2016). [45] T. P. Peixoto, "The graph-tool python library," (2014). [46] T. M. Cover and J. A. Thomas, Elements of Information Theory (John Wiley & Sons, New York, 2012). [47] D(P||Q) also goes to 0 at  = 0, and a more careful scaling analysis is necessary to conclude on the detectability of sparse instances. [48] H. S. M. Coxeter, Regular Polytopes (Courier Corporation, New York, 1973). [49] S. Boyd and L. Vandenberghe, Convex Optimization (Cambridge University Press, Cambridge, 2004). [50] Since L > 0 is not sufficient for detectability, some instances could still be undetectable. [51] M. Jerrum and G. B. Sorkin, Discrete Appl. Math 82, 155 (1998). [52] R. R. Nadakuditi and M. E. J. Newman, Phys. Rev. Lett. 108, 188701 (2012). [53] Another explanation is that there are effectively q = 2 pairs of blocks in the eyes of our formalism: A single inner pair and a single outer pair, with, respectively, a fraction  and 1 -  of all possible edges. [54] We give a reference implementation of the algorithm in C++ at www.github.com/jg-you/sbm_canonical_mcmc. [55] P. Zhang, J. Stat. Mech. , P11006 (2015). [56] L. Danon, A. Diaz-Guilera, J. Duch, and A. Arenas, J. Stat. Mech. Theor. Exp. 2005, P09008 (2005). [57] T. O. Kv°alseth, IEEE Trans. Syst., Man, Cybern. 17, 517 (1987). [58] We do not have a procedure to determine the value of  within the information-theoretical framework itself. However, random matrix theory and recent developments in Information theory offers some insights as to why one should have   1/n, see Appendix B and Ref. [61] for details. [59] J.-G. Young, De la d´etection de la structure communautaire des r´eseaux complexes, Master's thesis, Universit´e Laval (2014). [60] T. P. Peixoto, Phys. Rev. Lett. 111, 098701 (2013). [61] T. Lesieur, F. Krzakala, and L. Zdeborova´, in Proceedings of the 2015 53rd Annual Allerton Conference on Communication (IEEE, 2015) pp. 680­687. [62] P. Diao, D. Guillot, A. Khare, and B. Rajaratnam, arXiv:1608.03860 (2016). [63] M. Molloy and B. A. Reed, Rand. Struct. Alg. 6, 161 (1995). [64] M. E. J. Newman, S. H. Strogatz, and D. J. Watts, Phys. Rev. E 64, 026118 (2001). [65] B. Karrer and M. E. J. Newman, Phys. Rev. E 83, 016107 (2011). [66] A. Clauset, C. Moore, and M. E. Newman, Nature 453, 98 (2008).
+
+

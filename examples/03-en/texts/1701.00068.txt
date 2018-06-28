@@ -1,0 +1,3153 @@
+arXiv:1701.00068v1 [math.NA] 31 Dec 2016
+
+The Discrete Stochastic Galerkin Method for Hyperbolic Equations with Non-smooth and
+Random Coefficients
+Shi Jin and Zheng Ma
+January 3, 2017
+Abstract We develop a general polynomial chaos (gPC) based stochastic Galerkin (SG) for hyperbolic equations with random and singular coefficients. Due to the singular nature of the solution, the standard gPC-SG methods may suffer from a poor or even non convergence. Taking advantage of the fact that the discrete solution, by the central type finite difference or finite volume approximations in space and time for example, is smoother, we first discretize the equation by a smooth finite difference or finite volume scheme, and then use the gPC-SG approximation to the discrete system. The jump condition at the interface is treated using the immersed upwind methods introduced in [8, 12]. This yields a method that converges with the spectral accuracy for finite mesh size and time step. We use a linear hyperbolic equation with discontinuous and random coefficient, and the Liouville equation with discontinuous and random potential, to illustrate our idea, with both one and second order spatial discretizations. Spectral convergence is established for the first equation, and numerical examples for both equations show the desired accuracy of the method.
+Key words. hyperbolic equation, random coefficient, potential barrier, stochastic Galerkin, polynomial chaos
+This research was supported by NSFC grant No. 91330203, NSF grants DMS-1522184 and DMS1107291: RNMS KI-Net, and by the Office of the Vice Chancellor for Research and Graduate Education at the University of Wisconsin-Madison with funding from the Wisconsin Alumni Research Foundation.
+Institute of Natural Sciences, Department of Mathematics, MOE-LSEC and SHL-MAC, Shanghai Jiao Tong University, Shanghai 200240, China and Department of Mathematics, University of WisconsinMadison, Madison, WI 53706, USA (jin@math.wisc.edu) and .
+Department of Mathematics, Shanghai Jiao Tong University, Shanghai 200240, China.
+1
+
+AMS subject classifications. 35L02, 65M06, 65M60, 65C30
+1 Introduction
+We are interested in developing efficient numerical methods to solve linear hyperbolic equations with non-smooth and uncertain coefficients. Such problems arise in wave propagation in heterogeneous media, through interfaces between different media, or potential barriers, making the coefficients in these equations discontinuous or even more singular. Random uncertainties arise due to modeling or experiment errors. These errors are inevitable since the fluxes in hyperbolic equations are often given by empirical laws, equations of state or moment closures which are often ad hoc.
+When hyperbolic equations contain singular coefficients, one usually needs to provide an extra physical condition at the singular points to make the initial or boundary value problems well-posed and to account for the correct physics of waves at the interface or barrier [8, 12]. In the case of potential barriers, a natural physical condition is the transmission and reflection conditions, and such conditions can be built into the numerical fluxes in a natural way, in the framework of the Hamiltonian-Preserving schemes [12, 13]. This is the approach we will take to tackle the problems with singular coefficients.
+To handle the difficulty induced by the random uncertainties, we will utilize the generalized polynomial chaos (gPC) expansion based stochastic Galerkin (SG) method [1, 5, 7, 15, 18, 21, 23, 24]. Such methods outperform the classical Monte-Carlo method in that, given sufficient regularity of the solution in the random space, they can achieve the spectral convergence, thus are much more efficient for problems with random uncertainties. Unfortunately, for hyperbolic problems, one often is not blessed with such regularities, which leads to significant reduction of order of convergence [17, 26], thus slows down the computation or even gives non-convergent results due to Gibbs' phenomenon. The problems under study in this paper are problems with discontinuous solutions in the random space, due to jumps of solutions formed at the interfaces or barriers which will propagate into the random space.
+A standard gPC-SG method begins with a gPC approximation of the original differential equation in the random space, yielding a deterministic system of equations for the gPC coefficients (while the randomness is built into the basis functions which are orthonormal polynomials), which is then discretized by standard schemes (finite difference, finite volume, finite element, or spectral methods) in space and time. The gPC approximation is accurate if solutions to the original problem are smooth in the random space. This is not the case for the problems under study.
+2
+
+Our central idea in this paper is to reverse the above gPC-SG process. Namely, we first discretize the original equation in space and time, using smooth numerical fluxes, and then apply the gPC approximation to this discrete equation. Since the discrete solution is more regular than the continuous one, the gPC approximation is applied to a smoother function (for fixed time step and mesh size), thus one expects a better convergence rate. We refer to such gPC-SG methods as the discrete gPC-SG methods.
+For hyperbolic equations, the smooth numerical fluxes are usually central differences which do not depend on the characteristic information (for examples the Lax-Friedrichs, the Lax-Wendroff scheme, etc.). The upwind type schemes are not smooth, since they depend on the sign of the absolute value of the characteristic speeds thus do not yield smooth numerical fluxes. For second order scheme, in order to suppress numerical viscosity, one usually uses slope limiters or ENO or WENO type reconstruction [14,16,19] which in general are not smooth functions. In order to keep the numerical flux smooth, we use the smooth BAP slope limiter introduced in [3].
+In this paper we will develop this idea for two problems. The first is a scalar hyperbolic equation with a discontinuous and random coefficient:
+
+ut (x, t , z) + c(x, z)u(x, t , z) x = 0, t > 0.
+
+(1.1)
+
+Here c(x, z) is the random coefficient where z is a random variable in a properly defined
+
+complete random space with event space  and probability distribution function (z).
+
+c(x, z) is discontinuous respect to x, which corresponds to an interface between differ-
+
+ent media. The second is the Liouville equation for the particle density distribution
+
+u(x, t , z) > 0:
+
+ut + vux - Vx uv = 0, t > 0, x, v  R,
+
+(1.2)
+
+in which the potential function V (x, z) may be discontinuous in x, corresponding to a potential barrier. The quantities of interest to be computed in these problems include the expectation of u,
+
+E[u] = u(z)(z) dz.
+
+(1.3)
+
+and its variance
+
+V[u] := E (u - E(u))2 = u(z)2(z) dz - (E[u])2
+
+(1.4)
+
+For equation (1.1), by using the Lax-Friedrichs scheme followed by the gPC-SG approximation, we will establish the regularity and consequently the spectral convergence of the proposed method in the random space, while the numerical convergence in space and time is the same as the deterministic problem established in [11]. The error will be verified numerically, for both the convection and the Liouville equations.
+
+3
+
+In such problems the uncertainty may also come from the initial data. This is a well-studied problem [6, 26] and our method can obviously be used in this case.
+The paper is organized as follows. In Section 2, we will present the discrete gPC-SG method for the convection equation (1.1), and conduct the regularity and numerical convergence analysis for the fully discrete scheme. In Section 3, we will show how to use this idea for the Liouville equation for both first and second order spatial discretizations. In Section 4, we will present numerical examples for both equations that will show an exponential convergence in the random space.
+
+2 A Discrete gPC-SG scheme for convection equation with discontinuous wave speed
+
+We first consider a scalar model convection equation
+
+ut (x, t , z) + c(x, z)u(x, t , z) x = 0, t > 0, u(x, 0, z) = u0(x, z).
+
+(2.1)
+
+Here we consider the case that c(x, z) can be discontinuous with respect to x at some
+
+point, for example,
+
+c-(z) > 0, if x < 0, c(x, z) = c+(z) > 0, if x > 0.
+
+(2.2)
+
+As in [8], an interface condition at x = 0 is needed to make the problem well-posed:
+
+u(0-, t , z) = (z)u(0+, t , z).
+
+(2.3)
+
+where (z) = 1 corresponds to conservation of mass or (z) = c-(z)/c+(z) for the conservation of flux which is the case we will use in the sequel. Notice that here we assume c(x, z) is smooth enough with respect to the random variable z, and only has one discontinuous point at x = 0.
+The discontinuity of u(x, t , z) generated by the interface condition (2.3) will propagate into the random space, preventing the gPC method from high order convergence due to Gibb's phenomenon. Here we propose a slightly different approach from the traditional gPC method: We first discretize equation (2.1) in space and time as done in [11] with the random variable z as a fixed parameter. A key idea in [11] is to "immerse" the interface condition (2.3) into the scheme. The gPC method will then be applied to the discrete system.
+
+4
+
+2.1 The scheme
+
+Let the spatial mesh be xi = i x, where i  Z, the set of all integers, and x is the mesh size. Let t n = nt be the discrete time where t is the time step. Let Uin(z) = U (xi , t n, z) be the numerical approximation of u(xi , t n, z). The immersed upwind scheme proposed
+by Jin and Qi in [11], for (2.1) (2.3) is
+
+Uin+1(z) = (1 - -(z))Uin(z) + -(z)Uin-1(z), Uin+1(z) = (1 - +(z))Uin(z) + -(z)Uin-1(z), Uin+1(z) = (1 - +(z))Uin(z) + +(z)Uin-1(z),
+
+if i  0, if i = 1, if i  2,
+
+(2.4)
+
+where ±(z) = c±(z)t /x. Notice, from this discrete scheme (2.4), if one assumes that Uin(z) is a smooth func-
+tion of z for each i , then after one time step, Uin+1(z) is still a smooth function of z. The reason is simple: ±(z) = c±(z)t /x is a smooth function of z! Since we assume the initial data is smooth with respect to z, the numerical solution at any time t n should
+also be smooth with respect to z. Then if applying the standard gPC Galerkin method to
+this discrete system, one can expect a fast convergence of gPC expansion to this discrete solution when the physical mesh size x and t are fixed.
+First we recall the scheme:
+
+
+ 
+
+Uin
+
++1(z
+
+)
+
+=
+
+(1
+
+-
+
+-(z
+
+))Uin
+
+(z
+
+)
+
++
+
+- (z )Uin-1 (z
+
+)
+
+Uin+1(z) = (1 - +(z))Uin(z) + -(z)Uin-1(z)
+
+  
+
+Uin
+
++1(z
+
+)
+
+=
+
+(1
+
+-
+
++(z
+
+))Uin
+
+(z
+
+)
+
++
+
++ (z )Uin-1 (z
+
+)
+
+if i  0, if i = 1, if i  2.
+
+(2.5)
+
+following the standard gPC Galerkin framework, we apply the gPC expansion of z to Uin(z). Namely, we seek an approximate solution in the form of gPC expansion, i.e.
+
+K
+Uin,(K )(z) = U^in,(k)Pk (z),
+k =0
+
+(2.6)
+
+where Pk (z) form an orthonormal polynomial basis with weights (z), and the degree of Pk (z) of k satisfying
+
+Pi , P j  = Pi (z)P j (z)(z) dz = i j ,
+
+(2.7)
+
+with the weighted inner product defined as
+
+ f , g  = f (z)g (z)(z) dz,
+
+(2.8)
+
+5
+
+and i j is the Kronecker delta function. The expansion coefficients are determined as
+
+U^in,(k) = Uin(z)Pk (z)(z) dz.
+
+(2.9)
+
+By utilizing the expansion (2.6) and employing a Galerkin projection, the coefficients U^in,(k) satisfy the following system of equations
+
+
+ 
+
+U^ in+1
+
+=
+
+(1
+
+-
+
+-)U^ in
+
++
+
+-U^ in-1,
+
+
+
+U^ in+1 = (1 - +)U^ in + -U^ in-1,
+
+  
+
+U^ in+1
+
+=
+
+(1
+
+-
+
++)U^ in
+
++
+
++U^ in-1,
+
+if i  0, if i = 1, if i  2.
+
+(2.10)
+
+Here U^ in = (U^in,(0), . . . ,U^in,(K ))T is a vector of dimension (K + 1), and ± are the (K + 1) × (K + 1) matrices whose entries are {±k,m}0k,mK where
+
+±k,m = c±(z)Pk (z)Pm(z)(z) dz .
+
+(2.11)
+
+2.2 The error estimate and convergence analysis
+We first introduce some notations, spaces and norms that will be used for our analysis. We assume that u(x, t , z) has a compact support in the domain D = [a, b], where a < 0 and b > 0 such that the domain includes the interface x = 0. -M  i  M is the spatial discretization index and x = (b - a)/(2M + 1). The time step index is n = 0, 1, . . . .
+Define a weighed L2 norm on the random space ,
+
+f (·)
+
+2 L
+
+2
+
+()
+
+=
+
+f 2(z)(z) dz.
+
+We also define the norm
+
+u n (·)
+
+2 H
+
+:=
+
+un(z)
+
+2 l 1(D
+
+)
+
+
+
+(z
+
+)
+
+dz
+
+,
+
+where
+
+M
+
+un (z) 1(D) =
+
+|uin (z )|x .
+
+i =-M
+
+(2.12) (2.13) (2.14)
+
+6
+
+2.2.1 Regularity of the discrete solution in the random space
+
+In order to obtain the error estimate, we need to investigate the regularity of discrete
+solution Uin(z) in the random space. It is natural that some assumptions for the given data will be made. More precisely, we make the following assumptions (see [20, 26]).
+
+Assumption 2.1.
+
+mzax|sz ±(z)|   , mDax|sz u0(x, z)|   , 0  s  ,
+
+(2.15)
+
+where 0  ±(z) = c±(z)t /x  1 and = 1, 2, . . . and ,  are positive constants. Without
+
+loss of generality, we also assume a bounded constant  = max  ,  , 1 .
+
+Note that in (2.15) the constants  and  are independent of x. We are now ready to state and prove the following regularity result.
+
+Theorem 2.1. Under Assumption (2.15), the discrete solution Uin(z) have properties
+
+imN,azx|zUin(z)|  C (n)(2)n,
+
+(2.16)
+
+for   N, where
+
+n
+C (n) =
+
+n (1 + s)  2( +1)n.
+
+s=0 s
+
+Proof. Differentiating scheme (2.4) times with respect to z,
+
+(2.17)
+
+
+
+   
+
+zUin+1(z
+
+)
+
+=
+
+z
+
+Uin
+
+(z
+
+)
+
+-
+
+  
+
+s=0
+
+s
+
+z-s -(z)szUin(z) +
+s=0
+
+s
+
+z-s -(z)szUin-1(z)
+
+
+
+   zUin+1(z) = zUin(z) -
+
+l
+
+ 
+
+s=0
+
+s
+
+l
+z-s +(z)szUin(z) +
+s=0
+
+s
+
+z-s -(z)szUin-1(z)
+
+
+
+
+
+ 
+
+l
+
+    
+
+zUin+1(z
+
+)
+
+=
+
+z
+
+Uin
+
+(z
+
+)
+
+-
+
+s=0
+
+s
+
+z-s +(z)szUin(z) +
+s=0
+
+s
+
+z-s +(z)szUin-1(z)
+
+if i  0, if i = 1, if i  2.
+
+We will use the mathematical induction on the index n. When n = 1 which means after the first step, one has
+
+
+
+   
+
+z
+
+Ui1(z
+
+)
+
+=
+
+z
+
+Ui0(z
+
+)
+
+-
+
+  
+
+s=0
+
+s
+
+z-s -(z)szUi0(z) +
+s=0
+
+s
+
+z-s -(z)szUi0-1(z)
+
+
+
+   zUi1(z) = zUi0(z) -
+
+l
+
+ 
+
+s=0
+
+s
+
+l
+z-s +(z)szUi0(z)
+s=0
+
+s
+
+z-s -(z)szUi0-1(z)
+
+
+
+
+
+ 
+
+l
+
+    
+
+z
+
+Ui1(z
+
+)
+
+=
+
+z
+
+Ui0(z
+
+)
+
+-
+
+s=0
+
+s
+
+z-s +(z)szUi0(z) +
+s=0
+
+s
+
+z-s +(z)szUi0-1(z)
+
+if i  0, if i = 1, if i  2.
+
+7
+
+With Assumption (2.15),
+
+i mN,azx|szUi0(z)| = i mN,azx|sz u0(xi , z)|  mDax|sz u0(x, z)|  ,
+
+and So one has
+
+mzax|z-s ±(z)|  .
+
+(2.18) (2.19)
+
+i
+
+mN,azx|zUi1(z
+
+)|
+
+
+i
+
+mN,azx|zUi0(z
+
+)|
+
++
+
+s=0
+
+s
+
+mzax|z
+
+-s
+
+±(z
+
+)|
+i
+
+mN,azx|szUi0(z
+
+)|
+
++
+s=0
+
+s
+
+mzax|z
+
+-s
+
+±(z
+
+)|
+i
+
+mN,azx|szUi0-1
+
+(z
+
+)|
+
+l
+
+ + 22
+
+ 2(2 + 1),
+
+s=0 s
+
+which satisfies (2.16) for n = 1. Next we assume when n = p, the derivatives satisfy (2.16):
+
+imN,azx|zUip (z)|  C (p)(2)p ,   N.
+
+Then for index n = p + 1, using the same procedure as above,
+
+(2.20) (2.21)
+
+i
+
+mN,azx|zUip+1(z
+
+)|
+
+
+i
+
+mN,azx|zUip
+
+(z
+
+)|
+
++
+
+s=0
+
+s
+
+mzax|z
+
+-s
+
+±
+
+(z
+
+)|
+i
+
+mN,azx|szUip
+
+(z
+
+)|
+
++
+s=0
+
+s
+
+mzax|z
+
+-s
+
+±
+
+(z
+
+)|
+i
+
+mN,azx|szUip-1
+
+(z
+
+)|
+
+C
+
+(p)(2)p  + 2
+s=0
+
+s
+
+C
+
+-s(p)(2)p 
+
+(2.22)
+
+
+
+C
+
+(p) +
+s=0
+
+s
+
+C -s(p)
+
+(2)p+1
+
+:=C (p + 1)(2)p+1.
+
+From the last equality one gets the recursive relation of C (p),
+
+C
+
+(n + 1) = C
+
+(n) +
+s=0
+
+s
+
+C
+
+-s (n),
+
+8
+
+(2.23)
+
+and by the mathematical induction one can find
+
+which is the desired result.
+
+nn
+
+C (n) =
+
+(1 + s) ,
+
+s=0 s
+
+Remark 2.1. The coefficient
+
+n
+C (n) =
+
+n (1 + s)  2n(1 + n)  2( +1)n.
+
+s=0 s
+
+For a given final time T = nt ,
+
+(2.24) (2.25)
+
+T
+
+T
+
+C (n)  2 t 1 +
+
+t
+
+( +1)T
+ 2 t .
+
+(2.26)
+
+2.2.2 The spectral convergence of the gPC Galerkin method
+Let Uin(z) be the solution to the linear convection equation (2.4). We define the K th order projection operator
+
+K
+PK Uin(z) = Uin(z), Pk (z) Pk (z).
+k =0
+
+(2.27)
+
+The error arisen from the gPC-SG can be split into two parts rin,(K )(z) and ein,(K )(z),
+
+Uin(z) -Uin,(K )(z) = Uin(z) - PK Uin(z) + PK Uin(z) -Uin,(K )(z) := rin,(K )(z) + ein,(K )(z),
+
+(2.28)
+
+where
+
+rin,(K
+
+)
+
+(z
+
+)
+
+=
+
+Uin
+
+(z)
+
+-
+
+P
+
+K
+
+Uin
+
+(z
+
+)
+
+is
+
+the
+
+interpolation
+
+error,
+
+and
+
+e
+
+n i ,(K
+
+)(z
+
+)
+
+=
+
+P
+
+K
+
+Uin
+
+(z
+
+)
+
+-
+
+Uin,(K )(z) is the projection error.
+
+For
+
+the
+
+interpolation
+
+error
+
+r
+
+n i ,(K
+
+)(z
+
+),
+
+we
+
+have
+
+the
+
+following
+
+lemma,
+
+Lemma 2.1 (Interpolation error). Under Assumption (2.15), for a given final time T = nt and any given integer  N,
+
+r·n,(K )(·)
+
+H
+
+
+
+(b
+
+-
+
+a )C  (2 K
+
++2 )n  ,
+
+  N,
+
+where C is a constant depends on the orthogonal polynomials {Pk (z)}kN .
+
+(2.29)
+
+9
+
+Proof. By the definition of rin,(K )(z) and the norm · H ,
+
+r
+
+n ·,(K
+
+)(·)
+
+=
+
+U·n(·) - PK U·n(·)
+
+H
+
+1/2
+
+=
+
+U·n(z) - PK U·n(z)
+
+2 l 1(D
+
+)(z
+
+)
+
+dz
+
+=
+
+M
+
+|Uin(z) - PK Uin(z)|x
+
+2
+(z ) dz
+
+1/2
+
+i =-M
+
+M
+
+i =-M
+
+1/2
+|Uin(z) - PK Uin(z)|2(z) dz x
+
+M
+
+=
+
+Uin(·) - PK Uin(·) L2()x,
+
+i =-M
+
+(2.30)
+
+here we have used the Minkowski inequality. Then by the standard error estimate for orthogonal polynomial approximations [2], we get
+
+Uin(·) - PK Uin(·)
+
+C L2() 
+
+z Uin (z ) K
+
+L2() .
+
+(2.31)
+
+By using Theorem 2.1, one obtains
+
+z Uin (·)
+
+L2()
+
+
+
+max
+i N,z
+
+z Uin (z )
+
+2
+(z) dz  Cl (n)(2)n  2( +1)n(2)n, (2.32)
+
+for l  N, then
+
+Uin(·) - PK Uin(·) L2()  C(2 +2)n/K ,   N,
+
+(2.33)
+
+which leads to
+
+U·n(·) - PK U·n(·)
+
+M
+
+H
+
+C(2 +2)n/K
+
+i =-M
+
+x
+
+=
+
+(b - a)C(2
+
++2 )n  .
+
+K
+
+(2.34)
+
+This completes the proof.
+
+It remains to estimate ein,(K )(z). To this aim, first notice that Uin,(K )(z) satisfies
+
+
+ 
+
+Uin,(+K1)(z
+
+)
+
+=
+
+Uin,(K
+
+)(z
+
+)
+
+-
+
+P
+
+K
+
+-(z) Uin,(K )(z) -Uin-1,(K )(z)
+
+Uin,(+K1)(z) = Uin,(K )(z) - P K +(z)Uin,(K )(z) - -(z)Uin-1,(K )(z)
+
+  
+
+Uin,(+K1)(z
+
+)
+
+=
+
+Uin,(K
+
+)(z
+
+)
+
+-
+
+P
+
+K
+
++(z) Uin,(K )(z) -Uin-1,(K )(z)
+
+if i  0, if i = 1, if i  2.
+
+(2.35)
+
+10
+
+On the other hand, by doing the K th order projection directly on the scheme (2.4), one obtains
+
+
+ 
+
+P
+
+K
+
+Uin
+
++1(z
+
+)
+
+=
+
+P
+
+K
+
+Uin
+
+(z
+
+)
+
+-
+
+P
+
+K
+
+-(z) Uin(z) -Uin-1(z))
+
+ PK Uin+1(z) = PK Uin(z) - PK +(z)Uin(z) - -(z)Uin-1(z))
+
+  
+
+P
+
+K
+
+Uin
+
++1(z
+
+)
+
+=
+
+P
+
+K
+
+Uin
+
+(z
+
+)
+
+-
+
+P
+
+K
+
++(z) Uin(z) -Uin-1(z))
+
+if i  0, if i = 1, if i  2.
+
+(2.36)
+
+(2.36) subtracted by (2.35) gives
+
+ 
+
+e
+
+n+1 i ,(K )
+
+=
+
+e
+
+n i ,(K
+
+)
+
+-
+
+P
+
+K
+
+-(z)(ein,(K ) - ein-1,(K ))
+
+
+
+    
+
+-PK
+
+-(z
+
+)(r
+
+n i ,(K
+
+)
+
+-
+
+r
+
+n i -1,(K
+
+))
+
+
+
+  
+
+e
+
+n+1 i ,(K )
+
+=
+
+e
+
+n i ,(K
+
+)
+
+-
+
+P
+
+K
+
+(+(z
+
+)ein,(K
+
+)
+
+-
+
+-
+
+(z
+
+)e
+
+n i -1,(K
+
+))
+
+ 
+
+-PK
+
+(+(z
+
+)r
+
+n i ,(K
+
+)
+
+-
+
+-(z
+
+)rin-1,(K
+
+))
+
+
+
+    
+
+e
+
+n+1 i ,(K )
+
+=
+
+e
+
+n i ,(K
+
+)
+
+-
+
+P
+
+K
+
++(z)(ein,(K ) - ein-1,(K ))
+
+
+
+ 
+
+-PK
+
++(z
+
+)(r
+
+n i ,(K
+
+)
+
+-
+
+r
+
+n i -1,(K
+
+))
+
+if i  0, if i = 1, if i  2.
+
+(2.37)
+
+where the variable z is omitted for clarity. Now we can give the following estimate of the projection error ein,(K )(z),
+Lemma 2.2 (Projection error). Under Assumption (2.15), for a given final time T = nt and any given integer  N that the projection error satisfies the following estimate,
+
+e·n,(K )(·)
+
+2(b - a)CC
+
+H
+
+K
+
+(n) ,
+
+  N,
+
+(2.38)
+
+(2 +2)n - 3n where C (n) = 2 +2 - 3 and C is a constant determined only by the orthogonal polynomials {Pk (z)}kN .
+
+Proof. First, according to (2.37), one has the following estimate for i  0,
+
+ein,+(K1) L2()  ein,(K ) L2() + P K
+
+max(- (z ))(
+z
+
+ein,(K )
+
+L2() +
+
+e
+
+n i -1,(K
+
+)
+
+L2())
+
++ PK
+
+max(- (z ))(
+z
+
+rin,(K )
+
+L2() +
+
+rin-1,(K )
+
+L2()) .
+
+(2.39)
+
+Note
+
+PK
+
+ 1 since it is a projection operator and max(±(z))  1, so one gets
+z
+
+e
+
+n+1 i ,(K )
+
+L2() 
+
+ein,(K )
+
+L2() +
+
+ein,(K )
+
+L2() +
+
+ein-1,(K )
+
+L2()
+
++
+
+r
+
+n i ,(K
+
+)
+
+L2() +
+
+rin-1,(K )
+
+L2().
+
+(2.40)
+
+11
+
+According to (2.33),
+
+r
+
+n i ,(K
+
+)
+
+L2()  C(2 +2)n/K
+
+,
+
+i  Z,   N,
+
+(2.41)
+
+so
+
+e
+
+n+1 i ,(K )
+
+L2()  2
+
+e
+
+n i ,(K
+
+)
+
+L2() +
+
+ein-1,(K )
+
+L2() + C2(2 +2)n/K
+
+.
+
+(2.42)
+
+Similarly, for i = 1 and i  2, one has the same estimate as above. Summing over i and multiplying by x give
+
+e
+
+n+1 (K )
+
+H 3
+
+e
+
+n (K
+
+)
+
+H + 2(b - a)C(2 +2)n/K
+
+.
+
+Using this recursive relation and notice that e(0K ) H = 0, one obtains
+
+(2.43)
+
+e(nK )
+
+H
+
+
+
+2(b - a)C K
+
+(2 +2)n - 3n 2 +2 - 3
+
+:=
+
+2(b
+
+- a)CC K
+
+(n) .
+
+This completes the proof of the lemma.
+
+(2.44)
+
+We are now ready to state the convergence theorem of gPC-SG method for the discrete scheme:
+
+Theorem 2.2. Under Assumption (2.15), for a given final time T = nt and any given integer  N, the error of the gPC-SG method for the discrete scheme is
+
+U n -U(nK )
+
+H
+
+
+
+(b
+
+-
+
+a)CC K
+
+(
+
+,n) ,
+
+  N,
+
+where C ( , n) = (2 +2)n + 2C (n).
+
+(2.45)
+
+Proof. From Lemma 2.1 and Lemma 2.2, one has
+
+U n -U(nK )
+
+H
+
+r(nK )
+
+H+
+
+e(nK )
+
+H
+
+
+
+(b - a)C(2 K
+
++2)n 2(b - a)CC + K
+
+(n) := (b - a)CC ( K
+
+,n) ,
+
+which completes the proof.
+
+Remark 2.2. The constant C ( , n) = O 2( +1)n
+
+( +1)T
+= O 2 t
+
+.
+
+This implies a spectral
+
+convergence in gPC order K for every fixed t .
+
+12
+
+2.2.3 An error estimate of the discrete gPC method
+
+Now we are ready to prove the main result of the error estimate. Part of this estimate uses the error estimate uses the result of Jin and Qi [11] for the deterministic problem.
+
+Lemma 2.3. Let u0(x, z) be a function of bounded variation for every fixed z. Then the immersed interface upwind difference scheme (2.4), under the CFL condition 0 < ±(z) < 1,
+has the following 1-error bound:
+
+U n(z) - u(·, t n, z) 1(D)  C1(z)(c-(z)) + C2(z)(c+(z)), for every fixed z, (2.46)
+
+where
+
+(c±(z)) = 2
+
+c
+
+± (z )x
+
+(1
+
+-
+
+c
+
+±(z)
+
+t x
+
+)tn
+
++
+
+x
+
+,
+
+and C1(z), C2(z) are bounded functions with respect to z.
+
+(2.47)
+
+Proof. For every fixed z, this is a deterministic problem thus one can use Theorem 1 in [11]. Note that we have assumed c±(z) are strictly positive and bounded function with
+respect to z, so one can get a bounded C1(z) and C2(z).
+
+Next we will prove the following error estimate:
+
+Theorem 2.3. Under Assumption 2.15 and assume u0(x, z) is a function of bounded variation for every z. Then the following error estimate of the discrete gPC method holds:
+
+U(nK ) - u(·, t n, ·) H  C (T )(
+
+x + t + x) + (b - a)CC (
+
+,n) ,
+
+K
+
+l  N,
+
+where C (T ) depends only on time T and C ( , n) depends on t and .
+
+(2.48)
+
+Proof. First we split the error into two parts:
+
+U(nK ) - u(·, t n, ·) H  U n - u(xi , t n, z) H + U(nK ) -U n H .
+
+(2.49)
+
+For the first part, it is the error of numerical scheme (2.4), using Lemma 2.3 one gets
+
+U(nK ) - u(·, t n, ·) H =  
+
+1/2
+
+U n(z) - u(·, t n, z)
+
+2 l1
+
+(D
+
+)(z
+
+)
+
+dz
+
+1/2
+(C1(z)(c-(z)) + C2(z)(c+(z)))2(z) dz
+
+1/2
+
+1/2
+
+[(C1(z)(c-(z))]2(z) dz + [(C2(z)(c+(z))]2(z) dz .
+
+(2.50)
+
+13
+
+The last inequality is obtained by Minkowski inequality. Notice that C1(z) is bounded and
+
+1/2
+[(c±(z))]2(z) dz  2
+
+c
+
+±
+
+(z
+
+)x(1
+
+-
+
+c
+
+±
+
+(z
+
+)
+
+t x
+
+)tn
+
+(z
+
+)
+
+d
+
+z
+
+1/2
++
+
+1/2
+x 2(z ) dz
+
+1/2
+= 2 tnx c±(z)(z) dz - tnt (c±(z))2(z) dz + x
+
+ C (T ) x + t + x.
+
+(2.51)
+
+Therefore one gets
+
+U n - u(·, t n, ·) H  C (T )( x + t + x).
+
+(2.52)
+
+For the second part, according to Theorem 2.2 we have
+
+U n -U(nK )
+
+H
+
+
+
+(b
+
+-
+
+a)CC K
+
+(
+
+,n) ,
+
+  N.
+
+Then by adding these two parts we complete the proof.
+
+(2.53)
+
+3 A gPC method for the Liouville equation with discontinuous potential
+
+In this section we study the Liouville equation in classical mechanics with random
+
+uncertainties:
+
+ut + vux - Vx uv = 0, t > 0, x, v  R,
+
+(3.1)
+
+with initial condition
+
+u(x, v, 0, z) = u0(x, v, z),
+
+(3.2)
+
+where u(x, v, t , z) is the density distribution of a classical particle at position x, time t and traveling with velocity v. V (x, z) is the potential depending on a random variable z
+The Liouville equation has bicharacteristics defined by Newton's second law:
+
+dx
+
+dv
+
+= v, dt
+
+d t = -Vx(x, z),
+
+which is a Hamiltonian system with the random Hamiltonian
+
+H = 1 v2 + V (x, z). 2
+
+(3.3) (3.4)
+
+14
+
+If V (x, z) is discontinuous with respect to x which corresponds to a random potential barrier, then the characteristic speed of the Liouville equation given by (3.3) is infinity at
+
+the discontinuous point and a conventional numerical scheme becomes difficult. On the
+
+other hand, it is known from classical mechanics that the Hamiltonian remains constant
+
+across a potential barrier. Based on this principle, Jin and Wen proposed a framework,
+
+called Hamiltonian preserving scheme in which they build the interface condition into
+
+the scheme according to the behavior of a particle across the potential barrier [12], [10].
+As in the previous section, we first discretize equation (3.1) using the Hamiltonian
+preserving scheme in which we regard the random variable z as a fixed parameter.
+Without loss of generality, we employ a uniform mesh with grid points at xi+1/2, i = 0, . . . , N in the x-direction and v j+1/2, j = 0, . . . , M in the v-direction. The cells are centered at (xi , v j ), i = 1, . . . , N , j = 1, . . . , M with xi = (xi+1/2+xi-1/2)/2 and v j = (v j +1/2+ v j -1/2)/2. The mesh size is denoted by x = xi+1/2 - xi-1/2 and v = vi+1/2 - vi-1/2. Also we assume that the discontinuous points of potential V are located at some grid points. Let the left and right limits of V at point xi+1/2 be Vi++1/2 and Vi-+1/2 respectively. The scheme reads:
+
+t
+
+ui
+
+j
+
+(z)
+
++
+
+v
+
+j
+
+ui-+1/2, j
+
+(z) - ui+-1/2,j x
+
+(z)
+
+-
+
+DVi
+
+(z)
+
+ui , j
+
++1/2(z) - ui v
+
+,j
+
+-1/2 (z )
+
+=
+
+0,
+
+(3.5)
+
+here
+
+DVi
+
+(z)
+
+:=
+
+Vi-+1/2(z) - Vi+-1/2(z) . x
+
+(3.6)
+
+We also need to determine the numerical fluxes ui,j +1/2(z) and ui±+1/2,j (z) at each cell
+
+interface.
+
+3.1 A first order finite difference approximation
+
+Here we can use the standard first order upwind scheme for the fluxes ui±+1/2,j (z) since the wave speed in this direction, which is v j , has nothing to do with the random variable z. So the characteristic in fact is deterministic. For example we consider the case v j > 0, according to the Hamilton preserving scheme such fluxes read,
+
+ui-+1/2,j (z) = ui j (z),
+
+ui++1/2,j (z) =
+
+c1ui +1,k (z) + c2ui +1,k+1(z), ui +1,k (z),
+
+when transmission, when reflection,
+
+(3.7)
+
+Here k is an index determined by the energy conservation across the interface (see [12]),
+
+1 2(v j
+
+)2
+
++ Vi-+1/2
+
+=
+
+1 (v +)2 2
+
++ Vi++1/2,
+
+(3.8)
+
+15
+
+where
+
+v+
+
+is
+
+the
+
+velocity
+
+across
+
+the
+
+barrier.
+
+If
+
+(v
+
+j
+
+)2
+
++
+
+2(V
+
+- j +1/2
+
+-
+
+V
+
++ j +1/2
+
+)
+
+>
+
+0,
+
+particle
+
+will
+
+transmit, thus
+
+v+ =
+
+(v
+
+j
+
+)2
+
++
+
+2(V
+
+- j +1/2
+
+-
+
+V
+
+j++1/2),
+
+(3.9)
+
+k is the index such that
+
+vk  v + < vk+1,
+
+(3.10)
+
+and c1 and c2 are the coefficients of a linear interpolation,
+
+c1
+
+=
+
+v+ - vk v
+
+,
+
+c2
+
+=
+
+vk+1 - v
+
+v+
+
+,
+
+c1 + c2 = 1.
+
+(3.11)
+
+If
+
+(v
+
+j
+
+)2
+
++
+
+2(V
+
+- j +1/2
+
+-
+
+V j++1/2)
+
+<
+
+0,
+
+then
+
+particle
+
+will
+
+reflect,
+
+k
+
+is
+
+the
+
+index
+
+such
+
+that
+
+vk = -v j .
+
+(3.12)
+
+When v j < 0, we can determine c1, c2 and k similarly using the Hamilton preserving condition (3.8).
+For the flux ui,j+1/2(z), one should be careful when dealing with it. Unlike the flux in x-direction, the wave speed in v-direction, DVi (z), depends on the random variable z such that the characteristic is random. This will make the discontinuity of solution in the physical space propagate into the random space if we use a characteristic dependent scheme (i.e. upwind scheme), which results a bad regularity of the solution with respect to z.
+Here we use the Lax-Friedrichs flux which is a characteristic independent scheme for the v-direction flux in general:
+
+1 ui ,j +1/2(z) = 2 DVi (z) ui ,j +1(z) - ui j (z) - ui j (z) + ui ,j +1(z) ,
+
+(3.13)
+
+where  is a constant satisfying   max |DVi (z)|.
+i ,z
+From the discussion above, one can easily see that the fluxes of x-direction and vdirection are both smooth functions with respect to z. As in Section 2, we can conclude that the solution of this scheme, which is ui j (z), are smooth functions of z for each i , j . Then we apply the standard gPC-SG method to this discrete system, same as in Section 2, one can expect a fast convergence of gPC expansion to the discretized solution when the mesh size x and time step t are fixed. The justification is the same as in Section 2.
+
+Remark 3.1. Here any central schemes, such as the local Lax-Friedrichs scheme, can be used besides the Lax-Friedrichs scheme.
+
+16
+
+3.2 A formally second order spatial discretization
+
+In previous two sections, we have presented our discrete gPC scheme with a first order spatial discretization. In the following, we will give the formally second order spatial discretization. Specifically, the spatial numerical flux used in the Hamilton Preserving scheme [12] is given by (consider the case when v j > 0)
+
+ui-+1/2, j
+
+(z)
+
+=
+
+ui
+
+j
+
+(z)
+
++
+
+x 2
+
+si
+
+j
+
+(z ),
+
+
+
+x
+
+x
+
+ui++1/2,j (z) = c1
+
+ui,k (z) + 2 x
+
+si ,k (z)
+
++ c2
+
+ui ,k+1(z) +
+
+2
+
+si ,k+1(z)
+
+,
+
+ui +1,k (z) - 2 si +1,k (z),
+
+(3.14)
+
+where si j is the numerical slope, c1, c2, k are determined by the Hamilton preserving scheme just as the first order case in previous subsection (3.7)­(3.12).
+Since the solution contains discontinuities, a second order scheme will necessarily introduce numerical oscillations. In order to suppress these oscillations, one can use the limited slope, in the spirit of total-variation-diminishing (TVD) framework [16]. Most of the slope limiteds used in the shock capturing community are non-smooth functions, while in our approach the regularity in z is essential. To this aim, we use smooth slope limiters called BAP, introduced in [3]. For the backward and forward differences,
+
+sl (z) = (ui j (z) - ui-1,j (z))/x, sr (z) = (ui+1,j (z) - ui j (z))/x,
+
+(3.15)
+
+at (xi , v j ), the BAP slope is given by
+
+si j (z) = B-1
+
+B(sl (z)) + B(sr (z)) 2
+
+.
+
+(3.16)
+
+Some examples of smooth B(x) include
+
+B(x) = arctan(x),
+
+B(x) = tanh(x),
+
+x
+
+B(x) =
+
+,
+
+1 + x2
+
+B-1(x) = tan(x), B-1(x) = tanh-1(x), B-1(x) = x .
+1 - x2
+
+(3.17)
+
+3.3 The full discretization
+Next we need to define the numerical flux in the v-direction. To this stage, in order to get a smooth discrete solution (with respect to z), we also need to choose some scheme that
+
+17
+
+does not depend on characteristic information. Here we use the Lax-Wendroff scheme. The v-direction flux:
+
+1
+
+t
+
+ui,j +1/2(z) = 2 (ui,j +1(z) + ui,j (z)) + (DVi (z)) 2v (ui,j +1(z) - ui j (z)).
+
+(3.18)
+
+So combine (3.5), (3.14) and (3.18), we get a second order in space and velocity, whose solution is smooth with respect to z, written as
+
+t ui j (z) = RHS(z).
+
+(3.19)
+
+We now the gPC-Galerkin method to this discrete system, for the k-th component uinj,k in gPC expansion we have:
+
+t uikj (z) = RHS(z), Pk (z) ,
+
+(3.20)
+
+where Pk (z) is the k-th order orthogonal polynomial and · is the inner product on the random space. Due to the complicated nonlinear form of RHS(z), we will use numerical integration, i.e. , the Gauss-quadrature to calculate the right hand side of (3.20).
+
+M
+RHS(z), Pk (z) = RHS(zm)Pk (zm)wm,
+m=0
+
+(3.21)
+
+where M is the total number of quadrature points we choose and zi , wi are the Gauss quadrature points and corresponding weights. Here we summarize the algorithm on every time step:
+
+·
+
+First,
+
+use
+
+the
+
+gPC
+
+expansion
+
+uinj
+
+(z)
+
+=
+
+K k =0
+
+uin,,jk
+
+P
+
+k
+
+(z
+
+)
+
+to
+
+compute
+
+uinj (zm).
+
+Notice
+
+that one only needs to compute Pk (zm), which is independent of time thus can be
+
+pre-computed before time marching.
+
+· Using uinj (zm) and (3.14), (3.18) to get RHS(zm) for every i , j , m.
+
+· Finally by (3.21) and time marching using the forward Euler or Runge-Kutta methods to get uinj+1,k for every i , j , k. This finishes one time step.
+Remark 3.2. For the convection equation (2.1), one can simply replace Uin(z) by Uin(z)+ si (z)x/2 in (2.4) and follow the procedure above to get a second order scheme in spatial domain.
+
+18
+
+4 Numerical examples
+In this section we will conduct some numerical experiments to show the performance of the proposed methods and check their numerical accuracy.
+
+4.1 Example 1: the scalar convection equation with discontinuous coefficient
+
+We consider the initial problem
+
+ut + (c(x, z)u x = 0, u(x, 0) = u0(x),
+
+t > 0, x  R, x  R,
+
+(4.1)
+
+with
+
+c- > 0, c(x, z) = 0.3z + c+ > 0,
+
+if x < 0, if x > 0,
+
+(4.2)
+
+where z is uniformly distributed on [-1, 1] (thus the gPC basis should be the normalized Legendre polynomials) and we treat the random variable z as a small perturbation such that (c± + 0.3z) > 0 for any z  [-1, 1].
+In this example, we set the initial data as
+
+u0(x) = cos(0.25x), on [-1, 3],
+
+(4.3)
+
+and an interface is located at x = 0 with the condition: u(0+, t , z) = (z)u(0-, t , z),
+
+(4.4)
+
+where
+
+(z)
+
+=
+
+c c
+
+- +
+
++ +
+
+0.3z 0.3z
+
+,
+
+(4.5)
+
+for the conservation of flux.
+
+The analytic solution of this simple model problem can be easily obtained by using
+
+the method of characteristic including the interface condition [12]:
+
+ u0
+
+x - (c+ + 0.3z)t
+
+,
+
+
+
+u(x, t , z) = (z)u0 (z)[x - (c+ + 0.3z)t ] ,
+
+ u0
+
+x - (c- + 0.3z)t
+
+,
+
+x > (c+ + 0.3z)t , 0 < x < (c+ + 0.3z)t , x < 0.
+
+(4.6)
+
+In the following examples, we set c- = 1, c+ = 2, and final time T = 1. The expectation and variance of the analytic solution can be obtained using (1.3) and (1.4).
+
+19
+
+For numerical solutions, we compute their expectation by
+
+Ei (t n) := E[u(xi , t n, z)] = u(xi , t n, z)(z) dz = U^in,(0),
+
+and their variance by
+
+K
+
+Vi (t n) := E (u - E(u))2 =
+
+U^in,(k) 2.
+
+k =1
+
+The norm for measuring the error between the analytic solution and the numerical solution is 1.
+
+u(1, 2, z)
+
+1.0
+
+u(1,2,z)
+
+0.9
+
+0.8
+
+0.7
+
+0.6
+
+0.5
+1.00 0.75 0.50 0.25 0.z00 0.25 0.50 0.75 1.00
+
+Figure 1: Example 1. The analytic solution (4.6) at t = 1 and x = 2 is a discontinuous function of z.
+Figure 1 shows that the analytic solution (4.6) has a discontinuity at z = 0 when x = 2. Figure 2 shows that the expectation and variance of the analytic solution. In this case, one can expect a low convergence rate of the standard gPC-SG method.
+
+4.1.1 The first order finite difference approximation
+In this subsection, we will give the numerical results of our discrete gPC-SG method. Figure 3 shows the numerical expectation and variance compared with the analytic
+
+20
+
+1.0
+
+Expectation
+
+Variance
+
+0.8
+
+0.6
+
+0.4
+
+0.2
+
+0.0
+
+2
+
+1
+
+0x1
+
+2
+
+3
+
+Figure 2: Example 1. The expectation and variance of the analytic solution.
+
+solution with x = 0.001, t = 1 x and gPC order K = 20. The discrepancy on the 4
+variance is due to the poor resolution of the first order spatial discretization, which is improved with the second order spatial discretization to be used later.
+Next we conduct the convergence test only for the gPC approximation. We fix x = 0.005 and t = 1 x in all computations with different K . Figure 4 shows that the 1 error
+5 decays very fast with respect to the gPC order K . When K = 4, it decays to the numerical error of the finite difference method.
+However, in Figure 4, since the finite difference error dominates the gPC error, it is difficult to verify the convergence rate of the gPC method. In order to examine the gPC error, we fix x and t , and compare the numerical solutions with different K , with the case of K = 30 serving as the reference solution. We measure the 1 error between each K = 2, 3, . . . , 20 and K = 30. The result is shown in Figure 5, in which an exponential convergence in the gPC approximation can be observed by using the log-log plot. Note that if the convergence order is algebraic, the curve should be a line. Here the curve shape shows the exponential decay of the gPC error.
+
+21
+
+1.0
+
+Analytic expectation
+
+Expectation of the new gPC method
+
+0.8
+
+0.6
+
+0.4
+
+0.2
+
+0.0
+
+2
+
+1
+
+0x1
+
+2
+
+3
+
+Analytic variance
+
+0.20
+
+Variance of the new gPC method
+
+0.15
+
+0.10
+
+0.05
+
+0.00
+
+2
+
+1
+
+0x1
+
+2
+
+3
+
+Figure 3: Example 1. The analytic solution compared with the new gPC-SG method using 1
+first order finite difference approximation with x = 0.001, t = x, gPC order K = 20. 4
+
+error
+
+0.045 0.040 0.035 0.030 0.025 0.020 0.015 0.010
+4
+
+Expectation error Variance error
+
+8 gPC ord12er
+
+16
+
+20
+
+Figure 4: Example 1. The first order finite difference approximation with x = 0.005,
+
+1 t = x: the
+
+1 error versus the gPC order.
+
+5
+
+22
+
+loglog error
+
+10 1
+
+10 2
+
+10 3
+
+10 4
+
+10 5
+
+10 6
+
+10 7
+
+10 8
+
+10 9
+
+10 10
+
+10 11
+
+10 12
+
+10 13 10 14 10 15
+
+Expectation error Variance error
+
+gPC order 101
+
+Figure 5: Example 1. The first order finite difference approximation x = 0.005, 1
+t = x: the gPC error versus the gPC order by a log-log plot (with other numeri5
+cal parameters fixed).
+
+23
+
+4.1.2 The second order finite difference approximation
+For the second order scheme, we use the same set up as in the first order case. Figure 6 shows the expectation and variance compared with the analytic solution, which gives a more accurate solution than the first order approximation especially for the variance around x = 2.
+Figure 7 and Figure 8 show the convergence of the numerical method in the gPC order from which one can observe the fast convergence. Comparing Figure 7 with Figure 4, we can see that the second scheme has a better total 1 error. But the rate of the gPC convergence shown in Figure 8 is not as fast as the first order scheme. This is hardly surprising since our spectral convergence depends on the smoothness of the discrete solutions, and the smoothness is given by the numerical viscosity which is larger for the first order spatial discretization. The second order spatial discretization offers better accuracy away from the discontinuities and better resolutions at discontinuities, but because it is closer to the analytic solution (which is not smooth) thus less smooth than the first order one, and smoothness of the discrete solution is what our spectral convergence relies upon, thus its gPC congerence rate, compared with the first order one, should be slower. However this does not mean that the second order method is inferior to the first one, since one has to consider the overall error, including the contributions of error from the spatial discretization in this problem. By comparing Figure 6 with Figure 3, and Figure 7 with Figure 4, it is obvious that the second order scheme outperforms the first order one.
+
+1.0
+
+Analytic expectation
+
+Expectation of the new gPC method
+
+0.8
+
+0.6
+
+0.4
+
+0.2
+
+0.0
+
+2
+
+1
+
+0x1
+
+2
+
+3
+
+0.25
+
+Analytic variance
+
+Variance of the new gPC method
+
+0.20
+
+0.15
+
+0.10
+
+0.05
+
+0.00
+
+2
+
+1
+
+0x1
+
+2
+
+3
+
+Figure 6: Example 1. The analytic solution compared with the new gPC-SG method using the second order finite difference approximation with x = 0.001, t = 1 x, gPC order
+4 K = 20.
+
+24
+
+error
+
+0.035 0.030 0.025 0.020 0.015 0.010 0.005
+4
+
+Expectation error Variance error
+
+8 gPC ord12er
+
+16
+
+20
+
+Figure 7: Example 1. The second order finite difference approximation x = 0.005, t = 1 x: the 1 error versus the gPC order.
+5
+
+25
+
+10 2
+
+loglog error
+
+10 3
+
+Expectation error
+
+10 4
+
+Variance error
+
+gPC order 101
+
+Figure 8: Example 1. The second order finite difference approximation x = 0.005, 1
+t = x: the gPC error versus the gPC order by a log-log plot (with other numerical 5
+parameters fixed).
+
+26
+
+4.2 Example 2: the Liouville equation with a discontinuous potential
+
+Recall the Liouville equation
+
+ut + vux - Vx uv = 0, t > 0, x, v  R, with the random potential given by
+
+(4.7)
+
+V (x, y) = V0(x) + 0.1xz, where z is uniformly distributed on (-1, 1) and
+
+(4.8)
+
+0.2, V0(x) = 0,
+
+x < 0, x > 0.
+
+(4.9)
+
+For the given initial data, one cannot get an analytic solution for this problem. Instead
+
+we will use the collocation method as a comparison. In collocation method, one solves
+
+the Liouville equation (1.2) at a discrete set of {zi }1iM called sample points in the corresponding random space. For every fixed zi , we only need to solve a deterministic Liouville equation with discontinuous potential using Hamilton preserving scheme [12].
+
+Then the expectation and variance can be obtained by the quadrature rules of (1.3)
+
+and (1.4). In the following examples, we choose {zi }1iM as the roots of M th order Legendre polynomials and use the Gauss-Legendre quadrature to obtain the expectation
+
+and variance.
+
+For the gPC method we need to evaluate
+
+1 -1
+
+V0 (z )P
+
+j
+
+(z
+
+)Pk
+
+(z
+
+) (z )
+
+dz
+
+,
+
+which,
+
+for
+
+this
+
+simple case, is given by
+
+
+
+j +1
+
+ 
+
+,
+
+1
+
+  
+
+(2 j + 1)(2 j + 3)
+
+
+
+-1
+
+V0(z
+
+)P
+
+j
+
+(z
+
+)Pk
+
+(z
+
+)
+
+(z
+
+)
+
+dz
+
+=
+
+V0
+  
+
+(x), j
+
+
+
+
+
+,
+
+ 4j2-1
+
+k = j + 1, k = j, k = j - 1.
+
+(4.10)
+
+Here one has a symmetric tridiagonal matrix. As an illustration of the singularity of the solution caused by the discontinuous
+potential , we use a continuous initial data:
+
+sin[2(0.25 - (x2 + v2))], x2 + v2 < 0.25,
+
+u(x, v, 0) =
+
+0,
+
+otherwise.
+
+(4.11)
+
+The expectation of the solution by using the collocation method with M = 20 sample points and our new gPC-SG method with gPC order K = 4 are shown in Figure 9. Although the initial data is continuous, due to the interface condition, the solution may still be discontinuous. This singularity will have a big impact on the convergence of gPC method.
+
+27
+
+2
+
+1.8 1.5
+1.6 1
+1.4
+0.5 1.2
+
+0
+
+1
+
+0.8 -0.5
+0.6 -1
+0.4
+-1.5 0.2
+
+-2
+
+0
+
+-2 -1.5 -1 -0.5
+
+0
+
+0.5
+
+1
+
+1.5
+
+2
+
+2
+
+0.9 1.5
+0.8 1
+0.7
+0.5 0.6
+
+0
+
+0.5
+
+0.4 -0.5
+0.3 -1
+0.2
+-1.5 0.1
+
+-2
+
+0
+
+-2 -1.5 -1 -0.5
+
+0
+
+0.5
+
+1
+
+1.5
+
+2
+
+Figure 9: Example 2 with initial data (4.11). Expectation of the solution. Left: the collocation method with 20 sample points. Right: the new gPC-SG method with gPC order K = 4.
+
+4.2.1 The first order finite difference approximation
+
+In this example we set the initial data as
+
+ 1,  
+u(x, v, 0) = 1,
+ 0,
+
+x  0, v < 0, x2 + v2 < 1, x  0, v > 0, x2 + v2 < 1, otherwise.
+
+(4.12)
+
+Notice that the solution has singularity due to both the initial data and the discontinuous potential. The deterministic version of this example was used in [12] and the analytic solution can be obtained by using the method of characteristics. We first plot the analytic solution and numerical solution (using the first order flux) with a fixed z = 0 in Figure 10 corresponding to the deterministic example in [12].
+Then we compare the solution computed by the collocation method with M = 20 sample points (Figures 11 and 12 left). Figures 11 and 12 right show the solutions by our new gPC-SG method with gPC order K = 10. Here the mesh size is x = v = 0.03 and time step is t = 0.002. One can see the difference between the expectation of the stochastic solution and the deterministic case when z = 0 and this differences can be easily seen on the variance plots as well. The expectation of the stochastic solution is expected to be smoother since it integrates over the z variable, thus gains on order of regularity (see examples in [4, 9]). For the computation cost, our new gPC-SG method runs much faster than collocation method. The collocation method takes about 20 times
+
+28
+
+1.0
+
+0.5
+
+0.0
+
+0.5
+
+1.0
+
+1.5 1.5
+
+1.0
+
+0.5 0.0
+
+0.5
+
+1.0
+
+1.0
+
+0.5
+
+0.0
+
+0.5
+
+1.0
+
+1.5 1.5
+
+1.0
+
+0.5 0.0
+
+0.5
+
+1.0
+
+Figure 10: The deterministic case of Example 2 with initial data (4.12). Left: analytic solution of the deterministic problem with z = 0 and t = 1. Right: numerical solution using the first order Hamiltonian preserving scheme with x = v = 0.015, t = 0.001
+
+cost of the deterministic version due to 20 sample points we choose, however, our new gPC-SG, with K = 10, takes about 10 times the cost of the deterministic problem.
+In Figure 13 we plot the 1 error of the discrete gPC-SG method as the gPC order K increases. This figure shows the spectral convergence.
+4.2.2 The second finite difference approximation
+Here for the second finite difference approximation we still use the same set up as in previous subsection for the first order case.
+First as in the first order case, we will show the numerical solution of the deterministic case when z = 0 using the second order flux in Figure 14. The second order method clearly gives a much sharper resolution for the discontinuities than the first order method (compare the right figures of Figure 10 and Figure 15). But due to the Lax-Wendroff scheme we use in the v-direction (3.18), there exists some oscillations due to numerical dispersion.
+Then we will show the expectation and variance of the solution calculated by the collocation method with M = 20 sample points and our new gPC-SG method (for the calculation of RHS(z) we also use 20 Gauss-Legendre quadrature points). See Figure 15 and Figure 16. One can find no difference between these two methods, both giving sharper resolutions at discontinuities than their first order counterparts shown in Figures 11 and 12. Here for the computation cost, we point out that unlike in the first order case, our new gPC-SG method runs only slightly faster than the collocation method since in the calculation of RHS(z) we use a similarly technique as the collocation method.
+
+29
+
+1.0
+
+0.5
+
+0.0
+
+0.5
+
+1.0
+
+1.5 1.5
+
+1.0
+
+0.5 0.0
+
+0.5
+
+1.0
+
+1.0
+
+0.5
+
+0.0
+
+0.5
+
+1.0
+
+1.5 1.5
+
+1.0
+
+0.5 0.0
+
+0.5
+
+1.0
+
+Figure 11: Example 2 with initial data (4.12) by the first order finite difference approximation with x = v = 0.03 and t = 0.002. The expectation of the solution. Left: the collocation method with M = 20 samples points. Right: the new gPC-SG method using first order finite difference approximation.
+
+1.0
+
+0.5
+
+0.0
+
+0.5
+
+1.0
+
+1.5 1.5
+
+1.0
+
+0.5 0.0
+
+0.5
+
+1.0
+
+1.0
+
+0.5
+
+0.0
+
+0.5
+
+1.0
+
+1.5 1.5
+
+1.0
+
+0.5 0.0
+
+0.5
+
+1.0
+
+Figure 12: Example 2 with initial data (4.12) by the first order finite difference approximation with x = v = 0.03 and t = 0.002. The variance of the solution. Left: the collocation method. Right: the new gPC-SG method.
+
+30
+
+Expectation error
+
+10 3
+
+0.0010
+
+Variance error
+
+10 4
+
+10 5
+
+0.0008
+
+10 6
+
+10 7
+
+loglog error
+
+0.0006
+
+10 8 10 9
+
+0.0004
+
+10 10 10 11
+
+0.0002 0.0000
+
+10 12
+
+10 13 10 14 10 15
+
+Expectation error Variance error
+
+3
+
+4
+
+5 gPC 6order 7
+
+8
+
+9
+
+gPC order
+
+101
+
+Figure 13: Example 2 with initial data (4.12). Convergence of the new gPC-SG method using the first order finite difference approximation. Left: the 1 error versus gPC order. Right: the gPC error versus the gPC order by a log-log plot (with other numerical parameters fixed).
+
+1.0
+
+0.5
+
+0.0
+
+0.5
+
+1.0
+
+1.5 1.5
+
+1.0
+
+0.5 0.0
+
+0.5
+
+1.0
+
+1.0
+
+0.5
+
+0.0
+
+0.5
+
+1.0
+
+1.5 1.5
+
+1.0
+
+0.5 0.0
+
+0.5
+
+1.0
+
+Figure 14: The deterministic case of Example 2 with initial data (4.12). Left: analytic solution of the deterministic problem with z = 0 and t = 1. Right: numerical solution using the second order Hamiltonian preserving scheme with x = v = 0.015, t = 0.001
+
+31
+
+1.0
+
+0.5
+
+0.0
+
+0.5
+
+1.0
+
+1.5 1.5
+
+1.0
+
+0.5 0.0
+
+0.5
+
+1.0
+
+1.0
+
+0.5
+
+0.0
+
+0.5
+
+1.0
+
+1.5 1.5
+
+1.0
+
+0.5 0.0
+
+0.5
+
+1.0
+
+Figure 15: Example 2 with initial data (4.12) by the second order finite difference approximation with x = v = 0.03, t = 0.002. Reference solution by the collocation method with 20 sample points at t = 1. Left: expectation. Right: variance.
+
+1.0
+
+0.5
+
+0.0
+
+0.5
+
+1.0
+
+1.5 1.5
+
+1.0
+
+0.5 0.0
+
+0.5
+
+1.0
+
+1.0
+
+0.5
+
+0.0
+
+0.5
+
+1.0
+
+1.5 1.5
+
+1.0
+
+0.5 0.0
+
+0.5
+
+1.0
+
+Figure 16: Example 2 with initial data (4.12) by the second order finite difference approximation with x = v = 0.03, t = 0.002. Solution at t = 1 computed by the new gPC-SG method. Left: expectation. Right: variance.
+
+32
+
+error loglog error
+
+0.022
+
+Expectation error Variance error
+
+10 2
+
+0.020
+
+0.018
+
+10 3
+
+0.016
+
+10 4
+
+0.014
+
+0.012
+
+10 5
+
+3
+
+4
+
+5 gPC 6order 7
+
+8
+
+9
+
+Expectation error Variance error
+
+gPC order
+
+101
+
+Figure 17: Example 2 with initial data (4.12). Convergence of the new gPC-SG method using second order finite difference approximation. Left: the 1 error versus the gPC order. Right: the gPC error versus the gPC order by a log-log plot (with other numerical parameters fixed).
+
+Finally, we test the convergence rate of our new gPC-SG method. To do this, we first fix our mesh size: x = v = 0.03, t = 0.02, and output the result at t = 1. We use 20 Gauss-Legendre quadrature points to compute the inner product in (3.20). We choose the gPC order K = 10 as our reference solution, and see how the error changes when increasing K from 3 to 10. From Figure 17, an exponential convergence can be observed.
+
+References
+[1] H. Bijl, D. Lucor, S. Mishra, C. Schwab, Uncertainty Quantification in Computational Fluid Dynamics, Springer, Cham, 2013. doi:10.1007/978-3-319-00885-1.
+[2] C. Canuto, A. Quarteroni, Approximation results for orthogonal polynomials in Sobolev spaces, Math. Comp. 38 (1982) 67-86. doi:10.1090/S0025-5718-19820637287-3.
+[3] H. Choi, J.G. Liu, The reconstruction of upwind fluxes for conservation laws: its behavior in dynamic and steady state calculations, J. Comput. Phys. 144 (1998) 237-256. doi:10.1006/jcph.1998.5970.
+[4] B. Despres, G. Poette, and D. Lucor. Robust uncertainty propagation in systems of conservation laws with the entropy closure method. In Uncertainty Quantication
+33
+
+in Computational Fluid Dynamics, Volume 92 of Lect. Notes Comput. Sci. Eng., 105-149. Springer, Heidelberg, 2013
+[5] R. G. Ghanem and P. D. Spanos. Stochastic Finite Elements: A Spectral Approach. Springer Verlag, New York, 1991.
+[6] D. Gottlieb and D. Xiu, Galerkin method for wave equations with uncertain coefficients, Comm. Comp. Phys. 3, 505-518, 2008.
+[7] Max D. Gunzburger, Clayton G. Webster, and Guannan Zhang. Stochastic finite element methods for partial differential equations with random input data. Acta Numer., 23 (2014), 521-650.
+[8] S. Jin, Numerical methods for hyperbolic systems with singular coefficients: wellbalanced scheme, Hamiltonian preservation and beyond, Proc. of the 12th International Conference on Hyperbolic Problems: Theory, Numerics, Applications, Univeristy of Maryland, College Park. Proceedings of Symposia in Applied Mathematics Vol 67-1, 93-104, 2009, American Mathematical Society.
+[9] J. Hu, S. Jin, and D. Xiu, A stochastic Galerkin method for Hamilton-Jacobi equations with uncertainty, SIAM J. Sci. Comput. 37, A2246-A2269, 2015.
+[10] S. Jin, K.A. Novak, A Semiclassical Transport Model for Thin Quantum Barriers, Multiscale Model. Simul. 5 (2006) 1063-1086. doi:10.1137/060653214.
+[11] S. Jin, P. Qi, 1-error estimates on the immersed interface upwind scheme for linear convection equations with piecewise constant coefficients: A simple proof, Science China Mathematics 56 (2013), 2773-2782. doi:10.1007/s11425-013-4738-2.
+[12] S. Jin, X. Wen, Hamiltonian-preserving schemes for the Liouville equation with discontinuous potentials, Commun. Math. Sci. 3 (2005) 285-315.
+[13] S. Jin and X. Wen, Hamiltonian-preserving schemes for the Liouville equation of geometrical optics with partial transmissions and reflections, SIAM J. Num. Anal. 44 (2006), 1801-1828.
+[14] A. Kurganov, E. Tadmor, New High-Resolution Central Schemes for Nonlinear Conservation Laws and Convection Diffusion Equations, J. Comput. Phys. 160, 241-282, (2000). doi:10.1006/jcph.2000.6459.
+[15] O. P. Le Maitre and O. M. Knio. Spectral Methods for Uncertainty Quantification, Scientific Computation, with Applications to Computational Fluid Dynamics. Springer, New York, 2010.
+34
+
+[16] R.J. LeVeque, Finite Volume Methods for Hyperbolic Problems, Cambridge University Press, 2002.
+[17] M. Motamed, F. Nobile, R. Tempone, A stochastic collocation method for the second order wave equation with a discontinuous random speed, Numer. Math. 123 (2012) 493-536. doi:10.1007/s00211-012-0493-5.
+[18] M. P. Pettersson, G. Iaccarino and J. Nordström, Polynomial Chaos Methods for Hyperbolic Differential Equations, Springer, Switzerland, 2015.
+[19] H. Nessyahu, E. Tadmor, Non-oscillatory central differencing for hyperbolic conservation laws, J. Comput. Phys. (1990).
+[20] T. Tang, T. Zhou, Convergence Analysis for Stochastic Collocation Methods to Scalar Hyperbolic Equations with a Random Wave Speed, Commun. Comput. Phys, 8.1 (2010) 226-248. doi:10.4208/cicp.060109.130110a.
+[21] J. Tryoen, O. Le Maitre, M. Ndjinga, A. Ern, Intrusive Galerkin methods with upwinding for uncertain nonlinear hyperbolic systems, J. Comput. Phys. 229 (2010) 6485-6511. doi:10.1016/j.jcp.2010.05.007.
+[22] D. Xiu, Fast numerical methods for stochastic computations: a review, Comun. Comput. Phys, 5.2-4 (2009) 242-272. doi:10.1016/j.adhoc.2013.06.001.
+[23] D. Xiu, Numerical Methods for Stochastic Computations, Princeton University Press, 2010.
+[24] D. Xiu and G.E. Karniadakis, The Wiener-Askey polynomial chaos for stochastic differential equations. SIAM J. Sci. Comput., 24(2002), 619-644.
+[25] D. Xiu, J.S. Hesthaven, High-Order Collocation Methods for Differential Equations with Random Inputs, SIAM J. Sci. Comput. 27 (2005) 1118-1139. doi:10.1137/040615201.
+[26] T. Zhou, T. Tang, Convergence Analysis for Spectral Approximation to a Scalar Transport Equation with a Random Wave Speed, J. Comput. Math. 30 (2012) 643656. doi:10.4208/jcm.1206-m4012.
+35
+
+

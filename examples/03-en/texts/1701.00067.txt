@@ -1,0 +1,1374 @@
+arXiv:1701.00067v2 [hep-ph] 13 Sep 2017
+
+Prepared for submission to JHEP
+Black Holes, Dark Matter Spikes, and Constraints on
+Simplified Models with t-Channel Mediators
+Pearl Sandicka, Kuver Sinhaa,b, and Takahiro Yamamotoa aDepartment of Physics and Astronomy, University of Utah, Salt Lake City, UT 84112, USA bDepartment of Physics and Astronomy, University of Oklahoma, Norman, OK 73019, USA E-mail: sandick@physics.utah.edu, kuver.sinha@ou.edu, t.yamamoto.1777@gmail.com
+Abstract: A possible density spike of dark matter (DM) in the subparsec region near the super-
+massive black hole at the Galactic Center can provide potentially observable gamma-ray signals emanating from DM annihilations. Taking Fermi-LAT data for the gamma-ray flux from the point source 3FGL J1745.6-2859c (Sgr A), we calculate the resulting constraints on generic models of DM, allowing for the possibility of a non-negligible velocity-dependent component of the annihilation cross section. We consider a range of values for relevant astrophysical parameters that describe the spike profile and find that the gamma-ray flux is strongly dependent on these choices; in particular, the modeling of spike depletion effects due to gravitational interactions with baryons, which affect the spike radius and the steepness of the profile. We consider both an idealized case where no attenuation of the spike occurs, as well as a case where the spike is depleted over time, and in each case we consider several choices for the steepness of the profile. We find that for the most conservative selection of parameters, corresponding to a depleted spike with an NFW cusp profile, the gamma-ray flux for a 100 GeV thermal relic is lower than current observational constraints by several orders of magnitude. For parameter choices corresponding to spikes that have not been attenuated, bounds on the mass of thermal DM can be obtained, and depend on the assumed steepness of the profile. We also specialize to a class of simplified models of fermionic DM that annihilate dominantly through the t-channel exchange of two scalar mediators with arbitrary mixing angle , and calculate the constraints on these models coming from the DM spike, for regions of parameter space that are complementary to collider searches. These simplified models demonstrate the sensitivity of conclusions about particle physics models to astrophysical parameters. Finally, we discuss the possibility of constraining the astrophysical parameters describing the DM spike if the properties of the DM are known, taking as an example a proposed DM explanation for the observed excess of GeV photons from the GC region.
+Keywords: Dark Matter, Phenomenological Models, Simplified Models
+
+Contents
+
+1 Introduction
+
+1
+
+2 Dark Matter Spike Near the Supermassive Black Hole
+
+4
+
+2.1 Spike Radius (rsp) and Depletion Effects
+
+4
+
+2.2 Dark Matter Density Profile
+
+6
+
+3 Results: Generic DM Model
+
+8
+
+3.1 Depleted Spike
+
+9
+
+3.2 Idealized Spike
+
+14
+
+4 Results: Constraints on Simplified Models
+
+17
+
+4.1 Simplified Model with t-Channel Mediators
+
+17
+
+4.2 Constraints on Simplified Models with t-Channel Mediators
+
+19
+
+5 Constraints on Spike Parameters from DM Annihilations
+
+21
+
+6 Conclusions
+
+22
+
+7 Acknowledgement
+
+25
+
+1 Introduction
+
+The particle nature of dark matter (DM) is an area of intense investigation which has the potential to shed light on fundamental questions about the Standard Model (SM), especially the hierarchy problem. For DM candidates with weak-scale couplings and mass, a calculation of the relic density automatically yields a value that is close to the measured dark matter abundance. This striking fact, a success of the so-called Weakly Interacting Massive Particle (WIMP) paradigm, reinforces the possibility that DM is deeply connected to new physics at the weak scale. The indirect detection of the products of DM annihilation or decay are one potentially fruitful way to investigate the properties of DM. Indeed, if DM annihilations occurred in the early Universe, it is possible that we could observe the products of annihilations occurring today.
+Indirect detection of WIMPs in the Milky Way halo has been a major endeavor over many years. The gamma-ray flux  coming from WIMP annihilation is proportional to the line-of-sight integral of the square of the DM density,
+
+  2(r)dr .
+
+(1.1)
+
+­1­
+
+Since the Galactic Center is expected to have a very high density of DM, it has been a much-studied source for indirect detection of DM.
+The formation of black holes at the centers of DM halos, and in particular the supermassive black hole at the center of our Galaxy [1, 2], can significantly modify the DM profile and affect the observed gamma-ray flux from that region. Gondolo and Silk showed [3] that if the black hole grows adiabatically at the center of a cusp with a power-law profile,
+
+(r)  r-c (cusp profile),
+
+(1.2)
+
+a DM spike can form close to the black hole, with a density profile given by
+
+(r)  r-sp (spike profile),
+
+(1.3)
+
+with sp > c. Such a spike causes an increase in  due to the enhanced density  in Eq. 1.3 at small radii. In fact, as r  0 the DM density profile diverges, but the divergence is cut off by the black hole horizon and smoothed near it due to the effects of DM annihilation.
+The account above is an idealized case, since the DM spike can be destroyed or smoothed by various effects [4­8]. In galactic nuclei, stars have much larger kinetic energy than DM particles, and interactions between them cause DM to be heated up. The gravitational interaction between stars near the black hole and the DM spike can thus cause damping, which affects the spike parameters, including the power-law behavior and the spike radius. The astrophysical parameters that describe the DM spike are a topic of ongoing debate, with a fairly broad range of plausible possibilities.
+The purpose of this paper is to investigate contributions of annihilations in the DM spike to the gamma-ray flux . Specifically, we investigate different spike profiles (i.e. spike formation histories) to determine whether the expectation of an enhanced signal due to the presence of a spike is robust. We consider cases where the DM profile is an idealized spike, which has not changed significantly since its formation, as well as cases where gravitational interactions with baryons have caused the spike to be depleted over time.
+Furthermore, as has been discussed in [11, 13], the DM velocity dispersion can be significantly altered near the GC, where the gravitational influence of the black hole is substantial. In this case, even DM models in which the annihilation cross section today is velocitysuppressed may lead to non-negligible gamma-ray signals from the GC, where the velocities can be large. Here, we investigate a range of DM models with both velocity-independent as well as velocity-dependent contributions to the annihilation cross section. Finally, we present a concrete example of a model in which the conclusions from gamma-ray data depend strongly on the details of the DM spike: a simplified model of fermionic DM coupled to Standard Model fermions via charged scalars [22], [23].
+Indirect detection of DM from a spike near the central black hole of our galaxy has been studied by several authors in different contexts in particle physics. Recently, [10­12] have studied these issues in the context of the Galactic Center excess and for DM models with pwave annihilation for an idealized spike. Indirect detection of DM with a velocity-dependent
+
+­2­
+
+annihilation cross section has been studied by [13], in models of non-thermal DM by [14], and in the context of dark stars by [15­17]. Meanwhile, spikes at the center of dwarf galaxies have recently been constrained by [18, 19].
+Here, we expand on the studies of DM annihilation near the Milky Way GC. We find that the size of the spike, denoted by the spike radius, and the steepness of the profile both inside the spike, parametrized by sp, and outside (in the cusp), parametrized by c, have a strong effect on the resulting constraints on DM models. For convenience, we summarize our main results:
+(i) The most conservative choice of parameters, corresponding to an attenuated spike radius, an NFW profile for the DM cusp c = 1.0, and a flattened annihilation core yields a flux  that is several orders of magnitude below the current observational threshold for a 100 GeV DM thermal relic (see the top left panel of Fig. 2).
+(ii) For a less conservative choice of parameters, corresponding to an attenuated spike radius, but a steeper profile for the DM cusp, c = 1.1 - 1.5, thermal relics of various masses may be constrained as shown in Fig. 5. The constraints on the velocity independent and velocity dependent contributions to the DM annihilation cross section are plotted in the top right and bottom panels of Fig. 2 and Fig. 3.
+(iii) Assuming that the spike has not undergone depletion improves the constraints considerably. In this idealized case, one can constrain thermal relics of different masses as shown in Fig. 6, which displays various choices of c, and assumes the steepest inner spike profile sp that one might reasonably expect. This steepest choice corresponds to a spike formed by collisionless DM assuming adiabatic growth of the central black hole.
+(iv) We also consider whether sp might be smaller than the steepest reasonable expectation, allowing it as a free parameter. The results are more conservative than Case (iii), and are displayed in Fig. 7 for one choice of sp and a range of values of c.
+Our work suggests that a more careful study of the astrophysics of DM spikes near black holes, specifically in the neighborhood of the supermassive black hole (SMBH) at the center of our Galaxy, is warranted. The wide range of plausible spike parameters results in significant variation in the space of DM constraints. To illustrate this, we take the above cases and apply them to a simplified model, with results that are depicted in Fig. ?? - Fig. 10.
+The paper is structured as follows. In Section 2, we discuss the parameters that describe the DM spike near the black hole. In Section 3, we discuss our main results in general DM models. In Section 4, we describe our results in the context of a simplified DM model, in which dark matter annihilates via t-channel exchange of charged mediators. In Section 5, we briefly discuss what can be learned about the DM spike under the assumption of a particular DM model, in this case one designed to explain the excess of GeV photons from the GC [34], [35], [36]. We end with our Conclusions.
+­3­
+
+2 Dark Matter Spike Near the Supermassive Black Hole
+
+In this section, we discuss the profile of a DM spike near the SMBH in the inner subparsec region of our Galaxy. This type of DM spike has been studied by many groups, beginning with the work of Gondolo and Silk [3]. In the following, we remain agnostic about the nature of DM, and parametrize its annihilation cross section as [20]
+
+v  c0 + c1
+
+v c
+
+2
+,
+
+(2.1)
+
+where c0 is the velocity-independent s-wave contribution, and c1 is the v2-suppressed contribution. We note that the velocity-suppressed terms arise from both s-wave and p-wave
+
+matrix elements. We consider a SMBH at the center of our Galaxy [1] with mass, Mbh, and Schwarzchild
+radius, rSch.,
+
+Mbh = 4 × 106M rSch.  4 × 10-7 pc .
+
+(2.2)
+
+If the growth of the SMBH was adiabatic, and assuming collisionless dark matter particles, one finds that an original DM cusp with density profile (r)  r-c becomes contracted into a spike with profile (r)  r-sp at small radii [3, 4]. In fact, at the smallest radii, just outside rSch., the DM density likely attains a maximum or plateau value. There are thus three distinct regions of the DM density profile, which will be discussed in detail in Section 2.2. Specifically, the profile is given by the analytic form
+
+  (rcore)  (r) = 0 (r/rsp)-sp
+
+ 
+
+0
+
+(r/rsp
+
+)-c
+
+10rSch. < r  rcore rcore < r  rsp rsp < r
+
+(Region III), (Region II), (Region I).
+
+(2.3)
+
+Here, rsp and rcore denote the spike and core radii, respectively. The profile depends on the steepness parameters sp and c. Three example profiles are shown in Fig. 1.
+The formation of a DM spike is contingent on several conditions, detailed for example in [3] and [4]. After its formation, the DM spike may be dampened due to gravitational interactions with stars near the GC, or disrupted due to halo mergers, either of which can substantially reduce the steepness of the spike [4]. Here we consider the case of an idealized (undepleted) spike, as well as a spike that has been depleted due to gravitational interactions with stars. For the latter, we follow the parametrization of [8].
+We first give details about the spike and core radii, rsp and rcore, then we describe the physics of the profile for each of the three regions.
+
+2.1 Spike Radius (rsp) and Depletion Effects In the idealized case, the spike radius does not evolve in time and is given by
+
+rsp(t) = rsp(0)  0.2rh (Idealized Case).
+
+(2.4)
+
+­4­
+
+ GeV cm 3
+
+1010
+
+I
+
+107
+
+104
+
+10 0.01
+10 5
+
+rc 0 0.001
+
+m 100 GeV
+
+c0 3 10 26 cm3s 1
+
+c1 1 10 26 cm3s 1
+
+II
+
+c 1.0
+
+ 10
+
+4
+
+III
+rsp 0
+
+0.1
+
+10
+
+r pc
+
+1000
+
+105
+
+Figure 1. The DM profile is displayed for a typical choice of parameters c = 1.0, sp = 7/3. The solid black profile corresponds to an idealized spike. The thick and thin blue dashed profiles correspond to depleted spikes with  = 10 and  = 4, respectively, where  denotes the time since the spike formed in units of the heating time (details in text).
+
+Here, rh denotes the radius of gravitational influence of the black hole,
+
+rh
+
+
+
+GMbh 2
+
+,
+
+(2.5)
+
+where G is Newton's constant and  denotes the one-dimensional velocity dispersion. Mbh is related to  through the empirical relation [26]
+
+Mbh 108 M
+
+= (1.66 ± 0.24)
+
+ 200 km s-1
+
+4.86±0.43
+.
+
+(2.6)
+
+For the central values in Eq. 2.6, we obtain
+
+  93 km/s rh  1.99 pc
+
+(2.7)
+
+for the DM velocity dispersion and the radius of influence of the black hole. In the idealized case, this leads to a spike radius of
+
+rsp = 0.40 pc (Idealized Case) ,
+
+(2.8)
+
+denoted as rsp(0) in Fig. 1.
+
+­5­
+
+Gravitational interactions between DM and baryons will lead to changes from the idealized case of Eq. 2.4. Stars in the galactic nucleus have much larger kinetic energies than the DM particles, and the interactions between the two tend to heat up the DM. This leads to a dampening of the spike [5]. The decay of the spike can be described roughly as
+
+(r, t)  (r, 0) e-/2 ,
+
+(2.9)
+
+where  is the time since the spike formed in units of the heating time, theat [8]. The heating time is theat  109 years, and we will take  = 10 [25], though we note that these values are not well constrained.
+The evolution of the spike radius can be described as [8]
+
+rsp(t) = rsp(0) × exp
+
+- 2(sp - c)
+
+(Depleted Case),
+
+(2.10)
+
+where rsp(0) = 0.2rh is the initial value of the spike radius. Typical values for the depleted spike radius are
+
+rsp = 0.0094 pc for c = 1.0 rsp = 0.0015 pc for c = 1.5 (Depleted Case),
+
+(2.11)
+
+assuming a relation between sp and c as in Equation 2.15, described in Section 2.2. Note that the spike radius in the depleted case is much smaller than in the idealized case, and also that there is significant variation in the spike radius depending on c. In Fig. 1 we show an idealized spike (solid black), as well as two examples of depleted spikes, one with  = 10 (think blue dashed) and one with  = 4, i.e. theat = 2.5 × 109, (thin blue dashed). Even for  = 4, we see that the spike is significantly depleted. Spikes of such varying size lead to a large range of predicted indirect signals of DM annihilation. Throughout the rest of this study, we restrict our attention on the case of  = 10 to demonstrate the effects of depletion.
+
+2.2 Dark Matter Density Profile
+
+In this section, we discuss the halo profile of the DM spike, starting from the outermost region
+
+and going to the innermost region.
+
+Region I - Outside the spike radius rsp: Typical DM halo profiles, such as NFW, are characterized by a double power law profile. For the Milky Way, at radii less than O(10)
+
+kpc, the profile is a single power law, which we take to be relevant for r > rsp, the radius inside which the spike is significant. We may therefore parametrize the DM profile in Region
+
+I as
+
+(r) = 0
+
+r rsp
+
+-c
+
+for rsp < r .
+
+(2.12)
+
+The normalization of the density profile 0 is set by extrapolating inwards from the solar
+
+radius
+
+0 = 
+
+r rsp
+
+c
+,
+
+(2.13)
+
+­6­
+
+where we take the density at the solar radius to be  = 0.3 GeV/cm3. N-body simulations that include only DM (and no baryonic matter) generally favor inner
+slopes of c  1, which is the canonical NFW value. However, baryonic interactions affect the profile in the inner 10 kpc of our galaxy, and can substantially steepen the power-law behavior [27­31]. Furthermore, observations are compatible with c as large as at least 1.5 [31]. Here we consider a range of cusp exponents, allowing values of c  [1.0, 1.5].
+Region II - Inside the spike radius rsp but outside the core radius rcore: The spike profile itself is also parametrized as a simple power law,
+
+(r) = 0
+
+r rsp
+
+-sp
+
+for rcore < r  rsp ,
+
+(2.14)
+
+where the spike slope, sp may or may not be directly related to the cusp slope, c. For
+
+collisionless DM forming a spike due to the adiabatic growth of the black hole, the spike slope
+
+obeys the relation
+
+sp
+
+=
+
+9 - 2c 4 - c
+
+,
+
+(2.15)
+
+which yields a value sp  2.3 - 2.4 for 1.0  c  1.5. This relation holds for a central black
+
+hole that grows adiabatically from a small seed.
+
+However, the spike slope may be significantly different than the adiabatic expectation
+
+under different assumptions. If the black hole appeared instantaneously, then one obtains
+
+sp = 4/3 [4]. Black hole mergers at the center of the progenitor halo can give sp = 1/2, a
+
+value that is also obtained if the black hole grows away from the center of the DM distribution
+
+[4]. As above, we focus on the effect of stellar heating, which could result in a final equilibrium
+
+value as low as sp  1.5 [5, 7]. Note that more recent work by the author of [5], namely [8],
+
+indicates that the effect of stellar heating will be a decrease in rsp, rather than a direct decrease
+
+in sp with rsp unchanged. In the remainder of the paper, we primarily follow [8], though we
+
+also address the possibility of a reduced value of sp relative to the adiabatic expectation. In
+
+the latter case, we choose sp = 1.8, following [10].
+
+Region III - Inside the core radius rcore: At very small radii, the DM density can
+
+reach very high values. However, that implies large values of the annihilation cross section,
+
+which acts to reduce the density. We make the conservative assumption that an annihilation
+
+plateau is formed in this region, with
+
+(r) = (rcore) for 10 rSch. < r  rcore ,
+
+(2.16)
+
+where the relevant inner radius is related to the Schwarzschild radius of the black hole, and the outer radius is the core radius, defined by the relation
+
+(rcore) m
+
+v
+
+ ( theat)-1 ,
+
+(2.17)
+
+which depends on the thermally averaged annihilation cross section times velocity, v , and the WIMP mass, m.
+
+­7­
+
+We note that in the general case of arbitrary velocity anisotropy, instead of circular particle orbits, a cusp with   r(--1/2) may develop in the center, where  is the anisotropy coefficient [32]. Though the cusp is expected to be very weak, it may further enhance the flux of DM annihilation products from the very central region of the Galaxy [12]. Here we take the simple limit of circular orbits, in which case there is a flat plateau as depicted in Fig. 1.
+Finally, we assume a virialized halo such that
+
+v c
+
+2
+=
+
+rSch. 2r
+
+.
+
+(2.18)
+
+Since the ratio v/c appears in the partial wave expansion of the annihilation cross section, given by Eq. 2.1, the annihilation cross section is therefore position-dependent, and the velocity-suppressed contribution can become large near the SMBH. In fact, from Eq. 2.17, we see that rcore, and therefore also (r) for r < rcore, may be sensitive to the velocity-suppressed contribution to the annihilation cross section, and will in general vary with the coefficient c1 even for fixed c0.
+
+3 Results: Generic DM Model
+
+In this section, we discuss our calculation of the gamma-ray flux from a DM spike at the Galactic Center, then we discuss the sensitivity of constraints on the properties of DM to assumptions about the form of the spike. We begin by discussing depleted spikes, i.e. those for which the spike density is dampened as in Eq. 2.9, which manifests as a decrease in the spike radius according to Eq. 2.10. In these cases, we assume the standard adiabatic relation for sp(c), Eq. 2.15. Example profiles are shown as blue dashed contours in Fig. 1, and our results for depleted spikes are presented in Figs. 2-5. Next, we turn our attention to idealized spikes, which have not suffered a decrease in rsp. In this case we also consider both the adiabatic expectation for sp, an example of which is shown as the solid black contour in Fig. 1, while our general results are presented in Fig. 6, as well as the effect of a direct decrease in sp with no change in spike radius, the results for which are presented in Fig. 7.
+The differential flux of gamma rays from a given angular direction d produced by the annihilation of Majorana DM, , is given by
+
+d d dE
+
+=
+
+1r 2 4
+
+2
+
+ds
+
+m
+
+l.o.s. r
+
+(r(s, )) 2 
+
+v
+
+f
+
+dNf dE
+
+.
+
+f
+
+(3.1)
+
+Here, r(s, ) = (r2 + s2 - 2 r s cos )1/2 is the radial Galactic coordinate, and  is the aperture angle between the direction of the line of sight, s, and the axis connecting the Earth to the Galactic Center. dNf /dE is the spectrum of photons coming from annihilation to a final state f , and is computed with Pythia [33]. We note that the usual separation between the calculation of the astrophysical J-factor and the annihilation cross section is no longer applicable here, since the annihilation cross section itself depends on position, from Eq. 2.18.
+
+­8­
+
+If the DM spike is a bright and compact enough source of photons, it may have been identified as a point source in Fermi-LAT 's Third Point Source Catalog. We will thus be interested in computing the total flux from the DM spike and comparing the brightness to point sources in the same region. As a comparative value that determines observability, we consider the integrated flux from 1 to 100 GeV for the Fermi 3FGL source J1745.6-2859c (Sgr A), which we denote as Fermi = 2.18×10-8 photons/cm2s. If the flux from the spike exceeds this value, we consider the model to be excluded. In fact, the bulk of the contribution to the gamma-ray flux from Sgr A is from standard astrophysics, rather than DM annihilation, as a spectral analysis would reveal (see, eg. [37]). Here we are interested only in order of magnitude estimates, and prefer to remain agnostic about the nature of the DM, so we take the only constraint to be the upper limit on the integrated flux. Furthermore, rather than assuming a specific final state to which dark matter annihilates, we choose as a benchmark value for the integrated photon count N = 1, with the flux scaling  N , and integrate over a fixed angular acceptance of 0.1 1.
+3.1 Depleted Spike
+In Figures 2 and 3 we present our results in the (c0, c1) plane for m = 100 GeV and m = 200 GeV, respectively, for the case of a depleted spike. We explore a range of values of c = 1.0, 1.3, and 1.5. The contours show the total integrated flux  in units of Fermi. In both figures, we see that for c 1.3, the total integrated flux  is below current observational sensitivity for the entirety of the parameter space shown, i.e. c0 10-25 cm3 s-1 and c1 10-24 cm3 s-1. For m = 100 GeV and c = 1.5, the observed gamma-ray flux constrains models with annihilation cross section c0 1.6×10-26 cm3 s-1. Therefore a canonical thermal relic with cross section 3 × 10-26 cm3 s-1 is excluded by this choice of spike parameters if its mass is 100 GeV. In Fig. 3 we see that the constraints weaken as the DM mass increases.
+One can also see that if the velocity-dependent component c1 provides the dominant contribution to the photon flux, it must be significantly larger (by a few orders of magnitude) than c0 need be if it dominates. This is due to the factor (v/c)2  (rSch./2r), which is small away from the central black hole. At the end of the day, the velocity-independent contribution to the annihilation cross section is likely still dominant. Note, however, that it is conceivable that c0 = 0, in which case a very large value of c1 could lead to a signal from DM annihilation in the spike, when otherwise no indirect detection signal would be expected.
+In Fig. 4, we show contours of the ratio /NFW, where  and NFW are the total integrated flux from annihilation of 100 GeV DM particles in the presence of a depleted spike with c = 1.5 and for a standard NFW profile (c = 1.0) with no spike. In the former case, the spike power law inside the spike radius is given by the standard adiabatic relation, Eq. 2.15. Unsurprisingly, we see that large enhancement factors are obtained relative to what
+1Choosing a small angular acceptance rather than using the full PSF may underestimate the flux from the spike by a factor of a few, depending on the final state. Here, we prefer agnosticism regarding the annihilations themselves, and are interested in broad trends in detectability. We will see that the exponents c and sp can cause variations in the flux by several orders of magnitude.
+­9­
+
+log10(c1[cm3s-1]) 1.3e-03
+log10(c1[cm3s-1])
+
+1.3e-01
+3.2e-02 1.6e-02
+
+6.4e-02
+
+24.0
+
+m = 100GeV, and C = 1. 0
+
+24.5
+
+25.0
+
+25.5
+
+26.0
+
+26.5
+
+27.0
+
+6.4e-04 1.6e-04
+
+24.0
+
+m = 100GeV, and C = 1. 3
+
+24.5 100
+
+25.0
+
+25.5
+
+26.0
+
+26.5 10-3
+
+27.0
+
+3.2e-04
+
+27.5
+
+27.5
+
+28.029.0 28.5 28.0 27.5 27.0 26.5 26.0 25.5 25.0
+log10(c0[cm3s-1])
+
+28.029.0 28.5 28.0 27.5 27.0 26.5 26.0 25.5 25.0
+log10(c0[cm3s-1])
+
+24.0
+
+m = 100GeV, and C = 1. 5
+
+24.5
+
+100
+
+2.0e+00 5.0e-01
+
+log10(c1[cm3s-1]) 4.0e+00
+
+25.0
+
+10-1
+
+25.5 10-2
+26.0
+
+1.0e+00 2.5e-01 1.2e-01
+
+26.5
+
+10-3
+
+27.0
+
+10-4
+
+27.5
+
+10-5 28.029.0 28.5 28.0 27.5 27.0 26.5 26.0 25.5 25.0
+log10(c0[cm3s-1])
+
+Figure 2. Depleted Spike, 100 GeV DM: Contours of the integrated flux  in units of Fermi = 2.18 × 10-8 photons/cm2s coming from the source 3FGL J1745.6-2859c (Sgr A), in the energy range 1-100 GeV, and assuming an integrated photon count N = 1. The dark matter mass is 100 GeV, and the annihilation cross section is parametrized by Eq. 2.1. The spike profile is given by Eq. 2.3. The spike radius is given by the depleted case in Eq. 2.10. The spike power law outside the spike radius is given by c = 1.0 (upper left panel), c = 1.3 (upper right panel), and c = 1.5 (lower panel). The bold line in the lower panel shows the contour  = Fermi. The spike power law inside the spike radius is given by Eq. 2.15, yielding values in the range sp  2.3 - 2.4 .
+
+one would expect for a standard NFW profile, even in the case of significant depletion as presented here. This is due almost exclusively to the large cusp exponent, c. Indeed, for this value of c, moderate values of c0 and c1 lead to an almost imperceptible spike (that is, rsp  rcore). However, even in this case, if c1 c0, then the impact of annihilations in the very central region of the spike becomes enhanced by the high velocities of the DM particles,.
+
+­ 10 ­
+
+log10(c1[cm3s-1]) log10(c1[cm3s-1])
+
+24.0
+
+m = 200GeV, and C = 1. 0
+
+24.5
+
+24.0
+
+m = 200GeV, and C = 1. 3
+
+24.5 100
+
+1.6e-02
+
+3.2e-04
+
+25.0
+
+25.0
+
+25.5
+
+25.5
+
+26.0
+
+26.0
+
+3.2e-02 8.0e-03 4.0e-03
+2.0e
+
+26.5
+
+26.5 10-3
+
+1.6e-04 8.0e-05
+
+27.0
+
+27.0
+
+27.5
+
+27.5
+
+28.029.0 28.5 28.0 27.5 27.0 26.5 26.0 25.5 25.0
+log10(c0[cm3s-1])
+
+28.029.0 28.5 28.0 27.5 27.0 26.5 26.0 25.5 25.0
+log10(c0[cm3s-1])
+
+24.0
+
+m = 200GeV, and C = 1. 5
+
+24.5
+
+100
+
+1.3e+00 3.2e-01
+
+log10(c1[cm3s-1]) 6.4e-01
+
+25.0
+
+10-1
+
+25.5 10-2
+26.0
+
+26.5
+
+10-3
+
+27.0
+
+10-4
+
+1.6e-01 8.0e-02
+
+27.5 10-5
+28.029.0 28.5 28.0 27.5 27.0 26.5 26.0 25.5 25.0
+log10(c0[cm3s-1])
+
+Figure 3. Depleted Spike, 200 GeV DM: Contours of the integrated flux  in units of F ermi = 2.18 × 10-8 photons/cm2s coming from the source 3FGL J1745.6-2859c (Sgr A), in the energy range 1-100 GeV, and assuming an integrated photon count N = 1. The dark matter mass is 200 GeV, and the annihilation cross section is parametrized by Eq. 2.1. The spike profile is given by Eq. 2.3. The spike radius is given by the depleted case in Eq. 2.10. The spike power law outside the spike radius is given by c = 1.0 (upper left panel), c = 1.3 (upper right panel), and c = 1.5 (lower panel). The spike power law inside the spike radius is given by Eq. 2.15, yielding values in the range sp  2.3 - 2.4.
+
+In the figure, vertical contours indicate that the flux is independent of c1, which one would expect for slow-moving/cold dark matter, but the contours deviate from vertical when the velocity-dependent contribution to the annihilation cross section becomes important.
+Fig. 4 demonstrates three features of our analysis: 1) Especially for large c, extremely large variations from the DM annihilation flux one would expect from an NFW halo are possible. 2) These variations are expected even in the relative absence of a significant spike
+
+­ 11 ­
+
+24.0
+
+m = 100 GeV and C = 1. 5
+
+24.5 105
+25.0
+
+log10(c1[cm3s-1])
+128000 32000
+16000 8000 4000 2000
+
+25.5
+
+26.0 104
+26.5
+
+27.0
+
+27.5
+
+28.0 30
+
+29
+
+28
+
+27
+
+26
+
+log10(c0[cm3s-1])
+
+25 103
+
+Figure 4. Depleted Spike, Contours of the ratio /NFW, where  and NFW are the total integrated flux in the presence and absence, respectively, of a DM spike near the supermassive black hole, coming from the source 3FGL J1745.6-2859c (Sgr A), in the energy range 1-100 GeV, and assuming an integrated photon count N = 1. The dark matter mass is 100 GeV, and the annihilation cross section is parametrized by Eq. 2.1. The spike profile is given by Eq. 2.3. The spike radius is given by the depleted case in Eq. 2.10. The spike power law outside the spike radius is given by c = 1.5. The spike power law inside the spike radius is given by Eq. 2.15, with value sp  2.4.
+
+(rsp  rcore). And 3), as discussed in [10], the flux may be much larger than the velocityindependent expectation if c1 is large enough.
+In Fig. 5, we show the observational limit as a function of the DM mass for the case of a depleted spike with spike radius given by Eq. 2.10. The spike power law inside the spike radius is given by the adiabatic expectation, Eq. 2.15. The contours are the total integrated flux  in units of F ermi = 2.18 × 10-8 photons/cm2s in the energy range 1-100 GeV for a benchmark integrated photon count N = 1. The annihilation cross section is parametrized
+
+­ 12 ­
+
+c0 = 3 × 10-26 and c1 = 10-30 cm3s-1
+
+102
+
+C = 1. 3
+
+C = 1. 4
+
+C = 1. 5
+
+101
+
+log10(/Fermi)
+
+100
+
+10-1
+
+10-2
+
+50
+
+100
+
+150
+
+200
+
+250
+
+300
+
+m [GeV]
+
+Figure plot -
+
+5. Depleted spike The total integrated
+
+with sp flux  in
+
+=
+
+9-2c 4-c
+
+ 2.3
+
+units of F ermi
+
+- =
+
+2.4 2.18
+
+: Observational reach versus mass × 10-8 photons/cm2s coming from the
+
+source 3FGL J1745.6-2859c (Sgr A), in the energy range 1-100 GeV, and assuming an integrated
+
+photon count N = 1. The annihilation cross section is parametrized by Eq. 2.1, with c0 = 3 × 10-26 cm3 s-1 and c1 = 1 × 10-30 cm3 s-1, corresponding to a canonical thermal relic. The spike profile
+is given by Eq. 2.3. The spike radius is given by the depleted case in Eq. 2.10. The spike power law
+
+inside the spike radius is given by Eq. 2.15, yielding values in the range sp  2.3 - 2.4. The dotted
+
+line shows the observational limit  = F ermi. The cyan, blue, and magenta contours correspond to
+
+c = 1.3, c = 1.4, and c = 1.5, respectively.
+
+by Eq. 2.1, with c0 = 3 × 10-26 cm3 s-1 and c1 = 1 × 10-30 cm3 s-1, corresponding to a canonical thermal relic. The dashed line shows the observational limit  = F ermi. From bottom to top, the cyan, blue, and magenta contours correspond to c = 1.3, c = 1.4, and c = 1.5, respectively.
+We see that thermal relics with increasingly large masses are constrained for depleted spikes with increasing c. In general, larger values of c lead to slightly steeper spike profiles inside the spike radius rsp, however the dominant effect comes from r > rsp where c determines the flux. Larger c leads to an increased integrated flux and higher mass reach. For a
+
+­ 13 ­
+
+given/determined c, the sensitivity falls off as 1/m2 due to the decreasing number density of DM particles.
+3.2 Idealized Spike
+
+c0 = 3 × 10-26 and c1 = 10-30 cm3s-1
+
+103
+
+C = 1. 0 C = 1. 1
+
+C = 1. 2
+
+C = 1. 3
+
+102
+
+C = 1. 4
+
+C = 1. 5
+
+101
+
+log10(/Fermi)
+
+100
+
+10-1
+
+50
+
+100
+
+150
+
+200
+
+250
+
+300
+
+m [GeV]
+
+Figure 6. Idealized spike with sp =
+
+9-2c 4-c
+
+:
+
+Observational
+
+reach
+
+versus
+
+mass
+
+plot
+
+-
+
+The
+
+total integrated flux  in units of F ermi = 2.18 × 10-8 photons/cm2s coming from the source 3FGL
+
+J1745.6-2859c (Sgr A), in the energy range 1-100 GeV, and assuming an integrated photon count
+
+N = 1. The annihilation cross section is parametrized by Eq. 2.1, with c0 = 3 × 10-26 cm3 s-1 and
+
+c1 = 1 × 10-30 cm3 s-1, corresponding to a canonical thermal relic. The spike profile is given by
+
+Eq. 2.3. The spike radius is given by the idealized case in Eq. 2.8, with value rsp  0.40 pc. The spike
+
+power law inside the spike radius is given by Eq. 2.15, yielding values in the range sp  2.3 - 2.4. The
+
+dotted line shows the observational limit  = F ermi. The black, red, green, cyan, blue, and magenta
+
+contours correspond to c = 1.0, c = 1.1, c = 1.2, c = 1.3, c = 1.4, and c = 1.5, respectively.
+
+Finally, we turn our attention to the possibility that the spike has not depleted as described by Eq. 2.10, but rather remains intact or is described by a spike exponent different from the adiabatic expectation2. We refer to both of these cases as idealized.
+2A value of sp different from the adiabatic expectation of Eq. 2.15 could arise at formation or through
+
+­ 14 ­
+
+First, we address the case of a truly idealized spike; one that has not suffered depletion
+
+in any way and formed adiabatically. In Fig. 6, we show the observational limit as a function
+
+of the DM mass for an idealized spike with spike radius given by Eq. 2.8 and its spike power
+
+law given by the adiabatic expectation, Eq. 2.15. The contours represent the total integrated
+
+flux  in units of F ermi = 2.18 × 10-8 photons/cm2s in the energy range 1-100 GeV for an
+
+integrated photon count N = 1. The annihilation cross section is parametrized by Eq. 2.1,
+
+with c0 = 3 × 10-26 cm3 s-1 and c1 = 1 × 10-30 cm3 s-1, corresponding to a canonical
+
+thermal relic. The dotted line shows the observational limit  = F ermi. From bottom to
+
+top, the black, red, green, cyan, blue, and magenta contours correspond to c = 1.0, c = 1.1,
+
+c = 1.2, c = 1.3, c = 1.4, and c = 1.5, respectively. In Fig. 6, again, we see the 1/m2 dependence, but the most striking feature is clearly the
+much large mass reach in this case relative to the depleted case shown in Fig. 5. Fig. 6 shows
+
+that if the spike has suffered no depletion, then even very large DM masses are incompatible
+
+c 1.3. Another way of reading this is that if the DM spike at our Galactic Center has not
+
+suffered much depletion, then the absence of a DM signal gives us an upper limit on c.
+
+Lastly, in Fig. 7 we show the observational limit as a function of the DM mass for the
+
+case of an idealized spike with spike radius given by Eq. 2.8, but with sp = 1.8. One can view
+
+this as a different type of depletion, which may be from gravitational interactions with stars,
+
+or potentially from some other mechanism, however it is idealized in the sense that the spike
+
+radius, rsp given by Eq. 2.4, is unchanged over time. Other parameter choices are identical to
+
+Fig. 6. Obviously, since the spike exponent is smaller in this case than in the truly idealized
+
+spike shown in Fig. 6, the mass reach is substantially reduced. In fact, comparing Figs. 7 and
+
+5, we see that flux from an idealized spike with sp = 1.8 is just a factor of a few larger than
+
+the flux from a depleted spike with the same c. In the future, these some-what degenerate
+
+cases may be resolved by carefully studying the extended spatial morphology (rather than
+
+just the point source flux) of a gamma-ray signal of DM annihilation.
+
+Our results from this section may be summarized as follows: The degree to which the
+
+DM spike near the black hole can constrain DM models depends strongly on the parameters
+
+that determine the spike profile, such as the spike radius rsp and the parameters sp and c
+
+describing the profile power-law behavior inside and outside the spike radius, respectively.
+
+Different choices of these parameters have been considered, ranked in order from the most
+
+conservative to the most optimistic:
+
+(i) A depleted spike with radius given by Eq. 2.10, c = 1.0, and sp given by Eq. 2.15
+
+(sp
+
+=
+
+9-2c 4-c
+
+).
+
+This
+
+is
+
+the
+
+most
+
+conservative
+
+choice
+
+of
+
+parameters
+
+we
+
+study,
+
+and
+
+the
+
+results
+
+are
+
+shown in the top left panels of Fig. 2 and Fig. 3, for 100 GeV and 200 GeV DM, respectively.
+
+We see that for a 100 GeV DM candidate with annihilation cross section compatible with a
+
+thermal relic, this choice of spike parameters leads to a flux that is several orders of magnitude
+
+smaller than the current observational limit F ermi. Smaller values of sp would therefore
+
+also lead to unobservably small photon fluxes.
+
+depletion over time, as briefly described in Sec. 2.2.
+
+­ 15 ­
+
+c0 = 3 × 10-26 and c1 = 10-30 cm3s-1
+
+102
+
+C = 1. 0 C = 1. 1
+
+C = 1. 2
+
+101
+
+C = 1. 3
+
+C = 1. 4
+
+C = 1. 5
+100
+
+log10(/Fermi)
+
+10-1
+
+10-2
+
+10-3
+
+50
+
+100
+
+150
+
+200
+
+250
+
+300
+
+m [GeV]
+
+Figure 7. Idealized spike with sp = 1.8 : Observational reach versus mass plot - The total integrated flux  in units of F ermi = 2.18 × 10-8 photons/cm2s coming from the source 3FGL J1745.6-2859c (Sgr A), in the energy range 1-100 GeV, and assuming an integrated photon count N = 1. The annihilation cross section is parametrized by Eq. 2.1, with c0 = 3 × 10-26 cm3 s-1 and c1 = 1 × 10-30 cm3 s-1, corresponding to a canonical thermal relic. The spike profile is given by Eq. 2.3. The spike radius is given by the idealized case in Eq. 2.8, with value rsp  0.40 pc. The
+spike power law inside the spike radius is given by sp = 1.8. The dotted line shows the observational
+limit  = F ermi. The black, red, green, cyan, blue, and magenta contours correspond to c = 1.0,
+c = 1.1, c = 1.2, c = 1.3, c = 1.4, and c = 1.5, respectively.
+
+(ii) A depleted spike with radius given by Eq. 2.10, c = 1.1 - 1.5, and sp given by Eq. 2.15. The mass reaches are plotted in Fig. 5, and the constraints in the DM annihilation plane c0 and c1 are plotted in the top right and bottom panels of Fig. 2 and Fig. 3. It is clear that with increasing c, the current observational limit F ermi can put some constraints on DM of various masses.
+(iii) An idealized spike with radius given by Eq. 2.4, c = 1.0 - 1.5, and sp = 1.8. The mass reaches are plotted in Fig. 7. Due to the larger spike radius, the reaches are generally greater than the depleted spike of Case (ii), even with the smaller value of sp.
+
+­ 16 ­
+
+(iv) An idealized spike with radius given by Eq. 2.4, c = 1.0 - 1.5, and sp =
+
+9-2c 4-c
+
+.
+
+This is the most optimistic choice of parameters in the sense that it would imply a very
+
+prominent spike, and the results are shown in Fig. 6.
+
+In particular, it is clear that for a given value DM mass and sp, a comparison between
+
+the depleted spike in Case (i) and the idealized spike in Case (iv) shows that the flux increases
+
+by a factor of  O(103) when one assumes that the spike radius remained at its idealized
+
+value. A comparison between Case (iii) and Case (iv) shows that for a given spike radius and
+
+DM mass, changing sp from 1.8 to the value predicted from Eq. 2.15 (typically 2.3 - 2.4) increases the flux by  O(10 - 102).
+
+4 Results: Constraints on Simplified Models
+
+In this section, we present a particular example that demonstrates the impact of the spike form on conclusions regarding the particle physics of DM interactions. Specifically, we describe the constraints that are obtained on simplified models of DM with t-channel mediators. For concreteness, we take the DM mass to be 100 GeV, and consider a subset of the parametrizations discussed in section 3. As an example, we consider DM annihilating to bb final states. We first describe this class of simplified models and give an overview of the calculation of the annihilation cross section, then we provide a discussion of the results.
+
+4.1 Simplified Model with t-Channel Mediators
+In this section, we describe some general features of models of DM that annihilate primarily through the t-channel. There is a vast amount of literature on these models, and we refer the reader to [21] and references therein.
+For simplicity, we focus on Majorana DM candidates  with mass m that couple to both left and right SM fermions fL,R. The mediator sector consists of a pair of scalars fL,R, with a mixing angle  [22], [23]. The standard case of mediator sectors coupling to right-handed SM fermions corresponds to the choice  = /2.
+The interaction Lagrangian is given by
+
+Lint = LfLPLf + RfR PRf + c.c. ,
+
+(4.1)
+
+where the Yukawa couplings L,R may in general contain a CP -violating phase,
+
+L  |L| ei/2 ,
+
+R  |R| e-i/2 .
+
+(4.2)
+
+Here, we set  = 0. The mixing angle  between the scalar mass and chiral eigenstates is
+
+given by
+
+f1 f2
+
+=
+
+cos  - sin  sin  cos 
+
+fL . fR
+
+(4.3)
+
+The two scalar mass eigenvalues are denoted as mf1 and mf2 in the following. There are thus the following free parameters in this class of simplified models [24]:
+
+­ 17 ­
+
+-f¯
+
+f ¯f-
+
+f
+
+~1~f, ~2
+
+~1~f, ~2
+
+~
+
+~ ~
+
+~
+
+Figure 8. Feynman diagrams for DM annihilation in the t-channel.
+
+· the four masses, m, mf1, mf2 and mf .
+· the Yukawas |L,R|, the scalar mixing angle , and the CP -violation phase  (here  = 0).
+
+In fact, this simplified model represents a slice of the parameter space of the Minimal
+
+Supersymmetric Standard Model (MSSM), in which bino DM couples to one generation of light sfermions. In the case of the MSSM, the Yukawa couplings are given by
+
+
+
+|L|
+
+= 
+
+2g|YL|
+
+|R| = 2g|YR| ,
+
+(4.4)
+
+where g is the electroweak coupling constant and the hypercharges are |YL| = 1/2 and |YR| = 1 for leptons and |YL| = 1/3 and |YR| = 2/3 for quarks.
+The relevant diagrams for DM annihilation in this model are given in Fig. 8. Parametrizing the annihilation cross section in the standard way, the velocity-independent s-wave contribution c0 is given in the limit mf /mf~i  0 by the simple expression
+
+c0
+
+=
+
+m2~ 2
+
+g4
+
+YL2YR2
+
+cos2
+
+ sin2
+
+
+
+1
+
+1
+
+m2f~1 + m2~ - m2f~2 + m2~
+
+2
+,
+
+(4.5)
+
+In the limit mf /mf~i  0, the v2-suppressed contribution, c1 simplifies considerably, and
+
+­ 18 ­
+
+the analytic expression is
+
+c1
+
+=
+
+m2~ 2
+
+g4
+
+(YL4
+
+cos4
+
+
+
++ YR4 (m2f~1
+
+sin4 )(m4f~1 + m2~)4
+
++
+
+m4~)
+
++
+
+(YL4
+
+sin4
+
+
+
++ YR4 (m2f~2
+
+cos4 )(m4f~2 + m2~)4
+
++
+
+m4~)
+
+2(YL4 +
+
++ YR4) sin2  cos2 (m2f~1 m2f~2 (m2f~1 + m2~)2(m2f~2 + m2~)2
+
++
+
+m4~)
+
++
+
+YL2YR2 sin2  cos2 2(m2f~1 + m2~)4
+
+(m2f~1 - m2f~2 (m2f~2 + m2~)4
+
+)2
+
+3m4f~1 m4f~2 - 52m4~m2f~1 m2f~2 + 3m8~
+
+-14m2~(m2f~1 + m2f~2 )(m4~ + m2f~1 m2f~2 ) - 5m4~(m4f~1 + m4f~2 ) .
+
+(4.6)
+
+We note that the velocity-suppressed terms arise from both s-wave and p-wave matrix elements. We also note that c0 and c1 do depend on  in terms proportional to mf . Additionally, these mf -dependent terms carry coefficients involving YL and YR such that there can be interesting cancellations, even in c0. In our results, we will use the full expressions for c0 and c1, including mf -dependent terms.
+
+4.2 Constraints on Simplified Models with t-Channel Mediators
+We now discuss the constraints in the context of the simplified model introduced above. We adapt Fig. 2, which gives contours of the flux  in units of the current observational limit F ermi in the (c0, c1) plane, and overlay a scan over the parameters of our simplified model. We consider two representative cases: the case of a depleted spike with c = 1.3, and the case of an idealized spike with c = 1.0. For each case, we scan over the mixing angle .
+In the left and right panels of Fig. 9, we consider the case of a depleted spike and idealized spike, respectively. The cyan dots show a scan over the mixing angle  defined by Eq. 4.3, holding the Yukawa couplings fixed at their supersymmetric values given in Eq. 4.4. The scan is performed in the range  = 0 to /2, which traces out a boomerang in the plane. The lowenergy spectrum of the SUSY model we consider consists of bino DM with mass m = 100 GeV, the lightest bottom squark with mass m~b = 105 GeV, and all other superpartners heavy. The solid black line denotes the contour of the integrated flux F ermi = 2.18 × 10-8 photons/cm2s.
+From the depleted case with c = 1.3 considered in the left panel of Fig. 9, we can see that current observational constraints just barely begin to constrain the parameter space. For c = 1.0, as one would expect, the results are even weaker, while we have checked that the case of c = 1.5 constrains a significant portion of the parameter space. Indeed, the constraints are much stronger for the case of an idealized spike, shown in the right panel of Fig. 9. We can see that even for c = 1.0 in the case of an idealized spike, the current observational limits constrain a large part of the parameter space.
+The resulting constraints on  are displayed in Fig. 10. The magenta and cyan curves show the dependence of c0 and c1 on  as obtained from Eq. 4.5 and Eq. 4.6, respectively. For
+
+­ 19 ­
+
+log10(c1[cm3s-1]) log10(c1[cm3s-1])
+
+23 m = 100, mb~1 = 105, and mb~2 = 1000 GeV and C = 1. 3 b
+
+24
+
+101
+
+25
+
+100
+
+26 10-1
+27 10-2
+28
+10-3 29
+
+3029.0 28.5 28.0 27.5 27.0 26.5 26.0 25.5 25.0 10-4
+log10(c0[cm3s-1])
+
+2 1
+1
+
+23 m = 100, mb~1 = 105, and mb~2 = 1000 GeV and C = 1. 0
+b
+
+24
+
+101
+
+25
+
+100
+
+26 10-1
+27 10-2
+28
+10-3 29
+
+3029.0 28.5 28.0 27.5 27.0 26.5 26.0 25.5 25.0 10-4
+log10(c0[cm3s-1])
+
+Figure 9. Depleted/Idealized spike, Simplified model - scan over mixing angle : In the left panel we present the constraints under the assumption of a depleted spike, and in the right panel we assume an idealized spike. In each case, the green points correspond to a scan over the mediator mixing angle  defined by Eq. 4.3. The Yukawa couplings are held fixed at their supersymmetric values, given by Eq. 4.4. The DM mass is 100 GeV and the lightest sbottom mass is 105 GeV, with all other superpartners heavy. The solid black line denotes the contour of the integrated flux F ermi = 2.18 × 10-8 photons/cm2s, coming from the source 3FGL J1745.6-2859c (Sgr A), assuming an energy range of 1-100 GeV and bb final states in DM annihilation. The spike profile is given by Eq. 2.3. In the left panel, the spike radius is given by the depleted case in Eq. 2.10 and c = 1.3, yielding sp  2.37. In the right panel, the spike radius is given by the idealized case in Eq. 2.8 and c = 1.0, yielding sp  2.33.
+
+  0, /2, the annihilation cross section drops precipitously since the contribution from c0 suffers from chiral suppression and the contribution from c1 is velocity-suppressed. These are the regions where the scans in Fig. 9 are cut off towards the left, where c0 becomes small. Conversely, there is a range of values   0.08 - 0.25, where c1 becomes small, but c0 remains large. These are the regions that are cut off towards the bottom of the scans in Fig. 9, where c1 is small.
+The horizontal dotted line in Fig. 10 corresponds to c0  10-27 cm3 s-1, which is where the  = F ermi contour for the idealized case in the right panel of Fig. 9 intersects the c0 axis. Values of c0 larger than this yield an integrated photon flux that is constrained by the source 3FGL J1745.6-2859c (Sgr A). Thus, from Fig. 10, it is clear that either   0 or   /2 if the spike is idealized. Very different conclusions are reached if the spike is depleted.
+While this simplified model describes a subset of the MSSM parameter space, it need not be confined to the MSSM. For example, it is possible that the Yukawa couplings, L,R, deviate from their MSSM values. In the absence of a signal, one could then constrain the couplings L,R for any combination of new particle masses and mixings. If the form of the spike is understood, using the point source flux to constrain the model parameters could be
+
+­ 20 ­
+
+25
+
+26
+
+log10(X[cm3s-1])
+
+27
+
+28
+
+29
+
+X = c0
+
+X = c1
+
+300.0
+
+0.1
+
+0.2
+
+0.3
+
+0.4
+
+0.5
+
+/
+
+Figure 10. Dependence of c0 and c1 on : The purple and blue curves show the dependence of c0 and c1 on  as obtained from Eq. 4.5 and Eq. 4.6, respectively. The horizontal dotted line corresponds to the contour  = F ermi from Fig. ?? (idealized spike with c = 1.0). Values of c0 above the dotted line are constrained by the integrated flux of photons coming from the source 3FGL J1745.6-2859c (Sgr A).
+
+a powerful technique. Alternatively, as will be explored in the next section, if we have some indication of the DM model, then the point source flux could help us understand the spike morphology, and therefore provide a window into the astrophysics of the very central region of our Galaxy.
+
+5 Constraints on Spike Parameters from DM Annihilations
+In this Section, we invert the approach we have hitherto taken to demonstrate the potential power of gamma-ray observations of a known DM candidate to determine the spike profile (and potentially learn something about the astrophysics that led to it). Although the most recent analysis indicates that the excess of GeV photons from the Galactic Center region observed by Fermi-LAT is most likely not due to DM [38], it is instructive to take this case
+
+­ 21 ­
+
+as an example. We calculate the constraints on the spike parameters in our model under the assumption of a particular DM model designed to explain the excess of  1 - 3 GeV gamma-rays from the Galactic Center. Specifically, we take as our benchmark point
+
+m = 49 GeV c0 = 1.76 × 10-26 cm3s-1 c1 = 1.0 × 10-30 cm3s-1,
+
+(5.1)
+
+and assume bb final states, as in [36], [35], [34]. Clearly, many choices for the spike parameters and the relationships among them exist,
+and considering different combinations would lead to different kinds of constraints on the parameter space. As a representative case, we consider a depleted spike and put constraints on the sp vs. c plane. The spike radius is given by Eq. 2.10, and though we do not explicitly enforce the adiabatic relation for sp, we do plot it as a dashed line in the plane.
+The results are displayed in Fig. 11. The solid black contours denote the integrated flux  in units of F ermi = 2.18 × 10-8 photons/cm2s coming from the source 3FGL J1745.62859c (Sgr A), assuming an energy range of 1-100 GeV. The dashed line shows the adiabatic relation between sp and c given by Eq. 2.15. It is clear that for a depleted spike, c 1.3 is incompatible with a DM interpretation of the Galactic Center excess for most values of sp. This is even true for very steep spikes with large sp; as long as c is not too large, these scenarios are not excluded by the point source flux.
+Additionally, the fact that the contours are nearly independent of sp, i.e. mostly vertical, indicates that it is not actually the spike that is responsible for the bulk of the photons. Instead, the spike is actually fairly insignificant relative to the smooth component of the halo. Ultimately, with some knowledge of the properties of DM, perhaps an observed, or unobserved, flux may help us learn about the DM profile near the Galactic Center, and possibly even the astrophysical mechanisms at play.
+In Fig. 12, we display the constraints on a DM candidate with a mass of 49 GeV, but allowing the coefficients c0 and c1 as free parameters. The contours denote the cases where the integrated flux  = F ermi = 2.18 × 10-8 photons/cm2s. The magenta, cyan, and blue contours correspond to c = 1.3, 1.4, 1.5, respectively. The inset shows the contour corresponding to c = 1.6. If c is very large, then the DM annihilation cross section must be very small indeed, to avoid overproducing the GC point source gamma-ray flux.
+
+6 Conclusions
+In this paper, we have studied contributions of a DM spike near the central black hole of our Galaxy to the gamma-ray flux . As our reference gamma-ray source, we have taken 3FGL J1745.6-2859c (Sgr A) from Fermi-LAT 's Third Point Source Catalog. We have taken into account a variety of astrophysical parameters describing the spike, and calculated the resulting constraints on general models of DM. We have then taken these constraints and applied them
+
+­ 22 ­
+
+SP
+
+m = 49 GeV, c0 = 1. 76 × 10-26 cm3s-1and c1 = 10-30 cm3s-1
+2.4
+102
+2.3 101
+2.2 100
+2.1 10-1
+2.01.0 1.1 1.2 1.3 1.4 1.5 1.6
+C
+Figure 11. Constraints on Spike Parameters, assuming Depleted Spike and GC Excess: The DM mass is 49 GeV and the annihilation cross section is parametrized by Eq. 2.1, with c0 = 1.76 × 10-26 cm3s-1 and c1 = 1.0 × 10-30 cm3s-1. The solid black contours denote the integrated flux  in units of F ermi = 2.18 × 10-8 photons/cm2s coming from the source 3FGL J1745.6-2859c (Sgr A), assuming an energy range of 1-100 GeV and bb final states in DM annihilation. The bold contour corresponds to  = F ermi The spike profile is given by Eq. 2.3. The spike radius is given by the depleted case in Eq. 2.10, with values rsp  0.002 - 0.046 pc. The dotted line shows the relation between sp and c given by Eq. 2.15.
+to a specific simplified model of fermionic DM with t-channel mediators. Finally, we have inverted our approach and considered the case of a DM candidate fitting the Galactic Center excess, and calculated the resulting constraints on the space of astrophysical spike parameters.
+We have found that the spike formation history and profile parameters have a profound effect on the extent to which models of DM can be constrained.
+(i) For the most conservative choice of parameters (a depleted spike with radius given by Eq. depletion, c = 1.0), the flux for a 100 GeV thermal relic is several order of magnitude below current observational limits. We have then considered a series of less conservative choices.
+­ 23 ­
+
+23 28.5
+24 29.0 29.5
+25 30.031.0
+26
+
+m = 100GeV
+30.5
+
+log10(c1[cm3s-1])
+
+27
+
+28
+
+29
+
+3029.0 28.5 28.0 27.5 27.0 26.5 26.0 25.5 25.0
+log10(c0[cm3s-1])
+Figure 12. Constraints on DM: The DM mass is 49 GeV and the annihilation cross section is parametrized by Eq. 2.1. The contours denote the cases where the integrated flux  = F ermi = 2.18 × 10-8 photons/cm2s coming from the source 3FGL J1745.6-2859c (Sgr A), assuming an energy range of 1-100 GeV and bb final states in DM annihilation. The spike profile is given by Eq. 2.3. The spike radius is given by the depleted case in Eq. 2.10, with values rsp  0.002 - 0.046 pc. The magenta, cyan, and blue contours correspond to c = 1.3, 1.4, 1.5, respectively. The inset shows the contour corresponding to c = 1.6.
+(ii) A depleted spike with steeper cusp profile can constrain thermal relics of different masses depending on c, as shown in Fig. 5. We see that thermal relics, approximately of masses 15 GeV, 50 GeV, and 140 GeV, are constrained by the choice of spike profile and different selections of c = 1.3, 1.4, and 1.5, respectively.
+(iii) An idealized spike which has not undergone attenuation improves the results considerably; the mass reach is shown in Fig. 6. This assumes that the inner spike profile corresponds to a scenario where the DM spike formed in response to the adiabatic growth of the black hole, i.e., sp  2.3 - 2.4. We see that thermal relics, approximately of masses 25 GeV, 80 GeV, and 240 GeV, are constrained by the choice of spike profile and different selections of c = 1.0, 1.1, and 1.2, respectively.
+
+­ 24 ­
+
+(iv) Relaxing the assumption of an adiabatic growth of the black hole results in less steep spike profiles; for a particular choice of smoother profile sp = 1.8, the mass reach is shown in Fig. 7. We see that thermal relics, approximately of masses 15 GeV, 50 GeV, and 140 GeV, are constrained by the choice of spike profile and different selections of c = 1.2, 1.3, and 1.4, respectively.
+We have then gone on to apply these results for the simplified model of fermionic DM with t-channel mediators described by Eq. 4.1. In particular, we have performed scans over the mixing angle  and the Yukawa couplings of the theory, and checked to what extent the models are constrained by the observational limits of the gamma-ray flux from 3FGL J1745.6-2859c (Sgr A). We have found that while a depleted spike radius just barely begins to constrain the parameter space, an idealized spike constrains large parts of it, even for the most conservative choice of the cusp profile c = 1.0.
+Furthermore, we explored the possibility of constraining the space of astrophysical spike parameters, assuming that we know something about the properties of the DM, taking as an example a proposed DM candidate to explain the excess of GeV photons from the Galactic Center observed by Fermi-LAT. If the spike is depleted, we find that moderate values of c 1.3 would be compatible with this particular model of DM for most values of sp, but some values of c could certainly be excluded.
+Finally, we'd like to note that the depletion we assume is for a heating timescale of 109 yr, which may be either shorter or longer than is realized in nature. If depletion is less strong, which here might be realized by a longer heating timescale, then the fluxes from any given model would be larger. This means that the power to exclude DM models would be greater, or, conversely, the power to use some knowledge about the properties of DM to constrain sp and c would be greater than in the depleted scenarios presented here.
+7 Acknowledgement
+We would like to thank Mustafa Amin for collaboration in the early stages of this work. PS is supported in part by NSF Grant No. PHY-1417367.
+References
+[1] R. Genzel et al., Astrophys. J. 594, 812 (2003) [arXiv:astro-ph/0305423]. [2] R. Schodel, T. Ott, R. Genzel, A. Eckart, N. Mouawad and T. Alexander, Astrophys. J. 596,
+1015 (1971) [arXiv:astro-ph/0306214]. [3] P. Gondolo and J. Silk, "Dark matter annihilation at the galactic center," Phys. Rev. Lett. 83,
+1719 (1999) [arXiv:astro-ph/9906391]. [4] P. Ullio, H. Zhao and M. Kamionkowski, "A Dark-Matter Spike at the Galactic Center?," Phys.
+Rev. D 64, 043504 (2001) [arXiv:astro-ph/0101481]. [5] D. Merritt, Phys. Rev. Lett. 92, 201304 (2004) [arXiv:astro-ph/0311594].
+­ 25 ­
+
+[6] G. Bertone and D. Merritt, "Time-dependent models for dark matter at the Galactic center," Phys. Rev. D 72, 103502 (2005) [arXiv:astro-ph/0501555].
+[7] O. Y. Gnedin and J. R. Primack, Phys. Rev. Lett. 93, 061302 (2004) doi:10.1103/PhysRevLett.93.061302 [astro-ph/0308385].
+[8] E. J. Ahn, G. Bertone and D. Merritt, Phys. Rev. D 76, 023517 (2007) doi:10.1103/PhysRevD.76.023517 [astro-ph/0703236 [ASTRO-PH]].
+[9] F. Acero et al. [Fermi-LAT Collaboration], Astrophys. J. Suppl. 218, no. 2, 23 (2015) doi:10.1088/0067-0049/218/2/23 [arXiv:1501.02003 [astro-ph.HE]].
+[10] B. D. Fields, S. L. Shapiro and J. Shelton, Phys. Rev. Lett. 113, 151302 (2014) doi:10.1103/PhysRevLett.113.151302 [arXiv:1406.4856 [astro-ph.HE]].
+[11] J. Shelton, S. L. Shapiro and B. D. Fields, Phys. Rev. Lett. 115, no. 23, 231302 (2015) doi:10.1103/PhysRevLett.115.231302 [arXiv:1506.04143 [astro-ph.HE]].
+[12] S. L. Shapiro and J. Shelton, Phys. Rev. D 93, no. 12, 123510 (2016) doi:10.1103/PhysRevD.93.123510 [arXiv:1606.01248 [astro-ph.HE]].
+[13] M. A. Amin and T. Wizansky, Phys. Rev. D 77, 123510 (2008) doi:10.1103/PhysRevD.77.123510 [arXiv:0710.5517 [astro-ph]].
+[14] P. Sandick and S. Watson, Phys. Rev. D 84, 023507 (2011) doi:10.1103/PhysRevD.84.023507 [arXiv:1102.2897 [astro-ph.CO]].
+[15] P. Sandick, J. Diemand, K. Freese and D. Spolyar, PoS IDM 2010, 086 (2011) [arXiv:1012.0068 [astro-ph.CO]].
+[16] P. Sandick, J. Diemand, K. Freese and D. Spolyar, JCAP 1101, 018 (2011) doi:10.1088/1475-7516/2011/01/018 [arXiv:1008.3552 [astro-ph.CO]].
+[17] D. Schoonenberg, J. Gaskins, G. Bertone and J. Diemand, JCAP 1605, no. 05, 028 (2016) doi:10.1088/1475-7516/2016/05/028 [arXiv:1601.06781 [astro-ph.HE]].
+[18] M. Wanders, G. Bertone, M. Volonteri and C. Weniger, JCAP 1504, no. 04, 004 (2015) doi:10.1088/1475-7516/2015/04/004 [arXiv:1409.5797 [astro-ph.HE]].
+[19] A. X. Gonzalez-Morales, S. Profumo and F. S. Queiroz, Phys. Rev. D 90, no. 10, 103508 (2014) doi:10.1103/PhysRevD.90.103508 [arXiv:1406.2424 [astro-ph.HE]].
+[20] M. Srednicki, R. Watkins and K. A. Olive, Nucl. Phys. B 310, 693 (1988). doi:10.1016/0550-3213(88)90099-5
+[21] M. Garny, A. Ibarra and S. Vogl, Int. J. Mod. Phys. D 24, no. 07, 1530019 (2015) doi:10.1142/S0218271815300190 [arXiv:1503.01500 [hep-ph]].
+[22] P. Sandick, K. Sinha and F. Teng, JHEP 1610, 018 (2016) doi:10.1007/JHEP10(2016)018 [arXiv:1608.00642 [hep-ph]].
+[23] J. Kumar, P. Sandick, F. Teng and T. Yamamoto, Phys. Rev. D 94, no. 1, 015022 (2016) doi:10.1103/PhysRevD.94.015022 [arXiv:1605.03224 [hep-ph]].
+[24] K. Fukushima, C. Kelso, J. Kumar, P. Sandick and T. Yamamoto, Phys. Rev. D 90, no. 9, 095007 (2014) doi:10.1103/PhysRevD.90.095007 [arXiv:1406.4903 [hep-ph]]; K. Fukushima and
+­ 26 ­
+
+J. Kumar, Phys. Rev. D 88, no. 5, 056017 (2013) doi:10.1103/PhysRevD.88.056017 [arXiv:1307.7120 [hep-ph]]. [25] G. Bertone and D. Merritt, Mod. Phys. Lett. A 20, 1021 (2005) doi:10.1142/S0217732305017391 [astro-ph/0504422]. [26] L. Ferrarese and H. Ford, Space Sci. Rev. 116, 523 (2005) doi:10.1007/s11214-005-3947-6 [astro-ph/0411247]. [27] J. Diemand, M. Kuhlen, P. Madau, M. Zemp, B. Moore, D. Potter and J. Stadel, Nature 454, 735 (2008) doi:10.1038/nature07153 [arXiv:0805.1244 [astro-ph]]. [28] J. F. Navarro et al., Mon. Not. Roy. Astron. Soc. 402, 21 (2010) doi:10.1111/j.1365-2966.2009.15878.x [arXiv:0810.1522 [astro-ph]]. [29] O. Y. Gnedin, A. V. Kravtsov, A. A. Klypin and D. Nagai, Astrophys. J. 616, 16 (2004) doi:10.1086/424914 [astro-ph/0406247]. [30] M. Gustafsson, M. Fairbairn and J. Sommer-Larsen, Phys. Rev. D 74, 123522 (2006) doi:10.1103/PhysRevD.74.123522 [astro-ph/0608634]. [31] M. Pato, F. Iocco and G. Bertone, JCAP 1512, no. 12, 001 (2015) doi:10.1088/1475-7516/2015/12/001 [arXiv:1504.06324 [astro-ph.GA]]. [32] E. Vasiliev, Phys. Rev. D 76, 103532 (2007) doi:10.1103/PhysRevD.76.103532 [arXiv:0707.3334 [astro-ph]]. [33] T. Sjostrand, S. Mrenna and P. Z. Skands, JHEP 0605, 026 (2006) doi:10.1088/1126-6708/2006/05/026 [hep-ph/0603175]. [34] T. Daylan, D. P. Finkbeiner, D. Hooper, T. Linden, S. K. N. Portillo, N. L. Rodd and T. R. Slatyer, Phys. Dark Univ. 12, 1 (2016) doi:10.1016/j.dark.2015.12.005 [arXiv:1402.6703 [astro-ph.HE]]; F. Calore, I. Cholis and C. Weniger, JCAP 1503, 038 (2015) doi:10.1088/1475-7516/2015/03/038 [arXiv:1409.0042 [astro-ph.CO]]; D. Hooper, JCAP doi:10.1016/j.dark.2016.11.005 [arXiv:1608.00003 [astro-ph.HE]]. [35] C. Karwin, S. Murgia, T. M. P. Tait, T. A. Porter and P. Tanedo, arXiv:1612.05687 [hep-ph]. [36] M. Ajello et al. [Fermi-LAT Collaboration], Astrophys. J. 819, no. 1, 44 (2016) doi:10.3847/0004-637X/819/1/44 [arXiv:1511.02938 [astro-ph.HE]]. [37] K. N. Abazajian, N. Canac, S. Horiuchi and M. Kaplinghat, Phys. Rev. D 90, no. 2, 023526 (2014) doi:10.1103/PhysRevD.90.023526 [arXiv:1402.4090 [astro-ph.HE]]. [38] M. Ackermann et al. [Fermi-LAT Collaboration], Astrophys. J. 840, no. 1, 43 (2017) doi:10.3847/1538-4357/aa6cab [arXiv:1704.03910 [astro-ph.HE]].
+­ 27 ­
+
+

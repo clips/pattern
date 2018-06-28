@@ -1,0 +1,2011 @@
+arXiv:1701.00103v1 [math.DS] 31 Dec 2016
+
+On the solutions of a second-order difference
+equations in terms of generalized Padovan
+sequences
+Yacine Halim1 and Julius Fergy T. Rabago2 1 Department of Mathematics and computer sceince
+Mila University Center, Mila, Algeria Email: halyacine@yahoo.fr
+2 Department of Mathematics and computer sciences, College of Science, University of the Philippines,
+Gov. Pack Road, Baguio City 2600, Benguet, Philippines. Email: jfrabago@gmail.com
+
+Abstract
+
+This paper deals with the solution, stability character and asymptotic behavior of the rational difference equation
+
+xn+1
+
+=
+
+xn-1 +  ,  xn xn-1
+
+n  N0,
+
+where N0 = N  {0}, , ,   R+, and the initial conditions x-1 and x0 are non zero real numbers such that their solutions are associated to generalized Padovan numbers. Also, we investigate the two-dimensional case of the this equation given by
+
+xn+1
+
+=
+
+xn-1 +  ,  yn xn-1
+
+yn+1
+
+=
+
+yn-1 +  ,  xn yn-1
+
+n  N0,
+
+and this generalizes the results presented in [34]. Keywords: Difference equations, general solution, stability, generalized Padovan numbers. Mathematics Subject Classification: 39A10, 40A05.
+
+1 Introduction and preliminaries
+The term difference equation refers to a specific type of recurrence relation ­ a mathematical relationship expressing xn as some combination of xi with i < n. These equations usually appear as discrete mathematical models of many biological and environmental phenomena such as population growth and predatorprey interactions (see, e.g., [8] and [18]), and so these equations are studied
+
+1
+
+because of their rich and complex dynamics. Recently, the problem of finding
+
+closed-form solutions of rational difference equations and systems of rational of
+
+difference equations have gained considerable interest from many mathemati-
+
+cians. In fact, countless papers have been published previously focusing on the
+
+aforementioned topic, see for example [5, 6, 7, 16, 20] and [21]. Interestingly,
+
+some of the solution forms of these equations are even expressible in terms of
+
+well-known integer sequences such as the Fibonacci numbers, Horadam numbers
+
+and Padovan numbers (see, e.g., [9, 11, 12, 14, 22, 24, 25, 26, 27, 29, 34]).
+
+It is well-known that linear recurrences with constant coefficients, such as
+
+the recurrence relation Fn+1 = Fn + Fn-1 defining the Fibonacci numbers, can be solved through various techniques (see, e.g., [17]). Finding the closed-
+
+form solutions of nonlinear types of difference equations, however, are far more
+
+interesting and challenging compared to those of linear types. In fact, as far
+
+as we know, there has no known general method to deal with different classes
+
+of difference equations solvable in closed-forms. Nevertheless, numerous studies
+
+have recently dealt with finding appropriate techniques in solving closed-form
+
+solutions of some systems of difference equations (see, e.g., [2, 5, 6, 7, 15, 23]).
+
+Motivated by these aforementioned works, we investigate the rational differ-
+
+ence equation
+
+xn+1
+
+=
+
+xn-1 +   xn xn-1
+
+,
+
+n  N0, .
+
+(1)
+
+Particularly, we seek to find its closed-form solution and examine the global
+
+stability of its positive solutions. We establish the solution form of equation
+
+(1) using appropriate transformation reducing the equation into a linear type
+
+difference equation. Also, we examine the solution form of the two-dimensional
+
+analogue of equation (1) given in the following more general form
+
+xn+1
+
+=
+
+xn-1 +   yn xn-1
+
+,
+
+yn+1
+
+=
+
+yn-1 +   xn yn-1
+
+,
+
+n  N0.
+
+(2)
+
+The case  =  =  = 1 has been studied by Tollu, Yazlik and Taskara in [34]. The authors in [34] established the solution form of system (2) (in the case  =  =  = 1) through induction principle.
+The paper is organized as follows. In the next section (Section 2), we review some definitions and important results necessary for the success of our study, and this includes a brief discussion about generalized Padovan numbers. In section 3 and 4, we established the respective solution forms of equations (1) and the system (2), and examine their respective stability properties. Finally, we end our paper with a short summary in Section 5.
+
+2 Preliminaries
+2.1 Linearized stability of an equation
+Let I be an interval of real numbers and let F : Ik+1 - I
+
+2
+
+be a continuously differentiable function. Consider the difference equation
+
+xn+1 = F (xn, xn-1, . . . , xn-k)
+
+(3)
+
+with initial values x0, x-1, . . . x-k  I..
+
+Definition 1. A point x  I is called an equilibrium point of equation(3) if
+
+x = F (x, x, . . . , x).
+
+Definition 2. Let x be an equilibrium point of equation(3).
+
+i) The equilibrium x is called locally stable if for every  > 0, there exist  > 0 such that for allx-k, x-k+1, . . . x0  I with
+
+|x-k - x| + |x-k+1 - x| + . . . + |x0 - x| < ,
+
+we have |xn - x| < , for all n  -k.
+
+ii) The equilibrium x is called locally asymptotically stable if it is locally stable, and if there exists  > 0 such that if x-1, x0  I and
+
+|x-k - x| + |x-k+1 - x| + . . . + |x0 - x| < ,
+
+then
+
+lim
+n+
+
+xn
+
+=
+
+x.
+
+iii) The equilibrium x is called global attractor if for all x-k, x-k+1, . . . x0  I, we have
+
+lim
+n+
+
+xn
+
+=
+
+x.
+
+iv) The equilibrium x is called global asymptotically stable if it is locally stable and a global attractor.
+
+v) The equilibrium x is called unstable if it is not stable.
+
+vi)
+
+Let
+
+pi =
+
+f ui
+
+(x,
+
+x,
+
+.
+
+.
+
+.
+
+,
+
+x),
+
+i = 0, 1, . . . , k.
+
+Then,
+
+the
+
+equation
+
+yn+1 = p0yn + p1yn-1 + . . . + pkyn-k,
+
+(4)
+
+is called the linearized equation of equation (3) about the equilibrium point x.
+
+The next result, which was given by Clark [3], provides a sufficient condition for the locally asymptotically stability of equation (3).
+
+Theorem 1 ([3]). Consider the difference equation (4). Let pi  R, then,
+
+|p0| + |p1| + . . . + |pk| < 1
+
+is a sufficient condition for the locally asymptotically stability of equation (3).
+
+3
+
+2.2 Linearized stability of the second-order systems
+
+Let f and g be two continuously differentiable functions:
+
+f : I2 × J 2 - I, g : I2 × J 2 - J, I, J  R
+
+and for n  N0, consider the system of difference equations
+
+xn+1 = f (xn, xn-1, yn, yn-1) yn+1 = g (xn, xn-1, yn, yn-1)
+
+(5)
+
+where (x-1, x0)  I2 and (y-1, y0)  J 2. Define the map H : I2 ×J 2 - I2 ×J 2 by
+H(W ) = (f0(W ), f1(W ), g0(W ), g1(W ))
+where W = (u0, u1, v0, v1)T , f0(W ) = f (W ), f1(W ) = u0, g0(W ) = g(W ), g1(W ) = v0. Let Wn = [xn, xn-1, yn, yn-1]T . Then, we can easily see that system (5) is equivalent to the following system written in vector form
+
+Wn+1 = H(Wn), n = 0, 1, . . . ,
+
+(6)
+
+that is
+
+ 
+
+xn+1
+
+=
+
+f (xn, xn-1, yn, yn-1)
+
+ 
+
+xn
+
+ yn+1
+
+= =
+
+xn g (xn, xn-1, yn, yn-1)
+
+.
+
+ 
+
+yn = yn
+
+Definition 3 (Equilibrium point). An equilibrium point (x, y)  I ×J of system (5) is a solution of the system
+
+x = f (x, x, y, y) , y = g (x, x, y, y) .
+
+Furthermore, an equilibrium point W  I2 × J2 of system (6) is a solution of the system
+W = H(W ).
+
+Definition 4 (Stability). Let W be an equilibrium point of system (6) and . be any norm (e.g. the Euclidean norm).
+
+1. The equilibrium point W is called stable (or locally stable) if for every  > 0 exist  such that W0 - W <  implies Wn - W <  for n  0.
+2. The equilibrium point W is called asymptotically stable (or locally asymptotically stable) if it is stable and there exist  > 0 such that W0-W <  implies Wn - W  0, n  +.
+
+3. The equilibrium point W is said to be global attractor (respectively global attractor with basin of attraction a set G  I2 × J2, if for every W0 (respectively for every W0  G)
+
+Wn - W  0, n  +.
+
+4
+
+4. The equilibrium point W is called globally asymptotically stable (respectively globally asymptotically stable relative to G) if it is asymptotically stable, and if for every W0 (respectively for every W0  G),
+Wn - W  0, n  +.
+5. The equilibrium point W is called unstable if it is not stable.
+Remark 1. Clearly, (x, y)  I × J is an equilibrium point for system (5) if and only if W = (x, x, , y, y, )  I2 × J2 is an equilibrium point of system (6).
+From here on, by the stability of the equilibrium points of system (5), we mean the stability of the corresponding equilibrium points of the equivalent system (6).
+
+2.3 Generalized Padovan sequence
+The integer sequence defined by the recurrence relation
+
+Pn+1 = Pn-1 + Pn-2, n  N,
+
+(7)
+
+with the initial conditions P-2 = 0, P-1 = 0, P0 = 1 (so P0 = P1 = P2 = 1), is known as the Padovan numbers and was named after Richard Padovan. This is the same recurrence relation as for the Perrin sequence, but with different initial conditions (P0 = 3, P1 = 0, P2 = 2). The first few terms of the recurrence sequence are 1, 1, 2, 2, 3, 4, 5, 7, 9, 12, . . .. The Binet's formula for this recurrence sequence can easily be obtained and is given by
+
+Pn
+
+=
+
+( (
+
+- -
+
+1)( )(
+
+- -
+
+1) )
+
+n
+
++
+
+( - 1)( ( - )(
+
+- -
+
+1) )
+
+n
+
++
+
+( (
+
+- -
+
+1)( )(
+
+- -
+
+1) )
+
+n.
+
+where
+
+
+
+=
+
+r2+12
+6r 
+
+(the
+
+so-called
+
+plastic
+
+number),
+
+
+
+=
+
+-
+
+ 2
+
+
+
++i
+
+3 2
+
+r 6
+
+-
+
+2 r
+
+and
+
+r = 3 108 + 12 69. The plastic number corresponds to the golden number
+
+1+ 2
+
+5
+
+associated
+
+with
+
+the
+
+equiangular
+
+spiral
+
+related
+
+to
+
+the
+
+conjoined
+
+squares
+
+in
+
+Fibonacci numbers, that is,
+
+lim
+n
+
+Pn+1 Pn
+
+= .
+
+For more informations associated with Padovan sequence, see [4] and [19].
+
+Here we define an extension of the Padovan sequence in the following way
+
+S-2 = 0, S-1 = 0, S0 = 1, Sn+1 = pSn-1 + qSn-2, n  N. (8)
+
+The Binet's formula for this recurrence sequence is given by
+
+Sn
+
+=
+
+( (
+
+- -
+
+1)( )(
+
+- -
+
+1) )
+
+n
+
++
+
+( (
+
+- -
+
+1)( )(
+
+- -
+
+1) )
+
+n
+
++
+
+( (
+
+- 1)( - )(
+
+- -
+
+1) )
+
+n.
+
+5
+
+where 
+
+=
+
+R2+12p 6R
+
+,
+
+
+
+=
+
+
+
+-
+
+ 2
+
++i
+
+3 2
+
+R 6
+
+-
+
+2p R
+
+and R = 3 108q + 12
+
+One can easily verify that
+
+lim
+n
+
+Sn+1 Sn
+
+= .
+
+-12p3 + 81q2.
+
+3 Closed-Form solutions and stability of equation (1)
+For the rest of our discussion we assume Sn, the n-th generalized Padovan number, to satisfy the recurrence equation
+Sn+1 = pSn-1 + qSn-2, n  N0,
+with initial conditions S-2 = 0, S-1 = 0, S0 = 1.
+
+3.1 Closed-Form solutions of equation (1)
+
+In this section, we derive the solution form of equation (1) through an analytical
+
+approach.
+
+We
+
+put
+
+q
+
+=
+
+ 
+
+and
+
+p
+
+=
+
+ 
+
+,
+
+hence
+
+we
+
+have
+
+the
+
+equation
+
+xn+1
+
+=
+
+pxn-1 + xnxn-1
+
+q
+
+;
+
+n  N0.
+
+(9)
+
+Consider the equivalent form of equation (9) given by
+
+xn+1
+
+=
+
+p xn
+
++
+
+q xn xn-1
+
+which, upon the change of variable xn+1 = zn+1/zn, transforms into
+
+zn+1 = pzn-1 + qzn-2.
+
+(10)
+
+Now, we iterate the right hand side of equation (10) as follows
+
+zn+1 = pzn-1 + qzn-2 = qzn-2 + p2zn-3 + qpzn-4 = p2zn-3 + 2pqzn-4 + q2zn-5 = 2pqzn-4 + (p3 + q2)zn-5 + qp2zn-6 = (p3 + q2)zn-5 + 3p2qzn-6 + 2pq2zn-7 = 3p2qzn-6 + (p4 + 3pq2)zn-7 + (p3 + q3)zn-8 = (p4 + 3pq2)zn-7 + (q3 + 4qp3)zn-8 + 3p2q2zn-9 ...
+= Sn+1z0 + Sn+2z-1 + Snqz-2.
+
+6
+
+Hence,
+
+xn+1
+
+=
+
+zn+1 zn
+
+=
+
+Sn+1z0 + Sn+2z-1 + Snqz-2 Snz0 + Sn+1z-1 + Sn-1qz-2.
+
+=
+
+Sn+1
+
+z0 z-1
+
++ Sn+2
+
++
+
+Sn-2
+
+q
+
+z-2 z-1
+
+Sn
+
+z0 z-1
+
++ Sn+1
+
++
+
+Sn-1 q
+
+z-2 z-1
+
+=
+
+Sn+1x0
+
++
+
+Sn+2
+
++
+
+Snq
+
+1 x-1
+
+Sn x0
+
++
+
+Sn+1
+
++
+
+Sn-1q
+
+1 x-1
+
+=
+
+Sn+1 x0 x-1 Snx0x-1 +
+
++ Sn+2x-1 Sn+1x-1 +
+
++ Snq Sn-1q
+
+.
+
+The above computations prove the following result.
+
+Theorem 2. Let {xn}n-1 be a solution of (9). Then, for n = 1, 2, . . . ,
+
+xn
+
+=
+
+Sn+1x-1 + Snx0x-1 Snx-1 + Sn-1x0x-1
+
++ +
+
+qSn-1 qSn-2
+
+.
+
+(11)
+
+where the initial conditions x-1, x0  R - F , with F is the Forbidden Set of equation (9) given by
+
+
+
+F=
+
+(x-1, x0) : Snx-1 + Sn-1x0x-1 + qSn-2 = 0 .
+
+n=-1
+
+If  =  = , then from (11) we get
+
+xn
+
+=
+
+Pn+1x-1 Pnx-1 +
+
++ Pnx0x-1 Pn-1 x0 x-1
+
++ +
+
+qPn-1 qPn-2
+
+.
+
+Hence, for  =  =  we have Sn = Pn, n  N, and consequently we get the solution given in [34].
+
+3.2 Global stability of solutions of equation (1)
+
+In this section we study the global stability character of the solutions of equation
+(9). It is easy to show that eqrefeq1 has a unique positive equilibrium point given by x = . Let I = (0, +), and consider the function f : I2 - I defined by
+
+f (x,
+
+y)
+
+=
+
+py + xy
+
+q
+
+.
+
+Theorem 3. The equilibrium point x is locally asymptotically stable.
+
+Proof. The linearized equation of equation (9) about the equilibrium x is
+
+yn+1 = t1yn + t2yn-1
+
+7
+
+where
+
+t1
+
+=
+
+f x
+
+(x,
+
+x)
+
+=
+
+-
+
+R6
+
+pR2 + + pR2
+
+12p2 + + 12p2
+
+6qR
+
++
+
+48p3 R2
+
+and
+
+t2
+
+=
+
+f y
+
+(x,
+
+x)
+
+=
+
+- R6
+
++
+
+6qR pR2 + 12p2
+
++
+
+48p3 R2
+
+and the characteristic polynomial is
+
+2 + t1 + t2 = 0.
+
+Consider the two functions defined by
+
+a() = 2, b() = -(t1 + t2).
+
+We have Then
+
+pR2 + 12p2 + 12qR
+
+R6
+
++
+
+pR2
+
++
+
+12p2
+
++
+
+48p3 R2
+
+< 1.
+
+|b()| < |a()| ,  : || = 1
+
+Thus, by Rouche's theorem, all zeros of P () = a() - b() = 0 lie in || < 1. So, by Theorem (1) we get that x is locally asymptotically stable.
+
+Theorem 4. The equilibrium point x is globally asymptotically stable.
+
+Proof. Let {xn}n-k be a solution of equation (9). By Theorem (3) we need only to prove that E is global attractor, that is
+
+lim
+n
+
+xn
+
+=
+
+.
+
+it follows from Theorem (2) that
+
+Then
+
+lim
+n
+
+xn
+
+=
+
+lim
+n
+
+Sn+1x-1 Snx-1 +
+
++ Snx0x-1 Sn-1 x0 x-1
+
++ +
+
+qSn-1 qSn-2
+
+=
+
+Sn lim
+
+x Sn+1
+Sn -1
+
++
+
+x0 x-1
+
++
+
+q
+
+Sn-1 Sn
+
+n Sn
+
+x-1
+
++
+
+Sn-1 Sn
+
+x0
+
+x-1
+
++
+
+q Sn-2
+Sn
+
+=
+
+lim
+n
+
+x-1
+
+Sn+1 Sn
+
+x-1
+
++
+
+x0 x-1
+
++
+
+q
+
+Sn-1 Sn
+
++
+
+Sn-1 Sn
+
+x0
+
+x-1
+
+1
+( ) q
+
+Sn+1
+
+-
+
+p q
+
+Sn-1
+
++ q Sn
+
+=
+
+lim
+n
+
+ x-1 x-1 +
+
++
+
+1 
+
+x0
+
+x-1
+
+1 
+
+x0 x-1
+
++
+
++
+
+q
+
+1 
+
+
+
++
+
+p 
+
+lim
+n
+
+xn
+
+=
+
+.
+
+8
+
+Example 1. For confirming results of this section, we consider the following
+
+numerical example. Let  = 2,  = 5 and  = 4 in (1), then we obtain the
+
+equation
+
+xn+1
+
+=
+
+2xn-1 + 5 4xnxn-1
+
+.
+
+(12)
+
+Assume x-1 = 3 and x0 = 0.2, (see Fig. 1).
+
+x(n)
+
+5
+
+4.5
+
+4
+
+3.5
+
+3
+
+2.5
+
+2
+
+1.5
+
+1
+
+0.5
+
+0
+
+10
+
+20
+
+30
+
+40
+
+50
+
+60
+
+70
+
+n
+
+Figure 1: This figure shows that the solution of the equation (12) is global attractor, that is, lim xn = .
+n
+
+4 Closed-form and stability of solutions of system (2)
+
+4.1 Closed-form solutions of system (2)
+
+In this section, we derive the respective solution form of system (2). We put
+
+q
+
+=
+
+ 
+
+and
+
+p=
+
+ 
+
+.
+
+Hence,
+
+we
+
+have
+
+the
+
+system
+
+xn+1
+
+=
+
+pxn-1 + ynxn-1
+
+q
+
+,
+
+yn+1
+
+=
+
+pyn-1 + xn yn-1
+
+q
+
+,
+
+n  N0
+
+(13)
+
+The following theorem describes the form of the solutions of system (13).
+
+Theorem 5. Let {xn, yn}n-1 be a solution of (13). Then for n = 1, 2, . . . ,
+
+9
+
+
+   xn =
+  
+
+Sn+1y-1 Sny-1 +
+
++ Snx0y-1 Sn-1 x0 y-1
+
++ +
+
+qSn-1 qSn-2
+
+,
+
+Sn+1x-1 Snx-1 +
+
++ Sny0x-1 Sn-1y0x-1
+
++ +
+
+qSn-1 qSn-2
+
+,
+
+if n is even, if n is odd,
+
+(14)
+
+
+   yn =
+  
+
+Sn+1 x-1 Snx-1 +
+
++ Sny0x-1 Sn-1 y0 x-1
+
++ +
+
+qSn-1 qSn-2
+
+,
+
+Sn+1 y-1 Sny-1 +
+
++ Snx0y-1 Sn-1 x0 y-1
+
++ +
+
+qSn-1 qSn-2
+
+,
+
+if n is even, if n is odd,
+
+(15)
+
+where the initial conditions x-1, x0, y-1 and y0  R \ (F1  F2), with F1 and F2 are the forbidden sets of equation (9) given by
+
+
+
+F1 =
+
+(x-1, x0, y-1, y0) : Snx-1 + Sn-1y0x-1 + qSn-2 = 0 ,
+
+n=-1
+
+and
+
+
+
+F2 =
+
+(x-1, x0, y-1, y0) : Sny-1 + Sn-1x0y-1 + qSn-2 = 0 .
+
+n=-1
+
+Proof. The closed-form solution of (13) can be established through a similar approach we used in proving the one-dimensional case. However, for convenience, we shall prove the theorem by induction. For the basis step, we have
+
+x1
+
+=
+
+px-1 + q y0x-1
+
+and
+
+y1
+
+=
+
+py-1 + x0 y-1
+
+q
+
+,
+
+so the result clearly holds for n = 0. Suppose that n > 0 and that our assumption holds for n - 1. That is,
+
+x2n-2
+
+=
+
+S2n-1y-1 S2n-2y-1
+
++ S2n-2x0y-1 + S2n-3x0y-1
+
++ +
+
+qS2n-3 qS2n-4
+
+,
+
+x2n-1
+
+=
+
+S2nx-1 + S2n-1y0x-1 + qS2n-2 S2n-1x-1 + S2n-2y0x-1 + qS2n-3
+
+,
+
+y2n-2
+
+=
+
+S2n-1 x-1 S2n-2x-1
+
++ +
+
+S2n-2 y0 c-1 S2n-3 y0 x-1
+
++ +
+
+qS2n-3 qS2n-4
+
+,
+
+y2n-1
+
+=
+
+S2ny-1 + S2n-1x0y-1 + qS2n-2 S2n-1y-1 + S2n-2x0y-1 + qS2n-3
+
+.
+
+10
+
+Now it follows from system (13) that
+
+x2n
+
+=
+
+px2n-2 + q y2n-1x2n-2
+
+=
+
+p
+
+S2n-1 S2n-2
+
+y-1 y-1
+
++ S2n-2x0y-1 + S2n-3x0y-1
+
++ qS2n-3 + qS2n-4
+
++q
+
+S2ny-1 + S2n-1x0y-1 + qS2n-2 S2n-1y-1 + S2n-2x0y-1 + qS2n-3
+
+S2n-1y-1 + S2n-2x0y-1 + qS2n-3 S2n-2y-1 + S2n-3x0y-1 + qS2n-4
+
+=
+
+p(S2n-1 y-1
+
++ S2n-2x0y-1 + qS2n-3) + q(S2n-2y-1 + S2n-3x0y-1 S2ny-1 + S2n-1x0y-1 + qS2n-2
+
++ qS2n-4)
+
+So, we have
+
+x2n
+
+=
+
+S2n+1y-1 S2ny-1 +
+
++ S2nx0y-1 S2n-1 x0 y-1
+
++ +
+
+qS2n-1 qS2n-2
+
+.
+
+Also it follows from system (13) that
+
+y2n
+
+=
+
+py2n-2 + q x2n-1 y2n-2
+
+=
+
+p
+
+S2n-1x-1 S2n-2x-1
+
++ S2n-2y0x-1 + S2n-3y0x-1
+
++ qS2n-3 + qS2n-4
+
++q
+
+S2nx-1 + S2n-1y0x-1 + qS2n-2 S2n-1x-1 + S2n-2y0c-1 + qS2n-3
+
+S2n-1x-1 + S2n-2y0x-1 + qS2n-3 S2n-2x-1 + S2n-3y0x-1 + qS2n-4
+
+=
+
+p(S2n-1 x-1
+
++ S2n-2y0x-1 + qS2n-3) + q(S2n-2x-1 + S2n-3y0x-1 S2nx-1 + S2n-1y0x-1 + qS2n-2
+
++ qS2n-4) .
+
+Hence, we have
+
+y2n
+
+=
+
+S2n+1x-1 S2nx-1 +
+
++ S2ny0c-1 S2n-1y0x-1
+
++ +
+
+qS2n-1 qS2n-2
+
+.
+
+Using the same argument it follows from system (13) that
+
+x2n+1
+
+=
+
+px2n-1 + q y2nx2n-1
+
+=
+
+p
+
+S2nx-1 + S2n-1y0x-1 + qS2n-2 S2n-1x-1 + S2n-2y0x-1 + qS2n-3
+
++
+
+q
+
+S2n+1x-1 + S2ny0x-1 + qS2n-1 S2nx-1 + S2n-1y0x-1 + qS2n-2
+
+S2nx-1 + S2n-1y0x-1 + qS2n-2 S2n-1x-1 + S2n-2y0x-1 + qS2n-3
+
+=
+
+p(S2n x-1
+
++
+
+S2n-1y0x-1 + qS2n-2) + q(S2n-1x-1 + S2n-2y0x-1 S2n+1x-1 + S2ny0x-1 + qS2n-1
+
++
+
+qS2n-3) .
+
+This yields
+
+x2n+1
+
+=
+
+S2n+2x-1 S2n+1 x-1
+
++ +
+
+S2n+1 S2ny0
+
+y0x-1 c-1 +
+
++ qS2n qS2n-1
+
+.
+
+11
+
+Moreover, we have
+
+y2n+1
+
+=
+
+py2n-1 + q x2n y2n-1
+
+=
+
+p
+
+S2ny-1 + S2n-1x0y-1 + qS2n-2 S2n-1y-1 + S2n-2x0y-1 + qS2n-3
+
++
+
+q
+
+S2n+1y-1 + S2nx0y-1 + qS2n-1 S2ny-1 + S2n-1x0y-1 + qS2n-2
+
+S2ny-1 + S2n-1x0y-1 + qS2n-2 S2n-1y-1 + S2n-2x0y-1 + qS2n-3
+
+=
+
+p(S2n y-1
+
++
+
+S2n-1x0y-1 + qS2n-2) + q(S2n-1y-1 + S2n-2x0y-1 S2n+1y-1 + S2nx0y-1 + qS2n-1
+
++
+
+qS2n-3) ,
+
+and this implies that
+
+y2n+1
+
+=
+
+S2n+2y-1 S2n+1 y-1
+
++ +
+
+S2n+1 S2n x0
+
+x0 y-1 y-1 +
+
++ qS2n qS2n-1
+
+.
+
+This completes the proof of the theorem.
+
+4.2 Global attractor of solutions of system (2)
+Our aim in this section is to study the asymptotic behavior of positive solutions of system (13). Let I = J = (0, +), and consider the functions
+
+f : I2 × J 2 - I and g : I2 × J 2 - J
+
+defined by
+
+f (u0, u1, v0, v1)
+
+=
+
+pu1 + v0u1
+
+q
+
+and
+
+g(u0, u1, v0, v1)
+
+=
+
+pv1 + u0v1
+
+q
+
+,
+
+respectively.
+
+Lemma 1. System (9) has a unique equilibrium point in I × J, namely
+
+E=
+
+R2
+
++ 12p 6R
+
+,
+
+R2
+
++ 12p 6R
+
+.
+
+Proof. Clearly the system
+
+x
+
+=
+
+px + xy
+
+q,
+
+y
+
+=
+
+py + yx
+
+q
+
+,
+
+has a unique solution in I2 × J2 which is
+
+E=
+
+R2
+
++ 12p 6R
+
+,
+
+R2
+
++ 12p 6R
+
+.
+
+Theorem 6. The equilibrium point E is global attractor. 12
+
+Proof. Let {xn, yn}n0 be a solution of system (9). Let n   in Theorem 5. That is, we have
+
+lim
+n
+
+x2n
+
+=
+
+lim
+n
+
+Sn+1 y-1 Sny-1 +
+
++ Snx0y-1 Sn-1 x0 y-1
+
++ +
+
+qSn-1 qSn-2
+
+Sn = lim
+n Sn
+
+Sn+1 Sn
+
+y-1
+
++
+
+x0y-1
+
++
+
+q
+
+Sn-1 Sn
+
+y-1
+
++
+
+Sn-1 Sn
+
+x0
+
+y-1
+
++
+
+q Sn-2
+Sn
+
+=
+
+lim
+n
+
+y-1
+
+Sn+1 Sn
+
+y-1
+
++
+
+x0 y-1
+
++
+
+q
+
+Sn-1 Sn
+
++
+
+Sn-1 Sn
+
+x0
+
+y-1
+
++
+
+1
+( ) q
+
+Sn+1
+
+-
+
+p q
+
+Sn-1
+
+q Sn
+
+=
+
+ y-1 y-1 +
+
++
+
+1 
+
+x0y-1
+
++
+
+q
+
+1 
+
+1 
+
+x0y-1
+
++
+
+
+
++
+
+p 
+
+= .
+
+and
+
+lim
+n
+
+x2n+1
+
+=
+
+lim
+n
+
+Sn+1x-1 Snx-1 +
+
++ Sny0x-1 Sn-1y0x-1
+
++ +
+
+qSn-1 qSn-2
+
+Sn = lim
+n Sn
+
+Sn+1 Sn
+
+x-1
+
++
+
+y0x-1
+
++
+
+q
+
+Sn-1 Sn
+
+x-1
+
++
+
+Sn-1 Sn
+
+y0
+
+x-1
+
++
+
+q Sn-2
+Sn
+
+=
+
+lim
+n
+
+x-1
+
+Sn+1 Sn
+
+x-1
+
++
+
+y0x-1
+
++
+
+q
+
+Sn-1 Sn
+
++
+
+Sn-1 Sn
+
+y0
+
+x-1
+
++
+
+1
+( ) q
+
+Sn+1
+
+-
+
+p q
+
+Sn-1
+
+q Sn
+
+=
+
+ x-1 x-1 +
+
++
+
+1 
+
+y0
+
+x-1
+
+1 
+
+y0x-1
+
++
+
++
+
+q
+
+1 
+
+
+
++
+
+p 
+
+= .
+
+Then
+
+lim
+n
+
+xn
+
+=
+
+.
+
+Similarly,
+
+we
+
+obtain
+
+lim
+n
+
+yn
+
+=
+
+.
+
+Thus,
+
+we
+
+have
+
+nlim(xn, yn) = E.
+
+Example 2. As an illustration of our results, we consider the following numer-
+
+ical example. Let  = 2,  = 3 and  = 5 in system (2), then we obtain the
+
+system
+
+xn+1
+
+=
+
+2xn-1 + 3 5ynxn-1
+
+,
+
+yn+1
+
+=
+
+2yn-1 + 3 5xnyn-1
+
+,
+
+n  N0
+
+(16)
+
+Assume x-1 = 1.2, x0 = 3.6, y-1 = 2.3 and y0 = 0.8. (See Fig. 2).
+
+13
+
+x(n), y(n)
+
+3.5
+
+3
+
+2.5
+
+2
+
+1.5
+
+1
+
+0.5
+
+0
+
+0
+
+10
+
+20
+
+30
+
+40
+
+50
+
+60
+
+70
+
+n
+
+Figure 2: This figure shows that the solution of the system (16) is global at-
+
+tractor,
+
+that
+
+is
+
+lim
+n
+
+xn
+
+=
+
+E.
+
+5 Summary and Recommendations
+
+In this work, we have successfully established the closed-form solution of the rational difference equation
+
+xn+1
+
+=
+
+xn-1 +   xn xn-1
+
+as well as the closed-form solutions of its corresponding two-dimensional case
+
+xn+1
+
+=
+
+xn-1 +   yn xn-1
+
+,
+
+yn+1
+
+=
+
+yn-1 +   xn yn-1
+
+.
+
+Also, we obtained stability results for the positive solutions of these systems.
+
+Particularly, we have shown that the positive solutions of each of these equations
+
+tends to a computable finite number, and is in fact expressible in terms of the
+
+well-known plastic number. Meanwhile, for future investigation, one could also
+
+derive the closed-form solution and examine the stability of solutions of the
+
+system
+
+xn+1
+
+=
+
+xn-1 -   yn xn-1
+
+,
+
+yn+1
+
+=
+
+yn-1 ±   xn yn-1
+
+.
+
+This work we leave to the interested readers.
+
+14
+
+References
+[1] J. B. Bacani and J. F. T. Rabago, On linear recursive sequences with coefficients in arithmetic-geometric progressions, Appl. Math. Sci., 9(52) (2015), 2595-2607.
+[2] L. Brand, A sequence defined by a difference equation, Am. Math. Mon., 62 (1955), 489-492.
+[3] C. W. Clark, A delayed recruitement of a population dynamics with an application to baleen whale population, J. Math. Biol., 3 (1976), 381-391.
+[4] B. M. M. De Weger, Padua and pisa are exponentially far apart, Publ. Mat., Barc., 41(2) (1997) 631-651.
+[5] E. M. Elsayed, On a system of two nonlinear difference equations of order two, Proc. Jangeon Math. Soc., 18(3) (2015), 353-368.
+[6] E. M. Elsayed and T. F. Ibrahim, Periodicity and solutions for some systems of nonlinear rational difference equations, Hacet. J. Math. Stat., 44(6) (2015), 1361-1390.
+[7] E. M. Elsayed, Solution for systems of difference equations of rational form of order two, Comp. Appl. Math., 33(3) (2014), 751-765.
+[8] G. Fulford, P. Forrester, A. Jones, Modelling with Differential and Difference Equations, Cambridge University Press, 12 June 1997.
+[9] Y. Halim, Global character of systems of rational difference equations, Electron. J. Math. Analysis Appl., 3(1) (2015), 204-214.
+[10] Y. Halim, Form and periodicity of solutions of some systems of higherorder difference equations, Math. Sci. Lett. 2, 5(1) (2016) 79-84.
+[11] Y. Halim, A system of difference equations with solutions associated to Fibonacci numbers, Int. J. Difference Equ.,11( 1) (2016), 65-77.
+[12] Y. Halim, N. Touafek and E. M. Elsayed, Closed forme solution of some systems of rational difference equations in terms of Fibonacci numbers, Dyn. Contin. Discrete Impulsive Syst. Ser. A, 21(5) (2014), 473-486.
+[13] Y. Halim, N. Touafek and Y. Yazlik, Dynamic behavior of a secondorder nonlinear rational difference equation, Turk. J. Math., 39(6) (2015), 1004- 1018.
+[14] Y. Halim and M. Bayram, On the solutions of a higher-order difference equation in terms of generalized Fibonacci sequences, Math. Methods Appl. Sci., 39 (2016), 2974-2982.
+[15] Y. Halim, J. F. T. Rabago, On some solvable systems of difference equations with solutions associated to Fibonacci numberss, Electron. J. Math. Analysis Appl., 5(1) (2017), 166-178.
+15
+
+[16] A. Khaliq and E. M. Elsayed, Qualitative properties of difference equation of order six, Mathematics, 4 (24) (2016), 14 pages.
+[17] P. J. Larcombe and J. F. T. Rabago, On the Jacobsthal, Horadam and geometric mean sequences, Bull. Inst. Combin. Appl., 76 (2016), 117-126.
+[18] R. E. Mickens, Difference Equations: Theory, Applications and Advanced Topics, 3rd ed. Chapman and Hall/CRC, 2015.
+[19] A. G. Shannon, P. G. Anderson and A. F. Horadam, Properties of Cordonnier, Perrin and Van der Laan Numbers, Int. J. Math. Educ. Sci. Technol., 37(7) (2006), 825-831.
+[20] J. F. T. Rabago, Effective methods on determining the periodicity and form of solutions of some systems of non-linear difference equations, Int. J. Dynamical Systems and Differential Equations, in press.
+[21] J. F. T. Rabago, An intriguing application of telescoping sums, Proceeding of 2016 Asian Mathematical Conference, to appear.
+[22] S. Stevic´, Representation of solutions of bilinear difference equations in terms of generalized Fibonacci sequences, Electron. J. Qual. Theory Differ. Equ., No. 67(2014), 1-15.
+[23] S. Stevic´, On a system of difference equations, Appl. Math. Comput., 218(2011), 33723378.
+[24] D. T. Tollu, Y. Yazlik, and N. Taskara, On the solutions of two special types of Riccati difference equation via Fibonacci umbers, Adv. Differ. Equ., 174 (2013), 7 pages.
+[25] D. T. Tollu, Y. Yazlik and N. Taskara, The solutions of four Riccati difference equations associated with Fibonacci numbers, Balkan J. Math., 2 (2014), 163-172.
+[26] D. T. Tollu, Y. Yazlik and N. Taskara, On fourteen solvable systems of difference equations, Appl. Math. & Comp., 233 (2014), 310-319.
+[27] N. Touafek, On some fractional systems of difference equations, Iranian J. Math. Sci. Info., 9(2) (2014), 303-305.
+[28] N. Touafek, On a second order rational difference equation, Hacet. J. Math. Stat., 41 (2012), 867-874.
+[29] N. Touafek, On some fractional systems of difference equations, Iran. J. Math. Sci. Inform., 9(2) (2014), 73-86.
+[30] N. Touafek and Y. Halim, Global attractivity of a rational difference equation, Math. Sci. Lett., 2(3) (2013), 161-165.
+16
+
+[31] N. Touafek and Y. Halim, On max type difference equations: expressions of solutions, Int. J. Nonlinear Sci., 11 (2011), 396-402.
+[32] N. Touafek and E. M Elsayed, On the periodicity of some systems of nonlinear difference equations, Bull. Math. Soc. Sci. Math. Roum., Nouv. Sr., 55 (2012), 217-224.
+[33] N. Touafek and E. M Elsayed, On the solutions of systems of rational difference equations, Math. Comput. Modelling, 55(7) (2012), 1987-1997.
+[34] Y. Yazlik, D. T. Tollu and N. Taskara, On the solutions of difference equation systems with Padovan numbers, Appl. Math., J. Chin. Univ., 4(12) (2013), 15-20.
+17
+
+

@@ -1,0 +1,755 @@
+Sparsity enabled cluster reduced-order models for control
+Eurika Kaisera,, Marek Morzyn´skib, Guillaume Davillerc, J. Nathan Kutzd, Bingni W. Bruntone, Steven L. Bruntona,d
+aDepartment of Mechanical Engineering, University of Washington, Seattle, WA 98195, United States bChair of Virtual Engineering, Poznan´ University of Technology, 60-965 Poznan´, Poland cCERFACS, F-31057 Toulouse CEDEX 01, France
+dDepartment of Applied Mathematics, University of Washington, Seattle, WA 98195, United States eDepartment of Biology and Institute of Neuroengineering, University of Washington, Seattle, WA 98195, United States
+
+arXiv:1701.00038v1 [physics.data-an] 31 Dec 2016
+
+Abstract
+Characterizing and controlling nonlinear, multi-scale phenomena play important roles in science and engineering. Cluster-based reduced-order modeling (CROM) was introduced to exploit the underlying lowdimensional dynamics of complex systems. CROM builds a data-driven discretization of the PerronFrobenius operator, resulting in a probabilistic model for ensembles of trajectories. A key advantage of CROM is that it embeds nonlinear dynamics in a linear framework, and uncertainty can be managed with data assimilation. CROM is typically computed on high-dimensional data; however, access to and computations on this full-state data limit the online implementation of CROM for prediction and control. Here, we address this key challenge by identifying a small subset of critical measurements to learn an efficient CROM, referred to as sparsity-enabled CROM. In particular, we leverage compressive measurements to faithfully embed the cluster geometry and preserve the probabilistic dynamics. Further, we show how to identify fewer optimized sensor locations tailored to a specific problem that outperform random measurements. Both of these sparsity-enabled sensing strategies significantly reduce the burden of data acquisition and processing for low-latency in-time estimation and control. We illustrate this unsupervised learning approach on three different high-dimensional nonlinear dynamical systems from fluids with increasing complexity, with one application in flow control. Sparsity-enabled CROM is a critical facilitator for real-time implementation on high-dimensional systems where full-state information may be inaccessible.
+Keywords: Reduced-order modeling, Sensor placement, Compressed sensing, Cluster analysis, Flow control, Classification
+
+1. Introduction
+Nonlinear, multi-scale phenomena are ubiquitous in many fields in science and engineering; examples include the spread of infectious diseases, global planetary processes such as the Earth's climate system, neural brain activity, autonomous behavior of robotic systems, sustainable energy production, and greener transport systems. The high-dimensionality of these systems poses a challenge to understand and realistically model these phenomena. Moreover, low-latency real-time prediction and control is still a difficult endeavor, despite continually increasing computing power and memory storage. The long history of model reduction exhibits numerous examples of compact representations of such high-dimensional systems, such as PODGalerkin models [1, 2], that successfully capture the principal mechanisms. An alternative representation of nonlinear systems is based on infinite-dimensional linear operators on functions of the state space, such as the Koopman and Perron-Frobenius operators. The critical motivation for these operator-based approaches
+
+Corresponding author Email address: eurika@uw.edu (Eurika Kaiser)
+Preprint submitted to Elsevier
+
+January 3, 2017
+
+is the ability to apply powerful linear estimation and control techniques to nonlinear systems. Clusterbased reduced-order modeling (CROM) [3] was recently introduced to approximate the Perron-Frobenius operator in an unsupervised manner from high-dimensional data yielding a low-dimensional, linear model in probability space. The present work combines CROM with sparsity-promoting techniques, particularly the sparse sensor placement optimization for classification (SSPOC) architecture [4], as a critical enabler for real-time prediction and control. The sparsity enabled CROM identifies the probabilistic dynamics from few optimized measurements or compressed data facilitating its application for online prediction, estimation, and control and faster computations for high-dimensional systems.
+Reduced-order models (ROMs) aim to simplify a high-dimensional system by reducing the degrees of freedom, keeping only those that are important to model the phenomenon of interest. The intrinsic coordinates, in which the system exhibits such a low-rank structure, are often computed by proper orthogonal decomposition (POD) [1], and low dimensional dynamics are obtained via Galerkin projection. ROMs for parameterized systems are enabled by efficient evaluation of the nonlinear terms using sparse sampling techniques such as gappy POD [5]. The state of the art algorithm for principled sparse sampling of ROMs is the discrete empirical interpolation method (DEIM) [6], with variants including the addition of a genetic algorithm [7] and the use of pivot locations from the QR factorization [8]. More generally, sparsity-promoting techniques play an increasingly important role for model identification [9, 10], mode selection [11], and sensor placement [12, 13, 14, 7, 4] as well as for classification [15, 16, 17, 18] and reconstruction [19, 20].
+Nonlinearities arising in standard ROMs remain challenging. For estimation and control purposes, a linear representation is highly advantageous, spurring considerable work on operator-theoretic embeddings of nonlinear dynamics; these embeddings are not to be confused with local linearization. Techniques for linear representation of dynamics include operator methods of Koopman [21, 22], Perron-Frobenius [23, 24] and Fokker-Planck [25]. These infinite dimensional operators act on functions of the state space, providing a global linear description of the system. The practical computation of finite-dimensional approximations of the Koopman operator include dynamic mode decomposition (DMD) [26, 27] and its variants [28, 29]. The Perron-Frobenius operator is the adjoint of the Koopman operator, and it is associated with a probabilistic description of the dynamics. The continuous-time Liouville equation [30] associated with Perron-Frobenius governs the evolution of the probability density function (p.d.f.) in the state space (i.e., how an ensemble of trajectories evolves). Data-driven approximations of the Perron-Frobenius operator include identification of almost-invariant sets [31, 32, 33, 34] via the Ulam-Galerkin method [24, 35], which reduces Perron-Frobenius to a stochastic matrix. In practice, Ulam's method involves a high-dimensional discretization of the state space using a box partition, which suffers from the curse of dimensionality. If time-series data is available, the transition probabilities between those boxes can then be determined directly, but the computational burden of computing the partition and transition matrix is significant.
+Cluster-based reduced-order modeling is a particular realization of Ulam's method where a low-dimensional discretization is obtained in an unsupervised manner from data using a clustering algorithm. This datadriven discretization enables an efficient partitioning, while avoiding superfluous covering of regions where data is not available. The simplest CROM uses the k-means clustering algorithm [36] to learn an intrinsic partition or structure directly from data by grouping similar observations [37]. CROM generally relies on the knowledge of full-state measurements, which may be inaccessible in practice, and limits its use for real-time estimation and control.
+In this work, we leverage sparsity-promoting techniques to construct an efficient CROM from few measurements, referred to as sparsity-enabled CROM, which is a critical enabler for its online application. We first show that a sufficient, but small number of random measurements embed the cluster geometry and preserve the probabilistic dynamics. Further, we demonstrate the ability to learn a minimal set of optimized sensors, using the sparse sensor placement optimization for classification (SSPOC) architecture [4], that are tailored to the specific CROM and provide performance on par with the high-dimensional CROM. Sparsityenabled CROM allows one to identify low-dimensional probabilistic dynamics of high-dimensional systems in an unsupervised manner from sparsely-sampled data. Our method facilitates faster computations and is a critical enabler for real-time applications such as prediction and control. These sparsity enabled innovations are demonstrated on three high-dimensional fluid systems of increasing complexity, and in all cases optimized sensors outperform randomly chosen sensors. We also show that the sparsity enabled CROM can
+2
+
+be used for closed-loop control, resulting in control performance that is similar to that of full-state CROM. The remainder of the article is structured as follows: The present work is centered around the CROM
+framework, compressed sensing, and the SSPOC architecture, which are discussed in Sec. 2. The main contributions of this work are (a) combining CROM with compressed sensing techniques to enable its estimation from few incoherent measurements, and (b) combining SSPOC with CROM to identify few optimized sensor locations in an unsupervised manner, both presented in Sec. 3. The approaches are illustrated for three high-dimensional systems from fluids in Sec. 4, the periodic double gyre flow, a well studied model for ocean mixing, a separating flow over a smoothly contoured ramp, where identified sensors are used for control, and the spatially developing mixing layer undergoing vortex pairing, where sensors are learned on heavily subsampled data. The main results are summarized and an outlook is provided in Sec. 5.
+
+2. Background
+
+This work develops reduced-order models of high-dimensional nonlinear dynamical systems using sparse measurements in a linear operator framework. The Perron-Frobenius operator is an infinite-dimensional linear operator for the evolution of densities in the state space of a nonlinear dynamical system. Although trading nonlinearity for a linear representation is desirable, a host of additional challenges arise due to the infinite-dimensional nature of the Perron-Frobenius operator. Thus, a finite-rank approximation of the Perron-Frobenius operator has been recently proposed [3], based on a data-driven discretization of phase space. This method, Cluster-based Reduced-Order Modeling (CROM), is discussed in Sec. 2.1.
+To facilitate sparse measurements and efficient computations for real-time control, techniques from compressed sensing are employed to determine a CROM for high-dimensional systems using few measurements. In compressed sensing, a high-dimensional signal can be recovered from few measurements if the signal is sparse in a transform basis. The geometry-preserving property of compressed sensing makes it ideal for estimating a CROM from few measurements, which requires that points close in high-dimensional state space remain close in measurement space. This is discussed in Sec. 2.2.
+The Sparse Sensor Placement Optimization for Classification (SSPOC) framework [4] leverages techniques from compressed sensing and exploits the low-rank structure occurring in many systems for optimized sensor placement, providing tailored sensor locations for a particular problem. This work combines CROM with SSPOC to yield (1) a sparse CROM from measurements, and (2) an unsupervised sensor placement framework for cluster classification. The SSPOC approach is reviewed in Sec. 2.3.
+In the following, we will consider a high-dimensional state u  RN with N 1, which may be obtained by discretizing a partial differential equation (PDE), that is governed by a nonlinear dynamical system
+
+d dt
+
+u
+
+=
+
+f
+
+(u).
+
+(1)
+
+It is assumed that the governing equations exhibit low-rank structure that can be computed from the singular value decomposition. The model reduction framework represents the dynamics in a POD basis of rank Nf given by the columns of the matrix   RN×Nf :
+
+u(t) = a(t)
+
+(2)
+
+so that the dynamics are now captured by the evolution of the coefficients a(t)  RNf [1, 2].
+
+2.1. Cluster-based reduced-order modeling (CROM) and control
+The cluster-based reduced-order modeling (CROM) [3] framework has been recently introduced to model the coarse-grained probabilistic dynamics of high-dimensional nonlinear systems, such as fluid flows. CROM identifies models in an unsupervised manner directly from data (see Fig. 1 for an example). The resulting low-dimensional model yields insights into properties of the attractor by analysis of the underlying interaction dynamics between clusters. Thus, a coarse-grained probability vector on the spate space is evolved, taking into account uncertainties with a well-defined prediction horizon, and capturing nonlinear mechanisms in a
+
+3
+
+Figure 1: Cluster-based reduced-order model of a mixing layer. High-dimensional time-series data is partitioned into few clusters; three exemplary cluster centroids are depicted. CROM yields a Markov model for the probabilistic dynamics on the set of clusters, which are here represented as a graph. See text for details.
+
+CROM
+u(x, tm) Data
+
+T Dimens. reduction (POD)
+
+{a(tm)}M m=1
+
+Kinematics
+{ck}Nk=c 1 Clustering {Lm}M m=1 (k-means)
+
+Dynamics P
+Santaatliysstiiscal
+
+Figure 2: Schematic of the cluster-based reduced-order modeling (CROM) strategy.
+
+linear framework. The approach is closely related to the common Ulam-Galerkin approximation scheme [23, 38], which reduces the infinite dimensional Perron-Frobenius operator to a stochastic matrix.
+In many systems, such as fluids, we are often interested in controlling statistical flow properties, such as the average drag on a car or average lift on an airfoil. Moreover, these quantities are often determined from a single time-series of data from an experiment or simulation, as opposed to an ensemble of data. The basis for their computation is Birkhoff's ergodic theorem [39], which states the equivalence between time averages and space averages in ergodic systems. Hence, interest in the long-term behavior leads naturally to invariant (or ergodic) probability measures on the attractor, i.e. these measures stay the same after transformation of the attractor. Moreover, a probabilistic description of complex dynamical systems can be more insightful than that of an individual trajectory, particularly in the study of transport and mixing processes [40, 33, 34]. The evolution of the probability density function (p.d.f.) of the state variables, i.e. an ensemble of trajectories, is governed by the linear Liouville equation. A prominent example is Hopf's derivation of a Liouville equation for the Navier-Stokes equation [41]. An overview of methods for the numerical approximation of functional differential equations, such as arising from Hopf's formalism of the Liouville equation, is provided in [42]. A prominent ROM strategy is based on the Mori-Zwanzig projection operator formalism [43, 44, 45] for a Liouville equation [46, 47]. The Liouville equation for a Galerkin system constitutes a simpler version and the reader is referred to [48] for a detailed discussion. Associated with the continuous-time Liouville equation is the above mentioned discrete-time Perron-Frobenius operator, which maps the p.d.f. forward in time; the Liouville equation may be thought of as the infinitesimal generator for the one-parameter family of Perron-Frobenius operators. CROM is closely related to the Ulam-Galerkin method [24, 36], but with the critical distinction of a data-driven discretization of phase space that results in a much lower-dimensional model. Thus, CROM is closely aligned with closure schemes, in which a stable fixed point represents the ergodic measure for the unsteady attractor in velocity space.
+In this work, we assume velocity fields as input data, which are denoted by {u(x, tm)}M m=1 in the following, where u(x, tm) is the mth realization at discrete time tm over a fixed domain  with spatial coordinate x. A constant time step t is assumed. A schematic of CROM is provided in Fig. 2 and discussed below. CROM assumes time-resolved data and relies on two steps: First, the data is partitioned into groups of kinematically similar observations using an unsupervised clustering algorithm, such as k-means [49], to obtain a coarse-grained state space. K-means aims to find a natural grouping or hidden structure in data by maximizing the similarity of observations in the same group, also referred to as cluster, and minimizing
+4
+
+it for observations belonging to different groups. The clustering algorithm assumes a pre-defined number of clusters Nc and yields a set of centroids {ck}Nk=c 1, where ck represents the mean of all observations in cluster Ck, k = 1, . . . , Nc, and a set of labels {Lm}M m=1 with Lm  {1, . . . , Nc}, which affiliates each observation u(x, tm) with a distinct cluster Ck. Moreover, the data space is partitioned into Nc centroidal Voronoi cells, which are defined as particular Voronoi cells for which the generating points of the Voronoi tessellation are equal to the mass centroids of the Voronoi regions [50]. K-means clustering has been applied in a variety of applications related to model reduction, e.g. for dimensionality reduction [51], trust-region reduced-order modeling [52, 53], and similarly to CROM, for the prediction of coarse-grained observables [54], to name a few. Second, the transitions between those clusters are modeled as a Markov process. The resulting transition probability matrix, which describes how the probability distribution evolves on the discretized state space, can be represented as a graph (Fig. 1). The maximum likelihood estimator is used to determine the transition probabilities P = (Pjk) of the Markov process, where Pjk = Prob{u(x, tm+1)  Cj|u(x, tm)  Ck} denotes the probability that a transition of the trajectory occurs from cluster Ck to cluster Cj over one time step t. If the data is high-dimensional, a reduction using, e.g., proper orthogonal decomposition (POD) [1], might be necessary to increase the feasibility of the procedure. The clustering is then applied to the POD time coefficients {a(tm)}M m=1 and the procedure continues as described above.
+The representation of nonlinear dynamics in an approximate linear framework is of significant current interest, largely because of the potential to enable advanced nonlinear prediction, estimation and control using standard tools from linear systems theory [22, 55, 56, 57, 28]. CROM is a practical data-driven approach for representing high-dimensional nonlinear systems in a probabilistic linear framework. However, the standard CROM analysis still relies on access to high-dimensional measurement data, which may be expensive to collect. Moreover, computations based on this high-dimensional data introduce unacceptable latency, limiting the bandwidth for real-time feedback control. The goal of real-time estimation and control motivates the use of compressed sensing and sparse measurements from the following sections.
+
+2.2. Compressed sensing
+Compressed sensing is revolutionizing our understanding of signal compression and reconstruction [58, 59, 60]. This growing body of work relies on the fact that most natural high-dimensional signals u, such as discretized solutions to PDEs, are highly compressible. Thus in an appropriate basis (such as a tailored POD basis, or a Fourier or wavelet basis), the high-dimensional signal may be written as a sparse vector a as in (2) with many zero-valued coefficients. For motivating examples of compressed sensing, such as image reconstruction, a generic wavelet or Fourier basis is sufficient. If the vector a has K nonzero elements, we say that it is K-sparse. Instead of measuring the high-dimensional signal u directly, compressed sensing provides rigorous conditions under which it is possible to collect surprisingly few measurements with respect to the Nyquist sampling frequency and infer the few non-zero coefficients of a, and hence u. This observation has led to a number of studies investigating the properties of random sparse measurements and the construction of sensing matrices with favorable reconstruction properties. In particular, consider a measurement matrix   RNs×N , with K < Ns N . Then measurements y are given by:
+
+y = u = a = a.
+
+(3)
+
+The main result of compressed sensing is that the sparse coefficients of a may be determined with highprobability, given that the measurements are chosen so that the matrix  satisfies the Restricted Isometry Property (RIP). In particular, there must be sufficiently many measurements, typically on the order Ns = O(K log(N/K)), and these measurements must be incoherent with respect to the sparsifying basis , so that the rows of  are not too correlated with any column of . An important set of results have shown that random measurements, where the entries of  are Gaussian or Bernoulli random variables, are incoherent with a given basis  with high probability.
+Without compressed sensing, searching for the sparsest vector a consistent with the measurements y amounts to an intractable brute-force search through the combinatorially many sparse vectors. Mathematically, this can be formulated as an optimization problem
+
+a = arg min ||a ||0 subject to y = a .
+
+(4)
+
+a
+
+5
+
+Figure 3: Sparse sensor placement optimization for classification (SSPOC) for high-dimensional systems.
+
+SSPOC
+u(x, tm), Lm Data
+
+T ((rDDrPPeeiiddmmOOuuDDeeccnntt))iissoo..nn
+
+plaSceenmsoernt {aa(t(mtm) )(C}LM mlaD=sAs1i)fiC(eLlraDsAs{i)wfieir}Ni=c{1-w1i}Ni=Spoc1pSr-otP1ibmOleiopSCmzprS.otPibmOleiCmz. 
+
+Figure 4: Schematic of the Sparse Sensor Placement Optimization for Classification (SSPOC) strategy.
+
+However, the 0 pseudo-norm, which measures the sparsity of a, makes this optimization non-convex, so that it does not scale well to large problems. With the advent of compressed sensing, it is now possible to solve for the sparsest consistent a with high probability by relaxing the 0 term to an 1 norm [59, 58, 61]:
+
+a = arg min ||a ||1 subject to y = a .
+
+(5)
+
+a
+
+Solutions to (5) can be found through convex optimization methods (e.g. using the cvx toolbox [62, 63]) or greedy algorithms such as orthogonal matching pursuit [64, 65]. The number of sensors can be further reduced for classification, considered in the present study, as the bijectivity property can be relaxed.
+In many engineering applications, Gaussian random measurements from compressed sensing are not practical. Instead, point measurements are more physical, as they correspond to individual sensors. Fortunately, point sensors are optimally incoherent with respect to the Fourier basis, and many engineering signals, such as fluid velocity fields and other solutions of PDEs, are sparse in the Fourier domain. There has been considerable recent work combining sparsity with dynamical systems [13, 66, 67, 68, 14, 69, 9, 70, 71, 17, 10], a perspective that is continued here. Throughout this work, we will leverage the fact from compressed sensing that random measurements tend to preserve the geometry of sparse vectors in the measurement space.
+
+2.3. Sparse sensor placement optimization for classification (SSPOC)
+The sparse sensor placement optimization for classification (SSPOC) framework [4] combines dimensionality reduction and discrimination techniques with compressed sensing to learn sparse sensor locations that enable classification of a high-dimensional system from few measurements. SSPOC exploits the fact that many high-dimensional systems evolve on a low-dimensional attractor, and can thus be represented in a low-rank basis. Moreover, classification is simpler than full-state reconstruction, and can be accomplished with fewer measurements. It is common to combine low-rank representations such as POD with linear discriminant analysis (LDA) to learn low-dimensional classifiers. In addition, using POD as a pre-processing step to LDA can regularize ill-conditioned problems. While SSPOC is a general procedure, here we make use of the POD-LDA approach as suggested in [4] for simplicity. A schematic of the procedure is shown in Fig. 4.
+We consider high-dimensional data, such as the velocity snapshot ensemble {u(x, tm)}M m=1 introduced in Sec. 2.1. Moreover, this data may be associated with different classes such as different bifurcation regimes
+6
+
+[14], different control cases [17], or distinct clusters representing a coarse-grained discretization of state space, as in the present study. The classification of each observation {Lm}M m=1 must be known in advance. It is further assumed that the data can be represented by a low-rank feature basis  = [1, . . . , Nf ]  RN×Nf , where N is the dimension of the data and Nf is the rank of the basis. The LDA classifier is trained using labeled data in the feature space and identifies the directions given by w = [w1, . . . , wNc-1]  RNf ×Nc-1, in which the classes are best separated. SSPOC aims to find a sparse vector s that best reconstructs the
+discriminating directions w by solving the optimization problem
+
+s = arg min {||s ||1 + ||s 1||1} subject to ||T s - w||F   ,
+
+(6)
+
+s
+
+where 1 represents a column vector of Nc - 1 ones and  is a small error tolerance (set to  = 10-10 in all examples). The non-zero entries in the solution s  RN are the spatial locations of the learned sparse sensors; these sensors are selected for rows in  that best reconstruct w. The coupling weight  tunes the number of learned sensors at the cost of decreasing the classification accuracy. Thus, increasing  amounts to strengthening the coupling between columns of s, so that the same entries or measurements are re-used to reconstruct several decision vectors.
+Having identified the optimal sensor locations, a sensing matrix   RNs×N is constructed by selecting the Ns rows of the N × N identity matrix corresponding to the Ns nonzero rows in s. The classification task can then be performed on low-dimensional measurements y = u. Although it is possible to use the original LDA classifier on the new measurements in y, it is generally advisable to train a new classifier directly in the sensor space, resulting in new discriminating directions w^  RNs×Nc-1. Then, a new measurement is assigned a class corresponding to the cluster k whose projected centroid k = w^ T ck, k = 1, . . . , Nc, is closest to  (the nearest-centroid method, NCM).
+Depending on the dimensionality of the data, this sensor placement approach can be quite costly and may require considerable computational resources. Thus, in some cases, it is advantageous to randomly subsample the data before learning the sensor locations, as explored in [4]. For many tasks, it has been shown that sensor locations learned on 10% of the data perform similarly to those trained on the full state. Measurements y are then obtained by the projection y = ~ ^ u where ^ is the sub-sampling matrix consisting of random rows of the N ×N identity matrix and ~ is the sensing matrix learned in that subspace.
+The SSPOC procedure has been previously demonstrated in a number of applied contexts to streamline the sensors required for an accurate classification based on a pre-trained supervised classification scheme [4, 17]. The present work generalizes this algorithm to work without known labels of observations using unsupervised clustering, such as k-means. More importantly, this work makes a critical generalization of SSPOC to apply to dynamical systems, where sparse sensor selection can dramatically improve real-time estimation and control performance.
+
+3. Methodology
+The major contribution of this work is in extending the CROM framework (see Sec. 2.1) to include compressive measurements; in particular, we use the SSPOC architecture (see Sec. 2.3) for sensor placement optimization. This combination enables the three main results of this work:
+1. It is possible to compute CROM from compressive measurements yielding the same probabilistic transition dynamics as CROM based on high-fidelity data. We refer to this as sparsity-enabled CROM.
+2. We apply SSPOC with CROM to find a few, optimized point measurements tailored to the specific CROM problem. This allows one to implement CROM, estimated from high-dimensional data, in real-time applications such as estimation and control. For control, we find that the optimized sensors perform similarly to full-state measurements.
+3. We generalize SSPOC to be applicable to unlabeled data and to learn sensor placement for dynamical systems, such as CROM. SSPOC finds sensors that perform the classification task with high accuracy, even though the data considered here is, by definition, not well separated among the partitions.
+7
+
+Sparsity-enabled CROM
+
+Sparse sampling
+
+u(x, tm) Data
+
+(compressive){y(tm)}M m=1 Measurements
+
+{cyk}Nk=c 1 Clustering {Lm}M m=1 (k-means)
+
+Santaatliysstiiscal
+
+P
+
+Figure 5: Schematic of the sparsity-enabled CROM strategy.
+
+Sparsity-enabled CROM estimated from few measurements, exploiting the geometry-preserving properties of compressed sensing methods, is discussed in Sec. 3.1. The combination of SSPOC with CROM to learn a small number of optimized sensors is presented in Sec. 3.2.
+
+3.1. Sparsity-enabled CROM
+The analysis, modeling and control of high-dimensional systems often involve algorithms that are computationally expensive, making real-time applications intractable. In this section, we combine CROM with ideas from compressed sensing to enable a computationally efficient cluster and model identification from few incoherent measurements. A schematic of the sparsity-enabled CROM strategy is shown in Fig. 5.
+Let us consider full-state measurements u  RN of the high-dimensional dynamical system (1). It is possible to collect compressed data y = u  RNs , where  is the sensing matrix. We seek a transition probability matrix from those measurements y that exhibits the same topological structure as its counterpart estimated from full-state measurements u. The transition probabilities depend solely on the cluster affiliation provided by the clustering of the time history of u or y. Thus, the k-means clustering step, yielding the state-space discretization into clusters, is crucial to preserve the probabilistic dynamics. K-means clustering aims to partition M observations into Nc clusters, such that the distances between observations in the same cluster are minimized and those between observations belonging to different clusters are maximized. Specifically, it minimizes the sum of the squared distances
+
+Nc
+
+{c1,
+
+...
+
+,
+
+cNc }
+
+=
+
+arg
+
+min
+c1 ,...,cNc
+
+i=1
+
+uCi
+
+||u
+
+-
+
+ci||2
+
+,
+
+(7)
+
+where Nc is the number of clusters and Ci denotes the Voronoi cell associated with cluster centroid ci, i = 1, . . . , Nc. Note that we consider in the present work only the Euclidean distance metric. This means that not only must measurements y disambiguate different high-dimensional states u, but the measurement
+matrix  must also ensure that two states u1 and u2, which are close in state space, must also be close in sensor space. Distances between data points must be preserved under the action of the sensing matrix :
+
+||u1 - u2||  ||y1 - y2|| = ||u1 - u2|| = ||(u1 - u2)|| .
+
+(8)
+
+These geometry-preserving properties establish that the dynamics estimated from measurements are equal to those in full state space. For this to be true, in the compressed sensing framework, the following conditions must be fulfilled: (i) u must be sparse in transform basis , (ii) sufficiently many measurements, typically Ns = O(K log(N/K)), must be collected, and (iii) the sensing matrix  must be incoherent with respect to . Thus, if the sensing matrix  satisfies the RIP, the pair-wise distances between any two K-sparse vectors, i.e. here specifically a = T u, are preserved, and the high-dimensional state u can be reconstructed from y [72]. It can also be concluded from this property that high-fidelity cluster centroids {ci}Ni=c1 can be reconstructed from those centroids {c^i}Ni=c1 learned from measurements y.
+Identifying dynamics from compressive data of high-dimensional systems has the additional advantage of making the pre-processing dimensionality-reduction step expendable. The representation of the data
+8
+
+u in a transform basis such as POD has been found to increase the computational efficiency if the state is high-dimensional [3]. Specifically, POD becomes computationally advantageous for INc > (M + 1)/2, where I is the number of iterations in the k-means algorithm, when comparing the number of distance integrals of k-means with correlation integrals of POD. Compressive measurements become advantageous if (M + 1)/2 > Ns, not taking into account any additional calculations for POD.
+Sparsity-enabled CROM allows one to identify the probabilistic dynamics of high-dimensional, nonlinear systems from few measurements facilitating more efficient computations and making data preprocessing steps for data compression and feature extraction superfluous. The critical enabler is the compressed sensing paradigm which directs the design of sensing matrices, such as Gaussian random matrices, that preserve geometric properties of sparse vectors. This allows one to apply k-means clustering directly to compressive measurements. In the following example, we demonstrate sparsity-enabled CROM for a high-dimensional system from fluids using Gaussian random and random point measurements. While Gaussian random measurements still rely on access to full-state data, random point measurements are more physical, corresponding to individual sensors. However, these are not tailored to the problem, but are instead chosen randomly, suggesting that significant improvements can be achieved by optimizing their locations.
+
+Example: Sparse CROM estimated from compressive measurements of the mixing layer. We illustrate the sparsity-enabled CROM estimated from few linear, incoherent measurements of the high-dimensional spatially developing fluid mixing layer (see Fig. 1). For details on this dataset we refer to [3] and Sec. 4.3 where it is studied in detail for optimized sensor placement of point measurements. In particular, we are interested in comparing the cluster affiliation and the probabilistic dynamics based on few incoherent measurements with those of the full state.
+We consider the time history of M = 2000 velocity fields u(x, tm), m = 1, . . . , M , which is compressed using POD. Note that the dimension of each velocity field is N  3.7 · 106 (considering the streamwise and transverse velocity component). Following the CROM strategy described in Sec. 2.1 and outlined in Fig. 2, the labels {L(tm)}M m=1, affiliating each velocity field with a cluster and the cluster transition probability matrix (CTM), here denoted by Q, are determined. This is the reference to which the results based on random measurements will be compared, and is in the following referred to as full-state CROM. We consider two different sensing matrices to obtain incoherent measurements y = u: a Gaussian random matrix, which can be generated using, e.g., the randn command in Matlab, and random point measurements generated from a random selection of rows of the N × N identity matrix. In particular, we consider three cases:
+
+(A) Gaussian sensing matrix and keeping the clustering fixed, (B) Gaussian sensing matrix and re-clustering of measurements y, and (C) random point measurements and re-clustering of measurements y.
+
+In case A, centroids, cluster affiliation and CTM are re-computed from measurements using the reference labels {L(tm)}M m=1. This is advantageous if CROM is learned offline on high-dimensional data for use in a real-time application with few measurements. In contrast, cases B and C follow the sparsity-enabled CROM
+strategy as shown in Fig. 5, where CROM is directly learned from the measurements.
+The probabilistic cluster dynamics described by the CTMs, namely P from measurements y and reference
+Q from the full state, are compared via the Jensen-Shannon divergence (JSD) [73]
+
+JSD(P, Q)
+
+=
+
+1 2
+
+DKL(P,
+
+M)
+
++
+
+1 2
+
+DKL(Q,
+
+M)
+
+with
+
+M
+
+=
+
+1 2
+
+(P
+
++
+
+Q)
+
+(9)
+
+where DKL denotes the Kullback-Leibler divergence [74, 75, 48] defined by
+
+DKL(P, Q)
+
+=
+
+Nc i=1
+
+Nc j=1
+
+Pij
+
+log
+
+Pij Qij
+
+.
+
+(10)
+
+The classification error as a function of the number of measurements for case A is shown in Fig. 6. The following steps are performed to compute the cluster affiliation and CTM from measurements: (1) centroids
+
+9
+
+Figure 6: Classification error (a) using a Gaussian sensing matrix and (b) example time history of the cluster affiliation of full-state features (black line) and recomputed from 100 measurements (red dashed lines). Misclassification mainly occurs at the cluster borders as visible in the zoomed window.
+Figure 7: Sparse CROM from incoherent measurements: (a) Jensen-Shannon divergence comparing CTMs P estimated from measurements to the reference Q. (b) Select transition matrices P are plotted for Ns = 50, Ns = 100 and reference Q (from left to right). Transition probabilities are displayed for better visualization in logarithmic scale ranging from zero probability ( ) to probability of 1 ( ).
+are re-computed from measurements using labels {L(tm)}M m=1, (2) the cluster affiliation is updated based on the nearest-centroid method using the cluster centroids from (1), (3) the CTM is re-computed, P, based on the cluster affiliation from (2). The error decays rapidly if more measurements are used. An example time history of the cluster affiliation closely matches that of the reference. The JSD decays analogously and the CTM converges to the reference CTM Q with increasing number of measurements (see Fig. 7).
+In the compressed sensing framework, few, but sufficiently many, incoherent measurements preserve geometric properties such as the cluster geometry. Thus, clustering algorithms such as k-means shall, in principle, yield the same results when applied directly to the measurements. As a consequence, the transition probabilities must also be equal to those computed using the POD coefficients. To facilitate the comparison of the results based on measurements with the full-state reference, we choose the same initial set of centroids in the iteration process of k-means. However, small differences in the pairwise distances between observations will inevitably lead to different final clustering results; the location of the final set of centroids will be different compared to the reference. Nevertheless, if sufficiently many measurements are taken, the cluster partition should converge. Further, the numbering of the clusters may change, thus the clusters computed from y are renumbered to match the full-state clusters as close as possible. The classification error and an example time history of the cluster affiliation is shown in Fig. 8. Despite being generally higher, the classification error shows the expected decay with increasing number of measurements. Similarly, the CTM P converges to the true CTM Q while the JSD decreases as shown in Fig. 9.
+In the following, more realistic measurements are considered corresponding to point measurements. The classification error for case C and an example time history of the cluster affiliation based on Ns = 1000 random point measurements at each time instant are shown in Fig. 10 . Note that for this example up to 1000 measurements are considered. The classification error does not decrease as rapidly as in the previous examples, as (1) single point measurements contain less information than Gaussian random measurements, which are obtained from taking the dot product between the Gaussian random matrix and the full state, (2)
+10
+
+Figure 8: Analogous to Fig. 6 but measurements are reclustered, showing (a) classification error and (b) time history of cluster affiliation for 100 measurements (red dashed lines) and reference (black line). Cluster indices are renumbered to match reference as good as possible.
+Figure 9: Sparse CROM from incoherent measurements analogous to Fig. 7 but based on the clustering in Fig. 8: (a) JensenShannon divergence and (b) select transition matrices for Ns = 10, Ns = 100 and reference Q (from left to right).
+the position change of the centroids also affects the renumbering procedure of the clusters introducing an error in the cluster affiliation. The fluctuation in the misclassification increases due to the strong dependency of the measurements on the selection of sensor locations in the sensing matrix. Despite these weaknesses, the CTM converges to the full-state CTM if sufficiently many measurements are collected (see Fig. 11).
+In conclusion, we have shown that CROM from few, incoherent measurements preserves the cluster geometry and and topological structure of the transition probability matrix. Thus, the same probabilistic dynamics are identified if sufficiently many measurements are collected. More generally, the computational cost of k-means clustering can be reduced if compressive measurements are employed. 3.2. Sparse sensor placement optimization for CROM
+Sparsity-enabled CROM makes possible more efficient computations using fewer measurements. While Gaussian random measurements are very suitable from a compressed sensing viewpoint, these are not suitable
+Figure 10: Analogous to Fig. 6 but measurements are reclustered, showing (a) classification error and (b) time history of cluster affiliation for 1000 measurements (red dashed lines) and reference (black line). Cluster indices are renumbered to match reference as good as possible.
+11
+
+Figure 11: Sparse CROM from incoherent measurements analogous to Fig. 7 but based on the clustering in Fig. 8: (a) Jensen-Shannon divergence and (b) select transition matrices for Ns = 100, Ns = 100 and reference Q (from left to right).
+for realistic applications. In contrast, random point measurements can be interpreted as physically realizable individual sensors. However, their random selection does not guarantee good performance. Moreover, sufficiently many measurements have to be collected to preserve the cluster geometry.
+Optimized sensor locations tailored to the specific CROM can yield improvements in accuracy, while decreasing the number of sensors. SSPOC has been demonstrated to find few optimized sensors for accurate classification based on a pre-trained supervised classification scheme [4, 17]. While CROM learns an intrinsic data partitioning, SSPOC exploits a known partition to find a minimal number of sensors that are most informative for discriminating those classes. Thus, combining CROM with SSPOC is particularly suitable and allows one to unify their respective merits. A schematic of the sparse sensor placement strategy for CROM facilitated by SSPOC is outlined in Fig. 12.
+Eq. (6)
+Figure 12: Schematic of the sparse sensor placement optimization for CROM showing the different training stages A and B as well as the subsequent (possibly real-time) application of the sensors in C. See text for details.
+Both SSPOC and CROM start with a dimensionality reduction procedure such as POD. Diverging from the standard procedures for SSPOC (compare Fig. 4) and CROM (compare Fig. 2), two key innovations are implemented: (1) K-means clustering is integrated into SSPOC as an intermediate step. This enables SSPOC to learn sensors in an unsupervised manner, where classes of the data are unknown and must be
+12
+
+first discovered using an unsupervised clustering algorithm, such as k-means. (2) The partitioning of CROM
+
+in conjunction with a supervised classifier, such as LDA, allows one to solve the l1 optimization problem of
+
+SSPOC (6) to learn few optimized sensors that are key for discriminating the clusters.
+
+The scheme for learning a CROM and subsequent sensor optimization follows three stages as shown in
+
+Fig. 12. In training stage A, which is performed offline, time-series data from a high-dimensional systems
+
+is analyzed. The standard CROM procedure can then be applied (see Fig. 2) to the full-state data. The
+
+cluster affiliation given by the labels {L(tm)}M m=1, resulting from the learned state-space partitioning using k-means, is provided to SSPOC yielding few optimized sensor locations. While CROM is trained on all
+
+features, depending on the dimensionality of the data and its sparsity in that basis, it can be suitable to
+
+reduce the number of features considered in the optimization problem, shrinking the computational costs.
+
+Finding a good set of sensors involves two steps: First, sensors are determined for varying . Often the
+
+total number of sensor locations found, denoted by Ns, reaches a plateau for a particular  value. There
+
+is generally a trade-off between the number of sensors and achieved accuracy which has to be taken into
+
+account when choosing . Second, the number of sensors can be further tuned by keeping  fixed, e.g.
+
+achieving the largest gain, and instead varying the number of features. Alternatively, the number of sensors
+
+can be adapted by sweeping through the error tolerance  in the optimization (see (6)). The Ns sensor
+
+locations correspond to rows in s which have at least one non-zero entry. In practice, these can be found
+
+by applying the threshold |sij| 
+
+||s||F 2Nc Nf
+
+[4] in order to construct the sensing matrix .
+
+For very high-
+
+dimensional problems, such as the mixing layer flow, it can be necessary to first randomly subsample the
+
+data to make the optimization problem tractable.
+
+In training stage B, the classifier for discriminating clusters is re-trained in the sensor space. Using the
+
+sensing matrix  created in stage A, single point measurements {y(tm)}M m=1 are collected from the training data. The LDA and cluster centroid classifiers are then re-trained from the measurements yielding the discriminating projection vectors {w^ i}Ni=c1-1 and centroids {c^k}Nk=c 1. Retraining classifiers in the sensor space is recommended, as this generally increases classification accuracy. This is done in all examples.
+
+The last stage C marks the online phase, where in-time measurements are collected from the sensor
+
+locations and the prevailing cluster is determined. Thus, a few point measurements of the high-dimensional
+
+state are measured and subsequently classified into a cluster in conjunction with the classifiers. This is a
+
+critical enabler for low-latency in-time estimation and response. While the classification based on the closest
+
+cluster centroid seems more natural for the considered problem, it can be advantageous to employ the LDA
+
+classifier in the sensor space, as sensor locations are optimized with regard to how well these reconstruct
+
+the discriminating projection vectors. However, if sensors are learned on subsampled data, we have found
+
+that the nearest-centroid method applied to the cluster centroids in the sensor space can achieve higher
+
+accuracy. In all examples, we compare the performance of the learned SSPOC sensors with random sensors
+
+and sensors corresponding to the pivot locations from the QR factorization [8] of the transform basis ,
+
+which are referred to as QRcp sensors.
+
+The combination of CROM with SSPOC is critical for making CROM applicable in realistic configurations
+
+that require in-time prediction, estimation, and control. Our innovations facilitate the learning of a minimal
+
+number of optimized sensor locations tailored to a specific CROM to achieve maximal performance and,
+
+more generally, specifically targeted towards dynamical systems. Moreover, this generalization of SSPOC
+
+to unsupervised classifiers enables sensor placement for classification problems in an unsupervised manner.
+
+4. Results
+We examine sensory placement for three examples from fluids that address different challenges (see Tab. 1). The first example is the periodic double gyre flow of moderate dimension which serves as illustrative example. The state space is discretized into two clusters, each associated with the contraction and expansion of the two vortices. The second flow system, a separating flow over a smoothly contoured ramp, has been previously employed as testbed for cluster-based control building on CROM [76]. Here, the control performance using optimized sensors is compared to full-state measurements. The third example is the spatially developing mixing layer, which exhibits high-dimensionality and strains computational resources. Thus, the optimization of sensors is facilitated by using heavily subsampled data.
+13
+
+see Sec. 4.1
+
+see Sec. 4.2
+
+see Sec. 4.3
+
+Table 1: Overview of numerical examples.
+
+For cross-validation purposes, all datasets are first split into a training and test set; clustering and sensor placement is then learned on the training set and performance is assessed on the test set. The subsampling percentage of the data on which the sensors are learned is denoted S%. For each example, the number of snapshots M , the number of spatial grid points Nxy (all flow problems are two-dimensional), and the number of potential sensor locations N are given in Tab. 1. Note that N = 2 Nxy for the separating flow, as sensor placement distinguishes between the streamwise and transverse velocity component. In the double gyre and the mixing layer flows, vorticity snapshot data is considered. The specifications and parameters for all cases are provided in Tab. 2. The number of clusters is set to Nc = 2 for the double gyre flow to identify the contraction and expansion behavior of the vortices. In the remaining examples, Nc = 10 clusters are used, motivated by the choice in previous work to which the results are compared. The clusters are trained in the POD space where the number of employed features is denoted by Nf .
+
+4.1. Periodically driven double gyre flow as illustrative example
+The periodically driven double gyre flow models the transport between convection rolls in the RayleighB´enard convection due to lateral oscillation, e.g. as a simple model for the gulf stream ocean front [77]. We employ here the same parameters as in Shadden's seminal work [78] on Lagrangian coherent structures. Consider the stream function defined by
+
+(x, y, t) = A sin(f (x, t)) sin(y)
+
+(11)
+
+with f (x, t) =  sin(t) x2 +(1-2 sin(t)) x, where A = 0.25,  = 0.25, and  = 2/10 are fixed parameters, over the domain  = {(x, y)|0  x  2, 0  y  1}, discretized to obtain Nx = 30 and Ny = 15 grid nodes in the horizontal and vertical directions, respectively. The parameter  represents the amplitude of the periodic oscillation, which yields a steady flow for  = 0 and oscillating flow for  > 0. A visualization of the instantaneous vorticity is displayed in Fig. 13(a). The separatrix between the two convection cells oscillates periodically with , leading to a periodic expansion and contraction of the vortex cells. These two dynamical regimes are identified in an unsupervised manner using the k-means clustering algorithm. The vorticity centroids of the two identified clusters, denoted by 1 and 2, are shown in Fig. 13(b) and (c), respectively. In the following, sparse sensor locations are learned to distinguish between these two states.
+
+14
+
+Example
+
+Clusters SSPOC
+
+Double gyre flow: Sec. 4.1
+
+Nc = 2 Nf = 10
+
+S% = 100% Nf  [1, 10]
+
+QRcp
+
+Random
+
+Train/Test [%]
+
+S% = 100% Nf  [1, 10]
+
+Ns  [1, 10] 80/20
+
+Separated flow: Sec. 4.2
+Case 1: Sec. 4.2.1
+
+Nc = 10 Nf = 1480
+
+S% = 100%
+  [0, 106], Nf = 20 Nf  [1, 180],  = 100
+
+S% = 100% Nf  [1, 180]
+
+Ns  [1, 180]
+
+90/10 90/10
+
+Case 2: Sec. 4.2.2 Nc = 10 Nf = 10
+
+S% = 100%   [0, 106], Nf = 10 Nf  [1, 10],  = 10
+
+S% = 100% Nf  [1, 10]
+
+Ns  [1, 90] 90/10 90/10
+
+Mixing layer: Sec. 4.3
+
+Nc = 10 Nf = 600
+
+S% = 1%   [0, 106], Nf = 40 Nf  [1, 40],  = 10
+
+S% = 100% Nf  [1, 500]
+
+Ns  [1, 500]
+
+90/10 90/10
+
+Table 2: Overview of specifications for CROM and SSPOC. For cross-validation the datasets have been split into training and test sets. Statistics are computed over Nr = 100 random reshuffling of the training and test sets.
+
+Figure 13: Periodic double gyre flow: (a) vorticity contours and velocity vectors of an instantaneous realization and (b) vorticity centroids for Nc = 2 clusters.
+15
+
+Figure 14: Classification results for the periodic double gyre flow: (a) accuracy for different numbers of sensors Ns  {1, . . . , 10} for which the placement is determined using (a1) SSPOC, (a2) a random selection, or (a4) QR with column pivoting. The results are compared with the accuracy for full-state sensors with increasing number of features Nf (a3). The mean and standard deviation of the cross-validated accuracy are shown as solid and dashed lines, respectively. The optimal sensor location (·) for a single sensor (b)(top) lies slightly outwards of the vortex core when the vortices are symmetric. The symmetry of the problem results in two optimal locations with equal probability for a single sensor (see (b)bottom) which can be immediately found using SSPOC or QRcp in contrast to random sensor locations (c) or an exhaustive search.
+Figure 15: Probability of sensor locations for (a) random and optimal placment using (b) QR with column pivoting or (c) SSPOC.
+The ability of vorticity sensors to classify the two dynamical regimes is shown in Fig. 14(a). In all cases, the accuracy improves with an increasing number of features Nf or sensors Ns. The accuracy reaches a plateau at Ns = Nf = 5, and decreases at Ns = Nf = 8 due to overfitting. SSPOC and QRcp achieve an average accuracy of 97.12% and 96.44%, respectively, for a single point sensor. In contrast, the full-state projected onto a single POD mode achieves an average classification accuracy of 54%. One example is shown in Fig. 14(b, top), where the single point sensor (red circle) is located slightly off the center of one of the vortex cores. This sensor achieves 100% accuracy. In Fig. 14(b, bottom), the probability distribution of sensor locations found by SSPOC or QRcp (which are identical in this particular case) with a single feature (Nf = 1), and hence a single sensor (Ns = 1), is shown. Due to the symmetry of the problem, there are two optimal locations close to each of the vortex cores, which are found with equal probability. These sensor locations can be easily determined using SSPOC or QRcp in contrast to random sensors (see Fig. 14(c)) or brute-force search.
+The overall probability distributions of all sensor locations found for random, QRcp, or SSPOC sensor selection, are shown in Fig. 15. The selection of sensor locations should be guided by the sensing or decision task. Here, sensors should be maximally informative observables with respect to the prevailing dynamical regime represented by the cluster. Both QRcp and SSPOC yield learned sensors along the horizontal center line, for which the double gyre flow exhibits a reflection symmetry. While the sensors found by QRcp are more equally distributed along that line, sensors found by SSPOC clearly favor the two distinct locations close to the vortex cores. Overall, QRcp and SSPOC perform equally well in this introductory example.
+16
+
+Figure 16: Schematic of cluster-based feedback control loop for the separating flow over a smoothly contoured ramp.
+Figure 17: Separating flow over a smooth ramp: (a) Computational domain with increased resolution in boundary and shear layer region. The location of the volume force is represented by ·. (b) Actuation signal applied to probe the natural and forced attractor. (c) Phase plot of the first three POD coefficients (a1, a2, a3) colored by cluster affiliation with Nc = 10 clusters. Observations affiliated with different clusters are not well separated.
+4.2. Separating flow over a smooth ramp: Towards in-time control Sensor placement is studied for a controlled separating flow over a smooth ramp (see Fig. 16) governed by
+typical Kelvin-Helmholtz shedding with Reynolds number Re = UL/ = 7700 based on the inflow velocity U, the length of the flat plate L upstream of the curved wall, and the kinematic viscosity . Learning optimized sparse sensor locations dramatically reduces the computational overhead in the online sensing and classification, reducing latency and improving bandwidth of in-time control. In the present study, we seek to identify few sensors that discriminate between different clusters (see Sec. 4.2.1) which is a key enabler for cluster-based control in experimental applications. Cluster-based control using a control-oriented CROM on full-state measurements has been previously studied to optimize an open-loop controller based on the optimal periodic excitation frequency for this configuration [76]. In particular, a bang-bang controller is employed, which turns the periodic forcing on or off dependent on the cluster, exploiting the long relaxation times of the flow. In Sec. 4.2.2, sensor locations are learned in a subspace specifically tailored towards this cluster-based control application and the performance of the optimal control laws using sparse sensor measurements and full-state measurements are compared.
+In the following, we provide a brief description of the unsteady, two-dimensional, incompressible NavierStokes solver and data set, both previously described in [76]. The two-dimensional flow is defined by the velocity vector u(x, t) := (u, v)T , where u and v are the streamwise and transverse velocity components, respectively. The computational domain , shown in Fig. 17(a), is discretized using mixed Taylor-Hood elements [79] on an unstructured triangular mesh comprised of 8567 nodes with increased resolution around the leading edge (located at (x, y) = (0, 0.6)), in the boundary layer and in the shear layer region. A quadratic finite-element method formulation is used to discretize the evolution equations with no-slip boundary on the
+17
+
+ramp and stress-free outflow. A detailed description of the solver can be found in [80, 81]. A rectangular velocity profile U  := u(x = -1, y) = (1, 0)T is used for the inflow condition. The numerical time step is 0.005 and the sampling period of the snapshots is 20 time steps, i.e. t = 0.1. The function b denotes the time-dependent control input amplitude, which has compact support in a circular region, centered at x = 1 and a y-position chosen such that the circular region is mostly inside the boundary layer (displayed as a red circle in Fig. 17(a)).
+The curvature of the wall induces an adverse pressure gradient leading to flow separation. The developing free shear layer is convectively unstable giving rise to the Kelvin-Helmholtz instability [82]. Behind the ramp a large recirculation area forms, the reduction of which benefits drag and lift forces. The recirculation area is here approximated by the area where the streamwise velocity component is negative. The corresponding time average of the recirculation area is defined by
+
+T2
+
+R(t)
+
+T
+
+=
+
+T2
+
+1 - T1
+
+H (-u(x))(t)dxdt
+
+(12)
+
+T1 
+
+where H denotes the Heaviside function. The recirculation area can be largely reduced by open-loop periodic forcing with excitation frequency close to the shedding frequency. In previous work [76], a cluster-based feedback controller was developed to optimize this open-loop forcing by turning the actuation on or off depending on the prevailing cluster exploiting the fact that this flow exhibits long relaxation times.
+The particular dataset considered (see [76]) consists of instantaneous velocity fields, for which open-loop forcing is randomly turned on and off (see Fig. 17(b)) with the optimal excitation frequency, fp = 0.45, known to achieve the smallest mean recirculation area. The data, comprised of M = 1650 velocity snapshots, is stacked into a matrix and reduced using POD. The data is clustered in the POD feature space into Nc = 10 clusters. A representative clustering result, showing the phase plot of the first three POD coefficients with color-coded cluster affiliation, is displayed in Fig. 17(c). The yellow/green-colored clusters represent flow realizations without forcing, while the dark blue clusters represent flow realizations with forcing and the corresponding lock-in between the flow and actuation. Transients between the natural and forced flows are colored in orange and light blue. Despite abruptly switching the actuation on or off, the flow varies smoothly and hence the data points are not well separated into different clusters.
+In the cluster-based control loop, depicted in Fig. 16, sensor measurements y are fed into the controller, which first determines the prevailing cluster  = (y), where  is a characteristic function affiliating a measurement with a particular cluster, and then enacts the next control input b. The control law K is a piecewise constant function of the cluster index. The optimal control law with respect to a cost function can be determined using a control-oriented CROM. The performance of each control law is evaluated with
+
+J = Jr + Jb = R(t) T + b2(t) T
+
+(13)
+
+where the penalization coefficient is   11 for an equal weighting of the control objective and the input energy. We refer to [76] for details on the specific control approach and results.
+
+4.2.1. Sensor placement for cluster classification
+In this section, placement of sparse sensors for the purpose of classifying the full-state velocity fields into clusters is examined for the partitioned dataset described in the previous section. The flow switches smoothly between the unforced and controlled flow states. The data is clustered into a larger number of clusters compared with the previous example to resolve the probabilistic dynamics in the state space (we refer to [3] and [76] for details). As flow states arising from the system with and without actuation may occupy the same cluster, classification from few measurements is considerably more difficult. All 8567 spatial points are considered as potential sensor locations with discrimination between streamwise and transverse velocity components, thus there exist 17134 potential sensor locations in total. The first Nf  20 POD features are considered, representing about 90% of the fluctuation energy.
+Cross-validated accuracy of SSPOC sensors (see approach in Sec. 2.3) is shown in Fig. 18. The average accuracy of 95% does not change with increasing parameter , while the number of sensors decreases
+18
+
+Figure 18: Classification results for Nc = 10 clusters where  is varied between 0 and 106. The accuracy in (a) appears to be independent of , even though the number of sensors (b) decreases. The number of sensors saturates at about  = 102 with Ns  130.
+Figure 19: Classification accuracy for Nc = 10 clusters using (a) SSPOC sensors with varying Nf and fixed  = 102, (b) random sensors, (c) full-state sensors for varying Nf , (d) QR with column pivoting for varying Nf (which correspond to the number of sensors Ns), and (e) SSPOC sensors with fixed Nf (results shown in Fig. 18) and varying   [0, 106]. Except for case (c), where the accuracy is plotted over the number of features Nf , in all other cases the accuracy is shown as a function of the number of sensors Ns. Mean accuracy and its standard deviation are shown in solid and dashed lines, respectively. Both, SSPOC and QRcp yield better accuracy than random sensors and saturate at Ns  50. In contrast to QRcp, SSPOC performs better if using fewer sensors and shows a smaller standard deviation in accuracy.
+saturating at about  = 100 with Ns  130 learned sensors on average (corresponding to about 0.76% of all potential sensor locations and 1.5% of the grid points).
+For a fixed , the number of sensors can be further tuned by adapting the number of features Nf . Cross-validated accuracy for SSPOC with fixed  = 100 is presented in Fig. 19. These results are compared to random sensors, full-state feature sensors, and sensors learned using QRcp. SSPOC results for varying  from Fig. 18 are also rearranged and shown with respect to the number of sensors (Fig. 19(e)). Sensors learned using SSPOC or QRcp generally yield a better accuracy than random sensors. Both reach a plateau of about 93% for Ns  50 sensors, corresponding to about 0.29% of all potential sensor locations. SSPOC sensors significantly outperform QRcp sensors for few sensors in the range of 10 < Ns < 40. Misclassification mainly occurs close to the cluster borders, which are defined by half of the distance between neighboring centroids. These clear cluster borders become fuzzy in the sensor space. Classification accuracy is increased by re-training the LDA classifier on the learned sensors, which generally performs better than classification based on re-trained centroids.
+Sensors should be placed in sensitive regions capable of discriminating between different clusters. The probability distribution that a SSPOC sensor is placed in a particular location is displayed in Fig. 20, with the streamwise and transverse components plotted separately. Most sensors are placed in the recirculation region and further downstream; most of the upstream sensors are placed closely behind the separation point
+19
+
+Figure 20: Distribution of sensor locations found using SSPOC (case (e) in Fig. 19). Bright color and large circle represent high probability that a particular sensor location is selected; probability is normalized with respect to the maximal probability pmax any sensor location is selected.
+region (separation point is xnspat  6 for the unforced and xpsperiodic  3.5 for the periodically forced flow). The favored sensor locations are different for the two velocity components: The transverse velocity sensors are mainly placed along the lines associated with the convecting vortex cores, which can be close to the wall, when the flow locks in to the excitation frequency, or farther away for the unforced flow. In contrast, the streamwise velocity sensors are placed close to the wall inside the boundary layer and (less frequently) along the convection lines of the vortex cores associated with the unforced flow. The clusters contain kinematically similar snapshots, thus snapshots belonging to the same cluster exhibit a similar phase. However, a cluster may also contain snapshots from both the forced and unforced flows, as the transition occurs smoothly and the partitioning is coarse. Thus, sensors are placed where both the unforced and controlled flows exhibit distinct features that discriminate the clusters. The aforementioned sensor locations are arguably the most sensitive regions, as these capture (1) whether the flow shows features from the forced or unforced flow, (2) to which phase bin the flow corresponds, and (3) the extent of the instantaneous recirculation area.
+In Fig. 21, distributions are shown for random sensors, SSPOC sensors with varying  (the same as in Fig. 19 to facilitate the comparison), SSPOC sensors with varying features, and QRcp sensors. QRcp shows a similar preference as SSPOC for placing streamwise sensors in the boundary layer and transverse sensors along the line associated with the convected vortex cores. Despite the similarities between SSPOC and QRcp, there are also important differences. While SSPOC sensors are confined to a limited region downstream of the ramp, QRcp sensors are more distributed, showing a smaller preference in particular sensor locations. Moreover, QRcp places (few) streamwise velocity sensors at the leading edge of the plate, which do not contain information on the flow separation but instead measure non-physical behavior: The leading edge corner is approximated with only a few vertices, leading to numerical inaccuracies at that location. Nevertheless, QRcp also places streamwise velocity sensors around 1  x  1.5. These sensors capture disturbances introduced by the actuator located at x = 1 that affect the flow behavior downstream.
+4.2.2. Comparing full-state and sparse sensors for control In this section, the performance of the best CROM-based control law using partial-information sensors is
+compared with full-state feature sensors employed in [76]. As the goal is optimization of the best open-loop periodic forcing, the considered feature space is the subspace spanned by the first Nf = 10 POD modes
+20
+
+Figure 21: Distribution of sensor locations analog to Fig. 20 and corresponding to the cases in Fig. 19 comparing (a) a random
+selection of sensor locations, (b) SSPOC sensors for varying , (c) SSPOC sensors for varying Nf , and (d) QRcp sensors, for the streamwise (left) and transverse (right) velocity component, respectively.
+
+Figure 22: Cross-validated classification results for Nc = 10 clusters. The accuracy (a) decays up to   101 and seems independent of  thereafter. Analogously, the number of sensors decreases to Ns  50 for   101 where it starts to saturate.
+
+
+
+=
+
+[O1 L
+
+..
+
+.
+
+
+
+OL Nf
+
+]
+
+associated
+
+with the best periodic forcing.
+
+Sparse
+
+sensors for
+
+classifying
+
+snapshots
+
+into
+
+Nc = 10 clusters are then learned in that subspace. While in Sec. 4.2.1, clusters are learned repeatedly from
+
+the training set, in this section the cluster affiliation of each snapshot is fixed and corresponds to that used
+
+in [76] in order to compare results.
+
+Cross-validated accuracy for SSPOC sensors is shown in Fig. 22. The number of learned sensors decays
+
+until  = 10 where it saturates with Ns = 50 sensors and an average accuracy of 82%. The accuracy
+
+is lower than the results in the previous section. As the classification is performed in the subspace, a
+
+large amount of information from the snapshots is removed, which may be critical for discriminating the
+
+clusters. Although sensors are learned with respect to their sensitivity to the employed features, they provide
+
+unfiltered measurements, decreasing the accuracy. Considering this, the accuracy is still comparably high,
+
+which is partially achieved by re-training the classifier in the sensor space.
+
+Cross-validated accuracy for SSPOC sensors with varying  or varying Nf , respectively, random sensors,
+
+21
+
+Figure 23: Classification accuracy (analog to Fig. 19) for Nc = 10 clusters using (a) SSPOC with varying Nf and fixed  = 10, (b) random sensors, (c) full-state sensors with varying Nf , (d) QRcp with varying Nf , and (e) SSPOC with fixed Nf = 10 and varying   [0, 106]. Both, SSPOC and QRcp yield better accuracy than random sensors.
+Figure 24: Distribution of sensor locations (analog to Fig. 21) to discriminate Nc = 10 clusters based on (a) SSPOC sensors for varying , (b) SSPOC sensors for varying Nf , and (c) QRcp sensors for varying Nf .
+full-state feature sensors, and QRcp sensors are compared in Fig. 23. Both SSPOC and QRcp yield better sensors than choosing random sensor locations. Since the maximum number of features is Nf = 10, at most Ns = 10 sensors can be determined using QRcp. The accuracy using SSPOC saturates at about 80% with Ns  20 sensors, having the largest gain with respect to random measurements. The full-state sensor accuracy decreases with increasing Nf > 4 due to overfitting. The employed classifier relies on the discriminating directions found by LDA, while the true classification is based on the nearest cluster centroids.
+A comparison of the distribution of sensor locations is displayed in Fig. 24. Note that the distribution of random sensors is not included, as it is similar to Fig. 21(a). Sensors learned using either SSPOC or QRcp have a clear location preference analogous to the results in Fig. 21, despite restricting the feature space to a subspace. Note that the reduction of the number of features also decreases the number of sensors placed, thus yielding fewer dominant sensor locations.
+In the following, the performance of the optimal control law determined from the control-dependent 22
+
+Figure 25: Sensor locations found using SSPOC for (a) the overall best case with Ns = 42 sensor locations (case `A') and (b) using Ns = 20 sensors having the largest gain compared to random sensors (case `B'). The sensor locations are discriminated with respect to the streamwise (·) and transverse (·) velocity component. Note that in both cases the majority of sensors measures only the transverse velocity component.
+Figure 26: Performance results of cluster-based control laws. The best CROM-based control law (b2) performs similarly well using only (b5) Ns = 42 or (b6) Ns = 20 sensors. The difference in the performance (a) originates from misclassification due to the unfiltered sensor signal. Both sensor-based control cases collapse with the full-state control when considering the overall performance (b).
+CROM for this configuration is examined using only information from the learned sensors. Two particular cases are considered (see Fig. 23): (A) those SSPOC sensors that achieve the best accuracy among all cases for  = 10, and (B) using the best case for Ns = 20 and  = 10, which yields the largest gain compared to random sensors, the latter achieving a similar accuracy with about Ns = 80 sensors. The distribution of sensors (red and blue circles) is displayed in Fig. 25 with an instantaneous vorticity realization as the background. For Ns = 42, most sensors measure the transverse velocity component and aggregate in the recirculation zone behind the backward-facing ramp or are distributed along the line the vortices associated with the forced flow are convected. The clustering of sensors in distinct regions suggests that fewer sensors could be sufficient to obtain similar information. In comparison with Ns = 20, the number of sensors is considerably reduced in x  [4, 5] and x  7.
+Performance results of all evaluated control laws are displayed in Fig. 26. All control laws are sorted with respect to their performance J. Particular cases are highlighted: (b1) the natural flow, (b2) the optimal control law determined with CROM using full-state POD feature sensors, (b3) the overall best control law determined with a brute-force search, (b4) the best periodic forcing as reference, (b5) the best CROM-based control law from (b2) where classification is based on case `A' sensors (Ns = 42), and (b6) similar like (b5) but for case `B' sensors (Ns = 20). The difference between the full-state controller and the sensor-based controller shown in Fig. 26(left) is due to the misclassification resulting from the unfiltered sensor signals. Nevertheless, all three cases (b2), (b5), and (b6) show a similar overall performance (compare Fig. 26(b)).
+23
+
+Figure 27: Instantaneous vorticity realization of the mixing layer.
+Figure 28: Classification results for Nc = 10 clusters of the mixing layer. Sensors are trained on a random selection of 1% of the grid points. The accuracy in (a) appears to be independent of , even though the number of sensors (b) decreases. The number of sensors saturates at about  = 101 with Ns  250.
+In conclusion, SSPOC has found few optimized sensor locations that perform equally well for control as full-state measurements. More generally, SSPOC sensors outperform random sensors and perform equally well or better than QRcp sensors. If enough random sensors are employed, these faithfully preserve the cluster geometry and can achieve a similar accuracy.
+4.3. Mixing layer with different dynamical regimes In this section, sensor placement is optimized for a two-dimensional mixing layer flow undergoing vortex
+pairing. The flow exhibits the typical roll-up of vortices arising from the Kelvin-Helmholtz instability and vortex pairing further downstream. This example is motivated by previous work [3], in which CROM identifies two dynamical regimes associated with different wavenumbers and a particular cluster that acts as a switch between these regimes (depicted in Fig. 1). The velocity ratio is r = U1/U2 = 3 where U1 and U2 denote the upper (fast) and lower (slow) stream velocities, respectively. The Reynolds number is Re = U  = 500 based on the velocity difference U = U1 - U2, the initial vorticity thickness , and the kinematic viscosity ; the Mach number is M a = 0.3. We employ an ensemble of M = 667 snapshots with a sampling time of 3t, non-dimensionalized with respect to U1 and . The computational domain is 140 long and 56 high with increasing spatial resolution in the mixing region. Details of the finitedifference Navier-Stokes solver and the configuration can be found in [83] and [84]. An instantaneous vorticity realization of the flow is shown in Fig. 27. There exist Nxy  1.5 · 106 potential sensor locations. This highdimensionality results in a computationally expensive optimization problem. Therefore, instead of using the full data, the data is randomly subsampled, and then POD is applied to this subset of measurements. Specifically, a random 1% of the data is selected, reducing the number of potential sensors to N  1.5 · 104. Further, SSPOC sensors are only trained on the first Nf = 40 POD features (see Appendix A for an analysis of CROM's dependency on the number of features).
+The mean and standard deviation of the cross-validated accuracy for SSPOC sensors are shown in Fig. 28. We compare two classifiers: (1) the nearest-centroid method applied in the subspace spanned by the LDA discriminating directions {w^ i}Ni=c1-1, which will be denoted by `NCM-w', and (2) the nearest-centroid method applied to the cluster centroids {c^k}Nk=c 1 in the sensor space, which is denoted by `NCM-c'. Although not
+24
+
+Figure 29: Comparison of cross-validated accuracy based on the nearest-centroid method using (a) LDA vectors or (b) centroids. Despite being trained on only a random 1% of the data, SSPOC sensors yield a similar accuracy as QRcp sensors trained on 100%, if Ns  200 and classification is based on centroids.
+shown, in the previous examples NCM-w generally outperformed NCM-c. However, sensors learned on heavily subsampled data for the mixing layer perform better using the latter approach, on average by 10 - 20%.
+Classification performance is compared using NCM-w (see Fig. 29(a)) and NCM-c (see Fig. 29(b)) for sensors learned from SSPOC on 1% subsampled data for a fixed , a random selection of sensors, full-state feature sensors using a varying number of features Nf , and sensors determined using QR with column pivoting (without subsampling). The SSPOC results from Fig. 28 are also rearranged with respect to the number of sensors, and shown in Fig. 29 (SSPOC Nf = 40). A general observation is that the accuracy of random sensors can be increased by using NCM-w for classification. For fewer sensors, clusters tend to merge and overlap, which impedes their discrimination based on cluster centroids. In contrast, LDA finds those features in sensor space that are most discriminating, increasing the performance. However, this is not true for all cases examined, particularly because LDA suffers from overfitting in contrast to the cluster centroids. Subsampled SSPOC sensors perform equally well compared with random sensors if the classification is based on NCM-w, but outperform random sensors if NCM-c is employed. Further, if the number of sensors exceeds Ns > 130, SSPOC sensors using NCM-c perform better than random sensors using NCM-w. Despite being trained on only a random 1% of the data, SSPOC sensors yield a similar accuracy as QRcp sensors trained on 100%, if Ns  200 and classification is based on NCM-c. QRcp sensors achieve the largest gain for Ns  80 sensors independent of the classification method. The general decline of accuracy after Ns > 100 in Fig. 29(a) is associated with overfitting. The strong effect of overfitting can also be observed for full-state feature sensors using NCM-w, where the accuracy decays rapidly starting at Nf  20. In contrast, full-state features converge to 100% accuracy based on the cluster centroids.
+The distribution of selected sensor locations for each method is displayed in Fig. 30. In both cases, SSPOC and QRcp sensors show a similar distribution with placement preference in the initial region where the shear layer instability develops. Clusters represent different phases but also discriminate the different dynamical regimes, where the flow is either governed by vortex shedding or dominated by vortex pairing. The distributions suggest that the initial instability region is critical for the discrimination of the clusters.
+For a better assessment, we show the sensor locations (see Fig. 31) found using SSPOC for the best case based on NCM-c. This set of 262 sensors, which corresponds to about 0.017% of all grid points, achieved the highest accuracy of 91%. Sensors are placed inside vortices and along the filaments, distributed along the direction of convection. Although the width of the shear layer is larger, sensors are restricted to a more confined region. Analogous to the growth of the mixing region, the spreading of the sensors in the transverse direction increases downstream with the streamwise direction. Note that the reason for the seemingly continuous distribution in the streamwise direction is that the flow is convective, similar to the separating flow and in contrast to the periodic double gyre.
+To analyze the effect of the number of sensors, we present three cases with decreasing number of sensors in Fig. 32. Sensors are sorted with respect to their streamwise location. Thus, the time history in
+25
+
+Figure 30: Probability distribution of sensor locations analogous to Fig. 20. The background shows probability that a particular sensor location is selected, where gray refers to zero. In addition, the 1000 most probable sensor locations are displayed as color-coded circles where color and size change with probability.
+
+Figure 31: Set of 262 sensor locations found using SSPOC, which achieves the highest accuracy of 91% based on NCM-c.
+
+Fig. 32(a) depicts the convection of the vortices (dark lines corresponding to maximum measured vorticity
+
+value). SSPOC sensors are only trained on the first Nf = 40 POD features, thus we compare the follow-
+
+ing measurements: the fluctuating part of measurements denoted by y, its reconstruction using only those
+
+modes yN40, where yN40 = uN40 with uN40 =
+
+Nf =40 i=1
+
+aii,
+
+and
+
+the
+
+remaining
+
+part
+
+yN >40 ,
+
+which
+
+is computed analogously. Two particular sensor locations, exhibiting the maximum and minimum variance
+
+in the considered set of sensors, are selected and the corresponding time history of y, yN40, and yN>40 are displayed in Fig. 32(b) and (c), respectively. The superscript `min' and `max' in Fig. 32(b) and (c) refer to
+
+the two selected sensors. The accuracy can be increased by up to 12% using NCM-c and up to 30% using
+
+NCM-w for those cases shown in Fig. 32 and Fig. 31, if filtered measurements yN40 are considered. The influence of the number of sensors becomes evident when comparing the cluster affiliation of the observa-
+
+tions in the subspace spanned by the LDA discriminating vectors, as shown in Fig. 32(d). With decreasing
+
+number of sensors, clusters tend to merge and overlap, making the classification task more difficult.
+
+Summarizing, for very high-dimensional systems it may be necessary to subsample the data on which
+
+sensors are trained. SSPOC sensors outperform random sensors when using the nearest-centroid method
+
+based on the cluster centroids. QR with column pivoting is computationally more efficient than solving the
+
+optimization problem, thus QRcp sensors can be trained on full-state data and using more features even
+
+for very high-dimensional systems. Generally, sensors are placed where they are most informative for the
+
+cluster discrimination, along the vortical structures in the direction of the convection.
+
+26
+
+Figure 32: Dependency on the number of sensors: (a) Time history of sensor measurements (sorted with respect to streamwise location), (b) time series of sensor having maximum variance y (gray thick line), yN40 (blue line), and yN>40 (red line), respectively. (c) same as (b) but for sensor location showing minimum variance, and (d) cluster affiliation in the subspace given by w^ i, i = 1, 2, 3, of the sensors. Each point represents an observation color-coded by its cluster affiliation.
+5. Conclusion
+Reduced-order models are of growing importance in a broad range of scientific applications as they enable simulations of large-scale engineering systems for design, optimization, and control thought impossible only a decade ago [2]. The success of ROMs centers on two key innovations: (i) many complex systems exhibit lowdimensional dynamics [85] so that high-dimensional system can be projected to a low-dimensional subspace in a principled way, and (ii) sparse sampling of the state space for interpolating the nonlinear terms required for the subspace projection. The low-rank embedding space for the ROM is typically computed via a POD reduction. The efficient projection of the nonlinearity to the POD subspace can be accomplished with gappy POD methods [86], which include the modern principled approaches of discrete empirical interpolation method [87, 88] and compressive sensing [89, 14, 7]. Although successful, the current POD-Galerkin method for producing a ROM has a number of important limitations, including that (i) the POD basis is expensive to compute and must be done in an offline manner, (ii) a nonlinear model is produced whose sensitivity to initial conditions make the ROM prediction only qualitative [90], and (iii) the standard POD-Galerkin timestepping algorithm is not robust and is prone to instability [90]. The nonlinear nature of standard ROMs
+27
+
+limits the mathematical machinery available for the objective of prediction and control. This suggests that alternatives to POD-Galerkin embeddings of the dynamics should be considered.
+There is a growing effort to represent nonlinear dynamics in a linear operator framework. This has motivated significant work on the infinite-dimensional Koopman and Perron-Frobenius operators. However, standard data-driven implementations, including dynamic mode decomposition for Koopman and UlamGalerkin methods for Perron-Frobenius, tend to result in high-dimensional models with their own associated challenges for computations and measurements. The recent cluster-based reduced-order model (CROM) framework provides an efficient low-dimensional representation of the Perron-Frobenius operator using a data-driven discretization of phase space into clusters, on which probabilistic dynamics evolve. Although the CROM is fundamentally low-dimensional, making it advantageous for real-time computations, uncertainty in the model grows with time so that data assimilation techniques must be incorporated. Because the clusters are typically defined in the ambient high-dimensional phase space, the data assimilation step is computationally expensive and relies on full-state data that may not be available in practical applications.
+In this work, we demonstrate the first algorithm that leverages sparse sensor selection for efficient operator-theoretic modeling of nonlinear systems, the so-called sparsity-enabled CROM. We first show that a sufficient, but small number of random measurements of the state embed the cluster geometry and preserve the probabilistic dynamics, relying on compressed sensing and the restricted isometry property. Further, we demonstrate the ability to learn a minimal set of optimized sensors that are tailored to the specific CROM and provide performance on par with the full high-dimensional CROM. These sparsity enabled innovations are demonstrated on three high-dimensional nonlinear fluid systems of increasing complexity, and in all cases optimized sensors outperform randomly chosen sensors. We also show that the sparsity enabled CROM can be used for closed-loop control, resulting in control performance that is similar to that of full-state CROM.
+The combination of sparsity promoting techniques with linear embeddings of nonlinear systems will become a key enabler for real-time estimation and control tasks because it overcomes many of the limitations of existing ROMs and/or linear operator models. A number of important future directions and extensions arise out of this work. First, it may be fruitful to explore not only selecting sparse sensor locations, but also which nonlinear measurements of the state are most informative for a Koopman or Perron-Frobenius embedding. The sparse sensor placement algorithm itself may also be modified to include more realistic cost functions that incorporate real costs associated with certain sensor locations and types; for example, sensors near the root of a wing may be less expensive than those at the tip, and sensors in the wake may be inadmissible. Finally, even though the sparse sensor optimization is an offline computation, it is currently prohibitively expensive for very high-dimensional state-spaces, such as that of the mixing layer, and further algorithmic developments are required to scale to larger problems.
+
+Acknowledgments
+EK gratefully acknowledges funding by the Moore/Sloan foundation, the Washington Research Foundation and the eScience Institute. JNK acknowledges support from the Air Force Office of Scientific Research (FA9550-15-1-0385). SLB and JNK acknowledge support from the Defense Advanced Research Projects Agency (DARPA contract HR0011-16-C-0016). BWB, SLB, and EK acknowledge support from the Air Force Research Lab award (FA8651-16-1-0003). We appreciate valuable stimulating discussions with Bernd Noack and Joshua Proctor.
+
+Appendix A. Model dependency on the number of features
+
+We examine the dependency of CROM on the number of features. Specifically, the errors in the transition probabilities are assessed when less features are considered for computing the cluster affiliation. For this purpose, in addition to the Jensen-Shannon divergence (JSD) defined in (9), we give an estimate of the maximal error based on the l1 norm:
+
+1 = max 
+
+with
+
+Nc
+
+j =
+
+|PiNj f - Qij |
+
+i=1
+
+28
+
+(A.1)
+
+Figure A.33: Dependency of estimated CROM on the number of features: (a) Transition matrices for Nf = 1, 10, 25, M - 1 features based on the same clustering using Nf = M - 1 features (best model chosen from 30 clustering repetitions), (b) the Jensen-Shannon divergence and the 1 error decrease both with increasing number of features, both error measures vanish for Nf > 43, and (c) the mean (thick solid line), standard deviation (dashed line) and the minimum and maximum values (thin solid lines) for both error measures over 30 executions of the clustering algorithm. Transition probabilities are displayed in logarithmic scale ranging from zero probability ( ) to probability of 1 ( ). Both error measures vanish for Nf > 43 (·) irrespective of the clustering.
+where PNf = (PiNj f ) is the transition matrix recomputed using Nf features, and Q = (Qij) denotes the transition matrix based on all features. The following steps are employed for calculating PNf : (1) CROM is computed from compressed data using POD as explained in Sec. 2.1. This affiliates each mth observation with a label, {Lm}M m=1, and yields the transition matrix Q. For this step, all POD features are considered. (2) The cluster affiliation is recomputed based on a reduced number of features. This relies on recomputed cluster centroids using the dominant Nf POD coefficients. (3) The transition matrix is recomputed based on the cluster affiliation in step (2). Example transition matrices and the error measures are displayed in Fig. A.33. In Fig. A.33(a), it is observed that as the number of features increases, the transition matrix converges to that obtained using all features. Both JSD and 1 rapidly decay and vanish for Nf > 43 (see Fig. A.33(b)). The error measures, and particularly the minimum number of features to achieve zero error, do not depend significantly on the clustering (compare Fig. A.33(c)).
+References
+[1] P. Holmes, J. L. Lumley, G. Berkooz, C. W. Rowley, Turbulence, Coherent Structures, Dynamical Systems and Symmetry, Cambridge University Press, Cambridge, 2nd paperback edition, 2012.
+[2] P. Benner, S. Gugercin, K. Willcox, A survey of projection-based model reduction methods for parametric dynamical systems, SIAM review 57 (2015) 483­531.
+[3] E. Kaiser, B. R. Noack, L. Cordier, A. Spohn, M. Segond, M. Abel, G. Daviller, J. O¨ sth, S. Krajnovi´c, R. K. Niven, Cluster-based reduced-order modelling of a mixing layer, J. Fluid Mech. 754 (2014) 365­414.
+[4] B. W. Brunton, Brunton, J. L. S. L., Proctor, J. N. Kutz, Sparse sensor placement optimization for classification, SIAM J. Appl. Math. 76 (2016) 2099­2122.
+[5] R. Everson, L. Sirovich, Karhunen-lo`eve procedure for gappy data, Journal of the Optical Society of America A 12 (1995) 1657­1664.
+[6] S. Chaturantabut, D. Sorensen, Nonlinear model reduction via discrete empirical interpolation, SIAM Journal on Scientific Computing 32 (2010) 2737­2764.
+[7] S. Sargsyan, S. L. Brunton, J. N. Kutz, Nonlinear model reduction for dynamical systems using sparse sensor locations from learned libraries, Physical Review E 92 (2015) 033304.
+[8] Z. Drmac, S. Gugercin, A new selection operator for the discrete empirical interpolation method--improved a priori error bound and extensions, SIAM J. Sci. Comput. 38 (2016) A631­A648.
+29
+
+[9] S. L. Brunton, J. L. Proctor, J. H. Tu, J. N. Kutz, Compressed sensing and dynamic mode decomposition, Journal of Computational Dynamics 2 (2015) 165­191.
+[10] S. L. Brunton, J. L. Proctor, J. N. Kutz, Discovering governing equations from data by sparse identification of nonlinear dynamical systems, Proceedings of the National Academy of Sciences 113 (2016) 3932­3937.
+[11] M. R. Jovanovi´c, P. J. Schmid, J. W. Nichols, Sparsity-promoting dynamic mode decomposition, Physics of Fluids 26 (2014) 024103.
+[12] B. Yildirim, C. Chryssostomidis, G. Karniadakis, Efficient sensor placement for ocean measurements using low-dimensional concepts, Ocean Modeling 273 (2009) 160­173.
+[13] I. Bright, G. Lin, J. N. Kutz, Compressive sensing and machine learning strategies for characterizing the flow around a cylinder with limited pressure measurements, Physics of Fluids 25 (2013) 1­15.
+[14] S. L. Brunton, J. H. Tu, I. Bright, J. N. Kutz, Compressive sensing and low-rank libraries for classification of bifurcation regimes in nonlinear dynamical systems, SIAM Journal on Applied Dynamical Systems 13 (2014) 1716­1732.
+[15] B. Kim, J. Y. Park, A. Mohan, A. C. Gilbert, S. Savarese, Hierarchical classification of images by sparse approximation, pp. 106.1­106.11.
+[16] M. I. Akhlaghi, A. Dogariu, Compressive correlation imaging with random illumination, Optics Letters 40 (2015) 4464. [17] Z. Bai, S. L. Brunton, B. W. Brunton, J. N. Kutz, E. Kaiser, A. Spohn, B. R. Noack, Data-Driven Methods in Fluid
+Dynamics: Sparse Classification from Experimental Data, Springer International Publishing, Cham, pp. 323­342. [18] K. Manohar, S. L. Brunton, J. N. Kutz, Environment identification in flight using sparse approximation of wing strain,
+arXiv:1606.00034v1 (2016). [19] K. Willcox, Unsteady flow sensing and estimation via the gappy proper orthogonal decomposition, Computers & Fluids
+35 (2006) 208­226. [20] K. Carlberg, C. Farhat, J. Cortial, D. Amsallem, The gnat method for nonlinear model reduction: Effective implementation
+and application to computational fluid dynamics and turbulent flows, Journal of Computational Physics 242 (2013) 623­ 647. [21] B. O. Koopman, Hamiltonian systems and transformation in hilbert space, Proceedings of the National Academy of Sciences 17 (1931) 315. [22] I. Mezi´c, Spectral properties of dynamical systems, model reduction and decompositions, Nonlinear Dynamics 41 (2005) 309­325. [23] O. Perron, Zur Theorie der Matrices, Math. Ann. 64 (1907) 248­263. [24] S. Ulam, Problems in Modern Mathematics, Interscience, 1964. [25] D. Ryter, On the eigenfunctions of the fokker-planck operator and of its adjoint, Physica A: Statistical Mechanics and its Applications 142 (1987) 103­121. [26] P. Schmid, Dynamic mode decomposition of numerical and experimental data, J. Fluid Mech. 65 (2010) 5­28. [27] C. W. Rowley, I. Mezi´c, S. Bagheri, P. Schlatter, D. S. Henningson, Spectral analysis of nonlinear flows, Journal of Fluid Mechanics 641 (2009) 115­127. [28] J. N. Kutz, S. L. Brunton, B. W. Brunton, J. L. Proctor, Dynamic Mode Decomposition: Data-Driven Modeling of Complex Systems, SIAM, 2016. [29] M. O. Williams, I. G. Kevrekidis, C. W. Rowley, A data­driven approximation of the koopman operator: Extending dynamic mode decomposition, Journal of Nonlinear Science 25 (2015) 1307­1346. [30] J. Liouville, ???, Journ. de Math. 3 (1838) 349. [31] G. Froyland, Approximating physical invariant measures of mixing dynamical systems in higher dimensions, Nonlinear Analysis: Theory, Methods & Applications 32 (1998) 831 ­ 860. [32] G. Froyland, M. Dellnitz, Detecting and locating near-optimal almost-invariant sets and cycles, SIAM J. Sci. Comput. 24 (2003) 1839­1863. [33] M. Dellnitz, O. Junge, On the Approximation of Complicated Dynamical Behavior, Springer New York, New York, NY, pp. 400­424. [34] G. Froyland, O. Junge, P. Koltai, Estimating Long-Term Behavior of Flows without Trajectory Integration: The Infinitesimal Generator Approach, SIAM J. Numer. Anal. 51 (2013) 223­247. [35] E. M. Bollt, N. Santitissadeekorn, Applied and Computational Measurable Dynamics, SIAM, 2013. [36] T. Y. Li, Finite approximation for the Frobenius-Perron operator: A solution to Ulam's conjecture, J. Approx. Theory 17 (1976) 177­186. [37] C. M. Bishop, Pattern Recognition and Machine Learning, Springer, ???, 2007. [38] A. Lasota, M. C. Mackey, Chaos, Fractals, and Noise, Springer New York, 2nd edition, 1994. [39] G. D. Birkhoff, Proof of the ergodic theorem, Proceedings of the National Academy of Sciences 17 (1931) 656­660. [40] P. Cvitanovi´c, R. Artuso, R. Mainieri, G. Tanner, G. Vattay, Chaos: Classical and Quantum, Niels Bohr Institute, Copenhagen, 2012. [41] E. Hopf, Statistical hydromechanics and functional analysis, J. Rat. Mech. Anal. 1 (1952) 87­123. [42] D. Venturi, The numerical approximation of functional differential equations, arXiv preprint arXiv:1604.05250 [math.NA] (2016). [43] M. H., Transport, collective motion and brownian motion, Prog. Theor. Phys. 33 (1965) 423450. [44] Z. R., Nonlinear generalized langevin equations, J. Stat. Phys. 9 (1973) 215220. [45] A. Chorin, O. Hald, Stochastic Tools for Mathematics and Science, 2009. [46] P. Stinis, Renormalized mori­zwanzig-reduced models for systems without scale separation, Proceedings of the Royal Society of London A: Mathematical, Physical and Engineering Sciences 471 (2015). [47] A. Gouasmi, E. Parish, K. Duraisamy, Characterizing memory effects in coarse-grained nonlinear systems using the
+30
+
+mori-zwanzig formalism, arXiv preprint arXiv:1611.06277 (2016). [48] B. R. Noack, R. K. Niven, Maximum-entropy closure for a Galerkin system of incompressible shear flow, J. Fluid Mech.
+700 (2012) 187­213. [49] H. Steinhaus, Sur la division des corps mat´eriels en parties, Bull. Acad. Polon. Sci. 4 (1956) 801­804. [50] Q. Du, V. Faber, M. Gunzburger, Centroidal Voronoi Tessellations: Applications and Algorithms, SIAM review 41 (1999)
+637­676. [51] Q. Du, M. D. Gunzburger, Centroidal Voronoi Tessellation Based Proper Orthogonal Decomposition Analysis, Birkh¨auser
+Basel, Basel, pp. 137­150. [52] D. Amsallem, J. Cortial, C. Farhat, On-demand cfd-based aeroelastic predictions using a database of reduced-order bases
+and models, in: 47th AIAA Aerospace Sciences Meeting Including The New Horizons Forum and Aerospace Exposition AIAA 2009-800 5 ­ 8 January 2009, Orlando, Florida. [53] D. Amsallem, M. J. Zahr, C. Farhat, Nonlinear model order reduction based on local reduced-order bases, International Journal for Numerical Methods in Engineering 92 (2012) 891­916. [54] D. Giannakis, A. J. Majda, Quantifying the predictive skill in long-range forecasting. part i: Coarse-grained predictions in a simple ocean model, J. of Climate ??? (2011) ??? [55] M. Budisi´c, R. Mohr, I. Mezi´c, Applied Koopmanism a), Chaos: An Interdisciplinary Journal of Nonlinear Science 22 (2012) 047510. [56] I. Mezic, Analysis of fluid flows via spectral properties of the Koopman operator, Annual Review of Fluid Mechanics 45 (2013) 357­378. [57] S. L. Brunton, B. W. Brunton, J. L. Proctor, J. N. Kutz, Koopman observable subspaces and finite linear representations of nonlinear dynamical systems for control, PLoS ONE 11 (2016) e0150171. [58] E. J. Cand`es, J. Romberg, T. Tao, Robust uncertainty principles: exact signal reconstruction from highly incomplete frequency information, IEEE Transactions on Information Theory 52 (2006) 489­509. [59] E. J. Cand`es, J. Romberg, T. Tao, Stable signal recovery from incomplete and inaccurate measurements, Communications in Pure and Applied Mathematics 8 (59). [60] D. L. Donoho, Compressed sensing, IEEE Transactions on Information Theory 52 (2006) 1289­1306. [61] D. L. Donoho, For most large underdetermined systems of linear equations, the minimal l1-norm solution is also the sparsest solution, Communications in Pure and Applied mathematics 59 (2006) 797­829. [62] M. Grant, S. Boyd, CVX: Matlab software for disciplined convex programming, version 2.1, http://cvxr.com/cvx, 2014. [63] M. Grant, S. Boyd, Graph implementations for nonsmooth convex programs, in: V. Blondel, S. Boyd, H. Kimura (Eds.), Recent Advances in Learning and Control, Lecture Notes in Control and Information Sciences, Springer-Verlag Limited, 2008, pp. 95­110. [64] J. A. Tropp, A. C. Gilbert, Signal recovery from random measurements via orthogonal matching pursuit, IEEE Transactions on Information Theory 53 (2007) 4655­4666. [65] J. A. Tropp, Algorithms for simultaneous sparse approximation. part ii: Convex relaxation, Signal Processing 86 (2006) 589­602. [66] V. Ozolin¸s, R. Lai, R. Caflisch, S. Osher, Compressed modes for variational problems in mathematics and physics, Proceedings of the National Academy of Sciences 110 (2013) 18368­18373. [67] H. Schaeffer, R. Caflisch, C. D. Hauck, S. Osher, Sparse dynamics for partial differential equations, Proceedings of the National Academy of Sciences USA 110 (2013) 6634­6639. [68] A. Mackey, H. Schaeffer, S. Osher, On the compressive spectral method, Multiscale Modeling &amp; Simulation 12 (2014) 1800­1827. [69] J. H. Tu, C. W. Rowley, J. N. Kutz, J. K. Shang, Spectral analysis of fluid flows using sub-nyquist-rate piv data, Experiments in Fluids 55 (2014) 1­13. [70] F. Gueniat, L. Mathelin, L. Pastur, A dynamic mode decomposition approach for large and arbitrarily sampled systems, Physics of Fluids 27 (2015) 025113. [71] B. Kramer, P. Grover, P. Boufounos, M. Benosman, S. Nabi, Sparse sensing and dmd based identification of flow regimes and bifurcations in complex flows, arXiv preprint arXiv:1510.02831 (2015). [72] M. A. Davenport, M. F. Duarte, Y. C. Eldar, G. Kutyniok, Introduction to Compressed Sensing, Cambridge University Press. [73] J. Lin, Divergence measures based on the shannon entropy, IEEE Transactions on information theory 37 (1991) 145­151. [74] S. Kullback, R. A. Leibler, On information and sufficiency, Annals Math. Stat. 22 (1951) 79­86. [75] S. Kullback, Information Theory and Statistics, John Wiley, New York, 1st edition, 1959. [76] E. Kaiser, B. R. Noack, A. Spohn, L. N. Cattafesta, M. Morzyn´ski, Cluster-based control of nonlinear dynamics, under review in Theoret. and Comp. Fluid Dynamics arXiv:1602.05416 (2016). [77] T. H. Solomon, J. P. Gollub, Chaotic particle transport in time-dependent rayleigh-b´enard convection, Physical Review A 38 (1988) 6280­6286. [78] S. Shadden, F. Lekien, J. Marsden, Definition and properties of lagrangian coherent structures from finite-time lyapunov exponents in two-dimensional aperiodic flows., Physica D: Nonlinear Phenomena 212 (2005) 271­304. [79] P. Hood, C. Taylor, Finite Element Methods in Flow Problems, University of Alabama in Huntsville Press, pp. 121­132. [80] M. Morzyn´ski, Numerical solution of navier-stokes equations by the finite element method, in: Proceedings of SYMKOM 87, Compressor and Turbine Stage Flow Path ­ Theory and Experiment, 1987, pp. 119­128. [81] K. Afanasiev, Stabilita¨tsanalyse, niedrigdimensionale Modellierung und optimale Kontrolle der Kreiszylinderumstr¨omung (trans.: Stability analysis, low-dimensional modeling, and optimal control of the flow around a circular cylinder), Ph.D. thesis, Fakulta¨t Maschinenwesen, Technische Universita¨t Dresden, 2003.
+31
+
+[82] C.-M. Ho, P. Huerre, Perturbed free shear layers, Ann. Rev. Fluid Mech. 16 (1984) 365­424. [83] G. Daviller, E´tude num´erique des effets de temp´erature dans les jets simples et coaxiaux, Ph.D. thesis, E´cole Nationale
+Sup´erieure de M´ecanique et d'A´erotechnique, 2010. [84] A. Cavalieri, G. Daviller, P. Comte, P. Jordan, G. Tadmor, Y. Gervais, Using large eddy simulation to explore sound-source
+mechanisms in jets, J. Sound Vib. 330 (2011) 4098­4113. [85] M. C. Cross, P. C. Hohenberg, Pattern formation outside of equilibrium, Reviews of modern physics 65 (1993) 851. [86] R. Everson, L. Sirovich, Karhunen­lo`eve procedure for gappy data, JOSA A 12 (1995) 1657­1664. [87] M. Barrault, Y. Maday, N. C. Nguyen, A. T. Patera, An empirical interpolation method: application to efficient reduced-
+basis discretization of partial differential equations, Comptes Rendus Mathematique 339 (2004) 667­672. [88] S. Chaturantabut, D. C. Sorensen, Nonlinear model reduction via discrete empirical interpolation, SIAM Journal on
+Scientific Computing 32 (2010) 2737­2764. [89] I. Bright, G. Lin, J. N. Kutz, Compressive sensing based machine learning strategy for characterizing the flow around a
+cylinder with limited pressure measurements, Physics of Fluids (1994-present) 25 (2013) 127102. [90] K. Carlberg, M. Barone, H. Antil, Galerkin v. discrete-optimal projection in nonlinear model reduction, arXiv preprint
+arXiv:1504.03749 (2015).
+32
+
+

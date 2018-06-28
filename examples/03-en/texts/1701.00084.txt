@@ -1,0 +1,278 @@
+arXiv:1701.00084v1 [math.GN] 31 Dec 2016
+
+PRODUCTS OF TOPOLOGICAL GROUPS IN WHICH ALL CLOSED SUBGROUPS ARE SEPARABLE
+ARKADY G. LEIDERMAN ,1 AND MIKHAIL G. TKACHENKO ,2
+To the memory of Wistar Comfort (1933­2016), a great topologist and man, to whom we owe much of our inspiration
+Abstract. We prove that if H is a topological group such that all closed subgroups of H are separable, then the product G × H has the same property for every separable compact group G.
+Let c be the cardinality of the continuum. Assuming 21 = c, we show that there exist:
+· pseudocompact topological abelian groups G and H such that all closed subgroups of G and H are separable, but the product G × H contains a closed non-separable -compact subgroup;
+· pseudocomplete locally convex vector spaces K and L such that all closed vector subspaces of K and L are separable, but the product K × L contains a closed non-separable -compact vector subspace.
+1. Introduction
+All topological groups and locally convex linear spaces are assumed to be Hausdorff. The weight of a topological space X, denoted by w(X), is the smallest size of a base for X. A space X is separable if it contains a dense countable subset. If every subspace of a topological space X is separable, then X is called hereditarily separable. Hereditary separability is not a productive property -- the Sorgenfrey line is an example of a hereditarily separable paratopological group whose square contains a closed discrete subgroup of cardinality c (see [6, 2.3.12] or [1, 5.2.e]). Nevertheless, as we observe in Proposition 1.2, the product of any hereditarily separable topological space with a separable metrizable space is hereditarily separable.
+Our main objective is to study products of two topological groups having the following property: Every closed subgroup of a group is separable. Since this property does not imply the separability of every subspace of a group, Proposition 1.2 has very limited applicability for our purposes.
+It is known that a closed subgroup of a separable topological group is not necessarily separable. However, W. Comfort and G. Itzkowitz proved in [3] that all closed subgroups of a separable locally compact topological group are separable. It
+Date: December 26, 2016. 2010 Mathematics Subject Classification. Primary 54D65; Secondary 22A05, 46A03. Key words and phrases. Topological group, closed subgroup, locally convex space, separable, pseudocompact, pseudocomplete.  The authors have been supported by CONACyT of Mexico, grant number CB-2012-01 178103. 1 The first listed author gratefully acknowledges the financial support received from the Universidad Aut´onoma Metropolitana during his visit to Mexico City in September, 2016. 2 Corresponding author.
+1
+
+2
+
+ARKADY G. LEIDERMAN AND MIKHAIL G. TKACHENKO
+
+was also noticed by several authors independently that every metrizable subgroup of a separable topological group is separable (see [12]).
+Recently these results have been generalized in [11] as follows: Every feathered subgroup of a separable topological group is separable. We recall that a topological group G is feathered if it contains a compact subgroup K such that the quotient space G/K is metrizable (see [1, Section 4.3]). All locally compact and all metrizable groups are feathered.
+Since the class of feathered groups is closed under countable products and taking closed subgroups, we obtain the following simple corollary.
+Proposition 1.1. Let G be a separable locally compact group and H be a separable feathered group. Then every closed subgroup of the product G × H is separable.
+Let us say that a topological group G is strongly separable (briefly, S-separable), if for any topological group H such that every closed subgroup of H is separable, the product G × H has the same property.
+The following open problem arises naturally.
+Problem 1. Find out the frontiers of the class of S-separable topological groups:
+(a) Is every separable locally compact group S-separable? (b) Is the group of reals R S-separable? Does there exist a separable metrizable
+group which is not S-separable? (c) Is the free topological group on the closed unit interval S-separable?
+Our Theorem 2.1 provides the positive answer to (a) of Problem 1 in the important case when G is a separable compact group.
+Then we deduce that every topological group G which contains a separable compact subgroup K such that the quotient space G/K is countable, is S-separable.
+It is reasonable to ask whether the separability of closed subgroups of the product G×H is determined by the same property of the factors G and H, without imposing additional conditions on G or H. We answer this question in the negative in Section 3.
+A Tychonoff space X is called pseudocompact if every continuous real-valued function defined on X is bounded. Assuming that 21 = c, we construct in Theorem 3.4 pseudocompact topological abelian groups G and H such that all closed subgroups of G and H are separable, but the product G × H contains a closed non-separable -compact subgroup.
+In Section 4 we consider the class of locally convex spaces (lcs) in which all closed vector subspaces are separable. The case of locally convex spaces is quite different from topological groups, as an infinite-dimensional lcs is never locally compact or pseudocompact. Probably the first example of a closed (but not complete) nonseparable vector subspace of a separable lcs was given by R. Lohman and W. Stiles [12]. The study of the products of topological vector spaces in which all closed vector subspaces are separable was initiated by P. Doman´ski. He proved in [5] that if Ei is a separable topological vector space whose completion is not q-minimal (in particular, if Ei is a separable infinite-dimensional Banach space) for each i  I, where |I| = c, then the product iI Ei has a non-separable closed vector subspace.
+Recently this result was generalized in [9] as follows: If each Ei, for i  I, is an lcs with at least c of the Ei's not having the weak topology, then the product
+iI Ei contains a closed non-separable vector subspace.
+
+PRODUCTS OF TOPOLOGICAL GROUPS
+
+3
+
+These facts prompt the following problem for lcs, similar to the questions considered earlier for topological groups.
+Problem 2. Do there exist locally convex spaces K and L such that all closed linear subspaces of K and L are separable, but the product K × L contains a closed non-separable vector subspace?
+To the best of our knowledge, the product of two lcs in which all closed vector subspaces are separable has not been considered in the literature yet.
+We present a result in the negative direction analogous in spirit to the aforementioned Theorem 3.4. Our Theorem 4.5 states that under 21 = c, there exist pseudocomplete (hence, Baire) locally convex spaces K and L such that all closed vector subspaces of both K and L are separable, but the product K × L contains a closed non-separable -compact vector subspace.
+Note that in view of our Proposition 4.1 none of the factors K, L in Theorem 4.5 can be a finite-dimensional Banach space.
+The question whether the assumption 21 = c can be dropped in Theorems 3.4 and 4.5 remains open (see Problem 5).
+1.1. Notation and Background Results. We start with the following apparently folklore result regarding products of hereditarily separable topological spaces. The authors thank K. Kunen who provided us with a short proof of the following proposition. Since we failed to find a reference to this fact in the literature, its proof is included for the sake of completeness.
+Proposition 1.2. Let X be a hereditarily separable space and Y a space with a countable network. Then the product X × Y is also hereditarily separable.
+Proof. Let N be a countable network for Y . The space Y admits a finer topology with a countable base -- it suffices to consider the topology on Y whose subbase is N . Therefore we can assume that the space Y itself has a countable base, say, B.
+Suppose for a contradiction that the product X × Y is not hereditarily separable. Let us recall that a space is hereditarily separable iff it has no uncountable left separated subspace (see [17]). Let {(x, y) :  < 1} be a left separated subspace of X × Y , so there are separating neighborhoods {U :  < 1} such that (x, y)  U for each   1, but (x, y) / U whenever  < . We can assume without loss of generality that each U has the form A × B, where A is an open subset of X and B  B. Since B is countable, one can find an uncountable set I  1 and an element B  B such that B = B for each   I. Clearly, y  B for each   I. Take ,   I with  < . Then x  A and x / A -- otherwise we would have (x, y)  A × B = A × B = U. This shows that {x :   I} is an uncountable left separated subspace of X. Hence X is not hereditarily separable, thus contradicting our assumptions.
+Next we collect several important (mostly well-known) facts that will be applied in the sequel.
+Theorem 1.3. (See [7, Theorem 3.1] and [3, Corollary 2.5]) If a compact topological group G satisfies w(G)  c, then it is separable, and vice versa. Hence all closed subgroups of a separable compact group G are separable.
+As usual, we equip products of topological spaces with the Tychonoff topology. The next result about products of separable spaces follows from the classical Hewitt­Marczewski­Pondiczery theorem.
+
+4
+
+ARKADY G. LEIDERMAN AND MIKHAIL G. TKACHENKO
+
+Theorem 1.4. (See [6, Theorem 2.3.15]) The product of no more than c separable spaces is separable.
+
+Let X = A X be a product space and B an arbitrary non-empty subset of the index set A. Then B : X  XB denotes the natural projection of X onto the subproduct XB = B X.
+We will use the following theorem about subspaces of Tychonoff products of compact metrizable spaces in the proof of Theorem 3.4.
+
+Theorem 1.5. [1, Theorem 2.4.15] Suppose that S is a subspace of the topological product X = A X of compact metrizable spaces such that B(X) = XB for every countable subset B  A. Then X is the Stone-Cech compactification of S and the space S is pseudocompact.
+
+The closure of a subset U  X in X is denoted by clX U . A family P of open non-empty subsets of X is called a -base for X if every open non-empty set in X contains an element of P. The following notion was introduced by J.C. Oxtoby in [16].
+
+Definition 1.6. A topological space X is called pseudocomplete if there exists a sequence {Pn : n  } of -bases for X such that for every sequence {Un : n  } of subsets of X satisfying Un  Pn and clX Un+1  Un for each n  , the intersection
+n Un is non-empty.
+Every regular pseudocomplete space has the Baire property, and an arbitrary product of pseudocomplete spaces is pseudocomplete [16]. The class of pseudocomplete spaces contains all pseudocompact spaces.
+Several well-known problems about pseudocompleteness are still open. For example, it is unknown whether pseudocompleteness is preserved by continuous open mappings or is hereditary with respect to dense G-subspaces (see [14]). Let us say that a subset Y of a space X is G-dense in X if Y intersects each non-empty G-set in X. The following fact is apparently new though simple.
+We recall that a space X is Moscow if the closure of every open set in X is the union of a family of G-sets in X. All extremely disconnected spaces and all spaces of countable pseudocharacter are evidently Moscow.
+
+Proposition 1.7. Let X be a regular pseudocomplete Moscow space and Y be a G-dense subspace of X. Then Y is a pseudocomplete space as well.
+
+Proof. Fix a sequence {Pn : n  } of -bases for X witnessing the pseudocompleteness of X. Since X is regular, we may assume that each Pn consists of regularly open sets. For every n  , we put Qn = {U  Y : U  Pn}. We claim that the sequence {Qn : n  } satisfies the requirements of Definition 1.6.
+Indeed, let {Wn : n  } be a sequence such that Wn  Qn and clY Wn+1  Wn for each n  . For every n  , take an open set Un  Pn with Un  Y = Wn. It is easy to see that clX Un+1  Un for all n  . If not, then clX Un+1  Un for some n  . Since the set Un is regular open in X, the latter means that
+
+clX Un+1  clX (X \ clX Un) = .
+
+As X is a Moscow space, each of the sets clX Un+1 and clX (X \ clX Un) is the union of G-sets. By the G-density of Y in X, we conclude that
+
+(1.1)
+
+Y  clX Un+1  clX (X \ clX Un) = 
+
+PRODUCTS OF TOPOLOGICAL GROUPS
+
+5
+
+or, equivalently, clY Wn+1clX (X\clX Un) = . However, clY Wn+1  Wn  Un and Un  clX (X \ clX Un) = , which contradicts (1.1). This proves that clX Un+1  Un for each n  .
+Since Un  Pn for each n   and the space X is pseudocomplete, it follows that n Un = . Making use of the G-denseness of Y in X, we see that
+
+ = Y  Un = (Un  Y ) = Wn.
+
+n
+
+n
+
+n
+
+This implies the pseudocompleteness of Y .
+
+Let us recall that the o-tightness of a space X, denoted by ot(X), is the minimum cardinal    such that for every family  of open sets in X and every point x  , one can find a subfamily  of  with ||   such that x  . It is clear that every space X satisfies ot(X)  c(X) and ot(X)  t(X), where c(X) and t(X) are the cellularity and tightness of X, respectively (see [19]).
+In the presence of an additional algebraic structure on a given space X, mild topological restrictions on X, like having countable o-tightness, imply that X is a Moscow space (see [1, Section 6.4]). We apply this fact in the following corollary.
+Corollary 1.8. Let G be a regular paratopological group of countable o-tightness. If G is pseudocomplete, then so is every G-dense subspace of G.
+Proof. Since G has countable o-tightness, [1, Corollary 6.4.11, 5)] implies that G is a Moscow space. Hence the required conclusion follows from Proposition 1.7.
+
+The next result will be used in the proof of Theorem 4.5.
+Theorem 1.9. Let Y be a subspace of the topological product X = A X of regular pseudocomplete first countable spaces such that B(Y ) = B X for every countable subset B of A. Then the space Y is pseudocomplete.
+Proof. It is clear that Y is a G-dense subspace of X because Y fills all countable faces of the product space X. Also, the space X is pseudocomplete as a product of pseudocomplete spaces [16]. Since each factor X is regular and first countable, it follows from [1, Corollary 6.3.15] that X is a regular Moscow space. Finally, Y is pseudocomplete in view of Proposition 1.7.
+
+If the factors X are paratopological groups, we can complement Theorem 1.9 as follows.
+Corollary 1.10. Let Y be a subspace of the topological product H = A H of regular, pseudocomplete, separable paratopological groups. If B(Y ) = B H for every countable subset B of A, then the space Y is pseudocomplete.
+Proof. By [1, Theorem 6.4.19], H is a Moscow space. Since Y is G-dense in H and H is regular, it remains to apply Proposition 1.7.
+
+Every maximal linearly independent subset B of a vector space E is called a Hamel basis for E. The cardinality of B is an algebraic dimension of E which will be denoted by ldim(E). It is known that ldim(E) = c for any separable infinitedimensional Banach space E (see [10]).
+
+6
+
+ARKADY G. LEIDERMAN AND MIKHAIL G. TKACHENKO
+
+2. Products with a compact or countable factor
+Let us say that a topological group G is strongly separable (briefly, S-separable) if for any topological group H such that every closed subgroup of H is separable, the product G × H has the same property.
+One of our main observations is the following result which can be reformulated by saying that every separable compact group is S-separable.
+Theorem 2.1. Let G be a separable compact group and H be a topological group in which all closed subgroups are separable. Then all closed subgroups of the product G × H are separable as well.
+Proof. Take a closed subgroup C of G × H and denote by pH the projection of G × H onto the second factor. According to Kuratowski's theorem (see [6, Theorem 3.1.16]) pH is a closed mapping. Therefore the image D = pH (C) is a closed subgroup of H. It follows from our assumptions about H that the group D is separable. Let H be the restriction of pH to C and K be the kernel of H . Clearly the homomorphism H : C  D is a continuous closed mapping. Hence the homomorphism H of C onto D is a quotient mapping and therefore H is open [1, Proposition 1.5.14]. The group K is topologically isomorphic to a closed subgroup of G, so K is separable according to Theorem 1.3. Finally, C is separable because separability is a three-space property in topological groups [1, Theorem 1.5.23].
+It is not clear to which extent one can generalize Theorem 2.1 by weakening the compactness assumption on G. However, some additional conditions on the groups G and/or H have to be imposed as it follows from Theorem 3.4 in Section 3.
+In the next proposition we present another situation when the projection G × H  H turns out to be a closed mapping.
+Proposition 2.2. Let G be a countably compact topological group and H a separable metrizable topological group. If all closed subgroups of G are separable, then the product group G × H has the same property.
+Proof. It is known (see [6, Theorem 3.10.7]) that the projection p : G × H  H is a closed mapping. Let C be a closed subgroup of G × H and  be the restriction to C of the projection p. Since C is closed in G × H,  is also a closed mapping. The mapping  being a continuous homomorphism, we see that  : C  (C) is open. Now we finish the proof by the same argument as in Theorem 2.1.
+The following problem arises in an attempt to generalize Proposition 2.2:
+Problem 3. Let G be a countably compact topological group such that all closed subgroups of G are separable, and H a topological group with a countable network. Are the closed subgroups of G × H separable?
+Next we show that every countable topological group is S-separable. A more general result will be presented in Theorem 2.5.
+Proposition 2.3. Let G be a countable topological group and H be a topological group in which all closed subgroups are separable. Then all closed subgroups of the product G × H are separable as well.
+Proof. We modify slightly the idea presented in the proof of Theorem 2.1. Take a closed subgroup C of G × H and let  be the restriction to C of the projection
+
+PRODUCTS OF TOPOLOGICAL GROUPS
+
+7
+
+G × H  G. Then the image D = (C) is a countable subgroup of G. The kernel of  is topologically isomorphic to a closed subgroup of H and, hence, is separable. Therefore all fibers of  are separable. For every y  D, let Sy be a countable dense subset of -1(y). Then S = yD Sy is a countable dense subset of C. Indeed, let U be an arbitrary non-empty open set in C. Take an element x  U and put y = (x). Then x  U  -1(y) = , so the density of Sy in -1(y) implies that U  Sy = . Since Sy  S, we conclude that U  S = , which shows that S is dense in C. Hence C is separable.
+Proposition 2.4. The class of S-separable groups is closed under the operations:
+(1) finite products; (2) taking closed subgroups; (3) taking continuous homomorphic images.
+Proof. Items (1) and (2) are evident, so we verify only (3). Let  : F  G be a continuous onto homomorphism of topological groups, where the group F is Sseparable. Also, let H be a topological group such that all closed subgroups of H are separable. Denote by iH the identity mapping of H onto itself. Then g = ×iH is a continuous homomorphism of F × H onto G × H. If D is a closed subgroup of G × H, then C = g-1(D) is a separable closed subgroup of F × H since F is S-separable. Hence the group D = g(C) is separable as well.
+Denote by S the smallest class of topological groups which is generated by all compact separable groups, all countable groups and is closed under the operations listed in (1)­(3) of Proposition 2.4. It is not difficult to verify that if G  S, then G contains a compact separable subgroup K such that the quotient space G/K is countable. In the next problem we conjecture that this property characterizes the groups from S:
+Problem 4. Is it true that a topological group G is in the class S if and only if G contains a compact separable subgroup K such that the quotient space G/K is countable?
+The theorem below generalizes both Theorem 2.1 and Proposition 2.3. It can be considered as a partial positive answer to Problem 4.
+Theorem 2.5. A topological group G is S-separable provided it contains a separable compact subgroup K such that the quotient space G/K is countable.
+Proof. Consider an arbitrary topological group H such that all closed subgroups of H are separable. Let C be a closed subgroup of G× H. It follows from Theorem 2.1 that the closed subgroup F = (K ×H)C of K ×H is separable. Let p : G×H  G be the projection onto the first factor. Take any point x  p(C) and choose an element z = (x, h)  C. It is easy to see that (xK × H)  C = zF . Since F has countable index in G, the latter equality implies that the group C can be covered by countably many translates of the separable group F . Hence C is separable as well. We conclude therefore that G is S-separable.
+Remark 2.6. Each G  S is a separable -compact group, but the group of reals R is not in the class S. We do not know any example of an S-separable topological group which is not in the class S.
+The main obstacle for resolving Problem 1 is the fact that the restriction of an open continuous homomorphism to a closed subgroup can fail to be open, even if
+
+8
+
+ARKADY G. LEIDERMAN AND MIKHAIL G. TKACHENKO
+
+the restriction is considered as a mapping onto its image. This is an important issue since we use the fact that separability is a three-space property, while the corresponding homomorphism of a group onto its quotient group is open. We also note that there exists a continuous one-to-one homomorphism of a non-separable precompact group onto a separable metrizable group (one can combine Theorems 9.9.30 and 9.9.38 of [1]). In particular, the kernel of such a homomorphism is trivial and, hence, separable. So the preservation of separability under taking inverse images of a continuous homomorphism with a separable kernel depends essentially on whether the homomorphism is open or not.
+A topological group G is called categorically compact (briefly, C-compact), if for every topological group H the projection G × H  H sends closed subgroups of G × H to closed subgroups of H [4]. It is known that C-compactness is preserved by continuous surjective homomorphisms and inherited by closed subgroups. D. Dikranjan and V. Uspenskij proved that the product of any family of C-compact groups is C-compact. A countable discrete group is C-compact if and only if it is hereditarily non-topologizable [13]. Obviously, compact groups are C-compact and C-compactness of G yields its compactness provided that the group G is either soluble (in particular, abelian), or connected, or locally compact [4].
+The long-standing problem of whether every C-compact group is compact has been recently resolved negatively in the article [8], where an infinite discrete Ccompact group is presented. Clearly this group is far from commutative or soluble. Thus, C-compact groups constitute a rich non-trivial class containing all compact groups as a proper subclass.
+Remark 2.7. We do not know whether all separable C-compact topological groups are S-separable.
+3. Product of Two Pseudocompact Groups
+In this section we present two pseudocompact abelian groups G and H such that all closed subgroups of G and H are separable, but the product G × H contains a closed non-separable subgroup.
+First we recall that a Boolean group is a group in which all elements are of order two. Clearly, all Boolean groups are abelian. For each integer n  2, Z(n) denotes the discrete group {0, 1, . . . , n - 1} with addition modulo n. A non-empty subset X of a Boolean group G with identity e is independent if for any pairwise distinct elements x1, . . . , xn of X the equality x1 + · · · + xn = e implies that x1 = · · · = xn = e.
+A family V of non-empty subsets of a topological space X is called a -network for X if every non-empty open set U  X contains an element of V.
+Lemma 3.1. Let  be a cardinal satisfying     c. Then the compact Boolean group C = Z(2) has a countable -network V = {Vn : n  } such that |Vn|  2 for each n  .
+Proof. Identify  with a dense subset of the open interval (0, 1) and fix a countable family T consisting of the sets of the form A, with A being a disjoint finite union of open intervals with rational end-points in (0, 1). For every set A1 A2 · · ·An  T and a finite collection {B1, B2, . . . , Bn}, where each Bi = {0} or {1}, we define the set
+V = {x   : x()  Bi for each   Ai}.
+
+PRODUCTS OF TOPOLOGICAL GROUPS
+
+9
+
+It is easy to verify that the family V consisting of all such sets V is a countable -network for the space C. The cardinality of each Vn is at least 2 = c because Vn contains a copy of Z(2).
+Proposition 3.2. Let  be a cardinal satisfying     c and S be a subgroup of the compact Boolean group C = Z(2) with |S| < c. Then C contains a countable dense independent subset X of C such that X  S = {e}.
+Proof. Evidently, if x  C \ S, then x  S = {e}. Let V = {Vn : n  } be a countable -network for C such that every Vn has cardinality at least 2 = c (see Lemma 3.1). Take an element x0  V0 \ S. Then x0  S = {e}. Similarly, take an element x1  V1 \ (S + x0 ). Again, this is possible since |S + x0 | < c. In general, if elements x0, x1, . . . , xn-1 of C have been defined, we choose an element xn  Vn \ (S + x0, x1, . . . , xn-1 ). This choice guarantees that x0, x1, . . . , xn  S = {e} and that the set {x0, x1, . . . , xn} is independent.
+Let X = {xn : n  } and Q be the subgroup of C generated by X. Notice that the set X is independent. Since xn  Vn for each n  , we see that X is dense in C. It is also clear that Q  S = {e}. This completes the proof.
+
+Remark 3.3. Proposition 3.2 cannot be extended to compact metrizable bounded torsion groups. Indeed, let G = Z(2) × Z(4). Clearly G is a compact metrizable group of period 4. Let S = {¯0} × Z(4), where ¯0 is the identity element of Z(2). Then every dense subgroup D of G has a non-trivial intersection with the finite group S. To see this, consider the open subset U = Z(2) × {1} of G. Since D is dense in G, there exists an element x  D  U . Clearly the element 2x is distinct from the identity of G and 2x = (¯0, 2)  D  S.
+Theorem 3.4. Assume that 21 = c. Then there exist pseudocompact abelian topological groups G and H such that all closed subgroups of G and H are separable, but the product G × H contains a closed non-separable -compact subgroup.
+
+Proof. We will construct G and H as dense subgroups of the compact Boolean group  = Z(2)1 . For every   1, we denote by p the projection of  onto the -th factor, p(x) = x() for each x  . Given an element x  , let
+
+supp(x) = {  1 : p(x) = 1}.
+
+Then the set
+
+ = {x   : | supp(x)| < }
+
+is a dense subgroup of  satisfying || = 1. It is easy to verify that the group 
+with the topology inherited from  is -compact and not separable.
+Our aim is to define the subgroups G and H of  satisfying the equality GH =
+. It is clear that  = {(x, x) : x  }, the diagonal in  × , is a closed subgroup
+of  × , so   (G × H) is a closed non-separable subgroup of G × H which is
+isomorphic to . We define the groups G and H by recursion of length c. It follows from 21 = c
+that the family of all closed subsets of  has cardinality 21 = c. Hence we can
+enumerate all infinite closed subgroups of , say, {C :  < c}. For every countable subset B of 1, the set Z(2)B has cardinality at most c, so we can enumerate the set  = {Z(2)B : B  1, 1  |B|  } as  = {b :  < c}. For every  < c, let B be a countable subset of 1 such that b  Z(2)B . The two enumerations will
+
+10
+
+ARKADY G. LEIDERMAN AND MIKHAIL G. TKACHENKO
+
+be used in our construction of G and H. For every non-empty subset B of 1, we denote the projection of  = Z(2)1 onto Z(2)B by B.
+We start with putting G0 = H0 = . Let  be an ordinal, 0 <  < c. Assume that we have defined subgroups G and H of , for each  < , such that the following conditions hold:
+(i) G  G and H  H if  < ; (ii) |G|  | + 1| · 1 and |H|  | + 1| · 1; (iii) G  H = ; (iv) b  B (G)  B (H) for each  < ; (v) both G  C and H  C contain a countable dense subgroup of C , for
+each  < .
+If  is a limit ordinal, we put G = < G and H = < H. It is clear that the families {G :   } and {H :   } satisfy conditions (i)­(iv).
+Assume that  is a successor ordinal, say,  =  + 1. First we define a subgroup G of . It follows from (ii) that |G|  || · 1 and |H|  || · 1. It is known that every compact Boolean group is topologically isomorphic to the group Z(2) for some cardinal  (this is a simple corollary of the Pontryagin­Van Kampen's duality theory, see [15, Chapter 5]). Hence one can apply Proposition 3.2 with S = G + H to find a countable dense subgroup Q of a compact Boolean group C such that the intersection of Q and S is trivial. This implies the equality
+(G + Q )  (H + Q ) = G  H = .
+Let G = G + Q and H = H + Q. By (ii), we have that |G |  | + 1| · 1 and |H |  | + 1| · 1. Since Q  G  H , both intersections G  C and H  C contain the countable dense subgroup Qµ of C . Denote by P the set {x   : B (x) = b}. Then |P| = c, while |G| · |H | < c. Hence we can choose an element x  P such that x / G + H . We put G = G + x . It follows from our choice of x that G  H = . Similarly, one can choose y  P such that y / G + H , and we put H = H + y . Again, our choice of y implies that G  H =  and, clearly, b  B (G)  B (H). Therefore, the families {G :   } and {H :   } satisfy conditions (i)­(v).
+Finally we define subgroups G and H of  by letting G = <c G and H = <c H. Then (i) and (iii) together imply that G  H = . We claim that all closed subgroups of G and H are separable. Clearly it suffices to verify this only for G. Let F be an infinite closed subgroup of G. Then the closure of F in , say, F is an infinite closed subgroup of , so F = C, for some  < c. It follows from (v) that G+1  C contains a countable dense subgroup of C, and so does G  C = G  F = F . Therefore the group F is separable, as claimed. It remains to show that the groups G and H are pseudocompact. Let us recall that {b :  < c} is an enumeration of all countable subproducts in  = Z(2)1 , so (iv) implies that B(G) = B(H) = DB for each non-empty countable set B  1. Since Z(2) is a compact metrizable group, the pseudocompactness of both G and H follows directly from Theorem 1.5.
+
+4. Product of Two Pseudocomplete LCS First, we present a result similar to Proposition 2.3.
+
+PRODUCTS OF TOPOLOGICAL GROUPS
+
+11
+
+Proposition 4.1. Let K be a finite-dimensional Banach space and L be a topological vector space in which all closed vector subspaces are separable. Then all closed vector subspaces of the product K × L are separable as well.
+Proof. Take a closed vector subspace C of K × L and let  be the restriction of the projection K × L  K to C. Mapping  is linear, hence the image D = (C) is a finite-dimensional Banach space. It is widely known that any continuous linear mapping onto a finite-dimensional Banach space is an open mapping (see [18]). So,  : C  D is a linear open mapping onto the separable space D. Again, the kernel of  is linearly isomorphic to a closed vector subspace of L, therefore the kernel of  is separable, by the assumptions about L. Finally, C is also separable because separability is a three-space property.
+Remark 4.2. We do not know whether Proposition 4.1 remains valid for an arbitrary separable Banach space K.
+We show in Theorem 4.5 below that the answer to Problem 2 is "Yes" under the assumption that 21 = c. In other words, we present locally convex spaces K and L such that all closed vector subspaces of K and L are separable, but the product K × L contains a closed non-separable vector subspace. In addition, the spaces K and L are pseudocomplete.
+First we establish two auxiliary facts about the properties of R, where     c. They are analogous to Lemma 3.1 and Proposition 3.2 and will play a similar role.
+Lemma 4.3. Let  be a cardinal satisfying     c. Then the space  = R has a countable -network V such that every element V  V contains a linearly independent subset of size at least c.
+Proof. Identify  with a dense subset of the open interval (0, 1) and fix two countable families B and T , where B consists of open intervals with rational end-points in R and T consists of the sets of the form A, with A being a disjoint finite union of open intervals with rational end-points in (0, 1). For every set A1 A2 · · ·An  T and a finite collection {B1, B2, . . . , Bn}, where each Bi  B, we define the set
+V = {x   : x()  Bi for each   Ai}.
+It is easy to verify that the family V consisting of all such sets V is a countable -network for the space .
+To finish the proof we make use of an idea from [10]. Consider an arbitrary element V  V. Since  is infinite there exists a subset W  V which is linearly isomorphic to the countable product [a, b], where [a, b] is a closed segment in R. Without loss of generality we can assume that [a, b] = [0, 1]. It suffices to find a linearly independent subset of size c in W = [0, 1] considered as a linear subspace of R. Let {Nt : t  I} be an almost disjoint family consisting of infinite subsets of  and such that |I| = c. For every t  I, let xt be an element of W which is defined by xt(n) = 1 if n  Nt and xt(n) = 0 otherwise. It is easy to see that the family {xt : t  I}  W is linearly independent.
+Proposition 4.4. Let  be an infinite cardinal with   c and L, S be vector subspaces of R. If L is closed, ldim(L)   and ldim(S) < c, then L contains a dense vector subspace M such that ldim(M ) =  and M  S = {0}.
+
+12
+
+ARKADY G. LEIDERMAN AND MIKHAIL G. TKACHENKO
+
+Proof. Every closed vector subspace of R is topologically isomorphic to R with    (see [2, Corollary 2.6.5]). Hence we can assume without loss of generality that L = R and that S is a vector subspace of L.
+Fix a countable -network V = {Vn : n  } for L as in Lemma 4.3. Since ldim V0  c we can find an element x0  V0 \ S. By induction, if we have defined elements x0, . . . , xn-1 in L with xi  Vi for each i  n - 1, then we denote by Sn the minimal vector subspace of L containing S and the elements x0, . . . , xn-1. It is clear that ldim(Sn) < c, so there exists xn  Vn \ Sn. The set Xn = {x0, . . . , xn} generates a vector subspace Mn of L. Finally, we define the set X = {xn : n  }. Let M be the linear subspace of L generated by X. Then M is dense in L since X is dense in L. Also, M and S have trivial intersection since each Mn has trivial intersection with S, and M = n Mn.
+Now we are in a position to present the main result of this section.
+Theorem 4.5. Assume that 21 = c. Then there exist pseudocomplete locally convex spaces K and L such that all closed vector subspaces of K and L are separable, but the product K × L contains a closed non-separable -compact vector subspace M.
+Proof. Our construction of K, L and M is similar in spirit to the one presented in the proof of Theorem 3.4. Let  = R1 be the product space with the usual Tychonoff topology. Clearly  is a lcs of weight 1. Let M0 =  be the -product lying in  , i.e. the vector subspace of  consisting of all elements which differ from zero element in at most finitely many coordinates. One can easily verify that the topological space M0 is a -compact and non-separable.
+Our aim is to construct two linear subspaces K and L of  satisfying KL = M0. Let  = {(x, x) : x   } be the diagonal in  × . Then M0 is naturally identified, algebraically and topologically, with the closed subspace M = (K ×L) of K ×L. Since the space  is locally convex, so are the linear subspaces K and L of  .
+According to [2, Corollary 2.6.5] every non-trivial closed vector subspace C of  = R1 is isomorphic to R, where 1    1, so C is separable. Since w( ) = 1, the assumption 21 = c implies that the space  contains at most c closed subsets. We enumerate all closed infinite-dimensional vector subspaces of  , say, {C :  < c}. Also, let {b :  < c} be an enumeration of the set
+{RA : A  1, 1  |A|  }. We put K0 = L0 = M0. Then ldim(K0) = ldim(L0) = 1. Following the lines of the proof of Theorem 3.4 and applying Proposition 4.4, one can construct families {K :  < c} and {L :  < c} of vector subspaces of  satisfying the following conditions for all ordinals ,  with  <  < c:
+(i) K  K and L  L; (ii) ldim(K)  | + 1| · 1 and ldim(L)  | + 1| · 1; (iii) K  L = M0; (iv) b  (K)  (L), where  is the projection of R1 onto R; (v) both K  C and L  C contain a dense separable subspace of C.
+Once the families {K :  < c} and {L :  < c} have been defined, we put K = <c K and L = <c L. Then, by (i) and (iii), the linear subspaces K and L of  satisfy K  L = M0. We claim that all closed vector subspaces of K and L are separable. For instance, let F be a closed vector subspace of K. If F is finite-dimensional, then it is evidently separable. Hence we can assume that F is
+
+PRODUCTS OF TOPOLOGICAL GROUPS
+
+13
+
+infinite-dimensional. The closure of F in  , say, F is a closed infinite-dimensional vector subspace of  , so F = C for some  < c. By (v), K+1  C contains a dense separable subspace of C, say, Q. Hence Q is dense in F = F  K = K  C, i.e. F is separable. The same argument shows that all closed vector subspaces of L are separable as well.
+It follows from (iv) that (K) = (L) = R for each  < 1. Therefore, by Theorem 1.9, K and L are pseudocomplete spaces, as claimed.
+
+Remark 4.6. Since M0 is dense in  , every compact subset of M0 is nowhere dense in  and in M0. Hence the closed vector subspace M of the product K × L in Theorem 4.5 is not Baire. Similarly, the closed subgroup   (G × H) of G × H in Theorem 3.4 is not Baire either.
+We finish the article with a question that remains open.
+Problem 5. Are Theorems 3.4 and 4.5 valid in ZFC alone?
+
+References
+[1] Alexander V. Arhangel'skii and Mikhail G. Tkachenko, Topological Groups and Related Structures, Atlantis Series in Mathematics, Vol. I, Atlantis Press and World Scientific, Paris­ Amsterdam, 2008.
+[2] Pedro P´erez Carreras and Jos´e Bonet, Barreled Locally Convex Spaces, North-Holland Math. Studies, Notas de Matema´tica (113), L. Nachbin, ed. Elsevier Science Publ. B.V., 1987.
+[3] Wistar W. Comfort and Gerald L. Itzkowitz, Density characters in topological groups, Math. Ann. 226 (1977), 223­227.
+[4] Dikran N. Dikranjan and Vladimir V. Uspenskij, Categorically compact topological groups, J. Pure Appl. Algebra 126 (1­3)(1998), 149­168.
+[5] Pawel Doman´ski, Nonseparable closed subspaces in separable products of topological vector spaces, and q-minimality, Arch. Math. 41 (1983), 270­275.
+[6] Richard Engelking, General Topology, Heldermann Verlag, Berlin 1989. [7] Gerald L. Itzkowitz, On the density character of compact topological groups, Fund. Math.
+75 (1972), 201­203. [8] Anton A. Klyachko, Alexander Yu. Ol'shanskii, Denis V. Osin, On topologizable and non-
+topologizable groups, Topology Appl. 160 (2013), 2104­2120. [9] Jerzy Ka¸kol, Arkady G. Leiderman and Sidney A. Morris, Nonseparable closed vector sub-
+spaces of separable topological vector spaces, Monatsh. Math., 9 pp. DOI: 10.1007/s00605016-0876-2. [10] H. Elton Lacey, The Hamel dimension of any infinite dimensional separable Banach space is c, Amer. Math. Monthly 80 (3) (1973), 298. [11] Arkady G. Leiderman, Sidney A. Morris, and Mikhail G. Tkachenko, Density Character of Subgroups of Topological Groups, Trans. Amer. Math. Soc., 20 pp. DOI: 10.1090/tran/6832. [12] Robert H. Lohman and Wilbur J. Stiles, On separability in linear topological spaces, Proc. Amer. Math. Soc. 42 (1974), 236­237. [13] G´abor Luk´acs, Hereditarily non-topologizable groups, Topology Proc. 33 (2009), 269­275. [14] Jan van Mill and Vladimir V. Tkachuk, Every k-separable C ech-complete space is subcompact, RACSAM 109 (2015), 65­71. [15] Sidney A. Morris, Pontryagin duality and the structure of locally compact abelian groups, Cambridge University Press, Cambridge­London­New York­Melbourne, 1977. [16] John C. Oxtoby, Cartesian products of Baire spaces, Fund. Math. 49 (1961), 157­166. [17] Judi Roitman, Basic S and L, In: Handbook of Set Theoretic Topology (K. Kunen and J. Vaughan, eds.), Chapter 7, pp. 295­326. North Holland, Amsterdam, 1984. [18] Walter Rudin, Functional Analysis, McGraw-Hill, 1991. [19] Mikhail G. Tkachenko, The notion of o-tightness and C-embedded subsets of products, Topol. Appl. 15 (1) (1983), 93­98.
+
+14
+
+ARKADY G. LEIDERMAN AND MIKHAIL G. TKACHENKO
+
+(A. Leiderman) Department of Mathematics, Ben-Gurion University of the Negev, Beer Sheva, P.O.B. 653, Israel
+E-mail address: arkady@math.bgu.ac.il
+(M. Tkachenko) Departamento de Matema´ticas, Universidad Auto´noma Metropolitana, Av. San Rafael Atlixco 186, Col. Vicentina, Del. Iztapalapa, C.P. 09340, Mexico City, Mexico
+E-mail address: mich@xanum.uam.mx
+
+

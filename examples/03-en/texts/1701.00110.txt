@@ -1,0 +1,774 @@
+arXiv:1701.00110v1 [cond-mat.mtrl-sci] 31 Dec 2016
+
+First-Principles Study of Exchange Interactions of Yttrium Iron Garnet
+Li-Shan Xie,1 Guang-Xi Jin,2 Lixin He,2 Gerrit E. W. Bauer,3, 4, 5 Joseph Barker,3 and Ke Xia1
+1The Center for Advanced Quantum Studies and Department of Physics, Beijing Normal University, Beijing, 100875, China
+2Key Laboratory of Quantum Information, University of Science and Technology of China, Hefei, 230026, China 3Institute for Materials Research, Tohoku University, Sendai 980-8577, Japan
+4WPI Advanced Institute for Materials Research, Tohoku University, Sendai 980-8577, Japan 5Kavli Institute of NanoScience, Delft University of Technology, 2628 CJ Delft, The Netherlands
+(Dated: January 3, 2017)
+Yttrium Iron Garnet (YIG) is the ubiquitous magnetic insulator used for studying pure spin currents. The exchange constants reported in the literature vary considerably between different experiments and fitting procedures. Here we calculate them from first-principles. The local Coulomb correction (U - J) of density functional theory is chosen such that the parameterized spin model reproduces the experimental Curie temperature and a large electronic band gap, ensuring an insulating phase. The magnon spectrum calculated with our parameters agrees reasonably well with that measured by neutron scattering. A residual disagreement about the frequencies of optical modes indicates the limits of the present methodology.
+
+I. INTRODUCTION
+Yttrium iron garnet (Y3Fe5O12-YIG) is a ferrimagnetic insulator of particular significance due to its uniquely low magnetic damping and relatively high Curie temperature ( 570 K). There has been a recent resurgence in interest after Kajiwara et al. [1] electrically injected spin waves into YIG and detected (by the inverse spin Hall effect) their transmission over macroscopic distances of 1 mm. Short wave length spin waves excited electrically [2] or thermally [3] can also diffuse over distances of 40 µm, even at room temperature, demonstrating the potential of using spin waves as information carriers in spintronic applications. The spin Seebeck effect (SSE) in YIG [4, 5] also garners attention in the field known as spin caloritronics [6]. Recent results on the SSE in the related garnet Gadolinium-Iron Garnet (GdIG) [7] illustrate the importance of understanding the many mode spin wave spectrum [8].
+Most experiments on YIG are interpreted in terms of a single magnon band with parabolic dispersion and a single exchange or spin wave stiffness parameter. However, the magnetic primitive cell contains 20 Fe moments and gives a complicated spin wave spectrum with many modes in the THz range [9]. The quantitative quality of Heisenberg spin models of YIG [10] relies on the accuracy of the derived parameters, such as exchange constants and magnetic moments. Through several decades of literature there is a plethora of suggested exchange constants for YIG. All are deduced either from macroscopic measurements such as calorimetry, or are fitted to the neutron scattering data by Plant from 1977 [11]. The triple axis inelastic neutron scattering only resolved 3 of the 20 spin wave branches which has led to a quite a spread in exchange parameter. The limited experimental data is insufficient to uniquely fit the exchange parameters. Moreover, the spin wave spectrum of YIG is anomalously sensitive to small changes in the exchange constants. Small changes in the exchange parameters
+
+appear to give dramatically different spectra. Here we employ computational material science to improve this unsatisfactory situation.
+Different ab initio techniques can be employed to deduce Heisenberg exchange parameters. Within density functional theory (DFT) the Heisenberg Hamiltonian can be fitted to the calculated total energy to identify the coupling constants. There are two common methods of doing this. In the `real-space' method, the total energy of a set of collinear spin configurations with spin flips on different sites is mapped onto the Hamiltonian [12, 13]. The alternative method is to compute the spin wave stiffness from the total energy of spin spirals by varying the pitch [14]. For simple, one component systems such as Fe, Co, Ni, both approaches give a good agreement between them selves and also with experimental data [15, 16]. Here we have chosen to use the real-space method with collinear spin configurations due to the simplicity of implementation when treating the complex crystal structure of YIG.
+YIG belongs to the cubic centrosymmetric space group Ia3d [17, 18]. The primitive BCC unit cell contains 80 atoms. One eighth of it is shown in Fig. 1(a). The magnetic structure as determined by neutron diffraction measurements [19] confirms that the spins of the FeO and FeT ions are locked into an anti-parallel configuration. There is a net magnetization because of the 3:2 ratio of FeO to FeT sites in the unit cell, hence YIG is a ferrimagnet.
+As a magnetically soft insulator, the magnetism in YIG can be well described by the Heisenberg model
+
+Etot
+
+=
+
+E0
+
+-
+
+1 2
+
+Jij Si · Sj ,
+
+(1)
+
+i=j
+
+where E0 is the total energy excluding spin-spin interactions and Si is a classical spin vector (of unit length) of the ith Fe atom. The exchange interaction Jij is usually considered to be short ranged, but in principle the index is summed over all spins in the crystal. We initially consider only nearest neighbor (NN) exchange interac-
+
+!"
+" !"
+!# $
+
+2
+which for pure YIG is known to be small and in fact is beyond the accuracy of our methods. The dipolar interactions do not interfere with the exchange energy and can be added a posteriori. The exchange constants are fitted to a number of different collinear spin configurations in which spins are flipped from the ground state. The number of different configurations must be larger than the number of adjustable parameters (3 for the NN model and 6 for the NNN model).
+
+II. EXCHANGE FITTING
+
+#"
+FIG. 1. (a) 1/8 of the YIG unit cell. The dodecahedrally coordinated Y ions (green) occupy the 24c Wyckoff sites, the octahedrally coordinated FeO ions (blue) occupy the 16a sites, and the tetrahedrally coordinated FeT ions (yellow) occupy the 24d sites. The oxygen (red) 96h sites are not confined by symmetry, while all cation sites are on special crystallographic positions. (b) The solid and dash lines denote the nearest and next nearest neighbor exchange interactions. The subscripts aa, dd and ad are stand for the FeO-FeO, FeT-FeT and FeOFeT interactions, respectively.
+tions (as done by most previous works); hence there are three independent exchange constants, Jaa, Jdd, Jad covering inter- and intra-sublattice interactions as indicated in Fig. 1(b). Comparing the energy of the model Hamiltonian (1) with the total energy calculated ab initio for different spin configurations which should be degenerate in energy, we find unacceptably large energy differences ( 2 meV) when only including NN interactions. Therefore, later in this work we extend the model to include also next nearest neighbor (NNN) exchange interactions parameterized by three more exchange constants Ja a, Jdd and Ja d (also shown in Fig. 1(b)). Previous works which have included interactions beyond NN [20] suffer from an increased over-parameterization of the fitting of only 3 spin wave modes in the neutron scattering data. Our minimal reliance on experimental data puts the justification for the inclusion of NNN on a more solid footing.
+We disregard the magnetocrystalline anisotropy energy
+
+We now give a brief outline of how the Heisenberg Hamiltonian is mapped onto the different spin configurations. We consider a spin wave of wave vector k that induces small oscillations in a spin moment Si on site i about the collinear ground state.
+
+ki (t) = k · Ri + (t).
+
+(2)
+
+The total energy Eq. (1) becomes
+
+Eij (k,
+
+,
+
+t)
+
+=E0
+
+-
+
+1 2
+
+Jij SiSj[cos i cos j
+
+i=j
+
+(3)
+
++ sin i sin j cos(ki (t) - kj (t))].
+
+The equation of motion for the spin magnetic moments is
+
+dSi(t) dt
+
+=
+
+-Si(t)
+
+× Hi
+
+(4)
+
+where Hi = -E/Si is the effective magnetic field. Then
+
+dj dt
+
+sin j
+
+=
+
+Jij Si[cos i sin j
+
+i(=j)
+
+(5)
+
+- cos(ki - kj ) sin i cos j],
+
+If i  1 or ( -i)  1, d/dt  k. Expanding Eq. (5) to lowest order leads to
+
+kj =
+
+Jij Si[Aij - cos(k · dij )iAj ], (6)
+
+i(=j)
+
+where dij = Ri-Rj, and the prefactor Ai is +1 for i  0 and -1 for i  . The frequencies of the normal modes of this spin system are the eigenvalues of the matrix M,
+
+M =
+
+J(0)S A  - J(k)SA, (7)
+
+
+
+J(k) = J cos(k · dij ),
+
+(8)
+
+d
+
+where the indices  and  label the 20 different positions in the unit cell,  is the Kronecker delta, dij = Ri -Rj
+
+3
+
+is a vector from an ion in the i sublattice to a nearest neighbor in the j sublattice, and the sum is over all such vectors related by symmetry. The eigenvalue problem can be solved in terms of the real space exchange constants J calculated from the total energies of collinear magnetic structures.
+To calculate the total energy we use DFT as implemented in the Vienna ab initio simulation package (VASP.5.3) [21, 22]. The electronic structure is described in the local density approximation (LDA) and the generalized gradient approximation (GGA). Projector augmented wave (PAW) pseudopotentials [23] with the Perdew-Wang 91 gradient-corrected functional are used. A 500 eV plane-wave cutoff and a 6 × 6 × 6 Monkhorst-Pack k-point mesh was found to lead to well converged results. We use the atomic positions from the experimental structural parameters (Tab. I) [17, 18].
+
+µs (µB)
+
+FeT FeO per formula unit Method
+
+Source
+
+5.37 4.11
+
+7.89
+
+neutron (Ia¯3d) Ref. 31
+
+4.01 3.95
+
+4.13
+
+neutron (R¯3)a
+
+1.56 0.62
+
+3.44
+
+LSDA
+
+Ref. 32
+
+3.36 3.41
+
+3.26
+
+LDA
+
+Ref. 24
+
+3.95 4.06
+
+3.73
+
+GGA+C
+
+Ref. 30
+
+3.47 3.49
+
+3.43
+
+LDA
+
+this work
+
+4.02 4.12
+
+3.82
+
+GGA+U
+
+(3.7 eV)
+
+a Fe sites in the R¯3 space group retain the tetrahedral and octahedral coordinations.
+
+TABLE II. Comparison of magnetic moments in the literature. Note that per formula unit includes only the Fe moments and not the total moment of the unit cell. All ab initio studies are for the Ia¯3d point group.
+
+Wyckoff Position
+
+x
+
+y
+
+z
+
+FeO
+
+16a
+
+0.0000 0.0000 0.0000
+
+FeT
+
+24d
+
+0.3750 0.0000 0.2500
+
+Y
+
+24c
+
+0.1250 0.0000 0.2500
+
+O
+
+96h
+
+0.9726 0.0572 0.1492
+
+TABLE I. Atomic positions in the YIG unit cell. The lattice constant is a = 12.376 °A.
+
+For the (ferrimagnetic) ground-state structure, the calculated spin magnetic moment of the Fe ions and the electronic band gap of YIG are shown in Fig. 2(a). The total moment (including Fe, Y and O ions) per formula unit is consistently 5 µB, in good agreement with experimental data [24, 25]. The majority of the moment within the unit cell is highly localised to the Fe sites. In the DFT-LDA calculation, the spin moments are 3.49µB for FeO, 3.47µB for FeT, and the electronic band gap has the value 0.35 eV, much lower than the value of 2.85 eV found experimentally [26, 27]. Density-functional theory in its bare form is not good at predicting the energy gap of insulators. This can be overcome to some extent by the inclusion of an on-site Coulomb correction (LDA/GGA+U ). In this study the Hubbard U and Hund's J parameters for the Fe atoms are determined [28­30] by DFT-GGA+U calculations with U - J in the range 0.7  5.7 eV. The electronic energy gap as well as the spin moments increases slightly with U - J. Even for the largest values of U - J, the moments are much smaller than expected for pure Fe3+ S = 5/2 state
+(µs = g S(S + 1) = 5.916µB), but quite close to those found from neutron diffraction [31]. However, these authors suggest that the true space group of YIG is R¯3. Only when they perform the refinement in this setting do they obtain good agreement with the known net moment of YIG. The moments obtained are very similar to those found here and by other ab initio calculations (Table II). The difference between the Ia¯3d and R¯3 groups appears to be sufficiently small to not affect the results
+
+much. The electronic energy gap is still smaller than the experimental value, but an even larger U - J causes unwanted artifacts such as a negative gap for spin-flip excitations.
+
+III. EXCHANGE INTERACTIONS
+A. Nearest Neighbour
+Ten different spin configurations (SC) were used to determine the exchange constants. Considering the NN model first, with Eaa = JaaSaSa, Edd = JddSdSd and Ead = JadSaSd, where Sa, Sd are the +/- directions of FeO, FeT ions, the total energies Eq. (1) are listed in Tab. III.
+TABLE III. Total energies for different spin configurations (SC) in the NN model. SC (a) is the ground-state structure. The other configurations are gotten by changing the magnetization directions of part of Fe ions.
+
+SC Etot
+
+SC Etot
+
+a E0 + 32Eaa + 24Edd + 48Ead f E0 + 32Eaa - 24Edd
+
+b E0 + 32Eaa + 24Edd - 48Ead g E0 - 32Eaa - 24Edd
+
+c E0 + 32Eaa + 8Edd + 32Ead h E0 - 32Eaa - 8Edd
+
+d E0 + 32Eaa - 8Edd + 16Ead i E0 - 32Eaa + 8Edd
+
+e E0 + 16Eaa + 16Edd + 28Ead j E0 - 32Eaa + 24Edd
+
+The exchange constants are the solutions of each of four linear equations. To minimize the dependence of the results on the choice of the spin configurations, the final results were obtained using all the configurations (a)-(j) listed in Tab. III. The final values, shown in Fig. 3, were obtained by a least squares fit of the 10 SC's. In the DFT-LDA/GGA calculations, the exchange constant Jdd is negative, meaning that this interaction favors fer-
+
+4
+
+E-Ef (eV)
+
+Spin moment ( ) B
+
+4.4 4.3 4.2 4.1 4.0 3.9 3.8 3.7 3.6 3.5 3.4 2.2 2.0 1.8 1.6 1.4 1.2 1.0 0.8 0.6 0.4 0.2
+
+GGA LDA
+
+O
+-S(Fe ) for GGA
+T
+S(Fe ) for GGA
+O
+-S(Fe ) for LDA
+T
+S(Fe ) for LDA
+
+Energy Gap (eV)
+
+0
+
+1
+
+2
+
+3
+
+4
+
+5
+
+6
+
+U-J (eV)
+
+(a)
+
+GGA
+
+Majority spin 0.8
+
+Minority spin 0.8
+
+GGA+U, U - J = 5.7 eV
+
+Majority spin
+
+Minority spin
+
+3.0
+
+2.8
+
+0.6
+
+0.6
+
+2.6
+
+0.4
+
+0.4
+
+2.8
+
+2.4
+
+0.2 0.0 -0.2 -0.4 -0.6
+
+0.2 0.0 -0.2 -0.4 -0.6
+
+-0.2 -0.4 -0.6
+
+2.2 2.0 1.8 1.6 -0.4 -0.6
+
+P 111 G 001 H
+
+P 111 G 001 H
+
+P 111 G 001 H P 111 G 001 H
+
+(b)
+
+FIG. 2. (a) Spin moments of Fe ions (per panel) and band gap of YIG (lower panel) obtained by computed in the LDA, GGA, and GGA+U approximations. Symbols mark calculated values and solid lines are guides for the eye. (b) The band structures of YIG in the GGA (left) and GGA+U , U - J = 5.7 eV (right) calculations.
+
+romagnetic order. This result contradicts all previous results in the literature [33, 34] - indicating that the DFTLDA/GGA method fails to describe the magnetism of YIG. However, in the GGA+U method, all three exchange constants are positive (antiferromagnetic), Jdd is an order of magnitude smaller than Jad, while Jaa is about half of Jdd. The strong Jad inter-sublattice exchange dominates the smaller intra-sublattice energies, forcing the ferrimagnetic ground state of the bulk. All the three exchange constants decrease as U - J increases, because a larger on-site U - J of the Fe atoms leads to a more localized electronic structure resulting in weaker exchange. Previous works assumed that Jad  Jaa, Jdd, which is required to constrain the fitting problem [9, 20, 33, 34]. Our results show directly the smallness of the intra-sublattice exchange energies because of a stronger objective function for the least-
+
+FIG. 3. Calculated exchange constants (in units of meV) by the DFT-GGA+U method. The error bars denote the square root of the squared 2-norm of the residual (l2-norm). Exchange constants favoring a ferromagnetic alignment are here denoted negative. (Insert) Calculated exchange constants (in units of meV) in the DFT-GGA/LDA approximations.
+squares fitting procedure.
+B. Next Nearest Neighbour
+The error bars in Fig. 3 reveal a large covariance in the fitting of the NN spin model to the different configurations. Even though the errors decrease with increasing U - J, the variance in the energies is still comparable to its estimation. This situation can be improved by extending the NN to the NNN model with additional parameters Ja a, Jd d and Ja d. The total energies of the corresponding SC can be rewritten (shown in Tab. IV), where Ea a = Ja aSaSa, Ed d = Jd dSdSd, Ea d = Ja dSaSd and Etot stands for the total energy expression in the NN model. The exchange constants are obtained from the set of linear equations for the SC (a)-(g) listed in the table. SC (h)-(j) are selected to check whether the results are reasonable. Ecal are the calculated total energies for U - J = 4.7 eV relative to the ground state (SC (a)). The energy difference for the different SC is of the order of 1  10 eV which is much larger than the accuracy of the calculation (10-3 eV). ENNN ( ENN) is the difference between the total energies calculated ab initio and the fitted total energies from the NNN (NN) spin model and constitutes the energy that has not been accounted for in our model Hamiltonian. This can be, for example, from longer ranged exchange interactions or anisotropies in the system. The difference between the first-principles total energy and the spin model |ENN| amounts to up to 7.85%, but the NNN model has a significantly smaller value |ENNN| = 0.66%, which we deem to be acceptable.
+In table V we compare our results to other values in the literature. Almost all of the exchange interactions we cal-
+
+5
+
+culated are lower than obtained from fitting experimental data. Especially the Jad, the strongest interactions, is lower than others have suggested, although the NNN U - J = 3.7 eV is quite close. Lowering U - J gives an increase in Jad, but at the expense of the size of the magnetic moments and the width of the electronic band gap. One may naively think that lower exchange constants will give a lower Curie temperature, however because the intra-sublattice interactions are also antiferromagnetic in character the situation is more complicated.
+Where NNN values are calculated the order of magnitude agrees with attempts by Plant to fit the neutron scattering data with a NNN model [20].
+
+T !" c
+
+U J #$"
+
+TABLE IV. Total energies for different SC in the NNN model. The energies are in units of meV. Etot and Etot are the total energies for the NN and the NNN models. Ecal are the total energies calculated ab initio and ENNN (ENN) are the differences between the fitted total energies from the NNN (NN) spin model and Ecal. Ecal of the ground-state structure (SC (a)) is denoted zero.
+
+FIG. 4. The magnetization curves of the NN model (red line) and the NNN model (blue line) with exchange constants fitted to the ab initio energies for U - J = 4.7 eV for the NN model and U - J = 3.7 eV for the NNN model. The experimental data [35] are indicated by circles. (Insert) The Curie temperatures of the NN model fitted to the ab initio results
+
+for different U - J.
+
+SC
+
+Etot
+
+Ecal ENNN ENN
+
+a b c d e f g h i j
+
+Etot + 24Ea a + 48Ed d + 48Ea d 0.00
+
+Etot + 24Ea a + 48Ed d - 48Ea d 4225.32
+
+Etot + 24Ea a + 16Ed d + 32Ea d 1907.02
+
+Etot + 24Ea a + 16Ed d + 16Ea d 566.01
+
+Etot + 12Ea a + 32Ed d + 32Ea d 778.86
+
+Etot + 24Ea a + 48Ed d
+
+1987.42
+
+Etot + 24Ea a + 48Ed d
+
+1228.54
+
+Etot + 24Ea a + 16Ed d
+
+1848.59
+
+Etot + 24Ea a + 16Ed d
+
+1885.68
+
+Etot + 24Ea a + 48Ed d
+
+2018.23
+
+0.37 -0.31 0.39 0.38 0.23 -0.21 0.24 -3.04 -7.62 -13.40
+
+-59.97 -3.69 -58.19 44.42 5.97 -36.19 52.29 43.44 49.55 -39.80
+
+gives smaller exchange constants and hence weaker interactions giving a lower TC. This follows intuitively because of the increased localisation of the wave functions reducing the exchange and hence also the Curie temperature. With the parameters U - J = 4.7 eV, TC is 540 K, in good agreement with the experimental value. The magnetization curve of the NNN model is quite similar to the NN model with a slightly higher TC of 590 K using the parameters exchange parameters when U - J = 3.7 eV. The finite slope at low temperatures in both models
+
+does not agree with experiments. This deviation is as-
+
+Compared with the NN model (as shown in Tab.V),
+the values of Jaa, Jdd and Jad in the NNN model became slightly smaller but still obey Jad  Jdd > Jaa. The additional interactions Jdd and Ja d are of the same order of magnitude as the NN intra-sublattice exchange and are also antiferromagnetic. Notably, Jdd > Jdd interaction.
+
+cribed to our disregard of quantum statistics in the simulations. Nevertheless, at higher temperatures the calculated shapes of the magnetization and TC agree well with experiments.
+B. Spin wave spectrum
+
+IV. INTRINSIC PROPERTIES
+A. Curie Temperature and Magnetization
+We calculate the temperature dependence of the magnetization and the Curie temperature (TC) from the spin models by Metropolis Monte Carlo (MC) simulations on a 32 × 32 × 32 super cell (each unit cell contains 20 spins) with periodic boundary conditions [37]. The temperature dependence of the total magnetization, M = Md - Ma, is shown in Fig. 4, normalized by M (T = 0 K). The TC of the NN model exchange parameters using different U - J values are shown in the inset. The experimental value of TC is 570 K [35, 38]. In the NN model, the larger U
+
+Next we calculate the spin wave spectrum from our parameterized Heisenberg model. We choose the exchange constants with the parameter U - J = 4.7 eV for the NN model and the parameter U - J = 3.7 eV for the NNN model. The analytic results of the spin-wave spectrum Eq. (7) are shown in Fig. 5. The experimental data from Refs. 11 and 20 are for 83 K. Strictly speaking only the low temperature results should be compared with theory.
+Dispersion relation of the acoustic mode ­ The slopes of the lowest acoustic mode of the NN model and the NNN model both agree well with the neutron scattering data (Fig. 5(a)). The spin-wave stiffness D is governed by the second derivative at the -point. D = 77×10-41 J·m2 and 85 × 10-41 J · m2 for the NN and NNN models, respectively. The values reported in the literature obtained
+
+6
+
+Jad 3.10 3.90 3.40 2.60 3.20 3.40 3.176 2.917 2.584 2.387
+
+Jdd 1.40 0.78 0.69 1.00 0.45 1.20 0.223 0.213 0.160 0.154
+
+(meV)
+
+Jaa
+
+Ja d
+
+0.96
+
+-
+
+0.78
+
+-
+
+0.69
+
+-
+
+0.56
+
+-
+
+0.00
+
+0.23
+
+0.33
+
+-
+
+0.112
+
+-
+
+0.090 0.218
+
+0.091
+
+-
+
+0.072 0.163
+
+Jd d -
+0.14 -
+0.228
+0.179
+
+Ja a -
+0.75 -
+0.005
+0.004
+
+method molecular field approximation magnetization fit neutron spectrum fit* molecular field approximation neutron spectrum fit* neutron spectrum fit* ab initio GGA+U (U - J = 3.7 eV)
+ab initio GGA+U (U - J = 4.7 eV)
+
+reference Ref. 35 Ref. 9 Ref. 11 Ref. 36 Ref. 20 Ref. 34 this work
+
+TABLE V. Comparison of exchange constants in the literature. (*) all fits to neutron data use the same data from Plant [11].
+
+ &'()*
+
+"&% %$ %# %" %! % $ # " !
+
+ &'()*
+
+"'% !$ !# !"
+
+"#$$%
+
+"##$%
+
+!
+
+"#$$%
+
+"##$%
+
+!
+
+FIG. 5. Spin-wave spectrum in the first Brillouin zone for the NN model (red dots) derived from ab initio calculations with U - J = 4.7 eV and the NNN model (blue dots) where U - J = 3.7 eV and compared to the available neutron scattering data (black circles) [11]. (a) The entire spin wave spectrum. (b) Comparison of the shape of the parabolic optical mode the results are shifted by +3.35 THz for the NN model and +2.40 THz for the NNN model and compared to the 83 K experimental data. The directions in k-space use the standard labels of bcc reciprocal lattice.
+
+by different experimental methods [34, 35, 39] vary from D = 42 × 10-41 J · m2 to 109 × 10-41 J · m2.
+High frequency modes ­ As shown in Fig. 5(a), the spectra of both models in the range of 8 THz  11 THz have a similar structure. However, the modes of the NNN model are more separated, especially at the -point, which we ascribe to Jdd. At high frequencies (above 12 THz), the modes of the NNN model have much higher frequency compared to the corresponding ones of the NN model.
+Spin wave gap ­ The (exchange) gap between two lowest (acoustic and optical) modes at the -point of the NN model is about 5 THz, while the one of the NNN model is 0.945 THz higher due to the larger Jad in the latter, but is still smaller than the experimental gap of about 8 THz at 83 K. The comparison of the frequencyshifted second lowest mode with the experimental data are shown in Fig. 5(b). The slope of the NNN model is a little steeper than that of the one of the NN model, and they are both in good agreement with the experimental data.
+In conclusion, we report exchange constants of YIG computed from first principles but with an adjustable U - J constant to increase the density functional band gap. We found that NNN interactions are required for a good fit of total energies by a Heisenberg model. Our results reproduce the experimental Curie temperature well. In addition, we obtain a spin-wave spectrum in which the lowest acoustic mode agrees very well with the available neutron scattering data. However the lowest optical mode energy appears to be underestimated, emphasizing the need for more studies of the temperature dependent spin wave spectrum.
+ACKNOWLEDGMENTS
+This work was supported by the National Natural Science Foundation of China (Grants No. 61376105, No. 21421003 and No. 11374275) and JSPS KAKENHI Grant Nos. 25247056, 25220910, 26103006. JB acknowl-
+
+7
+edges support from the Graduate Program in Spintronics, Tohoku University. LSX and JB acknowledge support from the JST Sakura Science Exchange Program.
+
+[1] Y. Kajiwara, K. Harii, S. Takahashi, J. Ohe, K. Uchida,
+
+functional theory: Application to fe, co, and ni,"
+
+M. Mizuguchi, H. Umezawa, H. Kawai, K. Ando,
+
+Phys. Rev. B 58, 293­302 (1998).
+
+K. Takanashi, S. Maekawa, and E. Saitoh, "Transmis- [16] M. Pajda, J. Kudrnovsky´, I. Turek, V. Drchal, and
+
+sion of electrical signals by spin-wave interconversion in
+
+P. Bruno, "Ab initio calculations of exchange interac-
+
+a magnetic insulator," Nature 464, 262­266 (2010).
+
+tions, spin-wave stiffness constants, and curie tempera-
+
+[2] L. J. Cornelissen, J. Liu, R. A. Duine, J. Ben Youssef,
+
+tures of fe, co, and ni," Phys. Rev. B 64, 174402 (2001).
+
+and B. J. Van Wees, "Long-distance transport of magnon [17] S. Geller and M. A. Gilleo, "The crystal structure and
+
+spin information in a magnetic insulator at room temper-
+
+ferrimagnetism of yttrium-iron garnet, Y3Fe2(FeO4)3,"
+
+ature," Nature Physics 11, 1022­1026 (2015).
+
+J. Phys. Chem. Solids 3, 30 ­ 36 (1957).
+
+[3] Brandon L. Giles, Zihao Yang, John S. Jamison, and [18] S. Geller and M. A. Gilleo, "The effect of dispersion
+
+Roberto C. Myers, "Long-range pure magnon spin dif-
+
+corrections on the refinement of the yttrium-iron garnet
+
+fusion observed in a nonlocal spin-seebeck geometry,"
+
+structure," J. Phys. Chem. Solids 9, 235 ­ 237 (1959).
+
+Phys. Rev. B 92, 224415 (2015).
+
+[19] Forrat Bertaut, F. Forrat, A. Herpin, and P. M´eriel,
+
+[4] K. Uchida, J. Xiao, H. Adachi, J-i Ohe, S. Takahashi,
+
+"Etude par diffraction de neutrons du grenat ferrimag-
+
+J. Ieda, T. Ota, Y. Kajiwara, H. Umezawa, H. Kawai,
+
+netique Y3Fe5O12," Compt. Rend. 243, 898­901 (1956).
+
+G. E. W. Bauer, S. Maekawa, and E. Saitoh, "Spin see- [20] J. S. Plant, "`Pseudo-acoustic' magnon dispersion in yt-
+
+beck insulator," Nature materials 9, 894­897 (2010).
+
+trium iron garnet," J. Phys. C 16, 7037 (1983).
+
+[5] Ken-ichi Uchida, Hiroto Adachi, Takeru Ota, [21] G. Kresse and J. Hafner, "Ab initio molecular dynamics
+
+Hiroyasu Nakayama,
+
+Sadamichi Maekawa,
+
+for liquid metals," Phys. Rev. B 47, 558­561 (1993).
+
+and Eiji Saitoh, "Observation of longitudi- [22] G. Kresse and J. Furthmu¨ller, "Efficient iterative schemes
+
+nal spin-seebeck effect in magnetic insulators,"
+
+for ab initio total-energy calculations using a plane-wave
+
+Applied Physics Letters 97, 172505 (2010), 10.1063/1.3507386. basis set," Phys. Rev. B 54, 11169­11186 (1996).
+
+[6] Gerrit E. W. Bauer, Eiji Saitoh, and Bart J. van Wees, [23] P. E. Bl¨ochl, "Projector augmented-wave method,"
+
+"Spin caloritronics," Nat. Mater. 11, 391­399 (2012).
+
+Phys. Rev. B 50, 17953­17979 (1994).
+
+[7] Stephan Gepra¨gs, Andreas Kehlberger, Francesco [24] Pio Baettig and Tamio Oguchi, "Why are garnets not
+
+Della Coletta, Zhiyong Qiu, Er-Jia Guo, Tomek
+
+ferroelectric? a theoretical investigation of Y3Fe5O12,"
+
+Schulz, Christian Mix, Sibylle Meyer, Akashdeep
+
+Chem. Mater. 20, 7545­7550 (2008).
+
+Kamra, Matthias Althammer, Hans Huebl, Gerhard [25] H.
+
+Pascard,
+
+"Fast-neutron-induced
+
+trans-
+
+Jakob, Yuichi Ohnuma, Hiroto Adachi, Joseph Barker,
+
+formation of the y3fe5o12 ionic structure,"
+
+Sadamichi Maekawa, Gerrit E W Bauer, Eiji Saitoh,
+
+Phys. Rev. B 30, 2299­2302 (1984).
+
+Rudolf Gross, Sebastian T B Goennenwein, and Mathias [26] R. Metselaar and P. K. Larsen, "High-
+
+Kla¨ui, "Origin of the spin Seebeck effect in compensated
+
+temperature electrical properties of yttrium
+
+ferrimagnets," Nat. Commun. 7, 10452 (2016).
+
+iron garnet under varying oxygen pressures,"
+
+[8] Jiang Xiao, Gerrit E. W. Bauer, Ken-chi Uchida,
+
+Solid State Commun. 15, 291­294 (1974).
+
+Eiji Saitoh,
+
+and Sadamichi Maekawa, "The- [27] S. Wittekoek, T. J. A. Popma, J. M. Robert-
+
+ory of magnon-driven spin seebeck effect,"
+
+son, and P. F. Bongers, "Magneto-optic spectra and
+
+Phys. Rev. B 81, 214418 (2010).
+
+the dielectric tensor elements of bismuth-substituted
+
+[9] A. Harris, "Spin-wave spectra of yttrium and gadolinium
+
+iron garnets at photon energies between 2.2-5.2 ev,"
+
+iron garnet," Phys. Rev. 132, 2398­2409 (1963).
+
+Phys. Rev. B 12, 2777­2788 (1975).
+
+[10] Joseph Barker and Gerrit E. W. Bauer, "Ther- [28] W. Y. Ching, Zong-quan Gu, and Yong-Nian Xu, "Theo-
+
+mal spin dynamics of yttrium iron garnet,"
+
+retical calculation of the optical properties of Y3Fe5O12,"
+
+Phys. Rev. Lett. 117, 217201 (2016).
+
+J. Appl. Phys. 89 (2001), 10.1063/1.1357837.
+
+[11] J. S. Plant, "Spinwave dispersion curves for yttrium iron [29] A. Rogalev, J. Goulon, F. Wilhelm, Ch. Brouder,
+
+garnet," J. Phys. C 10, 4805 (1977).
+
+A. Yaresko, J. Ben Youssef, and M. V. Indenbom,
+
+[12] Chenjie Wang, Guang-Can Guo, and Lixin He, "First-
+
+"Element selective x-ray magnetic circular and linear
+
+principles study of the lattice and electronic structure of
+
+dichroisms in ferrimagnetic yttrium iron garnet films,"
+
+Tbmn2o5," Phys. Rev. B 77, 134113 (2008).
+
+J. Magn. Magn. Mater. 321, 3945­3962 (2009).
+
+[13] Miao Gao, Xun-Wang Yan, and Zhong-Yi Lu, "Spin [30] Xingtao Jia, Kai Liu, Ke Xia, and Gerrit E. W.
+
+wave excitations in AFe1.5Se2 (A = K, Tl): analytical
+
+Bauer, "Spin transfer torque on magnetic insulators,"
+
+study," J. Phys. Condens. Matter 25, 036004 (2013).
+
+EPL 96, 17005 (2011).
+
+[14] F. Essenberger, S. Sharma, J. K. Dewhurst, C. Bersier, [31] D. Rodic, M. Mitric, R. Tellgren, H. Rundlof, and
+
+F. Cricchio, L. Nordstr¨om, and E. K. U. Gross, "Magnon
+
+A. Kremenovic, "True magnetic structure of the ferri-
+
+spectrum of transition-metal oxides: Calculations includ-
+
+magnetic garnet Y3Fe5O12 and magnetic moments of iron
+
+ing long-range magnetic interactions using the LSDA + u
+
+ions," J. Magn. Magn. Mater. 191, 137 ­ 145 (1999).
+
+method," Phys. Rev. B 84, 174425 (2011).
+
+[32] Yong-Nian Xu, Zong-quan Gu, and W. Y.
+
+[15] S. V. Halilov, H. Eschrig, A. Y. Perlov, and P. M.
+
+Ching, "First-principles calculation of the elec-
+
+Oppeneer, "Adiabatic spin dynamics from spin-density-
+
+tronic structure of yttrium iron garnet (Y3Fe5O12),"
+
+8
+
+J. Appl. Phys. 87, 4867 (2000).
+
+[33] Denis F. Strenzwilk and Elmer E. Anderson,
+
+"Calculation of the sublattice magnetization of
+
+yttrium iron garnet by the oguchi method,"
+
+Phys. Rev. 175, 654­659 (1968).
+
+[34] Vladimir Cherepanov, Igor Kolokolov, and Victor L'vov,
+
+"The saga of YIG: spectra, thermodynamics, interac-
+
+tion and relaxation of magnons in a complex magnet,"
+
+Phys. Rep. 229, 81­144 (1993).
+
+[35] Elmer
+
+E.
+
+Anderson,
+
+"Molecular
+
+field
+
+model and the magnetization of yig,"
+
+Phys. Rev. 134, A1581­A1585 (1964).
+
+[36] C. M. Srivastava, "Exchange constants in ferrimagnetic
+
+garnets," J. Appl. Phys. 53, 781 (1982).
+
+[37] To ensure thermal equilibrium, the convergence of the magnetization was subjected to a Geweke diagnostic test [40]. The final 80% of the data was used to calculate the thermally averaged magnetization.
+[38] S. R. Nimbore, D. R. Shengule, S. J. Shukla, G. K. Bichile, and K. M. Jadhav, "Magnetic and electrical properties of lanthanum substituted yttrium iron garnets," J. Mater. Sci. 41, 6460­6464 (2006).
+[39] C. M. Srivastava and R. Aiyar, "Spin wave stiffness constants in some ferrimagnetics," J. Phys. C 20, 1119 (1987).
+[40] John Geweke, "Evaluating the Accuracy of Sampling-based Approach Reserve Bank of Minneapolis, Research Department Minneapolis, MN, USA (1991).
+
+

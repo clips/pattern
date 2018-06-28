@@ -1,0 +1,1040 @@
+arXiv:1701.00047v3 [math.FA] 22 Jun 2017
+
+GABOR TIGHT FUSION FRAMES: CONSTRUCTION AND APPLICATIONS IN SIGNAL RETRIEVAL MODULO PHASE
+MOZHGAN MOHAMMADPOUR, BRIAN TUOMANEN, AND RAJAB ALI KAMYABI GOL
+Abstract. Hilbert space fusion frames are a natural extension of Hilbert space frames, extending the notion from a set of vectors in a Hilbert space to a set of subspaces of a Hilbert space with analogous notions of overcompleteness and boundedness. As tight frames are a very important topic within standard frame theory, tight fusion frames are similarly important; however, only trivial examples of tight fusion frames are hitherto known. In this paper, we apply ideas from Gabor analysis to demonstrate a non-trivial construction of tight fusion frames by using the fact that a fusion frame for a finite dimensional Hilbert space H with M subspaces is a frame for the finite dimensional Hilbert space HM . We then use this construction to further show their applicability in some cases for the retrieval of signals modulo phase.
+1. Introduction
+Fusion frame theory has recently garnered great interest among researchers who work in signal processing. Fusion frames extend the notion of a frame (i.e., an overcomplete set of vectors) within a Hilbert space H to a collection of subspaces {Wi}iI (with orthogonal projections {Pi}iI ) in H. This concept was originally introduced by Kutyniok and Casazza in [10].
+A tight fusion frame is one such that we have the identity iI Pi = CIN×N , i.e., the sum of the projections is a multiple of the identity. Such tight fusion frames are of interest for two reasons. First, they guarantee a very simple reconstruction of a signal; and second, tight fusion frames are robust against noise [8] and also remain robust against a one-erasure subspace when the rank of projections are equal to each other [17].
+On the other hand, phaseless reconstruction is a field that has gathered interest in the mathematical community in the last decade. Phaseless reconstruction (or equivalently, phase retrieval) is defined as the recovery of a signal modulo phase from the absolute values of fusion frame measurement coefficients arising from a fusion frame. This is known to have applications to a disparate array of other scientific
+Key words and phrases. Frame Theory, Fusion Frames, Sensor Networks, Gabor Frames, Gabor Fusion Frames, Phase Retrieval, Phaseless Reconstruction.
+The second author was supported by NSF ATD 1321779. 1
+
+2
+
+MOHAMMADPOUR, TUOMANEN, AND KAMYABI GOL
+
+and applied disciplines, including X-ray crystallography [12], speech recognition [5, 18, 20], and quantum state tomography [19], where the recorded phase information of a signal is lost or distorted.
+In the case of phase retrieval, the signal must be recovered from coefficients of dimension higher than one. Here, in the context of fusion frames, the problem is to recover x  HM "up to phase" from the measurements { Pix }Ni=1.
+In this paper we demonstrate a new method for the construction of tight fusion frames. There are hithero few examples of tight fusion frames except trivial ones made up of orthogonal subspaces, so we believe this is a relevant and interesting advance. Moreover, there are few examples of phase retrieval fusion frames. In this paper, we present a condition that makes this structure allow phase retrieval.
+This article is organized as follows: Section 2 starts with preliminaries about tight fusion frames and phase retrievability of fusion frames. Section 3 is devoted to a brief summary of Gabor frames which is used to construct the tight fusion frames. In section 4, we explain our method to construct tight fusion frames. Section 5 focuses on finding conditions that makes our tight fusion frame allow phase retrieval, and our conclusion is in section 6.
+
+2. Preliminaries And Notation
+A fusion frame is defined as follows:
+Definition 2.1. Consider a Hilbert space H, with a collection of subspaces {Wi}iI and an associated set of positive weights {i}iI . We likewise denote the associated orthogonal projections Pi : H  Wi. Then we call {Wi}iI a fusion frame if there are positive constants 0 < A  B <  such that for any x  H we have the following:
+
+A x 2
+
+Pix 2  B x 2
+
+iI
+
+Definition 2.2. A tight fusion frame is a fusion frame as in 2.1 where A = B for all i  I. That is to say, we have the following for any x  H:
+
+Or, equivalently:
+
+Pix 2 = A x 2
+iI
+N
+AI = Pi
+i=1
+
+GABOR TIGHT FUSION FRAMES
+
+3
+
+Now, consider an orthonormal basis for the range of Pi, that is {ei,}ni=1. We know that:
+n
+Pix = x, ei, ei,
+=1
+for all x  CN . Summing these equations over i = 1, · · · , N together
+
+N
+
+Nn
+
+Ax = Pix =
+
+x, ei, ei,
+
+i=1
+
+i=1 =1
+
+One can recover the signal modulo phase from fusion frame measurements. In this
+senario, consider we are given subspaces {Wi}Ni=1 of M -dimensional Hilbert space HM and orthogonal projections Pi : HM  Wi. We want to recover any x  HM (up to a global phase factor) from the fusion frame measurements { Pix }Ni=1. To fix notation, denote T = {c  C; |c| = 1}. The measurement process is then given
+
+by the map:
+
+A : CM /T  CN , Ax (n) = Pnx
+
+We say {Wi}Ni=1 allows phaseless reconstruction or allows phase retrieval if A is injective; we call a frame (or fusion frame) with this property a phase retrieval frame. In the case where dim Wi = 1 for i = 1, · · · , N , the problem will be referred to as the classical phaseless reconstruction problem. In section 4, we will provide a novel structure of tight fusion frames where under particular conditions, will allow phaseless reconstruction.
+
+3. Gabor Frames For CN
+
+In this section, we provide a brief summary of Gabor frames which is used to construct our tight fusion frames. We index the components of a vector x  CN by {0, 1, · · · , N - 1}, i.e., the cyclic group ZN . We will write x (k) instead of xk to avoid algebraic operations on indices.
+The discrete Fourier transform is basic in Gabor analysis and is defined as
+
+N -1
+
+Fx (m) = x^ (m) =
+
+x
+
+(n)
+
+e-2im
+
+n N
+
+.
+
+n=0
+
+The most important properties of the Fourier transform are the Fourier inversion
+
+formula and the Parseval formula [9]. The inversion formula shows that any x can be
+
+written as a linear combination of harmonics. This means the normalized harmonics
+
+{
+
+1 N
+
+e2im
+
+(.) N
+
+}mN =-01
+
+form
+
+an
+
+orthonormal
+
+basis
+
+of
+
+CN
+
+and
+
+hence
+
+we
+
+have
+
+x
+
+=
+
+1 N
+
+N -1
+
+x^
+
+(m)
+
+e2im
+
+n N
+
+m=0
+
+x  CN .
+
+4
+
+MOHAMMADPOUR, TUOMANEN, AND KAMYABI GOL
+
+Moreover, the Parseval formula states
+
+x, y
+
+=
+
+1 N
+
+x^, y^
+
+x, y  CN ,
+
+which results in
+
+N -1
+|x (n) |2
+n=0
+
+=
+
+1 N
+
+N -1
+|x^ (m) |2,
+m=0
+
+where |x (n) |2 quantifies the energy of the signal x at time n, and the Fourier
+
+coefficients
+
+x^ (m) indicates
+
+that the
+
+harmonic
+
+e2im
+
+(.) N
+
+contributes
+
+energy
+
+1 N
+
+|x^
+
+(m)
+
+|2
+
+to x.
+
+Gabor analysis concerns the interplay of the Fourier transform, translation oper-
+
+ators, and modulation operators. The cyclic translation operator T : CN  CN is
+
+given by
+
+T x = T (x (0) , · · · , x (N - 1))t = (x (N - 1) , x (0) , · · · , x (N - 2))t .
+
+The translation Tk is given by Tkx (n) = T kx (n) = x (n - k) .
+
+The operator Tk alters the position of the entries of x. Note that n - k is achieved modulo N . The modulation operator M : CN  CN is given by
+
+Mx =
+
+e-2i
+
+0 N
+
+x
+
+(0)
+
+,
+
+e-2i
+
+1 N
+
+x (1) , · · ·
+
+,
+
+e-2i
+
+N -1 N
+
+x
+
+(N
+
+-
+
+1)
+
+t
+.
+
+Modulation operators are implemented as the pointwise product of the vector with
+
+harmonics
+
+e-2i
+
+. N
+
+.
+
+Translation and modulation operators are referred to as time-shift and frequency
+
+shift operators. The time-frequency shift operator  (k, ) is the combination of
+
+translation operators and modulation operators:
+
+ (k, ) : CN  CN  (k, ) x = MTkx.
+
+Hence, the short time-Fourier transform V : CN  CN×N with respect to the window   CN can be written as
+
+N -1
+
+Vx (k, ) = x,  (k, )  =
+
+x
+
+(n)
+
+
+
+(n
+
+-
+
+k)e-2i
+
+n N
+
+n=0
+
+x  CN .
+
+The short time-Fourier transform generally uses a window function , supported at neighborhood of zero that is translated by k. Hence, the pointwise product with x selects a portion of x centered at k, and this portion is analyzed using a Fourier
+
+GABOR TIGHT FUSION FRAMES
+
+5
+
+transform. The inversion formula for the short time-Fourier transform is [9]
+
+x (n) =
+
+N
+
+1 
+
+2 2
+
+N -1 N -1
+
+V
+
+x
+
+(k,
+
+)
+
+
+
+(n
+
+-
+
+k)
+
+e-2i
+
+n N
+
+k=0 =0
+
+=
+
+N
+
+1 
+
+2 2
+
+N -1 N -1 k=0 =0
+
+x,  (k, ) 
+
+ (k, )  (n)
+
+x  CN .
+
+So it can be easily seen that for all  = 0, the system is a N  2 tight Gabor frame.
+
+4. Gabor Fusion Frame For CN
+In this section, we show our method to construct Gabor tight fusion frames. In fact, we show that Gabor fusion frame for CN is a Gabor frame for CN×N where the signal is coming from the subspce CN  CN×N . The key idea is to start with a general approach for the construction of tight fusion frames, which has certain conditions that must be satisfied. We then show that these conditions are indeed satisfied using methods from the Gabor frame theory.
+We begin by showing the following proposition, which is the generalization of our approach with certain conditions:
+
+Proposition 4.1. Consider a collection of frame sequences {{fij}Li=1}M j=1 within the finite dimensional Hilbert space CN , and denote Wi := span{fij}M j=1. Suppose there exists an index i0 such that {fi0j}M j=1 is a B-tight frame for Wi0 and also a set of coisometry operators {Ui}Li=1 from CN to CN such that for each j = 1, ..., M , we have
+{fij }Li=1 = {Uifi0j}Li=1.
+Furthermore, if the set {fij}Li=1 is an Aj-tight frame in CN for every j = 1, · · · , M . Then we will have that {(Wi, 1)}Li=1 is a tight fusion frame.
+Proof. Consider x  Wi. The set {Uifi0j}M j=1 is a B-tight frame for Wi over i = 1, · · · , L, because
+
+M
+
+M
+
+| x, Uifi0j |2 = | Uix, fi0j |2
+
+j=1
+
+j=1
+
+= B Uix 2
+
+=B x 2
+
+6
+
+MOHAMMADPOUR, TUOMANEN, AND KAMYABI GOL
+
+Hence we have, for any x  CN :
+
+L
+
+Pix 2 =
+
+L
+
+1 B
+
+M
+| Pix, fij |2
+
+i=1
+
+i=1 j=1
+
+=
+
+L
+
+1 B
+
+M
+| x, fij |2
+
+i=1 j=1
+
+=
+
+1 B
+
+M
+
+L
+| x, fij |2
+
+j=1 i=1
+
+=
+
+1 B
+
+M
+Aj
+j=1
+
+x
+
+2
+
+=
+
+M j=1
+
+Aj
+
+B
+
+x 2,
+
+where Pi is the orthogonal projection on Wi. The equality holds since {fij}Li=1 is an Aj-tight frame for CN for j = 1, · · · , M .
+
+In the following, we explain the method to construct tight fusion frame based on the Theorem 4.1 and Gabor frames on finite dimensional signals [9].
+To do this, every subspace W can be modeled by a matrix whose rows are an orthonormal basis for W . On the other hand, every subspace of dimension M can be represented by a matrix N × N whose first M rows are an orthonormal basis for W , since CN×M can be embeded in CN×N . For example if the subspace W is generated by {e1, · · · , eM }, then, the matrix associated to this subspace is as follows:
+[e1, · · · , eM , 0, · · · , 0]
+Moreover, a signal x of length N can be represenetd by a matrix of N × N since CN can be embeded in CN×N .
+X~ = [x, 0 · · · , 0]
+Based on the notation stated above, we define CN×N -valued inner product on CN×N as follows:
+X, Y = XY
+
+According to the notions above, if the subspaces Wi of a fusion frame is denoted by a matrices Xi, then the fusion frame {Wi}M i=1 for CN is the same as {Xi}M i=1 is a frame for CN×N , where x  CN  CN×N . This view point help us to extend several
+notions and theorems about frame theory to fusion frame theory. For example, the
+Gabor fusion frame is defined in the following way.
+
+GABOR TIGHT FUSION FRAMES
+
+7
+
+The translation and modulation operators for the space of complex valued square matrix of dimension N are defined as follows: Consider l  ZN . The translation operator T~ : CN×N  CN×N is defined as follows:
+T~ (e1, · · · , eN ) = (Te1, · · · , TeN )
+In fact the translation operator T~ alters the position of each row of the matrix X. The modulation operator M~ : CN×N  CN×N is given by
+M~  (x1, · · · , xN ) = (Mx1, · · · , MxN )
+
+Modulation operators are implemented as the pointwise product of each row of the
+
+matrix
+
+X
+
+with
+
+harmonics
+
+e-2il
+
+. N
+
+.
+
+The translation and modulation operator on
+
+CN×N are unitary operators and the following properties can be concluded
+
+T~
+
+
+=
+
+T~ -1 = T~N-land
+
+M~ 
+
+
+=
+
+M~  -1 = M~ N-l.
+
+The circular convolution of two spaces X, Y  CN×N is defined by the convolution of functions, which defined on the space ZN × ZN or can be written as:
+
+XY =
+
+N -1
+
+N -1
+
+xi  y0-i, · · · , xi  yN-1-i
+
+i=0
+
+i=0
+
+Hence, if X~ = (x, 0, · · · , 0), the convolution of X~ and Y is given by
+
+X~  Y = (x  y0, · · · , x  yN-1)
+
+Moreover, the circular involution or circular adjoint of X  CN×N is given by
+
+X = (x1, · · · , xN )
+
+where x1, · · · , xN  Cp and xi () = x (N - ). Note that the complex linear space CN×N equipped with 1-norm, the circular convolution and involution defined above
+is a Banach -algebra. The unitary discrete Fourier transform of X  CN×N is defined by
+
+X^ = (FN (x1) , · · · , FN (xN ))
+
+where x1, · · · , xN  CN and the Fourier transform xi is given by
+
+FN
+
+(xi) ()
+
+=
+
+1 N
+
+N -1
+xi (k)  (k)
+k=0
+
+=
+
+1 N
+
+N -1
+
+xi
+
+(k)
+
+e-2i
+
+k N
+
+k=0
+
+The Fourier transform is a unitary operator on the CN×N with the Frobenius norm. In fact, for all X  CN×N :
+
+X^ , X^ = X, X
+
+8
+
+MOHAMMADPOUR, TUOMANEN, AND KAMYABI GOL
+
+We also have the following relationships.
+
+T~X = M~X^ M~X = T~N-X^ X^ = X^ X  Y = X^ .Y^
+
+for X, Y  CN×N and   ZN . The inverse Fourier formula for X  CN×N is given by
+X = (x1, · · · , xN ) = FN-1 (x1) , · · · , FN-1 (xN ) 
+Translation operators are refered as time shift operators and modulation operators are refered as frequency shift operators. Time-frequency shift operators  (k, l) combines translations by k and modulation by l.
+
+ (k, ) X = M~T~kX
+
+The Gabor Fusion transform VY of a signal x  CN with respect to the window Y  CN×N is given by
+
+(4.1)
+
+VYx (k, ) = x,  (k, ) Y = Vy0 x (k, ) , · · · , VyN-1 x (k, ) 
+
+Now consider Y  CN×N and   {0, · · · , N - 1} × {0, · · · , N - 1}. The set
+
+(Y, ) = { (k, ) Y}(k,)
+is called the Gabor Fusion System which is generated by Y and . A Gabor Fusion System which spans CN is a fusion frame and is referred to as a Gabor Fusion Frame. Next theorem explains the necessary conditions that the set {M~T~kY}N=,N1,k=1 becomes a tight fusion frame.
+
+Theorem 4.2. Assume x  CN and {y1, · · · , yM } is a B-tight fusion frame for
+
+WN,N = span{y1, · · · , yM }. Consider also Wk, = span{TkMyj }M j=1 for k,  =
+
+1, · · · , N .
+
+Then, the set {Wk,}Nk=,N1,=1 constitutes a
+
+N
+
+Y
+
+2 2
+
+B
+
+tight fusion frame and
+
+we have the following equality:
+
+N -1
+
+Pk,x
+
+2=
+
+N
+
+Y B
+
+2 2
+
+x
+
+2 2
+
+k,=0
+
+M
+
+Proof. All that has to be done is to verify that
+
+{Tk M yi }Nk,=1
+
+satisfies the
+i=1
+
+criteria of proposition 4.1. First, for a given value of j, we have that {TkMyj}Nk,=1
+
+is a Aj = N yj 2 tight frame in CN by the elementary Gabor theory (this can be
+
+seen the prior section). It should clear by its nature that the time-frequency shift
+
+operator TkM is a co-isometry for a set k, , since it was mentioned before Tk and
+
+M are both unitary operators for every k, . Finally, we know by the assumption
+
+that {yj}M j=1 is B-tight on its ambient space W0,0. Seeing that the conditions for the
+
+proposition
+
+are
+
+satisfied,
+
+we
+
+have
+
+the
+
+conclusion
+
+that
+
+{(Wk,, 1)}kN,-=10
+
+is
+
+a
+
+NY B
+
+2
+2-
+
+tight fusion frame on CN .
+
+GABOR TIGHT FUSION FRAMES
+
+9
+
+5. Gabor Fusion Frames and Phaseless Reconstruction
+
+In this section, we are looking for some conditions such that the tight Gabor fusion frame allows phase retrieval. To state these conditions, we provide some theorems should be necessary to explain the main result. The next lemma shows that if we add a vector to a phaseless retrieval frame, the new frame also allows phaseless retrieval.
+
+Lemma 5.1. Let {i}Ni=1 be a frame for CN that allows phase reconstruction. If we add a vector N+1 to {i}Ni=1, then {i}Ni=+11, this will also allow phaseless recon-
+struction.
+
+Proof. Consider that for x1, x2  CN , we have {| x1, i |}Ni=+11 = {| x2, i |}Ni=+11. Hence, we have {| x1, i |}Ni=1 = {| x2, i |}Ni=1. So, x1 = cx2 where |c| = 1 since {i}Ni=1 allows phase retrieval for CN . Thus {i}Ni=+11 also allows phase retrieval.
+The prior lemma is important in the construction of phase retrieval frames. If we have a phase retrieval frame for CN , then we can construct a new frame that also allows phase retrieval by adding a vector to the frame vector set. On the other hand, to show the phase retrievability of a frame, it is enough to show that a subset of the frame vectors that spans the ambient space allows phaseless reconstruction.
+Next proposition will state the conditions such that a fusion frame is phase retrieval
+
+Proposition 5.2. Let {ei}Ni=1 be an orthonormal basis for CN . Moreover, for every j = 1, · · · , M ,{fij}ni=1 is a Parseval frame for the subspace Wj generated by these vectors and fij is the linear sumation of {ei}Ni=1. Suppose that {fij}M j=1 for every i = 1, · · · , n is a Parseval frame for CN and {Wj}M j=1 is a fusion frame and there exists i0 such that {fi0j}M j=1 is a phase retrieval frame for CN . Then {Wj}M j=1 is a phase retrieval fusion frame for CN if the matrix SM×N has a left inverse matrix
+VN×M such that
+V S = IN×N .
+
+Proof. To show that there is an injective mapping from the fusion frame mea-
+
+surements, { Pj x 22}M j=1, to the vector x modulo phase (i.e., the equivalence class {cx : |c| = 1}), we can just show that we can derive the values of the frame mea-
+
+surements {| x, fi0j |2}M j=0 from the fusion frame measurements. We can see this in the following way:
+
+We denote | x, ei |2 = i for i = 1, · · · , N . On the other hand
+
+n
+
+N
+
+Pj x
+
+2 2
+
+=
+
+| x, fi0j |2 =
+
+cij | x, ei |2,
+
+i=1
+
+i=1
+
+10
+
+MOHAMMADPOUR, TUOMANEN, AND KAMYABI GOL
+
+since {fij}ni=1 is a Parseval frame for CN for every j = 1, · · · , M and fij is the linear summation of {ei}Ni=1. We denote S = [cij ]M j=,1N,i=1. Now consider S. We will get
+the following output:
+
+[
+
+P1x
+
+2 2
+
+,
+
+P2x
+
+2 2
+
+,
+
+·
+
+·
+
+·
+
+,
+
+PM x 22]T = S
+
+Since S has a left inverse matrix V and {fi0j}M j=1 is a phase retrieval frame for CN , we are done.
+
+The Proposition 5.2 has an important role to construct phase retrieval fusion frame based on the phase retrieval frame.
+
+5.1. A Brief Overview of Circulant Matrices. We will need to review a few key concepts of circulant matrices before we continue to the next section.
+
+Definition 5.3. A circulant matrix is a matrix of the following form:
+
+
+
+
+
+c0 cn-1 . . . c2 c1
+
+C = cNc...1-2
+
+c0 c1
+
+cn-1
+c0 ...
+
+... ...
+
+cNc...2-1 .
+
+cN-1 cN-2 . . . c1 c0
+
+Remark 5.4. We denote the jth division of unity as
+
+j = exp
+
+2ij N
+
+We will need the following theorem; a proof is given in [16]
+
+Theorem 5.5. Let C be an N × N circulant matrix. Then det(C) = jN=-01 c0 + c1j + c2j2 + · · · + cN-1jN-1 .
+Lemma 5.6. Let C be a matrix as in 5.3 with c0, c1, . . . , cn-1 = 1 and cn, cn+1, . . . , cN+1 = 0 for some 0 < n < N . Then C is singular if and only if there is some value j, 1  j  N - 1, such that N divides into jn.
+
+Proof. By 5.5, we know that C is singular if and only if there is some j where
+
+0  j  N - 1 and
+
+N k=0
+
+ck jk
+
+=
+
+n-1 k=0
+
+jk
+
+=
+
+0.
+
+We
+
+notice
+
+that
+
+for
+
+j
+
+=
+
+0,
+
+we
+
+have
+
+n-1 k=0
+
+0k
+
+=
+
+Consider
+
+n-1 k=0
+
+1
+
+=
+
+n-1 k=0
+
+jk.
+
+n, so we will only consider The geometric series gives
+
+the values 1 us that this
+
+ j  N - 1.
+
+is
+
+equal
+
+to
+
+1-wjn 1-wj
+
+;
+
+this
+
+is zero if and only if wjn = exp
+
+2ijn N
+
+= 1. But this will only happen exactly when
+
+jn N
+
+is
+
+an
+
+integer,
+
+that
+
+is
+
+to
+
+say,
+
+when
+
+N
+
+divides
+
+into
+
+jn.
+
+GABOR TIGHT FUSION FRAMES
+
+11
+
+5.2. Construction of Gabor Tight Fusion Frame. In [6] the conditions on the window function such that the generated Gabor frame allows phase retrieval are given; we now present a method to produce a phase retrieval Gabor fusion frame. The following theorem demonstrates the relationship of the phase retrievability of the Gabor fusion frames and the phase retrievability of the frame vectors which spans subspaces.
+
+Theorem 5.7. Let {ei}Ni=1 be an orthonormal basis for CN . Let {fi}Ni=1 is a Parseval
+
+frame for the n-dimensional subspace W0,0  CN spanned by these vectors and fi for
+
+i = 1, · · · , n is the linear summation of {ei}Ni=1 where
+
+n i=0
+
+fi
+
+=
+
+n0 i=0
+
+ei.
+
+Moreover,
+
+Wk, = span {TkMfi}ni=1 for k,  = 0, 1, · · · , N - 1. If there exists an i0 such that {TkMfi0}kN,-=10 is a phase retrieval frame for CN , then {Wk,}kN,-=10 is a phase
+
+retrieval fusion frame if and only if for all values 1  j  N - 1, we have that N
+
+does not divide into jn0.
+
+Proof. To show that {Wk,}kN,-=10 is phase retrieval, we display that {Wk,}kN,-=10 stisfies the conditions of the Proposition 5.2. It is trivial {TkMei}ni=1 is Parseval
+frame for Wk,l for every k, l = 1, · · · , N - 1. Moreover, there exists i0 such that {TkMei0}kN,-=10 is a phase retrieval frame.
+Now for   {0, 1, · · · , N - 1}, consider the vector:
+
+v = [| x, T0Me1 |2, | x, T1Me1 |2, · · · , | x, TN-1Me1 |2]T ,
+
+It is trivial that {Mei}Ni=1 is also an orthonormal basis for CN . Moreover, we have:
+
+(5.1)
+
+n
+
+N
+
+n0
+
+Pk,x
+
+2 2
+
+=
+
+| x, TkMfi |2 =
+
+ci| x, MTkei |2 =
+
+civli .
+
+i=1
+
+i=1
+
+i=1
+
+Now, consider the operator S : RN  RN , where S is the circulant matrix such
+
+that the jth row is Tj-1([c1, · · · , cn0, 0, · · · , 0]), where the area of support in each row is n:
+
+
+
+c1 S = cnc00n......-0 1
+
+c2 c1
+0 cn0
+
+c3 c2
+··· ··· 0
+
+··· ···
+0 ··· ···
+
+cn0-1 cn0-1
+··· 0
+
+cn0 cn0
+0 c1
+
+0 0
+c1 c2
+
+··· ···
+··· ··· ···
+···
+
+c2 c3 c4 · · · cn0-1 cn0 0 · · ·
+
+By lemma 5.6, it can be seen that S is not singular. Now by the proposition 5.2, {Wk,l}kN,l-=10 is phase retrieval.
+
+
+
+0
+
+0
+cn0-1 cn0-2
+...
+
+
+
+c1
+
+12
+
+MOHAMMADPOUR, TUOMANEN, AND KAMYABI GOL
+
+Theorem 5.7 demonstrates the relationship between the phase retrievality of Gabor frame and its associated Gabor fusion frame. In [6] the conditions on the window function such that the generated Gabor frame allows phaseless reconstruction are given. Based on Theorem 5.7, we presented a method to produce phase retrieval Gabor fusion frame.
+We shall end with a brief example of a Gabor fusion frame that allows phase retrieval, as an application of the prior theorem:
+ Example 5.8. Consider the orthogonal unit vectors e1 = 1{1,2,4}/ 3 and e2 = 1{3} in the space C7. By the Proposition 2.2 in [6], {TkMle1}6k,l=0 is a phase retrieval Gabor frame for C7. Suppose that Yk,l = span {TkMlei}2i=1 for k, l = 0, · · · , 6. Since e1 and e2 are orthogonal so they are tight frame for the subspace W0,0. As a result we fullfill the requirements of the Theorem 5.7 and the Gabor fusion frame {Yk,l}6k,l=0 allows phaseless reconstruction.
+References
+[1] R. Balan, B. G. Bodmann, P. G. Casazza, D. Edidin, Painless reconstruction from magnitudes of frame coefficients, J. Fourier Anal. Appl. 15, 488-501, 2009.
+[2] R. Balan, P. Casazza, and Dan Edidin. On signal reconstruction without phase. Appl. Comput. Harmon. Anal., 20(3):345356, 2006.
+[3] R. H. Bates and D. Mnyama. The status of practical Fourier phase retrieval, in W. H. Hawkes, ed., Advances in Electronics and Electron Physics, 67-164, 1986.
+[4] R. Balan, P.G. Casazza and D. Edidin, On Signal Reconstruction without Noisy Phase, Applied and Computational Harmonic Analysis, 20, 345-356, 2006.
+[5] C. Becchetti and L. P. Ricotti, Speech recognition theory and C++ implementation. Wiley, 1999.
+[6] I. Bojarovska and A. Flinth, Phase retrieval from gabor measurements. Journal of Fourier Analysis and Applications, 1-26, 2015.
+[7] M. Ehler, M. Gr¨af, F.Kira´ly, Phase rRetrieval using random cubatures and fusion frames of positive semidefinite matrices, Waves, Wavelets and Fractals - Advanced Analysis, vol. 1, no. 1, 2015.
+[8] P.G. Casazza, M. Fickus, D. Mixon, Y. Wang, Z. Zhou, Constructing tight fusion frames,Appl. Comput. Harmon. Anal. 30, 175-187, 2011.
+[9] P.G. Casazza and G. Kutyniok, Finite frames: theory and applications, Birkhauser, 2013. [10] P. Casazza, G. Kutyniok, Frames of subspaces, wavelets, frames and operator theory, Contemp.
+Math., vol. 345, Amer. Math. Soc., Providence, RI, 2004, 87-113, 2005. [11] O. Christensen, An introduction to frames and Riesz bases, Birkhauser, Boston, 2003. [12] J. Drenth, Principles of protein x-ray crystallography, Springer, 2010. [13] A. G. Farashahi, M. Mohammadpour, A Unified theoretical harmonic analysis approach to the
+cyclic wavelet transform (CWT) for periodic signals of prime dimensions, Journal of Sahand Communications in Mathematical Analysis (SCMA), vol. 1, no. 2, 1-17, 2014.
+
+GABOR TIGHT FUSION FRAMES
+
+13
+
+[14] A. G. Farashahi, Cyclic wave packet transform on finite abelian groups of prime order, International Journal of Wavelets, Multiresolution and Information Processing, vol. 12, no. 6, 2014.
+[15] J. R. Fienup. Reconstruction of an object from the modulus of its fourier transform, Optics Letters, 3, 27-29, 1976.
+[16] R. M. Gray, Toeplitz and circulant matrices: a review. [17] G. Kutyniok, A. Pezeshki, R. Calderbank, T. Liu, Robust dimension reduction, fusion frames,
+and grassmannian packings, Appl. Comput. Harmon. Anal. 26, no.1, 64-76. 2009. [18] L. Rabiner and B. H. Juang, Fundamentals of speech recognition. Prentice Hall Signal Process-
+ing Series, 1993. [19] J. M. Renes, R. Blume-Kohout, A. J. Scott, and C. M. Caves, Symmetric informationally
+complete quantum measurements. J. Math. Phys., 45, 2171-2180, 2004. [20] J. G. Proakis, J. R. Deller and J. H. L. Hansen, Discrete-Time processing of speech signals.
+IEEE Press, 2000.
+
+Department of Pure Mathematics, Faculty of Mathematical sciences, Ferdowsi University of Mashhad, Iran
+E-mail address: mozhganmohammadpour@gmail.com
+Department of Mathematics, University of Missouri, Columbia, MO 65211-4100, USA E-mail address: btuomanen@outlook.com
+Department of Pure Mathematics, Faculty of Mathematical sciences, Ferdowsi University of Mashhad, Iran
+E-mail address: kamyabi@um.ac.ir
+
+

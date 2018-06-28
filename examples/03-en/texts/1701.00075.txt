@@ -1,0 +1,479 @@
+arXiv:1701.00075v1 [math.GN] 31 Dec 2016
+
+Extending Baire-one functions on compact spaces
+Olena Karlova, Volodymyr Mykhaylyuk
+Department of Mathematical Analysis, Faculty of Mathematics and Informatics, Yurii Fedkovych Chernivtsi National University, Kotsyubyns'koho str., 2, Chernivtsi, Ukraine
+Abstract We answer a question of O. Kalenda and J. Spurny´ from [8] and give an example of a completely regular hereditarily Baire space X and a Baire-one function f : X  [0, 1] which can not be extended to a Baire-one function on X.
+Keywords: extension; Baire-one function; fragmented function; countably fragmented function 2000 MSC: Primary 54C20, 26A21; Secondary 54C30, 54C50
+1. Introduction
+The classical Kuratowski's extension theorem [14, 35.VI] states that any map f : E  Y of the first Borel class to a Polish space Y can be extended to a map g : X  Y of the first Borel class if E is a G-subspace of a metrizable space X. Non-separable version of Kuratowski's theorem was proved by Hansell [4, Theorem 9], while abstract topological versions of Kuratowski's theorem were developed in [5, 8, 9].
+Recall that a map f : X  Y between topological spaces X and Y is said to be - Baire-one, f  B1(X, Y ), if it is a pointwise limit of a sequence of continuous maps fn : X  Y ; - functionally F-measurable or of the first functional Borel class, f  K1(X, Y ), if the preimage f -1(V ) of
+any open set V  Y is a union of a sequence of zero sets in X. Notice that every functionally F-measurable map belongs to the first Borel class for any X and Y ; the converse inclusion is true for perfectly normal X; moreover, for a topological space X and a metrizable separable connected and locally path-connected space Y we have the equality B1(X, Y ) = K1(X, Y ) (see [10]).
+Kalenda and Spurny´ proved the following result [8, Theorem 13].
+Theorem A. Let E be a Lindel¨of hereditarily Baire subset of a completely regular space X and f : E  R be a Baire-one function. Then there exists a Baire-one function g : X  R such that g = f on E.
+The simple example shows that the assumption that E is hereditarily Baire cannot be omitted: if A and B are disjoint dense subsets of E = Q  [0, 1] such that E = A  B and X = [0, 1] or X = E, then the characteristic function f = A : E  R can not be extended to a Baire-one function on X. In connection with this the following question was formulated in [8, Question 1].
+Question 1. Let X be a hereditarily Baire completely regular space and f a Baire-one function on X. Can f be extended to a Baire-one function on X?
+We answer the question of Kalenda and Spurny´ in negative. We introduce a notion of functionally countably fragmented map (see definitions in Section 2) and prove that for a Baire-one function f : X  R on a completely regular space X the following conditions are equivalent: (i) f is functionally countably fragmented; (ii) f can be extended to a Baire-one function on X. In Section 3 we give an example of a completely regular hereditarily Baire (even scattered) space X and a Baire-one function f : X  [0, 1] which is not functionally countably fragmented and consequently can not be extended to a Baire-one function on X.
+2. Extension of countably fragmented functions
+Let X be a topological space and (Y, d) be a metric space. A map f : X  Y is called -fragmented for some  > 0 if for every closed nonempty set F  X there exists a nonempty relatively open set U  F such that diamf (U ) < . If f is -fragmented for every  > 0, then it is called fragmented.
+Let U = (U :   [0, ]) be a transfinite sequence of subsets of a topological space X. Following [6], we define U to be regular in X, if
+Email addresses: maslenizza.ua@gmail.com (Olena Karlova), vmykhalyuk@ukr.net (Volodymyr Mykhaylyuk)
+
+(a) each U is open in X;
+(b)  = U0  U1  U2  · · ·  U = X;
+(c) U = < U for every limit ordinal   [0, ). Proposition 1. Let X be a topological space, (Y, d) be a metric space and  > 0. For a map f : X  Y the following conditions are equivalent:
+(1) f is -fragmented;
+(2) there exists a regular sequence U = (U :   [0, ]) in X such that diamf (U+1 \ U) <  for all   [0, ).
+Proof. (1)(2) is proved in [12, Proposition 3.1]. (2)(1). We fix a nonempty closed set F  X. Denote  = min{  [0, ] : F  U = }. Property (c) implies
+that  =  + 1 for some  < . Then the set U = U  F is open in F and diamf (U )  diamf (U+1 \ U) < .
+If a sequence U satisfies condition (2) of Proposition 1, then it is called -associated with f and is denoted by U(f ).
+We say that an -fragmented map f : X  Y is functionally -fragmented if U(f ) can be chosen such that every set U is functionally open in X. Further, f is functionally -countably fragmented if U(f ) can be chosen to be countable and f is functionally countably fragmented if f is functionally -countably fragmented for all  > 0.
+Evident connections between kinds of fragmentability and its analogs are gathered in the following diagram.
+functional countable fragmentability
+
+functional fragmentability
+
+fragmentability
+
+countable fragmentability
+
+Baire-one
+
+continuity
+
+functional F-measurability
+
+Notice that none of the inverse implications is true.
+Remark 1. (a) If X is hereditarily Baire, then every Baire-one map f : X  (Y, d) is barely continuous (i.e., for every nonempty closed set F  X the restriction f |F has a point of continuity) and, hence, is fragmented (see [14, 31.X]).
+(b) If X is a paracompact space in which every closed set is G, then every fragmented map f : X  (Y, d) is Baire-one in the case either dimX = 0, or Y is a metric contractible locally path-connected space [11, 12].
+(c) Let X = R be endowed with the topology generated by the discrete metric d(x, y) = 1 if x = y, and d(x, y) = 0 if x = y. Then the identical map f : X  X is continuous, but is not countably fragmented.
+For a deeper discussion of properties and applications of fragmented maps and their analogs we refer the reader to [1, 2, 7, 13, 15].
+Proposition 2. Let X be a topological space, (Y, d) be a metric space,  > 0 and f : X  Y be a map. If one of the following conditions hold
+(1) Y is separable and f is continuous,
+(2) X is metrizable separable and f is fragmented,
+(3) X is compact and f  B1(X, Y ),
+then f is functionally countably fragmented.
+
+Proof. Fix  > 0.
+
+(1) Choose a covering (Bn : n  N) of Y by open balls of diameters < . Let U0 = , Un = f -1( kn Bk) for
+
+every n  N and U0 =
+
+ n=0
+
+Un.
+
+Then
+
+the
+
+sequence
+
+(U
+
+:
+
+
+
+
+
+[0, 0])
+
+is
+
+-associated
+
+with
+
+f.
+
+(2) Notice that any strictly increasing well-ordered chain of open sets in X is at most countable and every open
+
+set in X is functionally open.
+
+(3) By [12, Proposition 7.1] there exist a metrizable compact space Z, a continuous function  : X  Z and a
+
+function g  B1(Z, Y ) such that f = g  . Then g is functionally -countably fragmented by condition (2) of the
+
+theorem. It is easy to see that f is functionally -countably fragmented too.
+
+Lemma 3. Let X be a topological space, E  X and f  B1(E, R). If there exists a sequence of functions fn  B1(X, R) such that (fn) n=1 converges uniformly to f on E, then f can be extended to a function g  B1(X, R).
+
+Proof. Without loss of generality we may assume that f0(x) = 0 for all x  E and
+
+|fn(x)
+
+-
+
+fn-1(x)|
+
+
+
+1 2n-1
+
+for all n  N and x  E. Now we put
+
+gn(x) = max{min{(fn(x) - fn-1(x)), 2-n+1}, -2-n+1}
+
+and notice that gn  B1(X, R). Moreover, the series
+
+ n=1
+
+gn
+
+(x)
+
+is
+
+uniformly
+
+convergent
+
+on
+
+X
+
+for
+
+a
+
+function
+
+g  B1(X, R). Then g is the required extension of f .
+
+Recall that a subspace E of a topological space X is z-embedded in X if for any zero set F in E there exists a zero set H in X such that H  E = F ; C-embedded in X if any bounded continuous function f on E can be
+extended to a continuous function on X.
+
+Proposition 4. Let E be a z-embedded subspace of a completely regular space X and f : E  R be a functionally countably fragmented function. Then f can be extended to a functionally countably fragmented function g  B1(X, R).
+
+Proof. Let us observe that we may assume the space X to be compact. Indeed, E is z-embedded in X, since X
+
+is C-embedded in X [3, Theorem 3.6.1], and if we can extend f to a functionally countably fragmented function
+
+h  B1(X, R), then the restriction g = h|E is a functionally countably fragmented extension of f on X and
+
+g  B1(X, R).
+
+Fix n  N and consider
+
+1 n
+
+-associated
+
+with
+
+f
+
+sequence U
+
+= (U
+
+:   ).
+
+Without loss of the generality we
+
+can assume that all sets U+1 \ U are nonempty. Since E is z-embedded in X, one can choose a countable family
+
+V = (V :   ) of functionally open sets in X such that V  V for all     , V  E = U for every   
+
+and V = < V for every limit ordinal   . For every   [0, ) we take an arbitrary point y  f (U+1 \ U). Now for every x  X we put
+
+fn(x) =
+
+y, x  V+1 \ V, y0, x  X \ V.
+
+Observe that fn : X  R is functionally F-measurable, since the preimage f -1(W ) of any open set W  R is an
+at most countable union of functionally F-sets from the system {V+1 \ V :   [0, )}  {X \ V}. Therefore,
+fn  B1(X, R). It is easy to see that the sequence (fn) n=1 is uniformly convergent to f on E. Now it follows from Lemma 3
+that f can be extended to a function g  B1(X, R). According to Proposition 2 (3), g is functionally countably
+fragmented.
+
+Corollary 5. Every functionally countably fragmented function f : X  R defined on a topological space X belongs to the first Baire class.
+
+Proof.
+
+For every n  N we choose a
+
+1 n
+
+-associated
+
+with
+
+f
+
+family Un
+
+= (Un,
+
+:   n) of functionally open sets Un,
+
+and corresponding family (n, :   n) of continuous functions n, : X  [0, 1] such that Un, = -n,1((0, 1]).
+
+We consider the at most countable set  =  n=1{n, : 0    n} and the continuous mapping  : X  [0, 1],
+
+(x) = ((x)).
+
+Show that f (x) = f (y) for every x, y  X with (x) = (y). Let x, y  X with (x) = (y). For every n  N
+
+we choose n  n such that x  Un,n+1 \ Un,n . Then y  Un,n+1 \ Un,n and
+
+|f (x)
+
+-
+
+f (y)|
+
+
+
+diam(Un,n+1
+
+\
+
+Un,n )
+
+
+
+1 n
+
+for every n  N. Thus, f (x) = f (y).
+
+Now we consider the function g : (X)  R, g((x)) = f (x). Clearly, that every set (Un,) is open in the
+
+metrizable
+
+space
+
+(X ).
+
+Therefore,
+
+for
+
+every
+
+nN
+
+the
+
+family
+
+((Un,) : 
+
+ n)
+
+is
+
+1 n
+
+-associated
+
+with
+
+g.
+
+Thus,
+
+g
+
+is functionally countably fragmented. According to Proposition 4, g  B1((X), R). Therefore, f  B1(X, R).
+
+Combining Propositions 2 and 4 we obtain the following result.
+
+Theorem 6. Let X be a completely regular space. For a Baire-one function f : X  R the following conditions are equivalent:
+
+(1) f is functionally countably fragmented;
+
+(2) f can be extended to a Baire-one function on X.
+
+3. A Baire-one bounded function which is not countably fragmented
+Theorem 7. There exists a completely regular scattered (and hence hereditarily Baire) space X and a Baire-one function f : X  [0, 1] which can not be extended to a Baire-one function on X.
+
+Proof. Claim 1. Construction of X. Let Q = {rn : n  N}, rn = rm for all distinct n, m  N and
+
+{r2n-1 : n  N} = {r2n : n  N} = Q,
+
+
+
+
+
+A = {r2n-1} × [0, 1], B = {r2n} × [0, 1].
+
+n=1
+
+n=1
+
+We consider partitions A = (At : t  [0, 1]) and B = (Bt : t  [0, 1]) of the sets A and B into everywhere dense sets At and Bt, respectively, such that |At| = |Bt| = c. Moreover, let [0, 1] = <1 T with |T| = c for every  < 1. For every   [0, 1) we put
+
+Q =
+
+tT At,  is even, tT Bt,  is odd,
+
+Q=
+
+Q, X = Q × {} and X =
+
+X.
+
+<1
+
+<1
+
+Claim 2. Indexing of X. For every   [0, 1) we consider the set
+
+I = {(i)[,1) : |{ : i = 0}|  0}  [0, 1][,1) and notice that |I| = c. Let  : I  T be a bijection and
+
+X =
+
+X,j ,
+
+jI+1
+
+where
+
+X,j =
+
+A+1(j) × {}, B+1(j) × {},
+
+For all ,   [0, 1) with  >  and i  I we put
+
+ is even,  is odd,
+
+Ji, = {j  I : j|[,1) = i}.
+
+In particular, if  = ,  =  + 1 and i  I+1, then we denote the set Ji +1, simply by Ji . Notice that |Ji | = c and we may assume that
+X,i = {xj : j  Ji }.
+
+Then
+
+X = {xi : i  I},
+
+since I = iI+1 Ji .
+
+Claim 3. Topologization of X. For all   [1, 1), i  I and x = xi  X we put
+
+L<x = {xj  X : j  Ji ,}, Lx = {x}  L<x.
+<
+
+Notice that for all x  X and y  X with    either Lx  Ly, or Lx  Ly = . Now we are ready to define a topology  on X. Each point of X0 is isolated. For any   [1, 1) and a point
+x  X we construct a base Ux of  -open neighborhoods of x in the following way. Take i  I and q  Q such that x = xi = (q, )  X. Let Vq be a base of clopen neighborhoods of q in the space Q equipped with the topology induced from R2. Then we put
+Ux = {(V × [0, 1))  (Lx \ Ly) : V  Vq and Y  L<x is finite}.
+yY
+Claim 4. Complete regularity and scatteredness of X. We show that the space (X,  ) is completely regular. We prove firstly that every set Lx is clopen. Since the inclusion v  Lu implies Lv  Lu, every set Lx is open. Now let y  Lx. Then Ly  Lx = . Therefore, Ly  Lx or Lx  Ly. Assume that y  Lx. Then x  L<y and for a neighborhood W = Ly \ Lx of y we have W  Lx = , which implies a contradiction. Thus, Lx = Lx and the set Lx is closed.
+Notice that for every clopen in Q set V the set (V × [0, 1))  X is clopen in X. Therefore, every U  Ux is clopen in X for every x  X. In particular, (X,  ) is completely regular.
+In order to show that (X,  ) is scattered we take an arbitrary nonempty set E  X and denote  = min{  [0, 1) : E  X = }. Then any point x from E  X is isolated in E.
+Claim 5. X =  X for every   [0, 1). It is sufficient to prove that
+
+X  X
+<
+for every   [1, 1). Let   [1, 1), x = (q, )  X, V be an open neighborhood of q in Q, Y  L<x be a finite set and
+U = (V × [0, 1))  (Lx \ Ly).
+yY
+We show that U  ( < X) = . For every y  Y we choose y <  such that y  Xy . We put  = max{y : y  Y } and  =  + 1. Since  < ,   . We choose i  I such that x = xi and choose j  J such that j|[,1) = i. We consider the set X,j. Recall that X,j = At × {} or X,j = Bt × {}, where t =  (j). Therefore, the set
+P = {p  Q : (p, )  X,j}
+is dense in Q. Thus, the set P  V is infinite. Moreover, |Ly  X|  1 for every y  Y . Hence, the set
+S = {p  P : (p, )  Ly}
+yY
+is finite. Therefore, the set (P  V ) \ S is infinite, in particular, it is nonempty. We choose a point p  (P  V ) \ S. Then z = (p, )  X,j. Thus, z  Lx. Moreover, z  V × [0, 1) and z  yY Ly. Thus, z  U . Since X,j  X, z  < X. Therefore, Ux  < X =  for every Ux  Ux and x  < X.
+Claim 6. Construction of a Baire-one function f . We put
+
+C=
+
+X
+
+<1,  is even
+
+and show that the function f : X  [0, 1],
+
+f = C,
+
+belongs to the first Baire class. Consider a mapping  : X  Q, (x) = r if x = (q, ) and q = (r, t) for some t  [0, 1] and  < 1. The
+mapping  is continuous, because for every open in Q set V the set
+
+-1(V ) = (V × [0, 1] × [0, 1))  X
+
+is open in X. Clearly, the function g : Q  R,
+
+g(t) =
+
+1, t = r2n-1, 0, t = r2n,
+
+belongs to the first Baire class. Therefore, the function f (x) = g((x)) belongs to the first Baire class too.
+
+Claim 7. The function f is not countably fragmented. Finally, we prove that f is not countably frag-
+
+mented. Assume the contrary and take a countable sequence U = (U :  < ) of functionally open sets such that
+
+U
+
+is
+
+1 2
+
+-associated
+
+with
+
+f.
+
+We show that U  < X for every   . We will argue by induction on . For  = 0 the assertion is
+
+obvious. Assume that the inclusion is valid for all  <   . If  is a limit ordinal, then
+
+U = U 
+
+X = X.
+
+<
+
+< <
+
+<
+
+Now let  =  + 1. Suppose that there exists x  U \ (  X). Notice that x  X  X according to Claim 6. Therefore, there exist z1  U  X and z2  U  X. According to the inductive assumption, we have U  < X. Therefore, z1, z2  U \ U = U+1 \ U. Thus, we have
+
+1
+
+=
+
+|f (z1)
+
+-
+
+f (z2)|
+
+
+
+diam(U+1
+
+\
+
+U )
+
+<
+
+1 2
+
+,
+
+a contradiction. Theorem 6 implies that f can not be extended to a Baire-one function on X.
+
+References
+[1] Angosto C., Cascales B., Namioka I. Distances to spaces of Baire one functions, Math. Zeit. 263 (1) (2009), 103­124.
+[2] Banakh T., Bokalo B. Weakly discontinuous and resolvable functions between topological spaces, Hacettepe Journal of Mathematics and Statistics, DOI: 10.15672/HJMS.2016.399.
+[3] Engelking R. General Topology. Revised and completed edition. Heldermann Verlag, Berlin (1989).
+[4] Hansell R. W. On Borel mappings and Baire functions, Trans. Amer. Math. Soc. 194 (1974), 195­211.
+[5] Holicky´ P. Extensions of Borel measurable maps and ranges of Borel bimeasurable maps, Bulletin Polish Acad. Sci. Math. 52 (2004), 151­167.
+[6] Holicky´ P., Spurny´ J. Perfect images of absolute Souslin and absolute Borel Tychonoff spaces, Top. Appl. 131 (3) (2003), 281­294.
+[7] Jayne J. E., Orihuela J., Pallar´es A. J., Vera G. -fragmentability of multivalued maps and selection theorems, J. Funct. Anal. 117 (1993), 243­273.
+[8] Kalenda O., Spurny´ J. Extending Baire-one functions on topological spaces, Topol. Appl. 149 (1-3) (2005), 195­216.
+[9] Karlova O. On -embedded sets and extension of mappings, Comment. Math. Univ. Carolin. 54 (3) (2013), 377­396.
+[10] Karlova O., Mykhaylyuk V. Functions of the first Baire class with values in metrizable spaces, Ukr. Math. J. 58 (4) (2006), 640­644.
+[11] Karlova O., Mykhaylyuk V. On composition of Baire functions, Top. Appl. 216 (2017), 8­24.
+[12] Karlova O., Mykhaylyuk V. Baire classification of fragmented maps and approximation of separately continuous functions, Eur. J. Math. (2017), DOI:10.1007/s40879-016-0123-3.
+[13] Koumoullis G. A generalization of functions of the first class, Top. Appl. 50 (1993), 217­239.
+[14] Kuratowski K. Topology, I, PWN, Warszawa, 1966.
+[15] Spurny´ J. Borel sets and function in topological spaces, Acta Math. Hungar. 129 (1­2), (2010), 47­69.
+
+

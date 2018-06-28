@@ -1,0 +1,2591 @@
+JOURNAL OF LATEX CLASS FILES, VOL. 14, NO. 8, AUGUST 2015
+
+1
+
+Distributed Finite-Time Termination of Consensus in the Presence of Delays
+Mangal Prakash*, Saurav Talukdar*, Sandeep Attree, Vikas Yadav, and Murti V. Salapaka
+*Both authors have contributed equally
+
+arXiv:1701.00021v3 [math.OC] 21 Jun 2017
+
+Abstract--Linear consensus iterations guarantee asymptotic convergence, thereby, limiting their applicability in applications where consensus value needs to be used in real time to perform a system level task. It also leads to wastage of power and communication resources. In this article, an algorithm is proposed which enables each node to detect in a distributed manner and in finite number of iterations, when every agent in the network is within a user specified threshold of the consensus value (approximate consensus) and hence terminate further communications and computations associated with consensus iterations. This article develops a distributed algorithm for achieving this approximate consensus in presence of random time-varying bounded communication delays. Moreover, the article instantiates the algorithm developed to distributively determine the average of the initial values held by agents in finite number of iterations. Specifically, this algorithm relies on distributively determining the maximum and minimum of values held by the agents. The approach presented here offers several advantages, including reduced computational complexity, and hence, is suited for hardware implementation. An experimental test bed of Raspberry-Pi agents that communicate wirelessly over neighborhoods is employed as a platform to demonstrate the effectiveness of the developed algorithm.
+Index Terms--Consensus with delays, average consensus with delays, approximate consensus, maximum consensus, minimum consensus.
+1. INTRODUCTION In recent times networks have gained widespread adoption for representing and analyzing large scale systems. Applications of the networks framework span multiple disciplines that include economics, neuroscience and social sciences [1] and emerging science and technology, including, "internet of things" [2]. Multi agent systems whose dynamics are governed by a network topology, often collaborate with each other in order to achieve system level objectives. Increasingly in applications, the size of the system imposes severe restrictions on resources that include computational capacity as well as communication bandwidth [3]. Due to these limitations coordination of multiple agents in large scale networked system calls for distributed algorithms. A problem that has received considerable attention in coordination of multi-agent systems addresses the consensus problem, where how agents can compute a common value determined by initial values held by agents in a distributed manner is devised and analyzed [3], [4]. Here, all agents
+M. Prakash, S. Attree and M. V. Salapaka are with the Department of Electrical and Computer Engineering, University of Minnesota, Minneapolis, MN, 55455, USA e-mail: {praka027,murtis}@umn.edu.
+S. Talukdar is with the Department of Mechanical Engineering, University of Minnesota, Minneapolis, MN, 55455, USA e-mail: taluk005@umn.edu.
+
+in the network strive to attain a common value of interest by sharing information with their neighbors in the network, which defines the communication layer. Consensus has found applications in parallel computers [5], distributed coordination of mobile autonomous agents [6], distributed data fusion in sensor networks [7], large scale power networks [8] and many more. A special case of consensus is that of average consensus where agents converge to the average of the initial conditions held by agents through local communication [4], [9]. There is considerable research toward algorithms for distributively reaching consensus with contributions from communications, control and computer science areas [10].
+The convergence to the consensus value, in presence or absence of delays, when linear strategies are used is typically achieved asymptotically [11], [12], [13], [14], [15]. Here, agents keep updating their states and communicating with their neighbors forever leading to wastage of power and computational resources, which is untenable in resource constrained applications such as sensor networks where the resources available for each agent is limited. Moreover, in many real time applications including the power grid, distributed finitetime termination of consensus iterations is essential as the consensus value when determined is used in real-time by local systems to perform important tasks [16]. In such situations, it is necessary for each node to detect in finite-time, if approximate consensus is achieved within a specified error margin and thus, terminate computation as well as communication.
+Distributed termination of the average consensus in finite time in the presence of time-varying but bounded delays is presented in [17]. [17] relies on computing and storing Hankel matrices at every iteration, which can be computationally expensive if the size of matrix is large; here the size depends on the network size as well as the number of iterations needed for convergence. We introduce a computationally efficient approach for finite time termination of consensus and average consensus both. We use maximum and minimum consensus to distributively determine the proximity (within a prespecified tolerance) of each node to the consensus/ average consensus value. Numerous applications of maximum and minimum consensus in other areas are reported in literature. [18] uses maximum consensus for synchronization of wireless sensor networks. Zhang and Li demonstrated the application of minimum consensus for tackling shortest path planning problem in graphs [19]. However, we explore a niche application of using the maximum and minimum consensus in an innovative manner to arrive at a distributed finite time termination criterion of consensus/ average consensus in the presence of fixed as well as time-varying link delays.
+
+JOURNAL OF LATEX CLASS FILES, VOL. 14, NO. 8, AUGUST 2015
+
+2
+
+Contributions: This article develops and analyzes an algorithm, where agents exchange information with other agents in their neighborhoods in the presence of unknown, time-varying but uniformly bounded communications delays, to achieve approximate consensus/average consensus (i.e, a termination criterion which can be used by agents to terminate computations distributively while realizing the consensus/ average consensus value is within the prespecified error tolerance). The algorithm depends on iteratively computing the maximum and minimum of the values held by agents with a small computational footprint. It is worth noting that the presentation in the manuscript is focused on the case of fixed communication delays to keep the discussion simple and the extension for the case of time varying communication delays is presented in the Appendix. Furthermore, the algorithm developed is instantiated to the average consensus problem as well and explicit bounds on the error from the average value due to finite-time termination of the average consensus protocol are determined. To the best of the knowledge of authors, the distributed finitetime termination algorithms developed here are simpler and computationally less expensive than other existing algorithms till date. The performance of the algorithms is illustrated using prototype networks of Raspberry Pis, where agents experience uncertainty in the communication channels. The algorithms proposed in this article for distributed finite time termination of consensus/ average consensus are generalizations and nontrivial extensions of the delay free framework presented in [20], which is the conference proceedings article by the authors. Notably, the algorithm presented in [20] fails when delays are present on communication channels and hence, the necessity arises for implementing the algorithm presented in this article.
+The rest of the paper is organized as follows. In Section 2, the dynamics of the consensus algorithm executed by each agent is presented along with the needed notations, definitions and assumptions. In Section 3, the distributed finite-time stopping criterion for consensus algorithm based on maximum and minimum consensus protocols is developed. The average consensus protocol in presence of delays is presented in Section 4, followed by the development of distributed finitetime stopping criterion for average consensus protocol. The performance of the proposed distributed finite-time algorithms illustrated through simulations as well as with experiments on real communication networks realized through Raspberry Pi devices is presented in Section 5. Finally, the conclusions are presented in Section 6.
+2. THE CONSENSUS PROTOCOL: BACKGROUND, DEFINITION AND ASSUMPTIONS
+In this section definitions and notations needed for subsequent development (for details refer [21] and [22]) are provided. Consider the following definitions:
+- Directed and Undirected Graph : A directed graph G is a pair {V, E} where V is a set of vertices or nodes and E is a set of edges, which are ordered subsets of two distinct elements of V . If an edge from j  V to i  V exists then it is denoted as (i, j)  E. An undirected graph G
+
+is a pair {V, E} where V is a set of vertices or nodes and E is a set of edges such that for every pair of distinct nodes i  V and j  V , if (i, j)  E then (j, i)  E. - Directed Path : In a directed graph, a directed path from node j to i exists if there is a sequence of distinct directed edges of G of the form (i, k1), (k1, k2), ..., (km, j). - Strongly Connected Graph : A directed graph is strongly connected if it has a directed path between each pair of
+
+distinct nodes i and j. - In-neighbor of node: Given a graph G = {V, E} (directed
+or undirected), a node j  V is said to be an in-neighbor of node i  V if (i, j)  E. The set of in-neighbors of node i  V is denoted by Ni- := {j : (i, j)  E}. - Diameter of Graph : The longest shortest distance between any pair of nodes in a graph is the diameter of the graph
+
+and is denoted by D. - Stochastic Matrices: A real n × n matrix A = [aij] is
+called a row stochastic matrix if 1  aij  0 for 1 
+n
+
+i, j  n and aij = 1 for 1  i  n. A real n × n
+
+j=1
+matrix A = [aij] is called a column stochastic matrix
+n
+if 1  aij  0 for 1  i, j  n and aij = 1 for
+
+1
+
+
+
+j
+
+
+
+n.
+
+A
+
+real
+
+n
+
+×
+
+n
+
+matrix
+
+A
+
+=
+
+i=1
+[aij ]
+
+is
+
+called
+
+a
+
+doubly stochastic matrix if it is both row stochastic and
+
+column stochastic.
+
+- Non-negative Matrix and Primitive Matrix: A nonnegative matrix is a matrix all of whose entries are greater
+
+than or equal to zero. A primitive matrix is a square
+
+nonnegative matrix if it is irreducible and has only one
+
+eigenvalue of maximum modulus which is positive.
+
+Consider a directed graph G = {V, E}. For every (i, j)  E, a weight pij > 0 is associated which represents the weight, node i gives to any information received from node j. P = [pij] represents the weight matrix associated with graph G. If (i, j) / E then pij = 0. In this article, the problem of consensus and average consensus on a network
+
+of agents in presence of delays on communication links is
+
+studied. The following section assumes that delays on the
+
+links are fixed and the extension of the results for the time
+
+varying but bounded communication delay case can be found
+
+in Appendix B. The consensus problem under consideration
+
+here admits the following assumptions.
+
+A1. Graph G is strongly connected. A2. Weight matrix P associated with the graph G is row
+stochastic.
+
+A3. Each edge in G has a fixed delay, that is, for any two nodes i,j  V such that (i, j)  E, the delay on the link (i, j) is ij(k) = ij for all time instants k.
+A4. (i, i)  E and ii = 0 for all i  V. A5. The delay in the network is bounded and finite, that is,
+
+ij  ¯, ¯  R, for all i, j  V . The nodes do not have the knowledge of the delay as-
+
+sociated with the edges in their in-neighborhood. Now, the
+
+consensus update rule for a directed network of agents in-
+
+teracting according to a fixed communication topology in the
+
+presence of fixed communication delays on the communication
+
+JOURNAL OF LATEX CLASS FILES, VOL. 14, NO. 8, AUGUST 2015
+
+3
+
+channels is presented. Under the assumptions A1-A5, agent i updates its state xi(k + 1) at (k + 1)th iteration by taking a weighted linear combination of its own value and possibly delayed values of its in-neighbors received at kth iteration. The update rule is described by:
+
+xi(k + 1) = piixi(k) +
+
+pij xj (k - ij ),
+
+(1)
+
+jNi-
+
+where, Ni- is determined by the graph G = {V, E}. Let x(k) denote the column vector of all nodal states. Based on the update rule (1), consensus is defined as follows.
+
+Definition 1. (Consensus): A system of n agents is said to have achieved consensus if for any set of initial conditions x(0)  Rn, there exists   R such that klimxi(k) =  for i = 1, 2, ..., n.
+
+Note that  does not depend on the node index i. It should be noted from (1) that at any update iteration k, from each of its in-neighbors node i will receive one packet of information; albeit lagged information from a neighbor if there is a delay in the communication channel.
+
+Theorem 2.1. [12], [13] Update rule given by (1) under the assumptions mentioned in Section 2 achieves consensus.
+
+3. MAX-MIN CONSENSUS ALGORITHMS In this section, first results based on the consensus update algorithm given by (1) are established and then Maximum and Minimum consensus algorithms are defined and their convergence is established. Subsequently a discussion on determining a distributed finite-time stopping criterion to detect if consensus is reached is provided. Let for node i, the maximum over all values held by its neighbors including itself currently and in the ¯ past instants be given by,
+
+{qi, qi } := arg max xj(k - r),
+
+(2)
+
+j Ni- {i}
+
+r={0,1,2,...,¯}
+
+for some qi  {0, 1, 2, ..., ¯}, qi  Ni-  {i}. Thus, xqi (k - qi ) is the maximum value in the neighborhood of node i in the horizon of ¯ into the past starting from iteration k. Similarly, let for node i, the minimum over all values held by its neighbors including itself, currently and in the ¯ past instants be given by,
+
+{si, si } := arg min xj(k - r),
+
+(3)
+
+j Ni- {i}
+
+r={0,1,2,...,¯}
+
+for some si  {0, 1, 2, ..., ¯}, si  Ni-  {i}. Thus, xsi (k - si ) is the minimum value in the neighborhood of node i in the horizon of ¯ into the past starting from iteration k. Furthermore, consider the maximum and minimum over all nodal values over the horizon {k - ¯, ..., k - 1, k} in the past as given by,
+
+M (k)
+
+:=
+
+max
+jV
+
+xqj (k
+
+-
+
+qj ),
+
+(4)
+
+and,
+
+m(k)
+
+:=
+
+min
+sV
+
+xqs (k
+
+-
+
+qs ).
+
+(5)
+
+Lemma 3.1. Consider the update rule (1). Then for all time instants k  k and for all i  V ,
+
+xi(k
+
+)  max
+jV
+
+xqj (k - qj ) = M (k),
+
+and,
+
+(6)
+
+xi(k
+
+)
+
+
+
+min
+sV
+
+xqs (k
+
+-
+
+qs )
+
+=
+
+m(k).
+
+(7)
+
+Proof. See Appendix A for proof.
+
+Lemma 3.1 establishes that the value held by an agent in the future is always bounded above by the maximum over the current and delayed values over a horizon ¯ of all the nodal states. Moreover, the value held by the agent is bounded below by the minimum over the current and delayed values over a horizon ¯ of all nodal states.
+Lemma 3.2. Consider a strongly connected graph G = {V, E} running consensus protocol given by (1) with an initial condition x(k). Let i be a node such that xi(k) < M (k) and let j be a node such that xj(k) > m(k), then for all time instants k  k, xi(k ) < M (k) and xj(k ) > m(k).
+Proof. See Appendix A for proof.
+
+Lemma 3.2 establishes that if the value held by an agent
+
+i at the present instant of time is strictly less (greater) than
+
+the maximum (minimum) over the current and delayed values
+
+over a horizon ¯ of all the nodal states, then the value of agent
+
+i continues to be strictly less (greater) than this maximum
+
+(minimum) for all future instants.
+
+Consider the maximum and minimum value in the network,
+
+which is defined as, max
+
+min
+iV
+
+xi(k)
+
+respectively.
+
+x(k)
+
+:=
+
+max
+iV
+
+xi(k)
+
+and
+
+min
+
+x(k)
+
+:=
+
+Lemma 3.3. Consider a strongly connected graph G =
+
+{V, E} with an update rule for the consensus protocol given
+
+by (1) with an initial condition x(k) such that min x(k) <
+
+max x(k). Then for all k  k +D(¯+1), max x(k ) < M (k)
+
+and min x(k ) > m(k).
+
+Proof. See Appendix A for proof.
+
+Lemma 3.3 establishes that if the maximum value over all nodal states at the present instant is strictly greater than the minimum value over all nodal states at the present instant, then the maximum (minimum) over all nodal states after D(1 + ¯) instants in the future will be strictly less (greater) than the present maximum (minimum) over the current and delayed values over a horizon ¯ of all the nodal states.
+Define by T  := D(1 + ¯) + ¯. Note that T  is a constant for a fixed interconnection topology.
+Theorem 3.1. Consider a strongly connected graph G = {V, E} with an update rule for the consensus protocol given by (1) and an initial condition x(lT ) such that min x(lT ) < max x(lT ), where l  0. Then, M ((l+1)T ) < M (lT ) and m((l + 1)T ) > m(lT ).
+
+JOURNAL OF LATEX CLASS FILES, VOL. 14, NO. 8, AUGUST 2015
+
+4
+
+Proof. Using k = lT  in Lemma 3.3, it follows that for k  lT  + D(1 + ¯),
+
+max x(k ) < M (lT ).
+
+(8)
+
+By definition,
+
+M ((l
+
++
+
+1)T )
+
+=
+
+max
+jV
+
+xqj ((l
+
++
+
+1)T 
+
+-
+
+qj ).
+
+Since the index ((l + 1)T  - qj )  lT  + D(1 + ¯), it follows that
+
+proved. Preceding results are utilized to develop a finite-time termination criterion for the consensus protocol.
+Define T~ := (¯ + 1). Note that in the subseDefnt discussions, these two notations will be used interchangeably. ine the queindicator function for the link from node j  V to node m  V at time k as
+
+Ik,mj ( ) =
+
+1, 0,
+
+if mj(k) =  if mj(k) = ,
+
+M ((l + 1)T ) < M (lT ). The rest of the proof is left to the reader.
+
+Theorem 3.1 implies that M (lT ) is a strictly decreasing sequence and m(lT ) is a strictly increasing sequence as a function of the index l.
+Corollary 3.1. Consider a strongly connected graph G = {V, E} running consensus protocol given by (1) with an initial condition x(lT ) such that min x(lT ) < max x(lT ), where, l  0. Then, (a) max x((l + 1)T ) < M (lT ) and min x((l + 1)T ) > m(lT ). Also, (b) max x((l + 1)T ) - min x((l + 1)T ) < M (lT ) - m(lT ).
+
+Proof. The proof of (a) follows directly from Theorem 3.1. The proof of (b) is a direct consequence of (a).
+
+Corollary 3.2. Consider the consensus protocol given by (1)
+
+with 1, 2,
+
+each node ...n. Then
+
+converging to the sequences
+
+{M, i.(el.T,kli)m}lxNi(kan)d={m(folTr
+
+all i = )}lN
+
+converge to  as l  . Further, the sequence {M (lT ) -
+
+m(lT )}lN  0 as l  .
+
+Proof. From the hypothesis it follows that, there exist  such that,
+
+klimxi(k) = , for all i = 1, 2, ...n. Further, M (lT ) and m(lT ) are subsequences of convergent sequence x(k) and hence converge to the same limit . Thus both M (lT ) and m(lT ) converge to  as l  . This implies,
+
+M (lT ) - m(lT )  0 as l  .
+
+Corollary 3.1 (b) and Corollary 3.2 together imply that max x((l + 1)T ) - min x((l + 1)T )  0 as l  . In what follows an algorithm is devised which converges to max x((l + 1)T ) and min x((l + 1)T ) in finite number of iterations with the finite-time stopping criteria based on the difference between max x((l+1)T ) and min x((l+1)T ) and evaluating whether the difference is less than the user specified error tolerance. Towards this end, the maximum/ minimum consensus protocol are developed in the following subsection and the finite-time convergence of maximum/ minimum consensus protocols in presence of fixed communication delays is
+
+A. Maximum and Minimum Consensus Protocols The Maximum Consensus Protocol denoted by MXP com-
+putes the maximum of the given initial node conditions z(0) = [z1(0) z2(0)....zn(0)]T in a distributed manner. It takes z(0) as an input and generates a sequence of node values based on the following update rule for node m for k  0,
+zm(k¯ + l) = zm(k¯ + l - 1), l  {k + 1, · · · , k + ¯}, (9)
+
+zm((k + 1)T~) = jNmm -ax{m}{zm((k + 1)T~ - (r + 1))I(k+1)T~-r,mj (r)}r=0,1,...,¯.
+(10) where, the indicator function is defined as in (9).
+The Minimum Consensus Protocol denoted by MNP computes the minimum of the given initial node conditions y(0) = [y1(0) y2(0)....yn(0)]T in a distributed manner. It takes y(0) as an input and generates a sequence of node values y(k) based on the following update rule for k  0:
+ym(k¯ + l) = ym(k¯ + l - 1), l  {k + 1, · · · , k + ¯}, (11)
+
+ym((k + 1)T~) = jNmm -in{m}{ym((k + 1)T~ - (r + 1))I(k+1)T~-r,mj (r)}r=0,1,...,¯.
+(12)
+
+where, the indicator function is defined as in (9).
+
+Note that (9) maintains value of zm at zm((k - 1)¯) till the kth epoch k¯+l, l  {1, 2, ..., ¯} ends. On the other hand (10) updates zm at time instances which are multiples of T~= ¯ + 1 based on recent information from the neighbors and itself.
+
+Effectively every zm update takes place once after every ¯ iterations. Similarly, every ym update takes place once after every ¯ iterations. MNP is similar to MXP since the minimum over a set of values is the negative of the maximum of the
+
+negative of the values. Next, results are established which will
+
+be useful to prove the convergence of MXP and MNP running
+
+through the update rules (9), (10), (11) and (12) in finite-time.
+
+Let
+
+z~
+
+:=
+
+max
+iV
+
+zi(0)
+
+and
+
+Let
+
+y~
+
+:=
+
+min
+iV
+
+yi(0).
+
+Lemma 3.4. Consider a directed graph G = {V, E} with fixed delays with uniform bound ¯ and an update rule for the Maximum Consensus Protocol (MXP) given by (9) and (10)
+
+and the Minimum Consensus Protocol (MNP) given by (11)
+
+and (12).
+
+JOURNAL OF LATEX CLASS FILES, VOL. 14, NO. 8, AUGUST 2015
+
+5
+
+(a)
+
+Then, for all k
+
+>
+
+0,
+
+max
+iV
+
+zi(k
+
+)
+
+=
+
+z~
+
+and
+
+min
+iV
+
+yi(k
+
+)
+
+=
+
+y~.
+
+(b) Let for some k, zj(k) = z~, that is, node j has the
+
+maximum value in the network at the kth time instant.
+
+Then, for all instants k > k, zj(k ) = z~, that is node j
+
+continues to be the maximum for k > k.
+
+(c) Let for some k, yj (k) = y~, that is, node j has the minimum value in the network at the kth time instant.
+
+Then, for all instants k > k, yj (k) = y~, that is node j
+
+continues to be the minimum for k > k.
+
+Proof. (a) The proof is left to the reader. (b) The proof follows from the fact that if the maximum value at the current iteration is held at node j, then node j continues to hold the maximum value in future iterations as well, as the update step of the MXP (10) includes the past value of node j. (c) The proof is similar to the proof of (b).
+
+Let,
+
+¯(j) := max z(T (j)), (j) := min y(T (j)), and (j) := ¯(j) - (j).
+
+Lemma 3.6. Consider the consensus protocol given by (1)
+
+with each node converging to , i = 1, 2, ...n. Then the sequences
+
+i¯.e(j.,)kliamndxi((kj))
+
+=  for all converge to
+
+ as j  . Further, the sequence (j)  0 as j  .
+
+ProafNonoordft.keal lIilfmthi{ax=tm,(ki1¯n),(}x2j k,i)=(..ka1.nn),id,=Vthce(onjfn)ovitrearfragoelelllssoiuwt=bosse1tq,h,u2ate,thn.ak.clt.inemiss.,omkfliamc xonxxviie((rkkg))en==t sequences max xi(k) and min xi(k) respectively. Thus, ¯(j) and (j) converge to the same limit . This implies that, (j)  0 as j  .
+
+Lemma 3.5. Consider a directed graph G = {V, E} with
+
+fixed delays with uniform bound ¯ and an update rule for
+
+the Maximum Consensus Protocol (MXP) given by (9) and
+
+(10) and that for for the Minimum Consensus Protocol (MNP)
+
+given by
+
+(11)
+
+and
+
+(12).
+
+Let
+
+z1
+
+(0)
+
+=
+
+max
+jV
+
+zj (0)
+
+and
+
+y1
+
+(0)
+
+=
+
+min
+jV
+
+yj (0).
+
+Then,
+
+for
+
+all
+
+k
+
+
+
+D(1
+
++
+
+¯),
+
+and
+
+any
+
+m
+
+
+
+V
+
+,
+
+(a) zm(k) = z1 (0). (b) ym(k) = y1 (0).
+
+Proof.
+
+(a)
+
+As
+
+z1 (0)
+
+=
+
+max
+jV
+
+zj (0)
+
+it
+
+follows
+
+from
+
+Lemma
+
+3.4
+
+that
+
+z1 (k) = z1 (0) for all k  0. Consider any node i  V . Since the graph G is strongly connected, there exists a directed path (2, 1)(3, 2)...(i, d) connecting i and 1. It follows from the update rule (9) and (10) that within ¯ iterations, 2 will have received the value z1 (0) and thus, z2 (¯ + 1) = z1 (0); and for any k  ¯ + 1, z2 (k) = z1 (0). Using the above steps for 3, 4, ..., d, i, it follows that,
+
+zi(k) = z1 (0) for any k  d(¯ + 1) Thus if k  D(¯+1)  d(¯+1); zi(k) = z1 (0). Since D is the diameter of the graph G, it follows that, for k  D(¯ + 1),
+
+zm(k)
+
+=
+
+z1 (0)
+
+=
+
+max
+jV
+
+zj (0)
+
+for
+
+all
+
+m
+
+
+
+V.
+
+(b) The proof is similar to the proof of (a). This proves the theorem.
+
+B. Distributed finite-time Algorithm for Terminating Consensus protocol
+In this section, an algorithm based on Maximum-Minimum Consensus for stopping the consensus protocol distributively in finite-time is proposed using the results derived in the previous sub-sections. At time instants T (j) = jT , for j = 1, 2, ... MXP and MNP protocols are reset with initial conditions x(jT ), thus z(T (j)) = x(T (j)) and y(T (j)) = x(T (j)).
+
+It should be noted that Lemma 3.6 is a consequence of Corollary 3.2.
+
+Algorithm 1: Finite-time termination of consensus in presence of uniformly bounded delays
+
+1 Input: 2 x(0), D, ¯, , P ; 3 Initialize: 4 k := 0; 5 l := 1; 6 zi := xi(0); 7 yi := xi(0); 8  := 1; 9  := 0; 10 Repeat:
+
+// Initial condition
+
+11 12
+
+xi(k + 1) = piixi(k) if k + 1 =  + l(1 +
+
++¯)thjeNni-
+
+pij xj
+
+(k
+
+-
+
+ij )
+
+/* maximum and minimum consensus updates
+
+given by (10) and (12) for each node
+
+iV
+
+*/
+
+13
+
+zi
+
+:=
+
+max
+j Ni- {i}
+
+zi;
+
+14
+
+yi
+
+:=
+
+min
+j Ni- {i}
+
+yi;
+
+15
+
+l := l + 1
+
+16
+
+end
+
+17 emit: xi(k + 1), yi and zi 18 if k + 1 = T  then
+
+19
+
+if zi - yi <  then
+
+20
+
+break ;
+
+// stop xi, yi and zi updates
+
+21
+
+else
+
+22
+
+zi := xi(T );
+
+23
+
+yi := xi(T );
+
+24
+
+ :=  + 1;
+
+25
+
+l := 1 ;
+
+// Reset
+
+26
+
+ :=  + k
+
+27
+
+end
+
+28
+
+end
+
+29 k := k + 1
+
+JOURNAL OF LATEX CLASS FILES, VOL. 14, NO. 8, AUGUST 2015
+
+6
+
+Theorem 3.2. Algorithm 1 converges in some finite-time Tc < , that is, Algorithm 1 reaches line number 20. Mathematically, given any  > 0, there exists Tc  N such that (j) < .
+Proof. It follows from Lemma 3.6 that (j)  0 as j  . Thus, for any given  > 0, there exists an integer j0 such that (j) <  for all j  j0. This implies that the Algorithm 1 converges in finite-time Tc = T (j0).
+Remark 1. If ¯ = 0, Algorithm 1 and the results presented above reduce to those presented in [20].
+Remark 2. All the results presented till this point for consensus and max-min consensus hold true even for uniformly bounded time varying delays under the assumption that only one packet of information from each neighbor can be processed at any time instant in the update rule (1). The asymptotic convergence of consensus under random delay model with at most one packet of information being processed at any time instant by any node is established in [12], [13] and [23]. The contribution here is that Algorithm 1 is valid even for these communication models for finite-time termination of consensus. The results and proofs for this communication model can be found in Appendix B.
+
+4. AVERAGE CONSENSUS PROTOCOL
+
+Average consensus problem is a special case of consensus where all the nodes converge to the average of the initial conditions. and is defined as follows.
+
+Definition 2. (Average Consensus) A system of n agents is
+
+said to have achieved average consensus if for any initial
+
+condition x(0) 1, 2, ..., n.
+
+
+
+Rn,
+
+klimxi(k)
+
+=
+
+n i=1
+
+xi
+
+(0)
+
+n
+
+for
+
+all
+
+i
+
+=
+
+In [24], it is shown that average consensus can be reached by using the ratio of two consensus updates as described below. First the assumptions and algorithm developed in [24] are discussed. Consider a directed graph with n nodes which satisfies the following assumptions. B1. Weight matrix P associated with the directed graph is
+primitive and column stochastic. B2. The directed graph is strongly connected. B3. Any node i in the directed graph has access to its own
+value at any instant k without any delay. B4. The delay on the directed edge connecting any two nodes
+i and j in the directed graph is bounded by some constant ¯, i.e., ij  ¯ < .
+Theorem 4.1. ([24]) Suppose the assumptions B1-B4 are satisfied. Let xi(k) and wi(k) be the result of iterations
+
+¯
+
+xi(k+1) = piixi(k)+
+
+pijxj(k-r)Iij(r), and (13)
+
+jNi - r=0
+
+Let the initial conditions be given by x(0) =
+
+[x1(0) x2(0)...xn(0)]T and w(0) = 1n where 1n is a
+
+n × 1 column vector of all ones. Then the ratio of
+
+wi(k) for all
+
+asymptotically converges to j = 1, ..., n where µj(k) :=
+
+klimµj (k) = xj (k)/wj (k).
+
+xi
+
+(k) and
+
+n i=1
+
+xi
+
+(0)
+
+n
+
+In order to satisfy the column stochastic assumption of
+
+Theorem 4.1 and to extend Algorithm 1 (which requires row
+
+stochasticity) for average consensus, doubly stochastic weight
+
+matrices are chosen. A square matrix is irreducible if and only
+
+if its associated graph is strongly connected [25]. Using Perron
+
+Frobenius Theorem, it follows that doubly stochastic weight
+
+matrix P is primitive [22]. Using Theorem 4.1 it can be shown
+
+that running two consensus protocols given by (13) and (14),
+
+the average consensus can be asymptotically achieved with
+
+the initial conditions as x(0) = [x1(0) x2(0)...xn(0)]T and
+
+w(0) = 1n where 1n is a n × 1 column vector of all ones.
+
+Thus the ratio of xj(k) and wj(k) asymptotically converges
+
+to
+
+n i=1
+
+xi
+
+(0)
+
+n
+
+=
+
+c,
+
+for
+
+all
+
+j
+
+=
+
+1, ..., n.
+
+A. Distributed finite-time Algorithm for terminating Average Consensus Protocol
+
+An MXP and an MNP associated with (13) are executed.
+
+Another MXP and MNP associated with (14) are also ex-
+
+ecuted. By Theorem 3.1, both (13) and (14) converge. Let
+
+kal lilmi =xi
+
+(k) =  for all i 1, 2, ..., n. Using
+
+= 1, 2, ..., n and Theorem 3.2, the
+
+kcliomnswenis(uks)
+
+=  for protocol
+
+given by (13) can be stopped in some finite-time Tc1 when | xi(Tc1) -  |< . Also, using Theorem 3.2, the consensus protocol given by (14) can be stopped in some finite-time Tc2 when | wi(Tc2) -  |< . Using Theorem 4.1 given > 0, (the bound within which the deviation of states from average
+
+of initial conditions is permitted),  can be chosen such that
+
+stopping the consensus protocols given by (13) and (14) in
+
+finite-time depending on chosen , will ensure that average
+
+consensus can be achieved within a positive constant of the
+
+average of initial conditions c in finite-time. The deviation
+
+from average of initial conditions by stopping the consensus
+
+protocols (13) and (14) in finite-time is now quantified in the
+
+following discussion.
+
+It is shown in [24] that
+
+lim
+k
+
+xi(k) wi(k)
+
+=
+
+c
+
+=
+
+ 
+
+.
+
+(15)
+
+Since, the two consensus protocols given by (13)and (14)
+
+terminate when they reach within some specified bound  > 0,
+
+xi(k) and wi(k) may not converge to  and  respectively
+
+but instead attain ~ and ~ respectively as the terminal values.
+
+The the
+
+croantisoenswxuiis
+
+will deviate from c protocols given by
+
+(=13)anddep(e1n4d)inagre
+
+on when stopped.
+
+The deviation from average can be quantified explicitly as a
+
+function of , ~ and ~, all of which are known values once  is specified. The deviation is quantified by (16) below.
+
+wi(k + 1) = piiwi(k) +
+
+¯
+pijwj(k - r)Iij(r). (14)
+
+jNi - r=0
+
+~ ~
+
+-
+
+~ ~
+
+(
+
+1 1
+
+- +
+
+ ~  
+
+)
+
+
+
+xi wi
+
+-
+
+c
+
+
+
+~ ~
+
+-
+
+~ ~
+
+(
+
+1 1
+
++ -
+
+
+
+~ 
+
+)
+
+
+
+(16)
+
+JOURNAL OF LATEX CLASS FILES, VOL. 14, NO. 8, AUGUST 2015
+
+7
+
+1
+
+2
+
+1
+
+2
+
+4
+
+3
+
+3
+
+4
+
+5
+
+(a)
+
+(b)
+
+Figure 1: (a) Directed ring network of 4 nodes (b) A general representative network of 5 nodes.
+
+Given the error tolerance within which the convergence to average of initial conditions is desired,  should be chosen to satisfy the bounds in (17) and (18),
+
+xi wi
+
+-
+
+c
+
+
+
+~ ~
+
+-
+
+~ ~
+
+(
+
+1 1
+
+- +
+
+
+
+~ 
+
+)
+
+
+
+
+
+,
+
+(17)
+
+xi wi
+
+-
+
+c
+
+
+
+~ ~
+
+-
+
+~ ~
+
+(
+
+1 1
+
++ -
+
+ ~  
+
+)
+
+
+
+-
+
+.
+
+(18)
+
+This implies that given
+
+and wi(k), | appropriately
+
+wxtioi((kke))ns-urce|
+
+ that
+
+t~~thhee-eerr~~rro(orr11+-ftro~ol)em,ratnhceceaanvebrfeaogrcehxioiss(ekans)
+
+small as desired. A detailed derivation of (16) is given in
+
+Appendix C.
+
+Using the Algorithm 1, distributed finite-time termination
+
+algorithm for average consensus is presented next.
+
+Algorithm 2: Finite-time termination of average consensus in presence of uniformly bounded delays 1 Given (the permitted deviation from average of initial
+conditions), Choose appropriately  for stopping the consensus updates given by (13) and (14) 2 Run Algorithm 1 for both (13) and (14) maintained by each node i  V 3 Stop Algorithm 1 for both (13) and (14) together, i.e. for any node Algorithm 1 terminates only when both (13) and (14) have met the termination criterion . This terminates Algorithm 2 4 Use (16) to check the deviation of the so computed value from the actual average of initial conditions. If the deviation is within desired bound , stop. Else repeat Steps 1-3 with a smaller value of .
+
+5. RESULTS AND DISCUSSION A. Simulation Results
+Here results of Algorithm 2 for finite-time termination of average consensus on the ring network shown in Figure 1(a) and a representative 5 node network shown in Figure 1(b) in presence of fixed communication delays is presented. The
+
+communication weight matrix for the ring network is chosen
+
+to be,
+
+
+
+
+
+1/2 1/2 0 0
+
+P
+
+= 
+
+0 0
+
+1/2 0
+
+1/2 1/2
+
+1/02 ,
+
+1/2 0 0 1/2
+
+and, for the 5 node network the weight matrix is chosen to be
+
+
+
+
+
+2/5 1/5 1/5 1/5 0
+
+P = 111///555
+
+2/5 1/5
+0
+
+1/5 2/5 0
+
+0 0 2/5
+
+112///555 .
+
+0 1/5 1/5 2/5 1/5
+
+For the ring network in Figure 1(a), the delay on the edges are
+
+
+
+
+
+0100
+
+ = 00
+
+0 0
+
+2 0
+
+01 .
+
+2000
+
+The initial conditions are set as x(0) = [50 70 150 30]T . The
+
+error tolerance for deviation from average of initial conditions
+
+is set to = 0.1. The stopping bound is set to  = 0.01
+
+for both the consensus algorithms given by (13) and (14).
+
+For the network in Figure 1(a), the consensus algorithm given
+
+by (13) converges to the value 42.85 in 166 iterations and the consensus algorithm given by (14) converges to the value
+
+0.57 in 166 iterations. Accordingly the ratio of (13) and (14)
+
+converges to 74.99 in 166 iterations as shown in Figure 2. The average of the initial conditions is 75 and thus, the
+
+deviation from the average achieved by implementing finite-
+
+time termination algorithm on ratio consensus is well within
+
+the bounds given by (16), (17) and (18).
+
+For the network in Figure 1(b) the delay on the edges are
+
+
+
+
+
+02100
+
+ = 210
+
+0 0 0
+
+0 0 0
+
+0 0 0
+
+300 .
+
+03000
+
+The initial conditions for this network are set as x(0) = [1000 0 200 100 700]T and the error tolerance for deviation from average of initial conditions is again set to be = 0.1. The consensus algorithm given by (13) converges to the value 270.3 in 40 iterations. For this network, the consensus algorithm given by (14) converges to the value 0.6757 in 40 iterations. Accordingly the ratio of (13) and (14) converges to 399.9974 in 40 iterations as shown in Figure 3. The average of the initial conditions is 400 and thus, the deviation from the average achieved by implementing finite-time termination algorithm on ratio consensus is well within the bounds given by (16), (17) and (18).
+Table I presents the results for comparison of Algorithm 2 with the distributed finite-time algorithm proposed in [17]. The computational complexity is listed in terms of the total number of nodes in the network and it can be seen that the
+
+JOURNAL OF LATEX CLASS FILES, VOL. 14, NO. 8, AUGUST 2015
+
+8
+
+160
+75.02
+
+1000
+
+140
+
+75.01
+
+800
+
+Agent value
+
+75
+
+120
+
+74.99
+
+600
+
+100
+
+74.98
+
+140
+
+150
+
+160
+
+400
+
+80
+
+Agent 1 Agent 2 Agent 3 Agent 4 Agent 5
+
+Agent value
+
+60
+
+Agent 1
+
+Agent 2
+
+Agent 3
+
+40
+
+Agent 4
+
+Error margin
+
+20
+
+0
+
+50
+
+100
+
+150
+
+Number of iterations
+
+Figure 2: Simulation results for Maximum-Minimum consensus based distributed finite-time termination of average consensus for the ring network of 4 nodes shown in Figure 1(a).
+
+1000
+
+400.1
+
+800 400
+
+Agent value
+
+600
+400
+200
+0 0
+
+399.9
+
+25
+
+30
+
+35
+
+40
+
+Agent 1 Agent 2 Agent 3 Agent 4 Agent 5 Error margin
+
+10
+
+20
+
+30
+
+40
+
+Number of iterations
+
+Figure 3: Simulation results for Maximum-Minimum consensus based distributed finite-time termination of average consensus for the network of 5 nodes shown in Figure 1(b).
+
+proposed algorithm is more efficient in terms of both CPU as well as memory requirements.
+
+Table I: Comparison of the simulation results for the 5 node network using the proposed algorithm and the algorithm in [17].
+
+Algorithm Algorithm in [17]
+Algorithm 2
+
+Number of iterations
+30 48
+
+Computational
+
+complexity at a node
+
+for an iteration
+
+Time
+
+Space
+
+complexity complexity
+
+O(n2) O(n)
+
+O(n2) O(n)
+
+Next, we demonstrate the applicability of our distributed finite time termination algorithm (Algorithm 1) for termination
+
+200
+
+0
+
+0
+
+10
+
+20
+
+30
+
+40
+
+50
+
+Number of iterations
+
+Figure 4: Simulation results for Maximum-Minimum consensus based distributed finite-time termination in the presence of uniformly bounded time-varying delays for the network of 5 nodes shown in Figure 1(b).
+
+of consensus iterations in the presence of random (time varying) but bounded communication delays on the network shown in Figure 1(b). It is assumed that at each link at each time instant, the delay is a non-negative integer upper bounded by ¯ = 3. All the delays are sampled from a uniform distribution on {0,1,2,3} for the simulation. The initial conditions are set as x(0) = [1000 0 200 100 700]T . Each node determines that the consensus has reached within an error margin of  = 0.01 in 48 iterations. All the nodes converge to a common value of 261.1 (see Figure 4). It is worth noting that the final value at which the consensus protocol converges in presence of time-varying delays depends on the specific realization of the communication delays.
+
+B. Experimental Demonstration In this section, the functionality and efficacy of the proposed
+algorithm on a physical network is established. First, the experimental setup is described and then the results and observations are discussed.
+Rapsberry Pi devices [26] are used to setup the physical network for experimentation. Each of such devices is a Raspberry Pi 3 model b with configuration of 1.2 GHz CPU, 1 GB RAM and 802.11n Wireless LAN support [27]. Each of the agent nodes in the network is an individual Raspberry Pi device capable of communicating with other agents over Internet via a Wi-Fi network. In a practical setting, all nodes communicate with latency in the communication channel. The distribution of pair-wise communication latency for each node in the experimental realization of the network given in Figure 1(b) is shown in Figure 5. For instance, the box plot labelled as `Agent 1' depicts the latency experienced by Raspberry Pi 1 for several communication requests sent to every other Raspberry Pi in the network i.e. Agents 2, 3, 4 and 5. It can be seen that the network latency ranges from 10ms to 100ms. Data communications happen via HTTP protocol [28], which is designed over TCP/IP [29] and ensures guaranteed, in-order delivery of data packets between the nodes. A NodeJS [30]
+
+JOURNAL OF LATEX CLASS FILES, VOL. 14, NO. 8, AUGUST 2015
+
+9
+
+Table II: Experimental results for the 5 node network using
+
+120
+
+delay-free termination algorithm of [20].
+
+Latency in ms Agent value
+
+100 80 60 40 20 0 Agent 1
+
+Agent 2
+
+Agent 3
+
+Agent 4
+
+Agent 5
+
+Agent Agent 1 Agent 2 Agent 3 Agent 4 Agent 5
+
+Initial Value 1000 0 200 100 700
+
+Converged Value 225.05 225.05 225.05 225.05 225.05
+
+Error 174.95 174.95 174.95 174.95 174.95
+
+Figure 5: Distribution of pair-wise latency (in milliseconds) for each node in the network shown in Figure 1(b). based application capable of bi-directional communication for running the consensus algorithm on each Raspberry Pi is developed. NodeJS has an event-driven architecture capable of asynchronous I/O which greatly enhances throughput and scalability in real-time web applications making it an ideal choice for applications targeted by the framework of the article. The application accepts a configuration setup to initialize the consensus algorithm and communicate with other nodes for information exchange, a necessary requirement for a Raspberry Pi to act as an agent. All the agents are initialized by passing the configuration information before starting the consensus protocol, and the agent node will then transmit or receive data from the neighbouring nodes in real-time. The agent node also logs data periodically for analysis.
+To illustrate the validity and performance of Algorithm 2, this algorithm is compared with the delay-free termination algorithm presented in [20] . Both the algorithms are tested in presence of constraints and variabilities that a physical network inherits. Figure 6 and Table II illustrate the performance of the delay-free termination algorithm for the 5 node network shown in Figure 1(b) and it can be seen that this algorithm does not terminate near the average of the nodal initial conditions. Next, the distributed finite-time termination of average consensus algorithm in presence of fixed delays is tested on the directed ring network having four agents as depicted in Figure 7(a) and the observed results are presented in Table III. The outcome of the same algorithm when applied to the network of 5 agents shown in Figure 1 (b) are presented in Figure 7(b) and Table IV. The delays and initial conditions for both the cases were set up in the same way as they were for simulations and the error margin i.e.  is also chosen to be 0.01. From Tables III and IV and Figure 7 (a) and 7 (b), it is clear that the finite time termination algorithm terminates when the nodes reach close to the average of the initial conditions, thereby exhibiting behaviour similar to the simulation results, and, hence, validating our approach. It can further be observed that the error margin chosen is quite aggressive and if it was relaxed to 1% of the average value, the algorithm will converge substantially early.
+6. CONCLUSION In this article, the problem of consensus and average consensus is discussed in the presence of fixed delays in the network. Under the assumption of a strongly connected graph formed by
+
+1000 800 600
+
+Agent 1 Agent 2 Agent 3 Agent 4 Agent 5 Average
+
+400
+
+200
+
+0
+
+0
+
+10
+
+20
+
+30
+
+40
+
+Number of iterations
+
+Figure 6: Experimental results for delay-free termination algorithm in presence of fixed delays on the network of 5 nodes shown in Figure 1(b).
+
+Table III: Experimental results for 4 node ring network.
+
+Agent Agent 1 Agent 2 Agent 3 Agent 4
+
+Initial Value 50 70 150 30
+
+Converged Value 74.99 74.99 74.99 74.99
+
+Error 0.01 0.01 0.01 0.01
+
+Table IV: Experimental results for representative 5 node network.
+
+Agent Agent 1 Agent 2 Agent 3 Agent 4 Agent 5
+
+Initial Value 1000 0 200 100 700
+
+Converged Value 399.99 399.99 399.99 399.99 399.99
+
+Error 0.01 0.01 0.01 0.01 0.01
+
+the agents in the network, consensus is shown to be achieved asymptotically. A novel Max-Min Consensus based finitetime stopping criterion is introduced to distributively terminate the computation of consensus by the agents when each of them has reached within a pre-specified error bound. Further this algorithm is integrated with ratio consensus algorithm to prove the finite-time convergence to the average of initial conditions. The deviation achieved from the average of initial conditions by using the proposed distributed finite-time stopping criterion is also quantified. Furthermore, proper choice
+
+JOURNAL OF LATEX CLASS FILES, VOL. 14, NO. 8, AUGUST 2015
+
+10
+
+Agent value
+
+160 140 120 100
+80 60 40 20
+0
+1000
+
+75.02
+
+75.01
+
+75
+
+74.99
+
+74.98
+
+140
+
+150
+
+160
+
+50
+
+100
+
+Number of iterations
+
+(a)
+
+Agent 1 Agent 2 Agent 3 Agent 4 Error margin
+150
+
+400.1
+
+800 400
+
+Agent value
+
+600
+400
+200
+0 0
+
+399.9 25
+
+30 35 40
+Agent 1 Agent 2 Agent 3 Agent 4 Agent 5 Error margin
+
+10
+
+20
+
+30
+
+40
+
+Number of iterations
+
+(b)
+
+Figure 7: Experimental results for max-min based distributed finite-time criterion for average consensus protocol in presence of uniformly bounded fixed delays on the networks shown in Figure 1: (a) Ring network of 4 nodes (b) general representative network of 5 nodes.
+
+APPENDIX A PROOFS OF LEMMAS IN SECTION 3 A. Proof of Lemma 3.1 Proof. From (1), we have,
+
+xi(k + 1) = piixi(k) +
+
+pij xj (k - ij ).
+
+j Ni-
+
+It follows that,
+
+xi(k + 1)  piixqi (k - qi ) +
+
+pij xqi (k - qi )
+
+j Ni-
+
+= xqi (k - qi ), and,
+
+(19)
+
+xi(k + 1)  piixsi (k - si ) +
+
+pij xsi (k - si )
+
+j Ni-
+
+= xsi (k - si ).
+
+(20)
+
+By taking maximum over all nodes i  V in (19), it follows that,
+
+xi(k+1)
+
+
+
+max
+iV
+
+xi(k+1)
+
+
+
+max
+iV
+
+xqi
+
+(k-qi
+
+)
+
+=
+
+M
+
+(k),
+
+(21)
+
+for all i  V . Similarly, by taking minimum over all nodes in (20), it follows that,
+
+xi(k
+
++
+
+1)
+
+
+
+min
+iV
+
+xi(k
+
++ 1)
+
+
+
+min
+iV
+
+xsi
+
+(k
+
+- si
+
+)
+
+=
+
+m(k),
+
+(22)
+
+for all i  V . When k = k the proof for (6) and (7) follows from the definitions. For all time instants k > k, the proof for (6) and (7) is reached using strong induction and is presented below.
+Define {qm, qm } := arg max xqj (k - qj ) for some qm in
+jV
+V, qm  {0, 1, 2, ..., ¯}. Thus, xqm (k - qm ) is the maximum value among all nodal states in the horizon of ¯ into the past starting from iteration k, that is, by definition xqm (k - qm ) =
+M (k). Using (21), it follows that,
+
+of the tolerance bound for stopping consensus algorithm can facilitate the convergence of average consensus arbitrarily close to the actual average of initial conditions. Furthermore, the practicality and real-time implementation of the proposed algorithm has been verified by testing it on a network of agents (Raspberry Pi devices) communicating over actual communication channels. The simulation and experimental results are in close agreement, thus, establishing the proposed method as a valid and practically attractive algorithm. This article is one of the very few attempts made in the direction of finite-time stopping of consensus and average consensus algorithms. To the best of the knowledge of the authors, the proposed algorithm is the simplest in terms of algorithmic and computational complexity.
+
+xi(k
+
++
+
+1)
+
+
+
+max
+jV
+
+xqj (k
+
+-
+
+qj )
+
+=
+
+xqm (k
+
+-
+
+qm ).
+
+(23)
+
+Suppose it is asserted that,
+
+xi(k
+
+)
+
+
+
+max
+jV
+
+xqj (k
+
+-
+
+qj )
+
+=
+
+xqm (k
+
+-
+
+qm ),
+
+(24)
+
+for k = {k + 2, ..., k + l}.
+
+Thus, xi(k + 2)  xqm (k - qm ), · · · , xi(k + l) 
+
+xqm (k - qm ), for all i = 1, 2, ..., n. Define {qm, qm } :=
+
+arg max
+jV
+
+xqj (k + l - qj )
+
+for
+
+some
+
+qm
+
+in
+
+V, qm
+
+
+
+{0, 1, 2, ..., ¯}, that is, among all nodal states
+
+inxqtm he(kho-rizoqm n
+
+) is of ¯
+
+the maximum value into the past starting
+
+from iteration k + l.
+
+Using
+
+(21),
+
+it
+
+follows
+
+that
+
+xi(k
+
++
+
+l
+
++
+
+1)
+
+
+
+max
+jV
+
+xqj (k
+
++
+
+l
+
+-
+
+qjC)o=nsxidqemr
+
+(k + l - the case
+
+wqm hen),
+
+for l>
+
+¯ - ¯ = k. Thus, k + l  k +
+
+and (24), it follows that xi(k +
+
+xqm (k - qm ).
+
+all i = 1, 2, ..., n.
+
+¯. Then
+
+l l
+
++-1)qm
+
+k+ k xqm
+
++l -1.qUmsin>g (k + l - qm
+
+k+ (23)
+)
+
+JOURNAL OF LATEX CLASS FILES, VOL. 14, NO. 8, AUGUST 2015
+
+11
+
+kkqm +C)o1n=ks-i+mdj e¯alrV.x-tFhxueqrjqtchm (akesr-emwoqrhkjee), +n=su11pmjp-aoVxsl¯ei>kj ¯{.km0T,-1akh,2xe,+¯n...,.,l¯Tk}-hx+ujs(lq,km -x-q.mqTm i(jhk)e-n, xqm (k + l - qm ). It follows that,
+
+xi(k + l + 1)  xqm (k + l - qm )  xqm (k - qm ).
+
+fHoqom lNlwoowewvseksrf,ur+opamlsp.oTt(shh2eeu3ks)in,<adfnreodkxm+((2k(42l+)1-)t,hlxaq-im t(,k.+qmIlt+)fo1l)lo{wksx+qthm1a,t(.kk..+,<kl-+k+ql}ml,
+
+-
+). it
+
+Thus, xi(k + l + 1)  piixi(k + l) + jNi- pijM (k). Hence,
+
+xi(k + l + 1) < piiM (k) +
+
+pijM (k) = M (k),
+
+jNi-
+
+implying, xi(k ) < M (k), for all k  k + 1.
+
+The proof for other inequality is similar to the proof above and is left to the reader.
+
+xqm (k + l - qm )  xqm (k - qm ) = M (k).
+
+It is thus established that, xqm (k - qm ) = M (k).
+
+xi(k +l +1)
+
+
+
+xqm
+
+(k +l -qm
+
+)
+
+
+
+This proves (6). Similarly, (7) can be proven. This completes
+
+the proof.
+
+B. Proof of Lemma 3.2
+
+Proof. By assumption for time instant k = k, xi(k) < M (k).
+
+For all time instants k > k, the proof is reached using strong
+
+induction. Note that xi(k + 1) = piixi(k) + ij). It follows that,
+
+jNi- pij xj (k -
+
+xi(k + 1)  piixi(k) +
+
+pij
+
+max
+jV
+
+xqj (k
+
+-
+
+qj ),
+
+jNi-
+
+or, xi(k + 1)  piixi(k) +
+
+pijM (k).
+
+jNi-
+
+Since, xi(k) < M (k), it implies that,
+
+xi(k + 1) < piiM (k) +
+
+pijM (k),
+
+or, xi(k + 1) < M (k).
+
+jNi-
+
+Suppose it is asserted that,
+
+C. Proof of Lemma 3.3
+
+Proof. Since min x(k) < max x(k), there exists a node i such
+
+that
+
+xi(k)
+
+<
+
+max x(k).
+
+Since
+
+max x(k)
+
+
+
+max
+jV
+
+xqj (k -
+
+qj ) := M (k), it follows that
+
+xi(k) < M (k).
+
+Consider any node j. By strong connectivity of G, there exists a directed path connecting nodes i and j. Assume the shortest directed path connecting i and j is given by (m1, i)(m2, m1, ) · · · (j, mdj-1). Using (1), it follows that
+
+xm1 (k + ¯ + 1) = pm1ixi(k + ¯ - m1i)+
+
+pm1j xj (k + ¯ - m1j ).
+jNm-1 {m1 }\{i}
+As (k + ¯ - m1j)  k, using the definition of M (k) and (6), it follows that
+
+xm1 (k + ¯ + 1)  pm1ixi(k + ¯ - m1i)+ jNm -1{m1}\{i}pm1j M (k + ¯).
+However, since M (k + ¯)  M (k), it follows that,
+xm1 (k + ¯ + 1)  pm1ixi(k + ¯ - m1i)+ jNm-1 {m1 }\{i}pm1j M (k).
+As k + ¯ - m1i  k, using the fact that, xi(k) < M (k) and Lemma 3.2, it follows that
+
+xi(k + l ) < M (k), for l = 2, ..., l.
+
+(25)
+
+It follows that,
+
+xi(k + l + 1) = piixi(k + l) +
+
+pij xj (k + l - ij ).
+
+jNi-
+
+Consider the case when k  k + l - r, where r  {0, 1, ..., ¯}. Then k + 2 - ¯  k + l - r  k. As the index (k + l - r)  {k + 2 - ¯, ..., k}, it follows from the definition of M (k) that,
+
+xj(k + l - r)  M (k). Now consider the case when k < k + l - r. Using (25) and (6) it follows that,
+
+xj (k
+
++
+
+l
+
+-
+
+r)
+
+
+
+max
+jV
+
+xqj (k
+
+-
+
+qj )
+
+=
+
+M (k).
+
+xm1 (k + ¯ + 1) < pm1iM (k) +
+
+pm1j M (k).
+
+jNm-1 {m1 }\{i}
+
+Thus, xm1 (k + ¯ + 1) < M (k). Thus, using Lemma 3.2, it follows that for all k  k + ¯ + 1,
+
+Proceeding,
+
+xm1 (k ) < M (k).
+
+xm2 (k + 2¯ + 2) = pm2m1 xm1 (k + 2¯ + 1 - m2m1 )+
+pm2j xj (k + 2¯ + 1 - m2j ).
+jNm-2 {m2 }\{m1 }
+As (k + 2¯ + 1 - m2j)  (k + ¯ + 1)  k + 1, using (6) it follows that
+
+JOURNAL OF LATEX CLASS FILES, VOL. 14, NO. 8, AUGUST 2015
+
+12
+
+xm2 (k + 2¯ + 2)  pm2m1 xm1 (k + 2¯ + 1 - m1m2 )+
+pm2j M (k).
+jNm-2 {m2 }\{m1 }
+Note that (k + 2¯ + 1 - m1m2 )  (k + ¯ + 1) and xm1 (k + ¯ + 1) < M (k). Using Lemma 3.2, it follows that
+
+Thus,
+
+xm2 (k + 2¯ + 2) < pm2m1 M (k)+
+pm2j M (k).
+jNm-2 {m2 }\{m1 }
+
+xm2 (k + 2¯ + 2) < M (k). Thus, it can be concluded using Lemma 3.2, that for all k  k + 2¯ + 2, xm2 (k ) < M (k). It follows that for all k  k + dj¯ + dj,xj(k ) < M (k). Note that, k + D¯ + D  k + dj¯ + dj, and, thus, for any v  V, v = i, k  k + D¯ + D implies, xv(k ) < M (k). It follows that, for all k  k + D(¯ + 1),
+
+max
+
+x(k
+
+)
+
+<
+
+max
+jV
+
+xqj (k
+
+-
+
+qj )
+
+=
+
+M (k).
+
+The proof for other inequality is similar to the proof above and is left to the reader.
+
+APPENDIX B TIME-VARYING DELAY FRAMEWORK The consensus model which incorporates time-varying delays is dealt in [12] and [13]. Under this model, node i  V updates its state at instant k + 1 by:
+
+Furthermore, denote the maximum and minimum over all nodal values over the horizon in the past {k - ¯, ..., k - 1, k} by M (k) and m(k) respectively as in (4) and (5).
+
+Lemma B.1. Consider the update rule (26). Then for all time instants k  k and for all i  V ,
+
+xi(k
+
+)  max
+jV
+
+xqj (k - qj ) = M (k),
+
+and,
+
+(27)
+
+xi(k
+
+)
+
+
+
+min
+sV
+
+xqs (k
+
+-
+
+qs )
+
+=
+
+m(k).
+
+(28)
+
+Proof. From (26), we have
+
+xi(k + 1) = piixi(k) +
+
+pijxj(k - ij(k)).
+
+j Ni-
+
+It follows that,
+
+xi(k + 1)  piixqi (k - qi ) +
+
+pij xqi (k - qi )
+
+j Ni-
+
+= xqi (k - qi ), and,
+
+(29)
+
+xi(k + 1)  piixsi (k - si ) +
+
+pij xsi (k - si )
+
+j Ni-
+
+= xsi (k - si ).
+
+(30)
+
+By taking maximum over all nodes i  V in (29), it follows that,
+
+xi(k+1)
+
+
+
+max
+iV
+
+xi(k+1)
+
+
+
+max
+iV
+
+xqi
+
+(k-qi
+
+)
+
+=
+
+M
+
+(k),
+
+(31)
+
+for all i  V . Similarly, by taking minimum over all nodes in (30), it follows that,
+
+xi(k
+
++
+
+1)
+
+
+
+min
+iV
+
+xi(k
+
++ 1)
+
+
+
+min
+iV
+
+xsi
+
+(k
+
+- si
+
+)
+
+=
+
+m(k),
+
+(32)
+
+for all i  V . It should be noted that (31) and (32) are same as (21) and (22) respectively. Hence, the rest of the proof follows exactly the same way as the proof of Lemma 3.1.
+
+xi(k + 1) = piixi(k) +
+
+pijxj(k - ij(k)), (26)
+
+jNi-
+
+where ij(k)  {0, 1, 2, ..., ¯}. The assumptions A1, A2, A4 and A5 presented in Section
+
+2 are valid for this case as well whereas assumption A3 is
+
+not valid as the link delays are time-varying but uniformly
+
+bounded by some finite integer ¯. It is proven in [12] and
+
+[13] that the consensus update algorithm given by (26) con-
+
+verges asymptotically. To prove the applicability of finite-time
+
+termination algorithm proposed in Section 4 (Algorithm 1) for
+
+the time-varying delay case, the results presented in Section
+
+3 are proved here considering update equation given by (26).
+
+Like the fixed delay case, let for node i, the maximum over all
+
+values held by its neighbors including itself currently and in
+
+the ¯ past instants be denoted by xqi (k-qi ) and the minimum over all values held by its neighbors including itself currently
+
+and in the ¯ past instants be denoted by xsi (k - si ). The
+
+definitions of qi, qi , si and Since, ij(k)  {ij},
+
+si are same as it follows that
+
+in (2) for j
+
+and (3).  Ni-
+
+
+
+{i}, xj(k - ij(k))  xqi (k - qi ) and xj(k - rij(k)) 
+
+xsi (k - si ).
+
+Lemma B.2. Consider a strongly connected graph G = {V, E} running consensus protocol given by (26) with an initial condition x(k). Let i be a node such that xi(k) < M (k) and let j be a node such that xj(k) > m(k), then for all time instants k  k, xi(k ) < M (k) and xj(k ) > m(k).
+
+Proof. By assumption for time instant k = k, xi(k) < M. For all time instants k > k, the proof is reached using strong induction. Note that
+
+xi(k + 1) = piixi(k) +
+
+pijxj(k - ij(k)).
+
+jNi-
+
+It follows that
+
+xi(k + 1)  piixi(k) +
+
+pij
+
+max
+jV
+
+xqj (k
+
+-
+
+qj ).
+
+jNi-
+
+Then,
+
+xi(k + 1)  piixi(k) +
+
+pijM (k).
+
+jNi-
+
+JOURNAL OF LATEX CLASS FILES, VOL. 14, NO. 8, AUGUST 2015
+
+13
+
+Since, xi(k) < M (k), it follows that,
+
+Thus,
+
+xi(k + 1) < piiM (k) +
+
+pijM (k).
+
+jNi-
+
+xi(k + 1) < M (k). Suppose it is asserted that,
+
+xi(k + l ) < M (k), for l = 2, ..., l.
+
+As (k + ¯ - m1j(k + ¯))  k, using the definition of M (k) and (27), it follows that
+xm1 (k + ¯ + 1)  pm1ixi(k + ¯ - m1j(k + ¯))+ pm1j M (k).
+jNm-1 {m1 }\{i}
+As (k + ¯ - m1j(k + ¯))  k, using the fact that, xi(k) < (33) M (k) and using Lemma B.2, it follows that
+
+It follows that
+
+xm1 (k + ¯ + 1) < pm1iM (k) +
+
+pm1j M (k).
+
+xi(k + l + 1) = piixi(k + l) +
+
+pijxj(k + l - ij(k + l)).
+
+jNm-1 {m1 }\{i}
+
+jNi-
+Consider the case when k  (k+l-ij(k+l)), then k+2-¯ 
+
+Thus, xm1 (k + ¯ + 1) < M (k). Thus, using Lemma B.2, it follows that for all k  k + ¯ + 1,
+
+(k + l - ij(k + l))  k. As the index (k + l - ij(k + l)) 
+
+xm1 (k ) < M (k).
+
+{k + 2 - ¯, ..., k}, it follows from the definition of M (k) that Proceeding further on the directed path,
+
+xj(k + l - ij(k + l))  M (k). Now consider the case when k < (k + l - ij(k + l)). Using (33) and (27) it follows that
+
+xj (k
+
++
+
+l
+
+-
+
+ij (k
+
++
+
+l))
+
+
+
+max
+jV
+
+xqj (k
+
+-
+
+qj )
+
+=
+
+M (k).
+
+Thus, xi(k + l + 1)  piixi(k + l) Hence,xi(k+l+1) < piiM (k)+
+This implies that,
+
++
+j
+
+jNi- pij M Ni- pij M (k)
+
+(k). =M
+
+(k).
+
+xi(k
+
+)
+
+<
+
+max
+jV
+
+xqj (k
+
+-
+
+qj )
+
+=
+
+M (k)
+
+for
+
+all
+
+k
+
+ k + 1.
+
+The proof for other inequality is similar to the proof above and is left to the reader.
+
+Like in Section 3, consider the maximum and minimum
+
+value in the network, which is defined as, max x(k) :=
+
+max
+iV
+
+xi(k)
+
+and
+
+min
+
+x(k)
+
+:=
+
+min
+iV
+
+xi(k)
+
+respectively.
+
+Lemma B.3. Consider a strongly connected graph G =
+
+{V, E} with an update rule for the consensus protocol given
+
+by (26) with an initial condition x(k) such that min x(k) <
+
+max x(k). Then for all k  k +D(¯+1), max x(k ) < M (k)
+
+and min x(k ) > m(k).
+
+Proof. Since min x(k) < max x(k), there exists a node i such
+
+that
+
+xi(k)
+
+<
+
+max x(k).
+
+Since
+
+max x(k)
+
+
+
+max
+jV
+
+xqj (k -
+
+qj ) := M (k), it follows that
+
+xi(k) < M (k).
+
+Consider any node j. By strong connectivity of G, there exists a directed path connecting nodes i and j. Assume the shortest directed path connecting i and j is given by (m1, i)(m2, m1) · · · (j, mdj-1). Using (26), it follows that
+
+xm1 (k + ¯ + 1) = pm1ixi(k + ¯ - m1i(k + ¯))+
+pm1j xj (k + ¯ - m1j (k + ¯)).
+jNm-1 {m1 }\{i}
+
+xm2 (k + 2¯ + 2) = pm2m1 xm1 (k + 2¯ + 1 - m2m1 (k + 2¯ + 1))+
+pm2jxj(k + 2¯ + 1 - m2j(k + 2¯ + 1)).
+jNm-2 {m2 }\{m1 }
+As (k + 2¯ + 1 - m2j(k + 2¯ + 1))  (k + ¯ + 1)  k + 1, using (27), it follows that,
+
+xm2 (k + 2¯ + 2)  pm2m1 xm1 (k + 2¯ + 1 - m2m1 (k + 2¯ + 1)) +
+pm2j M (k).
+jNm-2 {m2 }\{m1 }
+Note that (k + 2¯ + 1 - m2m1 (k + 2¯ + 1))  (k + ¯ + 1) and xm1 (k + ¯ + 1) < M (k). Using Lemma B.2, it follows that,
+
+xm2 (k + 2¯ + 2) < pm2m1 M (k)
+
+Thus,
+
++
+
+pm2j M (k).
+
+jNm-2 {m2 }\{m1 }
+
+xm2 (k + 2¯ + 2) < M (k). Thus, it can be concluded using Lemma B.2, that for all k  k + 2¯ + 2, xm2 (k ) < M (k). It follows that for all k  k + dj¯ + dj, xj(k ) < M (k). Note that, k + D¯ + D  k + dj¯ + dj, and, thus, for any v  V, v = i, k  k + D¯ + D implies xv(k ) < M (k). It follows that, for all k  k + D(¯ + 1),
+
+max
+
+x(k
+
+)
+
+<
+
+max
+jV
+
+xqj (k
+
+-
+
+qj )
+
+=
+
+M (k).
+
+The proof for other inequality is similar to the proof above and is left to the reader.
+
+Remark 3. It should be noted that the results of Lemma B.1, Lemma B.2 and Lemma B.3 are exactly the same as that of Lemma 3.1, Lemma 3.2 and Lemma 3.3 respectively and hence the results of Lemma 3.1, Lemma 3.2 and Lemma
+
+JOURNAL OF LATEX CLASS FILES, VOL. 14, NO. 8, AUGUST 2015
+
+14
+
+3.3 hold for consensus with time-varying delays as well. Furthermore, the results of Theorem 3.1, Corollary 3.1 and Corollary 3.2 follow directly from the results of Lemma 3.3. Hence, Theorem 3.1, Corollary 3.1 and Corollary 3.2 hold true for consensus with time-varying delay framework.
+
+Using
+
+(34),
+
+(35)
+
+and
+
+(36),
+
+it
+
+follows
+
+that
+
+~- ~+
+
+
+
+c
+
+
+
+~+ ~-
+
+.
+
+IATthlisusose,,aist~~yi-stoe~~ass(eye11-+ttoh~~as)tewexiitwhx-iai t~~-a(sc11-+~)~~
+
+
+- 0,
+
+wwxx~~iiii(-11+-c~~c.).
+
+xi wi
+
+-
+
+( ~
+~
+
+1+ 1-
+
+ ~ ~
+
+).
+
+A. Max and Min Consensus in Presence of Time-Varying Delays
+Like the fixed delay case, the Maximum Consensus Protocol computes the maximum of the given initial node conditions z(0) = [z1(0) z2(0)....zn(0)]T in a distributed manner. It takes z(0) as an input and generates a sequence of node values based on the update rule for node m given by (9) and (10). Similarly, the Minimum Consensus Protocol computes the minimum of the given initial node conditions y(0) = [y1(0) y2(0)....yn(0)]T in a distributed manner. It takes y(0) as an input and generates a sequence of node values based on the update rule for node m given by (11) and (12).
+In time-varying delay framework, it is possible that any inneighbor j of node m can be sending multiple packets of zj to node m while it is waiting for ¯ iterations, but each packet received from j during the waiting time contains the same information because node j also updates its maximum consensus state only once in ¯ iterations in accordance with (9) and (10). Similar logic holds for Min consensus protocol.
+Remark 4. It is worth noting that the results of Lemma 3.4, Lemma 3.5, Lemma 3.6 and Lemma 3.7 depend solely on Max-Min consensus update rules given by (9), (10), (11) and (12). Since the Max-Min consensus update rules are logically the same for time-varying delay case as well, the results of Lemma 3.4, Lemma 3.5, Lemma 3.6 and Lemma 3.7 hold true for time-varying delay framework. This entails that the results of associated Lemma 3.8 and Theorem 3.2 hold true for time-varying delay framework. This implies that the finite-time termination algorithm for consensus (Algorithm 1) proposed for the fixed delay case can be implemented without any modification even if the delays are time-varying and follow the update rule given by (26).
+
+APPENDIX C QUANTIFYING DEVIATION FROM AVERAGE USING
+Algorithm 2
+
+It has been shown in [24] that
+
+lim
+k
+
+xi(k) wi(k)
+
+=
+
+c
+
+=
+
+ 
+
+(34)
+
+Since, the two consensus protocols given by (13) and (14)
+
+will terminate when they reach within some specified bound
+
+ > 0, xi(k) and wi(k) do not converge to  and  respectively. Instead let ~ and ~ be the terminal values of xi and wi respectively upon termination of Algorithm 2, such that,
+
+ -   ~   + ,
+
+(35)
+
+ -   ~   + .
+
+(36)
+
+ACKNOWLEDGMENT The authors would like to thank the ARPA-E for supporting this research via ARPA-E Award No. DE-AR000071 for the project `A Robust Distributed Framework for Flexible Power Grids'.
+REFERENCES
+[1] M. Newman, A.-L. Barabasi, and D. J. Watts, The structure and dynamics of networks. Princeton University Press, 2006.
+[2] F. Xia, L. T. Yang, L. Wang, and A. Vinel, "Internet of things," International Journal of Communication Systems, vol. 25, no. 9, p. 1101, 2012.
+[3] M. Mesbahi and M. Egerstedt, Graph theoretic methods in multiagent networks. Princeton University Press, 2010.
+[4] J. N. Tsitsiklis, "Problems in decentralized decision making and computation." DTIC Document, Tech. Rep., 1984.
+[5] J. E. Boillat, "Load balancing and poisson equation in a graph," Concurrency: Practice and Experience, vol. 2, no. 4, pp. 289­313, 1990.
+[6] A. Jadbabaie, J. Lin et al., "Coordination of groups of mobile autonomous agents using nearest neighbor rules," Automatic Control, IEEE Transactions on, vol. 48, no. 6, pp. 988­1001, 2003.
+[7] L. Xiao, S. Boyd, and S. Lall, "A scheme for robust distributed sensor fusion based on average consensus," in Information Processing in Sensor Networks, 2005. IPSN 2005. Fourth International Symposium on. IEEE, 2005, pp. 63­70.
+[8] M. Andreasson, D. V. Dimarogonas, H. Sandberg, and K. H. Johansson, "Distributed control of networked dynamical systems: Static feedback, integral action and consensus," Automatic Control, IEEE Transactions on, vol. 59, no. 7, pp. 1750­1764, 2014.
+[9] V. Blondel, J. M. Hendrickx, A. Olshevsky, J. Tsitsiklis et al., "Convergence in multiagent coordination, consensus, and flocking," in IEEE Conference on Decision and Control, vol. 44, no. 3. IEEE; 1998, 2005, p. 2996.
+[10] Z. Li and Z. Duan, Cooperative control of multi-agent systems: a consensus region approach. CRC Press, 2014.
+[11] P.-A. Bliman, A. Nedic, and A. Ozdaglar, "Rate of convergence for consensus with delays," in Decision and Control, 2008. CDC 2008. 47th IEEE Conference on. IEEE, 2008, pp. 4849­4854.
+[12] M. Cao, A. S. Morse, and B. D. Anderson, "Reaching a consensus in a dynamically changing environment: A graphical approach," SIAM Journal on Control and Optimization, vol. 47, no. 2, pp. 575­600, 2008.
+[13] M. Cao, A. S. Morse, and B. Anderson, "Reaching an agreement using delayed information," in Proceedings of the 45th IEEE Conference on Decision and Control. IEEE, 2006, pp. 3375­3380.
+[14] K. I. Tsianos and M. G. Rabbat, "The impact of communication delays on distributed consensus algorithms," arXiv preprint arXiv:1207.5839, 2012.
+[15] ----, "Distributed consensus and optimization under communication delays," in Communication, Control, and Computing (Allerton), 2011 49th Annual Allerton Conference on. IEEE, 2011, pp. 974­982.
+[16] A. D. Dominguez-Garcia and C. N. Hadjicostis, "Distributed algorithms for control of demand response and distributed energy resources," in Decision and Control and European Control Conference (CDC-ECC), 2011 50th IEEE Conference on. IEEE, 2011, pp. 27­32.
+[17] T. Charalambous, Y. Yuan, T. Yang, W. Pan, C. N. Hadjicostis, and M. Johansson, "Distributed finite-time average consensus in digraphs in the presence of time delays," IEEE Transactions on Control of Network Systems, vol. 2, no. 4, pp. 370­381, 2015.
+[18] J. He, P. Cheng, L. Shi, J. Chen, and Y. Sun, "Time synchronization in wsns: A maximum-value-based consensus approach," IEEE Transactions on Automatic Control, vol. 59, no. 3, pp. 660­675, 2014.
+[19] Y. Zhang and S. Li, "From simplicity to complexity based on consensus: A case study," arXiv preprint arXiv:1610.09482, 2016.
+[20] V. Yadav and M. V. Salapaka, "Distributed protocol for determining when averaging consensus is reached," in 45th Annual Allerton Conf, 2007, pp. 715­720.
+
+JOURNAL OF LATEX CLASS FILES, VOL. 14, NO. 8, AUGUST 2015
+
+15
+
+[21] R. Diestel, Graph Theory. Berlin, Germany: Springer-Verlag, 2006. [22] R. A. Horn and C. R. Johnson, Matrix analysis. Cambridge university
+press, 2012. [23] A. Nedic´ and A. Ozdaglar, "Convergence rate for consensus with
+delays," Journal of Global Optimization, vol. 47, no. 3, pp. 437­456, 2010. [24] C. N. Hadjicostis and T. Charalambous, "Average consensus in the presence of delays in directed graph topologies," IEEE Transactions on Automatic Control, vol. 59, no. 3, pp. 763­768, 2014. [25] J. Ding and A. Zhou, Nonnegative matrices, positive operators, and applications. World Scientific Singapore, 2009. [26] E. Upton and G. Halfacree, Raspberry Pi user guide. John Wiley & Sons, 2014. [27] E. Perahia and R. Stacey, Next Generation Wireless LANS: 802.11 n and 802.11 ac. Cambridge university press, 2013. [28] R. Fielding, J. Gettys, J. Mogul, H. Frystyk, L. Masinter, P. Leach, and T. Berners-Lee, "Hypertext transfer protocol­http/1.1," Tech. Rep., 1999. [29] K. R. Fall and W. R. Stevens, TCP/IP illustrated, volume 1: The protocols. addison-Wesley, 2011. [30] M. Cantelon, M. Harter, T. Holowaychuk, and N. Rajlich, Node. js in Action. Manning, 2014.
+
+Murti V. Salapka received the B.Tech. degree in mechanical engineering from the Indian Institute of Technology, Madras, in 1991 and the M.S. and Ph.D. degrees in Mechanical Engineering from the University of California at Santa Barbara, in 1993 and 1997, respectively. He was a faculty member in the Electrical and Computer Engineering Department, Iowa State University, Ames, from 1997 to 2007. Currently, he is the Director of Graduate Studies and the Vincentine Hermes Luh Chair Professor in the Electrical and Computer Engineering Department, University of Minnesota, Minneapolis. His research interests include control and network science, nanoscience and single molecule physics. Dr. Salapaka received the 1997 National Science Foundation CAREER Award.
+
+Mangal Prakash received the B.Tech degree in Electrical Engineering from National Institute of Technology, Durgapur, India and MS degree in Electrical Engineering from the University of Minnesota, USA. His research interests include control of network systems, probabilistic inference in graphical models and their applications to biological systems.
+
+Saurav Talukdar received the B.Tech and M. Tech degree in Mechanical Engineering from Indian Institute of Technology, Bombay, India and is a PhD candidate in Mechanical Engineering at the University of Minnesota, Minneapolis, USA. His research interests include learning topology of dynamic systems, multi-agent systems and statistical physics.
+
+Sandeep Attree is a graduate student in electrical and computer engineering at the University of Minnesota. He obtained his B.Tech and M.Tech degrees from Indian Institute of Technology, Kanpur, India. His research interests include network optimization and distributed computing, with applications to smart and autonomous systems.
+
+Vikas Yadav received the B.Tech. degree in electrical engineering from the Indian Institute of Technology, Kanpur, in 2000 and the M.S. and Ph.D. degrees in electrical engineering from Iowa State University, Ames, in 2007. He was with Garmin International Inc. from 2007 to 2013, Qualcomm Technologies Inc. from 2013 to 2015 and LG Electronics from 2015 to 2016. Presently he is a Principle Algorithm Architect at QuickLogic Corp., San Francisco, USA. His research interests include sensor fusion, distributed control design, self-organization and phase transition in large scale systems.
+
+

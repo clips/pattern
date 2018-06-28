@@ -1,0 +1,2723 @@
+High order local absorbing boundary conditions for acoustic waves in terms of farfield expansions
+Vianey Villamizar,a, Sebastian Acostab, Blake Dastrupa
+aDepartment of Mathematics, Brigham Young University, Provo, UT bDepartment of Pediatrics - Cardiology, Baylor College of Medicine, Houston, TX
+
+arXiv:1701.00055v1 [physics.comp-ph] 31 Dec 2016
+
+Abstract
+We devise a new high order local absorbing boundary condition (ABC) for radiating problems and scattering of time-harmonic acoustic waves from obstacles of arbitrary shape. By introducing an artificial boundary S enclosing the scatterer, the original unbounded domain  is decomposed into a bounded computational domain - and an exterior unbounded domain +. Then, we define interface conditions at the artificial boundary S , from truncated versions of the well-known Wilcox and Karp farfield expansion representations of the exact solution in the exterior region +. As a result, we obtain a new local absorbing boundary condition (ABC) for a bounded problem on -, which effectively accounts for the outgoing behavior of the scattered field. Contrary to the low order absorbing conditions previously defined, the order of the error induced by this ABC can easily match the order of the numerical method in -. We accomplish this by simply adding as many terms as needed to the truncated farfield expansions of Wilcox or Karp. The convergence of these expansions guarantees that the order of approximation of the new ABC can be increased arbitrarily without having to enlarge the radius of the artificial boundary. We include numerical results in two and three dimensions which demonstrate the improved accuracy and simplicity of this new formulation when compared to other absorbing boundary conditions.
+Key words: Acoustic scattering, Nonreflecting boundary condition, High order absorbing boundary condition, Helmholtz equation, Farfield pattern
+
+1. Introduction
+Equations modeling wave phenomena in fields such as geophysics, oceanography, and acoustics among others, are normally defined on unbounded domains. Due to the complexity of the corresponding boundary value problems (BVP), in general, an explicit analytical technique cannot be found. Therefore, they are treated by numerical methods. Major challenges appear when numerically solving wave problems defined in these unbounded regions using volume discretization
+
+Corresponding author
+
+Email addresses: vianey@mathematics.byu.edu (Vianey Villamizar), sacosta@bcm.edu (Sebastian
+
+Acosta), blakedast@gmail.com (Blake Dastrup)
+
+URL: sites.google.com/site/acostasebastian01 (Sebastian Acosta)
+
+Preprint submitted to ArXiv
+
+January 3, 2017
+
+methods. One of them consists of the appropriate definition of absorbing boundary conditions
+
+(ABC) on artificial boundaries such that the solution of the new bounded problem approximates
+
+to a reasonable degree the solution of the original unbounded problem in their common domain.
+
+That is why the definition of ABCs for wave propagation problems in unbounded domain plays a
+
+key role in computation.
+
+Historically two main approaches were initially followed in the evolution of ABCs, as de-
+
+scribed by Givoli in [1]. First, low order local ABCs were constructed. Undoubtedly, one of the
+
+most important ABCs in this category was introduced by Bayliss-Gunzburger-Turkel in their cel-
+
+ebrated paper [2]. This condition is denoted as BGT in the ABC literature. Other well-known
+
+conditions in this category were introduced by Engquist-Majda [3], Feng [4] and Li-Cendes [5].
+
+Some of them became references for many that followed thereafter. Several years later in the late
+
+1980s and early 1990s, exact non-local ABCs made their appearance. Since their definitions are
+
+based on Dirichlet-to-Neumann (DtN) maps, they are called DtN absorbing boundary conditions.
+
+The pioneer work in their formulations and implementations was performed by Keller-Givoli [6, 7]
+
+and Grote-Keller [8]. The main virtue of the DtN absorbing conditions is that they approximate
+
+the field at the artificial boundary almost exactly. Therefore, the accuracy of the numerical com-
+
+putation depends almost entirely on the accuracy of the numerical method employed for the com-
+
+putation at the interior points.
+
+The BGT absorbing condition consists of a sequence of differential operators applied at the
+
+artificial boundary (a circle or a sphere of radius R) which progressively annihilate the first terms
+
+of a farfield expansion of the outgoing wave valid in the exterior of the artificial boundary. We
+
+call the first of these operators BGT1. In three dimensions, it provides an accuracy of O(1/R3) and involves a first order normal derivative. The next condition in this sequence, BGT2 has O(1/R5)
+
+accuracy and includes a second order normal derivative in its definition. They are called BGT
+
+operators of order one and order two, respectively. The drawback of the BGT and of the other
+
+ABCs in the first category is that to increase the order of the approximation at the boundary,
+
+the order of the derivatives present in their definitions also needs to be increased. This leads to
+
+impractical ABCs due to the difficulty found in their implementations beyond the first two orders.
+
+There is also a downside for the DtN-ABCs stemming from the fact the computation of the field at
+
+any boundary point involves all the other boundary points which leads to partially dense matrices
+
+at the final stage of the numerical computation.
+
+The above disadvantages are overcome by the introduction of high order local ABCs without
+
+high order derivatives. According to [1], they are sequences of ABCs of increasing accuracy which
+
+are also practically implementable for an arbitrarily high order. Several ABCs have been formu-
+
+lated within this category in recent years. A detailed description of some of them is found in [1].
+
+A common feature of all these high order local ABCs is the presence of auxiliary variables which
+
+avoid the occurrence of high derivatives (beyond order two) in the ABC's formulation. Probably,
+
+the best known of all these high order local conditions was formulated by Hagstrom-Hariharan
+
+[9] which we denote as HH. They start representing the outgoing solution by an infinite series in
+
+inverse powers of
+
+1 R
+
+,
+
+where
+
+R
+
+is
+
+the
+
+radius
+
+of
+
+a
+
+circular
+
+or
+
+spherical
+
+artificial
+
+boundary.
+
+Analo-
+
+gous to the BGT formulation, the key idea in this formulation is the construction of a sequence of
+
+operators that approximately annihilate the residual of the preceding term in the sequence. As a
+
+result, a sequence of conditions in the form of recurrence formulas for a set of unknown auxiliary
+
+2
+
+variables is obtained. The expression for the first auxiliary variable coincides with BGT1. Similarly, combining the formulas for the first two auxiliary variables, the HH absorbing condition reduces to BGT2. Actually, Zarmi [10] proves that HH is equivalent to BGT for all orders. The difference between these two formulations is that HH does not involve high derivatives owing to the use of the auxiliary variables. Thus, HH can be implemented for arbitrarily high order. The three-dimensional (3D) HH can be considered an exact ABC since it is obtained from an exact representation of the solution in the exterior of the artificial boundary. However, the two-dimensional (2D) HH is only asymptotic because it is obtained from an asymptotic expansion of the exact representation of the solution. Recently, Zarmi-Turkel [11] generalized the HH construction of local high order ABCs. They developed an annihilating technique that can be applied to rather general series representation of the solution in the exterior of the computational domain. As a result, they were able to reobtain HH and derive new high order local ABCs such as a high order extension of Li-Cendes ABC [5].
+Our construction of high order local ABCs proceeds in the opposite way of the previous ABCs discussed above. Instead of defining local differential operators which progressively annihilate the first terms of a series representation of the solution in the exterior of the artificial boundary, we use a truncated version of the series representations directly to define the ABC without defining special differential operators at the boundary. As a consequence, the derivation of the absorbing condition is extremely simple. Moreover, the order of the error induced by this ABC can be easily improved by simply adding as many terms as needed to the truncated farfield expansions The series representations employed are Karp's farfield expansion [12] in 2D, and Wilcox's farfield expansion [13] in 3D. They are exact representations of the outgoing wave outside the circular or spherical artificial boundaries of radius R, respectively. Therefore, the resulting ABC which we call Karp's double farfield expansion (KDFE) and Wilcox farfield expansion (WFE), respectively, can be considered exact ABCs. The exact character of KDFE represents an improvement over HH in 2D, which is only asymptotically valid. Instead of having unknown auxiliary functions as part of the new condition, we simply consider as unknowns the original angular functions appearing in Wilcox's or Karp's farfield expansions. To determine these angular functions, we use the recurrence formulas derived from Wilcox's or Karp's theorems which do not disturb the local character of the ABC. A relevant feature of the farfield expansions approach is that the coefficient (angular function) of their leading term is the farfield pattern of the propagating wave. Thus, no additional computation is required to obtain an approximation for this important profile. For comparison purposes, we also obtain a farfield expansion ABC from the asymptotic farfield expansion of Karp's exact series. We call it Karp's single farfield expansion (KSFE) absorbing boundary condition.
+An important consideration is that the formulation of these absorbing boundary conditions depends on existing knowledge of an exact or asymptotic series representation for the outgoing waves of the problem being studied. This limits the use of Karp and Wilcox farfield expansions ABCs to problems in the entire plane or space, respectively. As a consequence, problems involving straight infinite boundaries as waveguide problems, half-plane, or quarter-plane cannot be modeled by these ABCs. For these type of problems, the most popular method to formulate ABCs is the perfectly matched layer (PML) introduced by Berenger [14]. However, a class of high order absorbing boundary conditions has also been employed by several authors. For instance, Hagstrom,
+3
+
+Mar-Or, and Givoli [15] obtained high order local ABCs for two-dimensional waveguide problems modeled by the wave equation. This ABC was first formulated for the wave equation by Hagstrom-Warburton [16] which in turn is based on a modification of the Higdon ABCs [17]. More recently, Rabinovich and et al. [18] adapted Hagstrom-Warburton ABC to time-harmonic problems in a waveguide and a quarter-plane modeled by the Helmholtz equation.
+The outline of the succeeding sections is as follows. In Section 2, details about the expansions KDFE, KSFE, and WFE are given. Also, the relationships between lower orders of KSFE absorbing boundary condition, BGT1, and BGT2 are established. Then in Section 3, the numerical method is described in the 2D case for KDFE. In particular, the discrete equations at the boundary are carefully derived. This is followed by an analysis of the structure of the matrices defining the ultimate linear systems for KSFE, KDFE, and DtN boundary value problems, respectively. Finally, numerical results for scattering and radiating problems, from circular and complexly shaped obstacles in 2D, and also from spherical obstacles in 3D, employing the novel farfield expansions ABCs, are reported in Section 6.
+
+2. High order local absorbing conditions from farfield expansions
+
+We start this Section by considering the scattering problem of a time-harmonic incident wave,
+uinc, from a single obstacle in two or three dimensions. This scatterer is an impenetrable obstacle that occupies a simply connected bounded region with boundary . The open unbounded region in the exterior of  is denoted as . This region  is occupied by a homogeneous and isotropic medium. Both the incident field uinc and the scattered field usc satisfy the Helmholtz equation in . For simplicity, we assume a Dirichlet boundary condition (soft obstacle) on . However, the analysis in this article can be easily extended to Neumann or Robin boundary conditions, and to a
+bounded penetrable scatterer with inhomogeneous and anisotropic properties. Then, usc solves the following boundary value problem (BVP):
+
+usc + k2usc = f
+
+in ,
+
+(1)
+
+usc = -uinc
+
+on ,
+
+(2)
+
+lim r(-1)/2 (rusc - ikusc) = 0.
+
+(3)
+
+r
+
+The wave number k and the source f may vary in space. Equation (3) is known as the Sommerfeld radiation condition where r = |x| and  = 2 or 3 for two or three dimensions, respectively. It implies that usc is an outgoing wave. This boundary value problem is well-posed under classical and weak formulations [19, 20, 21].
+As pointed out in the introduction, the unbounded BVP (1)-(3) needs to be transformed into
+a bounded BVP before a numerical solution can be sought. This is typically done by introducing
+an artificial boundary S enclosing the obstacle followed by defining an appropriate absorbing
+boundary condition (ABC) on S . We choose a circular or spherical artificial boundary for the two- or three-dimensional scenarios, respectively. As a result, the region  is divided into two open regions. The region -, bounded internally by the obstacle boundary  and externally by the artificial boundary S (a circle or a sphere of radius r = R), and the open unbounded connected region + =  \ -. We assume that the source f has its support in -, and the wave number
+4
+
+k is constant in +. An appropriate ABC should induce no or little spurious reflections from the artificial boundary S in order to maintain a good accuracy for the numerical solution inside -.
+As an intermediate step before constructing our high order local ABC in the next sections, we consider the following equivalent interface problem to the original BVP (1)-(3) for u-sc = usc|- and u+sc = usc|+:
+
+u-sc + k2u-sc = f ,
+
+in -,
+
+(4)
+
+u+sc + k2u+sc = 0,
+
+in +,
+
+(5)
+
+u-sc = -uinc,
+
+on ,
+
+(6)
+
+with the interface and Sommerfeld conditions:
+
+u-sc = u+sc,
+
+on S ,
+
+(7)
+
+u-sc = u+sc
+
+on S ,
+
+(8)
+
+lim r(-1)/2
+r
+
+ru+sc - iku+sc
+
+= 0,
+
+(9)
+
+where  denotes the derivative in the outer normal direction on S . The original scattering problem
+(1)-(3), and the interface problem (4)-(9) are equivalent as shown in [22, Thm 1] or [21, Lemma
+4.19]. As a consequence, by simply requiring the Cauchy data to match at the artificial boundary
+S , all higher order derivatives also match at the interface. This matching condition at the artificial boundary will ultimately lead to a bounded BVP in - whose numerical solution approximates to a reasonable degree the solution of the original unbounded problem in -. This bounded BVP is constructed by realizing that there is an analytical representation of the solution u+sc for the portion of the interface problem defined in +. By matching, at the artificial boundary S , this analytical solution with the solution u-sc defined in the interior region -, the bounded BVP sought in - is finally obtained. The numerical solution of this bounded BVP in - is the main subject of this work. Furthermore, once this numerical solution for u-sc is obtained, the analytical representation for u+sc can be evaluated in +. Details of the derivation of the bounded BVP in - are given in the sections below. Moreover, since the problem in - is to be solved numerically, we can consider a rather general source term f and a variable wave number k inside -. However, for sake of simplicity, from now on we assume f = 0 and k constant.
+
+2.1. Karp's double farfield expansion (KDFE) absorbing boundary condition in 2D
+Here, we consider the outgoing field u+sc satisfying the 2D Helmholtz equation exterior to a circle r = R and the Sommerfeld radiation condition (3) for  = 2. Our derivation of the new exact absorbing boundary condition is based on a well-known representation of outgoing solutions of the Helmholtz equation in 2D by two infinite series in powers of 1/kr. This representation is provided
+by the following theorem due to Karp.
+
+Theorem 1 (Karp [12]). Let u+sc be an outgoing solution of the two-dimensional Helmholtz equation in the exterior region to a circle r = R. Then, u+sc can be represented by a convergent expansion
+
+u+sc(r, ) = H0(kr)
+
+ l=0
+
+Fl() (kr)l
+
++ H1(kr) 5
+
+ l=0
+
+Gl() , (kr)l
+
+for r > R.
+
+(10)
+
+This series is uniformly and absolutely convergent for r > R and can be differentiated term by term with respect to r and  any number of times.
+
+Here, r and  are polar coordinates. The functions H0 and H1 are Hankel functions of first kind
+
+of order 0 and 1, respectively. Karp also claimed that the terms Fl and Gl (l = 1, 2, . . . ) can
+
+be computed recursively from F0 and G0. To accomplish this, he suggested the substitution of
+
+the expansion (10) into Helmholtz equation in polar coordinates and the use of the identities:
+
+H0(z)
+
+=
+
+-H1(z)
+
+and
+
+H1(z)
+
+=
+
+H0(z)
+
+-
+
+1 z
+
+H1(z).
+
+In
+
+fact,
+
+by
+
+doing
+
+this
+
+and
+
+requiring
+
+the
+
+coefficients
+
+of
+
+H0 and H1 to vanish, we derive a recurrence formula for the coefficients Fl and Gl of the expansion
+
+(10). This result is stated in the following corollary.
+
+Corollary 1. The coefficients Fl() and Gl() (l > 1) of the expansion (10), can be determined from F0() and G0() by the recursion formulas
+
+2lGl() = (l - 1)2Fl-1() + d2Fl-1(), 2lFl() = -l2Gl-1() - d2Gl-1(),
+
+for l = 1, 2, . . .
+
+(11)
+
+for l = 1, 2, . . . .
+
+(12)
+
+As discussed in the previous section, we use the semi-analytical representation of u+sc given by (10) and the matching conditions (7)-(8), at the interface S , to obtain an approximation u  u-sc that satisfies the following bounded BVP in the region -:
+
+u + k2u = f,
+
+in -,
+
+(13)
+
+u = -uinc,
+
+on ,
+
+(14)
+
+u(R, )
+
+=
+
+H0(kR)
+
+L-1 l=0
+
+Fl() (kR)l
+
++
+
+H1(kR)
+
+L-1 l=0
+
+Gl() , (kR)l
+
+(15)
+
+ru(R, )
+
+=
+
+ r H0(kr)
+
+L-1 l=0
+
+Fl() (kr)l
+
++
+
+H1(kr)
+
+L-1 l=0
+
+Gl() (kr)l
+
+ 
+
+,
+r=R
+
+(16)
+
+where R is the radius of the circular artificial boundary S . This problem is not complete until
+enough conditions at the artificial boundary S , for the two families of unknown angular functions
+Fl and Gl of Karp's expansion, are specified. Clearly, extra conditions to determine Fl and Gl for l = 1, . . . L - 1 are provided by the recurrence formulas (11) and (12). To apply these recurrence formulas, F0 and G0 need to be known. The boundary conditions (15) and (16) may be used to determine u and F0 at the boundary S . Therefore, we are still short by another condition to determine G0 at S . Now, usc has a second order partial derivative which is continuous with respect to r at r = R. Thus, a natural condition to add at r = R, to our new bounded problem (13)-(16) supplemented with (11)-(12), is 2u-sc = 2u+sc which can be fully written in terms of u as
+
+2r u(R, )
+
+=
+
+ 2r H0(kr)
+
+L-1 l=0
+
+Fl() (kr)l
+
++
+
+H1(kr)
+
+L-1 l=0
+
+Gl() (kr)l
+
+ 
+
+,
+r=R
+
+(17)
+
+where the second radial derivative 2r u may also be expressed in terms of ru and 2u using the Helmholtz equation itself.
+6
+
+Summarizing, we approximate the solution of the interface problem (4)-(9) in the region - by the solution of the bounded BVP consisting of (13)-(17) and (11)-(12). The equations (15)-(17) for the double family of farfield functions Fl and Gl, supplemented by the recurrence formulas (11)-(12), constitute our novel Karp's Double Farfield Expansion (KDFEL) absorbing boundary conditions with L terms.
+
+2.2. Karp's single farfield expansion (KSFE) absorbing boundary condition in 2D
+It is possible to approximate the two-family expansion (10) with a one-family expansion by means of an asymptotic approximation for large values of kr. A similar procedure was employed in [2]. The Hankel functions H0(z) and H1(z) admit the following approximations [23, §9.2],
+
+H0(z) =
+
+eiz 
+z
+
+L-1 C0,l zl
+l=0
+
++ O(|z|-L)
+
+and
+
+H1(z) =
+
+eiz 
+z
+
+L-1 C1,l zl
+l=0
+
++ O(|z|-L)
+
+(18)
+
+valid for z  C with |arg(z)| <  as |z|  . Therefore, after multiplication of the power series of (10) with these approximations for H0(kr) and H1(kr), re-arranging terms of same powers, and neglecting the terms O(|kr|-L), we can combine the two families of angular functions Fl and Gl into one family fl. As a result, a new asymptotic series representation of the outgoing wave (19 ) is obtained. Moreover, the application of the 2D Helmholtz operator to the new asymptotic expansion
+renders a recursive formula (21) for the functions fl. Thus, in virtue of the approximation (18) and the matching at the artificial boundary S described in the previous section, we obtain a new
+absorbing boundary condition for the problem (13)-(14) given by
+
+u(R, ) =
+
+eikR 
+kR
+
+L-1 l=0
+
+fl() (kR)l
+
+(19)
+
+ru(R, ) =
+
+eikR L-1 
+kR l=0
+
+ik -
+
+l
+
++
+
+1 2
+
+/R
+
+fl() , (kR)l
+
+(20)
+
+2il fl() =
+
+l
+
+-
+
+1 2
+
+2 fl-1() + 2 fl-1(),
+
+l  1.
+
+(21)
+
+We call the boundary condition defined by (19)-(21) with a single family of farfield functions fl the Karp's Single Farfield Expansion (KSFEL) absorbing boundary condition with L terms. As we see in the numerical results in Section 6, both the KSFEL and KDFEL render similar results as the number of terms L increases, for moderate to large values of kR. But, KSFEL exhibits a slower convergence behavior. However, we warn that (as discussed in [12]) the approximations (18) cannot be convergent for fixed |z| as L  , because the Hankel functions possess a branch cut on the negative real axis which prevents them to be expanded by any Laurent series. Thus the number L should be chosen judiciously, especially for small values of kR.
+
+2.2.1. Relationship between KSFE and BGT absorbing conditions First, we consider the relationship between the BVPs corresponding to KSFE1 and BGT1 (the
+first order ABC from [2]). More precisely, we consider u1 solving a BVP corresponding to the
+7
+
+KSFE1 condition (KSFE1-BVP):
+
+u1 + k2u1 = 0,
+
+in -,
+
+(22)
+
+u1 = -uinc,
+
+on ,
+
+(23)
+
+u1(R,
+
+)
+
+=
+
+eikR
+
+f0() (kR)1/2
+
+(24)
+
+ru1(R, ) = r
+
+eikr
+
+f0() (kr)1/2
+
+r=R
+
+=
+
+eikR
+
+f0() (kR)1/2
+
+1 ik -
+2R
+
+,
+
+(25)
+
+and U1 solving a BVP corresponding to the BGT1 condition (BGT1-BVP):
+
+U1 + k2U1 = 0,
+
+in -,
+
+(26)
+
+U1 = -uinc,
+
+on ,
+
+(27)
+
+rU1(R,
+
+)
+
++
+
+1 2R
+
+U1(R,
+
+)
+
+-
+
+ikU1(R,
+
+)
+
+=
+
+0.
+
+(28)
+
+It is clear from combining (24) and (25) that a solution u1 of (22)-(25) also satisfies the BVP (26)(28). Conversely, if U1 is a solution of (26)-(28), then by defining f0() = U1(R, )(kR)1/2e-ikR, we immediately show that U1 is a also a solution of (22)-(25). Furthermore, the BVP (26)-(28) has a unique solution as shown in [2]. As a consequence, the BVPs defined by the BGT1 and KSFE1 conditions have the same unique solution, which we state in the form of a theorem.
+
+Theorem 2. The boundary value problems (22)-(25) and (26)-(28) are equivalent and they have a unique solution.
+
+Secondly, we analyze if the BVPs corresponding to KSFE2 and BGT2 are equivalent. The KSFE2-BVP consists of finding a function u2 satisfying Helmholtz equation in -, Dirichlet
+boundary condition on , and the following absorbing boundary condition on S :
+
+u2(R, )
+
+=
+
+eikR (kR)1/2
+
+f0() +
+
+f1() kR
+
+(29)
+
+ru2(R, )
+
+=
+
+eikR (kR)1/2
+
+1 ik -
+2R
+
+f0() +
+
+3 ik -
+2R
+
+f1() , kR
+
+(30)
+
+2i f1()
+
+=
+
+1 4
+
+f0() +
+
+f0
+
+().
+
+(31)
+
+Similarly, the BGT2-BVP consists of finding a function U2 satisfying Helmholtz equation in -, Dirichlet boundary condition on , and the following absorbing boundary condition on S :
+
+rU2
+
+=
+
+(2(kR)2
+
++ 3ikR - 3/4)U2 2R(1 - ikR)
+
++
+
+2U2 ,
+
+(32)
+
+Next, we will prove the following statement about the relationship between the BVPs corresponding to KSFE2, KSFE3, and BGT2.
+
+8
+
+Theorem 3.
+a. A solution u2 of KSFE2-BVP satisfies BGT2-BVP only up to O(R-7/2) at the artificial boundary S .
+b. A solution u3 of KSFE3-BVP satisfies BGT2-BVP up to O(R-9/2) at the artificial boundary S .
+
+Proof. We will prove statement (a) by showing that when U2 is replaced by u2 in (32), then the left hand side (lhs) of (32) is equal to its right hand side (rhs) up to O(R-3/2). To obtain the expression
+for the lhs, we replace rU2 in (32) with ru2 and use (30). This leads to
+
+lhs =
+
+1 ik -
+2R
+
+f0 +
+
+3 ik -
+2R
+
+f1 kR
+
+eikR (kR)1/2
+
+.
+
+(33)
+
+On the other hand, replacing U2 by u2 defined by (29) into the rhs of (32), we obtain,
+
+rhs =
+
+1
+
+2R (1 - ikR)
+
+2(kR)2 + 3ikR - 3 4
+
+f0
+
++
+
+f1 kR
+
++
+
+f0
+
++ f1 kR
+
+eikR (kR)1/2
+
+.
+
+(34)
+
+Now, using the recurrence formula (31) in (33)-(34), we obtain,
+
+(1
+
+- ikR) (lhs
+
+- rhs)
+
+=
+
+ikeikR (kR)5/2
+
+9 16
+
+f0
+
++
+
+5 2
+
+f0
+
++
+
+f0
+
+.
+
+(35)
+
+Hence, division by (1 - ikR) renders the statement (a).
+A similar procedure leads to the proof of statement (b). First, we consider BVP defining the
+absorbing condition KSFE3 which consists of finding a function u3 satisfying Helmholtz equation in -, Dirichlet boundary condition on , and the following absorbing boundary condition on S :
+
+u3(R, )
+
+=
+
+eikR (kR)1/2
+
+f0() +
+
+f1() kR
+
++
+
+f2() (kR)2
+
+,
+
+(36)
+
+ru3(R, )
+
+=
+
+eikR (kR)1/2
+
+1 ik -
+2R
+
+f0() +
+
+3 ik -
+2R
+
+f1() + kR
+
+5 ik -
+2R
+
+f2() (kR)2
+
+,
+
+(37)
+
+2i f1()
+
+=
+
+1 4
+
+f0()
+
++
+
+f0
+
+(),
+
+(38)
+
+4i f2()
+
+=
+
+9 4
+
+f1()
+
++
+
+f1
+
+().
+
+(39)
+
+When replacing U3 with u3, then lhs of (32) becomes equal to
+
+lhs
+
+=
+
+eikR (kR)1/2
+
+1 ik -
+2R
+
+f0() +
+
+3 ik -
+2R
+
+f1() + kR
+
+5 ik -
+2R
+
+f2() (kR)2
+
+.
+
+(40)
+
+Similarly, substituting u3 into the rhs of (32) leads to
+
+2R(1 - ikR) rhs = 2(kR)2 + 3ikR - 3/4
+
+f0
+
++
+
+f1 kR
+
++
+
+f2 (kR)2
+
++ f0
+
++ f1 + f2 . kR (kR)2
+
+(41)
+
+Then, using the recurrence formulas (38)-(39), we obtain that (1 - ikR) (lhs - rhs) = O(R-7/2).
+Finally, the statement (b) is proved by dividing both sides by (1 - ikR). 9
+
+It was shown in [2] that a solution U2 of the BGT2-BVP approximates the exact solution of (1)-(3) to O(R-9/2) when R  . From our previous results, we conclude that BGT2-BVP and KSFE2-BVP are not equivalent. Since a solution of KSFE2-BVP satisfies BGT2 to O(R-7/2), a
+solution of KSFE2-BVP will be a poorer approximation to the exact solution than U2. However, the solution of KSFE3-BVP satisfies BGT2 to O(R-9/2) also. It means that the solutions of BGT2-
+BVP and KSFE3-BVP approximate the exact solution at a comparable rate. This behavior is
+confirmed in our numerical experiments in Section 6.
+
+2.3. Wilcox's farfield expansion absorbing boundary condition in 3D
+For the 3D case ( = 3), we also use a representation of outgoing waves by an infinite series in powers of 1/kr. This representation is provided by a well-known theorem due to Atkinson and Wilcox, which is stated here for completeness.
+
+Theorem 4 (Atkinson-Wilcox [13]). Let u+sc be an outgoing solution of the three-dimensional Helmholtz equation in the exterior region to a sphere of radius r = R. Then, u+sc can be represented by a convergent expansion
+
+u+sc(r, , ) =
+
+eikr kr
+
+ l=0
+
+Fl(, ) (kr)l
+
+for r > R.
+
+(42)
+
+This series is uniformly and absolutely convergent for r > R, , and . It can be differentiated term by term with respect to r, , and  any number of times and the resulting series all converge absolutely and uniformly. Moreover the coefficients Fl (l  1) can be determined by the recursion formula,
+
+2ilFl(, ) = l(l - 1)Fl-1(, ) + SFl-1(, ), l  1.
+
+(43)
+
+Here, r, , and  are spherical coordinates and S is the Laplace-Beltrami operator in the angular coordinates  and . See [2].
+Following an analogous procedure to the one employed in Section 2.1 for the 2D case, we use a truncated version of the series (42) defined in + to match the solution in - through the interface conditions (7)-(8). This yields an approximation u  u-sc that is defined to be the solution of the following BVP in the region -:
+
+u + k2u = 0,
+
+in -,
+
+(44)
+
+u = -uinc,
+
+on ,
+
+(45)
+
+u(R, , )
+
+=
+
+eikR kR
+
+L-1 l=0
+
+Fl(, ) (kR)l
+
+(46)
+
+ru(R, , )
+
+=
+
+eikR kR
+
+L-1 l=0
+
+l+1 ik -
+R
+
+Fl(, ) , (kR)l
+
+(47)
+
+2ilFl(, ) = l(l - 1)Fl-1(, ) + SFl-1(, ), l  1.
+
+(48)
+
+The equations (46)-(48) form the absorbing boundary condition with L terms which we call Wilcox
+farfield expansion absorbing boundary condition and denote WFEL. We also denote the BVP 10
+
+(44)-(48) as WFEL-BVP. Contrary to the 2D case, there is only one family of unknown angular functions Fl in this case. Hence, we only need the interface conditions (7)-(8) plus the recurrence formula (43) to define the new farfield expansion ABC at the artificial boundary S .
+The WFE-BVP (44)-(48) can also be posed in weak form which is essential for the finite element methods. First we define the following (affine) spaces to deal with the Dirichlet boundary conditions (45),
+
+H1,Dir(-) = u  H1(-) : u = -uinc on  , H1,0(-) = u  H1(-) : u = 0 on  .
+
+We require the solution (u, F0, F1, ..., FL-1) to satisfy u  H1,Dir(-), Fl  H1(S ) for l = 0, ..., L - 2, FL-1  H0(S ), and
+
+-
+
+u, v
+
+ + k2
+
+u, v
+
++
+
+eikR kR
+
+L-1 l=0
+
+ik - (l + 1)/R (kR)l
+
+Fl, v
+
+S
+
+= 0,
+
+for all v  H1,0(-), (49)
+
+u, v0
+
+S
+
+=
+
+eikR kR
+
+L-1 l=0
+
+1 (kR)l
+
+Fl, v0
+
+S,
+
+for all v0  H0(S ),
+
+(50)
+
+2il Fl, vl S = l(l - 1) Fl-1, vl S - S Fl-1, S vl S , for all vl  H1(S ), l  1. (51)
+
+where the symbol S represent the gradient in the geometry of the sphere S , and the functions Fl, originally defined on the unit-sphere, can be seen as defined on the sphere S of radius R by writing the argument as x^ = x/R where x  S and R is fixed.
+
+3. Numerical method
+We start this section describing how to obtain a numerical approximation of the solution for the acoustic scattering of a plane wave from a circular shaped obstacle of radius r = r0 using Karp farfield expansions as ABC. As discussed in previous sections, our approach consists of numerically solving the KDFEL-BVP defined by (13)-(14) with the ABC given by (15)-(17) supplemented by the recurrence formulas (11)-(12). For this particular circular scatterer, polar coordinates (r, ) is the natural choice of coordinate system. However, we will extend the discussion to more general obstacle shapes in generalized curvilinear coordinates in the next section. The numerical method chosen is based on a centered second order finite difference. The number of grid points in the radial direction is N and in the angular direction is m + 1. Therefore, the step sizes in the radial and angular directions are r = (R - r0)/(N - 1) and  = 2/m, respectively. Also, ri = (i - 1)r,  j = ( j - 1) and ui, j = u(ri,  j), where i = 1, . . . N and j = 1, . . . , m + 1. Since the pairs (ri, 1) and (ri, m+1) represent the same physical point, ui,1 = ui,m+1, for i = 1, . . . N. The discretization of the governing equations varies according to the location of the grid points. The areas of interest within the numerical domain and its boundaries are: the obstacle boundary , the interior of the domain -, and the artificial boundary S .
+At the obstacle boundary u = -uinc holds. Then, we start constructing the corresponding linear system AU = b by simply including the negative value of uinc at each boundary grid point in the
+11
+
+forcing vector b, and let the corresponding entry in the coefficient matrix A equal unity. This
+results in an identity matrix of size m × m in the upper left-hand corner of the matrix A. At the interior points (ri,  j) (i = 2, . . . N - 2, j = 1, . . . m) in -, we discretize Helmholtz
+equation to obtain
+
++i ui+1, j + -i ui-1, j + iui, j + iui, j+1 + iui, j-1 = 0,
+
++i
+
+=
+
+1 r2
+
++
+
+1 (2r)ri
+
+,
+
+-i
+
+=
+
+1 r2
+
+-
+
+1 (2r)ri
+
+,
+
+i
+
+=
+
+k2
+
+-
+
+2 r2
+
+-
+
+, 2
+2 ri2
+
+i
+
+=
+
+. 1
+2 ri2
+
+(52)
+
+This discrete equation renders (N - 3)m new rows to the sparse matrix A with a total of 5(N - 3)m
+
+non-zero entries.
+
+At the interior points (rN-1,  j) with j = 1, . . . m, we replace the uN, j term by H0(kR)
+
++ L-1 Fl, j
+l=0 (kR)l
+
+H1(kR)
+
+L-1 l=0
+
+Gl, j (kR)l
+
+from
+
+the
+
+farfield
+
+absorbing
+
+condition.
+
+This
+
+leads
+
+to
+
+the
+
+following
+
+discrete
+
+equa-
+
+tion:
+
++N-1
+
+L-1 l=0
+
+H0(kR) (kR)l
+
+Fl,
+
+j
+
++
+
++N-1
+
+L-1 l=0
+
+H1(kR) (kR)l
+
+Gl,
+
+j
+
++-N-1uN-2, j + N-1uN-1, j + N-1uN-1, j+1 + N-1uN-1, j-1 = 0.
+
+(53)
+
+This equation adds m new rows to the matrix A with a total of 2(L + 2)m nonzero entries. Also at the artificial boundary points (rN,  j) with j = 1, . . . m, the discrete equation (52) is
+written as
+
++N uN+1, j + -N uN-1, j + N uN, j + N uN, j+1 + N uN, j-1 = 0.
+
+(54)
+
+Now, consider the discretization of equation (16) using centered finite difference, i.e.
+
+L-1
+
+L-1
+
+uN+1, j = uN-1, j - 2r Al(kR)Fl, j - 2r Bl(kR)Gl, j,
+
+l=0
+
+l=0
+
+(55)
+
+where
+
+Al(kR)
+
+=
+
+kH1(kR) (kR)l
+
++
+
+klH0(kR) (kR)l+1
+
+and
+
+Bl(kR)
+
+=
+
+k(l
+
++ 1)H1(kR) (kR)l+1
+
+-
+
+kH0(kR) . (kR)l
+
+Substitution of uN+1, j, uN, j+1, and uN, j-1 into (54) using the previous expression and Karp's expansion, respectively, leads to the following set of m equations for j = 1, . . . m,
+
+L-1
+
+L-1
+
+(+N + -N)uN-1, j + Cl(kR)Fl, j + Dl(kR)Gl, j +
+
+l=0
+
+l=0
+
+(56)
+
+N
+
+L-1 l=0
+
+H0(kR) (kR)l
+
+Fl,
+
+j+1
+
++ N
+
+L-1 l=0
+
+H1(kR) (kR)l
+
+Gl,
+
+j+1
+
++ N
+
+L-1 l=0
+
+H0(kR) (kR)l
+
+Fl,
+
+j-1
+
++ N
+
+L-1 l=0
+
+H1(kR) (kR)l
+
+Gl,
+
+j-1
+
+=
+
+0,
+
+12
+
+where the coefficients Cl and Dl are given by
+
+Cl(kR)
+
+=
+
+-+N 2rk
+
+Al(kR)
+
++
+
+N
+
+H0(kR) (kR)l
+
+and
+
+Dl(kR)
+
+=
+
+-+N 2rk
+
+Bl(kR)
+
++
+
+N
+
+H1(kR) . (kR)l
+
+The number of non-zero entries for these set of equation is nz = (6L + 1)m. Another set of m equations is obtained from the discretization of the continuity condition on
+the second derivative combined with (55), and Karp farfield expansion,
+
+2 r2 uN-1, j
+
++
+
+L-1 l=0
+
+Ml(kR)Fl, j
+
++
+
+L-1 l=0
+
+Nl(kR)Gl, j
+
+=
+
+0,
+
+(57)
+
+where
+
+Ml(kR)
+
+=
+
+-
+
+2 r
+
+k
+
+Al(kR)
+
++
+
+k2
+
+H0(kR) (kR)l
+
+-
+
+(2l
+
++
+
+1)
+
+H1(kR) (kR)l+1
+
+-
+
+l(l
+
++ 1)H0(kR) (kR)l+2
+
+- 2H0(kR) r2(kR)l
+
+Nl(kR)
+
+=
+
+-
+
+2 r
+
+k
+
+Bl(kR)
+
++
+
+k2
+
+-(2l
+
++
+
+1)
+
+H0(kR) (kR)l+1
+
++
+
+H1(kR) (kR)l
+
+-
+
+(l
+
++
+
+1)(l + 2)H1(kR) (kR)l+2
+
+- 2H1(kR) r2(kR)l
+
+The total number of nonzero entries for these equations is (2L + 1)m. Finally, each one of the recurrence formulas (11)-(12) contribute with (L - 1)m new equations.
+They are given by
+
+2lGl, j =
+
+(l
+
+-
+
+1)2
+
+-
+
+2 2
+
+Fl-1, j
+
++
+
+1 2 Fl-1, j+1
+
++
+
+1 2
+
+Fl-1,
+
+j-1,
+
+2lFl, j =
+
+-l2
+
++
+
+2 2
+
+1
+
+1
+
+Gl-1, j - 2 Gl-1, j+1 - 2 Gl-1, j-1
+
+(58) (59)
+
+for l = 1, . . . L - 1 and j = 1, . . . m. The number of nonzero entries is four for each j and for each recurrence formula.
+The above discrete equations are written as a linear system of equations AU = b. The matrix A structure depends on how the unknown vector U is ordered. We chose U as follows:
+
+at boundary
+
+at interior grid points
+
+U = u1,1...u1,m u2,1...u2,m...uN-1,1...uN-1,m
+
+at artificial boundary T
+F0,1...F0,m G0,1...G0,m... FL-1,1...FL-1,m GL-1,1...GL-1,m
+
+(60)
+
+From the previous discrete equations (52)-(60), (56)-(59), it can be seen that the matrix A has dimension (N-1+2L)m×(N-1+2L)m. Furthermore, adding the m non-zero entries corresponding to the upper left-hand corner subdiagonal matrix of A to the non-zero entries of the discrete equations (52)-(60) and (56)-(59), it can be shown that the non-zero entries of A are nz = (5N -16)m+18Lm.
+A completely analogous work can be performed for the discretization of KSFE-BVPs. However, the BVP defined by (13)-(14) with the KSFEL condition (19)-(21) has only one family of
+13
+
+unknown farfield angular coefficients fl() (l = 0, . . . L - 1). As a consequence, the matrix A corresponding to its discrete equations has dimension (N - 1 + L)m × (N - 1 + L)m. Moreover, it can be shown that its number of non-zero entries is nz = (5N - 13)m + 8Lm. For purpose of comparison, we also consider the discretization of the Dirichlet-to-Neumann boundary value problem (DtN-BVP) derived by Keller and Givoli [6]. For this BVP the matrix A, obtained by employing a second order centered finite difference method, has dimension Nm × Nm and its non-zero entries are nz = (5N - 8)m + m2. A relevant feature of the matrices A for the KDFE-BVP and KSFEBVP is that they do not have full blocks as found in the case of DtN-BVP. In fact, the number of non-zero entries for the DtN-BVP matrix is O(m2) against O(Lm) for the KDFE-BVP and KSFEBVP matrices, respectively. Now, the number L of terms in the farfield expansion is always much smaller than m (nodes in the angular direction). As a consequence, the non-zeros of the matrices associated to the KDFE and KSFE boundary value problems are considerable less than those of the matrix corresponding to the DtN-BVP for the same problem. This is a key property for the computational efficiency of the numerical technique proposed in this work. Furthermore, this is why higher order local ABCs are preferred over global exact ABCs such as DtN.
+4. Applications of farfield ABCs
+4.1. Scattering from a circular obstacle
+To illustrate the computational advantage of the exact farfield expansions ABCs over the DtNABC, we consider the acoustic scattering of a plane wave propagating along the positive x-axis from a circular obstacle of radius r0 = 1. We place the artificial boundary at R = 2 and select a frequency k = 2 for the incident wave. Then, we apply the centered finite difference scheme described in Section 3 for the KDFE-BVP. For purpose of comparison, we also apply it with its respective modifications to KSFE-BVP and DtN-BVP. The points per wavelength in each case is PPW = 20. The number of terms employed for KDFEL is L = 3 and for the KSFEL is L = 8. These choices of L made possible that the three numerical solutions approximate the exact solution at the artificial boundary with about the same relative error of 3.8 × 10-3 in the L2-norm. In Fig. 1, the structure of their respective matrices are depicted. Although the matrix corresponding to the DtN-ABC has the smallest dimension, it has more than one and a half times as many non-zero entries as the farfield expansions ABCs. As the number of point per wavelength increases, this difference is even bigger since the number of points for the DtN-ABC is O(m2) while for the farfield ABCs is only O(Lm).
+It is timely to comment on the numerical difficulties that can be faced when solving threedimensional problems modeled by the farfield ABCs. Using our finite difference technique will lead to sparse but very large matrices at the discrete level. Therefore, a direct solver may not be a feasible choice as the mesh is refined. Iterative methods become an imperative choice. Among such methods are Krylov subspace iterative methods, multigrid and domain decomposition methods. However, their applications to the resulting sparse matrices experience difficulties because these matrices are known to be non-Hermitian and poorly conditioned. Efforts have been made to develop good preconditioners and parallelizable methods tailored to these wave scattering problems modeled by the Helmholtz equation [24, 25]. We intend to explore some of these new tech-
+14
+
+Karp Exact Expansion Terms = 3 PPW= 20 Grid size N # m = 20x126 0
+
+500
+
+1000
+
+1500
+
+2000
+
+2500
+
+3000 0
+
+500 1000 1500 2000 2500 3000 nz = 17388
+
+(a)
+
+DtN PPW= 20 Grid size N # m = 20x126 0
+
+KSFE Terms = 8 0 PPW= 20 Grid size N # m = 20x126
+
+500 1000
+
+500 1000 1500
+
+1500
+
+2000
+
+2000
+2500 0
+
+2500
+
+3000
+
+500 1000 1500 2000 2500 nz = 27468
+(b)
+
+0 500 1000 1500 2000 2500 3000 nz = 19026
+(c)
+
+Figure 1: Comparison of the matrix structure for: a) KDFE3, b) DtN, and c) KSFE8 with R = 2 and PPW = 20.
+
+niques along with the application of the farfield absorbing boundary conditions to complex 3D problems in future work.
+
+4.2. Scattering from a spherical obstacle. Axisymmetric case
+In this section, we formulate the BVP corresponding to scattering from a spherical obstacle of an incident plane wave uinc = eikz propagating along the positive z-axis. The mathematical model including our novel Wilcox farfield ABC (WFE-ABC) consists of the BVP (44)-(48) in spherical coordinates (r, , ). This problem is axisymmetric about the z-axis. Therefore, the governing Helmholtz equation for the approximation u of the scattered field usc is independent of the angle . As a consequence, it reduces to
+
+2u r2
+
++
+
+2 r
+
+u r
+
++
+
+r2
+
+1 sin
+
+
+
+ 
+
+sin
+
+
+
+u 
+
++ k2u = 0,
+
+in -.
+
+(61)
+
+Obviously, this equation is singular at the poles when  = 0, . However, there is not such sin-
+
+gularity at these angular values for Helmholtz equation in cartesian coordinates. The singularity
+
+arises by the introduction of spherical coordinates. It can be shown [26] that equation (61) reduces
+
+to
+
+u 
+
+(r,
+
+)
+
+=
+
+0, when 
+
+=
+
+0, .
+
+The angular coefficients Fl of the Wilcox farfield expansion are
+
+also independent of . As in the two-dimensional case, we employ a second order centered finite
+
+difference scheme as our numerical method to obtain the approximate solution to this scattering
+
+problem. Due to the analogy between the KSFE and the WFE absorbing boundary conditions for
+
+this axisymmetric case, the discretization of the equations and the structure of the matrix obtained
+
+after applying a centered finite difference approximation to the equations defining this BVP are
+
+similar to those of KSFE-BVP. In Section 6.3, numerical results for this problem are presented.
+
+15
+
+4.3. Radiation and scattering from complexly shaped obstacles in two-dimensions
+Since most real applications deal with obstacle of arbitrary shape, in this section, we consider scattering problems for arbitrary shaped scatterers using the farfield absorbing boundary conditions. In order to do this, we introduce generalized curvilinear coordinates such that the physical scatterer boundaries correspond to coordinate lines. These type of coordinates, called boundary conforming coordinates [27], are generated by invertible transformations T : D  D, from a rectangular computational domain D with coordinates (, ) to the physical domain D with coordinates (x, y) = (x(, ), y(, )). A common practice in elliptic grid generation is to implicitly define the transformation T as the numerical solution to a Dirichlet boundary value problem governed by a system of quasi-linear elliptic equations for the physical coordinates x and y. Following this approach, the authors Acosta and Villamizar [22] introduced the elliptic-polar grids as the solution to the following quasi-linear elliptic system of equations:
+
+x
+
+-
+
+2x
+
++
+
+ x
+
++
+
+1 2
+
+
+
+x
+
++
+
+1 2
+
+
+
+x
+
+=
+
+0,
+
+(62)
+
+y
+
+-
+
+2y
+
++
+
+y
+
++
+
+1 2
+
+
+
+y
+
++
+
+1 2
+
+
+
+y
+
+=
+
+0.
+
+(63)
+
+The symbols , , and , represent the scale metric factors of the coordinates transformation T , respectively. These are defined as
+
+ = x2 + y2,
+
+ = x x + yy,
+
+ = x2 + y2.
+
+In this work, we adopt the elliptic-polar coordinates in the presence of complexly shaped obstacles. Before we attempt a numerical solution to our BVP with the farfield expansions ABCs in these coordinates, we express the governing equations in terms of them. For instance, the two-dimensional Helmholtz equation transforms into
+
+1 J2
+
+u - 2u + u +
+
+1 2
+
+ u +  u
+
++ k2u = 0,
+
+(64)
+
+where the symbol J corresponds to the jacobian of the transformation T . Once the farfield expansions ABC equations are also expressed in terms of elliptic-polar coordinates, we transform all of these continuous equations into discrete ones using centered second order finite difference schemes. This process is described in detail in [22]. Then, the corresponding linear system is derived in much the same way as we did above for polar coordinates. Numerical results for several complexly shaped obstacles are discussed in Section 6.
+
+5. Farfield Pattern definition and its accurate numerical computation
+In scattering problems, an important property to be determined is the scattered field far from the obstacles. The geometry and physical properties of the scatterers are closely related to it. In Section 4.2.1 of [28], Martin defines the farfield pattern (FFP) as the angular function present in
+
+16
+
+the dominant term of the asymptotic expansions for the scattered wave when r  . For instance in 2D, the farfield pattern is the coefficient f0() of KSFE,
+
+u(r, )
+
+=
+
+eikr (kr)1/2
+
+f0()
+
++
+
+O
+
+1/(kr)3/2
+
+.
+
+(65)
+
+Following Bruno and Hyde [29], we now describe how the FFP can be efficiently calculated from the approximation of the scattered wave at the artificial boundary.
+If r > R, where R is the radius of the artificial circular boundary enclosing the obstacle, then, the scattered wave can be represented as the following complex Fourier series,
+
+
+
+
+
+u(r, ) =
+
+cq(r)eiq =
+
+bq Hq(1) (kr)eiq ,
+
+q=-
+
+q=-
+
+where
+
+bq
+
+=
+
+cq(r) . Hq(1)(kr)
+
+(66)
+
+Using the asymptotic expansion of the Hankel function Hq(1)(kr) when r  , equation (66) transforms into
+
+u(r, )
+
+=
+
+eikr (kr)1/2
+
+ 
+
+2 
+
+e-i/4
+
+ q=-
+
+ bq(-i)qeiq
+
++
+
+O
+
+1/(kr)3/2
+
+.
+
+(67)
+
+By comparing (67) with (65) the following expression for f0() is derived
+
+f0() =
+
+2 
+
+e-i/4
+
+
+
+bq(-i)qeiq.
+
+q=-
+
+(68)
+
+Thus, the FFP can be determined once the coefficients bq have been calculated. But as pointed out above, the coefficients bq can be determined from the coefficients cq(r) for r fixed. Likewise, approximated values of cq(R) can be obtained from the scattered field approximation at the artificial boundary r = R, i.e., uN, j for j = 1, . . . m. In fact as stated by Kress [30], approximations c^q to the coefficients cq(R), at the fictitious infinite boundary can be obtained by considering the discrete Fourier transform vector c^q (q = -m/2, . . . m/2 - 1) of the vector uN, j, interpolating the
+points  j, uN, j for j = 1, . . . m (m even). More precisely,
+
+c^q
+
+=
+
+1 m
+
+m-1 j=1
+
+uN, je-iq j ,
+
+for q = -m/2, . . . m/2 - 1.
+
+(69)
+
+These finite series can be directly evaluated, or a FFT algorithm can be used to compute them. The importance of the above derivation is that a semi-analytical formula
+
+f0() =
+
+2 
+
+e-i/4
+
+m/2-1
+
+b^ q(-i)qeiq ,
+
+q=-m/2
+
+(70)
+
+approximating the FFP for arbitrary shaped obstacles, can be obtained from the numerical approximation of the scattered far field, where b^q = c^q/Hq(1)(kR). This formula is extremely accurate as
+shown in [29]. The error in the approximation of f0() using (70) depends almost entirely upon the error made in the approximation of the coefficients b^q.
+17
+
+6. Numerical Results
+
+In this Section, we present numerical evidences of the advantages of using the exact farfield expansions ABCs, when dealing with acoustic scattering and radiating problems, compared with other commonly used ABCs. First, we numerically solve bounded problems with farfield expansions ABCs as defined in Sections 2.1-2.3. Then, we show that these numerical solutions indeed converge to the exact solutions of the original unbounded BVPs. As described in Section 3, the numerical method employed consists of familiar second order centered finite difference discretizations for Helmholtz equation in polar, spherical, and generalized curvilinear coordinates. This numerical method is completed with the discrete equations of the farfield expansions ABCs on the artificial boundary S . Our numerical results contain two sources of error. The first one is the error introduced by the finite difference scheme employed to discretize the Helmholtz equation in the computational domain -. This error can be diminished by refining the finite difference mesh as we increase the number of points per wavelength. The second source of error is due to the truncation of the farfield expansion series. This error can be diminished by increasing the number L of terms in the absorbing conditions KSFEL, KDFEL, or WFEL. For example, if a finite difference scheme for a two-dimensional problem in polar coordinates leads to a second order convergence, then the order of the total error introduced by combining the finite difference scheme with the proposed absorbing boundary conditions is given by
+
+error = O h2 + O (kR)-L ,
+
+(71)
+
+where h = r0 = r is the mesh refinement parameter and L is the number of terms in the farfield expansions absorbing boundary conditions. Then for the total error to exhibit second order convergence with mesh refinement, it is necessary to choose L = O log(1/h) . Therefore, there is no need of large increments of L to improve the order of convergence. In practice, we can expect that a moderately large (but fixed) choice of L will be sufficient to reveal the order of convergence of the finite difference method for a reasonable range of mesh refinements. We construct our numerical experiments, reported later in this section, according to this fact.
+First, we present numerical results for the scattering of a plane wave uinc = eikx from a circular obstacle in 2D. As a reference point, we also display the results from the use of the DtN nonreflecting condition [6, 31, 8, 32]. Since this latter condition is considered exact, it serves as a reference point to gauge the error introduced by the finite difference scheme alone. For all ABCs, we use a second order centered finite difference scheme in the interior of the domain -. In our experiments for the circular scatterer, we are able to obtain second order convergence of the numerical solution to the exact solution. In fact, we found that the numerical solution obtained from KDFEL and KSFEL, for appropriate number of terms L, are comparable to the approximation obtained from the DtN absorbing boundary condition. However, the advantage over the DtN-ABC formulation is that the farfield expansions ABCs are local while the former is not.
+Secondly, we numerically solve the scattering from complexly shaped scatterers, using the exact farfield expansions ABCs. As a result, the farfield patterns (FFP) for several obstacles of arbitrary shape are obtained. Then we present our results, with the new ABCs, for an exterior radiating problem obtained from two sources conveniently located inside a domain bounded by
+18
+
+complexly shaped curves. For these specials radiating problems, it is possible to obtain analytical solutions. Then, by comparing the numerical approximations and the exact solutions, we determine the order of convergence for several non-separable geometries, as we do in the circular case.
+Finally, results for a spherical scatterer are presented. The numerical method is analogous to the one employed in the two-dimensional case for the KDFEL-BVP: a centered finite difference of second order in - and WFE-ABC on the artificial boundary. Again, a second order convergence is reached by using few terms in the WFE farfield expansions.
+6.1. Scattering from a circular obstacle. Comparison against exact solution and order of convergence
+First, we point out that approximated solutions of the scattering problem obtained for the BVP corresponding to KSFE1 are identical to the numerical solutions obtained for the BVP corresponding to BGT1. This is a numerical evidence of the equivalence between these two problems, as proved in Theorem 2.
+Another important result is the convergence of the numerical solutions of KDFEL and KSFEL boundary value problems to the exact solution as the number L of terms in the farfield expansion is increased for a sufficiently small h. In particular, this is shown in Fig. 2. However, the KSFEL numerical solutions only converge asymptotically as kR   when L is fixed. Indeed when kR is fixed, e.g. kR = /2, and L grows then the numerical solution unavoidably diverges as explained at the end of subsection 2.2. This fact is also discussed in more detail in the Conclusions Section 7. Actually, Fig. 2 (left panel) shows the appearance of unphysical oscillations in the farfield pattern for KSFE9 which become larger as L increases.
+
+Amplitude Amplitude
+
+KSFEL-BVP Asymptotic Convergence r0 = 1 k = 2: R = 1.05 1
+
+0.98
+
+0.96
+
+0.94
+
+0.92 0.9
+
+Exact KSFE2 KSFE9 KSFE10
+
+0
+
+1
+
+2
+
+3
+
+4
+
+5
+
+6
+
+7
+
+3 (polar angle)
+
+KDFEL-BVP Convergence r0 = 1 k = 2: R = 1.05 1
+
+0.98
+
+0.96
+
+0.94
+
+0.92 0.9
+
+Exact KDFE1 KDFE3 KDFE7
+
+0
+
+1
+
+2
+
+3
+
+4
+
+5
+
+6
+
+7
+
+3 (polar angle)
+
+Figure 2: Convergence of solutions of KSFEL- and KDFEL-BVPs (h fixed and L increasing) to the exact solution of scattering of a plane wave from a circular scatterer of radius r0 = 1 along the artificial boundary with radius R = 1.05.
+
+The relevant data used in these problems is the following: wavenumber k = 2, radius of
+the circular obstacle is r0 = 1, and radius of artificial boundary R = 1.05. We define the grid 19
+
+such that the number of points per wavelength in all experiments is PPW = 30 in the angular direction and N = 21 points in the radial direction. This is an extreme problem where the artificial boundary radius has been chosen almost equal to the radius of the circular scatterer. So, the
+domain of computation is very small. Even in this extreme situation, it is observed how well
+the numerical solution of KDFE7-BVP approximates the exact solution at the artificial boundary with a L2-norm relative error equal to 3.44 × 10-4 with only seven terms in the farfield expansion. Similarly, the numerical solution of KSFE11-BVP at the artificial boundary also approximates the exact solution with a L2-norm relative error equal to 3.73×10-4 with eleven terms in the expansion. This illustrates the slower convergence of the numerical solutions of KSFEL-BVP when compared with the sequence of solutions obtained from KDFEL-BVP.
+
+10-1
+
+Number of Terms: 2
+
+10-2
+
+BGT2 DtN
+KSFE2 KDFE
+2
+
+10-1
+
+Number of Terms: 4
+
+10-2
+
+BGT2 DtN
+KSFE
+4
+KDFE4
+
+10-3
+
+10-3
+
+L2-norm Rel. Error
+
+L2-norm Rel. Error
+
+10-430
+
+35
+
+40
+
+45
+
+50
+
+55
+
+60
+
+65
+
+70
+
+Points per Wavelength
+
+10-1 10-2
+
+Number of Terms: 8
+
+BGT2 DtN KSFE
+8
+KDFE
+8
+
+10-430
+
+35
+
+40
+
+45
+
+50
+
+55
+
+60
+
+65
+
+70
+
+Points per Wavelength
+
+10-1 10-2
+
+Number of Terms: 10
+
+BGT
+2
+DtN KSFE
+10
+KDFE
+10
+
+L2-norm Rel. Error
+
+L2-norm Rel. Error
+
+10-3
+
+10-3
+
+10-430
+
+35
+
+40
+
+45
+
+50
+
+55
+
+60
+
+65
+
+70
+
+Points per Wavelength
+
+10-430
+
+35
+
+40
+
+45
+
+50
+
+55
+
+60
+
+65
+
+70
+
+Points per Wavelength
+
+Figure 3: Comparison of L2-norm relative error of the Farfield Pattern among DtN, BGT2, KSFEL, and KDFEL for L = 2, 4, 8, 10. The data in use is r0 = 1, R = 2, and k = 2.
+
+In our next set of numerical experiments, we analyze the performance of the second order finite difference method for the scattering from a circular scatterer using the following ABC: BGT2, DtN, KSFEL, and KDFEL (L = 2, 4, 8, 10). By comparing the numerical farfield pattern (FFP)
+20
+
+with the one obtained from the exact solution, we obtain the L2-norm relative error. The formula employed to compute the FFP, for all types of ABCs from the numerical solution of the scattered field at the artificial boundary, is the formula (70) described in Section 3. The results of these experiments are illustrated in Fig. 3. The common data in these numerical simulations is the following: frequency k = 2, radius of the circular obstacle is r0 = 1, and radius of artificial boundary R = 2. In all our experiments, the error reported is the L2-norm relative error. The grid is systematically refined, as L is kept fixed, to discover the rate of convergence. For L = 2 (top left corner subgraph), it is observed that the rate of convergence for three of the four types of ABC is close to zero, while the approximation to the exact solution of the numerical solution corresponding to DtN improves as the grid is refined. The subgraph at the top right corner reveals that the numerical solution of KDFE4-BVP has almost the same rate of convergence than the one corresponding to DtN-BVP. From the subgraph in the lower row left corner, we conclude that the numerical solution of KSFE8-BVP also converges at almost the same rate as the one for KDFE4 and DtN boundary value problems. Finally for ten terms in both farfield expansions, the rate of convergence for the ABC: KSFE, KDFE, and DtN is basically the same.
+The previous discussion illustrated in Fig. 3 is appropriately summarized by a single graph depicted in Fig. 4. This figure clearly shows the second order convergence of the three methods using: DtN, KDFEL (L  5) and KSFEL, (L  9) while BGT2-BVP order of convergence is around 3.8 × 10-1. The set of grids employed to obtain Fig. 4 consist of PPW = 30, 40, 50, 60, and 70, respectively. As a particular case of the quadratic convergence of KDFEL-BVP (L  5), we show the convergence of the numerical solution of KDFE5-BVP in Table 1. The grids are ordered from less to more refine. Furthermore, Fig. 5 shows the line obtained from the least squares approximation of the orders between progressively finer grids. The slope of this line is 1.99948, which confirms the quadratic order of convergence for the numerical solution of KFDE5-BVP using the technique proposed in this work.
+
+PPW
+30 40 50 60 70
+
+Grid size
+30 × 190 40 × 253 50 × 316 60 × 378 70 × 441
+
+h = r0 = r
+0.03324 0.02493 0.01995 0.01667 0.01428
+
+L2-norm Rel. Error
+1.64 × 10-3 9.19 × 10-4 5.87 × 10-4 4.10 × 10-4 3.04 × 10-4
+
+Observed order
+2.02 2.00 1.99 1.95
+
+Table 1: Order of convergence of FFP approximation using KDFE5-BVP
+We observe that the numerical solution of KSFE-BVP also exhibits a second order convergence to the exact solution, although it requires more terms than the solution of KDFE-BVP to converge at the same rate. In fact as shown in Fig. 4, nine terms or more are required in the farfield expansion of KSFE-ABC to reach second order convergence while only four or more terms are required in the farfield expansion of KDFE-ABC. Moreover, these numerical experiments provide numerical evidence of the non-equivalence between KSFE2-ABC and BGT2 as established in Theorem 3.
+
+21
+
+Order of Convergence
+
+2.5 2
+1.5 1
+0.5 0
+-0.5 0
+
+Farfield Pattern Comparison Order of Convergence
+BGT2 DtN KSFE KDFE
+
+2
+
+4
+
+6
+
+8
+
+10
+
+12
+
+Number of Terms
+
+Figure 4: Comparison of order of convergence of FFP approximation for various ABCs versus the number of terms in the farfield expansion. The data in use is r0 = 1, k = 2, R = 2, and PPW = 30, 40, 50, 60, 70.
+
+#10-3 1.8 1.6 1.4 1.2
+1
+0.8
+0.6
+
+Farfield Pattern Order of Convergence = 1.9995
+
+L2-Norm Rel. Error
+
+0.4
+
+0.015
+
+0.02 0.025 "3
+
+errors least squares fit
+0.03 0.035
+
+Figure 5: Least squares fitting line for the data in Table 1
+6.2. Scattering and radiation from complexly shaped obstacles Our results in Section 6.1 for a circular shaped scatterer reveals the high precision that can
+be achieved by using the farfield expansions as ABCs with the appropriate number of terms and reasonable set of grids. As pointed out above, the accuracy of the overall numerical method is limited by the accuracy of the numerical method employed in the interior of the domain for relatively small number of terms, L, of the farfield ABCs. In this section, we take advantage
+22
+
+Farfield Pattern 90 6
+
+120
+
+60
+
+4
+
+150
+
+30
+
+2
+
+180
+
+0
+
+210 240
+120 150 180
+
+330
+300 270
+90 6 60
+4 30
+2
+0
+
+210 240
+120 150 180
+
+330
+300 270
+
+90 5 60
+4
+3
+2
+1
+
+30 0
+
+210
+
+330
+
+240
+
+300
+
+270
+
+Figure 6: Total field and corresponding FFP for scattering from complexly shaped obstacles on elliptic-polar grids using KSFE5-ABC with k = 2, R = 3, and PPW=50.
+
+of this fact to numerically solve more realistic scattering problems. In fact, we find numerical solutions for acoustic scattering problems from obstacles with complexly shaped bounding curves such as a star, epicycloid, and astroid. We choose as the artificial boundary a circle of radius R = 3 and the frequency k = 2. As described in Section 4.3, the differential equations defining
+23
+
+these BVPs are written in terms of generalized curvilinear coordinates that Acosta and Villamizar derived in [22]. The corresponding grids for these curvilinear coordinates were obtained from an elliptic grid generator and they were named elliptic-polar grids. Following the circular scatterer case, we use a second order centered finite difference method as our numerical technique for the interior points. A detailed account of the discretized equations in curvilinear coordinates are also found at [22]. We employ KSFE5 as our farfield expansion combined with PPW =50 (points per wavelength). The results are illustrated in Fig. 6 where the total field and its corresponding FFP are shown for each one of these obstacles. The parametric equations of these bounding curves are given by
+Star: x() = 0.2(4 + cos(5)) cos() y() = 0.2(4 + cos(5)) sin(), 0    2. (72)
+
+Epicycloid:
+
+x() = ((5 sin(-( + 5/4)) - sin(-5( + 5/4))) cos(/4) - (5 cos(-( + 5/4)) - cos(-5( + 5/4))) sin(/4))1/6
+y() = ((5 sin(-( + 5/4)) - sin(-5( + 5/4))) sin(/4) - (5 cos(-( + 5/4)) - cos(-5( + 5/4))) cos(/4))1/6,
+
+(73) 0    2.
+
+Astroid:
+
+x() = (2 cos( - /3) + cos(2( - /3))) cos(/3)/3 -
+
+(2 sin( - /3) + sin(2( - /3))) sin(/3)/3
+
+(74)
+
+y() = (2 cos( - /3) + cos(2( - /3))) sin(/3)/3 -
+
+(2 sin( - /3) + sin(2( - /3))) cos(/3)/3, 0    2.
+
+For the experiments corresponding to the graphs shown in Fig. 6, using relatively fine grids with PPW = 50, we did not find significant changes in the numerical solution by increasing the number of terms in the KSFEL condition up to L = 12 terms.
+Next, we discuss the numerical results for radiating problems defined in the exterior region  bounded internally by an arbitrary simple closed curve . These BVPs consist of Helmholtz equation, Sommerfeldt radiation condition, and a Dirichlet condition on the complexly shaped bounding curve . By imposing an appropriate boundary condition on , we can easily prescribe a solution for each one of these BVPs. In fact, consider the function u defined in the exterior region  from the superposition of two sources which are located inside the closed region bounded by . More precisely, u is given in terms of Hankel functions of first kind of order zero as
+
+u(x) = H0(1)(kr1(x)) + H0(1)(kr2(x)),
+
+x
+
+(75)
+
+where r1 = |x - x1|, and r2 = |x - x2| with x1 and x2 inside the region bounded by . Clearly, the function u satisfies Helmholtz equation in  since H0(1)(kri) does for i = 1, 2. It also satisfies the Sommerfeld radiation condition. Thus if we also impose the values of u at the boundary  (superposition of the two sources) as the boundary condition on , the function u defined by (75) satisfies the radiating problem just defined, regardless of the shape of the bounding curve .
+Starting with the previously superimposed boundary condition on the bounding curve , it is
+possible to obtain a numerical solution. First, we transform the unbounded radiating problem into 24
+
+a bounded one by introducing the KDFE-ABC or KSFE-ABC on a circular artificial boundary (r = R). Then, we apply the proposed numerical technique in generalized curvilinear coordinates in the region -, bounded internally by  and externally by the circle of radius R to obtain the
+numerical solution sought.
+
+y
+
+1.5 1
+0.5 0
+-0.5 -1
+-1.5
+-2
+
+Radiating Sources Field Nxm = 80x503
+
+-1
+
+0
+
+1
+
+x
+
+0.7 0.6 0.5 0.4 0.3 0.2 0.1 0 2
+
+Far-Field Pattern Comparison Circle
+
+L2-Norm Rel. Error =3.38e-05
+
+90 2
+
+120
+
+60
+
+1.5
+
+Exact Numerical
+
+150
+
+1
+
+30
+
+0.5
+
+180
+
+0
+
+210
+
+330
+
+240
+
+300
+
+270
+
+L2-Norm Rel. Error
+
+#10-5 6.5
+6 5.5
+5
+
+Farfield Pattern Order of Convergence = 2.0235
+
+4.5
+
+4
+
+3.5 0.012
+
+0.014 "3
+
+errors least squares fit
+
+0.016
+
+0.018
+
+y
+
+1.5 1
+0.5 0
+-0.5 -1
+-1.5
+-2
+
+Radiating Sources Field Nxm = 80x503
+
+-1
+
+0
+
+1
+
+x
+
+Far-Field Pattern Comparison Epicycloid
+
+0.7
+
+L2-Norm Rel. Error =5.16e-03
+
+90 2
+
+0.6
+
+120
+
+60
+
+Exact
+
+Numerical
+
+1.5
+
+0.5 150
+
+1
+
+30
+
+0.4
+
+0.5
+
+0.3 180
+
+0
+
+0.2
+
+210
+
+330
+
+0.1
+
+0 2
+
+240
+
+300
+
+270
+
+L2-Norm Rel. Error
+
+#10-3 8.5
+8 7.5
+7
+6.5
+
+Farfield Pattern Order of Convergence = 1.4888
+
+6
+
+5.5
+
+5 0.012
+
+0.014 "3
+
+errors least squares fit
+
+0.016
+
+0.018
+
+Radiating Sources Field Nxm = 80x503
+1.5 1
+0.5 0
+-0.5
+
+Far-Field Pattern Comparison Star
+
+0.7
+
+L2-Norm Rel. Error =1.11e-03
+
+90 2
+
+0.6
+
+120
+
+60
+
+Exact
+
+1.5
+
+Numerical
+
+0.5
+
+150
+
+1
+
+30
+
+0.4
+
+0.5
+
+0.3
+
+180
+
+0
+
+#10-3 2.2
+2
+
+Farfield Pattern Order of Convergence = 2.2172
+
+1.8
+
+1.6
+
+1.4
+
+L2-Norm Rel. Error
+
+y
+
+0.2
+
+-1
+
+1.2
+
+210
+
+330
+
+-1.5
+
+0.1
+
+0
+
+-2
+
+-1
+
+0
+
+1
+
+2
+
+240
+
+300
+
+270
+
+1 0.012
+
+0.014 "3
+
+errors least squares fit
+
+0.016
+
+0.018
+
+Figure
+
+7:
+
+x
+Numerical
+
+computation
+
+of
+
+a
+
+radiating
+
+field
+
+from
+
+two
+
+sources
+
+using
+
+KSFE10-ABC,
+
+k
+
+=
+
+2, R = 2, and PPW=80. Order of convergence of FFP approximation for PPW = 60,65,70,75,80
+
+for complex bounding curves.
+
+The relevant data employed in our numerical experiments is the following: artificial boundary R = 2, frequency k = 2, number of terms in the KSFE expansion L = 10, location of sources
+25
+
+x1 = (0, 1/2) and x2 = (0, -1/2), set of grid points PPW = 60, 65, 70, 75, 80. We show that these numerical solutions indeed converge to the exact prescribed solution (75) of the original radiating BVP. This is illustrated in Fig. 7 where the known radiating field from the two sources is numerically approximated in three different regions - which are internally bounded by three different curves. They are a circle of radius r0 = 1, the epicycloid boundary curve defined in (73), and the star curve defined in (72). The relative L2-norm error between the FFP of the prescribed solution and the approximated solution is computed for each different grid. Then, the order of convergence is estimated based on these errors. As seen in Fig. 7, we are able to prove quadratic convergence for the circle and for the star bounding curves. However, for the epicycloid we can only get 1.5 as order of convergence for the same set of grid points and number of terms in the farfield expansion L. This is due to the difficulty of generating conforming smooth grids in the neighborhood of the epicycloid singularities.
+
+6.3. Scattering from a spherical obstacle. The axisymmetric case. Numerical approximation and order of convergence
+In this section, we discuss the results for the scattering from a spherical obstacle modeled by WFEL-BVP as described in Section 4.2.
+
+Far-Field Pattern Comparison
+
+L2-Norm Rel. Error =8.93e-04
+
+90 30
+
+120
+
+60
+
+Exact Numerical
+
+20
+
+150
+
+30
+
+10
+
+180
+
+0
+
+#10-3 3 2.5
+
+Farfield Pattern Order of Convergence = 2.0049
+
+2
+
+1.5
+
+L2-Norm Rel. Error
+
+210
+
+330
+
+240
+
+300
+
+270
+
+1 0.01 0.012
+
+0.016 "3
+
+errors least squares fit
+0.02 0.024
+
+Far-Field Pattern Comparison
+
+L2-Norm Rel. Error =7.29e-04
+
+90 100
+
+120
+
+60
+
+80
+
+60 150
+40
+
+20
+
+Exact Numerical
+30
+
+180
+
+0
+
+210
+
+330
+
+240
+
+300
+
+270
+
+L2-Norm Rel. Error
+
+#10-3 2.4 2.2
+2 1.8 1.6
+1.4
+1.2
+1
+
+Farfield Pattern Order of Convergence = 2.0537
+
+0.8
+
+errors
+
+0.6
+
+least squares fit
+
+0.005
+
+0.006 0.007 0.008 0.009
+
+"3
+
+#10-3
+
+Figure 8: Numerical results for scattering from a spherical scatterer using Wilcox farfield ABC: cross-sections of the total field for arbitrary , farfield pattern, and order of convergence for two different frequencies k = 2, 4.
+
+26
+
+In Fig. 8, cross-sections of the total field for an arbitrary angle  are depicted. The middle graphs corresponds to the approximation of the farfield pattern of this scattering problem. These graphs were extended to the interval [0, 2] by taking the mirror image of the solution in [0, ]. Finally, the rightmost graphs show the second order convergence of the numerical solution to the exact solution when Wilcox farfield expansions ABC are employed. The data employed to generate the graphs in the top row of Fig. 8 is: k = 2, R = 3, terms in WFEL, L = 8, and set of grid points used to achieve the second order convergence, PPW = 25, 30, 35, 40, 45. Similarly, the bottom row graphs were obtained using: k = 4, R = 3, terms in WFEL, L = 8, and set of grid points used to achieve the second order convergence, PPW = 30, 35, 40, 45, 50.
+These results reveals the high accuracy that can be achieved using the exact Wilcox farfield expansions in the 3D case. As we showed in the 2D case, the accuracy of the numerical solutions depends only on the order of approximation of the numerical method employed in the interior of - when enough terms in the exact farfield expansions ABCs are used.
+
+7. Concluding remarks
+We have derived exact local ABCs for acoustic waves in two-dimensions (KDFE), and in three-dimensions (WFE). We have constructed them directly from Karp's and Atkinson-Wilcox's farfield expansions, respectively. A previous attempt by Zarmi and Turkel [11] to derive a high order local ABC from Karp's expansion was partially successful. However, they were able to obtain other high order local conditions using an annihilating technique more general than the procedure used to obtain HH-ABC.
+
+L2-Norm Rel. Error L2-Norm Rel. Error L2-Norm Rel. Error
+
+k = :/2 R=1.05 100
+
+10-1 10-2
+
+KSFE KDFE DtN
+
+10-3
+
+10-4
+
+10-5
+
+10-61 2 3 4 5 6 7 8 9 10 11 12 13 14 15 Number of Terms L
+
+100
+
+k = : R = 1.05
+
+KSFE
+
+KDFE
+
+10-1
+
+DtN
+
+10-2
+
+10-3
+
+10-4
+
+10-5
+
+10-61 2 3 4 5 6 7 8 9 10 11 12 13 14 15 Number of Terms L
+
+100
+
+k = 2: R = 1.05
+
+KSFE
+
+KDFE
+
+10-1
+
+DtN
+
+10-2
+
+10-3
+
+10-4
+
+10-5
+
+10-61 2 3 4 5 6 7 8 9 10 11 12 13 14 15 Number of Terms L
+
+Figure 9: Convergence properties of the numerical approximation of the FFP, obtained from KSFEL-BVP and KDFEL-BVP, when L increases for various kR products.
+
+Some of the attributes of the novel farfield ABCs have been highlighted in various sections of this article. Among the most relevant attributes we find the exact character of these absorbing conditions according to [1]. This means the error between the solutions of KDFEL-BVP and WFEL-BVP, and the solutions of their corresponding original unbounded problems approaches zero when L   and the radius R of the artificial boundary is held fixed. Although, it is not possible to prove this exact property merely from numerical experiments, it is still possible to determine this behavior for moderately large values of L. A discussion on this convergence properties follows in the next paragraphs.
+27
+
+As we pointed out earlier, possibly the most well-known higher order local absorbing boundary condition in two-dimensions is due to Hagstrom and Hariharan [9] which we denote as HH-ABC. The advantage of KDFE sequence of ABCs over the HH counterpart is that the former leads to convergence of the numerical approximation to the exact solution for a fixed value of R, while the HH-ABC only converges asymptotically as R increases. In addition to KDFE and WFE farfield ABCs, we also derived KSFE in Section 2.2, which is a farfield expansion obtained from a classical asymptotic expansion of Karp's series. This asymptotic expansion is the same employed in the derivation of the BGT and HH absorbing conditions in two-dimensions.
+In Fig. 9 the convergence properties of the numerical FFP obtained form KSFE-BVP and KDFE-BVP are compared. The physical problem is the same scattering problem studied in Section 6.1 and illustrated in Fig. 2. However, instead of describing the approximation of the outgoing wave at the artificial boundary, we describe the approximation of the farfield pattern for different values of kR which are obtained for a fixed R = 1.05 combined with appropriate values of k.
+Notice that the convergence of the solutions of KSFEL-BVP is conditioned by the value of the frequency k and radius R of the artificial boundary. More precisely, for kR = /2 and kR = , the FFP approximation of KSFEL-BVP begins to diverge from the exact FFP for L  4 and L  7, respectively. However for kR = 2, the FFP of KSFEL-BVP converges to the exact FFP when L increases, for 1  L  15. Furthermore, this approximation is as good as the one obtained using the exact DtN boundary condition for 10  L  15. However, as we continue increasing the number of terms L, the solutions of KSFEL-BVP will eventually diverge. This behavior parallels the one established by a rigorous proof given by Schmidt and Heier [33] for the convergence properties of the solution obtained using Feng's absorbing boundary conditions. Feng's condition arises from an asymptotic expansion of the exact DtN boundary condition for large R.
+In practical terms, the use of KSFE-ABC is advisable only if the product kR is large enough which is also applicable to any absorbing condition obtained from an asymptotic expansion of series representation of the outgoing waves. The application of KSFEL is still useful in many physical problems where kR is sufficiently large since it takes only a few terms to reach the same order of convergence than the one obtained from DtN-ABC. On the other hand, the exact character of KDFE-BVP is clearly shown in Fig. 9. In fact, it only takes four terms of Karp's expansion (L = 4) to reach the same level of convergence of the solution of the DtN-BVP when kr = /2. This level is maintained until L = 15. Similar behavior is observed for the other two values of the product kR. In all these experiments R = 1.05 and the frequency k was chosen according to the desired value of kR. We also employed the same grid in all these experiments.
+A non-asymptotic version of BGT2 can be obtained by constructing a second order operator that annihilates the terms of O (1) in Karp's expansion. This was the approach followed by Grote and Keller [8] to obtain the second order differential operator,
+
+L0u = ru - k
+
+H0(kr) u - H0(kr)
+
+H0(kr) - H1(kr) H0(kr) H1(kr)
+
+2 u
+
+(76)
+
+An alternative derivation of (76) was given by Li and Cendes [5] by requiring that the first two terms of the exact solution of normal modes of Helmholtz equation in cylindrical coordinates were annihilated. All these authors and more recently Turkel, Farhat, and Hetmaniuk [34] used the differential operator (76) at the artificial boundary as an ABC for the scattering of a plane
+28
+
+wave from a circular obstacle. They noticed the superior accuracy of the solution obtained with this condition compared with the one obtained from the absorbing boundary conditions BGTL (for L = 1, 2), for low values of the frequency k. In particular, Turkel et al. [34] showed that for a frequency k = 0.01 and radius R = 5 (artificial boundary) the L2-norm relative error at the artificial boundary is about 50 times better using (76) over BGT2. These results can be considered as a low order version of the results illustrated in Fig. 9 for the high order local KSFE and KDFE absorbing boundary conditions. Zarmi and Turkel [11] also arrived to the same conclusion by comparing their higher order version of Li and Cendes' operator in 2D with the higher order versions of HH operators obtained from the asymptotic Karp's expansion.
+We would like to highlight two other valuable attributes of the farfield ABCs. First, the farfield pattern is the coefficient of the leading term of the farfield expansion. This leading coefficient (angular function) is one of the unknowns of the linear system to be solved to obtain the approximation of the exact solution. So, there is no additional computation afterward to obtain the FFP. In most of our experiments, we decided to use the FFP approximation formula obtained in Section 5 for comparison purposes. Secondly, by increasing the parameter L (number of terms in the expansion), the error introduced by KDFEL and WFEL can easily be reduced and made negligible compared with the error from the numerical method in the interior domain -.
+There are numerous directions in which the application of farfield ABCs can be extended. Some of those on which we are currently working or plan to work are the following:
+a. The combined formulation of high order finite difference (or finite element), for the discretization of the Helmholtz equation in -, with the novel exact local farfield ABCs. This will show the high accuracy that can be achieved by simply increasing the number of terms in the ABCs expansion, using relatively coarse grids. For this purpose, we plan to explore several high order compact finite difference schemes that have been recently developed [35, 36] and others well-established found in [37].
+b. The extension of the formulation of our ABC to the wave equation (time-domain). This extension is clearly feasible in 3D since the time-domain analogue of the Wilcox expansion is available [38, 39] due to the Fourier duality between t and ik, and between eikr and time shift. This is also valid for the KSFE-ABC in 2D. However, for the KDFE absorbing condition in 2D, Karp's expansion has no closed-form transformation to the time domain due to the complexity of the terms H0(kr) and H1(kr). Such a transformation would lead to nonlocal operators in the time variable similar to the ones discussed in [40].
+c. Construction of exact local farfield ABCs for multiple scattering of time-harmonic waves. The farfield expansions of Wilcox and Karp allow the evaluation of the scattered field semianalytically at any point outside the artificial boundary. This property is fundamental in the multiple scattering setting for the introduction of artificial sub-boundaries enclosing obstacles disjointly a` la Grote-Kirsch [41].
+Acknowledgments
+The first and third authors acknowledge the support provided by the Office of Research and Creative Activities (ORCA) of Brigham Young University. Thanks are also due to the referees for their useful suggestions.
+29
+
+References
+[1] D. Givoli, High-order local non-reflecting boundary conditions : a review, Wave Motion 39 (2004) 319­326. [2] A. Bayliss, M. Gunzburger, E. Turkel, Boundary conditions for the numerical solution of elliptic equations in
+exterior regions, SIAM J. Appl. Math. 42 (1982) 430­451. [3] B. Engquist, A. Majda, Absorbing boundary conditions for the numerical simulation of waves, Math. Comput.
+31 (1977) 629­651. [4] K. Feng, Finite element method and natural boundary reduction, in: F. Magoule`s (Ed.), Proc. of the International
+Congress of Mathematicians, 1983, pp. 207­232. [5] Y. Li, Z. J. Cendes, Modal expansion absorbing boundary conditions for two-dimensional electromagnetic scat-
+tering, IEEE Transactions on Magnetics 29 29(2) (1993) 1835­1838. [6] J. Keller, D. Givoli, Exact non-reflecting boundary conditions, J. Comput. Phys. 82 (1989) 172­192. [7] D. Givoli, J. B. Keller, Non-reflecting boundary conditions for elastic waves, Wave Motion 12 (1990) 261­279. [8] M. Grote, J. Keller, On nonreflecting boundary conditions, J. Comput. Phys. 122 (1995) 231­243. [9] T. Hagstrom, S. Hariharan, A formulation of asymptotic and exact boundary conditions using local operators,
+Appl. Num. Math. 27 (1998) 403­416. [10] A. Zarmi, A New Approach for Higher Order Absorbing Boundary Conditions for the Helmholtz Equation,
+Master's Thesis, School of Mathematics, Tel Aviv University, 2012. [11] A. Zarmi, E. Turkel, A general approach for high order absorbing boundary conditions for the helmholtz equa-
+tion, J. Comput. Phys. 242 (2013) 387­404. [12] S. N. Karp, A convergent "farfield expansion" for a two-dimensional radiation functions, Comm. Pure Appl.
+Math. 14 (1961) 427­434. [13] C. Wilcox, A generalization of theorems of Rellich and Atkinson, Proc. Am. Math. Soc. 7 (1956) 271­276. [14] J. Berenger, A perfectly matched layer for the absorption of electromagnetic waves, J. Comput. Phys. 114 (1994)
+185­200. [15] T. Hagstrom, A. Mar-Or, D. Givoli, High-order local absorbing conditions for the wave equation: Extensions
+and improvements, J. Comput. Phys. 227 (2008) 3322­3357. [16] T. Hagstrom, T. Warburton, A new auxiliary variable formulation of high-order local radiation boundary condi-
+tions: corner compatibility conditions and extensions to first-order systems, Wave Motion 39 (2004) 327­338. [17] R. Higdon, Numerical absorbing boundary condition for the wave equation, Mathematics of Computation
+49 (179) (1987) 65­90. [18] D. Rabinovich, D. Givoli, E. Be´cache, Comparison of high-order absorbing boundary conditions and perfectly
+matched layers in the frequency domain, Int. J. Numerical Methods in Biomedical Engineering 26 (10) (2010) 1351­1369. [19] D. Colton, R. Kress, Inverse Acoustic and Electromagnetic Scattering Theory, 2nd Edition, Springer, 1998. [20] J. Nedelec, Acoustic and Electromagnetic Equations : Integral Representations for Harmonic Problems, Springer, 2001. [21] W. McLean, Strongly Elliptic Systems and Boundary Integral Equations, Cambridge Univ. Press, 2000. [22] S. Acosta, V. Villamizar, Coupling of Dirichlet-to-Neumann boundary condition and finite difference methods in curvilinear coordinates for multiple scattering, J. Comput. Phys. 229 (2010) 5498­5517. [23] M. Abramowitz, I. Stegun (Eds.), Handbook of Mathematical Functions with Formulas, Graphs, and Mathematical Tables, 10th Edition, Wiley-Interscience, 1972. [24] R. Kechroud, A. Soulaimani, Y. Saad, S. Gowda, Preconditioning techniques for the solution of the Helmholtz equation by the finite element method, Mathematics and Computers in Simulation 65 (2004) 303­321. [25] Y. Erlanga, Advances in iterative methods and preconditioners for the Helmholtz equation, Arch. Comput. Methods Eng. 15 (2008) 37­66. [26] M. N. O. Sadiku, Elements of Electromagnetics, 4th Edition, Oxford University Press, 2007. [27] P. Knupp, S. Steinberg, Fundamentals of Grid Generation, CRC Press, 1993. [28] P. Martin, Multiple Scattering, Cambridge Univ. Press, 2006. [29] O. P. Bruno, E. M. Hyde, Higher-order fourier approximation in scattering by two-dimensional, inhomogeneous media, SIAM J. Numer. Anal. 42 (2005) 2298­2319. [30] R. Kress, Numerical Analysis, Springer Verlag, 1998.
+30
+
+[31] D. Givoli, Exact representations on artificial interfaces and applications in mechanics, Appl. Mechanics Rev. 52 (1999) 333­349.
+[32] D. Givoli, Non-reflecting boundary conditions, J. Comp. Phys. 94 (1991) 1­29. [33] K. Schmidt, C. Heier, An analysis of feng's and other symmetric local absorbing boundary conditions, ESAIM
+Math. Model. Numer. Anal. 49 (2015) 257­273. [34] E. Turkel, C. Farhat, U. Hetmaniuk, Improved accuracy for the helmholtz equation in unbounded domains, Int.
+J. Numer. Meth. Engng. 59 (2004) 1963­1988. [35] S. Britt, S. Tsynkov, E. Turkel, A compact fourth order scheme for the helmholtz equation in polar coordinates,
+J. Sci. Comput. 45 (2010) 26­47. [36] E. Turkel, D. Gordon, R. Gordon, S. Tsynkov, Compact 2d and 3d sixth order schemes for the helmholtz equation
+with variable wave number, J. Comput. Phys. 232 (2013) 272­287. [37] S. Lele, Compact finite difference schemes with spectral-like resolution, J. Comput. Phys. 103 (1992) 16­42. [38] A. Bayliss, E. Turkel, Radiation boundary conditions for wave-like equations, Comm. Pure Appl. Math. 33
+(1980) 707­725. [39] M. Grote, I. Sim, Local nonreflecting boundary condition for time-dependent multiple scattering, J. Comput.
+Phys. 230 (2011) 3135­3154. [40] B. Alpert, L. Greengard, T. Hagstrom, Rapid evaluation of nonreflecting boundary kernels for time-domain wave
+propagation, SIAM J. Numer. Anal. 37 (4) (2000) 1138­1164. [41] M. Grote, C. Kirsch, Dirichlet-to-Neumann boundary conditions for multiple scattering problems, J. Comput.
+Phys. 201 (2004) 630­650.
+31
+
+

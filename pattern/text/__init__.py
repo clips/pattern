@@ -49,8 +49,7 @@ from pattern.helpers import encode_string, decode_string
 decode_utf8 = decode_string
 encode_utf8 = encode_string
 
-PUNCTUATION = ".,;:!?()[]{}`'\"@#$^&*+-|=~_”—“"
-
+PUNCTUATION = ".,;:!?()\[]{}`'\"@#$^&*+-|=~_”—“"
 
 def ngrams(string, n=3, punctuation=PUNCTUATION, continuous=False):
     """ Returns a list of n-grams (tuples of n successive words) from the given string.
@@ -80,22 +79,22 @@ def ngrams(string, n=3, punctuation=PUNCTUATION, continuous=False):
     return g
 
 
-def split_document_by_delimeters(string):
+def split_document_by_delimeters(string, regexp="[.,!?;: ]", min_word_len=1, stopwords=None):
     """
     :param string: input string (text document)
     :return: list of words
     """
-    def strip_punctuation(s, punctuation=set(PUNCTUATION)):
-        return [w for w in s if (isinstance(w, Word) and w.string or w) not in punctuation]
+    string = re.sub(r"(-\n)", "", string.lower())
+    string = re.sub(r"(\n)", " ", string)
+    words = re.split(regexp, string)
 
-    sentences = [strip_punctuation(s.split(" ")) for s in tokenize(string)]
-    words = [item for sublist in sentences for item in sublist]
+    if not stopwords:
+        stopwords = []
 
-    return [word.lower() for word in words if len(word) > 1]
+    return [word for word in words if len(word) > min_word_len and word not in stopwords]
 
 
-
-def train_topmine_ngrammer(documents, threshhold=10, max_ngramm_len=3):
+def train_topmine_ngrammer(documents, threshhold=1, max_ngramm_len=3, min_word_len=2, regexp="[.,!?;: ]", stopwords=None):
     """
     :param documents: list of documents, where each document is represented by a string or by a list of prepared words (ex. stemmed)
     :return: trained ngrammer for text corpus
@@ -104,7 +103,7 @@ def train_topmine_ngrammer(documents, threshhold=10, max_ngramm_len=3):
     splitted_docs = []
     for doc in documents:
         if isinstance(doc, str):
-            splitted_docs.append(split_document_by_delimeters(doc))
+            splitted_docs.append(split_document_by_delimeters(doc, regexp, min_word_len=min_word_len, stopwords=stopwords))
         elif isinstance(doc, list):
             splitted_docs.append(doc)
         else:
@@ -113,7 +112,7 @@ def train_topmine_ngrammer(documents, threshhold=10, max_ngramm_len=3):
 
     ng = None
     try:
-        ng = NGrammer()
+        ng = NGrammer(regexp=regexp)
         ng.frequentPhraseMining(splitted_docs, threshhold=threshhold, max_ngramm_len=max_ngramm_len)
 
     except Exception:
@@ -122,19 +121,19 @@ def train_topmine_ngrammer(documents, threshhold=10, max_ngramm_len=3):
     return ng
 
 
-def topmine_ngramms(doc, ng, threshhold=3):
+def topmine_ngramms(doc, ng, threshhold=1):
     """
     :param doc: document from text corpus, represented by a list of words without delimeters
     :param ng: trained ngramer for text corpus
     :param threshhold: the hyperparameter
     :return: dictionary of ngramms
     """
-    splitted_doc = split_document_by_delimeters(doc)
+    splitted_doc = split_document_by_delimeters(doc, ng.regexp)
     extracted_terms = ng.ngramm(splitted_doc, threshhold=threshhold)[0]
     terms_dict = defaultdict(int)
     for term in extracted_terms:
         terms_dict[term] += 1
-    return extracted_terms
+    return terms_dict
 
 
 class NGrammer(object):
@@ -143,11 +142,12 @@ class NGrammer(object):
     _delimiters_regex = None
     _lengthInWords = 0
 
-    def __init__(self):
+    def __init__(self, regexp):
         self._phrase2freq = {}
         self._delimiters = {}
         self._delimiters_regex = []
         self._lengthInWords = 0
+        self.regexp = regexp
 
     @property
     def delimiters(self):
@@ -622,7 +622,7 @@ class Lexicon(lazydict):
 
     def load(self):
         # Arnold NNP x
-        dict.update(self, (x.split(" ")[:2] for x in _read(self._path)))
+        dict.update(self, (x.split(" ")[:2] for x in _read(self._path) if len(x.split(" ")) > 1))
 
 #--- FREQUENCY -------------------------------------------------------------------------------------
 

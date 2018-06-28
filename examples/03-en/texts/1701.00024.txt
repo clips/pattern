@@ -1,0 +1,473 @@
+arXiv:1701.00024v2 [astro-ph.GA] 26 Oct 2017
+
+Draft version October 27, 2017 Preprint typeset using LATEX style AASTeX6 v. 1.0
+NUMERICAL SIMULATIONS OF A JET-CLOUD COLLISION AND STARBURST: APPLICATION TO MINKOWSKI'S OBJECT
+P. Chris Fragile Department of Physics & Astronomy, College of Charleston, Charleston, SC 29424, USA
+Peter Anninos Lawrence Livermore National Laboratory, Livermore, CA 94550, USA
+Steve Croft Astronomy Department, University of California, Berkaenledy, 501 Campbell Hall #3411, Berkeley, CA 94720, USA
+Eureka Scientific, Inc. 2452 Delmer Street Suite 100, Oakland, CA 94602, USA
+Mark Lacy National Radio Astronomy Observatory, 520 Edgemont Road, Charlottesville, VA 22903, USA
+Jason W. L. Witry Department of Physics & Astronomy, College of Charleston, Charleston, SC 29424, USA
+ABSTRACT We present results of three-dimensional, multi-physics simulations of an AGN jet colliding with an intergalactic cloud. The purpose of these simulations is to assess the degree of "positive feedback," i.e. jet-induced star formation, that results. We have specifically tailored our simulation parameters to facilitate comparison with recent observations of Minkowski's Object (M.O.), a stellar nursery located at the termination point of a radio jet coming from galaxy NGC 541. As shown in our simulations, such a collision triggers shocks which propagate around and through the cloud. These shocks condense the gas and under the right circumstances may trigger cooling instabilities, creating runaway increases in density, to the point that individual clumps can become Jeans unstable. Our simulations provide information about the expected star formation rate, total mass converted to H I, H2, and stars, and the relative velocity of the stars and gas. Our results confirm the possibility of jet-induced star formation, and agree well with the observations of M.O. Keywords: galaxies: individual (Minkowski's Object) -- galaxies: jets -- hydrodynamics -- inter-
+galactic medium -- shock waves
+1. INTRODUCTION The interaction between high-energy jets from active galactic nuclei (AGN) and their surroundings has long been a topic of great astrophysical interest. It is well known that AGN feedback can control the size of a galaxy by influencing star formation, but the mechanism behind this is not well understood. Several recent observations (Nesvadba et al. 2010; Guillard et al. 2015), as well as numerical studies (e.g. Sutherland & Bicknell 2007; Antonuccio-Delogu & Silk 2008; Gaibler et al. 2012), have demonstrated that AGN feedback can be either "negative" or "positive." The exact astrophysical conditions in the jet and cloud are important in determining what direction feedback takes. Jets can be roughly divided according to their Fanaroff-Riley classification (Fanaroff & Riley 1974). Fast, energetic FRII jets seem more likely to result in negative feedback. Negative feedback curbs or even halts star formation, and is thought to result from the extreme radiative and kinetic energies of the jet, which heat and disperse the starforming gas. Additionally, the kinetic energy of a jet creates turbulence that can prevent ambient gas from cooling and subsequently coalescing (e.g. Nesvadba et al. 2010). For example, a study of the system 3C 326 by Ogle et al. (2007) found that, despite the strong H2 line emission and an inferred molecular gas mass of 2 ×109 M , the star formation is 20 times lower than predicted by the Kennicutt-Schmidt law. They infer that turbulent heating from the
+fragilep@cofc.edu
+
+2
+jet is inhibiting star formation. Other studies, though, suggest increased star formation may be seen in the cocoon of such jets (e.g. Gaibler et al. 2012).
+In contrast, FRI jets propagate through the ISM/IGM with energies high enough to create compression in the surrounding gas, but low enough to reduce the chance of significant turbulent heating. These jets are observed in positive feedback cases, wherein the effect of the jet serves to enhance star formation, including Centaurus A (Salom´e et al. 2016, and references therein), 4C 41.17 (Bicknell et al. 2000), and Minkowski's Object (hereafter M.O.) (Croft et al. 2006, hereafter C06). We give more details on both positive and negative feedback in Section 2.
+In this paper, we focus on the case of M.O., a peculiar star forming object located at a redshift of z = 0.0189 (C06) that is currently being bombarded by a FR I radio jet from the nearby galaxy NGC 541. The M.O. system is of particular interest due to the lack of evidence for an especially dense ISM or IGM. There is also not much evidence for cold gas outside of the jet interaction site, unlike in Centaurus A. As a result, it is unlikely that significant star formation would proceed in M.O. without the interaction of the jet.
+A strong argument in favor of jet-induced star formation in M.O. is the morphology of the jet-cloud interaction site. Outside of the jet interaction, the gas in M.O. is warm ( 104 K) and clumpy. Near the jet interaction site there is a double structure of H I gas wrapped around the jet and numerous H II regions (C06). C06 thus determined that it is likely that the jet interaction in M.O. caused the warm gas to cool into the H I, in contrast to the pre-existing cold gas regions in Centaurus A. Also, the star forming regions in M.O. correlate with the jet-cloud morphology; the region where the star formation is the highest is the center of the jet-cloud interaction, and the star formation rate (SFR) decreases laterally from this point (C06).
+M.O. may, in fact, be a low redshift example of the type of jet-induced star formation that was perhaps more common in the early universe. Evidence for this is the similarity between M.O. in ultraviolet and the rest-frame UV morphology of suspected jet-induced star-forming regions around high-redshift radio galaxies.
+The present work can be viewed as an extension of our earlier study of the interactions of radiative shocks with clouds (Fragile et al. 2004). That work focused mostly on the effects of planar shocks overtaking individual (or small collections of) warm clumps on the scale of  100 pc. In the current work, we explore the much richer problem of a full jet intersecting an inhomogeneous intergalactic cloud on the scale of tens of kpc. The paper proceeds as follows: Section 2 covers the theory behind jet-cloud interactions, Section 3 describes the numerical models used to capture the M.O. system, Section 4 details the simulation results, and Section 5 concludes the findings.
+2. JET-CLOUD INTERACTIONS
+The basic idea of jet-induced star formation (i.e. positive feedback) is that the collision of the jet with the cloud will trigger a series of shocks within the cloud. The immediate effect of these shocks will be to compress and heat the gas. Depending on how the radiative processes scale with density and temperature, the net result can be to dramatically increase the radiative efficiency within the cloud. If the temperature dependence is shallower than the density dependence, the cloud can enter a phase of runaway cooling. This process occurs most quickly in relatively over-dense regions of the original cloud. These over-dense regions then proceed to collapse at an accelerating pace. Provided some of these clumps start sufficiently close to the Jeans limit, this collapse will push them beyond this limit, such that gravitational collapse can take over and the clump will proceed to form stars.
+The properties of the jet and cloud are key to controlling this process. For positive feedback to be important, the initial cloud must be dense enough for some parts to be reasonably close to the Jeans limit. The temperature must also be such that any increase in temperature is met with a dramatic increase in cooling (the hydrogen cooling edge at  104 K is a good example). It also generally helps for the jet to be significantly less dense than the cloud. Finally, the jet velocity needs to be fast enough to trigger shocks in the cloud, yet not so fast that the cloud is disrupted before cooling can have much of an effect.
+3. NUMERICAL MODELS
+Our numerical simulations are performed using the well-tested Cosmos++ computational astrophysics code (Anninos et al. 2005), specifically its Newtonian hydrodynamics solvers. Cosmos++ carries over many of the multi-physics capabilities found in its predecessor code Cosmos (Anninos et al. 2003). The Newtonian solvers have previously been utilized to study the bar mode instability in magnetized, rotating neutron stars (Camarda et al. 2009) and the galactic center G2 event (Anninos et al. 2012). The current work uses the High Resolution Shock Capturing (HRSC) scheme, which was described in its relativistic form in Fragile et al. (2012). As there are few differences between the relativistic and Newtonian forms, we do not give a full presentation here, focusing instead on the packages that are most important to this paper: chemistry, cooling, and star formation. Note that, although magnetic fields can play an important role
+
+Simulations of a Jet-Cloud Collision
+
+3
+
+in shock-induced star formation (cf. Fragile et al. 2005), they are not considered in this work. Most prior numerical studies of stimulated star formation from jet-generated shocks have been hampered by the
+resolution of the computational mesh (e.g. Fragile et al. 2004). In the present work, we significantly improve on previous resolution limitations by employing the adaptive mesh refinement (AMR) capabilities of Cosmos++. Cosmos++ employs a local AMR scheme, in which refinement and de-refinement decisions are made on a cell-by-cell basis, using an oct-tree network to traverse the grid hierarchy (Anninos et al. 2005). Each level of refinement doubles the spatial resolution in each dimension within a given parent cell. This style of local AMR scheme ensures that the refinement and de-refinement conform as closely as possible to the shape of the region of interest, in this case the shocks and unstable cooling fronts triggered inside the cloud by the jet. The AMR capabilities and the improvements in computing power have also allowed us to move from two-dimensional to more realistic three-dimensional simulations. Other improvements over our previous work include: simulating an object the size of M.O., instead of much smaller cloudlets; inputting a realistic jet, instead of a planar shock; inclusion of a star-formation prescription; and inclusion of dust grain chemistry.
+In this work, we present an idealized case of a direct, axially symmetric collision between a jet and a pre-existing spherical cloud. As such, it is a simple, and well controlled, test simulation, albeit with imperfect correspondence to M.O. In the case of M.O., it is thought that the collision was between a jet and a stellar bridge connecting the elliptical galaxy, NGC 541, with the interacting galaxies, NGC 545/547 (C06). There is also evidence that the jet is slowly sweeping across M.O. (C06). Despite these differences, the correspondence in parameters between our simulation and M.O. ensure that our results are applicable and the simulation can be used to better understand the dynamics of this particular object and of jet-induced star formation more generally.
+
+3.1. Simulation Setup
+
+Although we performed some two-dimensional simulations to test different code options and explore our parameter space, we focus on reporting the results of our 3D simulations. The 3D simulations have a base resolution of 384×128× 128 zones to cover a domain that is approximately 30 kpc × 10 kpc × 10 kpc with reflection boundaries applied in the y- and z-directions, so that we only simulate one quadrant of the full problem. The finest spatial resolution achieved is 19.5 pc per zone, reached by including 2 levels of refinement on top of the 384 × 128 × 128 base mesh, equivalent to a uniform mesh of 1536 × 512 × 512 zones. The criterion used for refinement is that any zone with n  0.01 cm-3 is kept at the maximum refinement, while zones that fall below n < 0.0005 cm-3 are allowed to de-refine, provided neighboring zones never differ by more than one level of refinement and no zone is allowed to drop below the base resolution. Zones are checked against the refinement and de-refinement criteria once every ten evolution steps in the numerical code. We find that a minimum resolution close to our base value is required even in the background in order to get reasonable convergence in the star formation rate.
+The cloud, which represents the parent object of M.O., is initialized with a radius of Rcl = 7.5 kpc. It is, therefore, somewhat smaller, in terms of projected area, than the real value of 275 kpc2 (C06). The cloud is modeled as nonself-gravitating gas within a fixed dark-matter potential. The omission of self-gravity is reasonable, given that the gravitational potential in an object like M.O. will be dominated by dark-matter (Persic et al. 1996). The shape of the potential is given by a modified Hubble profile (Binney & Tremaine 1987)
+
+GM~
+
+ln[x + (1 + x2)1/2]
+
+(r < Rt) = Rc 1 -
+
+x
+
+,
+
+(1)
+
+where x = r/Rc, Rc = 0.5Rcl is the core radius, and
+
+M~ = Md
+
+ln[xt + (1 + x2t )1/2] - xt(1 + x2t )-1/2
+
+-1
+,
+
+(2)
+
+where Md = 1011M is the dark-matter mass, xt = Rt/Rc, and Rt = 10Rcl is the tidal radius. The gas is initialized to be isothermal, with Tcl = 2 × 105 K, and in hydrostatic equilibrium within the potential, such that the density
+
+cl  e-/c2s ,
+
+(3)
+
+where cs is the isothermal sound speed. The gas within this potential is made clumpy by overlaying a random, lognormal distribution of the form n~eX, with standard deviation  = 2 ln(n¯/n~) = 0.05 and n¯ = 0.5 cm-3, where X is a
+randomly drawn variable with a mean of 0 and variance of 1. The normalization is such that the total gas mass within Rcl is Mg = 1.4 × 109M , which we show gives about the right mass of H I (4.9 × 108M ; C06), and giving an overall average density in the cloud of ¯cl = 5.3 × 10-26 g cm-3. The gas is initialized to have a mean molecular weight of
+
+4
+
+µ = 1.3, appropriate for neutral, solar metallicity gas, although this only affects the initialization, as µ is subsequently solved for self-consistently by the chemistry package. The cloud is immersed in a background gas with nb = 10-4 cm-3 and Tb = 5 × 107 K, such that the cloud and background are initially in approximate pressure equilibrium at the cloud surface. To avoid numerical problems caused by the background gas density dropping too far below its initial value, a density floor of 10-7 cm-3 is set. Each simulation is run for a total of four sound-crossing-times, Rcl/cs,b, of the cloud in the background gas, which corresponds to about 40 Myr total.
+A jet is introduced into the simulation domain through one end. First, we estimate the power of the jet impacting M.O. from the claimed correlation with radio luminosity, Pjet  7.2 × 1036(Lrad/1030 erg s-1)12/17 erg s-1 (K¨ording et al. 2008), using the measured radio luminosity of NGC 541, Lrad  1041 erg s-1 (van Breugel et al. 1985). This gives a value for the kinetic power of 4 × 1044 erg s-1. This estimate is roughly consistent with independent estimates
+of the jet power from the other radio source in Abell 194, 3C40B, based on X-ray cavity energetics (Bogd´an et al.
+2011). Since both sources have similar radio luminosities, it seems reasonable that their jet powers would be similar,
+too. In order to translate this jet power into simulation variables, we are also guided by dynamical models for jet
+deceleration in intergalactic environments (e.g. Laing & Bridle 2002). We settle on the following jet parameters: a density of njet = 5 × 10-6 cm-3, a diameter of Djet = 5 kpc, and a velocity of 10% of the speed of light. For a cylindrical jet of cross-sectional area Ajet, this yields a kinetic power, Pjet = jetAjetvj3et = 6 × 1043 erg s-1, somewhat below the power estimate above, consistent with the jet having dissipated some fraction of its power prior to reaching
+M.O.
+
+3.2. Chemistry Models
+
+In our simulations, we follow the abundances of 9 atomic and molecular species: H I, H II, He I, He II, He III, e-, H-, H2, and H+2 . The evolution of each species is governed by an equation of the form
+
+[m] t
+
++  · ([m]v) =
+
+Ns
+
+Ns
+kij (T )[i][j] +
+
+Ns
+
+Ii()[i]e-i .
+
+(4)
+
+i=1 j=1
+
+i=1
+
+These rate equations are solved using a stable, semi-implicit, backward difference scheme that we developed in Anninos et al. (1997), which has since become a standard method adopted by the general community (e.g. Smith et al. 2016) due to its combination of robustness, efficiency, and accuracy. A total of 27 gas-phase chemical reactions are included in the full network, including 19 collisional (kij) and 8 photoionization/photodissociation (Ii) processes. The exact reaction chains are spelled out in Anninos et al. (2003). The photoionization field is set to 10-21 s-1, appropriate for cosmic UV background radiation at low redshift (Bechtold et al. 1987), while the photodissociation rate is 5.0 × 10-11 s-1, appropriate for the local interstellar medium (Spaans & Neufeld 1997). For photoionization, the products of the external field and the respective interaction cross sections are each integrated over frequency to derive effective photoionization rates for H, He, and molecules. To account for self-shielding within the cloud, we approximate the optical depth as i = inil, where HI = 6.3 × 10-18 cm2 (Osterbrock 1989), H2 = 5.2 × 10-18 cm2 (Hollenbach et al. 1971), and l is the length of a typical zone.
+We account for the effect of dust grains by adding an extra reaction to the network consisting of collisional interactions between grains and hydrogen atoms to enhance the production of molecules. Dust grains can also absorb and emit radiation, effectively acting as an additional cooling or heating mechanism. Both collisional and cooling rates are sensitive functions of the gas and grain temperatures, and of the grain size. We adopt the grain reaction and cooling models of Hollenbach & McKee (1979) and Omukai (2000) for this work, assuming a characteristic grain size and temperature of 100 °A and 10 K, respectively.
+
+3.3. Cooling Models
+
+The energy equation
+
+E +  · [(E + P )v] = -(T, n[m]) ,
+
+(5)
+
+t
+
+where E = e + v2/2 is the total energy density, including its internal and kinetic contributions, accounts for the
+
+cooling and heating of the gas via a total of eight different mechanisms: collisional-excitation, collisional-ionization,
+
+recombination, bremsstrahlung, metal-line cooling (dominantly carbon, oxygen, neon, and iron), molecular-hydrogen
+
+cooling, dust cooling, and photoionization heating. The cumulative cooling function is
+
+Ns Ns
+
+Ns
+
+(T, n[m]) =
+
+eij (T )n[i]n[j] - Jin[i] + eM (T )n2 ,
+
+(6)
+
+i=1 j=1
+
+i=1
+
+Simulations of a Jet-Cloud Collision
+
+5
+
+where eij(T ) are the cooling rates from 2-body interactions between species i and j, and Ji represents the frequencyintegrated photoionization and photodissociation heating rates. eM is the temperature-dependent cooling rate for metals (assuming solar metallicity), taken from Dalgarno & McCray (1972). A cooling floor is set at Tfloor = 10 K, below which only adiabatic cooling is possible.
+
+3.4. Star Formation Model
+
+In this study, we are particularly interested in tracking the formation of stars within the cloud. We follow the
+
+approach of Rasera & Teyssier (2006) in defining a density threshold, n , above which star formation is triggered at a
+
+rate given by
+
+
+
+ =
+
+(7)
+
+tff
+
+where tff = 3/32G is the local free-fall time and controls the star formation efficiency. We tested values of n between 0.5 and 4 cm-3 and between 0.02 and 0.1, settling in our two highest resolution simulations on n = 1 cm-3
+and = 0.02. This star formation appears as a sink term in the continuity equation
+
+
+
++  · (v) = - .
+
+(8)
+
+t
+
+By tracking how much mass is lost to star formation during each compute cycle, we are able to continuously track the star formation rate throughout the simulation.
+Additionally, we use tracer particles to track the most massive (M  0.02M ) "stars" created in this way. Each star particle is given an initial velocity equal to the velocity of the gas in the zone in which the star is created. The particles are then fed into a post-processing routine, which integrates their motion through the dark-matter potential. This is not entirely realistic as some momentum may get redistributed during the free-fall process that leads to star formation, but we at least capture the dominant force that would act on the stars once they form.
+We are justified in our neglect of self-gravity in following the collapse of the cloud, because the initial Jeans radius
+
+15kT
+
+1/2
+
+RJ = 4GµmH 
+
+(9)
+
+of the cloud is 21 kpc, more than twice the size of the cloud. Even at the densities and temperatures typical of star formation in our simulations (  2 × 10-24 g cm-3 and T  1000 K), the Jeans length is still 240 pc, which is considerably less than the original radius of the cloud, yet well above the resolution limits of our simulations. More importantly, it is comparable to the size scales of the regions that exceed the star formation criteria, meaning the clumps are just becoming Jeans unstable whenever our star formation model kicks in and starts converting gas in these regions to stars. In other words, just when self-gravity would be taking over is when our star formation model kicks in.
+
+4. RESULTS
+Table 1 summarizes the 3 simulations presented in this work. The naming convention refers to the base resolution and how many total grid resolution levels there are. Figure 1 presents volume visualizations from an intermediateand the end-time of our highest resolution 3D simulation (384x128x128 3level). A number of general features are apparent. First, the cloud is dense enough and has enough inertia to dramatically slow the propagation of the jet (represented by its temperature in red). At the speed the jet is traveling, if not for the cloud (and, to a lesser extent, the background gas) impeding its progress, it should have traversed 41 box lengths (164 cloud radii) over the duration of the simulation. Instead, most of the jet material is deflected to the sides of the cloud, though a significant fraction of its energy is deposited within the cloud gas. The blue material represents neutral hydrogen (H I) and shows that the core of the original cloud remains relatively intact until late times. At the head of the jet, where it is interacting with the cloud, a thin layer of very dense, cold gas has formed (represented by the green, H2, gas). This is where star formation is expected to occur. This figure shows qualitative similarities with Fig. 1 of Lacy et al. (2017, hereafter L17), which reports ALMA observations of M.O.
+
+4.1. Shock Propagation
+In Figure 1, we can clearly see the termination shock at the end of the collimated jet. Ahead of it is a compression shock being driven into the cloud (not seen in Figure 1, but lying just ahead of the cold, dense H2 gas seen in green).
+
+6
+Figure 1. Volume visualization from an intermediate (t = 30 Myr) and the final (t = 40 Myr) time dumps of our highest resolution simulation (384x128x128 3level). Red represents hot, T > 2 × 108 K, jet material; blue represents regions of the cloud with a neutral hydrogen density, nHI 0.1 cm-3; and green represents regions of the cloud with a molecular hydrogen (our tracer for cold gas) density, nH2 10-5 cm-3. Data have been reflected across the y = 0 and z = 0 planes to create this image. Axes are marked in units of cloud radii, Rcl.
+
+Simulations of a Jet-Cloud Collision
+
+7
+
+Table 1. Jet-Cloud Models and Parameters
+
+Namea
+
+n Nlb (cm-3)
+
+384x128x128
+
+1
+
+1
+
+0.1
+
+384x128x128 2level 2
+
+1 0.02
+
+384x128x128 3level 3
+
+1 0.02
+
+aEach simulation has a base resolution of
+
+384 × 128 × 128.
+
+b Nl is the total number of grid refinement levels.
+
+We can compare its position with the estimated shock velocity in the cloud. If we take our jet velocity, vjet = 3 × 104 km s-1, as the speed of the post-shocked material inside the jet, then we can use the usual jump conditions,
+
+-1
+
+vps =
+
+1- +1
+
+vsh ,
+
+(10)
+
+where vps and vsh are measured in the rest frame of the pre-shock gas, to estimate the speed of the jet shock, vsh,jet  4vjet/3 = 4 × 104 km s-1. If the shock in the jet is strong, then the post-shock pressure is approximately jetvs2h,jet. If we assume the shocks are also strong inside the background and that the post-shock jet and background gas reach pressure equilibrium, then we can estimate the speed of the shock in the background
+
+vsh,b
+
+jet b
+
+1/2
+vsh,jet = 8.9 × 103 km s-1.
+
+(11)
+
+If we likewise assume the shocks are strong in the cloud and take a characteristic cloud density of cl = 2.2 × 10-25 g cm-3, we get a shock speed in the cloud of
+
+vsh,cl
+
+b cl
+
+1/2
+vsh,b
+
+=
+
+vsh,b 1/2
+
+= 280
+
+km s-1,
+
+(12)
+
+where  = cl/b is the ratio of cloud to background density. According to this, the shock should traverse the cloud core in about 26 Myr, which looks to be roughly consistent with the shock progression seen in Figure 1.
+
+4.2. Cooling Front
+
+As mentioned in Section 2, for the jet feedback to be positive, it is critical for the cooling timescale to be shorter than the disruption timescale of the cloud, taken to be the shock-crossing time. Following Fragile et al. (2004), we estimate the cooling time to be
+
+tcool
+
+=
+
+(7.0
+
+× 10-35
+
+g
+
+cm-6
+
+s4) vs3h,cl cl
+
+2.2 × 105 yr .
+
+(13)
+
+This is much shorter than any other relevant timescale in the problem. Figure 2 shows how this cooling front and the associated star formation progresses over the course of the simulation.
+
+4.3. Star Particles
+As a reminder, whenever more than 0.02M of gas is converted into stars within a given zone within a single cycle, then a star particle is created to track the properties, such as position, age, and velocity, of that "star." Following this prescription, we created over 2.3 × 107 star particles in our lowest resolution simulation (384x128x128). The star particles span an age range from 0 ­ 32 Myr. However, this "age" does not correspond directly to the age of a star, as we do not account for the freefall and pre-main-sequence lifetimes of each. At best, the star particle ages give an estimate of the range of ages that may be expected and, as shown in Figure 3, some feeling for the spatial distribution of "young" and "old" stars.
+An interesting point about the stellar ages in our simulations is that they show a negative curvature along the direction of jet propagation, that is, the youngest (currently forming) stars are found between two populations of slightly older stars, one in the upstream direction and one downstream. The upstream population are stars that formed recently, only slightly before the current star formation. The downstream population are some of the first stars
+
+8
+Figure 2. Isosurface plot showing regions of the simulation domain where the density exceeds the star formation limit (n > n ) at t = 10 (yellow), 20 (blue), 30 (green), and 40 Myr (orange) from our highest resolution simulation (384x128x128 3level). Data have again been reflected across the y = 0 and z = 0 planes. Axes are marked in units of cloud radii, Rcl.
+Figure 3. Plot of spatial distribution (projected into the x-y plane) of star tracer particles from the final time dump (t = 40 Myr) of our lowest resolution 384x128x128 simulation. In the left panel, the color of each particle indicates its age (in Myr), while in the right panel, the color indicates velocity magnitude (in km s-1). to form from the jet interaction, but they are now actually located ahead of the current star formation front because they received a velocity kick larger than the current shock speed. Since the star particles are not coupled to the gas, they can actually pass ahead of the shock as it slows down, giving an apparently older population ahead of the current star formation front.
+Figure 3 (right panel) shows the spatial distributions of the star particles, colored by the magnitude of their velocities. As mentioned above, the fastest moving star particles are on the downstream edges of the distribution. By using our results from Sec. 4.1 and inverting the shock jump condition, we predict a post-shock velocity in the cloud of
+
+Simulations of a Jet-Cloud Collision
+
+9
+
+1.0
+
+0.8
+
+0.6
+
+(106 ) M
+
+0.4
+
+0.2
+
+0.0 0
+
+50
+
+v100
+
+150
+
+| | (km s-1 )
+
+200
+
+250
+
+Figure 4. Histogram of the velocity magnitudes of all the star particles formed in our 384x128x128 simulation. The peak of the distribution is roughly consistent with observations of M.O.
+
+vcl,ps = 3vsh,cl/4 210 km s-1. Since our star particles are assigned their velocity based upon the velocity of the gas from which they form, we expect the simulated star particle velocities to be similar. Figure 4 shows a histogram of the velocity distribution of all of the star particles. The distribution peaks at around 85 km s-1, which is fairly consistent with our crude predictions. The spread in our velocity distribution is also fairly consistent with the  40 km s-1 of
+velocity shear observed in M.O. (L17).
+
+4.4. Star Formation Rate
+
+Figure 5 shows the measured star formation rate (S.F.R.) as a function of time for two different 3D simulations done at different effective resolutions, from 39.1 pc per zone (384x128x128 2level) to 19.5 pc per zone (384x128x128 3level). Up to a point, we expect the simulated S.F.R. to be sensitive to resolution. At higher resolutions, more gas is going to be able to reach the density threshold, n , of our star formation model. However, a limit should be reached where the high density filaments are well enough resolved that their size and peak density are no longer functions of resolution. It appears we may have reached this point in our highest resolution simulations, as they track each other closely. Equally important, we achieved an S.F.R., or correspondingly an H luminosity, since (Kennicutt 1998)
+
+SFR M yr-1
+
+= 7.9 × 10-42
+
+LH erg s-1
+
+,
+
+(14)
+
+consistent with the observed value in M.O. (S.F.R. = 0.47M yr-1 or LH = 5.9 × 1040 erg s-1; Salom´e et al. 2015). In fact, we overshoot the observed S.F.R. after about 20 Myr. However, we are neglecting negative feedback effects,
+such as supernovae from the first generation of stars, which would damp this rate.
+
+4.5. Other Comparisons with Observations
+Figure 6 tracks the total mass of H I, H2, and stars over the course of our highest resolution simulation. All of these measures are within about a factor of two of their observed values. The simulation slightly overproduces H I [9.2 × 108M in the simulation vs. 4.9 × 108M for M.O. (C06)], slightly underproduces H2 [1.3 × 107M vs. (3.0 - 18) × 107M in M.O. (L17)], and slightly overproduces stars [3.3 × 107M vs. 1.9 × 107M in M.O. (C06)]. We find an electron number density in our cloud of ne  0.2 cm-3, also somewhat lower than the range of 1-10 cm-3 obtained for M.O. (C06). Figure 6 also tracks the "star formation efficiency," M /MHI, over time. By this measure, our simulation achieves a peak star formation efficiency of 3.5%, very close to the value of 4% measured in M.O. (C06).
+
+5. DISCUSSION & CONCLUSION
+In this work, we used 3D multi-physics hydrodynamic simulations to model the evolution of a radio jet impacting a single, dwarf-galaxy-scale cloud in a direct, axially-symmetric collision. Our intention is to use these simulations to better understand observations of M.O., the peculiar starburst galaxy located at the termination point of the radio jet from NGC 541.
+
+10
+
+100
+
+1041
+
+H (erg s-1 ) L
+
+S.F.R. (  yr-1 ) M
+
+10-1
+
+1040
+
+10-2 5
+
+10
+
+15
+
+t20
+
+25
+
+(Myr)
+
+30
+
+2-level 3-level MO
+35 40
+
+Figure 5. Star formation rate history for the two highest resolution simulations. After about 20 Myr, the S.F.R. in both simulations exceeds the current observed rate in M.O. of  0.5M yr-1 (grey, dashed line, corresponding to an H luminosity of 7 × 1040 erg s-1).
+
+M/MHI M [M] MH2 [M] MHI [M]
+
+1e8
+
+9
+
+6
+
+3
+
+0 1.5
+
+1e7
+
+1.0
+
+0.5
+
+0.0 1e7
+
+3
+
+2
+
+1
+
+0 1e-2
+
+3 2 1
+
+05 10 15 20 t [Myr2]5 30 35 40
+
+Figure 6. Plots of MHI, MH2 , M , and M /MHI over time for our highest resolution 3D simulation (384x128x128 3level). At the final time of t = 40 Myr, all measures are within a factor of two of their observed values.
+
+Our first, main conclusion is that jet-induced star formation (i.e. positive feedback) is possible under this scenario. Figure 5 shows a dramatic increase in star formation attributable to the jet interaction, and the star-formation rate matches M.O. well. Importantly, this star formation is occurring upstream of the bulk of the H I (compare Figures 1 and 2), also consistent with observations (C06).
+Other quantitative measures from the simulations also show substantial agreement with the observations. For example, the total masses of H I, H2, and stars (Figure 6) are all within a factor of two of their M.O. values. Additionally, the velocity histogram of our star particles peaks at |v|  85 km s-1 (Figure 4), which is roughly consistent with observations (L17). Given the relative simplicity of our setup (uniform jet hitting spherical cloud head on), it is remarkable how well our results match quantitatively across such a wide range of diagnostics.
+The spatial distribution of the star particle velocities is interesting. The fastest moving star particles are found furthest downstream (Figure 3). These are also some of the first star particles to form (i.e. they are the oldest), which is consistent with a slowing of the propagation speed of the star formation front. We plan to reexamine the observations of M.O. to see if a similar distribution is present.
+
+Simulations of a Jet-Cloud Collision
+
+11
+
+One effect that is not treated in these simulations is negative feedback from the star formation process itself. Once the first generation of massive stars form, there is only a limited amount of time (of the order a few Myr) for star formation to continue before heating from these stars would effectively shut it off (Dong et al. 2003). This might explain why the S.F.R. in M.O. appears to be lower now than it was in the past ­ negative feedback may already be kicking in.
+As future observations continue to constrain the star formation history of M.O., we plan to continue to refine our simulations. Future modifications to our setup may include: simulating non-axially-symmetric interactions between the jet and cloud; having the jet sweep across the cloud; or adding more feedback mechanisms, such as heating from young stars and supernovae. We could also include self gravity, which would only enhance and accelerate the star formation.
+
+This work used the Extreme Science and Engineering Discovery Environment (XSEDE), which is supported by National Science Foundation grant number ACI-1053575. PCF acknowledges support from National Science Foundation grants AST-1211230 and AST-1616185. JWLW acknowledges support from NRAO Student Observing Support grant SOSPA3-020. Work by PA was performed in part under the auspices of the U.S. Department of Energy by Lawrence Livermore National Laboratory under Contract DE-AC52-07NA27344.
+Software: Cosmos++ (Anninos et al. 2005)
+
+REFERENCES
+
+Anninos, P., Fragile, P. C., & Murray, S. D. 2003, ApJS, 147, 177 Anninos, P., Fragile, P. C., & Salmonson, J. D. 2005, ApJ, 635,
+723 Anninos, P., Fragile, P. C., Wilson, J., & Murray, S. D. 2012,
+ApJ, 759, 132 Anninos, P., Zhang, Y., Abel, T., & Norman, M. L. 1997, New A,
+2, 209 Antonuccio-Delogu, V., & Silk, J. 2008, MNRAS, 389, 1750 Bechtold, J., Weymann, R. J., Lin, Z., & Malkan, M. A. 1987,
+ApJ, 315, 180 Bicknell, G. V., Sutherland, R. S., van Breugel, W. J. M., et al.
+2000, ApJ, 540, 678 Binney, J., & Tremaine, S. 1987, Galactic dynamics Bogd´an, A´ ., Kraft, R. P., Forman, W. R., et al. 2011, ApJ, 743, 59 Camarda, K. D., Anninos, P., Fragile, P. C., & Font, J. A. 2009,
+ApJ, 707, 1610 Croft, S., van Breugel, W., de Vries, W., et al. 2006, ApJ, 647,
+1040 Dalgarno, A., & McCray, R. A. 1972, ARA&A, 10, 375 Dong, S., Lin, D. N. C., & Murray, S. D. 2003, ApJ, 596, 930 Fanaroff, B. L., & Riley, J. M. 1974, MNRAS, 167, 31P Fragile, P. C., Anninos, P., Gustafson, K., & Murray, S. D. 2005,
+ApJ, 619, 327 Fragile, P. C., Gillespie, A., Monahan, T., Rodriguez, M., &
+Anninos, P. 2012, ApJS, 201, 9 Fragile, P. C., Murray, S. D., Anninos, P., & van Breugel, W.
+2004, ApJ, 604, 74 Gaibler, V., Khochfar, S., Krause, M., & Silk, J. 2012, MNRAS,
+425, 438
+
+Guillard, P., Boulanger, F., Lehnert, M. D., et al. 2015, A&A, 574, A32
+Hollenbach, D., & McKee, C. F. 1979, ApJS, 41, 555 Hollenbach, D. J., Werner, M. W., & Salpeter, E. E. 1971, ApJ,
+163, 165 Kennicutt, Jr., R. C. 1998, ApJ, 498, 541 K¨ording, E. G., Jester, S., & Fender, R. 2008, MNRAS, 383, 277 Lacy, M., Croft, S., Fragile, C., Wood, S., & Nyland, K. 2017,
+ApJ, 838, 146 Laing, R. A., & Bridle, A. H. 2002, MNRAS, 336, 1161 Nesvadba, N. P. H., Boulanger, F., Salom´e, P., et al. 2010, A&A,
+521, A65
+Ogle, P., Antonucci, R., Appleton, P. N., & Whysong, D. 2007, ApJ, 668, 699
+Omukai, K. 2000, ApJ, 534, 809 Osterbrock, D. E. 1989, Astrophysics of gaseous nebulae and
+active galactic nuclei Persic, M., Salucci, P., & Stel, F. 1996, MNRAS, 281, 27 Rasera, Y., & Teyssier, R. 2006, A&A, 445, 1 Salom´e, Q., Salom´e, P., & Combes, F. 2015, A&A, 574, A34 Salom´e, Q., Salom´e, P., Combes, F., & Hamer, S. 2016, A&A,
+595, A65 Smith, B. D., Bryan, G. L., Glover, S. C. O., et al. 2016, ArXiv
+e-prints, arXiv:1610.09591 Spaans, M., & Neufeld, D. A. 1997, ApJ, 484, 785 Sutherland, R. S., & Bicknell, G. V. 2007, ApJS, 173, 37 van Breugel, W., Filippenko, A. V., Heckman, T., & Miley, G.
+1985, ApJ, 293, 83
+
+

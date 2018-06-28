@@ -1,0 +1,3382 @@
+arXiv:1701.00051v1 [hep-th] 31 Dec 2016
+
+Prog. Theor. Exp. Phys. 2012, 00000 (14ages) DOI: 10.1093/ptep/0000000000
+Supergravity on the noncommutative geometry
+Masafumi Shimojo1,, Satoshi Ishihara2, Hironobu Kataoka2, Atsuko Matsukawa2 and Hikaru Sato2
+1Department of Electronics and Information Engineering, National Institute of Technology, Fukui College, Geshicho, Sabae, Fukui 916-8507, Japan 2Department of Physics, Hyogo University of Education, Shimokume, Kato, Hyogo 673-1494, Japan E-mail: shimo0@ei.fukui-nct.ac.jp
+............................................................................... Two years ago, we found the supersymmetric counterpart of the spectral triple which specified noncommutative geometry. Based on the triple, we derived gauge vector supermultiplets, Higgs supermultiplets of the minimum supersymmetric standard model and its action. However, unlike the famous theories of Connes and his co-workers, the action does not couple to gravity. In this paper, we obtain the supersymmetric Dirac operator DM (SG) on the Riemann-Cartan curved space replacing derivatives which appear in that of the triple with the covariant derivatives of general coordinate transformation. We apply the supersymmetric version of the spectral action principle and investigate the heat kernel expansion on the square of the Dirac operator. As a result, we obtain a new supergravity action which does not include the Ricci curvature tensor.
+.............................................................................................. Subject Index B11, B16, B82
+1. Introduction
+The standard model of high energy physics has some defects. It can not include gravity theory, can not solve hierarchy problem, has many free parameters including coupling constants of gauge groups in the theory which must be decided by experiments. More essentially, it cannot explain why the gauge group is SU (3) × SU (2) × U (1). Connes and his co-workers derived the standard model coupled to gravity on the basis of noncommutative geometry(NCG)[1­4]. Their result is that if the space-time is a product of a continuous Riemannian manifold M and a finite space F of KO-dimension 6, gauge theories of the standard model are uniquely derived[5, 6]. In the model, three coupling constants of SU (3), SU (2), U (1) are unified by the same relation as that of SU (5) grand unified theory(GUT). The Weinberg angle is also fixed at that of the GUT.
+On the other hand, the most powerful candidate of new physics to solve the hierarchy problem is supersymmetric theory[7]. One loop correction to squared Higgs mass m2H from a Dirac spinor contains square of ultraviolet cut off, 2UV . If UV is order of Plank scale, this correction is 30 orders of magnitude larger than the value of m2H . Introducing supersymmetry brings about one more loop correction from a boson which is the superpartner of the fermion. It has the same absolute value as that of the fermion loop but with opposite sign, so that the hierarchy problem is systematically removed.
+Unfortunately, it is difficult, perhaps impossible to extend the NCG itself to new one which produce supersymetric particle models. The framework of NCG is specified by so-called the spectral triple (H0, A0, D0), where H0 is a Hilbert space which consists of spinorial wave
+c The Author(s) 2012. Published by Oxford University Press on behalf of the Physical Society of Japan. This is an Open Access article distributed under the terms of the Creative Commons Attribution License (http://creativecommons.org/licenses/by-nc/3.0), which permits unrestricted use, distribution, and reproduction in any medium, provided the original work is properly cited.
+
+functions of matter fields in the standard model, A0 and D0 are algebra and Dirac operator which act on H0. Let us consider to extend the spectral triple to supersymmetric counterpart, (H, A, D), where H is the space which consists of not only spinorial wave functions but also of bosonic wave functions of superpartners of the matter fields and elements of A and D are operators which act on H. Supersymmetric theories are mostly formulated on the Minkowskian space-time, while the standard model constructed from the NCG is formulated on the space-time with Euclidean signature. So the space H will not be a Hilbert space. In addition, since the extended Dirac operator D will include d'Alembertian which appears in the Klein-Gordon equation, [D, a] will not be bounded for an arbitrary element a  A, so that D-1 can not play the role of infinitesimal length element ds of a geometry. These facts do not obey axioms of NCG.
+Nevertheless, if not only supersymmetry but also NCG have important meaning in particle physics, these successful theories must coexist. Recently, we arrived at the minimum supersymmetric standard model(MSSM) based on NCG[8­10]. We have found the supersymmetric counterpart of the process to construct the standard model action from the NCG one by one. At first, we obtained "the triple" (H, A, D) extended from the spectral triple and verified the supersymmetry of it. The space H is the product of the functional space HM on the Minkowskian space-time manifold and the finite space HF which is the space of labels denoting the matter particles. According to the constitution of H, the algebra A/the Dirac operator D consists of AM /DM which acts on the manifold and AF /DF which acts on the finite space, respectively. The above construction was performed in the Minkowskian signature in order to incorporate supersymmetry. As mentioned earlier, the spectral triple corresponds to the NCG, but the triple does not define a new NCG. However, projecting HM to the fermionic part and changing the signature from the Minkowskian one to the Euclidean one by the Wick rotation, we found that it reduced to the theory constructed on the original spectral triple. We derived internal fluctuation of the Dirac operator, D, which induced vector supermultiplets of gauge degrees of freedom and Higgs supermultiplets.
+Secondarily, we obtained the action of the NCG model in terms of the supersymmetric version of spectral action principle[11] which was expressed by
+
+(k, iDk) + T rL2f (P ),
+
+(1)
+
+k
+
+where k denoted the wave functions which described the chiral or antichiral supermultiplet, P = (iD~)2 and f (x) was an auxiliary smooth function on a 4D compact Riemannian manifold
+without boundary[11]. We calculated the Seeley-Dewitt coefficients due to the second term
+of (1), which gave the action of the Non-Abelian gauge fields and Higgs fields.
+However, since the triple is constructed on the Minkowskian space-time,i.e. flat space-
+time, it does not give the action of gravity. In this paper, We replace the derivative iµ which appears in DM with the covariant derivative i~ µ which includes spin connection
+with contorsions generated by gravitino[12, 13]. Then we obtain the supersymmetric version of Dirac operator, DMSG on the curved space-time. We investigate the square of the Dirac operator P = (iDMSG)2 and the Seeley-Dewitt coefficients due to P in order to obtain the action of supergravity.
+
+2/14
+
+2. Supersymmetrically extended triple on the flat space-time
+In our previous papers, we introduced the triple for the supersymmetric theory which was extended from the spectral triple of the NCG on the flat Riemannian manifold. In this section, let us review it. The functional space HM on the Minkowskian space-time manifold is the direct sum of two subsets, H+ and H-:
+
+HM = H+  H-.
+
+(2)
+
+The element of HM is given by
+
+=
+
++ -
+
+= + + -,
+
+(3)
+
++ =
+
++ 03
+
+ H+, - =
+
+03 -
+
+ H-.
+
+(4)
+
+Here, +, - are denoted by
+
+(+)i = (+(x), +(x), F+(x))T , i = 1, 2, 3,
+
+(5)
+
+and
+
+(-)¯i = (-(x), ¯- (x), F-(x))T , ¯i = 1, 2, 3,
+
+(6)
+
+in the vector notation. Here, + and F+ of + are complex scalar functions with mass
+
+dimension one and two, respectively, and +,  = 1, 2 are the Weyl spinors on the space-
+
+time
+
+M
+
+which
+
+have
+
+mass
+
+dimension
+
+3 2
+
+and
+
+transform
+
+as
+
+the
+
+(
+
+1 2
+
+,
+
+0)
+
+representation
+
+of
+
+the
+
+Lorentz group, SL(2, C). +(x) obey the following chiral supersymmetry transformation
+
+and form a chiral supermultiplet.
+
+  
+
+ F+++===ii222¯¯µ+µ¯, µµ+++.
+
+ 2F+
+
+,
+
+(7)
+
+On
+
+the
+
+other
+
+hand,
+
+¯
+
+transform
+
+as
+
+the
+
+(0,
+
+1 2
+
+)
+
+of
+
+SL(2, C)
+
+and
+
+-(x)
+
+form
+
+an
+
+antichiral
+
+supermultiplet which obey the antichiral supersymmetry transformation as follows:
+
+
+
+ -
+
+
+
+¯- F-
+
+= = =
+
+ii222¯¯µ¯-µ, µµ¯--.
+
++
+
+2¯ F-,
+
+(8)
+
+The Z/2 grading of the functional space HM is given by an operator which is defined by
+
+M =
+
+-i 0
+
+0 i
+
+.
+
+(9)
+
+In this basis, we have M (+) = -i and M (-) = i. Hereafter, we suitably abbreviate unit matrices or subscripts which denote sizes of unit and zero matrices.
+
+3/14
+
+For the state   HM , the charge conjugate state c is given by
+
+c =
+
+c+ c-
+
+.
+
+(10)
+
+The antilinear operator JM is defined by
+
+c = JM  = C,
+
+(11)
+
+so that it is given by
+
+JM = C  ,
+
+(12)
+
+where C is the following charge conjugation matrix:
+
+
+
+
+
+100
+
+C
+
+=
+
+
+
+1 0
+
+0
+0  
+
+0 0
+
+0 0
+
+ 0
+0
+
+0 1
+
+ ,
+
+(13)
+
+001
+
+and  is the complex conjugation. The operator JM obeys the following relation:
+
+JM M = M JM .
+
+(14)
+
+The real structure JM is now expressed for the basis of the Hilbert space (, c)T in the
+
+following form:
+
+JM =
+
+0 JM
+
+JM-1 0
+
+.
+
+(15)
+
+The Z/2 grading M on the basis is expressed by
+
+M =
+
+M 0
+
+0 M
+
+.
+
+(16)
+
+Corresponding to the construction of the functional space (2), the algebra A represented by them are expressed as
+
+AM = A+  A-.
+
+(17)
+
+Here an element ua of A+, which acts on H+, and an element u¯a of A-, which acts on H-
+
+are given by
+
+
+
+
+
+(ua)ij
+
+=
+
+1 m0
+
+aa Fa
+
+0
+a -a
+
+0 0   A+, a
+
+(18)
+
+
+
+
+
+(u¯a)¯i¯j
+
+=
+
+1 m0
+
+¯aa Fa
+
+0 a -¯a
+
+0 0   A-, , a
+
+(19)
+
+where {a(a), a(¯a ), Fa(Fa)} are chiral(antichiral) multiplets. Note that these multiplets are not related to the multiplets in the functional space in
+
+Eqs. (5) and (6). The elements of A, ua and u¯a together with the Dirac operator are the
+
+4/14
+
+origin of the gauge and Higgs supermultiplets, while the elements (5) and (6) of the functional space are the origin of matter fields.
+On the basis (, c)T , the Dirac operator DM on the manifold is given by
+
+DM =
+
+DM 0
+
+0 JM DM JM-1
+
+,
+
+(20)
+
+and
+
+DM = -i
+
+0 D¯ij
+
+D¯i¯j 0
+
+,
+
+(21)
+
+where
+
+
+
+
+
+
+
+
+
+0 01
+
+0 01
+
+D¯ij =  0 i¯µµ 0 , D¯i¯j =  0 iµµ 0 .
+
+(22)
+
+00
+
+00
+
+We verified in Ref.[8] that the Dirac operator and the supersymmetric transformation expressed by Eq.(7) and (8) were commutative.
+When we change the order of elements in the basis (3),(4),(5),(6) to
+
+(+, -, +, - , F+, F-)  HM ,
+
+(23)
+
+the Dirac operator (21) is replaced with
+
+
+
+
+
+0 DM = -i  0
+
+0 iµµ
+
+12 0
+
+
+
+.
+
+(24)
+
+× 12 0 0
+
+We note again that the above formalism was given in the framework of Minkowskian signature in order to incorporate supersymmetry. When we restrict the functional space HM to its fermionic part H0 and transfer to the Euclidean signature, we recover the original spectral triple which gives the framework of NCG.
+
+3. Dirac operator on the curved space-time
+
+In order to obtain the supersymmetric Dirac operator on a curved space-time, we must
+
+consider torsion tensor. The torsion consists of gravitino µ which is a majorana spinor
+
+vector.
+
+Tµ
+
+=
+
+-
+
+1 2
+
+
+
+µ
+
+=
+
+1 2
+
+
+
+µ
+
+(25)
+
+It is the antisymmetric part of affine connection expressed by
+
+T
+
+ µ
+
+=
+
+~ µ
+
+- ~µ.
+
+(26)
+
+The affine connection with the torsion is a sum of Christoffel symbol µ and contorsion
+
+Y
+
+ µ
+
+:
+
+~ µ
+
+=
+
+µ
+
++
+
+Y
+
+ µ
+
+.
+
+(27)
+
+The relation between the contorsion and the torsion is given by
+
+Yµ
+
+=
+
+1 2
+
+(Tµ
+
++ Tµ
+
++ Tµ).
+
+(28)
+
+5/14
+
+The spin connection is separated to the contorsion and the part without contorsion[14]:
+
+~ abµ
+
+=
+
+abµ
+
++
+
+Y
+
+ab µ
+
+,
+
+(29)
+
+Y
+
+ab µ
+
+=
+
+ea eb Y
+
+µ,
+
+(30)
+
+where eaµ is vielbein which connects general coordinates denoted by subscript of the Greek letter to local inertial coordinates denoted by that of Roman letter. The covariant derivative
+
+for a spinor in the curved space is described by
+
+~ µ = µ + ~µ,
+
+(31)
+
+where ~µ is a sum of products of the spin connection and commutator of  matrices ab =
+
+1 2
+
+[a,
+
+b]
+
+which
+
+is
+
+expressed
+
+by
+
+~µ
+
+=
+
+1 4
+
+~ abµ ab
+
+=
+
+1 4
+
+(abµ
+
++ Y abµ)ab.
+
+(32)
+
+On the curved space, for the (2,2)-th entry of the matrix (24), we replace the partial
+
+derivative µ with the covariant derivative and for the (1,3)-th and (3,1)-th entries which act on bosonic wave functions, we adopt the operator which appears in the equation given
+
+by the action of the Klein-Gordon field in the curved space[15]. So, the Dirac operator on
+
+the curved space is expressed by
+
+
+
+
+
+0
+
+DM(SG) = - i 
+
+0
+
+0 iµ~ µ
+
+102
+
+(gµ ~ µ~  + R~) × 12
+
+0
+
+0
+
+ 0
+
+= -i 
+
+0
+
+
+
+0
+
+12
+
+iaeµa (µ + ~µ) 0  ,
+
+(33)
+
+gµ (µ - ~µ ) + R~ × 12
+
+0
+
+0
+
+where R~ is curvature with the torsion and  is an unknown constant.
+
+4. Supergravity action
+
+In our noncommutative geometric approach to supersymmetry, the action for supergravity will be obtained by the coefficients of heat kernel expansion of the operator P = (DM(SG))2[16].
+The prescription to obtain these coefficients on the curved space with the torsion for the spinorial part of DM(SG), i.e. (2,2)-th entry of the matrix (33) and its result are given by [13].
+We want to obtain the coefficients for DM(SG) including (1,3)-th and (3,1)-th entries. At
+first, we expand the operator P into the following form:
+
+P = -(gµ ~ µ~  + A~ µ~ µ + B~).
+
+(34)
+
+We define a vector Sµ as follows:
+
+Sµ = Qµ + A~ µ,
+
+(35)
+
+where Qµ is torsion trace T µ. In our theory, trace over the vector bundle are replaced with
+
+supertrace. When a matrix M in the basis (23) is given by
+
+
+
+
+
+M = MM1211
+
+M12 M22
+
+MM1233 ,
+
+(36)
+
+M31 M32 M33
+
+6/14
+
+the supertrace is expressed by
+
+StrM = trVM11 + trVM33 - trVM22.
+
+(37)
+
+Since the bosonic degrees of freedom equals that of fermionic states, the supertrace of I vanishes. Then the coefficients an(P ) are given by
+
+a0(P )
+
+=
+
+1 162
+
+d4x-gStr(I) = 0,
+M
+
+(38)
+
+a2(P )
+
+=
+
+1 162
+
+M
+
+d4x-gStr(
+
+1 6
+
+RI
+
++
+
+Z)
+
+=
+
+1 162
+
+d4x-gStrZ,
+M
+
+(39)
+
+a4(P )
+
+=
+
+1 162
+
+M
+
+d4x-g
+
+1 360
+
+Str
+
+(12
+
+R + 5R2 - 2Rµ Rµ + 2RµRµ)I
+
++60RZ + 180Z2 + 60 Z + 30µ µ
+
+=
+
+1 162
+
+M
+
+d4x-g
+
+1 360
+
+Str(60RZ
+
++
+
+180Z2
+
++
+
+60
+
+Z + 30µ µ ),
+
+(40)
+
+where µ is the bundle curvature that we will describe later and Z is a function defined as
+
+follows:
+
+Z
+
+=
+
+B~
+
+-
+
+1 2
+
+µSµ
+
++
+
+1 4
+
+S
+
+µSµ.
+
+(41)
+
+After some algebra in terms of the Riemann curvature tensor R~µ with torsion in appendix A, the square of (33) is given by
+
+P = DM(SG)2 = - D02()
+
+0 D2()
+
+ 0 0  ,
+
+(42)
+
+0
+
+0 D2()
+
+where
+
+D2() =gµ ~ µ~  + R~,
+
+D2()
+
+=gµ ~ µ~ 
+
+-
+
+1 2
+
+
+
+µ
+
+T
+
+ µ
+
+~ 
+
++
+
+1 8
+
+µ
+
+abeaebR~µ
+
+.
+
+(43) (44)
+
+On the basis (23), the functions A~ , B~ in (34) and Sµ in (35) are expressed by the matrix
+
+form as follows:
+
+
+
+
+
+
+
+
+
+
+
+
+
+000
+
+R~ 0
+
+A~ µ = 0
+
+A~ µ
+()
+
+0 , B~ =  0
+
+B~ ()
+
+0 0
+
+ , Sµ
+
+=
+
+Q0µ
+
+0 Sµ()
+
+0 0  ,
+
+(45)
+
+000
+
+0 0 R~
+
+0 0 Qµ
+
+where
+
+A~ µ
+()
+
+=
+
+-
+
+1 2
+
+
+
+
+
+T
+
+µ 
+
+,
+
+B~ ()
+
+=
+
+1 8
+
+
+
+µ
+
+abea
+
+eb
+
+R~ µ
+
+,
+
+Sµ()
+
+=
+
+Qµ
+
+-
+
+1 2
+
+
+
+T
+
+µ 
+
+.
+
+(46)
+
+Then the matrix form of the function Z is given by
+
+
+
+
+
+Z
+
+=
+
+Z() ×  0
+
+12
+
+0 Z ()
+
+0 0  ,
+
+(47)
+
+0
+
+0 Z() × 12
+
+7/14
+
+where
+
+Z ()
+
+=gµ
+
+(-
+
+1 2
+
+µT
+
+ 
+
+-
+
+1 4
+
+T
+
+µT
+
+ 
+
+)
+
++
+
+R~
+
+=
+
+gµ
+
+(-
+
+1 2
+
+~ µQ
+
++
+
+1 4
+
+QµQ
+
+)
+
++
+
+R~,
+
+Z ()
+
+=
+
+1 8
+
+
+
+µ
+
+
+
+R~µ
+
+-
+
+1 2
+
+µS
+
+()µ
+
+-
+
+1 4
+
+S ()µ Sµ()
+
+=
+
+1 8
+
+
+
+µ
+
+
+
+R~µ
+
+-
+
+1 2
+
+~ µ(Qµ
+
+-
+
+1 2
+
+
+
+T
+
+µ
+
+
+
+)
+
++
+
+1 4
+
+QµQµ
+
+-
+
+1 16
+
+
+
+
+
+
+
+Tµ
+
+T
+
+µ 
+
+.
+
+(48) (49)
+
+Using Eq.(48) and Eq.(49), a2(P ) of (39) can be converted into
+
+a2(P
+
+)
+
+=
+
+1 162
+
+=
+
+1 162
+
+M
+
+d4 x-g(4Z ()
+
+-
+
+T rZ())
+
+=
+
+1 162
+
+d4x-g
+M
+
+(4
+
++
+
+1)R~
+
+-
+
+1 2
+
+T
+
+µ Tµ
+
+d4x-g
+M
+
+(4
+
++
+
+1)(R
+
++
+
+1 2
+
+T
+
+µ
+
+T
+
+µ
+
+-
+
+QµQµ
+
+-
+
+2µQµ)
+
++
+
+2T µTµ
+
+.
+
+(50)
+
+In the basis (23), the bundle curvature µ in Eq.(40) is also given by
+
+µ
+
+=
+
+µ() ×  0
+
+12
+
+0
+
+0 (µ)
+0
+
+ 0 0  , µ() × 12
+
+(51)
+
+where µ() is given by
+
+µ()
+
+=
+
+1 2
+
+((µQ
+
+)
+
+-
+
+( Qµ))
+
+=
+
+1 2
+
+((~ µ
+
+Q
+
+)
+
+-
+
+(~ Qµ))
+
++
+
+1 2
+
+T
+
+ 
+
+µ
+
+Q,
+
+(52)
+
+and using (A.10), (µ) is also obtained by
+
+(µ)
+
+=µ~
+
+-
+
+ ~µ
+
++
+
+[~µ, ~]
+
++
+
+1 2
+
+(µS()
+
+-
+
+ Sµ())
+
++
+
+1 4
+
+[Sµ()
+
+,
+
+S()
+
+]
+
+=
+
+-
+
+1 4
+
+
+
+R~µ
+
++
+
+1 2
+
+(~ µ
+
+S()
+
+-
+
+~ Sµ())
+
++
+
+1 4
+
+[Sµ()
+
+,
+
+S()
+
+]
+
+-
+
+1 2
+
+T
+
+ µ
+
+S.
+
+(53)
+
+After long and tedious algebra using the supertraces in appendix B, the coefficient a4(P ) of (40) is converted into
+
+a4(P )
+
+=
+
+1 162
+
+d4x-g(()(2) + R(2) + RT + RT (2) + (T )(2) + T (2)T + T (4)), (54)
+M
+
+8/14
+
+where
+
+()(2)
+
+=
+
+1 6
+
+(1
+
++
+
+4)R~
+
+-
+
+1 2
+
+T
+
+µ Tµ
+
+,
+
+(55)
+
+R(2)
+
+=(22
+
++
+
+2 3
+
+
+
++
+
+1 )R~2 24
+
++
+
+1 24
+
+R~µR~µ
+
+,
+
+(56)
+
+RT
+
+=
+
+-
+
+1 6
+
+(1
+
++
+
+4)R~~ Q
+
++
+
+1 3
+
+R~µ
+
+~ T
+
+µ
+
+,
+
+(57)
+
+RT
+
+(2)
+
+=
+
+1 12
+
+(1
+
++
+
+4)R~QQ
+
+-
+
+1 6
+
+R~Tµ
+
+
+
+T
+
+µ
+
+-
+
+1 12
+
+(1
+
++
+
+4)R~T µTµ
+
+-
+
+2 3
+
+R~µ
+
+T
+
+µT
+
+ 
+
+
+
+-
+
+1 2
+
+R~µTµ
+
+T
+
+
+
++
+
+1 6
+
+R~µT
+
+T
+
+µ
+
+,
+
+(58)
+
+(T
+
+)(2)
+
+=
+
+-
+
+1 48
+
+(~ µ
+
+T
+
+)(~ 
+
+T
+
+µ )
+
++
+
+1 2
+
+((~ µ
+
+Q
+
+)(~ µ
+
+Q
+
+)
+
+-
+
+(~ µQ)(~ Qµ))
+
++
+
+1 48
+
+(~ µ
+
+T
+
+)(~ µT
+
+
+
+)
+
++
+
+1 8
+
+(-(~ µT
+
+)(~ T
+
+µ
+
+)
+
+-
+
+(~ µT )(~ T µ)
+
+- (~ µT )(~ µT ) - (~ µT)(~ T µ) + (~ µT )(~ T µ))
+
+(59)
+
+T (2)T
+
+=
+
+1 2
+
+(~ µ
+
+Q
+
+- ~  Qµ)QT µ
+
+-
+
+5 12
+
+(~ Q)Tµ
+
+T
+
+µ
+
+-
+
+(~ µT
+
+
+
+)(
+
+1 4
+
+T
+
+µT
+
+
+
++
+
+1 4
+
+T
+
+ 
+
+Tµ
+
++
+
+1 4
+
+T
+
+µT
+
+-
+
+1 8
+
+T
+
+µ
+
+
+
+T
+
+-
+
+1 4
+
+T
+
+T
+
+µ 
+
++
+
+1 4
+
+T
+
+µ 
+
+T
+
+ 
+
+-
+
+3 8
+
+T
+
+T
+
+
+
+µ
+
+-
+
+4 3
+
+T
+
+µT
+
+ 
+
+-
+
+1 6
+
+T
+
+µ
+
+T
+
+),
+
+(60)
+
+T (4)
+
+=
+
+-
+
+1 24
+
+QQTµ
+
+T
+
+µ
+
+
+
++
+
+1 4
+
+QT
+
+ µ
+
+Q
+
+T
+
+µ
+
++
+
+1 8
+
+T
+
+µ
+
+T
+
+(T
+
+ 
+
+
+
+Tµ
+
+
+
++
+
+T Tµ
+
++
+
+T
+
+
+
+ 
+
+Tµ
+
+
+
+-
+
+T
+
+ µ
+
+T
+
+ 
+
+
+
+-
+
+T
+
+ µ
+
+
+
+T
+
+ 
+
+-
+
+Tµ T )
+
+-
+
+1 16
+
+T
+
+µ
+
+T
+
+(T
+
+ 
+
+µT
+
+
+
++
+
+T
+
+µT
+
+ 
+
+)
+
+-
+
+1 4
+
+T
+
+µ
+
+T
+
+T
+
+
+
+
+
+T
+
+ µ
+
+-
+
+1 24
+
+T
+
+µ
+
+Tµ
+
+T
+
+
+
+T
+
+ 
+
+-
+
+1 6
+
+T
+
+µ
+
+T
+
+Tµ
+
+T
+
+ 
+
+-
+
+1 4
+
+T
+
+µ
+
+T
+
+TµT
+
+ 
+
++
+
+1 48
+
+T
+
+µ
+
+T
+
+T
+
+µ
+
+T
+
+ 
+
+-
+
+1 48
+
+T
+
+µ
+
+T
+
+Tµ
+
+T
+
+ 
+
+-
+
+2 3
+
+T
+
+µ
+
+T
+
+Tµ
+
+T 
+
++
+
+1 24
+
+T
+
+µ
+
+Tµ
+
+T
+
+
+
+
+
+T
+
+.
+
+(61)
+
+In general, the coefficients an(P ) vanish for odd values of n[16]. In addition, the mass dimension of each term of the integrand in an(P ) is n so that in order to conserve the renormalizabilty, an(n > 4) should not appear in the action. Then, we have obtained the all renormalizable terms of our supergravity action.
+
+5. Conclusions and discussions
+In this paper, we have derived in Eq.(33) the supersymmtric Dirac operator DM(SG) on the Riemann-Cartan curved space without gauge interaction by replacing the derivative with
+respect to the space-time coordinates in Eq.(24) with the covariant derivative of the general
+coordinate transformation. This operator includes the spin connection, the affine connection
+and the curvature with torsion tensors which consist of gravitinos. According to the prescription of the spectral action principle, we have obtained the square of DM(SG) and have taken it to pieces as Eq.(34). We have replaced the trace in the ordinary spectral action with the
+
+9/14
+
+supertrace and calculated the Seeley-Dewitt coefficients of the heat kernel expansion. The coefficient a0(P ) in Eq.(38) cancels out. It means that the cosmological constant vanishes in the supersymmetric theory. So the supergravity action of our theory is given by
+
+S = a2(P ) + a4(P ),
+
+(62)
+
+where  and  are some constants, the coefficients a2(P ) and a4(P ) are given in Eq.(50) and (54). It is a modified Einstein-Hilbert action.
+
+In the action (62), there is no term with the Ricci curvature tensor. Therefore, when we
+
+construct based on NCG a gravity theory which possesses physically important property
+
+such as conformal invariance, renormalizability, if we want the theory able to be extended
+
+supersymmetrically, we should build its action not to include Ricci curvature tensor. For
+
+example, one of the simplest theory which
+
+malizabilty consists of the term and surface terms
+
+dW4xeyl-acgt(ioGn bte+rm
+
+pods4sexsse-s glCoc2alancdontfhoermGaalussys-mBmonentreyt
+
+and renortopological
+
+R) [17] , where C2 and Gb terms are given by
+
+C2
+
+=RµRµ
+
+-
+
+2Rµ Rµ
+
++
+
+1 3
+
+R2
+
+,
+
+Gb =RµRµ - 4Rµ Rµ + R2.
+
+(63) (64)
+
+The linear combination whose terms with Ricci tensor cancel out is given by
+
+2C 2
+
+-
+
+Gb
+
+=
+
+RµRµ
+
+-
+
+1 3
+
+R2.
+
+(65)
+
+Seeing Eq.(A.14) and Eq.(A.16), we know that in Eq.(54), the coefficients of R~µR~µ
+
+and
+
+R~2
+
+are
+
+same
+
+as
+
+those
+
+of
+
+RµRµ
+
+and
+
+R2.
+
+So,
+
+let
+
+us
+
+take
+
+the
+
+ratio
+
+of
+
+them
+
+at
+
+1
+
+:
+
+-
+
+1 3
+
+as follows:
+
+1 : 22 + 2  + 1 = 1 : - 1 .
+
+(66)
+
+24
+
+3 24
+
+3
+
+Then
+
+we
+
+obtain
+
+
+
+=
+
+-
+
+1 6
+
+.
+
+The
+
+coefficient
+
+a2(P )
+
+in
+
+the
+
+Eq.(50)
+
+is
+
+replaced
+
+with
+
+a2(P
+
+)
+
+=
+
+1 162
+
+M
+
+d4
+
+ x -g(
+
+1 3
+
+R~
+
+-
+
+1 2
+
+T
+
+µ
+
+Tµ
+
+)
+
+=
+
+1 482
+
+M
+
+d4
+
+ x -g(R
+
+-
+
+2µT
+
+µ 
+
+-
+
+T
+
+µ 
+
+T
+
+ µ
+
+-
+
+5 4
+
+T
+
+µTµ
+
++
+
+1 2
+
+T
+
+µ
+
+Tµ
+
+).
+
+(67)
+
+The coefficient a4(P ) is also replaced with
+
+a4(P )
+
+=
+
+1 162
+
+d4x-g
+M
+
+1 6
+
+(
+
+1 3
+
+R~
+
+-
+
+1 2
+
+T
+
+µ
+
+Tµ
+
+)
+
++
+
+1 24
+
+(R~µ
+
+R~µ
+
+-
+
+1 3
+
+R~2)
+
+-
+
+1 18
+
+R~~ Q
+
++
+
+1 36
+
+R~Q
+
+Q
+
++
+
+1 36
+
+R~Tµ
+
+T
+
+µ
+
+
+
+-
+
+1 36
+
+R~T
+
+µTµ
+
++
+
+1 3
+
+R~µ
+
+~ T
+
+µ
+
+-
+
+2 3
+
+R~µ
+
+T
+
+µT
+
+ 
+
+
+
+-
+
+1 2
+
+R~µ
+
+Tµ
+
+T
+
+
+
++
+
+1 6
+
+R~µT
+
+T
+
+µ
+
++(T )(2) + T (2)T + T (4) .
+
+(68)
+
+When we reduce the coefficient a4(P ) in Eq.(68) to non-supersymmetric part, i.e. the part without terms including torsion tensor, it has captured the local conformal symmetry and
+
+10/14
+
+renormalizability. Indeed, the coefficient a4(p) includes a new type of non-supersymmetric gravity action S1 which is given by
+
+S1
+
+=
+
+ 3642
+
+M
+
+d4x-g(RµRµ
+
+-
+
+1 3
+
+R2).
+
+(69)
+
+The variation of S1 due to the conformal transformation gµ = -gµ is given by
+
+1-g S1
+
+=
+
+ 962
+
+µ
+
+
+
+Gµ
+
+,
+
+(70)
+
+where
+
+Gµ
+
+is
+
+the
+
+Einstein
+
+tensor,
+
+Gµ
+
+=
+
+Rµ
+
+-
+
+1 2
+
+gµ
+
+R.
+
+Therefore,
+
+we
+
+can
+
+verify
+
+the
+
+conformal invariance of S1 by the Bianchi's identity µGµ = 0.
+
+References
+[1] A. Connes,Comm. Math. Phys.182,155(1996), [arXiv:hep-th/9603053]. [2] A. H. Chamseddine and A. Connes, Phys. Rev. Lett. 77,4868(1996), [arXiv:hep-th/9606056]. [3] A.Connes, J.High Energy Phys.0611,081(2006), [arXiv:hep-th/0608226]. [4] A.H.Chamseddine, A.Connes, and M.Marcolli, [arXiv:hep-th/0610241]. [5] A. H. Chamseddine and A. Connes, J. Geom. Phys. 58,38(2008), [arXiv:hep-th/0706.3688]. [6] A. H. Chamseddine and A. Connes, Phys. Rev. Lett. 99,191601(2007), [arXiv:hep-th/0706.3690]. [7] S.P. Martin, (1997), [arXiv:hep-ph/9709356]. [8] Hikaru Sato, S.Ishihara, H.Kataoka, A.Matsukawa and M.Shimojo, Prog.Theor.Exp.Phys,
+053B02,(2014). [9] Hikaru Sato, S.Ishihara, H.Kataoka, A.Matsukawa and M.Shimojo, Prog.Theor.Exp.Phys,
+073B05,(2014). [10] M.Shimojo, S.Ishihara, H.Kataoka, A.Matsukawa and Hikaru Sato, Prog.Theor.Exp.Phys,
+013B01,(2015). [11] A.H.Chamseddine, A.Connes, Comm. Math. Phys. 186,731,(1997), [arXiv:hep-th/9606001]. [12] V.P.Gusynin, E.V.Gorbar, V.V.Romankov, Nuclear Phys. B362,449,(1991). [13] Yu.N.Obukhov, Nuclear Phys. B212,237,(1983). [14] J.L.Lo´pez, O.Obrego´n, M.P.Ryan and M.Sabido, International Journal of Modern Phys. A Vol28,
+Issue12(2013). [15] Fiorenzo Bastianelli, (1991), [arXiv:hep-th/9112035]. [16] P.Gilkey, Invariance Theory, the Heat Equation and the Atiyah-Singer Index Theorem, (Publish or
+Perish, Wilmington, 1984). [17] Guilherme de Berredo-Peixoto and Ilya L. Shapiro, [arXiv:hep-th/0307030].
+-------
+Appendix
+
+A. Affine connection, spin connection, vielbein, curvature tensors with torsion
+In this appendix, we show some equations about affine connection, spin connection, vielbein, curvature tensors with torsion. The covariant derivatives of vielbein vanish.
+
+~ µea = µea - ~abµeb - ~µea = 0, ~ µea = µea - ~abµeb + ~µea = 0.
+
+(A.1) (A.2)
+
+From (A.1), we obtain the relation between the affine connection and the spin connection expressed by
+
+~µ = ea(µea - ~abµeb ).
+
+(A.3)
+
+11/14
+
+We also provide some else equations about the affine connection, the spin connection and the vielbein as follows:
+
+µ~ = (µea )( ea - ~ab eb) + ea (µ ea) - (µ~ab )eb - ~ab (µeb) ,  ~µ = ( ea )(µea - ~abµeb) + ea ( µea) - ( ~abµ)eb - ~abµ( eb) , ~µ~ = ea (µea - ~abµeb)ec ( ec - ~cd ed),
+= ea (µea)ec ( ec) - ~cd ed - ea ~abµbc ( ec) - ~cd ed , ~ ~µ = ea ( ea)ec (µec) - ~cdµed - ea~ab bc (µec) - ~cdµed .
+
+(A.4) (A.5)
+(A.6) (A.7)
+
+Here, since
+
+ec ( ec) = ( ec ec) - ( ec )ec = ( ) - ( ec )ec = -( ec )ec,
+
+(A.8)
+
+we obtain one more equation as follows:
+
+ea (µea)ec ( ec) - ~cd ed - ea ( ea)ec (µec) - ~cdµed = -(µea ) ( ea) - ~ad ed + ( ea) (µea) - ~adµed .
+
+(A.9)
+
+Using Eq.(A.3)-Eq.(A.9), we obtain the expression of the Riemann curvature tensor R~µ with torsion as follows:
+
+R~µ = µ~ -  ~µ + ~µ~ - ~ ~µ =(µea)( ea) - ( ea )(µea) - (µea)~ab eb + ( ea)~abµeb - ea (µ~ab ) - ( ~abµ) eb - ea ~ab (µeb) - ~abµ( eb) + ea(µea)(ec ( ec) - ~cd ed) - ea~abµbc ( ec) - ~cd ed - ea( ea)ec (µec) - ~cdµed + ea ~ab bc (µec) - ~cdµed = - eaeb (µ~ab ) - ( ~abµ) - (~acµ~cb - ~ac ~cbµ) .
+
+(A.10)
+
+We also note some equations on traces of gamma matrices and their product with curvature and torsion tensors.
+
+T r(µ ) = 0, T r(µ ) = 4(gµ g - gµg),
+
+T
+
+r
+
+1 8
+
+(
+
+µ
+
+
+
+)R~µ
+
+=
+
+4 8
+
+(gµ
+
+g
+
+- gµg)R~µ
+
+=
+
+-g  R~ 
+
+=
+
+-R~,
+
+T
+
+r(-
+
+1 16
+
+
+
+
+
+
+
+Tµ
+
+T
+
+µ 
+
+)
+
+=-
+
+4 16
+
+(g
+
+g
+
+-
+
+g
+
+g
+
+)Tµ
+
+T
+
+µ 
+
+=
+
+1 2
+
+T
+
+µ
+
+Tµ
+
+.
+
+(A.11) (A.12) (A.13)
+
+12/14
+
+The Riemann curvature tensor R~µ , the Ricci tensor R~ and the curvature R~ with torsion are related to those without torsion by
+
+R~ µ
+
+=
+
+Rµ
+
++
+
+µY
+
+ 
+
+- Y
+
+ µ
+
++
+
+Y
+
+ µ
+
+Y
+
+ 
+
+-
+
+Y
+
+ 
+
+Y
+
+µ,
+
+R~
+
+=
+
+R~
+
+=
+
+R
+
++ Y
+
+ 
+
+-
+
+
+
+Y
+
+ 
+
++
+
+Y
+
+ 
+
+Y
+
+ 
+
+-
+
+Y
+
+ 
+
+Y
+
+,
+
+R~
+
+=
+
+R
+
+-
+
+2µ
+
+T
+
+µ 
+
+-
+
+T
+
+µT
+
+ µ
+
++
+
+1 4
+
+T
+
+µ
+
+Tµ
+
++
+
+1 2
+
+T
+
+µT
+
+µ
+
+=
+
+R
+
++
+
+µ(µ  )
+
+-
+
+1 4
+
+µµ
+
+
+
+
+
++
+
+1 8
+
+
+
+
+
+µ
+
+µ
+
++
+
+1 16
+
+
+
+µ
+
+
+
+µ.
+
+(A.14) (A.15)
+(A.16)
+
+B. Supertrace of Z, ZZ, µ µ Using Eq.(48), (49), the supertrace of the matrix Z of (47) and ZZ are given by
+
+StrZ
+
+=4Z ()
+
+-
+
+T
+
+rZ ()
+
+=
+
+(1
+
++
+
+4)R~
+
+-
+
+1 2
+
+T
+
+µTµ ,
+
+StrZZ =4Z()Z() - T rZ()Z()
+
+(B.1)
+
+=(42
+
+-
+
+1 4
+
+)R~2
+
+-
+
+R~(-R~
+
++
+
+R~ )
+
+-
+
+1 4
+
+R~µ(R~µ
+
++
+
+R~µ
+
++
+
+R~µ)
+
+-
+
+1 4
+
+R~µ
+
+(R~µ
+
++
+
+R~  µ
+
++
+
+R~  µ )
+
+-
+
+1 2
+
+(~ µT
+
+µ 
+
+)(~ 
+
+T
+
+)
+
+-
+
+1 8
+
+(T
+
+µ
+
+Tµ
+
+T
+
+T
+
+ 
+
++
+
+2T µ T Tµ T 
+
++
+
+4T
+
+µ
+
+T
+
+T
+
+µT
+
+
+
+ 
+
+)
+
+-
+
+(1
+
++
+
+4)R~~ Q
+
++
+
+2R~ ~ T
+
+
+
++
+
+(
+
+1 2
+
++
+
+2)R~QµQµ
+
++
+
+1 4
+
+R~ T T
+
+
+
+-
+
+R~µ TµT 
+
++
+
+1 2
+
+R~µ
+
+Tµ
+
+T
+
+
+
+-
+
+1 2
+
+(~ µQµ
+
+)T
+
+T
+
+
+
+
+
+-
+
+1 4
+
+QQTµ
+
+T
+
+µ
+
+.
+
+(B.2)
+
+In the same way, using (52), (53), we obtain the supertrace of µµ as follows:
+
+Strµ µ
+
+=4µ()µ() - T r(µ)µ()
+
+=
+
+1 2
+
+R~µ
+
+
+
+R~µ
+
++
+
+gµ g
+
+(~ µT )(~  T ) - (~ µT )(~ T  )
+
++
+
+1 4
+
+(Tµ
+
+T
+
+ 
+
+Tµ
+
+
+
+T
+
+ 
+
+-
+
+Tµ
+
+T
+
+ 
+
+Tµ
+
+
+
+T
+
+ 
+
+-
+
+2Tµ
+
+T
+
+ 
+
+T
+
+ µ
+
+T
+
+
+
+- 32Tµ T Tµ T ) + 4R~µ ~ µT
+
+-
+
+8R~µ T
+
+µ T
+
+ 
+
+-
+
+R~µ T
+
+µ T
+
+-
+
+16(~ µT )T
+
+µT
+
+
+
+
+
+- 2(~ µT  )T µ T.
+
+(B.3)
+
+13/14
+
+When we develop terms of the second power of the Ricci and Riemann curvature tensors in the equation (B.2), we can use equations as follows:
+
+-
+
+1 2
+
+R~
+
+(-R~
+
++
+
+R~ )
+
++
+
+R~µ ~ T µ
+
+-
+
+1 4
+
+(~ µ
+
+T
+
+µ 
+
+)(~ 
+
+T
+
+)
+
+=
+
+1 4
+
+(~ µ
+
+Q
+
+- ~  Qµ
+
+-
+
+QT
+
+ µ
+
+)(~ µQ
+
+- ~  Qµ
+
+-
+
+QT µ )
+
+=
+
+1 2
+
+(~ µQ )(~ µQ ) - (~ µQ )(~  Qµ) - (~ µQ )QT µ
+
++
+
+QT
+
+µ QT
+
+ µ
+
+.
+
+(B.4)
+
+-
+
+1 8
+
+R~µ
+
+(R~µ
+
+
+
++
+
+R~µ
+
++
+
+R~µ
+
++
+
+R~µ
+
++
+
+R~  µ
+
++
+
+R~  µ )
+
+=
+
+-
+
+1 16
+
+(~ µT
+
+)(~ µT
+
+
+
+)
+
+-
+
+1 8
+
+(~ µT
+
+)(~ 
+
+T
+
+µ)
+
++
+
+1 16
+
+(~ µT
+
+)(~ T
+
+µ
+
+)
+
+-
+
+1 8
+
+(~ µT
+
+)(~ T
+
+µ)
+
+-
+
+1 8
+
+(~ µT
+
+)(~ µT
+
+)
+
+-
+
+1 8
+
+(~ µT
+
+)(~ T
+
+µ)
+
++
+
+1 8
+
+(~ µT
+
+)(~ T
+
+µ)
+
+-
+
+1 8
+
+(~ µT
+
+
+
+)(2T
+
+µT
+
+
+
++
+
+2T Tµ
+
++
+
+2T µT
+
+-
+
+T µT
+
+-
+
+2T
+
+T
+
+µ 
+
++
+
+2T
+
+µT
+
+ 
+
+)
+
++
+
+3 8
+
+(~ µT
+
+
+
+)T
+
+T
+
+
+
+µ
+
++
+
+1 8
+
+T
+
+µ
+
+T
+
+(T
+
+ 
+
+
+
+Tµ
+
+
+
++
+
+T  Tµ
+
++
+
+T
+
+
+
+ 
+
+Tµ
+
+
+
+-
+
+T
+
+ µ
+
+
+
+T
+
+ 
+
+
+
+-
+
+1 2
+
+T
+
+ 
+
+µ
+
+T
+
+
+
+-
+
+T
+
+ µ
+
+
+
+T
+
+ 
+
+-
+
+1 2
+
+T
+
+µT
+
+ 
+
+
+
+-
+
+Tµ T 
+
+-
+
+2T
+
+
+
+
+
+T
+
+ µ
+
+).
+
+(B.5)
+
+14/14
+
+

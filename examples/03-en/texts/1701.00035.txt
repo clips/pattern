@@ -1,0 +1,827 @@
+Magnetism, transport and thermodynamics in two-dimensional half-filled Hubbard superlattices
+Rubem Mondaini1 and Thereza Paiva2 1Beijing Computational Science Research Center, Beijing 100193, China 2Instituto de F´isica, Universidade Federal do Rio de Janeiro Cx.P. 68.528, 21941-972 Rio de Janeiro RJ, Brazil
+We study magnetic, transport and thermodynamic properties of the half-filled two-dimensional (2D) Hubbard model with layered distributed repulsive interactions using unbiased finite temperature quantum Monte Carlo simulations. Antiferromagnetic long-ranged correlations at T = 0 are confirmed by means of the magnetic structure factor and the onset of short-ranged ones is at a minimum temperature, which can be obtained by peaks in susceptibility and specific heat following a random-phase-approximation (RPA) prediction. We also show that transport is affected in the large interaction limit and is enhanced in the non-repulsive layers suggesting a change of dimensionality induced by increased interactions. Lastly, we show that by adiabatically switching the interactions in layered distributed patterns reduces the overall temperature of the system with a potential application in cooling protocols in cold atoms systems.
+PACS numbers: 71.10.Fd 71.30.+ 71.27.+a 73.63.-b
+
+arXiv:1701.00035v2 [cond-mat.str-el] 24 Feb 2017
+
+I. INTRODUCTION
+Recent improvements on deposition techniques has enabled the growth of atomically precise layer sequences of different materials [1]. Among the recently synthesized structures, the transition metal oxide superlattices (SL's), for example, play a key role, as they offer the potential for future use in devices [2]. LaAlO3-SrTiO3 superlattices, for instance, have been used to fabricate diodes with with room-temperature breakdown voltages of up to 200 V [3], as well as field-effect devices [4­6]. Most of the compounds used in these superlattices are characterized by the presence of strong electronic correlations, that give rise to complex collective quantum phases. Among the correlation-driven phenomena occurring in these materials one can highlight the interface superconductivity [7], magnetism between non-magnetic interfaces [8], coexistence of magnetic order and twodimensional superconductivity at LaAlO3/SrTiO3 interfaces [9], and others. These phenomena have led to the intense study of the interface between oxides in superlattice structures [2, 10].
+Another interesting point of view is the study of the change of magnetic and transport properties as the width of one or both of the layers on a superlattice is altered. Superlattices made of paramagnetic correlated metal LaNiO3 and wide-gap insulator LaAlO3, grown by pulsed laser deposition, show collective metal-insulator transitions and antiferromagnetic transitions as a function of temperature when the lanthanum nickelate is as thin as two unit cells. Conversely, samples with thicker LaAlO3 layers remain metallic and paramagnetic at all temperatures [11]. It is also possible to tune the magnetic character from antiferrogmagnetic to ferromagnetic of a thin film of LaAlO3 grown on top of SrTiO3 when the thickness of the the lanthanum alluminate has six or more unit-cells [12]. Superlattices with heavy fermion compounds also show interesting behavior with decreas-
+
+ing layer thickness: epitaxially grown superlattices of antiferromagnetic CeIn3 and metallic LaIn3 [13] show a linear decrease of the N´eel temperature when the width of the CeIn3 layer is reduced, vanishing when it is two atoms thick.
+In the context of cold atoms, which presents a framework to investigate many-body phenomena in a highly tunable fashion [14, 15], although spatially varying interactions have not yet been realized in optical lattices, they have recently become available in trapped ultracold gases. The ability to control a magnetic Feshbach resonance with laser light [16], has increased the tunability of interactions for bosonic systems. Submicrometer spatial modulation of the interaction was already achieved in a 174Yb Bose-Einstein condensate [17] and new optical controls of Feshbach resonances for fermionic ultracold gases [18­20] have also been proposed. Only recently [21], however, it was possible to overcome two major difficulties that plagues the experiments using optical Feshbach resonances: heating from off-resonant light scattering that leads to a rapid decay of the quantum gas and an unwanted shift of the energy levels that leads to the deformation of the trap potential, recently demonstrated by trapping a Bose-Einstein condensate of Cs atoms subjected to a position dependent modulation of the inter-atomic interactions.
+Overall, either in condensed matter or in atomic physics realms, these experiments illustrate that the properties of otherwise homogeneous systems can be drastically altered when they are cast into ultra-thin layers forming a superlattice. A simple model that incorporates both fermionic correlations and superlattices structure can help to elucidate some of the issues in these fields and potentially indicate new routes of experimental investigation. Here we study a twodimensional model where one-dimensional strongly correlated strips of width LU are intercalated by noninteracting strips of width L0, forming 2D superlattices. The two-dimensional "bulk" non-interacting system cor-
+
+2
+
+responds to a paramagnetic metal; conversely, at halffilling, the two-dimensional interacting system has an antiferromagnetic, Mott-insulator ground-state. The questions that we wish to address here are the following. (i) What are the magnetic and transport properties of these superlattices? (ii) How do they depend on layer thicknesses? (iii) Is the magnetic order preserved in the presence of non-interacting sites? (iv) How are the temperature scales affected by the superlattice structure? (v) Can we devise new cooling protocols in optical lattices by adiabatically changing the spatially modulated interactions?
+The paper is organized as follows: Section II describes the model and method used to perform the simulations. Section III describes magnetism whereas Sec. IV investigates the resulting transport in these superlattice structures. Section V is dedicated to the thermodynamical properties where the signatures of charge and spin fluctuations are analyzed in specific heat, spin susceptibility and entropy data; Sec. VI summarizes our findings.
+
+II. MODEL AND METHOD
+
+We consider a modified version of the Hubbard Model (HM) with site-dependent repulsive interactions; the Hamiltonian, using periodic boundary conditions, reads:
+
+H^ = -t
+
+(c^ic^j + c^jc^i)
+
+i,j ,
+
+1 + Ui n^i - 2
+i
+
+1 n^i - 2
+
+- µ n^i, (1)
+i,
+
+where c^i(ci) is the fermionic creation(annihilation) operator in site i with pseudospin  =,  and n^i is the number operator. t is the hopping parameter between nearest neighbor sites ( i, j ), of an L × L square lattice, Ui is the site dependent repulsion, and µ is the chemical potential that controls the band filling yielding a given electronic density . The interaction term is written in particle-hole symmetric form. Thus, tuning µ = 0 drives the electronic occupation to one in all sites for any combination of the Hamiltonian parameters t, Ui and temperatures T [22]. We have restricted our study to half-filled systems ( = 1.0). To simulate the layered systems we construct a pattern of repulsive and non-interacting layers where U > 0 and U = 0, respectively. We define the width of the repulsive layer as LU and the width of the non-interacting one as L0 as depicted in Fig. 1 for the LU = 2 L0 = 1 case, in a 12 × 12 lattice. Note that not all patterns are commensurate with the available lattice sizes we can numerically investigate (we have considered lattices up to 18 × 18), therefore, a finite size scaling analysis is in some cases elusive. We set t as our energy scale.
+The ground-state magnetic and transport properties of the site-dependent Hubbard model have been extensively studied in one-dimension. The non-symmetric
+
+FIG. 1. (Color online) Cartoon of the regularly distributed onsite repulsive interactions for the LU = 2 L0 = 1 case in a 12 × 12 lattice. Throughout this work, x represents the direction along the layers and y perpendicular to it.
+Hamiltonian was studied with different numerical approaches, such as the Lanczos method [23­25], density matrix renormalization group [26], within the HartreeFock approximation [27], and within the Luttinger liquid framework [28]. The effect of an on-site energy in one of the sublattices was also considered [29, 30] and was shown to strongly alter the ground state properties.
+Going beyond one-dimensional systems, other studies have focused on the interface properties of metallic and interacting regions at finite temperatures. These studies often focus on the penetration of the magnetism in the metallic regions and induced metallic behavior on the insulating side in two- [31] and three dimensions [32, 33], where hybridization effects are explored by tuning the hopping at the interfaces in order to explore the interplay of magnetism and Kondo screening. Here, on the other hand, we aim to provide an in-depth study for the case of many interfaces forming a superlattice. Other studies [34] were primarily attained to the interface effects of metallic and insulating thin films with a potential realization of correlated transistors. We focus as well in the induced magnetism in metallic regions, the anisotropic transport due to the layered structure, finite temperature scales for spin and moment formation and, lastly, in cooling mechanisms that could be potentially employed in cold atoms experiments in optical lattices.
+We use finite temperature determinantal quantum Monte Carlo (QMC) simulations to unbiasedly probe magnetic, transport and thermodynamic properties of the half-filled two-dimensional superlattices. In this method, the partition function is expressed as a path integral by using the Suzuki-Trotter decomposition of exp(-H), introducing the imaginary-time interval  . The interaction term is decoupled through a discrete Hubbard-Stratonovich transformation [35, 36], which introduces an auxiliary Ising field. This allows one to eliminate the fermionic degrees of freedom, and the summation over the auxiliary field (which depends both on the site and the imaginary time) is carried out stochastically. Initially this field is generated randomly, and a local flip is attempted, with the acceptance rate given by the Metropolis algorithm. The process of traversing
+
+3
+the entire space-time lattice trying to change the auxiliary field variable constitutes one QMC sweep. The errors associated with the Suzuki-Trotter decomposition in the QMC method are proportional to O ( )2U , so we have set  = 0.125/t to  = 0.05/t depending on the value of the interaction strength U , to guarantee small enough systematic errors. [37]
+
+III. MAGNETISM
+
+A. Short-ranged correlations
+
+The longstanding question of induced magnetism in
+
+metallic non-ordered regions due to the proximity to a
+
+magnetically ordered insulator can be initially tackled
+
+in a superlattice construction by investigating how the
+
+short-ranged correlations are modified by the layered pat-
+
+tern. Pushing the limits of short ranged to local (i.e.,
+
+in the same site) we first investigate the local moment,
+defined as (m^ zi )2  (n^i - n^i)2 . Beyond its purely theoretical relevance, we stress that in the situation that
+
+the proposed Hamiltonian [Eq. (1)] could be emulated in
+
+optical lattices experiments, this is precisely the quan-
+
+tity that was recently measured to probe local spin or-
+
+der in a study of the two-dimensional Fermi-Hubbard
+
+model using trapped cold atoms [38]. From the theo-
+
+retical point of view it is important to understand the
+
+local magnetic properties when approaching the ground
+
+state at T = 0. However, with the connection to exper-
+
+iments in cold atoms in mind, again, here we will focus
+
+in ranges of temperatures that, although lower than the
+
+ones achieved in current experiments, could be poten-
+
+tially used as a guidance for future experiments.
+
+As we have discussed in the previous section, the sym-
+
+metric form of the Hamiltonian requires that at half-
+
+filling the charge distribution is homogeneous through-
+
+out the lattice. The local moment profile, on the other
+
+hand, is not homogeneous and strongly depends on the
+
+superlattice pattern, as can be clearly observed in Fig. 2,
+
+following closely the same periodicity of the superlatice
+
+structure[39]. Double occupations are less likely on repul-
+
+sive sites than on non-interacting ones, therefore the local
+
+moment is larger on the interacting sites. In the homoge-
+
+neous Hubbard model the local moment increases mono-
+
+tonically with the interaction strength [40]. At half-filling
+for U = 0, it takes the uncorrelated value (m^ zi )2 = 1/2, while as U increases the double and empty occupancies
+
+decrease, until for U   they are completely sup-
+
+pressed leading to (m^ zi )2 = 1, which corresponds to
+
+the
+
+spin-
+
+1 2
+
+Heisenberg
+
+limit.
+
+The U -dependence of the local moment for the layered
+
+system at T /t = 0.10 is shown in Fig. 3. The plot displays
+
+the average local moment within repulsive [Fig. 3(a)] and
+free [Fig. 3(b)] sites. In the former, (m^ zi )2 U increases monotonically with U , and approaches the values for the
+
+homogeneous system as LU increases. On the other hand,
+
+FIG. 2. (Color online) Local moment profile throughout layers for different SL's with L = 12 and U/t = 4 at temperature T /t = 0.1. Filled and empty symbols denote repulsive and free (U = 0) sites, respectively.
+FIG. 3. (Color online) Local moment dependence with U/t for different SL's with L = 12 at temperature T /t = 0.1. Filled and empty symbols denote repulsive and free (U = 0) sites, respectively. the local moment in the non-interacting sites is affected by the strength of the interaction on the neighboring repulsive ones and displays a non-monotonic behavior with U . Starting from U = 0, when we increase U , the effect of the interactions "leaks" into the non-interacting sites, resulting in an increase of the local moment even though in these sites the interaction is turned off. Note, though, the difference in scale from Fig. 3(a): The induced moment
+
+4
+
+(b)
+
+LU = 1 L0 = 3
+
+central
+edge edge
+
+FIG. 4. (Color online) (a) Local moment in free sites as a function of U/t for different SL's with L = 12 at temperature T /t = 0.1. Empty symbols represent sites at the edge of the free layers whereas crossed symbols represent sites at the central line of the free layer: see cartoon in (b) with the example for the SL configuration LU = 1 L0 = 3.
+localization in free sites is almost seven times smaller than the moment acquired in repulsive sites for U/t  8. However, Fig. 3(b) clearly shows that an increase in the ratio LU/L0 increases (m^ zi )2 0 for finite values of U/t. It is interesting to note that for different superlattices with the same ratio LU/L0, such as LU = 1 L0 = 1, and LU = 2 L0 = 2, the thinner non-interacting layer in the former favors the "leakage" of local moment. Ultimately, when U  , fermions on repulsive layers become completely localized [see Fig. 3(a)], hopping between the free and repulsive sites is suppressed (see Sec. IV), pushing the local moment back to its non-interacting value on the free sites [Fig. 3(b)].
+To better understand the enhancement of moment localization in non-interacting sites, we probe the effects of the vicinity of a correlated layer, by considering separately the different lines that compose the noninteracting layer. Figure 4(a) shows the local moment in sites at the edges of the free layer (i.e., in the noninteracting line neighboring a repulsive layer; open symbols) and along the central line of the layer (crossed symbols) ­ see schematics in Fig. 4(b) for LU = 1 and L0 = 3. When L0 = 1 or L0 = 2, edge and center lines coincide. Additionally, when L0 > 2, one can clearly see that the central line of the free layer is barely affected by the repulsive layers as (m^ zi )2 0 remains very close to the noninteracting value (0.5). The increase in (m^ zi )2 0 is larger for superlattices with L0 = 1; in these cases, each free line has two neighboring repulsive lines. The effect of the repulsive layers goes beyond nearest neighbors, as for fixed L0 = 1, the local moment is larger for the superlatice with LU = 3 than for the one with LU = 1.
+We now turn to spin-spin correlation functions defined as c(i - j)  m^ zi m^ zj . Recently, single atom imaging for fermionic atoms trapped on optical lattices has been achieved in experiments with 6Li [41, 42] and 40K atoms [43­45] enabling the measurement of spin-spin correlation functions in cold atom experiments [38, 46, 47].
+
+Thus, we show in Fig. 5 the NN spin-spin correlation functions as a function of U/t for different superlattices at T /t = 0.10. The negative values in all cases considered show the antiferromagnetic arrangement. Similarly to what is seen for the local moment, nearest-neighbor (NN) spin correlations along repulsive sites [Fig. 5(a)] approach the values for homogeneous systems as LU/L0 increases. Note that for L0 > 1, increasing the width of the free layers has very little effect on the magnetic correlations along the repulsive sites. On the other hand, a "leakage" of magnetic correlations from the repulsive sites is present along free layers. This "leakage" is strongly dependent on the neighboring sites. NN-spin-spin correlations along the central line of the free layer (crossed symbols) and also for the line at the edge of the free layer (open symbols), are shown in Fig. 5(b). For wide (L0 = 5) free layers, NN-spin-spin correlations along the central line of a non-interacting layer [crossed pentagons, Fig. 5(b)] remain close to the non-interacting value. On the contrary, correlations along the edges of the free layer [open pentagons, and open circles, Fig. 5(b)] increase in modulus with U/t and follow closely those for LU = 1 and L0 = 2 (open triangles). From this, one could think of a mechanism where at the "interface" between the layers a hybridization of the orbitals of each site induces a singlet formation as a result of the strongly localized moment in the repulsive layer. It has been argued that this would occur in similar systems [31] where shielding would prevent the correlations to spread inside the free layer.
+However, there is no need to speculate. One can directly investigate the coupling of the adjacent spins in repulsive and free layers by probing the NN-spin-spin correlations along the y-direction, i.e., taken perpendicular to the direction of the layers. This is shown in Fig. 5(c). Its dependence with the interaction U is reminiscent to the effect of the local moment in free sites: For small values of U , the adjacent spins in repulsive and free layers display AF correlations that increase with increasing U , reaching its maximum values for different SL's configurations for U/t  8. Larger interaction strengths reduce the magnitude of this coupling, due to the decrease in the local moment within the free sites as shown in Figs. 3(b) and 4(a). For U/t  16, the NN spin correlations are comparable to the non-interacting case, denoting that the layers become uncorrelated. Hence we can rule out the shielding mechanism since even the local moments at the interface from the free layer side become less localized and the overall correlation with the repulsive layer is diminished for large U .
+Lastly, we want to understand how robust is this maximum spreading of the correlations that happens for U/t  8 from variations of the temperature. Figure 6 displays the local moments and NN spin-spin correlation functions either inside a repulsive layer [panels (a) and (b)] or inside a free one [panels (c) and (d)], as a function of temperature. For large temperatures, all the quantities reduce to its uncorrelated value, i.e., the local moment
+
+5
+
+FIG. 5. (Color online) Nearest-neighbor spin-spin correlation function as a function of U/t at T /t = 0.10 for L = 12 lattices. Correlations are calculated along (a) repulsive (filled symbols) and (b) free (empty symbols) layers, and (c) perpendicular to the layers, between a free and a repulsive site (half-filled symbols). Stars represent the corresponding homogeneous system. The dashed line represent the Heisenberg model nearest-neighbor spin-spin correlations QMC result [48].
+is (m^ zi )2 = 0.5 and the nearest neighbor correlation is vanishing. Note that the temperature used in the previous analysis (T /t = 0.1) is already low enough to capture physics close to the ground state since most of the quantities are on the verge of saturation or already saturated. Hence we expect that in the limit T  0, the decrease in moment localization for large values of interaction in sites within the free layer will be robust. Figure 6(e) also shows the NN spin-spin correlation function for sites at the interface between repulsive and free layers, where one can see that this coupling is larger, at low T , when the width of the free layer is small.
+B. Long-range ordering
+From a theoretical point of view, it is an open question whether selecting the interactions in a layered pat-
+
+FIG. 6. (Color online) (a) and (b) [(c) and (d)] display the local moment and NN spin-spin correlation function inside the repulsive [free] layer as a function of the temperature for three different SL structures. (e) also provides the temperature dependence but for the NN spin-spin correlation function where one site is at the repulsive layer and the other at the free one, computing, essentially, the coupling between the two types of layers.
+
+tern still renders a global long-range magnetic order for the ground-state. The two-dimensional half-filled homogeneous HM on the square lattice is known to display long-range AF order for any non-zero value of the local interaction energy U at T = 0 [40]. Given that for the SLs this repulsive energy is not regularly distributed throughout the lattice, it is not obvious which magnetic arrangement minimizes the total energy when approaching this limit. In order to probe it, we calculate the magnetic structure factor
+
+1 S(q) = L2
+
+eiq·(i-j)c(i - j);
+
+(2)
+
+i,j
+
+where q denotes the wave vector. Here, we make the choice of neglecting the periodicity of the SL and use as the wave vector the one associated with the homogeneous lattice. This will help to infer whether the long-range AF order is globally obtained regardless of the underlying superlattice structure. The peaks in this quantity are related with the dominant spin ordering. For all the studied SL's, we observe a peak at q=(, ) related with AF ordering in both principal lattice directions, as shown in Fig. 7. This peak becomes more pronounced as the
+
+6
+
+1 4 U /t = 4 T /t = 0 .0 6 2 5
+
+( , )
+
+12 L= 12
+
+S (q )
+
+10
+
+L =1 L =11
+
+U
+
+0
+
+L =1 L = 3
+
+U
+
+0
+
+8
+
+L =1 L = 2
+
+U
+
+0
+
+L =1 L = 1
+
+6
+
+U
+
+0
+
+L =2 L = 1
+
+U
+
+0
+
+L =3 L = 1
+
+4
+
+U
+
+0
+
+L =11 L =1
+
+U
+
+0
+
+2
+
+( 0 , 0 ) ( , 0 )
+
+0(0 ,0 )
+
+( , 0 )
+
+( , )
+
+(0 ,0 )
+
+(q ,q ) xy
+
+FIG. 7. (Color online) Structure factor along a path in momentum space for different SL's with L = 12, U/t = 4 and T /t = 0.0625. All SL's shown display a dominant q=(, ) related with an overall AF ordering in both directions neglecting the underlying SL structure.
+
+number of repulsive sites is increased in relation to the number of free ones and one would be led to identify it with the increased average value of interaction strength. To characterize this picture, we can define an effective repulsive interaction,
+
+Ueff
+
+
+
+LU U, LU + L0
+
+(3)
+
+and choose different SL's configurations, then setting a specific value of U in order to keep the average repulsive interaction constant. Indeed, if magnetic properties were only ruled by Ueff , different SL's would display the same S(, ) as long as Ueff is kept fixed. However, this is not observed [Fig. 8(a)] and the widths of the layers strongly affect spin correlations. Not only the absolute values of the AF spin correlations are different when approaching the ground state, but also the temperature in which spin correlations reach their asymptotic value, which occurs when the typical size of spin correlations  becomes larger than linear lattice size L.
+The presence of long ranged AF ordering in the thermodynamic limit is determined by a proper finite-size scaling analysis of the q = (, ) structure factor. Spinwave theory [49], predicts that the finite-size corrections to S(, ) are linear in 1/L:
+
+S(, )
+
+=
+
+m2AF
+
++
+
+a ,
+
+(4)
+
+N
+
+3L
+
+where mAF is the long-ranged AF order parameter and a is a constant. This dependence is displayed in Fig. 8(b) for the LU = 1 and L0 = 1 SL showing that, indeed, long range AF order is present for all the analyzed values of Ueff .
+Compiling the values for the magnetic order parameter for different configurations, in Fig. 9 we compare
+
+S ( ,)
+
+S ( ,) / N
+
+L = 1 L = 1 - U /t = 8
+
+24
+
+U
+
+0
+
+L U = 2 L 0= 2 - U /t = 8
+
+0 .1 4
+
+20
+
+L = 1 L = 3 - U /t = 1 6
+
+U
+
+0
+
+L U = 3 L 0= 1 - U /t = 1 6 /3
+
+0 .1 2
+
+L = 1 1 L = 1 - U /t = 4 8 /1 1
+
+U
+
+0
+
+0 .1 0
+
+16 L = 1 2
+
+U /t = 4
+
+0 .0 8
+
+e ff
+
+12
+
+0 .0 6
+
+8 0 .0 4
+
+L U = 1 L 0= 1 U /t = 2
+e ff
+U eff/ t = 4 U /t = 5
+e ff
+U eff/ t = 6 U /t = 8
+e ff
+
+4
+(a ) 0
+0 2 4 6 8 10 12 14 16
+t
+
+0 .0 2
+(b ) 0 .0 0
+0 .0 0 0 .0 4 0 .0 8 0 .1 2 0 .1 6
+1 /L
+
+FIG. 8. (Color online) AF structure factor vs inverse temperature  for different SL's with L = 12 and Ueff /t = 4. It is clearly seen that an effective U model does not explain all the features of magnetism in SL's. Finite-size dependence of AF structure factor for the SL's LU = 1, L0 = 1 and various Ueff /t. The linear extrapolation to limit L   shows that the AF order is long ranged.
+
+0 .7
+
+0 .6
+
+L =1L =1
+
+U
+
+0
+
+0 .5
+
+L =2L =2
+
+U
+
+0
+
+L =3L =1
+
+U
+
+0
+
+0 .4
+
+L =5L =1
+
+U
+
+0
+
+AF
+
+m
+
+0 .3
+
+0 .2
+
+V a rn e y e t a l.
+
+0 .1
+
+R PA
+
+H e is e n b e rg
+
+0 .0
+
+0
+
+1
+
+2
+
+3
+
+4
+
+5
+
+6
+
+7
+
+8
+
+9
+
+U /t e ff
+
+FIG. 9. (Color online) Staggered magnetization mAF dependence with Ueff /t and four different SL's compared with homogeneous result obtained from Ref.50. The continuous line is obtained from RPA approximation [51] and the dashed one is the QMC Heisenberg [48] result.
+
+mAF for the superlattices with recent QMC data for the homogeneous lattice [50]. The order parameter for different SL's is always smaller than for the homogeneous system, but for Ueff /t 7, it follows the same trend, i. e., it increases with increasing interaction strength. Moreover, the comparison among the different SL's configurations shows that this ordering depends non-trivially on the chosen pattern. Superlattices with the same LU/L0 ratio, such as LU = 1, L0 = 1 and LU = 2, L0 = 2,
+
+7
+
+do not always have the same value of mAF when Ueff is kept fixed. Thus, an effective interaction mechanism is not sufficient to explain the observed long-range magnetic order. For larger Ueff , the order parameter does not saturate at the Heisenberg limit value (dashed line), as one would naively expect, and instead decreases. For large values of U/t, the free and repulsive layers decouple, as signaled by the reduced value of near-neighbor spin-spin correlations shown in Fig. 5(c). In the U   limit, the SL's become a set of uncoupled free and repulsive chains that are unable to sustain long range order in two-dimensions.
+IV. TRANSPORT PROPERTIES
+
+FIG. 10. (Color online) Temperature dependence of the ratio of kinetic energies of superlattices to the non-interacting result. The lattice size is 12 × 12 and the interactions in the repulsive sites is U/t = 8.
+
+Better insight on the interplay of localization and delocalization in repulsive and free layers, initially obtained by investigating the spin correlations in the previous section, can be gained by checking some of the transport properties of the system. We start our study of the transport by analyzing the total effective hopping [52],
+
+tSL =
+
+i,j ,(c^ic^j + c^jc^i) SL ,
+
+(5)
+
+t
+
+i,j ,(c^ic^j + c^jc^i) 0
+
+which we define as the ratio of the kinetic energy on a superlattice, averaged over both the directions, along and across the layers, to its non-interacting counterpart value. We start by checking the temperature dependence of this quantity in Fig. 10 for different SL structures at U/t = 8. In the high-temperature limit (T t), the effect of interactions (either layered or homogeneously distributed) is negligible and the kinetic energy is essentially equivalent to the kinetic energy of the non-interacting system (tSL/t  1). For decreasing temperatures, the actual pattern of interactions affects the overall charge mobility and the correspondent kinetic energy for interacting SL's drops to a fraction of the non-interacting value which is inversely proportional to LU/L0. In the following, we will focus on values of temperature T /t = 0.1, which is small enough to capture the physical aspects when approaching the ground state for the different superlattices structures, since the kinetic energy is either converged or in the verge of convergence for decreasing temperatures, but not so small to render unnecessarily complicated large simulations. It is important to notice that quantum fluctuations are responsible for the fact that the kinetic energy is still finite when approaching the zero temperature limit.
+Figure 11(a) shows the U -dependence of tSL/t for different superlattices and also for the homogeneous system for 12 × 12 lattices at T /t = 0.1. In all cases, increasing U induces charge localization in at least the repulsive layers and, therefore, decreases the total hopping energy in comparison to the non-interacting limit. We can see that tSL/t is strongly dependent on the ratio LU/L0, converging towards the non-interacting limit (teff /t = 1) as
+
+FIG. 11. (Color online) (a) Effective hopping as a function of interaction strength U/t, for the homogeneous system and different superlattices with L = 12 and T /t = 0.10. (b) and (c) with the effective hopping contribution split along direction along and across layers, respectively.
+
+LU/L0  0 (see, for instance, black squares for LU = 1 and L0 = 11) and approaching the homogeneous system results as LU/L0 increases (see right triangles for LU = 11 and L0 = 1).
+The large anisotropic character introduced by the layered construction makes it important to analyze the effective hopping along (x) and across (y) the direction of the layers, which we define as:
+
+tSL = t
+
+j, c^j+^c^j + c^jc^j+^ j, c^j+^c^j + c^jc^j+^
+
+SL 0
+
+,
+
+(6)
+
+where ^ = x^ or y^.
+
+8
+
+At first sight, one would expect that the anisotropy favors the electronic transport along the direction of the layers. This is indeed the case, as can be readily observed in Figs. 11(b) and 11(c), where the repulsive interaction splits the two contributions of the effective hopping. In fact, the largest contribution to the transport in the direction parallel to the layers should be related to stripes formed by free sites since within the repulsive layers local moment formation is favored [see Fig. 3(a)] and, consequently, the mobility is reduced. We separate the contribution of the kinetic energy along the layers between the repulsive and free layers via,
+
+tUSL,0
+
+=
+
+t
+
+x
+
+j, c^j+x^c^j + c^jc^j+x^ j, c^j+x^c^j + c^jc^j+x^
+
+U,0 SL
+0
+
+,
+
+(7)
+
+where the denominator refers to the average kinetic energy along one direction of a two-dimensional noninteracting square lattice. Figure 12 shows how the separate contribution of the hopping depends on the strength of interactions in free [panel (a)] and repulsive layers [panel (b)]. One observes, in the latter, that the transport along repulsive sites does not significantly change for different SL configurations, remaining close to the correspondent homogeneous results and smoothly interpolating the limits of small interactions, obtained within perturbation theory (dashed curve), and the strong coupling limit [52] (dotted line). On the other hand, in the former, as U/t is increased, the contribution to the kinetic energy due to the hopping between free sites is always larger than one, i.e., enhanced in comparison to the contribution to the kinetic along one direction in a completely non-interacting two-dimensional lattice. In this case, when comparing different SL's patterns we can see that the enhancement is maximum when the free layer is just one-site thick (L0 = 1) and increases with increasing LU/L0. This feature is an indicative of the change of dimensionality, as a result of increased interactions, being related to the picture where free layers become uncoupled to the repulsive ones as the large U/t limit is approached, which was also inferred when investigating the magnetism in Sec. III. This scenario is supported by noting that the the kinetic energy along the free layers of the SL systematically converges to the kinetic energy of a one-dimensional non-interacting chain (dashed-dotted line in Figure 12(a)) for U/t 1.
+One can also get useful physical information by investigating wider free layers as in the SL with configurations LU = 1 and L0 = 3 or 5 [circles and pentagons, respectively, in Fig. 12(a)]. When analyzing the contribution of the hopping in the free layers, we see that, the wider the free layer is, the less its center is affected by the repulsive sites. Still, for the free sites at the edge between the two regions, the enhancement of kinetic energy along the x direction is substantial, reaching  25% of increase for U/t = 16.
+It is still an open question to examine other quantities that could potentially fully characterize transport, and
+
+FIG. 12. (Color online) Ratio between the x-component of the kinetic energy at a finite U/t to the U = 0 case for L = 12 lattice with T /t = 0.10 for different SLs. In (a) we plot the hopping contribution from the free layers and in (b) the same for the repulsive ones. The filled (empty) symbols denote electronic transport between repulsive (free) sites. To avoid misleading interpretation due to the different number of repulsive (NU) and free (NU=0) sites, in this case we have normalized the results by the number of sites of each type. In (b) we also include the analytical results in the extreme limits of U/t 1 (perturbation theory) and U/t 1 (strong coupling) [52] and the contribution to the kinetic energy between repulsive sites smoothly interpolates between both limits albeit the layered distributed interactions.
+definitively quantify whether the superlattice displays a metal-insulator transition when approaching T = 0 at large U/t limit. Among them one could highlight the dc-conductivity [53, 54] and the Drude weight [55, 56] both of which can be computed using imaginary timedependent correlation functions in QMC calculations. However, while the kinetic energy per site does not change substantially when using different system sizes, we have checked that the Drude weight and the dcconductivity possess dramatic finite size effects. Besides, as we argued before, the fact that some of the superlattices are not commensurate with the system size makes a proper finite-size scaling analysis elusive. Future studies may shed light on this issue and unequivocally answer the question of whether the increase of repulsive interactions may induce a Mott-insulator to anisotropic metal transition in the large U limit.
+V. TEMPERATURE SCALES
+We now turn to the study of the temperature scales that characterize the superlattices. The Mermin-Wagner theorem [57] establishes that long range order is only possible at T = 0 for two-dimensional systems with continuous symmetry. Nonetheless, one can define finite temperature scales where strong magnetic and charge correlations start to develop. The knowledge of such temper-
+
+9
+
+FIG. 13. (Color online) Uniform spin susceptibility  as a function of temperature for various SL's with U/t = 4 and for homogeneous systems with U/t = 0 (line) and U/t = 4 (stars) in L = 12 lattices. The peak in this quantity defines Tspin, the onset of antiferrogmagnetic fluctuations.
+ature scales is relevant in the context of fermionic cold atom experiments as spin and charge correlations in twodimensional systems were recently measured. [38, 47]
+A. Spin susceptibility
+A crossover temperature Tspin, below which spin correlations grow rapidly, can be obtained by the temperature where the uniform magnetic susceptibility (q = 0, T ) = S(q = 0) peaks [58]. Figure 13 shows the susceptibility as a function of T for different superlattices at U/t = 4. For the SL's with LU/L0 < 1 the crossover temperature is below T = t/20, the smaller temperature reached in most of our simulations and far beyond what can be reached under cold atoms experiments. The finite lattices are AF ordered at non-zero temperatures and we can associate Tspin with the finite N´eel temperature for 2D lattices calculated within the random phase approximation (RPA) and Hartree-Fock calculations: TN  t exp[-2 t/U ] [40]. Figure 15 compiles the positions of the peaks, Tspin (empty symbols), as a function of Ueff for different superlattice patterns, different system sizes and U/t = 4, together with the RPA form. It clearly shows that the crossover temperature is governed by the effective interaction strength, essentially being independent of the underlying superlattice structure.
+B. Specific heat
+Another quantity that can provide insight into the temperature scales of the system is the specific heat C. We use the definition C(T ) = dE/dT to obtain the specific heat by numerical differentiation of the total en-
+
+FIG. 14. (Color online) Temperature dependence of specific heat for four different SL configurations with L = 12 and the corresponding homogeneous cases with U/t = 0 and U/t = 4. While the high-temperature peak position is roughly constant at Thigh  t, the low-temperature one significantly varies for the SL's presented and displays increasing Tlow as the Ueff becomes higher and closer to the homogeneous U/t = 4 case. Lines are guides to the eye.
+ergy E(T ). Figure 14 shows C(T ) for different SL's with L = 12 at U/t = 4 and also the results for the homogeneous case in the non-interacting (dashed line) and interacting limits. In the latter, the specific heat is known to display a two peak structure [59, 60]: a broad high-temperature peak at Thigh, associated with "charge fluctuations," and a sharp peak at Tlow associated with "spinfluctuations." These denote temperature below which these degrees of freedom start to freeze. Note that, for fixed U , while the high-T peak position is very similar for all superlattices, Tlow strongly depends on the superlattice pattern, shifting to lower temperatures as the ratio LU/L0 is reduced. We were not able to resolve the peak when Tlow < t/20, which is the case when LU/L0 < 1. For the other cases, Fig. 15 shows the dependence of Tlow (filled symbols) with Ueff , for different system sizes and different superlattice patterns with U/t = 4. Similar to Tspin, Tlow also defines a temperature scale where AF correlations become relevant, therefore, Tlow obeys the same RPA-like form for small values of Ueff .
+To better understand the position of the peaks and its dependence with the interaction strength, it is instructive to recall that the energy can be separated in kinetic and potential parts which separately contribute to the specific heat. In a strong coupling picture, the high-T peak can be understood as the temperature where double occupations ( d^ ) are suppressed and, therefore, is governed by the contribution of the potential energy P = U d^ to the specific heat. In this regime, Thigh has a linear dependence with Ueff as Thigh  Ueff /4.1, as can be seen in Fig. 16. In contrast, for weak interactions, the high-T peak is determined by the kinetic energy contribution to the specific heat [59]. Figure 14 clearly shows that Thigh
+
+10
+
+T /t
+
+0 .2 8
+
+S L U /t = 4
+
+0 .2 4
+TT
+lo w s p in 0 .2 0 L = 6
+L= 8
+0 .1 6 L = 1 0 L= 12
+0 .1 2 L = 1 4 L= 16
+
+hom ogeneous
+
+0 .0 8
+
+L= 10
+
+0 .0 4
+
+0 .0 0
+
+0
+
+1
+
+t e x p [ - 2 ( t / U ) 1 / 2 ] e ff
+
+2 U /t 3
+
+4
+
+e ff
+
+FIG. 15. (Color online) Position of the low-T peak of the specific heat (full symbols) and peak of the spin-susceptibility (open symbols) as a function of Ueff /t for different SL's with U/t = 4 together with the homogeneous lattice results. Dashed line corresponds to an RPA-like form for the temperature scale in which antiferromagnetic fluctuations occur: T  t exp[-2 t/Ueff ].
+
+S /(N k B)
+
+1 .2 ( a )
+0 .8 0 .4 0 .0
+1 .2 ( b )
+0 .8 0 .4 0 .0
+0 .1
+
+1 T /t
+
+L =1 L =3
+
+U
+
+0
+
+U /t = 2
+
+U /t = 4
+
+U /t = 8
+
+U /t = 1 6
+
+U /t = 8
+
+hom ogeneous
+
+L U = 1 L 0= 1 L U = 1 L 0= 3 L U = 1 L 0= 7
+
+10
+
+100
+
+FIG. 17. (Color online) Entropy as a function of temperature for fixed LU = 1 and L0 = 3 and U/t = 2, 4, 8 and 16 (a) and for fixed U/t = 8, and different SL configurations in a lattice with L = 8. Dotted (dashed) lines represent adiabats with S/(N kB) = 0.8 (0.5).
+C. Entropy
+
+3 .0
+
+SL:
+
+L= 6
+
+2 .5
+
+L= 8
+
+L= 10
+
+2 .0
+
+L= 12
+
+L= 14
+
+L= 16
+
+1 .5
+
+h o m o g en eo u s: L= 10 L= 200
+
+T /t
+
+1 .0
+
+0 .5 U /(4 .1 t)
+
+0 .0
+
+0
+
+2
+
+4
+
+6
+
+8
+
+10
+
+U /t e ff
+
+FIG. 16. (Color online) Position of the high-T peak of specific heat for different SL's as a function of Ueff , the dashed line denotes the linear extrapolation to the data presented in the strong coupling limit (T  U/4.1). Error bars denote the confidence interval of estimating the peak from the data of the specific heat
+
+closely follows the non-interacting peak: Thigh  t = 1, for all superlattices shown at U/t = 4.
+Although in the previous section we observed that an effective interaction cannot explain the discrepancies in spin-spin correlation functions or the ground state values of the order parameter for different SL's, the temperature scales presented in this section are clearly ruled by Ueff .
+
+The entropy is a central quantity for cold atoms, as it can be obtained more easily on experiments than the temperature. Understanding the behavior of the entropy as a function of the temperature for different interaction strengths and SL's configurations can help in devising new cooling schemes, which are useful if one is concerned with the emulation of the low-temperature physics of strongly correlated systems. Here, we obtain the entropy per particle in units of the Boltzmann constant kB, by integrating the energy per particle e  E/N in inverse temperature :
+
+S()
+
+
+
+= ln(4) + e() - d e( ).
+
+(8)
+
+N kB
+
+0
+
+Figure 17(a) shows this quantity as a function of the temperature for the SL with LU = 1 and L0 = 3 and different values of the interaction strength U/t. For a fixed entropy value (see dotted and dashed horizontal lines), increasing U/t, which can be tuned by adjusting Feshbach resonances [14], will lead to heating of the system, i.e., the temperature increases with increasing repulsive interactions. Figure 17(b), on the other hand, displays the temperature dependence of S/(N kB) for fixed U/t = 8 and different SL configurations, as well as for the homogeneous system with the same interaction value. If we start with an SL with LU = 1 and L0 = 7 (diamonds), and adiabatically turn the interaction on within lines of sites on the free layers, changing the pattern to a different SL configuration with LU = 1 and L0 = 3 (circles), and then LU = 1 and L0 = 1 (down triangles), and finally reaching the homogeneous system (stars), there is a range of entropies 0.2 S/N kB 1.0 for which the temperature is reduced.
+
+11
+
+In both panels of Fig. 17, Ueff /t is increased; in (a)
+
+by increasing the interaction U/t while keeping LU/L0
+
+fixed, while in (b), by increasing LU/L0 and keeping U/t fixed. To undestand how the former leads to heating and
+
+the latter to cooling (in an intermediate range of tem-
+
+peratures) let us examine separately the contributions
+
+of the kinetic (K) [Figs. 18(a) and 18(c)] and poten-
+
+tial (P ) [Figs. 18(b) and 18(d)] energies to the entropy.
+
+It is useful to remember that S =
+
+T 0
+
+dT
+
+C/T
+
+,
+
+where
+
+C = dE/dT is the specific heat and E = K + P . For
+
+fixed LU = 1, L0 = 3, and small U/t, the system is similar to the non-interacting one, with most of the en-
+
+tropy coming from the kinetic energy contribution. In
+
+the opposite limit (large U/t), the contribution from the
+
+kinetic energy moves to higher temperatures and the one
+
+associated with the potential energy becomes more rele-
+
+vant. The potential energy contribution comes from the
+
+double occupancies d^ on repulsive sites. The double
+
+occupancies are directly related to the local moments via
+
+d^ = [ (n^i + n^i) - (m^ zi )2 ]/2. Starting at high temperatures, where it assumes its uncorrelated value d^ = 1/4
+
+for all U/t, as T /t decreases, d^ also decreases. For small
+
+U/t, d^ hardly changes with T /t and the contribution of
+
+dP/dT is small. For large U/t, on the other hand, the
+
+change in d^ gives rise to the high-T peak in dP/dT (and
+
+also in C, see Figs. 14 and 16). The freezing of the charge
+
+degrees of freedom as U/t increases at the repulsive sites
+
+leads to heating, observed in Fig. 17(a).
+
+For fixed U/t and increasing LU/L0, the behavior is similar to the previous one at smaller Ueff /t: most of the contribution to the entropy comes from the kinetic energy at temperature scales around T /t  1. As LU/L0 increases, two effects take place, first a high-T peak also develops in the contribution from the potential energy, similar to what is seen in the previous case, and, second, the peak in the kinetic energy derivative becomes sharper and moves to lower temperatures. This second effect is the responsible for cooling the system as LU/L0 is increased.
+
+Figure 19 shows how the temperature changes with Ueff /t along the adiabats with S/(N kB) = 0.5 and 0.8. For a fixed SL, increasing Ueff /t leads to heating. This effect is more pronounced than in the homogeneous case [58]. Keeping the SL fixed and increasing U/t increases the temperature by a factor of three at S/(N kB) = 0.5 for Ueff /t going from 0.5 to 4. Conversely, if there is a way to experimentally turn on the interaction strength adiabatically on sites from the free layers, this could be a useful way to cool down the system and achieve lower temperatures in comparison to homogeneous ones. Starting from a system with LU = 1, L0 = 7 with U/t = 8 and T /t = 0.89, turning on the interactions at the free layers until the homogeneous system is achieved, leads to a final temperature of T /t 0.40, more than a factor of two below the initial one.
+
+FIG. 18. (Color online) Panels (a) and (c) [(b) and (d)] show the temperature dependence of the kinetic [potential] energy contributions to the specific heat for a L = 8 lattice. Panels (a) and (b) focus in a given SL with configuration LU = 1 and L0 = 3 and different interactions, while (c) and (d) compare the homogeneous result with a SL (LU = 1 and L0 = 7) for a given U/t = 8. Dashed lines depict the non-interacting result.
+
+T /t
+
+2 .8
+U /t = 8
+
+2 .4
+
+S /(N k B )= 0 .8
+
+S /(N k B )= 0 .5
+
+2 .0
+
+L U = 1 L 0= 3
+
+1 .6
+
+S /(N k B )= 0 .8
+
+S /(N k B )= 0 .5
+1 .2
+
+0 .8
+
+0 .4
+
+0 .0
+
+0
+
+2
+
+4
+
+6
+
+8
+
+U eff/ t
+
+FIG. 19. (Color online) Temperature as a function of Ueff /t for fixed S/(N kB) = 0.5 (dashed lines) and 0.8 (dotted lines), for fixed LU = 1 L0 = 3 (squares and up triangles) and for fixed U/t = 8 (circles and down triangles).
+
+VI. CONCLUSIONS
+In summary, we have employed quantum Monte Carlo methods to perform a thorough analysis of the half-filled Hubbard model on a two-dimensional lattice with layer distributed onsite interactions U to understand how it affects the magnetism and charge dynamics. We have found that although the superlattices contain layers with sites possessing vanishing interactions, they are still able to sustain a global antiferrogmagnetic long-range order at finite values of the ratio U/t. We have probed that for
+
+12
+
+SL's with LU  L0, this AF ordering is long ranged at T = 0 but the correspondent order parameter decreases for large interaction values. In fact, the exact dependence of this order parameter with the strength of the interactions depends non-trivially on the superlattice configuration. In turn, some thermodynamical properties, e.g., the temperatures in which spin and charge-fluctuations associated with AF and moment formation start to develop, can be described by a model of an effective homogeneously distributed U . The SL's have a dominant short-ranged AF ordering at finite temperatures regardless of their different layer's construction whose onset follows an RPA-like form: T  exp[-2 t/Ueff ]. This is confirmed by the position of the peak in magnetic susceptibility, as well as, in the low-T peak for the specific heat. Regarding the charge dynamics, the kinetic energy clearly shows an anisotropic behavior, where transport preferentially takes place in the direction parallel to the layers. These results suggest a mechanism of reduced dimensionality induced by the increasing interactions in a layered pattern. In the large U/t limit, this would ultimately result in a decoupling of the repulsive and free layers (or strips). Whether this leads to a transition from a Mott-insulator to an anisotropic metal is still an open
+
+question that deserves further investigation. In connection with the cooling problem in optical lattices, we have also showed a potential cooling protocol where one can more than halve the temperature of the system by adiabatically switching on the interactions in some layers of the lattice. This may renew interest in cooling mechanisms that could eventually reach temperatures to realize the long-sought after d-wave superconductivity in cold atoms experiments.
+ACKNOWLEDGMENTS
+We are indebted to T. Mendes-Santos, R. R. dos Santos and R. T. Scalettar for useful discussions. RM is financially supported by the National Natural Science Foundation of China (NSFC) (Grant Nos. U1530401, 11674021 and 11650110441). TP gratefully acknowledges financial support from the Brazilian Agencies CNPq and FAPERJ as well as the INCT on Quantum Information. We acknowledge the use of computational facilities at CENAPAD-SP and in the Tianhe-2JK at the Beijing Computational Science Research Center (CSRC).
+
+[1] J. Chakhalian, J. W. Freeland, A. J. Millis, C. Panagopoulos, and J. M. Rondinelli, "Colloquium : Emergent properties in plane view: Strong correlations at oxide interfaces," Rev. Mod. Phys. 86, 1189­1202 (2014).
+[2] J. Mannhart and D. G. Schlom, "Oxide interfaces--an opportunity for electronics," Science 327, 1607­1611 (2010).
+[3] R. Jany, M. Breitschaft, G. Hammerl, A. Horsche, C. Richter, S. Paetel, J. Mannhart, N. Stucki, N. Reyren, S. Gariglio, P. Zubko, A. D. Caviglia, and J.-M. Triscone, "Diodes with breakdown voltages enhanced by the metalinsulator transition of LaAlO3SrTiO3 interfaces," Appl. Phys. Letters 96, 183504 (2010).
+[4] B. Fo¨rg, C. Richter, and J. Mannhart, "Field-effect devices utilizing LaAlO3-SrTiO3 interfaces," Appl. Phys. Lett. 100, 053506 (2012).
+[5] Y. Zhou and S. Ramanathan, "Correlated electron materials and field effect transistors for logic: A review," Critical Reviews in Solid State and Materials Sciences 38, 286­317 (2013).
+[6] Z. Chen, H. Yuan, Y. Xie, D. Lu, H. Inoue, Y. Hikita, C. Bell, and H. Y. Hwang, "Dual-gate modulation of carrier density and disorder in an oxide two-dimensional electron system," Nano Letters 16, 6130­6136 (2016).
+[7] N. Reyren, S. Thiel, A. D. Caviglia, L. Fitting Kourkoutis, G. Hammerl, C. Richter, C. W. Schneider, T. Kopp, A.-S. Ru¨etschi, D. Jaccard, M. Gabay, D. A. Muller, J.-M. Triscone, and J. Mannhart, "Superconducting interfaces between insulating oxides," Science 317, 1196­1199 (2007).
+[8] A. Brinkman, M. Huijben, M. van Zalk, J. Huijben, U. Zeitler, J. C. Maan, W. G. van der Wiel, G. Rijnders,
+
+D. H. A. Blank, and H. Hilgenkamp, "Magnetic effects at the interface between non-magnetic oxides," Nat. Mater. 6, 493­496 (2007). [9] Lu Li, C. Richter, J. Mannhart, and R. C. Ashoori, "Coexistence of magnetic order and two-dimensional superconductivity at LaAlO3/SrTiO3 interfaces," Nat. Phys. 7, 762­766 (2011). [10] H. Y. Hwang, Y. Iwasa, M. Kawasaki, B. Keimer, N. Nagaosa, and Y. Tokura, "Emergent phenomena at oxide interfaces," Nat. Mater. 11, 103­113 (2012). [11] A. V. Boris, Y. Matiks, E. Benckiser, A. Frano, P. Popovich, V. Hinkov, P. Wochner, M. Castro-Colin, E. Detemple, V. K. Malik, C. Bernhard, T. Prokscha, A. Suter, Z. Salman, E. Morenzoni, G. Cristiani, H.-U. Habermeier, and B. Keimer, "Dimensionality control of electronic phase transitions in nickel-oxide superlattices," Science 332, 937­940 (2011). [12] X. R. Wang, C. J. Li, W. M. Lu¨, T. R. Paudel, D. P. Leusink, M. Hoek, N. Poccia, A. Vailionis, T. Venkatesan, J. M. D. Coey, E. Y. Tsymbal, Ariando, and H. Hilgenkamp, "Imaging and control of ferromagnetism in LaMnO3/SrTiO3 heterostructures," Science 349, 716­ 719 (2015). [13] H. Shishido, T. Shibauchi, K. Yasu, T. Kato, H. Kontani, T. Terashima, and Y. Matsuda, "Tuning the dimensionality of the heavy fermion compound CeIn3," Science 327, 980­983 (2010). [14] I. Bloch, J. Dalibard, and W. Zwerger, "Many-body physics with ultracold gases," Rev. Mod. Phys. 80, 885­ 964 (2008). [15] I. Bloch, J. Dalibard, and S. Nascimbene, "Quantum simulations with ultracold quantum gases," Nat. Phys. 8, 267­276 (2012).
+
+13
+
+[16] Dominik M. Bauer, Matthias Lettner, Christoph Vo, Gerhard Rempe, and Stephan Durr, "Control of a magnetic feshbach resonance with laser light," Nat. Phys. 5, 339­342 (2009).
+[17] Rekishu Yamazaki, Shintaro Taie, Seiji Sugawa, and Yoshiro Takahashi, "Submicron spatial modulation of an interatomic interaction in a Bose-Einstein condensate," Phys. Rev. Lett. 105, 050405 (2010).
+[18] Haibin Wu and J. E. Thomas, "Optical control of Feshbach resonances in Fermi gases using molecular dark states," Phys. Rev. Lett. 108, 010401 (2012).
+[19] Haibin Wu and J. E. Thomas, "Optical control of the scattering length and effective range for magnetically tunable feshbach resonances in ultracold gases," Phys. Rev. A 86, 063625 (2012).
+[20] A. Jagannathan, N. Arunkumar, J. A. Joseph, and J. E. Thomas, "Optical control of magnetic feshbach resonances by closed-channel electromagnetically induced transparency," Phys. Rev. Lett. 116, 075301 (2016).
+[21] L. W. Clark, L.-C. Ha, C.-Y. Xu, and Chin C., "Quantum Dynamics with Spatiotemporal Control of Interactions in a Stable Bose-Einstein Condensate," Phys. Rev. Lett. 115, 155301 (2015).
+[22] It is worth mentioning that the reason behind it is that in Eq. (1) the repulsive sites (Ui > 0) have a lower on-site energy which then balances the occupancy irrespectively of whether a site possesses U = 0 or U = 0. Hence, we are focused here on the effects of the underlying superlattice structure in the physical properties for a situation where charges are still homogeneously distributed.
+[23] T. Paiva and R. R. dos Santos, "Electronic Correlations in One-Dimensional Superlattices," Phys. Rev. Lett. 76, 1126­1129 (1996).
+[24] T. Paiva and R. R. dos Santos, "Metal-insulator transition in one-dimensional Hubbard superlattices," Phys. Rev. B 58, 9607­9610 (1998).
+[25] T. Paiva and R. R. dos Santos, "Magnetism in onedimensional Hubbard superlattices," Phys. Rev. B 62, 7007­7014 (2000).
+[26] A. L. Malvezzi, T. Paiva, and R. R. dos Santos, "Multiperiodic magnetic structures in Hubbard superlattices," Phys. Rev. B 66, 064430 (2002).
+[27] J. Chowdhury, S. N. Karmakar, and B. Bhattacharyya, "Ground-state phase diagram and magnetoconductance of a one-dimensional Hubbard superlattice at half filling," Phys. Rev. B 75, 235117 (2007).
+[28] J. Silva-Valencia, E. Miranda, and R. R dos Santos, "Luttinger liquid superlattices," Journal of Physics: Condensed Matter 13, L619 (2001).
+[29] D. Go´ra, K. J. Rosciszewski, and A. M. Oles, "Spectral and magnetic properties of one-dimensional superlattices," Journal of Physics: Condensed Matter 10, 4755 (1998).
+[30] M. F. Silva, N. A. Lima, A. L. Malvezzi, and K. Capelle, "Effects of nanoscale spatial inhomogeneity in strongly correlated systems," Phys. Rev. B 71, 125130 (2005).
+[31] M. Jiang, G. G. Batrouni, and R. T. Scalettar, "Density of states and magnetic correlations at a metal-Mott insulator interface," Phys. Rev. B 86, 195117 (2012).
+[32] A. Euverte, F. H´ebert, S. Chiesa, R. T. Scalettar, and G. G. Batrouni, "Kondo Screening and Magnetism at Interfaces," Phys. Rev. Lett. 108, 246401 (2012).
+[33] A. Zujev and P. Sengupta, "Induced magnetism versus Kondo screening in alternating Mott-metal layers," Phys.
+
+Rev. B 88, 094415 (2013). [34] Z. Zhong, M. Wallerberger, J. M. Tomczak, C. Taranto,
+N. Parragh, A. Toschi, G. Sangiovanni, and K. Held, "Electronics with Correlated Oxides: SrVO3/SrTiO3 as a Mott Transistor," Phys. Rev. Lett. 114, 246401 (2015). [35] R. Blankenbecler, D. J. Scalapino, and R. L. Sugar, "Monte Carlo calculations of coupled boson-fermion systems. I," Phys. Rev. D 24, 2278­2286 (1981). [36] J. E. Hirsch, "Discrete Hubbard-Stratonovich transformation for fermion lattice models," Phys. Rev. B 28, 4059­4061 (1983). [37] We have typically used 1000 warm up sweeps for equilibration, followed by 4000 measuring sweeps, where the error bars are estimated by the statistical fluctuations. When necessary, the data were estimated over an average of simulations with different random seeds. [38] L. W. Cheuk, M. A. Nichols, K. R. Lawrence, M. Okan, H. Zhang, E. Khatami, N. Trivedi, T. Paiva, M. Rigol, and M. W. Zwierlein, "Observation of spatial charge and spin correlations in the 2D Fermi-Hubbard model," Science 353, 1260­1264 (2016). [39] We focus on relatively small lattices for the current computational capabilities since the size-dependence is minimal for local quantities, as the local moment. This allows us to have very good statistics after all. [40] J. E. Hirsch, "Two-dimensional Hubbard model: Numerical simulation study," Phys. Rev. B 31, 4403­4419 (1985). [41] M. F. Parsons, F. Huber, A. Mazurenko, C. S. Chiu, W. Setiawan, K. Wooley-Brown, S. Blatt, and M. Greiner, "Site-Resolved Imaging of Fermionic 6Li in an Optical Lattice," Phys. Rev. Lett. 114, 213002 (2015). [42] A. Omran, M. Boll, T. A. Hilker, K. Kleinlein, G. Salomon, I. Bloch, and C. Gross, "Microscopic Observation of Pauli Blocking in Degenerate Fermionic Lattice Gases," Phys. Rev. Lett. 115, 263001 (2015). [43] E. Haller, J. Hudson, A. Kelly, D. A. Cotta, B. Peaudecerf, G. D. Bruce, and S. Kuhr, "Single-atom imaging of fermions in a quantum-gas microscope," Nat. Phys. 11, 738­742 (2015). [44] L. W. Cheuk, M. A. Nichols, M. Okan, T. Gersdorf, V. V. Ramasesh, W. S. Bakr, T. Lompe, and M. W. Zwierlein, "Quantum-gas microscope for fermionic atoms," Phys. Rev. Lett. 114, 193001 (2015). [45] G. J. A. Edge, R. Anderson, D. Jervis, D. C. McKay, R. Day, S. Trotzky, and J. H. Thywissen, "Imaging and addressing of individual fermionic atoms in an optical lattice," Phys. Rev. A 92, 063406 (2015). [46] M. Boll, T. A. Hilker, G. Salomon, A. Omran, J. Nespolo, L. Pollet, I. Bloch, and C. Gross, "Spin- and densityresolved microscopy of antiferromagnetic correlations in Fermi-Hubbard chains," Science 353, 1257­1260 (2016). [47] M. F. Parsons, A. Mazurenko, C. S. Chiu, G. Ji, D. Greif, and M. Greiner, "Site-resolved measurement of the spincorrelation function in the Fermi-Hubbard model," Science 353, 1253­1256 (2016). [48] A. W. Sandvik, "Finite-size scaling of the ground-state parameters of the two-dimensional Heisenberg model," Phys. Rev. B 56, 11678­11690 (1997). [49] D. A. Huse, "Ground-state staggered magnetization of two-dimensional quantum Heisenberg antiferromagnets," Phys. Rev. B 37, 2380­2382 (1988). [50] C. N. Varney, C.-R. Lee, Z. J. Bai, S. Chiesa, M. Jarrell, and R. T. Scalettar, "Quantum Monte Carlo study of the
+
+14
+
+two-dimensional fermion Hubbard model," Phys. Rev. B 80, 075116 (2009). [51] J. R. Schrieffer, X. G. Wen, and S. C. Zhang, "Dynamic spin fluctuations and the bag mechanism of high-Tc superconductivity," Phys. Rev. B 39, 11663­11679 (1989). [52] S. R. White, D. J. Scalapino, R. L. Sugar, E. Y. Loh, J. E. Gubernatis, and R. T. Scalettar, "Numerical study of the two-dimensional Hubbard model," Phys. Rev. B 40, 506­516 (1989). [53] M. Randeria, N. Trivedi, A. Moreo, and R. T. Scalettar, "Pairing and spin gap in the normal state of short coherence length superconductors," Phys. Rev. Lett. 69, 2001­2004 (1992). [54] N. Trivedi, R. T. Scalettar, and M. Randeria, "Superconductor-insulator transition in a disordered electronic system," Phys. Rev. B 54, R3756­R3759 (1996). [55] D. J. Scalapino, S. R. White, and S. Zhang, "Insulator, metal, or superconductor: The criteria," Phys. Rev. B 47, 7995­8007 (1993).
+
+[56] R. Mondaini, K. Bouadim, T. Paiva, and R. R. dos Santos, "Finite-size effects in transport data from quantum Monte Carlo simulations," Phys. Rev. B 85, 125127 (2012).
+[57] N. D. Mermin and H. Wagner, "Absence of Ferromagnetism or Antiferromagnetism in One- or TwoDimensional Isotropic Heisenberg Models," Phys. Rev. Lett. 17, 1133­1136 (1966).
+[58] T. Paiva, R. Scalettar, M. Randeria, and N. Trivedi, "Fermions in 2D Optical Lattices: Temperature and Entropy Scales for Observing Antiferromagnetism and Superfluidity," Phys. Rev. Lett. 104, 066406 (2010).
+[59] T. Paiva, R. T. Scalettar, C. Huscroft, and A. K. McMahan, "Signatures of spin and charge energy scales in the local moment and specific heat of the half-filled twodimensional Hubbard model," Phys. Rev. B 63, 125116 (2001).
+[60] D. Duffy and A. Moreo, "Specific heat of the twodimensional Hubbard model," Phys. Rev. B 55, 12918­ 12924 (1997).
+
+

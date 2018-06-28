@@ -1,0 +1,2528 @@
+arXiv:1701.00092v1 [math.FA] 31 Dec 2016
+
+HERMITE-HADAMARD, HERMITE-HADAMARD-FEJE´R, DRAGOMIR-AGARWAL AND PACHPATTE TYPE
+INEQUALITIES FOR CONVEX FUNCTIONS VIA FRACTIONAL INTEGRALS
+MOKHTAR KIRANE BERIKBOL T. TOREBEK
+Abstract. The aim of this paper is to establish Hermite-Hadamard, HermiteHadamard-Fej´er, Dragomir-Agarwal and Pachpatte type inequalities for new fractional integral operators with exponential kernel.
+
+1. Introduction
+
+The inequalities discovered by Hermite and Hadamard for convex functions are very important in the literature (see, e.g.,[PPT92, DP00]). These inequalities state that if [H1883, H1893] u : I  R is a convex function on the interval I  R and a, b  I with b > a, then
+
+b
+
+u
+
+a+b 2
+
+
+
+b
+
+1 -
+
+a
+
+u(x)dx
+
+
+
+u(a) + 2
+
+u(b) .
+
+a
+
+(1.1)
+
+Both inequalities hold in the reversed direction if u is concave. We note that Hadamard's inequality may be regarded as a refinement of the concept of convexity and it follows easily from Jensen's inequality.
+The classical Hermite-Hadamard inequality provides estimates of the mean value of a continuous convex function u : [a, b]  R.
+The most well-known inequalities related to the integral mean of a convex function u are the Hermite-Hadamard inequalities or its weighted versions, the so-called Hermite-Hadamard-Fej´er inequalities.
+In [F06], Fej´er established the following inequality which is the weighted generalization of Hermite-Hadamard inequality (1.1):
+Let u : [a, b]  R be convex function. Then the inequality
+
+b
+
+b
+
+b
+
+u
+
+a+b 2
+
+v(x)dx 
+
+u(x)v(x)dx
+
+
+
+u(a)
+
++ 2
+
+u(b)
+
+v(x)dx
+
+a
+
+a
+
+a
+
+(1.2)
+
+holds;
+
+here
+
+v
+
+:
+
+[a, b]  R
+
+is
+
+nonnegative,
+
+integrable
+
+and
+
+symmetric
+
+to
+
+a+b 2
+
+.
+
+In [DA98], Dragomir and Agarwal proved the following results connected with
+
+the right part of (1.1):
+
+2000 Mathematics Subject Classification. 35A09; 34K06. Key words and phrases. HermiteHadamard inequality, Hermite-Hadamard-Fej´er inequality, Dragomir-Agarwal inequality, Pachpatte inequalities, new fractional integral operator, integral inequalities.
+1
+
+2
+
+M. KIRANE AND B. T. TOREBEK
+
+Let u : I  R  R be a differentiable mapping on I, a, b  I. If |u| is convex on [a, b], then the following inequality holds:
+
+b
+
+u(a)
+
++ 2
+
+u(b)
+
+-
+
+b
+
+1 -
+
+a
+
+u(x)dx
+
+
+
+b- 8
+
+a
+
+(|u(a)| +
+
+|u(b)|) .
+
+a
+
+(1.3)
+
+In [P03], Pachpatte established two new Hermite-Hadamard type inequalities for products of convex functions as follows:
+Let u and v be nonnegative and convex functions on [a, b]  R, then
+
+b
+
+1 b-a
+
+u(x)v(x)dx
+
+a
+
+
+
+u(a)v(a) + u(b)v(b) 3
+
++
+
+u(a)v(b)
+
++ 6
+
+u(b)v(a)
+
+and
+
+2u
+
+a+b 2
+
+v
+
+a+b 2
+
+(1.4)
+
+b
+
+
+
+b
+
+1 -
+
+a
+
+u(x)v(x)dx
+
+a
+
+(1.5)
+
++
+
+u(a)v(a)
+
++ 6
+
+u(b)v(b)
+
++
+
+u(a)v(b)
+
++ 3
+
+u(b)v(a) .
+
+Many generalizations and extensions of the Hermite-Hadamard, Hermite-Hadamard-
+
+Fej´er, Dragomir-Agarwal and Pachpatte type inequalities were obtained for vari-
+
+ous classes of functions using fractional integrals; see [SSYB13, WLFZ12, ZW13,
+
+ITM16, JS16, BPP16, C16, HYT14, I16, CK17] and references therein.
+
+Definition 1.1. The function u : [a, b]  R  R, is said to be convex if the following inequality holds
+
+u(µx + (1 - µ)y)  µu(x) + (1 - µ)u(y)
+
+for all x, y  [a, b] and µ  [0, 1]. We say that u is concave if (-u) is convex.
+
+In the following, we will give some necessary definitions and mathematical preliminaries of new fractional integral which are used further in this paper.
+
+Definition 1.2. Let f  L1(a, b). The fractional integrals Ia and Ib of order   (0, 1) are defined by
+
+x
+
+Iau(x)
+
+=
+
+1 
+
+exp
+
+-
+
+1
+
+- 
+
+
+
+(x
+
+-
+
+s)
+
+u(s)ds, x > a
+
+a
+
+and
+
+b
+
+Ibu(x)
+
+=
+
+1 
+
+exp - 1 -  (s - x) u(s)ds, x < b 
+
+x
+
+HERMITE-HADAMARD, HERMITE-HADAMARD-FEJE´ R, DRAGOMIR-AGARWAL AND ... 3
+
+respectively.
+
+If  = 1, then
+
+x
+
+b
+
+lim
+1
+
+Iau(x)
+
+=
+
+u(s)ds,
+
+lim
+1
+
+Ibu(x)
+
+=
+
+u(s)ds.
+
+a
+
+x
+
+Therefore the operators Ia and Ib are called a fractional integrals of order . Moreover, because
+
+lim 1 exp - 1 -  (x - s) = (x - s),
+
+0 
+
+
+
+then
+
+lim
+0
+
+Iau(x)
+
+=
+
+u(x),
+
+lim
+0
+
+Ibu(x)
+
+=
+
+u(x).
+
+The aim of this paper is to establish some functional inequalities for the above
+
+new fractional integral operators with exponential kernel.
+
+We
+
+henceforth
+
+denote
+
+A
+
+=
+
+1- 
+
+(b
+
+-
+
+a)
+
+2. Hermite-Hadamard type inequality
+
+Theorem 2.1. Let u : [a, b]  R be a positive function with 0  a < b and u  L1(a, b). If u is a convex function on [a, b], then the following inequalities for fractional integrals hold:
+
+u
+
+a+b 2
+
+
+
+2 (1
+
+1- - exp (-A))
+
+[Iau(b) +
+
+Ibu(a)]
+
+
+
+u(a)
+
++ 2
+
+u(b)
+
+.
+
+(2.1)
+
+Proof. Since u is a convex function on [a, b], we get for x and y from [a, b] with
+
+µ
+
+=
+
+1 2
+
+u
+
+x+y 2
+
+
+
+u(x)
+
++ 2
+
+u(y) ,
+
+(2.2)
+
+i.e., with x = ta + (1 - t)b, y = (1 - t)a + tb,
+
+2u
+
+a+b 2
+
+ u(ta + (1 - t)b) + u((1 - t)a + tb).
+
+(2.3)
+
+Multiplying both sides of (2.3) by exp (-At) , then integrating the resulting inequality with respect to t over [0, 1], we obtain
+
+2
+
+(1
+
+-
+
+exp A
+
+(-A))
+
+u
+
+a+b 2
+
+1
+ exp (-At) [u(ta + (1 - t)b) + u((1 - t)a + tb)] dt
+
+0 1
+= exp (-At) u(ta + (1 - t)b)dt
+
+0 1
++ exp (-At) u((1 - t)a + tb)dt
+
+0
+
+4
+
+M. KIRANE AND B. T. TOREBEK
+
+As a results, we obtain
+
+b
+
+=
+
+b
+
+1 -
+
+a
+
+exp - 1 -  (b - s) 
+
+a
+
+b
+
++
+
+b
+
+1 -
+
+a
+
+exp - 1 -  (s - a) 
+
+a
+
+=
+
+b
+
+ -a
+
+[Iau(b) +
+
+Ibu(a)] .
+
+u(s)ds u(s)ds
+
+2
+
+(1
+
+-
+
+exp A
+
+(-A))
+
+u
+
+a+b 2
+
+
+
+b
+
+ -
+
+a
+
+[Iau(b)
+
++
+
+Ibu(a)] .
+
+The first inequality of (2.1) is proved. For the proof of the second inequality in (2.1) we first note that if u is a convex
+function, then, for µ  [0, 1], it yields
+
+u(ta + (1 - t)b)  tu(a) + (1 - t)u(b)
+
+and u((1 - t)a + tb)  (1 - t)u(a) + tu(b).
+By adding these inequalities we get
+
+u(ta + (1 - t)b) + u((1 - t)a + tb)  u(a) + u(b).
+
+(2.4)
+
+Then multiplying both sides of (2.4) by exp (-At) and integrating the resulting inequality with respect to t over [0, 1], we obtain
+
+2
+
+(1
+
+-
+
+exp A
+
+(-A))
+
+[u(a)
+
++
+
+u(b)]
+
+1
+
+ exp (-At) u(ta + (1 - t)b)dt
+
+0 1
+
++ exp (-At) u((1 - t)a + tb)dt,
+
+0
+
+i.e.
+
+b
+
+ -
+
+a
+
+[Iau(b)
+
++
+
+Ibu(a)]
+
+
+
+2 (1
+
+-
+
+exp (-A)) A
+
+[u(a)
+
++
+
+u(b)] ,
+
+and the second inequality in (2.1) is proved. The proof of the Theorem 2.1 is
+
+completed.
+
+Corollary 2.2. Let u : [a, b]  R be a positive function with 0  a < b and u  L1(a, b). If u is a concave function on [a, b], then the following inequalities for fractional integrals hold:
+
+u
+
+a+b 2
+
+
+
+2 (1
+
+1- - exp (-A))
+
+[Iau(b)
+
++
+
+Ibu(a)]
+
+
+
+u(a)
+
++ 2
+
+u(b) .
+
+Remark 2.3. For   1, we get
+
+lim
+1
+
+2 (1
+
+1- - exp (-A))
+
+=
+
+1 2(b -
+
+a) .
+
+HERMITE-HADAMARD, HERMITE-HADAMARD-FEJE´ R, DRAGOMIR-AGARWAL AND ... 5
+Then the under assumptations of Theorem 2.1 with  = 1, we have HermiteHadamard inequality of (1.1).
+
+3. Hermite-Hadamard-Fej´er type inequality
+
+Theorem 3.1. Let u : [a, b]  R be convex and integrable function with a < b.
+
+If
+
+v
+
+:
+
+[a, b]
+
+
+
+R
+
+is
+
+nonnegative,
+
+integrable
+
+and
+
+symmetric
+
+with
+
+respect
+
+to
+
+a+b 2
+
+,
+
+i.e.
+
+v(a + b - x) = v(x), then the following inequalities hold
+
+u
+
+a+b 2
+
+[Iav(b) + Ibv(a)]
+
+
+
+[Ia (uv) (b) +
+
+Ib
+
+(uv) (a)]
+
+
+
+u(a) + u(b) 2
+
+[Iav(b)
+
++ Ibv(a)] .
+
+(3.1)
+
+Proof. Since u is a convex function on [a, b], we have for all t  [0; 1] the inequality (2.3). Multiplying both sides of (2.3) by
+
+exp (-At) v ((1 - t)a + tb) ,
+
+(3.2)
+
+then integrating the resulting inequality with respect to t over [0, 1], we obtain
+
+2u
+
+a+b 2
+
+1
+exp (-At) v ((1 - t)a + tb) dt
+
+0
+
+1
+
+ exp (-At) u (ta + (1 - t)b) v ((1 - t)a + tb) dt
+
+0 1
++ exp (-At) u ((1 - t)a + tb) v ((1 - t)a + tb) dt
+
+0
+
+b
+
+=
+
+b
+
+1 -
+
+a
+
+exp
+
+a
+
+- 1 -  (s - a) 
+
+u (a + b - s) v(s)ds
+
+b
+
++
+
+b
+
+1 -
+
+a
+
+exp - 1 -  (s - a) u(s)v(s)ds 
+
+a
+
+b
+
+=
+
+b
+
+1 -
+
+a
+
+exp - 1 -  (b - s) u(s)v (a + b - s) ds 
+
+a
+
++
+
+b
+
+ -
+
+a Ib
+
+[u(a)v(a)]
+
+=
+
+b
+
+ -
+
+a
+
+[Ia
+
+[u(a)v(a)]
+
++
+
+Ib
+
+[u(a)v(a)]] ,
+
+i.e.
+
+2u
+
+a+b 2
+
+1
+exp (-At) v ((1 - t)a + tb) dt
+
+0
+
+
+
+b
+
+ -
+
+a
+
+[Ia
+
+[u(a)v(a)]
+
++
+
+Ib
+
+[u(a)v(a)]] .
+
+6
+
+M. KIRANE AND B. T. TOREBEK
+
+Since
+
+v
+
+is
+
+symmetric
+
+with
+
+respect
+
+to
+
+a+b 2
+
+,
+
+then
+
+the
+
+following
+
+equalities
+
+hold
+
+Iav(b)
+
+=
+
+Ibv(a)
+
+=
+
+1 2
+
+[Iav(b) +
+
+Ibv(a)] .
+
+Therefore, we have
+
+u
+
+a+b 2
+
+[Iav(b) + Ibv(a)]  Ia [v (b) u(b)] + Ib [v (a) u(a)]
+
+and the first inequality of Theorem 3.1 is proved. For the proof of the second inequality in (3.1) we first note that if u is a convex
+function, then, for all t  [0; 1], it yields the inequality (2.4). Then multiplying both sides of (2.3) by (3.2) and integrating the resulting inequality with respect to t over [0; 1], we get
+
+1
+exp (-At) u (ta + (1 - t)b) v ((1 - t)a + tb) dt
+
+0 1
++ exp (-At) u ((1 - t)a + tb) v ((1 - t)a + tb) dt
+
+0 1
+ [u(a) + u(b)] exp (-At) v ((1 - t)a + tb) dt.
+
+0
+
+As a result, we obtain
+
+Ia
+
+[v
+
+(b) u(b)]
+
++
+
+Ib
+
+[v
+
+(a) u(a)]
+
+
+
+u(a)
+
++ 2
+
+u(b)
+
+[Iav(b)
+
++
+
+Ibv(a)] .
+
+Theorem 3.1 is proved
+
+Corollary 3.2. Let u : [a, b]  R be concave and integrable function with a < b. If
+
+v
+
+:
+
+[a, b]  R
+
+is
+
+nonnegative,
+
+integrable
+
+and
+
+symmetric
+
+to
+
+a+b 2
+
+,
+
+i.e.
+
+v(a + b - x) =
+
+v(x), then the following inequalities hold
+
+u
+
+a+b 2
+
+[Iav(b) + Ibv(a)]
+
+ [Ia (uv) (b) + Ib (uv) (a)]
+
+
+
+u(a)
+
++ 2
+
+u(b)
+
+[Iav(b)
+
++
+
+Ibv(a)] .
+
+Remark 3.3. Under assumptations of Theorem 3.1 with  = 1, we have HermiteHadamard-Fej´er inequality of (1.2).
+
+4. Dragomir-Agarwal type inequality
+Theorem 4.1. Let u : I  R  R be a differentiable mapping on I, a, b  I. If |u| is convex on [a, b], then the following inequality holds:
+
+u(a)
+
++ 2
+
+u(b)
+
+-
+
+2
+
+(1
+
+1- - exp (-A))
+
+[Iau(b)
+
++
+
+Ibu(a)]
+
+
+
+b-a 2A
+
+tanh
+
+A 4
+
+(|u(a)| + |u(b)|) .
+
+(4.1)
+
+HERMITE-HADAMARD, HERMITE-HADAMARD-FEJE´ R, DRAGOMIR-AGARWAL AND ... 7
+
+Proof. For u  L1(a, b) it is easy to prove the validity of the equality
+
+u(a)
+
++ 2
+
+u(b)
+
+-
+
+2
+
+(1
+
+1- - exp (-A))
+
+[Ibu(a)
+
++
+
+Iau(b)]
+
+1
+
+=
+
+2 (1
+
+b-a - exp (-A))
+
+ 
+
+exp (-At) u (ta + (1 - t)b) dt
+
+0
+
+1
+
+
+
+ - exp (-A(1 - t)) u (ta + (1 - t)b) dt .
+
+
+0
+
+Then using (4.2) and the convexity of |u|, we find
+
+(4.2)
+
+u(a) + u(b)
+
+2
+
+-
+
+2
+
+(1
+
+1- - exp (-A))
+
+[Ibu(a)
+
++
+
+Iau(b)]
+
+1
+
+
+
+b
+
+- 2
+
+a
+
+|exp
+
+(-At) - exp (-A(1 1 - exp (-A)
+
+-
+
+t))|
+
+|u
+
+(ta
+
++
+
+(1
+
+-
+
+t)b)|
+
+dt
+
+0
+
+1
+
+
+
+b
+
+- 2
+
+a
+
+|exp
+
+(-At) - exp (-A(1 1 - exp (-A)
+
+-
+
+t))|
+
+t
+
+|u
+
+(a)|
+
+dt
+
+0
+
+1
+
++
+
+b
+
+- 2
+
+a
+
+|exp
+
+(-At) - exp (-A(1 1 - exp (-A)
+
+-
+
+t))|
+
+(1
+
+-
+
+t)
+
+|u
+
+(b)|
+
+dt
+
+0
+
+1
+
+2
+
+=
+
+b-a 2
+
+|u (a)|
+
+exp
+
+(-At) - exp (-A(1 1 - exp (-A)
+
+-
+
+t))
+
+tdt
+
+0
+
+1
+
++
+
+b
+
+- 2
+
+a
+
+|u
+
+(a)|
+
+exp (-A(1 - t)) - exp (-At)
+
+1 - exp (-A)
+
+tdt
+
+1 2
+
+1
+
+2
+
++
+
+b
+
+- 2
+
+a
+
+|u
+
+(b)|
+
+exp
+
+(-At) - exp (-A(1 1 - exp (-A)
+
+-
+
+t))
+
+(1
+
+-
+
+t)dt
+
+0
+
+1
+
++
+
+b
+
+- 2
+
+a
+
+|u
+
+(b)|
+
+exp
+
+(-A(1 - t)) - exp 1 - exp (-A)
+
+(-At)
+
+(1
+
+-
+
+t)dt
+
+1 2
+
+=
+
+2 (1
+
+b-a - exp (-A))
+
+[|u (a)| (I1
+
++
+
+I2)
+
++ |u (b)| (I3
+
++
+
+I4)] .
+
+As a result, we get
+
+u(a)
+
++ 2
+
+u(b)
+
+-
+
+2
+
+(1
+
+1- - exp (-A))
+
+[Ibu(a)
+
++
+
+Iau(b)]
+
+8
+
+M. KIRANE AND B. T. TOREBEK
+
+
+
+2 (1
+
+b-a - exp (-A))
+
+[|u
+
+(a)| (I1
+
++
+
+I2)
+
++
+
+|u
+
+(b)| (I3
+
++
+
+I4)] .
+
+Calculating I1 we obtain
+
+(4.3)
+
+1 2
+
+I1 = (exp (-At) - exp (-A(1 - t))) tdt
+
+0
+Similarly, we find
+
+=
+
+-
+
+exp
+
+- A
+
+A 2
+
++
+
+1 A2
+
+(1
+
+-
+
+exp
+
+(-A))
+
+.
+
+(4.4)
+
+1
+
+I2 = (exp (-A(1 - t)) - exp (-At)) tdt
+
+1 2
+
+=
+
+1 A
+
+1 - exp
+
+-
+
+A 2
+
++ exp (-A)
+
+-
+
+1 A2
+
+(1
+
+-
+
+exp
+
+(-A))
+
+,
+
+(4.5)
+
+1 2
+I3 = (exp (-At) - exp (-A(1 - t))) (1 - t)dt
+
+0
+and
+
+=
+
+-
+
+exp
+
+- A
+
+A 2
+
++
+
+1 A
+
+(1
+
++
+
+exp
+
+(-A))
+
+-
+
+1 A2
+
+(1
+
+-
+
+exp
+
+(-A))
+
+(4.6)
+
+1
+
+I2 = (exp (-At) - exp (-A(1 - t))) (1 - t)dt
+
+1 2
+
+=
+
+-
+
+exp
+
+- A
+
+A 2
+
++
+
+1 A2
+
+(1
+
+-
+
+exp
+
+(-A))
+
+.
+
+(4.7)
+
+Thus if we use (4.4)-(4.7) in (4.3), we obtain the inequality of (4.1). This completes
+
+the proof.
+
+Corollary 4.2. Let u : I  R  R be a differentiable mapping on I, a, b  I. If |u| is concave on [a, b], then the following inequality holds:
+
+u(a)
+
++ 2
+
+u(b)
+
+-
+
+2
+
+(1
+
+1- - exp (-A))
+
+[Iau(b)
+
++
+
+Ibu(a)]
+
+
+
+b-a 2A
+
+tanh
+
+A 4
+
+(|u(a)| + |u(b)|) .
+
+Remark 4.3. For   1, we get
+
+lim
+1
+
+2 (1
+
+1- - exp (-A))
+
+=
+
+1 2(b -
+
+a) ,
+
+HERMITE-HADAMARD, HERMITE-HADAMARD-FEJE´ R, DRAGOMIR-AGARWAL AND ... 9
+
+lim
+1
+
+b-a 2A
+
+tanh
+
+A 4
+
+=
+
+b
+
+- 8
+
+a
+
+.
+
+Then the under assumptations of Theorem 4.1 with  = 1, we have DragomirAgarwal inequality of (1.3).
+
+5. Pachpatte type inequalities
+
+Theorem 5.1. Let u and v be real-valued, nonnegative and convex functions on [a, b]. Then the following inequalities hold
+
+ 2(b -
+
+a)
+
+[Ia
+
+(u(b)v(b))
+
++
+
+Ib
+
+(u(a)v(a))]
+
+A2 - 2A + 4 - A2 + 2A + 4 exp (-A)
+
+ [u(a)v(a) + u(b)v(b)]
+
+2A3
+
++
+
+[u(a)v(b)
+
++
+
+u(b)v(a)]
+
+A
+
+-
+
+2
+
++
+
+exp (-A) A3
+
+(A
+
++
+
+2)
+
+,
+
+(5.1)
+
+2u
+
+a+b 2
+
+v
+
+a+b 2
+
+
+
+2 (1
+
+1- - exp (-A))
+
+[Iau(b)v(b)
+
++
+
+Ibu(a)v(a)]
+
++
+
+[u(a)v(a)
+
++
+
+u(b)v(b)]
+
+A
+
+- 2 + exp (-A) (A + A2 (1 - exp (-A))
+
+2)
+
+A2 - 2A + 4 - A2 + 2A + 4 exp (-A)
+
++ [u(a)v(b) + u(b)v(a)]
+
+2A2 (1 - exp (-A))
+
+. (5.2)
+
+Proof. Since u and v are convex on [a, b], then for t  [0, 1] from definition 1.1, we get
+
+u (ta + (1 - t)b) v (ta + (1 - t)b)  t2u(a)v(a) + (1 - t)2u(b)v(b) + t(1 - t) [u(a)v(b) + u(b)v(a)] .
+
+Similarly, we have
+
+u ((1 - t)a + tb) v ((1 - t)a + tb)  (1 - t)2u(a)v(a) + t2u(b)v(b) + t(1 - t) [u(a)v(b) + u(b)v(a)] .
+
+Consequently u (ta + (1 - t)b) v (ta + (1 - t)b) + u ((1 - t)a + tb) v ((1 - t)a + tb)  (2t2 - 2t + 1) [u(a)v(a) + u(b)v(b)] + 2t(1 - t) [u(a)v(b) + u(b)v(a)] .
+
+(5.3)
+
+Multiplying both sides of inequality (5.3) by exp (-At) , then integrating the resulting inequality with respect to t  [0, 1], we obtain
+
+10
+
+M. KIRANE AND B. T. TOREBEK
+
+1
+exp (-At) u (ta + (1 - t)b) v (ta + (1 - t)b) dt
+
+0 1
+
++ exp (-At) u ((1 - t)a + tb) v ((1 - t)a + tb) dt
+
+0
+
+=
+
+b
+
+ -
+
+a
+
+[Ia
+
+(u(b)v(b))
+
++
+
+Ib
+
+(u(a)v(a))]
+
+1
+
+ [u(a)v(a) + u(b)v(b)] exp (-At) (2t2 - 2t + 1)dt
+
+0 1
+
++ [u(a)v(b) + u(b)v(a)] exp (-At) 2t(1 - t)dt
+
+0
+
+A2 - 2A + 4 - A2 + 2A + 4 exp (-A)
+
+= [u(a)v(a) + u(b)v(b)]
+
+A3
+
++
+
+2
+
+[u(a)v(b)
+
++
+
+u(b)v(a)]
+
+A
+
+-
+
+2
+
++
+
+exp (-A) A3
+
+(A
+
++
+
+2)
+
+.
+
+So
+
+ 2(b -
+
+a)
+
+[Ia
+
+(u(b)v(b))
+
++
+
+Ib
+
+(u(a)v(a))]
+
+A2 - 2A + 4 - A2 + 2A + 4 exp (-A)
+
+ [u(a)v(a) + u(b)v(b)]
+
+2A3
+
++
+
+[u(a)v(b)
+
++
+
+u(b)v(a)]
+
+A
+
+-
+
+2
+
++
+
+exp (-A) A3
+
+(A
+
++
+
+2)
+
+,
+
+which completes the proof of (5.1). Now let us prove the inequality (5.2). The functions u and v are convex on [a, b],
+then we obtain
+
+u
+
+a+b 2
+
+v
+
+a+b 2
+
+=u
+
+ta
+
++
+
+(1 2
+
+-
+
+t)b
+
++
+
+(1
+
+-
+
+t)a 2
+
++
+
+tb
+
+×
+
+×v
+
+ta
+
++
+
+(1 2
+
+-
+
+t)b
+
++
+
+(1
+
+-
+
+t)a 2
+
++
+
+tb
+
+
+
+u (ta
+
++
+
+(1
+
+-
+
+t)b)
+
++ 2
+
+u ((1
+
+-
+
+t)a
+
++
+
+tb) ×
+
+×
+
+v
+
+(ta
+
++
+
+(1
+
+-
+
+t)b)
+
++ 2
+
+v
+
+((1
+
+-
+
+t)a
+
++
+
+tb)
+
+
+
+u (ta
+
++
+
+(1
+
+-
+
+t)b) v 4
+
+(ta
+
++
+
+(1
+
+-
+
+t)b)
+
++
+
+u ((1
+
+-
+
+t)a
+
++
+
+tb) v 4
+
+((1
+
+-
+
+t)a
+
++
+
+tb)
+
++
+
+t(1 - 2
+
+t)
+
+[u(a)v(a)
+
++
+
+u(b)v(b)]
+
+HERMITE-HADAMARD, HERMITE-HADAMARD-FEJE´ R, DRAGOMIR-AGARWAL AND ... 11
+
+That is
+
+u
+
+a+b 2
+
+v
+
+a+b 2
+
++
+
+(2t2
+
+- 2t 4
+
++
+
+1)
+
+[u(a)v(b)
+
++
+
+u(b)v(a)]
+
+.
+
+
+
+u (ta + (1
+
+-
+
+t)b) v (ta + (1 4
+
+-
+
+t)b)
+
++
+
+u
+
+((1
+
+-
+
+t)a
+
++
+
+tb) v 4
+
+((1
+
+-
+
+t)a
+
++
+
+tb)
+
+(5.4)
+
++
+
+t(1
+
+- 2
+
+t)
+
+[u(a)v(a)
+
++
+
+u(b)v(b)]
+
++
+
+(2t2
+
+- 2t 4
+
++
+
+1)
+
+[u(a)v(b)
+
++
+
+u(b)v(a)]
+
+.
+
+Multiplying both sides of (5.4) by exp (-At) , then integrating the resulting in-
+
+equality with respect to t  [0, 1], we have
+
+1
+
+-
+
+exp A
+
+(-A)
+
+u
+
+a+b 2
+
+v
+
+a+b 2
+
+1
+
+
+
+exp
+
+(-At)
+
+u
+
+(ta
+
++
+
+(1
+
+-
+
+t)b) v 4
+
+(ta
+
++
+
+(1
+
+-
+
+t)b)
+
+dt
+
+0
+
+1
+
++
+
+exp
+
+(-At)
+
+u
+
+((1
+
+-
+
+t)a
+
++
+
+tb) v 4
+
+((1
+
+-
+
+t)a
+
++
+
+tb)
+
+dt
+
+0
+
+1
+
++
+
+exp
+
+(-At)
+
+t(1
+
+- 2
+
+t)
+
+[u(a)v(a)
+
++
+
+u(b)v(b)]
+
+dt
+
+0
+
+1
+
++
+
+exp
+
+(-At)
+
+2t2
+
+- 2t 4
+
++
+
+1
+
+[u(a)v(b)
+
++
+
+u(b)v(a)]
+
+dt
+
+0
+
+=
+
+ 4(b -
+
+a)
+
+[Iau(b)v(b) + Ibu(a)v(a)]
+
+That is, we have
+
++
+
+[u(a)v(a)
+
++
+
+u(b)v(b)]
+
+A
+
+-
+
+2
+
++
+
+exp (-A) 2A3
+
+(A
+
++
+
+2)
+
+A2 - 2A + 4 - A2 + 2A + 4 exp (-A)
+
++ [u(a)v(b) + u(b)v(a)]
+
+4A3
+
+.
+
+u
+
+a+b 2
+
+v
+
+a+b 2
+
+
+
+4 (1
+
+1- - exp (-A))
+
+[Iau(b)v(b)
+
++
+
+Ibu(a)v(a)]
+
++
+
+[u(a)v(a)
+
++
+
+u(b)v(b)]
+
+A
+
+- 2 + exp 2A2 (1 -
+
+(-A) (A + exp (-A))
+
+2)
+
+A2 - 2A + 4 - A2 + 2A + 4 exp (-A)
+
++ [u(a)v(b) + u(b)v(a)]
+
+4A2 (1 - exp (-A))
+
+.
+
+12
+
+M. KIRANE AND B. T. TOREBEK
+
+This ends the proof.
+
+Corollary 5.2. Let u and v be real-valued, nonnegative and concave functions on [a, b]. Then the following inequalities hold
+
+ 2(b -
+
+a)
+
+[Ia
+
+(u(b)v(b))
+
++
+
+Ib
+
+(u(a)v(a))]
+
+A2 - 2A + 4 - A2 + 2A + 4 exp (-A)
+
+ [u(a)v(a) + u(b)v(b)]
+
+2A3
+
++
+
+[u(a)v(b)
+
++
+
+u(b)v(a)]
+
+A
+
+-
+
+2
+
++
+
+exp (-A) A3
+
+(A
+
++
+
+2)
+
+,
+
+2u
+
+a+b 2
+
+v
+
+a+b 2
+
+
+
+2 (1
+
+1- - exp (-A))
+
+[Iau(b)v(b)
+
++
+
+Ibu(a)v(a)]
+
++
+
+[u(a)v(a)
+
++
+
+u(b)v(b)]
+
+A
+
+- 2 + exp (-A) (A + A2 (1 - exp (-A))
+
+2)
+
+A2 - 2A + 4 - A2 + 2A + 4 exp (-A)
+
++ [u(a)v(b) + u(b)v(a)]
+
+2A2 (1 - exp (-A))
+
+.
+
+Remark 5.3. For   1, we get
+
+lim
+1
+
+2 (1
+
+1- - exp (-A))
+
+=
+
+1 2(b -
+
+a) ,
+
+lim
+1
+
+A
+
+- 2 + exp (-A) (A + A3
+
+2)
+
+=
+
+1 6
+
+,
+
+lim
+1
+
+A2
+
+-
+
+2A
+
++ 4 - A2 + 2A + 4 2A2 (1 - exp (-A))
+
+exp (-A)
+
+=
+
+1 3
+
+.
+
+The the under assumptations of Theorem 5.1 with  = 1, we have Pachpatte inequalities of (1.4) and (1.5).
+
+Acknowledgements
+The second named author is supported by the target program 0085/PTSF-14 from the Ministry of Science and Education of the Republic of Kazakhstan.
+
+[PPT92] [DP00] [H1883] [H1893] [F06] [DA98]
+
+References
+J.E. Pecari´c, F. Proschan, Y.L. Tong, Convex Functions, Partial Orderings and Statistical Applications, Academic Press, Boston, 1992. S.S. Dragomir, C.E.M. Pearce, Selected topics on HermiteHadamard inequalities and applications, RGMIA Monographs, Victoria University, 2000. Ch. Hermite, Sur deux limites d'une integrale definie, Mathesis 3 (1883), 82. J. Hadamard, Etude sur les proprietes des fonctions entieres et en particulier d'une fonction considree par Riemann, J. Math. Pures et Appl. 58 (1893), 171-215. Fej´er, L., Uberdie Fourierreihen, II, Math., Naturwise. Anz Ungar. Akad.Wiss, 24 (1906), 369-390, (in Hungarian). S.S. Dragomir, R.P. Agarwal, Two inequalities for differentiablemappings and applications to specialmeans of real numbers and to trapezoidal formula, Appl. Math. lett. 11:5, (1998) 9195.
+
+HERMITE-HADAMARD, HERMITE-HADAMARD-FEJE´ R, DRAGOMIR-AGARWAL AND ... 13
+
+[P03]
+
+Pachpatte, B.G., On some inequalities for convex functions, RGMIA Res. Rep. Coll.
+
+E, vol. 6 (2003).
+
+[SSYB13] Sarikaya, M.Z., Set, E., Yaldiz, H., Ba¸sak, N., Hermite-Hadamard's inequalities for
+
+fractional integrals and related fractional inequalities, Mathematical and Computer
+
+Modelling, 57(9)(2013), 2403-2407.
+
+[WLFZ12] Wang, J., Li, X., Feckan, M., Zhou, Y., Hermite-Hadamard-type inequalities for
+
+Riemann-Liouville fractional integrals via two kinds of convexity, Appl. Anal., 92:11,
+
+(2012), 2241-2253
+
+[ZW13] Zhang, Y, Wang, J: On some new Hermite-Hadamard inequalities involving Riemann-
+
+Liouville fractional integrals. J. Inequal. Appl. 2013, 220 (2013)
+
+[ITM16] I. I¸scan, S. Turhan, S. Maden, Some Hermite-Hadamard-Fejer type inequalities for
+
+harmonically convex functions via fractional integral, New Trends in Mathematical
+
+Sciences, 4:2, (2016), 1-10.
+
+[JS16]
+
+Jleli M., Samet B. On Hermite-Hadamard type inequalities via fractional integrals
+
+of a function with respect to another function. Journal of Nonlinear Sciences and
+
+Applications. 2016. V. 9. No. 3. P. 1252-1260.
+
+[BPP16] Baleanu D., Purohit S. D., Prajapati J. C. Integral inequalities involving generalized
+
+Erdelyi-Kober fractional integral operators. Open Mathematics. 2016. V. 14. No. 1.
+
+P. 89-99.
+
+[C16]
+
+Chen F. Extensions of The HermiteHadamard Inequality for Convex Functions via
+
+Fractional Integrals. Journal of Mathematical Inequalities. 2016. V. 10. No. 1. P. 75-
+
+81.
+
+[HYT14] Hwang S. R., Yeh S. Y., Tseng K. L. Refinements and similar extensions of Hermite-
+
+Hadamard inequality for fractional integrals and their applications. Applied Mathe-
+
+matics and Computation. 2014. V. 249. P. 103-113.
+
+[I16]
+
+Iscan I. On generalization of different type inequalities for harmonically quasi-convex
+
+functions via fractional integrals. Applied Mathematics and Computation. 2016. V.
+
+275. P. 287-298.
+
+[CK17] Chen H., Katugampola U. N. HermiteHadamard and HermiteHadamardFejer type
+
+inequalities for generalized fractional integrals. Journal of Mathematical Analysis and
+
+Applications. 2017. V. 446. No. 2. P. 1274-1291.
+
+Mokhtar Kirane LaSIE, Facult´e des Sciences, Pole Sciences et Technologies, Universit´e de La Rochelle, Avenue M. Crepeau, 17042 La Rochelle Cedex, France NAAM Research Group, Department of Mathematics, Faculty of Science, King Abdulaziz University, P.O. Box 80203, Jeddah 21589, Saudi Arabia
+E-mail address: mkirane@univ-lr.fr
+
+Berikbol T. Torebek Department of Differential Equations, Institute of Mathematics and Mathematical Modeling. 125 Pushkin str., 050010 Almaty, Kazakhistan
+E-mail address: torebek@math.kz
+
+

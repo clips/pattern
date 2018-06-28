@@ -1,0 +1,1275 @@
+Viability theorem for deterministic mean field type control systems
+Yurii Averboukhab
+
+arXiv:1701.00089v3 [math.OC] 11 Apr 2017
+
+Abstract
+A mean field type control system is a dynamical system in the Wasserstein space describing an evolution of a large population of agents with mean-field interaction under a control of a unique decision maker. We develop the viability theorem for the mean field type control system. To this end we introduce a set of tangent elements to the given set of probabilities. Each tangent element is a distribution on the tangent bundle of the phase space. The viability theorem for mean field type control systems is formulated in the classical way: the given set of probabilities on phase space is viable if and only if the set of tangent distributions intersects with the set of distributions feasible by virtue of dynamics. MSC classifications: 49Q15, 93C10, 49J53, 46G05, 90C56. Keywords: Viability theorem; mean field type control system; tangent distribution; nonsmooth analysis in the Wasserstein space.
+
+1 Introduction
+
+The theory of mean field type control system is concerned with a control problem for a large population of agents with mean-field interaction governed by a unique decision maker. This topic is closely related with the theory of mean field games proposed by Lasry and Lions in [22], [23] and simultaneously by Huang, Caines and Malhamé [19]. The mean field game theory studies the Nash equilibrium for the large population of independent agents. The similarities and differences between mean field games and mean field type control problems are discussed in [9], [15].
+The study of mean field type control systems started with paper [1]. Now the mean field type control systems are examined with the help of the classical methods of the optimal control theory. The existence theorem for optimal controls is proved in [20]. An analog of Pontryagin maximum principle is obtained in [3], [9], [12], [13], [24]. Papers
+
+aKrasovskii Institute of Mathematics and Mechanics,
+averboukh@gmail.com bUral Federal University
+
+e-mail: ayv@imm.uran.ru,
+
+1
+
+[8], [9], [27] are concerned with the dynamical programming for mean field type control systems. It is well known that the dynamic programming principle leads to Bellman equation. For the mean field type control problems the Bellman equation is a partial differential equation on the space of probabilities [9], [10], [14]. Results of [26] states that the value function of the optimal control problem for mean field type control system is a viscosity solution of the Bellman equation. The link between the minimum time function and the viscosity solutions of the corresponding Bellman equation for the special case when the dynamics of each agent is deterministic and depends only on her state is derived in [16].
+The viability theory provides a different tool to study optimal control problems (see [6], [28] and references therein). In particular, for systems governed by ordinary differential equations the epigraph and hypograph of the value function are viable under certain differential inclusions [28]. Now the viability theory is developed for the wide range of dynamical systems (see [5], [6], [7] and reference therein). The key result of the viability theory is the reformulation of the viability property in the terms of tangent vectors. In particular, this theorem implies the description of the value function of optimal control problem via directional derivatives, whereas the viscosity solutions are formulated using sub- and superdifferentials. We refer to [28] for the equivalence between these two approaches for systems governed by ordinary differential equations.
+Actually, the viability theorem for the dynamical systems in the Wasserstein space was first proved in [4]. The system examined in that paper arises in the optimal control problem with the probabilistic knowledge of initial condition. It is described by the linear Liouville equation. The viability theorem proved in [4] relies on embedding of the probabilities into the space of random variables and it is formulated via normal cones.
+In the paper we prove the viability theorem for the deterministic mean field type control system of the general form. To this end we introduce a set of tangent elements to the given set. Each tangent element is a distribution on the tangent bundle of the phase space. The viability theorem for mean field type control systems is formulated in the classical way: the given set of probabilities on phase space is viable if and only if the set of tangent distributions intersects with the set of distributions feasible by virtue of the dynamics.
+The result of the paper involves the probabilities on the tangent bundle of the phase space first such probabilities were studied in [18]. Notice that for the Banach case the notions of set of tangent vectors (tangent cone) and subdifferential to a real-valued functions are closely related [25]. The subdifferential to a real-valued function defined on the Wasserstein space is introduced in [2, §10.3]. The link between this subdifferential and the set of tangent distributions introduced in the paper is the subject of the future research.
+The paper is organized as follows. In Section 2 we introduce the general notations. The examined class of the dynamical systems is presented in Section 3. The viability theorem is formulated in Section 4. The auxiliary lemmas are introduced in Section 5.
+2
+
+Sufficiency and necessity parts of the viability theorem are proved in Sections 6 and 7 respectively.
+
+2 Preliminaries
+
+Given a metric space (X, X ), a set K  X, x  X, and a  0 denote by Ba(x) the ball of radius a centered in x. If X is a normed space and x is origin, we write simply Ba instead of Ba(0). Further, denote
+dist(x, K) inf{X(x, x) : x  K}.
+If (X, X ) is a separable metric space, then denote by P1(X) the set of probabilities m on X such that, for some (and, consequently, for all) x  X,
+
+X (x, x)m(dx) < .
+X
+If m1, m2  P1(X), then define 1-Wasserstein metric by the rule:
+
+W1(m1, m2) = inf
+
+X (x1, x2)(d(x1, x2)) :   (m1, m2)
+
+X ×X
+
+(1)
+
+= sup (x)m1(dx) - (x)m2(dx) :   Lip1(X) .
+
+X
+
+X
+
+Here (m1, m2) is the set of plans between m1 and m2, i.e.
+
+(m1, m2) {  P1(X × X) : (A × X) = m1(A), (X × A) = m2(A) for any mesurable A  X},
+
+Lip(X) denotes the set of -Lipschitz continuous functions on X. If   P1(X × Y ), where (Y, Y ) is a separable metric space, then denote by (·|x) a
+conditional probability on Y given x that is a weakly measurable mapping x  (·|x)  P1(Y ) obtained by disintegration of  along its marginal on X.
+If (1, F1), (2, F2) are measurable spaces, m is a probability on (1, F1), h : 1  2 is measurable, then denote by h#m a probability on (2, F2) given by the rule: for any A  F2,
+(h#m)(A) m(h-1(A)).
+For simplicity we assume that the phase space is the d-dimensional torus Td = Rd/Zd. Recall that the tangent space to Td is Rd.
+Let Cs,r denote C([s, r]; Td). Note that
+
+W1(et#1, et#2)  W1(1, 2).
+
+(2)
+
+is
+
+If G : [s, r]  Rd, then the set of all integrals
+
+dserngo(tte)dbtyofsrinGt(etg)rdatbtlhe efuAnucmtiaonnns
+
+integral of G i.e. g : [s, r]  Rd
+
+r s
+
+G(t)dt
+
+such that
+
+g(t)  G(t).
+
+3
+
+3 Mean field differential inclusions
+
+This paper in concerned with the mean field type control problem for deterministic case. This is a dynamical system on a space of probabilities, where the state of the system is given by the probability m(t) obeying the following equation: for all   C (Td ),
+d (x)m(t, dx) = f (x, m(t), u(t, x)), (x) m(t, dx). dt Td
+Here u(t, x) is a control policy. This equation can be rewritten in the operator form
+
+d dt
+
+m(t)
+
+=
+
+f (·, m(t), u(t, ·)),  m(t),
+
+(3)
+
+Control system (3) describes the evolution of a large population of agents when the dynamics of each agent is given by
+
+d dt
+
+x(t)
+
+=
+
+f (x(t),
+
+m(t),
+
+u(t)).
+
+(4)
+
+There are two ways of the relaxation of the control problem. The first approach relies on measure-valued control. For mean field control systems, it was developed in several papers. Within the framework of this approach the existence result of the optimal control problem is obtained [20]. Additionally, this approach permits the study of the limit of many particle systems [21]. We will use the second approach. It is more convenient in the viewpoint of the viability theory. The main idea of the second approach is to replace the original control system with the corresponding differential inclusion. Applying this method to the mean field type control system, we formally replace system (3) with the mean field type differential inclusion (MFDI)
+
+d dt
+
+m(t)
+
+
+
+F (·, m(t)),  m(t).
+
+(5)
+
+Here F (x, m) co{f (x, m, u) : u  U}, symbol · stands for the state variable.
+
+Definition 1. We say that the function [0, T ]  t  m(t)  P1(Td) is a solution to (5) if there exists a probability   P1(C0,T ) such that
+
+1. m(t) = et#;
+
+2. any x(·)  supp() is absolutely continuous and, for a.e. t  [0, T ],
+
+x  F (x(t), m(t)).
+
+(6)
+
+4
+
+Remark 1. The introduced definition of the solutions to the mean field type differential
+inclusion corresponds to the control problem for a large population of agents. It includes
+the solutions defined by selectors of right-hand side of (5). This means that if the flow of probabilities [0, T ]  t  m(t)P(Td) is such that there exists a function w : [0, T ]×Td  Rd satisfying the following properties
+
+· w(t, x)  F (x, m(t)),
+
+·   C1([0, T ] × Td)
+
+T
+
+(t, x)
+
+0 Td
+
+t + w(t, x), (t, x) m(t, dx)dt = 0,
+
+then by [2, Theorem 8.2.1] m(·) solves (5) in the sense of Definition 1 under weak assumptions on f and U.
+Remark 2. There is a natural link between the solution of MFDI (5) and the relaxed controls of (3). Recall that a relaxed controls for a system described by a ordinary differential equation is a probability  on [0, T ] × U with the marginal on [0, T ] equal to Lebesgue measure. Denote by U the set of relaxed controls. Given flow of probabilities m(·), initial state y  Td and relaxed control   U denote by x[·, m(·), y, ] the solution of the equation
+
+x(t) = y +
+
+f (x( ), m( ), u)1[0,t]( )(d(, u)).
+
+(7)
+
+[0,T ]×U
+
+The function x[·, m(·), y, ] is a motion of the system (4) generated by the relaxed control . Further, let  be a probability on Rd × U. We say that [0, T ]  t  m(t)  P1(Td) is a flow of probabilities generated by  if the marginal distribution of  on Rd
+is equal to m(0) and, for any t  [0, T ],
+
+m(t) = x[t, m(·), ·, ·]#.
+
+(8)
+
+If the existence and uniqueness theorem for (7) holds true, then the solutions to (3) determined by (8) is equivalent to the deterministic variant of the definition of solutions to the controlled McKean-Vlasov equation proposed in [21].
+Using [29, Theorem VI.3.1], one can prove under the conditions imposed below that m(·) is a flow of probabilities generated by a certain distribution of relaxed controls  if and only if m(·) is a solution to MFDI (5).
+We put the following conditions:
+
+1. F (x, m) = co{f (x, m, u) : u  U}, where f is a continuous function defined on Td × P1(Td) × U with values in Rd;
+
+2. U is compact;
+
+5
+
+3. there exists a constant L such that, for all x1, x2  Td, m1, m2  P1(Td), u  U , f (x1, m1, u) - f (x2, m2, u)  L( x1 - x2 + W1(m1, m2)).
+
+Note that since Td, P1(Td) are compact and the function f is continuous, one can find a constant R such that, for any v  F (x, m), x  Td, m  P1(Td),
+
+v  R.
+
+(9)
+
+Further, for any v  Rd, x, x  Td, m, m  P1(Td),
+
+|dist(v, F (x, m)) - dist(v, F (x,2 ))|  L( x - x + W1(m, m)).
+
+(10)
+
+Additionally, if s, r  [0, T ], s < r, y, y  Rd, x(·), x(·) : [s, r]  Td, m(·), m(·) : [s, r]  P1(Td) are integrable, then
+
+r
+
+r
+
+dist y, F (x(t), m(t)dt - dist y, F (x(t), m(t)dt
+
+s
+
+s
+
+r
+
+(11)
+
+ y - y + L ( x(t) - x(t) + W1(m(t), m(t)))dt.
+
+s
+
+Under the imposed conditions, one can prove that, for any m0  P1(Td), and any T > 0, there exists at least one flow of probabilities m(·) solving to MFDI (5) on [0, T ] such that m(0) = m0.
+
+4 Statement of the Viability theorem
+
+Definition 2. We say that K  P1(Td) is viable under MFDI (5) if, for any m0  K, there exist T > 0 and a solution to MFDI (5) on [0, T ] m(·) such that m(0) = m0, and m(t)  K for all t  [0, T ].
+To characterize the viable sets we introduce the notion of tangent probability to a set (see Definition 3 below).
+To this end denote by L(m) the set of probabilities  on Td × Rd such that its marginal distribution on Td is equal to m and
+
+v (d(x, v)) < .
+Td ×Rd
+We introduce the metric on L(m) in the following way. Let 1, 2  L(m), denote by (1, 2) the set of probabilities  on Td × Rd × Rd such that, for any measurable A  Td, C1, C2  Rd, the following equalities hold true:
+(A × C1 × Rd) = 1(A × C1), (A × Rd × C2) = 2(A × C2).
+Define W(1, 2) by the rule
+
+W(1, 2) inf
+
+v1 - v2 (d(x, v1, v2)) :   (1, 2) . (12)
+
+Td ×Rd ×Rd
+
+6
+
+Proposition 1. The following statements hold true:
+
+1. W is a metric on L(m);
+
+2. L(m) with metric W is complete;
+
+3. for any positive constant a, the set {  L(m) : supp()  Td × Ba} is compact in L(m).
+
+This proposition follows from Propositions A1, A2 and Corollary A1 proved in the
+
+Appendix.
+
+Further, for  > 0, define the operator  : Td × Rd  Td by the rule: for (x, v) 
+
+Td × P1(Td),
+
+ (x, v) x +  v.
+
+(13)
+
+If   L(m), then  # is a shift of m through .
+
+Definition 3. We say that   L(m) is a tangent probability to K at m  P1(Td) if there exists a sequence {n} n=1 such that
+
+1 n
+
+dist(n # ,
+
+K)
+
+
+
+0,
+
+n  0 as n  .
+
+Remark 3. For a  R, let the rescaling operation Sa : Td × Rd  Td × Rd map a pair (x, v) to (x, av). Note that SaSb = Sab. Define the scalar multiplication on L(m) by the
+rule: a ·  Sa#.
+
+Under this definition the set TK(m) becomes a cone. Indeed, for a > 0, the mapping   Sa# is a one-to-one transform of L(m).
+Furthermore, for any positive numbers  and a,
+
+/a#(Sa#) =  #.
+Thus, if   TK(m), a > 0, then a ·  = Sa#  TK(m). Remark 4. Generally, given K  P1(Td), m  P1(Td),   TK(m), one can not find a function w : Td  Rd such that
+
+(d(x, v)) = w(x)m(dx)dv,
+
+(14)
+
+i.e. there is no embedding of the set TK(m) into the set of measurable functions on Td with valued on Rd. Indeed, let d = 1, K = {(1/2-t + 1/2+t)/2 : t  [0, ]}. Here 
+stands for the Dirac measure concentrated at . In this case,
+
+TK (1/2) = {((1/2,-1)/2 + (1/2,+1))/2}
+
+and representation (14) does not hold true.
+
+7
+
+Denote by F (m) the set of probabilities   L(m) such that
+
+dist(v, F (x, m))(d(x, v)) = 0.
+Td ×Rd
+Theorem 1 (Viability theorem). A closed set K  P1(Td) is viable under MFDI (5) if and only if, for any m  K,
+
+TK(m)  F (m) = .
+
+(15)
+
+The Viability theorem is proved in Sections 6, 7. The proof relies on auxiliary constructions and lemmas introduced in the next section.
+
+5 Properties of tangents probabilities
+Let (X1, 1), (X2, 2), (X3, 3) be separable metric spaces. Let 1,2, 2,3 be probabilities on X1 × X2 and X2 × X3, respectively. Assume that 1,2 and 2,3 have the same marginal distributions on X2. Define the probability 1,2  2,3  P(X1 × X3) by the rule: for all   Cb(X1 × X3),
+(x1, x3)1,22,3(d(x1, x3))
+X1 ×X3
+(x1, x3)2,3(dx3|x2)1,2(d(x1, x2)).
+X1×X2 X3
+The operation (1,2, 2,3)  (1,2)  2,3 is a composition of probabilities. In [2] it is denoted by 2,31,2 due to the natural analogy with the composition of functions. However, we prefer the designation 1,2  2,3 because it explicitly points out the marginals of the compositions of probabilities. Remark 5. If (X4, 4) is a metric space, 3,4 is a probability on X3 × X4 such that marginal distributions of 2,3 and 3,4 on X3 coincides, then
+(1,2  2,3)  3,4 = 1,2  (2,3  3,4).
+Note that if m,m is a plan between m and m,   L(m), then m,m    L(m).
+Lemma 1. If  > 0, m, m  P1(Td), m,m  (m, m) is an optimal plan between m and m,   L(m), then
+W1( #,  #(m,m  ))  W1(m, m).
+
+8
+
+Proof. Let   Lip1(Td). We have that
+
+(y)( #(m,m  ))(dy) - (y)( #)(dy)
+
+Td
+
+Td
+
+=
+
+(x +  v)(m,m  )(d(x, v)) -
+
+(x +  v)(d(x, v))
+
+Td×Rd
+
+Td×Rd
+
+=
+
+[(x +  v) - (x +  v)](dv|x)m,m(d(x, x))
+
+Td×Td Rd
+
+
+
+x - x (dv|x)m,m(d(x, x)) = W1(m, m).
+
+Td×Td Rd
+
+This and the definition of 1-Wasserstein metric imply the conclusion of the lemma.
+
+Lemma 2. Let m, m  P1(Td), m,m  (m, m) be an optimal plan between m and m,   L(m). Then
+
+dist(v,F (x, m))(d(x, v))
+Td ×Rd
+
+-
+
+dist(v, F (x, m))(m,m  )(d(x, v))  2LW1(m, m).
+
+Td×Rd
+
+Proof. From (10) we obtain
+
+dist(v, F (x, m))(d(x, v))
+Td ×Rd
+
+-
+
+dist(v, F (x, m))(m,m  )(d(x, v))
+
+Td×Rd
+
+
+
+|dist(v, F (x, m)) - dist(v, F (x, m))|(dv|x)mm(d(x, x))
+
+Td×Td Rd
+
+L
+
+( x - x + W1(m, m))(dv|x)mm(d(x, x))
+
+Td×Td Rd
+
+ 2LW1(m, m).
+
+The following lemma is a cornerstone of the sufficiency part of the Viability theorem. It is analogous to [5, Lemma 3.4.3].
+Lemma 3. Assume that K  Td is compact and (15) is fulfilled. Then, for each natural n, one can find a number n  (0, 1/n) such that, for any m  K, there exist s  (n, 1/n),   L(m) and   K satisfying the following properties:
+1. W1(s#, ) < s/n;
+
+9
+
+2. supp()  Td × BR;
+
+3.
+
+dist(v, F (x, m))(d(x, v)) < 1/n.
+Td×Rd
+
+Proof. First, notice that, given probability µ  K, and natural n, there exist a time rµ  (0, 1/n) and a probability ^µ  TK(µ)  L(µ) such that
+
+dist(rµ#^µ, K)
+
+<
+
+rµ , 2n
+
+dist(v, F (x, µ))^µ(d(x, v)) = 0.
+Td×Td
+Let En(µ) be a subset of P1(Td) such that, for any m  En(µ), there exists a probability   L(m) satisfying the following conditions:
+(E1) dist(rµ#, K) < rµ/n;
+
+(E2)
+
+dist(v, F (x, m))(d(x, v)) < 1/n;
+Td×Rd
+(E3) supp()  Td × BR.
+Note that µ belongs to En(µ). Thus,
+
+K  En(µ).
+
+(16)
+
+µK
+
+Now we show that each set En(µ) is open. To this end we prove that, for any
+m  En(µ), one can find a positive constant  depending on n, µ and m such that
+B(m)  En(µ). First, observe that since m  En(µ), there exists   L(m) satisfying conditions (E1)­(E3). Now let m  P1(Td).
+
+Put
+
+ m,m  ,
+
+(17)
+
+where m,m is an optimal plan between m and m. We have that   L(m). Lemma 1 yields that
+
+dist(rµ#, K)  W1(rµ#, rµ#) + dist(rµ#, K)  W1(m,m) + dist(rµ#, K).
+
+(18)
+
+Further, from Lemma 2 it follows that
+
+dist(v, F (x, m))(d(x, v))
+Td×Td
+
+ 2LW1(m, m) +
+
+dist(v, F (x, m))(d(x, v)).
+
+Td×Rd
+
+10
+
+This and (18) give that if
+
+W (m, m) < 
+
+min
+
+1 n
+
+-
+
+dist(rµ # ,
+
+K),
+
+1 -1
+
+dist(v, F (x, m))(d(x, v)) ,
+
+2Ln 2L Td×Rd
+
+then conditions (E1) and (E2) are fulfilled for . Furthermore, condition (E3) holds true for  by (17). Hence, B(m)  Eµ. Therefore, the set En(µ) is open.
+Since K is a closed subset of the compact space P1(Td), and {En(µ)}µK is an open
+cover of K, there exists a finite number of probabilities µ1, . . . , µI  K such that
+
+I
+K  En(µi).
+i=1
+
+Note that rµi  (0, 1/n). Put
+
+n min rµi . i1,I
+
+Now let m  K. There exists a number i such that m  E(µi). This means that,
+for some   L(m) and µ = µi, conditions (E1)­(E3) hold true. To complete the proof of the lemma it suffices to put s rµi and to choose   K to be nearest to s#.
+
+6 Proof of the Viability theorem. Sufficiency
+
+To prove the sufficiency part of the Viability theorem we introduce the concatenation of probabilities on space of motions in the following way. First, if x1(·)  Cs,r, x2(·)  Cr, are such that x1(r) = x2(r), then
+
+(x1(·)  x2(·))(t)
+
+x1(t), t  [s, r], x2(t), t  [r, ].
+
+Note that x1(·)  x2(·)  Cs,. Now let 1  P1(Cs,r), 2  P1(Cr,) be such that er#1 = er#2 = m. Let
+{2(·|y)}yTd be a family of conditional probabilities such that, for any   Cb(Cr,),
+
+(x(·))2(d(x(·))) =
+
+(x(·))2(d(x(·))|y)m(dy).
+
+Cr,
+
+Td Cr,
+
+Note that supp(2(·|y))  {x(·)  Cr,  : x(r) = y} Finally, for A  P1(Cs,) put
+
+(1  2)(A)
+
+2({x2(·) : (x1(·)  x2(·))  A}|x1(r))1(d(x1(·))).
+Cs,r
+
+11
+
+Proof of Theorem 1. Sufficiency. Given m0  K, T > 0, and a natural number n, let us construct a number Jn and sequences {tjn}Jj=n 0  [0, +), {µjn}Jj=n 0  P1(Td), {nj }Jj=n 0  K, {nj }Jj=n 1  P1(Td × Rd) by the following rules:
+1. t0n 0, µ0n = n0 m0;
+2. If tjn < T , then choose sjn+1  (n, 1/n), nj+1  L(nj ) and nj+1  K satisfying conditions of Lemma 3 for m = nj . Put tjn+1 tjn +sjn+1, µjn+1 sjn+1#(nj nj+1), where nj is an optimal plan between µjn and nj .
+3. If tjn  T , then put Jn j.
+Since tjn+1 - tjn  n, this procedure is finite. Now let us prove that, for j = 0, Jn,
+
+W1(µjn, nj )  tjn/n.
+
+(19)
+
+For j = 0 inequality (19) is fulfilled by the construction. Assume that (19) holds true for some j  0, Jn - 1. We have that
+
+W1(µjn+1, nj+1) = W1(sjn+1#nj  nj+1, nj+1)  W1(sjn+1 #(nj  nj+1), sjn+1 #nj+1) + W1(sjn+1#nj+1, nj+1)).
+
+(20)
+
+Recall that nj denotes the optimal plan between µjn and nj . This, inequality (20), the choice of sjn+1, nj+1, nj+1 and Lemmas 1, 3 imply that
+
+W1(µjn+1, nj+1)  W1(µjn, nj ) + sjn+1/n.
+
+Hence, using assumption, we get
+
+W1(µjn+1, nj+1)  tjn+1/n.
+
+This proves (19) Put
+
+nj
+
+tnj , j = 0, . . . , Jn - 1, T, j = Jn.
+
+For j = 1, Jn define the map jn : Td × P1(Td)  Ctjn-1,tjn by the rule:
+
+(jn(x, v))(t) x + (t - nj-1)v, t  [nj-1, nj].
+
+Put jn probability
+
+jn#(nj-1  nj ). Note that e0#1n = m0, enj #jn = enj #jn+1. Thus, the n 1n  . . .  Jnn
+
+12
+
+is well-defined. Note that n  P1(C0,T ). If x(·)  supp(n), then, for all t, t  [0, T ],
+
+x(t) - x(t)  R|t - t|.
+
+(21)
+
+Denote mn(t) et#n. Inequality (21) yields that
+
+W1(mn(t), mn(t))  R|t - t|.
+
+(22)
+
+We have that mn(tjn) = µjn. Therefore, using (19), (22) and inclusion nj  K, we obtain that
+
+dist(mn(t), K)  (T + R)/n.
+
+(23)
+
+Given s, r  [0, T ], s < r let In0, In1 be such that s  [nIn0-1, nIn0 ], r  [nIn1-1, nIn1 ]. For sufficiently large n, In0 < In1. Put nI0-1 s, ni ni , i = In0, . . . , In1 - 1, nI1 r. For i = In0, . . . , In1, denote ni ni - ni-1.
+Now assume that x(·)  supp(n). Using inequalities (21) and (22), we get
+
+r
+
+dist x(r) - x(s), F (x(t), mn(t))dt
+s
+
+In1
+ dist
+i=In0
+
+ni
+
+x(ni ) - x(ni-1),
+
+F (x(t), mn(t)dt
+
+ni-1
+
+In1
+ dist x(ni ) - x(ni-1), ni F (x(ni-1), mn(ni-1)) + 2(r - s)LR/n.
+
+i=In0
+
+Thus,
+
+s
+
+dist x(r) - x(s), F (x(t), mn(t))dt n(dx(·))
+
+C0,T
+
+r
+
+In1
+
+i=In0
+
+dist
+Cni-1 ,ni
+
+x(ni ) - x(ni-1), ni F (x(ni-1),mn(ni-1))
+
+in(dx(·))
+
++ 2(r - s)LR/n.
+
+(24)
+
+By the construction of in we have that
+
+dist x(ni ) - x(ni-1), ni F (x(ni-1), mn(ni-1)) in(dx(·))
+Cni-1 ,ni
+
+=
+
+dist ni v, ni F (x, µin-1)) (ni-1  ni )(d(x, v))
+
+Td×Rd
+
+= ni
+
+dist v, F (x, µin-1) (ni-1  ni )(d(x, v)).
+
+Td ×Rd
+
+13
+
+This, Lemma 2, inequality (19) and the choice of ni-1 yield the estimate
+
+dist x(ni ) - x(ni-1), ni F (x(ni-1), mn(ni-1)) in(dx(·))
+Cni-1 ,ni
+
+ ni
+
+dist v, F (x, ni-1) ni (d(x, v)) + ni 2LT /n.
+
+Td×Rd
+
+Therefore, taking into account equality ni = (r - s), inequality (24), the choice of nj and Lemma 3 we conclude that
+
+r
+
+dist x(r) - x(s), F (x(t), mn(t))dt n(dx(·))
+
+C0,T
+
+s
+
+(25)
+
+ (r - s)(1 + 2LT + 2LR)/n.
+
+Further, we have that, for each natural n, supp(n) lie in the compact set of RLipschitz continuous function from [0, T ] to Td. By [2, Proposition 7.1.5] the sequence {n} is relatively compact in P1(C0,T ). There exist a sequence nl and probability   P1(C0,T ) such that
+W1(nl, )  0 as l  .
+Notice that x(·)  supp(), then x(·) is R-Lipschitz continuous and, thus, absolutely continuous.
+Put m(t) et#. Inequality (2) implies that, for any t  [0, T ],
+
+W1(m(t), mnl(t))  W1(, nl).
+
+(26)
+
+Since the functions C0,T
+
+ x(·)  dist(x(r) - x(s),
+
+r s
+
+F (x(t), m(t))dt)
+
+is
+
+Lipschitz
+
+continuous for the constant (2 + L(r - s)), using (11) and (26), we have that
+
+r
+
+dist x(r) - x(s), F (x(t), m(t))dt (d(x(·)))
+
+C0,T
+
+s r
+
+
+
+dist x(r) - x(s), F (x(t),mnl(t))dt nl(d(x(·)))
+
+C0,T
+
+s
+
++(2 + 2L(r - s))W1(, nl).
+
+Thus, by (25)
+
+r
+
+dist x(r) - x(s), F (x(t), m(t))dt (d(x(·))) = 0.
+
+C0,T
+
+s
+
+This means that, for any x(·)  supp() and any r, s  [0, T ], s < r,
+
+r
+x(r) - x(s)  F (x(t), m(t))dt.
+s
+
+14
+
+Hence, each x(·)  supp() solves (6). Consequently, m(·) is a solution to MFDI (5). Finally, dist(m(t), K)  W1(m(t), mnl(t)) + dist(mnl(t), K).
+This, (23) and (26) yield that, for any t  [0, T ],
+m(t)  K.
+Since m(·) is a solution of MFDI (5), we conclude that K is viable under MFDI (5).
+
+7 Proof of Viability theorem. Necessity
+The following lemma estimates the distance between shifts of the probability m through elements of L(m).
+Lemma 4. Let m  P1(Td),  > 0, 1, 2  L(m). Then
+W1( #1,  #2)   W(1, 2).
+Proof. Let   (1, 2) minimize the right-hand side in (12). For any   Lip1(Td), we have that
+
+(x +  v1)1(d(x,v1)) -
+
+(x +  v2)2(d(x, v2))
+
+Td×rd
+
+Td ×Rd
+
+=
+
+[(x +  v1) - (x +  v2)](d(x, v1, v2))
+
+Td ×Rd ×Rd
+
+
+
+v1 - v2 (d(x, v1, v2)) =  W(1, 2).
+
+Td×Rd×Rd
+
+This, the definitions of the 1-Wassertstein metric and the operator  (see (1) and (13)) imply the statement of the lemma.
+
+Now we prove the necessity part of the Viability theorem.
+
+Proof of Theorem 1. Necessity. First, note that if [0, T ]  t  m(t) solves MFDI (5),
+
+then
+
+W1(m(t), m(t))  R|t - t|.
+
+(27)
+
+Indeed, let   P1(C0,T ) be such that m(t) = et# and, for any x(·)  supp(), x (t)  F (x(t), m(t)) a.e. t  [0, T ]. Define the plan between m(t) and m(t) by the
+rule: for   C(Td × Td),
+
+(x, x)(d(x, x)) =
+
+(x(t), x(t))(d(x(·))).
+
+Td×Td
+
+C0,T
+
+15
+
+We have that
+
+W1(m(t), m(t)) 
+
+x - x (d(x, x))
+
+Td ×Td
+
+=
+
+x(t) - x(t) (d(x(·)))  R|t - t|.
+
+C0,T
+
+Now define the operator  : C0,T  Td × Rd by the following rule:
+
+ (x(·))
+
+x(0),
+
+x( )
+
+- 
+
+x(0)
+
+.
+
+(28)
+
+Let m0  K. By assumption, there exist a time T , a flow of probabilities on [0, T ] m(·) and a probability   P1(C0,T ) be such that
+· m(t) = et#,
+· m(0) = m0,
+· if x(·)  supp(), then x(·) is absolutely continuous and x (t)  F (x(t), m(t)) a.e. t  [0, T ],
+
+· m(t)  K.
+
+Put   #.
+The definitions of the operators  and  (see (13) and (28)) yield that
+
+ # = m( ).
+
+This means that
+
+ #  K.
+
+(29)
+
+Further, the definition of  implies that
+
+supp( )  Td × BR.
+
+(30)
+
+Now let us prove that
+
+dist(v, F (x, m0)) (d(x, v))  LR.
+
+(31)
+
+Td×Rd
+
+Indeed, if x(·) belongs to supp() then it solves differential inclusion (6). In particular, x(t) - x(0)  Rt. Hence, for x(·)  supp(),
+
+
+
+dist x( ) - x(0), F (x(t), m(t))dt = 0.
+
+(32)
+
+0
+
+16
+
+Using inequality (11) we obtain, for x(·)  supp(),
+
+dist( (x(·)), F (x(0), m0))
+
+=
+
+1 
+
+dist
+
+
+
+1 
+
+dist
+
+x( ) - x(0), x( ) - x(0),
+
+
+F (x(0), m(0))dt
+0 
+F (x(t), m(t))dt
+0
+
++ LR.
+
+This and (32) proves (31).
+By inclusion (29) and the third statement of Proposition 1 we conclude that there exist a sequence {n} n=1 and a probability   P1(Td × Rd) such that
+
+n  0, W(n , )  0 as n  .
+
+By Lemma 4 and (29) we have that
+
+dist(n #, K)  W1(n #, n#n )  nW(n , ).
+
+Hence,
+
+  TK (m0).
+
+(33)
+
+Further, for each natural n, let n minimize right-hand side in (12) for 1 =  and 2 = n . Using (31), we obtain
+
+dist(v, F (x, m0))(d(x, v)) 
+
+dist(v, F (x, m0))n(d(x, v))
+
+Td×Rd
+
+Td ×Rd
+
++
+
+|dist(v, F (x, m0)) - dist(v, F (x, m0))|n(d(x, v, v))
+
+Td×Rd×Rd
+
+ LRn + nW(, n).
+
+Therefore,
+
+  F (m0).
+
+Combining this and (33) we conclude that
+
+  TK(m0)  F (m0). This proves the necessity part of the Viability theorem.
+
+Appendix
+In the Appendix we extend the metric W introduced by (12) to the case of arbitrary Polish spaces and study its properties. Proposition 1 follows from these properties.
+Let p  1 and let (X, X ), (Y, Y ) be Polish spaces, m be a probability on X. Denote by Lp(X, m, Y ) the set of probabilities  on X × Y such that,
+
+17
+
+· for some (or, equivalently, any) y  Y ,
+
+(y, y)p(d(x, y)) < ;
+X ×Y
+
+· marginal distribution of  on X is equal to m.
+
+For 1, 2  Lp(m, X, Y ), let (1, 2) be a set of probabilities  on X × Y × Y such that, for any measurable A  X, C1, C2  Y ,
+
+(A × C1 × Y ) = 1(A × C1), (A × Y × C2) = 2(A × C2).
+
+Define the function Wp : Lp(X, m, Y ) × Lp(X, m, Y )  [0, +) by the rule:
+
+Wp(1, 2)
+
+1/p
+
+inf
+
+(Y (y1, y2))p(d(x, y1, y2)) .
+
+(1,2) X×Y ×Y
+
+(A1)
+
+With a slight abuse of terminology, we call elements of (1, 2) plans between 1 and 2. If  minimize the right-hand side of (A1), we say that  is on optimal plan between 1 and 2.
+If p = 2 X is a Riemann manifold and Y is equal to TxX for all x, then W coincides with the metric introduced in [18, Definition 5.1]. Note that the set L(m) introduced in Section 4 is equal to L1(Td, m, Rd), whereas the function W is the function W1. Below we establish the properties of Wp (see Proposition A1­A3 and Corollary A1). This properties applied for the case when X = Td, Y = Rd, p = 1 imply Proposition 1.
+The following auxiliary construction is an adaptation of one proposed in [2]. Define the sequence of spaces {Gn} n=0 by the rule
+
+G0 X, Gn+1 Gn × Y.
+
+Finally, put
+
+G X × Y .
+
+The spaces Gn, G are equipped with the product topology. If i1, . . . , ik are indexes,
+
+then
+
+denote
+
+by
+
+pn i1,...,ik
+
+the
+
+following
+
+projection
+
+of
+
+Gn
+
+onto
+
+Gk:
+
+pni1,...,ik (x, y1, . . . , yn) (x, yi1 , . . . , yik ).
+
+Further, let pi1,...,ik : G  Gk be given by the rule:
+
+pi1,...,ik (x, y1, . . . , yn, . . .) (x, yi1, . . . , yik).
+
+Now let n be a probability on X × Y with marginal distribution on X equal to m, n,n+1  (n, n+1). Define the probabilities µn on Gn by the following rule. Put
+
+18
+
+µ0 m, µ1 1. If µn is already constructed, then let µn+1  P1(Gn+1) be such that, for   Cb(Gn+1),
+
+(x,y1, . . . , yn, yn+1)µn+1(d(x, y1, . . . , yn, yn+1))
+Gn+1
+
+=
+
+(x, y1, . . . , yn, yn+1)n,n+1(dyn+1|x, yn)µn(d(x, y1, . . . , yn)).
+
+Gn Y
+
+Note that
+
+pni #µn = i, pni,i+1#µn = i,i+1.
+
+(A2)
+
+By Kolmogorov's Theorem [17, II-51] there exists a probability µ on G such that
+
+pi#µ = i, pi,i+1#µ = i,i+1.
+
+(A3)
+
+Note that
+
+Wp(i, i+1) = Lp(G,µ)(pi, pi+1).
+
+(A4)
+
+Here, for a given probability µ on G and functions ,  : G  X × Y , we put
+
+(, )Lp(G,µ) =
+
+1/p
+(XY ((z), (z)))pµ(dz) ,
+G
+
+XY ((x, y), (x, y)) X (x, x) + Y (y, y).
+Analogously, given a sequence of optimal plans 1,n between 1 and n (n  2), there exists a probability  on G such that
+
+pn# = n, p1,n# = 1,n.
+
+(A5)
+
+Proposition A1. Wp is a metric on Lp(X, m, Y ).
+
+Proof. First, notice that Wp(1, 2)  0. To show that Wp(, ) = 0 choose 0  (, ) concentrated on X ×{(y, y) : y  Y }.
+Obviously,
+
+[W(, )]p 
+
+(Y (y1, y2))p0(d(x, y1, y2)) = 0.
+
+X Y ×Y
+
+Further, if   (1, 2), then (·|x)  (1(·|x), 2(·|x)) for m-a.e. x  X. Hence,
+
+Wp(1, 2)  Wp((·|x), 2(·|x))m(dx).
+X
+Therefore, if Wp(1, 2) = 0, then Wp((·|x), 2(·|x)) = 0 m-a.e. x  X. Hence, 1 = 2.
+
+19
+
+Now let 1, 2, 3  Lp(X, m, Y ), and let 1,2 and 2,3 be optimal plans between 1, 2 and 2 and 3, respectively. We have that there exists a probability µ3  P1(G3) such that
+p3i #µ3 = i, p3i,i+1#µ3 = i,i+1.
+Put 1,3 p31,3#µ3.
+Note that 1,3  (1, 3). We have that
+
+Wp(1, 3) 
+
+(Y (y1, y3))p1,3(d(x, y1, y3)) 1/p
+
+G2
+
+1/p
+= Y (y1, y3)µ3(d(x, y1, y2, y3))
+G3
+
+
+
+(Y (y1, y2))pµ3(d(x, y1, y2, y3)) 1/p
+
+G3
+
++
+
+(Y (y2, y3))pµ3(d(x, y1, y2, y3)) 1/p
+
+G3
+
+= Wp(1, 2) + Wp(2, 3).
+
+This proves the triangle inequality.
+
+Proposition A2. The space Lp(X, m, Y ) with metric Wp is complete.
+Proof. It suffices to prove that if n  Lp(X, m, Y ), n = 1, 2, . . ., is such that
+
+Wp(n, n+1) < ,
+n=1
+
+(A6)
+
+then there exists a limit of n. We have that there exists a probability µ on G such that (see A3)
+
+Wp(n, n+1) = Lp(G,µ)(pn, pn+1).
+
+Using completeness of Lp, we obtain that there exists a function p : G  X × Y that is a limit of the sequence {pn}. Put
+
+ p#µ.
+
+We have that
+
+Wp(n,
+
+)
+
+
+
+lim
+n
+
+Lp(Gn,µ)(pn,
+
+p)
+
+
+
+
+
+Lp(Gn,µ)(pm, pm+1)  0 as n  .
+
+m=n
+
+20
+
+We say that a set K  Lp(X, m, Y ) has uniformly integrable partial p-moments if, for some (and, thus, any) y  Y ,
+(Y (y, y))p(d(x, y))  0 as a   uniformly w.r.t.   K.
+X×(Y \Ba(y))
+Proposition A3. A sequence {n} n=1  Lp(X, m, Y ) converges to  w.r.t Wp if and only if {n} n=1 narrowly converges to  and {n} has uniformly integrable partial pmoments. Corollary A1. A set K  Lp(X, m, Y ) is relatively compact w.r.t. Wp if and only if K is tight and has uniformly integrable partial p-moments.
+Proof of Theorem A3. Assume that Wp(n, )  0 as n  . For n  2, let 1,n be an optimal plan between  and n. There exists a probability  on G such that (A5) holds true. We have that
+Wp(n, ) = Lp(G,)(pn, p1)  0, as n  .
+Let  : X × Y  R be such that
+|(x, y)|  C(1 + Y (y, y)).
+Using Vitali convergence theorem [11, Theorem 4.5.4], we get
+
+lim
+n
+
+X ×Y
+
+(x,
+
+y)n(d(x,
+
+y))
+
+=
+
+lim
+n
+
+(pn(z))(dz)
+G
+
+= (p1(z))(dz) =
+
+(x, y)(d(x, y)).
+
+G
+
+X ×Y
+
+This implies narrow convergence. The proof of the uniform integrability of partial
+
+p-moments follows from [2, Lemma 5.1.7].
+
+Now assume that n narrowly converge to  and {n} has uniformly integrable partial p-moments. Let a  0. If n  (, n) is an optimal plan between 1, 2, then
+
+Wp(, n) =
+
+Y (y, y)n(d(x, y, y))
+
+X×Y ×Y
+
+
+
+Y (y, y)(d(x, y)) +
+
+Y (y, y)n(d(x, y))
+
+X ×Y
+
+X ×Y
+
+
+
+[Y (y, y)  a](d(x, y)) +
+
+[Y (y, y)  a]n(d(x, y))
+
+X ×Y
+
+X ×Y
+
++
+
+Y (y, y)(d(x, y)) +
+
+Y (y, y)n(d(x, y)).
+
+X×(Y \Ba(y))
+
+X×(Y \Ba(y))
+
+Narrow convergence of n and uniformly integrability of partial p-moments imply that
+
+lim
+n
+
+Wp(,
+
+n)
+
+=
+
+0.
+
+21
+
+References
+[1] N. Ahmed and X. Ding. Controlled McKean-Vlasov equation. Commun Appl Anal, 5:183­206, 2001.
+[2] L. Ambrosio, N. Gigli, and G. Savaré. Gradient flows: in metric spaces and in the space of probability measures. Lectures in Mathematics. ETH Zurich. Birkhäuser, Basel, 2005.
+[3] D. Andersson and B. Djehiche. A maximum principle for SDEs of mean-field type. Appl Math Optim, 63(3):341­356, 2011.
+[4] S. As Soulaimani. Viability with probabilistic knowledge of initial condition, application to optimal control. Set-Valued Anal, 16(7):1037­1060, 2008.
+[5] J.-P. Aubin. Viability theory. Birkhäuser, Boston, 2009.
+[6] J.-P. Aubin, A. M. Bayen, and P. Saint-Pierre. Viability theory. New directions. Springer, New York, 2011.
+[7] J.-P. Aubin and A. Cellina. Differential inclusions. Set-valued maps and viability theory. Springer, New York, 1984.
+[8] E. Bayraktar, A. Cosso, and H. Pham. Randomized dynamic programming principle and Feynman-Kac representation for optimal control of McKean-Vlasov dynamics. Preprint at ArXiv:1606.08204, 2016.
+[9] A. Bensoussan, J. Frehse, and P. Yam. Mean field games and mean field type control theory. Springer, New York, 2013.
+[10] A. Bensoussan, J. Frehse, and P. Yam. The master equation in mean field theory. Preprint at ArXiv:1404.4150, 2014.
+[11] V. I. Bogachev. Measure theory, volume 1. Springer, Berlin, 2007.
+[12] R. Buckdahn, B. Djehiche, and J. Li. A general stochastic maximum principle for SDEs of mean-field type. Appl Math Optim, 64(2):197­216, 2011.
+[13] R. Carmona and F. Delarue. Forward-backward stochastic differential equations and controlled McKean­Vlasov dynamics. Preprint at arXiv:1303.5835, 2013.
+[14] R. Carmona and F. Delarue. The master equation for large population equilibriums, volume 100 of Stoch Anal Appl, pages 77­128. Springer, 2014.
+[15] R. Carmona, F. Delarue, and A. Lachapelle. Control of McKean-Vlasov dynamics versus mean field games. Math Financ Econ, 7(2):131­166, 2013.
+22
+
+[16] G. Cavagnari, A. Marigonda, K. Nguyen, and F. Priuli. Generalized control systems in the space of probability measures. Preprint, 2015.
+[17] C. Dellacherie and P.-A. M. Meyer. Probabilities and potential, volume 29 of NorthHolland Mathematics Studies. North-Holland Publishing Co, Amsterdam, 1978.
+[18] N. Gigli. On the inverse implication of brenier-mccann theorems and the structure of (P2(M), W2). Methods and Applications of Analysis, 18:127­158, 2009.
+[19] M. Huang, R. Malhamé, and P. Caines. Nash equilibria for large population linear stochastic systems with weakly coupled agents. In E. Boukas and M. R.P., editors, Analysis, Control and Optimization of Complex Dynamic Systems, pages 215­252. Springer, 2005.
+[20] B. Khaled, M. Meriem, and M. Brahim. Existence of optimal controls for systems governed by mean-field stochastic differential equations. Afr Stat, 9(1):627­645, 2014.
+[21] D. Lacker. Limit theory for controlled McKean-Vlasov dynamics. Preprint at ArXiv:1609.08064, 2016.
+[22] J.-M. Lasry and P.-L. Lions. Jeux à champ moyen. I. Le cas stationnaire (French) [Mean field games. I. the stationary case]. C R Math Acad Sci Paris, 343:619­625, 2006.
+[23] J.-M. Lasry and P.-L. Lions. Jeux à champ moyen. II. Horizon fini et contrle optimal (French) [Mean field games. II. finite horizon and optimal control]. C R Math Acad Sci Paris, 343:679­684, 2006.
+[24] M. Laurière and O. Pironneau. Dynamic programming for mean-field type control. C R Math Acad Sci Paris, 352(9):707­713, 2014.
+[25] B. S. Mordukhovich. Variational Analysis and Generalized Differentiation I: Basic Theory. Springer, New York, 2006.
+[26] H. Pham and X. Wei. Bellman equation and viscosity solutions for mean-field stochastic control problem. Preprint at ArXiv:1512.07866, 2015.
+[27] H. Pham and X. Wei. Dynamic programming for optimal control of stochastic McKean-Vlasov dynamics. Preprint at ArXiv:1604.04057, 2016.
+[28] A. I. Subbotin. Generalized solutions of first-order PDEs. The dynamical perspective. Birkhäuser, Boston, 1995.
+[29] J. Warga. Optimal control of differential and functional equations. Academic press, New York, 1972.
+23
+
+

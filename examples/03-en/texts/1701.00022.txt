@@ -1,0 +1,261 @@
+H. Miao et al., PNAS 114, 12430-12435 (2017)
+High-temperature charge density wave
+correlations in La1.875Ba0.125CuO4 without spin-charge locking
+H. Miaoa,1, J. Lorenzanab, G. Seiboldc, Y.Y. Pengd, A. Amoresee, F. Yakhou-Harrise, K. Kummere, N. B. Brookese, R. M. Konika, V. Thampya, G. D. Gua, G. Ghiringhellid, L. Braicovichd, and M. P. M. Deana,1
+aCondensed Matter Physics and Materials Science Department, Brookhaven National Laboratory, Upton, New York 11973, USA; bISC-CNR, Dipartimento di Fisica, Università di Roma "La Sapienza", P. Aldo Moro 2, 00185 Roma, Italy; cInstitut für Physik, BTU Cottbus, P.O. Box 101344, 03013 Cottbus, Germany; dCNR/SPIN, CNISM and Dipartimento di Fisica, Politecnico di Milano, Piazza Leonardo da Vinci 32, 20133 Milano, Italy; eEuropean Synchrotron Radiation Facility (ESRF), BP 220, F-38043 Grenoble Cedex, France
+
+arXiv:1701.00022v5 [cond-mat.supr-con] 22 Nov 2017
+
+Although all superconducting cuprates display charge-ordering tendencies, their low-temperature properties are distinct, impeding efforts to understand the phenomena within a single conceptual framework. While some systems exhibit stripes of charge and spin, with a locked periodicity, others host charge density waves (CDWs) without any obviously related spin order. Here we use resonant inelastic x-ray scattering (RIXS) to follow the evolution of charge correlations in the canonical stripe ordered cuprate La1.875Ba0.125CuO4 (LBCO 1/8) across its ordering transition. We find that hightemperature charge correlations are unlocked from the wavevector of the spin correlations, signaling analogies to CDW phases in various other cuprates. This indicates that stripe order at low temperatures is stabilized by the coupling of otherwise independent charge and spin density waves, with important implications for the relation between charge and spin correlations in the cuprates.
+Charge density waves | Stripes | Superconductivity | Cuprates
+When holes are doped into the Mott insulating parent compounds of the cuprates, multiple competing interactions conspire to form a rich phase diagram. In the underdoped regime, holes can save energy by clustering together on neighboring sites in order to minimize the number of broken magnetic bonds, but by doing so they pay an extra energy cost of the increased inter-site Coulomb repulsion and reduced kinetic energy. Several early theoretical works suggested that frustration between these different ordering tendencies generates an instability towards spin density wave (SDW) order (1­5) and low-energy incommensurate SDW correlations were indeed observed around the same time (6­8). Such considerations were key to the discovery of "stripes" in the La2-x-y(Nd/Eu)y(Sr/Ba)xCuO4 or 214 family of cuprates. These correlations were found to be strongest at a doping level of 1/8 for which static spin and charge order forms at wavevectors related by a factor of two (9, 10). This phase was often conceptualized in terms of a dominant spin degree of freedom, as the underdoped cuprates have a large magnetic energy scale and a relatively small electronic density of states at the Fermi level (1­5). Furthermore, although high-temperature spin correlations were easily seen (7, 8, 10), directly detecting high-temperature charge correlations proved beyond the sensitivity of standard x-ray and neutron scattering measurements. Most compellingly, charge and spin ordering appeared, until recently, to be absent in cuprates in which there was a low-energy spin gap such as YBa2Cu3O6+x (YBCO), Bi1.5Pb0.5Sr1.54CaCu2O8+ (BSCCO2212), and HgBa2CuO4+ (HBCO1201), so the dis-
+
+covery of CDW correlations in these systems generated great interest (11­19). While the similarity of CDW phase diagrams in these materials may indicate a unified CDW mechanism (20, 21), many of the CDW properties reported in these materials were, however, notably different than that in LBCO 1/8. The CDW incommensurability in YBCO is 0.3 rather than 1/4 at 1/8 doping (11, 12), the CDW ordering seems to compete with SDW ordering (22­24) and the CDW incommensurability decreases weakly with doping, rather than increasing (16, 20, 23, 24). On this basis, concepts such as nesting and electron-phonon coupling for CDW formation in YBCO, BSCCO, and HBCO were discussed extensively impeding efforts to understand these cuprates using similar mechanism that were discussed for 214 systems (15, 20, 25­27). Here we use new RIXS instrumentation to discover CDW correlations in the high-temperature phase of the canonical stripe-ordered cuprate LBCO 1/8 (10, 28­31). We find that these hightemperature CDW correlations exist without related SDW correlations at half their wavevector and that the correlations evolve with temperature, away from an incommensurability of 1/4. These observations show that stripe order is stabilized by locking of the charge and spin correlations that occurs at low temperatures and suggest that both phenomena should
+Significance Statement
+Charge correlations have now been identified in the lowtemperature phase of essentially all families of underdoped cuprates, but in two apparently distinct types. The first hosts locked charge and spin stripes of which the material La1.875Ba0.125CuO4 (LBCO 1/8) is a paradigmatic example. In the second type, a charge density wave (CDW) exists without any obviously related spin correlations. Here we report the discovery of high-temperature CDW correlations that exist at temperatures above the CDW transition in the canonical striped cuprate LBCO 1/8. We find that the high-temperature CDW is decoupled from the fluctuating spin density wave, lessening apparent differences in behavior among different materials and setting important constraints for how we understand their electronic states.
+Experiment: H.M., Y.Y.P., A.A., F.Y.-H., K.K., N.B.B., L.B., G.G. and M.P.M.D. Theoretical calculations: G.S. and J.L. Data analysis and interpretation: H.M., J.L., G.S., R.M.K. G.G., L.B. and M.P.M.D. Sample growth and preparation: H.M., V.T. and G.D.G. Project planning: H.M., G.G., L.B. and M.P.M.D. Paper writing: H.M. J.L., G.S., G.G., L.B. and M.P.M.D.
+The authors declare no competing financial interests.
+1To whom correspondence should be addressed. E-mail: hmiao@bnl.gov; mdean@bnl.gov
+
+www.pnas.org/cgi/doi/10.1073/pnas.1708549114
+
+PNAS | November 23, 2017 | vol. XXX | no. XX | 1­6
+
+A 
+-pol
+: Cu :O
+
+-pol c b 
+
+K
+
+B
+
+L QCDW
+
+QSDW
+
+' a H
+
+Counts (sec-1) Counts (sec-1)
+
+C 500
+400
+300
+200
+100
+0 -0.27
+
+H. Miao et al., PNAS 114, 12430-12435 (2017)
+
+: 23 K : 27 K : 33 K : 39 K : 46 K : 49 K : 50 K : 51 K : 52 K : 54 K : 56 K : 59 K : 62 K : 90 K
+
+-0.24
+
+-0.21
+
+H (r. l.u.)
+
+D 500
+400
+300
+200
+100
+0 -0.03
+
+: 23 K : 27 K : 33 K : 39 K : 46 K : 49 K : 50 K : 51 K : 52 K : 54 K : 56 K : 59 K : 62 K : 90 K
+
+0.00
+
+0.03
+
+K (r. l.u.)
+
+Fig. 1. Scattering geometry and temperature-dependent CDW Bragg peak. A, The experimental geometry showing incident and outgoing photon directions, labeled by their energies of  and  , scattering from the c-axis face of the crystal. The incident x-ray polarization can be tuned to be parallel () or perpendicular () to the scattering plane. B, The two dimensional (2D) cuprate Brillouin zone. Purple (yellow) points in the 2D Brillouin zone correspond to the locations of charge (spin) density wave Bragg peaks QCDW and QSDW, respectively. C and D plot quasi-elastic RIXS intensity along H and K around L = 1.5, respectively, as a function of temperature, showing the CDW Bragg peak. Error bars in C and D represent the error from Poisson statistics.
+
+be understood within the same framework.
+Results
+In this work we use Cu L3 edge RIXS to achieve very high sensitivity to weak charge correlations. This works by choosing a photon energy that resonances with a Cu 2p  3d core level transition in order to enhance scattering from valence electrons, while using a spectrometer to reject the strong x-ray florescence that limits the sensitivity of traditional resonant soft x-ray scattering experiments. Figure 1A shows scattering geometry employed here. Figure 1B depicts the locations of the charge and spin ordering Bragg peaks for 214 type cuprates within the two-dimensional Brillouin zone labeled QCDW  (0.24, 0) and QSDW  (0.38, 0.5) in reciprocal lattice units (r.l.u.). We start by choosing  polarized incident x-rays in order to enhance our sensitivity to charge scattering (11, 32, 33). Figure 1C,D plots projections of the quasi-elastic scattering intensity around QCDW along the H and the K directions. A clear peak is observed at the base temperature corresponding to the known CDW with a wavevector of (0.235, 0) and a correlation length of 207(5) Å (28, 29, 31). As established in several previous studies the low-temperature CDW peak intensity drops with increasing temperature and seems to disappear around 55 K (28, 29, 31).
+Having established the low-temperature CDW properties, we scanned large regions of reciprocal space at temperatures above the nominal transition. Figure 2A-F plots RIXS intensity maps that reveal broad momentum-dependent scattering. The quasi-elastic intensity in these maps show broad peaks around (H, K) = (0.24, 0) for temperatures of 54-59 K, while at higher temperatures it peaks at larger H while remaining centered at K = 0. Although the close match in the wavevectors between the low-temperature and high-temperature scattering already indicates an intimate connection between this scattering and the low-temperature CDW, it is important to justify the electronic origin of the broad peak. Panels 2C (inset) and 2G show the off-resonance RIXS intensity map and integrated RIXS intensity along H. Both the inelastic excitations and the quasi-elastic remnant intensity are significantly suppressed when changing the incident energy, proving that the signal is dominated by the x-ray resonant process. The flat 2.8(0.3)
+
+counts sec-1 off-resonant intensity also confirms the constant spectrometer acceptance. We also see in Fig. 2I that the peak has the same width in H and K, consistent with the behavior of the low-temperature CDW (Fig. 1C,D). It is also worth noting that x-ray self-absorption effects (see Fig. S2) and the Cu L3 RIXS cross section are known to vary monotonically in this scattering geometry (11, 32). Based on all these experimental observations, we conclude that the observed broad peak represents a direct observation of the high-temperature CDW correlations discussed extensively ever since the discovery of the low-temperature CDW (9, 34­37). Compared to the low-temperature CDW, the high-temperature CDW has far lower peak intensity (13 vs 467 counts/s) but a much broader line width (about a factor of 16). As a result, this diffuse high-temperature scattering comprises approximately 7 times larger 2D-momentum and energy integrated spectral weight than the sharp low-temperature CDW peak that emerges on top of the diffuse scattering below 54 K.
+Upon cooling through the 54 K transition, no changes are observed in the diffuse tail of intensity. Although this is opposite to what is expected in a disorder-free phase transition, in which all high-temperature correlations would be expected to condense into a sharp CDW peak, such behavior is expected in the presence of disorder (38, 39). Cuprates are known to host appreciable disorder (24, 40­42), and this is the likely cause of the observed phenomenology, particularly in view of the match between the structural and CDW correlation length in LBCO 1/8 under pressure (41).
+High-temperature CDW correlations in 214 cuprates are often argued to be dynamic (34, 35, 43) and such a view is supported by transport measurements (44). Notably, longrange ordered static LTT octahedral tilts, often thought to be coupled to the CDW at low temperatures, are found to become dynamic and correlated over a  10 Å length scale above the transition similar to the high-temperature CDW correlation length detected here (45, 46). On the basis of the resolution-limited energy width we observe (see Fig. S4), we conclude that the high-temperature CDW is static on a timescale of 100 fs, but slow fluctuations are nonetheless possible and can, in principle be directly measured by other
+We chose the term "high-temperature CDW correlations" as the most generic way to refer to valence charge modulations with a different periodicity to the underlying lattice.
+
+2 | www.pnas.org/cgi/doi/10.1073/pnas.1708549114
+
+Miao and Dean et al.
+
+H. Miao et al., PNAS 114, 12430-12435 (2017)
+
+Fig. 2. Identification of the high-temperature-CDW. A-F RIXS intensity at 54, 59 and 90 K cutting through the observed peak in the quasi-elastic intensity as a function of H (A-C) and K (D-F). A peak in the quasi-elastic intensity is seen in the vicinity of QCDW alongside an increase in the inelastic intensity. The inset of panel C displays an intensity map at 90 K taken with a different off-resonant x-ray energy in order to reduce the sensitivity to the valence electrons. This was multiplied by a factor of 10 to make the signal visible on the same color scale. G,H The quasi-elastic intensity calculated by integrating (A-F) confirming the presence of the peak. I Comparison of scans in the H and K directions showing similar widths parallel and transverse to the CDW, similar to the low-temperature behavior (Fig. 1 C,D). As discussed in Results, this scattering demonstrates the presence of high-temperature CDW correlations. Error bars in G-I come from Poisson counting statistics.
+
+techniques (30).
+Figure 3 shows the temperature dependence of the CDW correlations as determined by fitting Lorentzian-squared functions to the diffuse CDW peak intensity present at all temperature and the sharp CDW peak that emerges at low temperatures (see Fig. S5 and Fig. S6). The correlation length of the high-temperature CDW of 13(2) Å is much shorter than that in the low-temperature state (207 Å) and substantially shorter than YBCO (60 Å) (11), but is of the same order of magnitude as several other cuprates systems such as Bi2Sr2-xLaxCuO6+ (BSLCO2201) (12 Å) (15), BSCCO2212 (<24 Å) (18), La2-xSrxCuO4 (LSCO) (35 Å) (17), HBCO1201 (20 Å) (19), hinting that the high-temperature CDW properties may help reconcile the difference between different cuprates. Further clues are evident in the wavevecector behavior allowing to associate the high temperature state observed here to the low temperature behaviour of other compounds. As can be seen in Fig. 3B, for temperatures below 55 K the incommensurability of the CDW and SDW appear to be locked by a factor of two, which is a well-known property of 214-type cuparates (7­10, 28). Upon heating above 55 K, we see strong violation of this relation [Fig. 3B]: The CDW correlations evolve away from H  1/4 and away from twice the incommensurability of the SDW (i.e. the CDW and SDW decouple) (10).
+
+We further tested the nature of the CDW/SDW state and its charge-spin coupling by changing the RIXS geometry in order to measure the magnetic excitation spectrum in the same Q-range (see Fig. S1) (32). Inelastic neutron scattering has been applied extensively to study the magnetic excitations around QSDW, finding an `hour-glass' shaped dispersion (35, 47, 48), RIXS can study the magnetic spectrum around QCDW, a region of reciprocal space in which stripe-related effects have never been observed. Figure 4A-B shows the resulting spectral intensity above that is dominated by damped spin wave excitations called paramagnons (49­52). We fit the paramagnon dispersion (see the SI for more details) and are compared it to the dispersion expected for a standard Néel antiferromagnet (AF) in Fig. 4C, finding a softening of the excitation energy over a broad range of reciprocal space around QCDW. The significant deviation observed at low temperatures shows that stripe-formation modifies the short-range spin correlations around QCDW at low temperature, but this coupling is much reduced at higher temperatures, consistent with a weakened charge-spin coupling above the transition. There have been extensive efforts to model such stripe-related modifications in the spin excitation spectrum as this provides a means to develop detailed models for the character of the ground state (35, 48, 53­57). These theories do a good job
+
+Miao and Dean et al.
+
+PNAS | November 23, 2017 | vol. XXX | no. XX | 3
+
+Peak width (r. l. u.) QCDW (r. l. u.) Counts (sec-1)
+
+A
+0.12
+0.09
+
+/ : Locked/unlocked CDW : SDW at 6 meV
+: SDW at 3 meV
+
+0.06 LTT
+0.03
+
+LTO
+
+0.00 0
+
+40
+
+80
+
+T (K)
+
+B
+0.40
+0.30
+
+H. Miao et al., PNAS 114, 12430-12435 (2017)
+
+C
+
+0.40
+
+500
+
+400
+0.30 300
+
+: CDW : TSDW
+
+2SDW (r. l. u.)
+
+0.20
+
+0.20
+
+0.10 0
+
+: SDW at 6 meV : SDW at 3 meV / : Locked/unlocked CDW
+0.10
+
+40
+
+80
+
+T (K)
+
+200 LTT
+100
+0 0
+
+LTO
+
+40
+
+80
+
+T (K)
+
+Fig. 3. Decoupling of the CDW and SDW in the high-temperature phase. A-C The results of fitting the quasi-elastic intensity showing: A the full width at half maximum, B the incommensurability and C the intensity at the peak. The black dashed line at 54 K corresponds to the low-temperature tetragonal (LTT) to low-temperature orthorhombic (LTO) structural phase transition which is depicted in B, blue and yellow code temperatures below and above this threshold (29). The orange dashed line at 42 K in C represents the static SDW transition. The behavior of the SDW, taken from inelastic neutron scattering results at 3 and 6 meV energy transfer from Ref. (10) are included on panels A and B. We see that the CDW and SDW incommensurabilities evolve in different directions above 54 K, which indicates a decoupling of the charge and spin degrees of freedom. We also note that the high-temperature CDW width and intensity show no detectable changes through the LTT-LTO transition (any possible changes would be smaller than our error bars, which are obtained from the least-squares fitting algorithm).
+
+of capturing the magnetic dispersion around QSDW, but none of these theories adequately capture the dispersion around QCDW. We discovered that a partially ordered CDW state with meandering charge stripes (see the inset of Fig. 4D), as constrained by the measured charge scattering, does successfully capture the observed modification in the magnetic dispersion. Figure 4D plots our calculations (see the methods section for full details). Despite the simplicity of the model, it captures what is observed in Figure 4C, confirming that we have identified the essential features of the ground state. Calculations based on a perfectly stripe-ordered crystalline CDW predict several sharp modes which are not observed (see Fig. S8).
+Discussion
+Our results have important implications for the relationship between stripe order in 214 type cuprates and CDW order in non 214 cuprates (58). We show that the high temperature state of LBCO 1/8 hosts CDW correlations at a wavevector unlocked from the SDW wavevector. This establishes an appealing analogy to non-214 systems, which also host CDW correlations without any obviously related SDW correlations. Indeed, stripe order in LBCO 1/8 appears to form via locking of the CDW and SDW at low temperatures. A remaining discrepancy, however, is that pristine non-214 systems tend to exhibit a spin gap not present in 214 systems (59­62). Substituting 2% Zn for Cu in YBa2Cu3O6.6 is known to close the spin gap and stabilize SDW order with an incommensurability of 0.1, but this remains unlocked from the CDW incommensurability of 0.3 (63). We furthermore demonstrate that the wavevector of the high-temperature CDW correlations in LBCO 1/8 is not uniquely defined by the doping level contrary to what is seen in the low temperature state (7­10, 28). Indeed the high-temperature wavevector of QCDW = 0.272(2) is closer to what is seen in 1/8 doped YBCO and BSCCO2201, which are 0.32 and 0.27, respectively than in the low temperature wavevector of 0.235 (11, 15). Temperature dependent wavevectors have been predicted in Landau-Ginzberg modeling of stripe ordering scenarios (39, 64). In these models, the CDW wavevector is determined by competition between the
+
+CDW's intrinsic ordering wavevector and coupling between the CDW and another degree of freedom, such as the SDW. The low-temperature wavevector may consequently not reflect the formation mechanism for these phases. Another unresolved discrepancy is that that low-temperature CDW incommensurability in LBCO 1/8 increases with temperature (10, 28), distinct from the weak decrease in CDW incommensurability seen in YBCO and other non-214 systems (22­24). It will be important for future studies to measure whether the hightemperature CDW correlations in La2-xBaxCuO4 increase or decrease with x. Here we show that the CDW incommensurability in LBCO 1/8 changes by 0.04 r.l.u. (from 0.235 to 0.272) with temperature i.e. on thermal energy scale of order 10 meV. We note that this is about the same magnitude as the doping induced change in YBCO (from 0.34 at 0.09 hole concentration to 0.30 at 0.16) (23, 24).
+We end by discussing different ways to reconcile the phenomenology observed here with that seen in other cuprate materials. One option is to assume that 214 and non-214 cuprates host completely different types of CDW. Alternatively, one can posit a universal CDW formation mechanism in which many states with different ordering wavevectors and different inter-plane stacking configurations can exist with only small energy differences. The widely discussed strongly correlated mechanisms are examples of this as the wavevector is determined by a balance of different competing interactions (1­5, 34, 35, 56, 65, 66), in contrast to nesting in which the wavevector is expected to correspond to parallel features in the Fermi surface (67). In this universal scenario, low-temperature ordering wavevector in 214 systems would then be defined by coupling between the CDW and the SDW condensing a relatively small fraction of the available low-energy fluctuations together into well correlated CDW order and establishing the factor of two relationship between the CDW and SDW incommensurabilities. In non-214 systems this mechanism does not occur due to the spin gap and the absence of the low-temperature tetragonal (LTT) structure, which is believed to play an important role to stabilize the CDW (9). In this case other details may be relevant for determining the lowtemperature wavevector. Several researchers have pointed
+
+4 | www.pnas.org/cgi/doi/10.1073/pnas.1708549114
+
+Miao and Dean et al.
+
+H. Miao et al., PNAS 114, 12430-12435 (2017)
+
+Fig. 4. Magnetic excitation spectrum and charge-spin coupling. A,B RIXS intensity maps measured in a geometry that couples to the paramagnon excitation at 23 K in the low-temperature CDW phase and at 60 K in the high-temperature CDW phase. Purple squares and red circles are the extracted peak positions from fitting the paramagnon lineshape (see Fig. S7). C Comparison of the peak positions obtained by fitting the data in A and B to the dispersion expected from spin wave theory (SWT) in an antiferromagnet (AF) without stripes. D The inset shows the theoretical charge configuration for one realization of the meandering stripes which mimics the experimental charge structure factor at 23 K. Stripes with a width of two sites with increased hole concentration are shown in blue. The main panel shows an average of the magnetic dynamic structure factor for ten such configurations as described in the method section. The purple dashed curve connects the points of maximum intensity at each H value. Such a picture qualitatively captures the observed dispersion in C.
+
+to analogies between Fermi surface features and the CDW wavevector in this case (11, 15, 16, 19, 68). A common origin for CDWs correlations in all cuprates also naturally explains why the onset temperature peaks at around 1/8 doping in all families.
+Conclusions
+We exploited the high sensitivity of RIXS to discover charge correlations in the high temperature state of LBCO 1/8. These correlations show that La-based 214 type cuprates can host CDW correlations that are unlocked from the SDW suggesting stripes form via the locking of the charge and spin wavevectors at low temperatures. This establishes shared properties between different cuprates, constraining models for the normal states from which high-temperature superconductivity emerges.
+Materials and Methods
+A LBCO 1/8 single crystal was grown using the floating zone method and cleaved ex-situ to reveal a face with a [001] surface normal. The wavevectors used here are described using the high temperature tetragonal (I4/mmm) space group with a = b = 3.78 Å and c = 13.28 Å. Correlation length is defined as 1/HWHM where HWHM is the half width at half maximum of the peak in reciprocal lattice units. RIXS measurements were performed at the ID32 beamline of the European Synchrotron Radiation Facility (ESRF). The resonant condition was achieved by tuning the incident x-ray energy to the maximum of the Cu L3 absorption peak around 931.5 eV. The
+
+scattering geometry is shown in Fig. 1A.  and  x-ray polarizations are defined as perpendicular and parallel to the scattering plane, respectively. H and K scans are achieved by rotating the sample around the  and  axes, without changing 2, thus changing the inplane component of the momentum transfer Q = kf - ki. By doing this, we are assuming that the scattering is independent of L, which is reasonable as the inter-layer coupling in the cuprates is known to be weak (28, 29, 51). Positive (negative) H corresponding to larger (smaller)  values. The horizontal and vertical momentum resolution was 0.008 Å-1 and 0.001 Å-1, respectively and all intensities are normalized to beam current and counting time. Two different geometries are used here to provide sensitivity to charge and spin degrees of freedom respectively (11, 32). For the charge scattering, we used -polarized incident x-rays and negative H values. The spectrometer scattering angle (2) was fixed at 118 such that L  1.5 and the total instrumental energy resolution (full-width at half maximum) was set to 90 meV to increase the counting rate. The quasi-elastic intensity was obtained by integrating the RIXS spectrum in an energy window of ± 150 meV around 0 meV. To measure the spin excitation spectra, we used -polarized incident x-rays and positive H values. The scattering angle (2) was set at the maximum value of 149 to access higher H values and the total instrumental energy resolution was set to 70 meV. The elastic energy was determined by measuring the diffuse scattering from carbon tape for every spectrum obtained.
+We performed our calculations of the spin excitation spectrum in the CDW state starting with an initially ordered set of charge stripes on a 40 × 40 site lattice. We then used a Monte Carlo algorithm to disorder the stripes until the charge structure factor matches the measured CDW peak shape and computed the magnetic excitation spectrum of the disordered state using a suitably parametrized Heisenberg model (53). It is assumed that the charge stripes define domain walls across which magnetic exchange J is replaced by a ferromagnetic exchange JF . J = 165 meV was chosen to match our observed zone boundary magnon energy and JF = -0.09J was
+
+Miao and Dean et al.
+
+PNAS | November 23, 2017 | vol. XXX | no. XX | 5
+
+chosen to obtain the correct energy for the neck of the hourglass in Ref. (69). The magnetic excitation spectrum of the system with the domain walls is computed under the spin wave theory (SWT) approximation and averaged over the expected different domain configurations. Such a treatment is sufficient to reproduce the observed magnetic peak dispersion even without including other effects such as fermionic excitations (35, 48).
+ACKNOWLEDGMENTS. We thank E. Bozin, C. Mazzoli, T. M. Rice, J. Tranquada and S. Wilkins for discussions and J. Pelliciari for assistance. H.M. and M.P.M.D. are supported by the Center for Emergent Superconductivity, an Energy Frontier Research Center funded by the US Department of Energy (DOE), Office of Basic Energy Sciences. Work at Brookhaven was supported by the U.S. DOE (Contract No. DE-SC00112704). Theoretical work by J.L. is supported by the Italian MIUR (project PRIN-RIDEIRON2012X3YFZ2). The experiment was performed at ID32 at the ESRF.
+1. Zaanen J, Gunnarsson O (1989) Charged magnetic domain lines and the magnetism of highTc oxides. Phys. Rev. B 40(10):7391­7394.
+2. Machida K (1989) Magnetism in La2CuO4 based compounds. Physica C: Superconductivity 158(1-2):192­196.
+3. Poilblanc D, Rice TM (1989) Charged solitons in the Hartree-Fock approximation to the largeU Hubbard model. Phys. Rev. B 39(13):9749­9752.
+4. Emery VJ, Kivelson SA, Lin HQ (1990) Phase separation in the t - J model. Phys. Rev. Lett. 64(4):475­478.
+5. Kato M, Machida K, Nakanishi H, Fujita M (1990) Soliton lattice modulation of incommensurate spin density wave in two dimensional hubbard model-a mean field study. Journal of the Physical Society of Japan 59(3):1047­1058.
+6. Birgeneau RJ, et al. (1989) Static and dynamic spin fluctuations in superconducting La2-xSrxCuO4. Phys. Rev. B 39(4):2868­2871.
+7. Cheong SW, et al. (1991) Incommensurate magnetic fluctuations in La2-x Srx CuO4. Phys. Rev. Lett. 67(13):1791­1794.
+8. Thurston TR, et al. (1992) Low-energy incommensurate spin excitations in superconducting La1.85Sr0.15CuO4. Phys. Rev. B 46(14):9128­9131.
+9. Tranquada J, Sternlieb B, Axe J, Nakamura Y, Uchida S (1995) Evidence for stripe correlations of spins and holes in copper oxide superconductors. Nature 375(6532):561­563.
+10. Fujita M, Goka H, Yamada K, Tranquada JM, Regnault LP (2004) Stripe order, depinning, and fluctuations in La1.875Ba0.125CuO4 and La1.875Ba0.075Sr0.050CuO4. Phys. Rev. B 70(10):104517.
+11. Ghiringhelli G, et al. (2012) Long-Range Incommensurate Charge Fluctuations in (Y,Nd)Ba2Cu3O6+x. Science 337(6096):821­825.
+12. Chang J, et al. (2012) Direct observation of competition between superconductivity and charge density wave order in YBa2Cu3O6.67. Nature Physics 8(12):871­876.
+13. Achkar AJ, et al. (2012) Distinct charge orders in the planes and chains of ortho-iii-ordered YBa2Cu3O6+ superconductors identified by resonant elastic x-ray scattering. Phys. Rev. Lett. 109(16):167001.
+14. Sebastian SE, Harrison N, Lonzarich GG (2012) Towards resolution of the fermi surface in underdoped high-tc superconductors. Reports on Progress in Physics 75(10):102501.
+15. Comin R, et al. (2014) Charge Order Driven by Fermi-Arc Instability in Bi2Sr2-xLaxCuO6+ . Science 343(6169):390­392.
+16. da Silva Neto EH, et al. (2014) Ubiquitous interplay between charge ordering and hightemperature superconductivity in cuprates. Science 343(6169):393­396.
+17. Thampy V, et al. (2014) Rotated stripe order and its competition with superconductivity in La1.88Sr0.12CuO4. Phys. Rev. B 90(10):100510.
+18. Hashimoto M, et al. (2014) Direct observation of bulk charge modulations in optimally doped Bi1.5Pb0.6Sr1.54CaCu2O8+ . Phys. Rev. B 89(22):220511.
+19. Tabis W, et al. (2014) Charge order and its connection with Fermi-liquid charge transport in a pristine high-Tc cuprate. Nat Commun 5:5875.
+20. Comin R, Damascelli A (2016) Resonant X-Ray Scattering Studies of Charge Order in Cuprates. Annual Review of Condensed Matter Physics 7(1):369­405.
+21. Fradkin E, Kivelson SA, Tranquada JM (2015) Colloquium : Theory of intertwined orders in high temperature superconductors. Rev. Mod. Phys. 87(2):457­482.
+22. Blanco-Canosa S, et al. (2013) Momentum-dependent charge correlations in YBa2Cu3O6+ superconductors probed by resonant x-ray scattering: Evidence for three competing phases. Phys. Rev. Lett. 110(18):187001.
+23. Blanco-Canosa S, et al. (2014) Resonant x-ray scattering study of charge-density wave correlations in YBa2Cu3O6+x. Phys. Rev. B 90(5):054513.
+24. Hücker M, et al. (2014) Competing charge, spin, and superconducting orders in underdoped YBa2Cu3Oy . Phys. Rev. B 90(5):054514.
+25. Le Tacon M, et al. (2014) Inelastic X-ray scattering in YBa2Cu3O6.6 reveals giant phonon anomalies and elastic central peak due to charge-density-wave formation. Nat Phys 10(1):52­ 58.
+26. Wang Y, Chubukov A (2014) Charge-density-wave order with momentum (2q, 0) and (0, 2q) within the spin-fermion model. Phys. Rev. B 90(3):035149.
+27. Liu YH, Konik RM, Rice T, Zhang FC (2016) Giant phonon anomaly associated with superconducting fluctuations in the pseudogap phase of cuprates. Nature communications 7.
+28. Hücker M, et al. (2011) Stripe order in superconducting La2-xBaxCuO4 (0.095 x 0.155). Phys. Rev. B 83(10):104506.
+29. Wilkins SB, et al. (2011) Comparison of stripe modulations in La1.875Ba0.125CuO4 and La1.48Nd0.4Sr0.12CuO4. Phys. Rev. B 84(19):195101.
+
+H. Miao et al., PNAS 114, 12430-12435 (2017)
+30. Chen XM, et al. (2016) Remarkable stability of charge density wave order in La1.875Ba0.125CuO4. Phys. Rev. Lett. 117(16):167001.
+31. Achkar AJ, et al. (2016) Nematicity in stripe ordered cuprates probed via resonant x-ray scattering. Science 351(001):1­5.
+32. Ament LJP, van Veenendaal M, Devereaux TP, Hill JP, van den Brink J (2011) Resonant inelastic x-ray scattering studies of elementary excitations. Rev. Mod. Phys. 83(2):705­767.
+33. Dean MPM (2015) Insights into the high temperature superconducting cuprates from resonant inelastic x-ray scattering. Journal of Magnetism and Magnetic Materials 376(0):3 ­ 13.
+34. Kivelson SA, et al. (2003) How to detect fluctuating stripes in the high-temperature superconductors. Rev. Mod. Phys. 75(4):1201­1241.
+35. Vojta M (2009) Lattice symmetry breaking in cuprate superconductors: stripes, nematics, and superconductivity. Advances in Physics 58(6):699­820.
+36. Nie L, Tarjus G, Kivelson SA (2014) Quenched disorder and vestigial nematicity in the pseudogap regime of the cuprates. Proceedings of the National Academy of Sciences 111(22):7980­ 7985.
+37. Capati M, et al. (2015) Electronic polymers and soft-matter-like broken symmetries in underdoped cuprates. Nature communications 6.
+38. Chatterjee U, et al. (2015) Emergence of coherence in the charge-density wave state of 2HNbSe2. Nature communications 6.
+39. Nie L, Maharaj AV, Fradkin E, Kivelson SA (2017) Vestigial nematicity from spin and/or charge order in the cuprates. Phys. Rev. B 96(8):085142.
+40. Alloul H, Bobroff J, Gabay M, Hirschfeld P (2009) Defects in correlated metals and superconductors. Reviews of Modern Physics 81(1):45.
+41. Hücker M, et al. (2010) Spontaneous symmetry breaking by charge stripes in the high pressure phase of superconducting La1.875Ba0.125CuO4. Phys. Rev. Lett. 104(5):057004.
+42. Campi G, et al. (2015) Inhomogeneity of charge-density-wave order and quenched disorder in a high-tc superconductor. Nature 525(7569):359­362.
+43. Reznik D, et al. (2006) Electron-phonon coupling reflecting dynamic charge inhomogeneity in copper oxide superconductors. Nature 440(7088):1170­3.
+44. Li Q, Hücker M, Gu GD, Tsvelik AM, Tranquada JM (2007) Two-Dimensional Superconducting Fluctuations in Stripe-Ordered La1.875Ba0.125CuO4. Phys. Rev. Lett. 99(6):067001.
+45. Bozin ES, et al. (2015) Reconciliation of local and long-range tilt correlations in underdoped La2-xBaxCuO4. Physical Review B 91(5):054521.
+46. Fabbris G, Hücker M, Gu GD, Tranquada JM, Haskel D (2013) Local structure, stripe pinning, and superconductivity in La1.875Ba0.125CuO4 at high pressure. Phys. Rev. B 88(6):060507.
+47. Tranquada JM, et al. (2004) Quantum magnetic excitations from stripes in copper oxide superconductors. Nature 429(6991):534­538.
+48. Seibold G, Lorenzana J (2006) Doping dependence of spin excitations in the stripe phase of high-Tc superconductors. Phys. Rev. B 73(14):144515.
+49. Le Tacon M, et al. (2011) Intense paramagnon excitations in a large family of hightemperature superconductors. Nat. Phys. 7(9):725­730.
+50. Dean MPM, et al. (2012) Spin excitations in a single La2CuO4 layer. Nat. Mater. 11:850­854. 51. Dean MPM, et al. (2013) Persistence of magnetic excitations in La2-xSrxCuO4 from the
+undoped insulator to the heavily overdoped non-superconducting metal. Nature Materials 12:1018­1022. 52. Dean MPM, et al. (2013) High-energy magnetic excitations in the cuprate superconductor Bi2Sr2CaCu2O8+ : Towards a unified description of its electronic and magnetic degrees of freedom. Phys. Rev. Lett. 110(14):147001. 53. Carlson EW, Yao DX, Campbell DK (2004) Spin waves in striped phases. Phys. Rev. B 70(6):064505. 54. Seibold G, Lorenzana J (2005) Magnetic fluctuations of stripes in the high temperature cuprate superconductors. Phys. Rev. Lett. 94(10):107006. 55. Yao DX, Carlson EW, Campbell DK (2006) Magnetic excitations of stripes and checkerboards in the cuprates. Phys. Rev. B 73(22):224525. 56. Lorenzana J, Seibold G (2002) Metallic mean-field stripes, incommensurability, and chemicalpotential in cuprates. Phys. Rev. Lett. 89(13):136401. 57. Seibold G, Grilli M, Lorenzana J (2012) Stripes in cuprate superconductors: Excitations and dynamic dichotomy. Physica C: Superconductivity 481:132­145. 58. Keimer B, Kivelson S, Norman M, Uchida S, Zaanen J (2015) From quantum matter to hightemperature superconductivity in copper oxides. Nature 518(7538):179­186. 59. Hinkov V, et al. (2007) Spin dynamics in the pseudogap state of a high-temperature superconductor. Nat Phys 3(11):780­785. 60. Stock C, et al. (2005) From incommensurate to dispersive spin-fluctuations: The high-energy inelastic spectrum in superconducting YBa2Cu3O6.5. Phys. Rev. B 71(2):024522. 61. Stock C, et al. (2010) Effect of the pseudogap on suppressing high energy inelastic neutron scattering in superconducting YBa2Cu3O6.5. Phys. Rev. B 82(17):174505. 62. Xu G, et al. (2009) Testing the itinerancy of spin dynamics in superconducting Bi2Sr2CaCu2O8+ . Nat Phys 5(9):642­646. 63. Suchaneck A, et al. (2010) Incommensurate magnetic order and dynamics induced by spinless impurities in YBa2Cu3O6.6. Phys. Rev. Lett. 105(3):037207. 64. Zachar O (2000) Stripes disorder and correlation lengths in doped antiferromagnets. Phys. Rev. B 62(21):13836­13839. 65. Castellani C, Di Castro C, Grilli M (1995) Singular quasiparticle scattering in the proximity of charge instabilities. Phys. Rev. Lett. 75(25):4650­4653. 66. Dodaro JF, Jiang HC, Kivelson SA (2017) Intertwined order in a frustrated four-leg t - J cylinder. Phys. Rev. B 95(15):155116. 67. Johannes MD, Mazin II (2008) Fermi surface nesting and the origin of charge density waves in metals. Phys. Rev. B 77(16):165135. 68. da Silva Neto EH, et al. (2016) Doping-dependent charge order correlations in electron-doped cuprates. Science Advances 2(8). 69. Tranquada JM, et al. (2008) Evidence for unusual superconducting correlations coexisting with stripe order in La1.875Ba0.125CuO4. Phys. Rev. B 78(17):174529.
+
+6 | www.pnas.org/cgi/doi/10.1073/pnas.1708549114
+
+Miao and Dean et al.
+
+

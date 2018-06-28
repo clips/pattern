@@ -1,0 +1,6984 @@
+arXiv:1701.00037v2 [gr-qc] 7 Mar 2017
+
+Janis­Newman algorithm: generating rotating and NUT charged black holes
+Harold Erbin1
+1Cnrs, Lptens, École Normale Supérieure, F-75231 Paris, France
+8th March 2017
+Abstract In this review we present the most general form of the Janis­Newman algorithm. This extension allows to generate configurations which contain all bosonic fields with spin less than or equal to two (real and complex scalar fields, gauge fields, metric field) and with five of the six parameters of the Plebaski­Demiaski metric (mass, electric charge, magnetic charge, NUT charge and angular momentum). Several examples are included to illustrate the algorithm. We also discuss the extension of the algorithm to other dimensions.
+erbin@lpt.ens.fr
+1
+
+Contents
+
+1 Introduction
+
+5
+
+1.1 Motivations . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 5
+
+1.2 The Janis­Newman algorithm . . . . . . . . . . . . . . . . . . . . . . . . . . . 5
+
+1.3 Summary . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 7
+
+1.4 Outlook . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 9
+
+1.5 Overview . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 10
+
+2 Algorithm: main ideas
+
+10
+
+2.1 Summary . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 10
+
+2.2 Algorithm . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 11
+
+2.2.1 Seed metric and gauge fields . . . . . . . . . . . . . . . . . . . . . . . 11
+
+2.2.2 Janis­Newman prescription: Newman­Penrose formalism . . . . . . . 12
+
+2.2.3 Giampieri prescription . . . . . . . . . . . . . . . . . . . . . . . . . . . 13
+
+2.2.4 Transforming the functions . . . . . . . . . . . . . . . . . . . . . . . . 14
+
+2.2.5 Boyer­Lindquist coordinates . . . . . . . . . . . . . . . . . . . . . . . 14
+
+2.3 Examples . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 15
+
+2.3.1 Flat space . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 15
+
+2.3.2 Kerr­Newman . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 15
+
+3 Extension through simple examples
+
+16
+
+3.1 Magnetic charges: dyonic Kerr­Newman . . . . . . . . . . . . . . . . . . . . . 16
+
+3.2 NUT charge, cosmological constant and topological horizon: (anti-)de Sitter
+
+Schwarzschild­NUT . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 17
+
+3.3 Complex scalar fields . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 19
+
+4 Complete algorithm
+
+19
+
+4.1 Seed configuration . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 19
+
+4.2 Janis­Newman algorithm . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 20
+
+4.2.1 Complex transformation . . . . . . . . . . . . . . . . . . . . . . . . . . 20
+
+4.2.2 Function transformation . . . . . . . . . . . . . . . . . . . . . . . . . . 21
+
+4.2.3 Null coordinates . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 21
+
+4.2.4 Boyer­Lindquist coordinates . . . . . . . . . . . . . . . . . . . . . . . 22
+
+4.3 Open questions . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 23
+
+5 Derivation of the transformations
+
+23
+
+5.1 Setting up the ansatz . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 24
+
+5.1.1 Action and equations of motion . . . . . . . . . . . . . . . . . . . . . . 24
+
+5.1.2 Seed configuration . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 24
+
+5.1.3 Janis­Newman configuration . . . . . . . . . . . . . . . . . . . . . . . 24
+
+5.2 Static solution . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 25
+
+5.3 Stationary solution . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 25
+
+5.3.1 Simplifying the equations . . . . . . . . . . . . . . . . . . . . . . . . . 26
+
+5.3.2 Summary of the equations . . . . . . . . . . . . . . . . . . . . . . . . . 27
+
+5.3.3 Solution for  = 0 . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 27
+
+5.3.4 Solution for  = 0 . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 28
+
+5.4 Relaxing assumptions . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 28
+
+5.4.1 Metric function F -dependence . . . . . . . . . . . . . . . . . . . . . . 29
+
+5.4.2 Gauge field integration constant . . . . . . . . . . . . . . . . . . . . . 30
+
+2
+
+6 Examples
+
+30
+
+6.1 Kerr­Newman­NUT . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 30
+
+6.2 Charged (a)dS­BBMB­NUT . . . . . . . . . . . . . . . . . . . . . . . . . . . 31
+
+6.3 Ungauged N = 2 BPS solutions . . . . . . . . . . . . . . . . . . . . . . . . . . 32
+
+6.3.1 Pure supergravity . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 33
+
+6.3.2 STU model . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 34
+
+6.4 Non-extremal rotating solution in T 3 model . . . . . . . . . . . . . . . . . . . 35
+
+6.5 SWIP solutions . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 36
+
+6.6 Gauged N = 2 non-extremal solution . . . . . . . . . . . . . . . . . . . . . . . 38
+
+7 Five dimensional algorithm
+
+39
+
+7.1 Myers­Perry black hole . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 40
+
+7.2 BMPV black hole . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 42
+
+7.2.1 Few properties and seed metric . . . . . . . . . . . . . . . . . . . . . . 42
+
+7.2.2 Transforming the metric . . . . . . . . . . . . . . . . . . . . . . . . . . 43
+
+7.2.3 Transforming the Maxwell potential . . . . . . . . . . . . . . . . . . . 44
+
+7.3 Another approach to BMPV . . . . . . . . . . . . . . . . . . . . . . . . . . . . 45
+
+7.4 CCLP black hole . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 46
+
+8 Algorithm in any dimension
+
+46
+
+8.1 Metric transformation . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 47
+
+8.1.1 Seed metric and discussion . . . . . . . . . . . . . . . . . . . . . . . . 47
+
+8.1.2 First transformation . . . . . . . . . . . . . . . . . . . . . . . . . . . . 48
+
+8.1.3 Iteration and final result . . . . . . . . . . . . . . . . . . . . . . . . . . 49
+
+8.2 Examples in various dimensions . . . . . . . . . . . . . . . . . . . . . . . . . . 50
+
+8.2.1 Flat space . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 50
+
+8.2.2 Myers­Perry black hole with one angular momentum . . . . . . . . . . 50
+
+8.2.3 Five-dimensional Myers­Perry . . . . . . . . . . . . . . . . . . . . . . 51
+
+8.2.4 Three dimensions: BTZ black hole . . . . . . . . . . . . . . . . . . . . 52
+
+A Coordinate systems
+
+53
+
+A.1 d-dimensional . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 53
+
+A.1.1 Cartesian system . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 54
+
+A.1.2 Spherical . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 54
+
+A.1.3 Spherical with direction cosines . . . . . . . . . . . . . . . . . . . . . . 54
+
+A.1.4 Spheroidal with direction cosines . . . . . . . . . . . . . . . . . . . . . 55
+
+A.1.5 Mixed spherical­spheroidal . . . . . . . . . . . . . . . . . . . . . . . . 55
+
+A.2 4-dimensional . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 55
+
+A.2.1 Cartesian system . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 56
+
+A.2.2 Spherical . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 56
+
+A.2.3 Spherical with direction cosines . . . . . . . . . . . . . . . . . . . . . . 56
+
+A.2.4 Spheroidal with direction cosines . . . . . . . . . . . . . . . . . . . . . 56
+
+A.3 5-dimensional . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 56
+
+A.3.1 Spherical with direction cosines . . . . . . . . . . . . . . . . . . . . . . 56
+
+A.3.2 Hopf coordinates . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 57
+
+B Review of N = 2 ungauged supergravity
+
+57
+
+C Technical properties
+
+58
+
+C.1 Group properties . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 58
+
+C.2 Chaining transformations . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 60
+
+C.3 Arbitrariness of the transformation . . . . . . . . . . . . . . . . . . . . . . . . 60
+
+3
+
+References
+
+60
+
+4
+
+1 Introduction
+1.1 Motivations
+General relativity is the theory of gravitational phenomena. It describes the dynamical evolution of spacetime through the Einstein­Hilbert action that leads to Einstein equations. The latter are highly non-linear differential equations and finding exact solutions is a notoriously difficult problem.
+There are different types of solutions but this review will cover only black-hole-like solutions (type-D in the Petrov classification) which can be described as particle-like objects that carry some charges, such as a mass or an electric charge.
+Black holes are important objects in any theory of gravity for the insight they provide into the quantum gravity realm. For this reason it is a key step, in any theory, to obtain all possible black holes solutions. Rotating black holes are the most relevant subcases for astrophysics as it is believed that most astrophysical black holes are rotating. These solutions may also provide exterior metric for rotating stars.
+The most general solution of this type in pure Einstein­Maxwell gravity with a cosmological constant  is the Plebaski­Demiaski metric [1, 2]: it possesses six charges: mass m, NUT charge n, electric charge q, magnetic charge p, spin a and acceleration . A challenging work is to generalize this solution to more complex Lagrangians, involving scalar fields and other gauge fields with non-minimal interactions, as is typically the case in supergravity. As the complexity of the equations of motion increase, it is harder to find exact analytical solutions, and one often consider specific types of solutions (extremal, BPS), truncations (some fields are constant, equal or vanishing) or solutions with restricted number of charges. For this reason it is interesting to find solution generating algorithms ­ procedures which transform a seed configuration to another configuration with a greater complexity (for example with a higher number of charges).
+An on-shell algorithm is very precious because one is sure to obtain a solution if one starts with a seed configuration which solves the equations of motion. On the other hand off-shell algorithms do not necessarily preserve the equations of motion but they are nonetheless very useful: they provide a motivated ansatz, and it is always easier to check if an ansatz satisfy the equations than solving them from scratch. Even if in practice this kind of solution generating technique does not provide so many new solutions, it can help to understand better the underlying theory (which can be general relativity, modified gravities or even supergravity) and it may shed light on the structure of gravitational solutions.
+1.2 The Janis­Newman algorithm
+The Janis­Newman (JN) algorithm is one of these (off-shell) solution generating techniques, which ­ in its original formulation ­ generates rotating metrics from static ones. It was found by Janis and Newman as an alternative derivation of the Kerr metric [3], while shortly after it has been used again to discover the Kerr­Newman metric [4].
+This algorithm provides a way to generate axisymmetric metrics from a spherically symmetric seed metric through a particular complexification of radial and (null) time coordinates, followed by a complex coordinate transformation. Often one performs eventually a change of coordinates to write the result in Boyer­Lindquist coordinates.
+The original prescription uses the Newman­Penrose tetrad formalism, which appears to be very tedious since it requires to invert the metric, to find a null tetrad basis where the transformation can be applied, and lastly to invert again the metric. In [5] Giampieri introduced another formulation of the JN algorithm which avoids gymnastics with null tetrads and which appears to be very useful for extending the procedure to more complicated solutions (such as higher dimensional ones). However it has been so far totally ignored in
+5
+
+the literature. We stress that all results are totally equivalent in both approaches, and every computation that can be done with the Giampieri prescription can be done with the other. Finally [6] provides an alternative view on the algorithm.
+In order for the metric to be still real, the radial functions inside the metric must be transformed such that reality is preserved.1 Despite that there is no rigorous statement concerning the possible complexification of these functions, some general features have been worked out in the last decades and a set of rules has been established. Note that this step is the same in both prescriptions. In particular these rules can be obtained by solving the equations of motion for some examples and by identifying the terms in the solution [7]. Another approach consists in expressing the metric functions in terms of the Boyer­Lindquist functions ­ that appear in the change of coordinates and which are real ­, the latter being then determined from the equations of motion [8, 9].
+It is widely believed that the JN algorithm is just a trick without any physical or mathematical basis, which is not accurate. Indeed it was proved by Talbot [10] shortly after its discovery why this transformation was well-defined, and he characterizes under which conditions the algorithm is on-shell for a subclass of Kerr­Schild (KS) metrics (see also [11]).2 KS metrics admit a very natural formulation in terms of complex functions for which (some) complex change of coordinates can be defined. Note that KS metrics are physically interesting as they contain solutions of Petrov type II and D. Another way to understand this algorithm has been provided by Schiffer et al. [12] (see also [13]) who showed that some KS metrics can be written in terms of a unique complex generating function, from which other solutions can be obtained through a complex change of coordinates. In various papers, Newman shows that the imaginary part of complex coordinates may be interpreted as an angular momentum, and there are similar correspondences for other charges (magnetic. . . ) [14­16]. More recently Ferraro shed a new light on the JN algorithm using Cartan formalism [17]. Uniqueness results for the case of pure Einstein theory have been derived in [8]. A recent account on these different points can be found in [18].
+In its current form the algorithm is independent of the gravity theory under consideration since it operates independently at the level of each field in order to generate an ansatz, and the equations of motion are introduced only at the end to check if the configuration is a genuine solution. We believe that a better understanding of the algorithm would lead to an on-shell formulation where the algorithm would be interpreted as some kind of symmetry or geometric property. One intuition is that every configuration found with the JN algorithm and solving the equations of motion is derived from a seed that also solves the equations of motion (in particular no useful ansatz has been generated from an off-shell seed configuration).
+Other solution generating algorithms rely on a complex formulation of general relativity which allows complex changes of coordinates. This is the case of the Ernst potential formulation [19, 20] or of Quevedo's formalism who decomposes the Riemann tensor in irreducible representations of SO(3, C)  SO(3, 1) and then uses the symmetry group to generate new solutions [21, 22].
+Despite its long history the Janis­Newman algorithm has not produced any new rotating solution for non-fluid configurations (which excludes radiating and interior solutions) beside the Kerr­Newman metric [4], and very few known examples have been reproduced [3, 23­ 26]. Generically the application the Janis­Newman algorithm to interior and radiating systems [9, 27­31] consist in deriving a configuration that do not solve the equations of motion by itself and to interpret the mismatch as a fluid (whose properties can be studied) ­ in this review we will not be interested by this kind of applications. Moreover the only
+1For simplifying, we will say that we complexify the functions inside the metric when we perform this transformation, even if in practice we "realify" them.
+2It has not been proved that the KS condition is necessary, but all known examples seem to fit in this category.
+6
+
+solutions that have been fully derived using the algorithm are the original Kerr metric [3], the d = 3 BTZ black hole [24, 25] and the d-dimensional Myers­Perry metric with a single angular momentum [23]: only the metric was found in the other cases [4, 26] and the other fields had to be obtained using the equations of motion.
+A first explanation is that there is no real understanding of the algorithm in its most general form (as reviewed above it is understood in some cases): there is no geometric or symmetry-related interpretation. Another reason is that the algorithm has been defined only for the metric (and real scalar fields) and no extension to the other types of fields was known until recently. It has also been understood that the algorithm could not be applied in the presence of a cosmological constant [7]: in particular the (a)dS­Kerr(­Newman) metrics [32] (see also [1, 2, 33, 34]) cannot be derived in this way despite various erroneous claims [30, 35]. Finally many works [36­44] (to cite only few) are (at least partly) incorrect or not reliable because they do not check the equations of motion or they perform non-integrable Boyer­Lindquist changes of coordinates [31, 45, 46].
+The algorithm was later shown to be generalizable by Demiaski and Newman who demonstrated by writing a general ansatz and solving the equations of motion that other parameters can be added [7, 47], even in the presence of a cosmological constant. While one parameter corresponds to the NUT charge, the other one did not receive any interpretation until now.3 Unfortunately Demiaski did not express his result to a concrete algorithm (the normal prescription fails in the presence of the NUT charge and of the cosmological constant) which may explain why this work did not receive any further attention. Note that the algorithm also failed in the presence of magnetic charges.
+A way to avoid problems in defining the changes of coordinates to the Boyer­Lindquist system and to find the complexification of the functions has been proposed in [8] and extended in [31]: the method consists in writing the unknown complexified function in terms of the functions of the coordinate transformation. This philosophy is particularly well-suited for providing an ansatz which does not relies on a static seed solution.
+More recently it has been investigated whether the JN algorithm can be applied in modified theories of gravity. Pirogov put forward that rotating metrics obtained from the JN algorithm in Brans­Dicke theory are not solutions if  = 1 [51]. Similarly Hansen and Yunes have shown a similar result in quadratic modified gravity (which includes Gauss­ Bonnet) [52].4 These do not include Sen's dilaton­axion black hole for which  = 1 (section 6.4), nor the BBMB black hole from conformal gravity (section 6.2). Finally it was proved in [54] that it does not work either for Einstein­Born­Infled theories.5 We note that all these no-go theorem have been found by assuming a transformation with only rotation.
+Previous reviews of the JN algorithm can be found in [18, 55, chap. 19, 8, 38, sec. 5.4] (see also [56]).
+1.3 Summary
+The goal of the current work is to review a series of recent papers [57­60] in which the JN algorithm has been extended in several directions, opening the doors to many new applications. This review evolved from the thesis of the author [61], which presented the material from a slightly different perspective, and from lectures given at Hri (Allahabad, India).
+3Demiaski's metric has been generalized in [48­50]. 4There are some errors in the introduction of [52]: they report incorrectly that the result from [51] implies that Sen's black hole cannot be derived from the JN algorithm, as was done by Yazadjiev [26]. But this black hole corresponds to  = 1 and as reported above there is no problem in this case (see [53] for comparison). Moreover they argue that several works published before 2013 did not take into account the results of Pirogov [51], published in 2013. . . 5It may be possible to circumvent the result of [54] by using the results described in this review since several tools were not known by its author.
+7
+
+As explained in the previous section, the JN algorithm was formulated only for the metric and all other fields had to be found using the equations of motion (with or without using an ansatz). For example neither the Kerr­Newman gauge field or its associated field strength could be derived in [4]. The solution to this problem is to perform a gauge transformation in order to remove the radial component of the gauge field in null coordinates [57]. It is then straightforward to apply the JN algorithm in either prescription.6 Another problem was exemplified by the derivation of Sen's axion­dilaton rotating black hole [63] by Yazadjiev [26], who could find the metric and the dilaton, but not the axion (nor the gauge field). The reason is that while the JN algorithm applies directly to real scalar fields, it does not for complex scalar fields (or for a pair of real fields that can naturally be gathered into a complex scalar). Then it is necessary to consider the complex scalar as a unique object and to perform the transformation without trying to keep it real [60]. Hence this completes the JN algorithm for all bosonic fields with spin less than or equal to two.
+A second aspect for which the original form of the algorithm was deficient is configuration with magnetic and NUT charges and in presence of a cosmological constant. The issue corresponds to finding how one should complexify the functions: the usual rules do not work and if there were no way to obtain the functions by complexification then the JN algorithm would be of limited interest as it could not be exported to other cases (except if one is willing to solve equations of motion, which is not the goal of a solution generating technique). We have found that to reproduce Demiaski's result [7] it is necessary to complexify also the mass and to consider the complex parameter m + in [59, 60] and to shift the curvature of the spherical horizon. Similarly for configurations with magnetic charges one needs to consider the complex charge q + ip [60]. Such complex combinations are quite natural from the point of view of the Plebaski­Demiaski solution [1, 2] described previously. It is to notice that the appearance of complex coordinate transformations mixed with complex parameter transformations was a feature of Quevedo's solution generating technique [21, 22], yet it is unclear what the link with our approach really is. Hence the final metric obtained from the JN algorithm may contain (for vanishing cosmological constant) five of the six Plebaski­Demiaski parameters [1, 2] along with Demiaski's parameter.
+An interesting fact is that the previous argument works in the presence of the cosmological constant only if one considers the possibility of having a generic topological horizons (flat, hyperbolic or spherical) and for this reason we have provided an extension of the formalism to this case [59].
+We also propose a generalization of the algorithm to any dimension [58], but while new examples could be found for d = 5 the program could not be carried to the end for d > 5.
+All these results provide a complete framework for most of the theories of gravity that are commonly used. As a conclusion we summarize the features of our new results:
+· all bosonic fields with spin  2;
+· topological horizons;
+· charges m, n, q, p, a (with a only for  = 0);
+· extend to d = 3, 5 dimensions (and proposal for higher).
+We have written a general Mathematica package for the JN algorithm in Einstein­Maxwell theory.7 Here is a list of new examples that have been completely derived using the previous results (all in 4d except when said explicitly):
+6Another solution has been proposed by Keane [62] but it is applicable only to the Newman­Penrose coefficients of the field strength. Our proposal requires less computations and yields directly the gauge field from which all relevant quantities can easily be derived.
+7 Available at http://www.lpthe.jussieu.fr/~erbin/.
+8
+
+· Kerr­Newman­NUT;
+· dyonic Kerr­Newman;
+· Yang­Mills Kerr­Newman black hole [64];
+· adS­NUT Schwarzschild;
+· Demiaski's solution [7];
+· ungauged N = 2 BPS solutions [65];
+· non-extremal solution in T 3 model [63] (partly derived in [26]);
+· SWIP solutions [66];
+· (a)dS­charged Taub­NUT­BBMB [67];
+· 5d Myers­Perry [68];
+· 5d BMPV [69];
+· NUT charged black hole8 in gauged N = 2 sugra with F = -i X0X1 [70].
+We also found a more direct derivation of the rotating BTZ black hole (derived in another way by Kim [24, 25]).
+1.4 Outlook
+A major playground for this modified Janis­Newman (JN) algorithm is (gauged) supergravity ­ where many interesting solutions remain to be discovered ­ since all the necessary ingredients are now present. Moreover important solutions are still missing in higherdimensional Einstein­Maxwell (in particular the charged Myers­Perry solution) and one can hope that understanding the JN algorithm in higher dimensions would shed light on this problem. Another open case is whether black rings can also be derived using the algorithm.
+A major question about the JN algorithm is whether it is possible to include rotation for non-vanishing cosmological constant. A possible related problem concerns the addition of acceleration , which is the only missing parameter when  = 0. It is indeed puzzling that one could get all Plebaski­Demiaski parameters but the acceleration, which appears in the combination a + i. Both problems are linked to the fact that the JN algorithm ­ in its current form ­ does not take into account various couplings between the parameters (such as the spin with the cosmological constant or the acceleration with the mass in the simplest cases). On the other hand it does not mean that it is impossible to find a generalization of the algorithm: philosophically the problem is identical to the ones of adding NUT and magnetic charges.
+In any case the meaning and a rigorous derivation of the JN algorithm ­ perhaps elevating it to the status of a true solution generating algorithm ­ are still to be found. It is also interesting to note that almost all of the examples quoted in the previous section can be embedded into N = 2 supergravity. This calls for a possible interpretation of the algorithm in terms of some hidden symmetry of supergravity, or even of string theory.
+We hope that our new extension of the algorithm will help to bring it outside the shadow where it stayed since its creation and to establish it as a standard tool for deriving new solutions in the various theories of gravity.
+8Derived by D. Klemm and M. Rabbiosi, unpublished work.
+9
+
+1.5 Overview
+In section 2 we review the original Janis­Newman algorithm and its alternative form due to Giampieri before illustrating it with some examples. Section 3 shows how to extend the algorithm to more complicated set of fields (complex scalars, gauge fields) and parameters (magnetic and NUT charges, topological horizon). Then section 4 provides a general description of the algorithm in its most general form. The complex transformation described in the previous section are derived in section 5. Section 6 describes several examples. Finally section 7 extends first the algorithm to five dimensions and section 8 generalizes these ideas to any dimension.
+Appendix A gathers useful formulas on coordinate systems in various numbers of dimensions. Appendix B reviews briefly the main properties of N = 2 supergravity. Finally appendix C discusses some additional properties of the JN algorithm.
+In our conventions the spacetime signature is mostly plus.
+2 Algorithm: main ideas
+In this section we summarize the original algorithm together with its extension to gauge fields. We will see that the algorithm involves the transformations of two different objects (the tensor structure and the coordinate-dependent functions of the fields) which can be taken care of separately. The transformation of the tensor structure is simple and no new idea (for d = 4) will be needed after this section since we will be dealing with the two most general tensor structures for bosonic fields of spin less than or equal to two (the metric and vector fields). On the other hand the transformation of the functions is more involved and we will introduce new concepts through simple examples in the next section before giving the most general formulation in section 4. We review the two different prescriptions for the transformation and we illustrate the algorithm with two basic examples: the flat space and the Kerr­Newman metrics.
+2.1 Summary
+The general procedure for the Janis­Newman algorithm can be summarized as follows:
+1. Perform a change of coordinates (t, r) to (u, r) and a gauge transformation such that grr = 0 and Ar = 0.
+2. Take u, r  C and replace the functions fi(r) inside the real fields by new real-valued functions f~i(r, r¯) (there is a set of "empirical" rules).
+3. Perform a complex change of coordinates and transform accordingly:
+(a) the tensor structure, i.e. the dxµ (two prescriptions: Janis­Newman [3] and Giampieri [5]);
+(b) the functions f~i(r, r¯).
+4. Perform a change of coordinates to simplify the metric (for example to Boyer­Lindquist system). If the transformation is infinitesimal then one should check that it is a valid diffeomorphism, i.e. that it is integrable.
+Note that in the last point the operations (a) and (b) are independent. In practice one is performing the algorithm for a generic class of configurations with unspecified fi(r) in order to obtain general formulas. One leaves point 2 and (3b) implicit since the other steps are independent of the form of the functions. Then given a specific configuration one can perform 2 and (3b).
+10
+
+Throughout the review we will not be interested in showing that the examples discussed are indeed solutions but merely to explain how to extend the algorithm. All examples we are discussing have been shown to be solutions of the theory under concerned and we refer the reader to the original literature for more details. For this reason we will rarely mention the action or the equations of motion and just discussed the fields and their expressions.
+One could add a fifth point to the list: checking the equations of motion. We stress again that the algorithm is off-shell and there is no guarantee (except in some specific cases [18]) that a solution is mapped to a solution.
+
+2.2 Algorithm
+We present the algorithm for a metric gµ and a gauge field Aµ associated with a U(1) gauge symmetry. This simple case is sufficient to illustrate the main features of the algorithm.
+As already mentioned in the introduction, the authors of [4] failed to derive the field strength of the Kerr­Newman black hole from the Reissner­Nordström one. In the null tetrad formalism it is natural to write the field strength in terms of its Newman­Penrose coefficients, but a problem arises when one tries to generate the rotating solution since one of the coefficients is zero in the case of Reissner­Nordström, but non-zero for Kerr­ Newman. Three different prescriptions have been proposed: two works in the Newman­ Penrose formalism ­ one with the field strength [62] and one with the gauge field [57] ­ while the third extends Giampieri's approach to the gauge field [57]. Since the proposals from [57] fit more directly (and parallel each other) inside the prescriptions of Janis­Newman and Giampieri, we will focus on them. It is also more convenient to work with the gauge fields since any other quantity can be easily computed from them.
+
+2.2.1 Seed metric and gauge fields
+
+The seed metric and gauge field take the form
+
+ds2 = -f (r) dt2 + f (r)-1 dr2 + r2d2, d2 = d2 + H()2 d2, A = fA(r) dt.
+
+(2.1a) (2.1b)
+
+The normalized curvature of the (, ) sections (or equivalently of the horizon) is denoted
+
+by 
+
+=
+
++1 -1
+
+S2, H2
+
+(2.2)
+
+where S2 and H2 are respectively the sphere and the hyperboloid,9 and one has
+
+H() = sin   = 1, sinh   = -1.
+
+(2.3)
+
+In all this section we will consider the case of spherical horizon with  = 1. Introduce Eddington­Finkelstein coordinates (u, r)
+du = dt - f -1dr
+
+(2.4)
+
+in order to remove the grr term of the metric [3]. Under this transformation the gauge field
+
+becomes
+
+A = fA (du + f -1dr).
+
+(2.5)
+
+9We leave aside the case of the plane R2 with  = 0. The formulas can easily be extended to this case.
+
+11
+
+The changes of coordinate has introduced an Ar component but since it depends only on the radial coordinate Ar = Ar(r) it can be removed by a gauge transformation.
+At the end the metric and gauge fields are
+
+ds2 = -f dt2 + 2dudr + r2d2, A = fA du.
+
+(2.6a) (2.6b)
+
+This last step was missing in [4] and explains why they could not derive the full solution from the algorithm. The lesson to draw is that the validity of the algorithm depends a lot on the coordinate basis10 and of the parametrization of the fields, although guiding principle founded on all known examples seems that one needs to have
+
+grr = 0, Ar = 0.
+
+(2.7)
+
+2.2.2 Janis­Newman prescription: Newman­Penrose formalism
+
+The Janis­Newman prescription for transforming the tensor structure relies on the Newman­ Penrose formalism [3, 4, 18].
+First one needs to obtain the contravariant expressions of the metric and of the gauge field
+
+2 s2
+
+=
+
+gµ µ
+
+=
+
+f
+
+r2
+
+- 2 ur +
+
+1 r2
+
+2
+
++
+
+2 sin2
+
+
+
+,
+
+A = -fA r.
+
+(2.8a) (2.8b)
+
+Then one introduces null complex tetrads
+
+Zaµ = { µ, nµ, mµ, m¯ µ}
+
+(2.9)
+
+with flat metric
+
+ 0 -1 0 0
+
+ab
+
+=
+
+-1
+
+ 
+
+0
+
+0 0
+
+0 0 0 1
+
+0 0 10
+
+such that
+
+gµ = abZaµZb = - µn -  nµ + mµm¯  + m m¯ µ.
+
+The explicit tetrad expressions are
+
+(2.10) (2.11)
+
+µ = rµ,
+
+nµ
+
+=
+
+uµ -
+
+f 2
+
+rµ,
+
+mµ
+
+=
+
+1 
+
+2r¯
+
+µ
+
++
+
+i sin 
+
+µ
+
+(2.12)
+
+and the gauge field is
+
+Aµ = -fA µ.
+
+(2.13)
+
+Note that without the gauge transformation there would be an additional term and the expression of Aµ in terms of the tetrads would be ambiguous.
+At this point u and r are allowed to take complex values but keeping µ and nµ real and (mµ) = m¯ µ and replacing
+
+f (r) - f~(r, r¯)  R, fA(r) - f~A(r, r¯)  R.
+
+(2.14)
+
+10The canonical example being that the Kerr metric in quasi-isotropic coordinates cannot be derived from the Schwarzschild metric in isotropic coordinates while it can be derived in the usual coordinates (see section 2.3.2).
+
+12
+
+Consistency implies that one recovers the seed for r¯ = r and u¯ = u. Finally one can perform a complex change of coordinates
+
+u = u + ia cos , r = r - ia cos 
+
+(2.15)
+
+where a is a parameter (to be interpreted as the angular momentum per unit of mass) and
+
+r , u  R. While this transformation seems arbitrary we will show later (sections 4 and 5) how to extend it and that general consistency limits severely the possibilities. The tetrads
+
+transform as vectors
+
+Zaµ
+
+=
+
+x µ x
+
+Za
+
+(2.16)
+
+and this lead to the expressions
+
+µ = rµ,
+
+n
+
+µ
+
+=
+
+uµ
+
+-
+
+f~ 2
+
+rµ,
+
+mµ = 
+
+1
+
+2(r + ia cos )
+
+µ
+
++
+
+i sin
+
+
+
+µ
+
+-
+
+ia
+
+sin
+
+
+
+(uµ
+
+-
+
+rµ)
+
+.
+
+(2.17)
+
+After inverting the contravariant form of the metric and the gauge field one is lead to the final expressions
+
+ds 2 = -f~(du - a sin2  d)2 - 2 (du - a sin2  d)(dr + a sin2  d) + 2d2, (2.18a)
+
+A = f~A (du - a sin2  d).
+
+(2.18b)
+
+where
+
+2 = |r|2 = r 2 + a2 cos2 .
+
+(2.19)
+
+The coordinate dependence of the functions can be written as
+
+f~ = f~(r, r¯) = f~(r , )
+
+(2.20)
+
+in the new coordinates (and similarly for f~A), but note that the  dependence is not arbitrary and comes solely from Im r.
+
+2.2.3 Giampieri prescription
+
+The net effect of the transformation (2.15) on the tensor structure amounts to the replace-
+
+ments
+
+du - du - a sin2  d, dr - dr + a sin2  d
+
+(2.21)
+
+by comparing (2.6) and (2.18), up to the r2  2 in front of d2. Is it possible to obtain the
+
+same effect by avoiding the Newman­Penrose formalism and all the computations associated
+
+to changing from covariant to contravariant expressions? Inspecting the infinitesimal form
+
+of (2.15)
+
+du = du - ia sin  d, dr = dr + ia sin  d,
+
+(2.22)
+
+one sees that (2.21) can be recovered if one sets [5]
+
+id = sin  d.
+
+(2.23)
+
+Note that it should be done only in the infinitesimal transformation and not elsewhere in the metric. Although some authors [17, 30] mentioned the equivalence between the tetrad computation and (2.21), it is surprising that this direction has not been followed further.
+While this new prescription is not rigorous and there is no known way to derive (2.23), it continues to hold for the most general seed (section 4) and it gives systematically the
+
+13
+
+same results as the Janis­Newman prescription, as can be seen by simple inspection. In particular this approach is not adding nor removing any of the ambiguities due to the function transformations that are already present and well-known in JN algorithm. Since this prescription is much simpler we will continue to use it throughout the rest of this review (we will show in section 4 how it is modified for topological horizons).
+Finally the comparison of the two prescriptions clearly shows that the r2 factor in front of d2 should be considered as a function instead of a part of the tensor structure: the replacement r2  2 is dictated by the rules given in the next section. We did not want to enter into these subtleties here but this will become evident in section 4.
+
+2.2.4 Transforming the functions
+
+The transformation of the functions is common to both the Janis­Newman and Giampieri prescriptions since they are independent of the tensor structure. This step is the main weakness of the Janis­Newman algorithm because there is no unique way to perform the replacement and for this reason the final result contains some part of arbitrariness. This provides another incentive for checking systematically if the equations of motion are satisfied. Nonetheless examples have provided a small set of rules [3, 4, 8, 57]
+
+r
+
+-
+
+1 2
+
+(r
+
++
+
+r¯)
+
+=
+
+Re r,
+
+11 r - 2
+
+1 r
+
++
+
+1 r¯
+
+=
+
+Re r |r|2 ,
+
+r2 - |r|2.
+
+(2.24a) (2.24b) (2.24c)
+
+The idea is to use geometric or arithmetic means. All other functions can be reduced to a combination of them, for example 1/r2 is complexified as 1/|r|2.
+Every known configuration which does not involve a magnetic, a NUT charge, complex scalar fields or powers higher of rthan quadratic can be derived with these rules (these cases will be dealt with in sections 3 and 4). Hence despite the fact that there is some arbitrariness, it is ultimately quite limited and very few options are possible in most cases.
+
+2.2.5 Boyer­Lindquist coordinates
+
+Boyer­Lindquist coordinates are defined to be those with the minimal number of non-zero
+
+off-diagonal components in the metric. Performing the transformation (the primes in (2.18)
+
+are now omitted)
+
+du = dt - g(r)dr , d = d - h(r)dr,
+
+(2.25)
+
+the conditions gtr = gr = 0 are solved for
+
+g(r)
+
+=
+
+r2
+
++ a2 ,
+
+h(r)
+
+=
+
+a 
+
+(2.26)
+
+where we have defined
+
+(r) = f~2 + a2 sin2 .
+
+(2.27)
+
+As indicated by the r-dependence this change of variables is integrable provided that g and h are functions of r only. However  as given in (2.27) for a generic configuration contains a  dependence: one should check that this dependence cancels once restricted to the example of interest. Otherwise one is not allowed to perform this change of coordinates (but other systems may still be found).
+
+14
+
+Given (2.26) one gets the metric and gauge fields (deleting the prime)
+
+ds2
+
+=
+
+-f~dt2
+
++
+
+2 
+
+dr2
+
++
+
+2d2
+
++
+
+2 2
+
+sin2
+
+
+
+d2
+
++
+
+2a(f~ -
+
+1)
+
+sin2
+
+
+
+dtd,
+
+A = f~A
+
+dt
+
+-
+
+2 
+
+dr
+
+-
+
+a
+
+sin2
+
+
+
+d
+
+(2.28a) (2.28b)
+
+with
+
+2 2
+
+=
+
+r2
+
++ a2
+
++ agt.
+
+The rr-term has been computed from
+
+(2.29)
+
+g
+
+-
+
+a sin2
+
+h
+
+=
+
+2 .
+
+
+(2.30)
+
+Generically the radial component of the gauge field depends only on radial coordinate Ar = Ar(r) (-dependence of the function f~A sits in a factor 1/2 which cancels the one in front of dr) and one can perform a gauge transformation in order to set it to zero, leaving
+
+A = f~A dt - a sin2  d .
+
+(2.31)
+
+2.3 Examples
+2.3.1 Flat space It is straightforward to check that the algorithm applied to the Minkowski metric ­ which has f = 1, leading to f~ = 1 ­ in spherical coordinates
+
+ds2 = -dt2 + dr2 + r2 d2 + sin2  d2
+
+(2.32)
+
+gives again the Minkowski metric but in spheroidal coordinates (A.31) (after a Boyer­ Lindquist transformation)
+
+ds2
+
+=
+
+-dt2
+
++
+
+2 r2 + a2
+
+dr2
+
++
+
+2d2
+
++ (r2
+
++
+
+a2) sin2 
+
+d2,
+
+(2.33)
+
+recalling that 2 = r2 + a2 cos2 . The metric is exactly diagonal because gt = 0 for f~ = 1 from (2.28a).
+Hence for flat space the JN algorithm reduces to a change of coordinates, from spherical to (oblate) spheroidal coordinates: the 2-spheres foliating the space in the radial direction are deformed to ellipses with semi-major axis a.
+This fact is an important consistency check that will be useful when extending the algorithm to higher dimensions (section 8) or to other coordinate systems (such as one with direction cosines). Moreover in this case one can forget about the time direction and consider only the transformation of the radial coordinate.
+
+2.3.2 Kerr­Newman
+
+The seed function is the Reissner­Nordström for which the metric and gauge field are
+
+f (r)
+
+=
+
+1
+
+-
+
+2m r
+
++
+
+q2 r2
+
+,
+
+fA
+
+=
+
+q .
+r
+
+(2.34)
+
+15
+
+Applications of the rules (2.24) leads to
+
+f~ =
+
+1-
+
+2m Re r |r|2
+
++
+
+q2 |r|2
+
+=
+
+1+
+
+q2
+
+- 2mr 2
+
+,
+
+f~A
+
+=
+
+q Re r |r|2
+
+=
+
+qr 2
+
+.
+
+(2.35a) (2.35b)
+
+These functions together with (2.28) describe correctly the Kerr­Newman solution [18, 71]. For completeness we spell out the expressions of the quantities appearing in the metric
+
+2 2
+
+=
+
+r2
+
++ a2
+
+-
+
+q2
+
+- 2mr 2
+
+a2 sin2 ,
+
+ = r2 - 2mr + a2 + q2.
+
+(2.36a) (2.36b)
+
+In particular  does not contain any  dependence and the BL transformation is well defined. Moreover the radial component of the gauge field is
+
+Ar
+
+=
+
+- f~A2 
+
+=
+
+qr 
+
+(2.37)
+
+and it is independent of .
+
+3 Extension through simple examples
+In this section we motivate through simple examples modifications to the original prescription for the transformation of the functions.
+
+3.1 Magnetic charges: dyonic Kerr­Newman
+
+The dyonic Reissner­Nordström metric is obtained from the electric one (2.34) by the re-
+
+placement [72, sec. 6.6]
+
+q2 - |Z|2 = q2 + p2
+
+(3.1)
+
+where Z corresponds to the central charge
+
+Z = q + ip.
+
+(3.2)
+
+Then the metric function reads
+
+f
+
+=
+
+1
+
+-
+
+2m r
+
++
+
+|Z |2 r2 .
+
+The gauge field receives a new -component
+
+(3.3)
+
+A = fA dt - p cos  d = fA du - p cos  d
+
+(3.4)
+
+(the last equality being valid after a gauge transformation) and
+
+fA
+
+=
+
+q .
+r
+
+The transformation of the function f under (2.15) is straightforward and yields
+
+(3.5)
+
+f~ =
+
+1
+
+-
+
+2mr
+
+- 2
+
+|Z |2
+
+.
+
+(3.6)
+
+16
+
+On the other hand transforming directly the r inside fA according to (2.24) does not yield the correct result. Instead one needs to first rewrite the gauge field function as
+
+Z fA = Re r
+
+(3.7)
+
+from which the transformation proceeds to
+
+f~A =
+
+Re(Z r¯) |r|2
+
+=
+
+qr
+
+- pa cos 
+
+2
+
+.
+
+(3.8)
+
+Note that it not useful to replace p by Im Z in (3.4) since it is not accompanied by any r dependence. Moreover it is natural that the factor |Z|2 appears in the metric and this
+explains why the charges there do not mix with the coordinates.
+The gauge field in BL coordinates is finally
+
+A
+
+=
+
+qr
+
+- pa cos  2
+
+dt +
+
+qr - 2
+
+a sin2 
+
++
+
+p(r2 + a2) 2
+
+cos 
+
+d
+
+=
+
+qr 2
+
+(dt
+
+-
+
+a
+
+sin2
+
+d) +
+
+p cos  2
+
+a dt + (r2 + a2) d
+
+.
+
+(3.9a) (3.9b)
+
+The radial component has been removed thanks to a gauge transformation since it depends
+
+only on r
+
+
+
+×
+
+Ar
+
+=
+
+qr -
+
+-
+
+pa 2
+
+cos
+
+
+
+2
+
+-
+
+pa
+
+cos
+
+
+
+=
+
+-qr.
+
+(3.10)
+
+There is a coupling between the parameters a and p which can be interpreted from the fact that a rotating magnetic charge has an electric quadrupole moment. This coupling is taken into account from the product of the imaginary parts which yield a real term. In view of the form of the algorithm such contribution could not arise from any other place. Moreover the combination Z = q + ip appears naturally in the Plebaski­Demiaski solution [1, 2].
+The Yang­Mills Kerr­Newman black hole found by Perry [64] can also be derived in this way, starting from the seed
+
+AI = qI dt + pI cos  d, r
+
+|Z|2 = qI qI + pI pI
+
+where qI and pI are constant elements of the Lie algebra.
+
+(3.11)
+
+3.2 NUT charge and cosmological constant and topological horizon: (anti-)de Sitter Schwarzschild­NUT
+In this subsection we consider general topological horizons
+
+d2 = d2 + H()2 d2,
+
+H() =
+
+sin  sinh 
+
+ = 1 (S2),  = -1 (H2).
+
+(3.12)
+
+The cosmological constant is denoted by . We give only the main formulas to motivate the modification of the algorithm, leaving the details of the transformation for section 4.
+The complex transformation that adds a NUT charge is
+
+u = u - 2 ln H(), r = r + in,
+
+m = m + in,
+
+=
+
+-
+
+4 3
+
+n2.
+
+(3.13a) (3.13b)
+
+17
+
+Note that it is  and not  that appears in m. After having shown The metric derived from the seed (2.1a) is
+ds2 = -f~(dt - 2nH () d)2 + f~-1 dr2 + 2 d2,
+
+(3.14)
+
+see (4.33), where
+
+2 = r 2 + n2.
+
+The function corresponding to the (a)dS­Schwarzschild metric is
+
+(3.15)
+
+f
+
+=
+
+
+
+-
+
+2m r
+
+-
+
+ 3
+
+r2
+
+=
+
+
+
+-
+
+2 Re
+
+m r
+
+-
+
+ 3
+
+r2.
+
+The transformation is
+
+f~ =
+
+
+
+-
+
+2 Re(mr¯) |r|2
+
+-
+
+ 3
+
+|r|2
+
+=
+
+
+
+-
+
+4 3
+
+n2
+
+-
+
+2
+
+mr
+
++
+
+
+
+-
+
+4 3
+
+n2
+
+2
+
+n2
+
+-
+
+ 3
+
+2
+
+(3.16) (3.17)
+
+which after simplification gives
+
+f~ = 
+
+-
+
+2m r
+
++ 2 n2 2
+
+-
+
+ 3
+
+(r
+
+2
+
++
+
+5n2)
+
++
+
+8 3
+
+n4 2
+
+(3.18)
+
+which corresponds correctly to the function of (a)dS­Schwarzschild­NUT [73].
+
+Note that it is necessary to consider the general case of massive black hole with topological
+
+horizon (if  = 0 for the latter) even if one is ultimately interested in the m = 0 or  = 1
+
+cases.
+
+The transformation (3.13) can be interpreted as follows. In similarity with the case of
+
+the magnetic charge, writing the mass as a complex parameter is needed to take into account
+
+some couplings between the parameters that would not be found otherwise. Moreover the
+
+shift of  is required because the curvature of the (, ) section should be normalized to
+
+ = ±1 but the coupling of the NUT charge with the cosmological constant modifies the
+
+curvature: the new shift is necessary to balance this effect and to normalize the (, )
+
+curvature to  = ±1 in the new metric. The NUT charge in the Plebaski­Demiaski
+
+solution [1, 2] is
+
+=n
+
+1
+
+-
+
+4 3
+
+n2
+
+(3.19)
+
+so the natural complex combination is m + i and not m + in from this point of view, and similarly for the curvature [74, sec. 5.3] (such relations appear when taking limit of the Plebaski­Demiaski solution to recover subcases).
+Finally we conclude this section with two remarks to quote different contexts where the above expression appear naturally :
+
+· Embedding Einstein­Maxwell into N = 2 supergravity with a negative cosmological constant  = -3g2, the solution is BPS if [73]
+
+ = -1,
+
+n
+
+=
+
+±
+
+1 2g
+
+,
+
+(3.20)
+
+in which case  = .
+
+· The Euclidean NUT solution is obtained from the Wick rotation
+
+t = -i, n = i.
+
+(3.21)
+
+The condition for regularity is [75, 76]
+
+m=m -
+
+
+
++
+
+4 3
+
+2
+
+= 0.
+
+(3.22)
+
+18
+
+3.3 Complex scalar fields
+
+For a complex scalar field, or any pair of real fields that can be naturally gathered as a complex field, one should treat the full field as a single entity instead of looking at the real and imaginary parts independently. In particular one should not impose any reality condition. A typical case of such system is the axion­dilaton pair
+
+ = e-2 + i.
+
+(3.23)
+
+In order to demonstrate this principle consider the seed (for a complete example see
+
+section 6.4)
+
+ =1+ µ r
+
+(3.24)
+
+where only the dilaton is non-zero. Then the transformation (2.15) gives
+
+
+
+=1+ µ =1+
+
+r
+
+r
+
+µ
+
+µr
+
+- ia cos  = 1 + 2
+
++
+
+i
+
+µa cos 2
+
+
+
+.
+
+(3.25)
+
+The transformation generates an imaginary part which cannot be obtained if Im  is treated separately: the algorithm does not change fields that vanish except if they are components of a larger field. Note that both  and  are harmonic functions.
+
+4 Complete algorithm
+In this section we gather all the facts on the Janis­Newman algorithm and we explain how to apply it to a general setting. We write the formulas corresponding to the most general configurations that can be obtained. We insist again on the fact that all these results can also be derived from the tetrad formalism.
+
+4.1 Seed configuration
+We consider a general configuration with a metric gµ, gauge fields AIµ, complex scalar fields  i and real scalar fields qu. The initial parameters of the seed configuration are the mass m, electric charges qI , magnetic charges pi and some other parameters A (such as the scalar charges). The electric and magnetic charges are grouped in complex parameters
+
+ZI = qI + ipI .
+
+(4.1)
+
+All indices run over some arbitrary ranges. The seed configuration is spherically symmetric and in particular all the fields depend
+only on the radial direction r
+
+ds2 = -ft(r) dt2 + fr(r) dr2 + f(r) d2, AI = f I (r) dt + pI H () d,  i =  i(r), qu = qu(r)
+
+(4.2a) (4.2b) (4.2c)
+
+where
+
+d2 = d2 + H()2 d2,
+
+H() =
+
+sin  sinh 
+
+ = 1 (S2),  = -1 (H2).
+
+(4.3)
+
+Note that only two functions in the metric are relevant since the last one can be fixed through a diffeomorphism. All the real functions are denoted collectively by
+
+fi = {ft, fr, f, f I , qu}.
+
+(4.4)
+
+19
+
+The transformation to null coordinates is
+
+dt = du - fr dr ft
+and yields ds2 = -ft du2 - 2 ftfr dr2 + f d2, AI = f I du + pI H d
+where the radial component of the gauge field
+
+AIr = f I
+
+fr ft
+
+has been set to zero through a gauge transformation.
+
+(4.5)
+(4.6a) (4.6b)
+(4.7)
+
+4.2 Janis­Newman algorithm
+
+4.2.1 Complex transformation
+
+One performs the complex change of coordinates
+
+r = r + i F (), u = u + i G().
+
+(4.8)
+
+In the case of topological horizons the Giampieri ansatz (2.23) generalizes to
+
+i d = H() d
+
+(4.9)
+
+leading to the differentials
+
+dr = dr + F ()H() d, du = du + G ()H() d.
+
+(4.10)
+
+The ansatz (4.9) is a direct consequence of the fact that the 2-dimensional slice (, ) is given
+by d2 = d2 + H()2 d2, such that the function in the RHS of (4.9) corresponds to g (where g is the static metric), as can be seen by doing the computation with i d = H()d and identifying H = H at the end.
+The most general known transformation is
+
+F () = n - a H () + c
+
+1
+
++
+
+H
+
+()
+
+ln
+
+H (/2) H (/2)
+
+,
+
+G()
+
+=
+
+a
+
+H
+
+()
+
+-
+
+2n
+
+ln
+
+H ()
+
+-
+
+c
+
+H
+
+()
+
+ln
+
+H (/2) H (/2) ,
+
+(4.11a) (4.11b)
+
+m = m + in,
+
+(4.11c)
+
+=
+
+-
+
+4 3
+
+n2,
+
+(4.11d)
+
+where a, c = 0 only if  = 0 (see section 5 for the derivation). The mass that is transformed is the physical mass: even if it written in terms of other parameters one should identify it and transform it.
+The parameters a and n correspond respectively to the angular momentum and to the NUT charge. On the other hand the constant c did not receive any clear interpretation (see for example [7, 18, 77, sec. 5.3]). It can be noted that the solution is of type II in Petrov classification (and thus the JN algorithm can change the Petrov type) and it corresponds to a wire singularity on the rotation axis. Moreover the BL transformation is not well-defined.
+
+20
+
+4.2.2 Function transformation
+
+All the real functions fi = fi(r) must be modified to be kept real once r  C
+
+f~i = f~i(r, r¯) = f~i r , F ()  R.
+
+(4.12)
+
+The last equality means that f~i can depend on  only through Im r = F (). The condition that one recovers the seed for r¯ = r = r is
+
+f~i(r , 0) = fi(r ).
+
+(4.13)
+
+If all magnetic charges are vanishing or in terms without electromagnetic charges the rules for finding the f~i are
+
+r
+
+-
+
+1 2
+
+(r
+
++
+
+r¯)
+
+=
+
+Re r,
+
+11 r - 2
+
+1 r
+
++
+
+1 r¯
+
+=
+
+Re r |r|2 ,
+
+(4.14a) (4.14b)
+
+r2 - |r|2.
+
+(4.14c)
+
+Up to quadratic powers of r and r-1 these rules determine almost uniquely the result. This is not anymore the case when the configurations involve higher power. These can be dealt with by splitting it in lower powers: generically one should try to factorize the expression into at most quadratic pieces. Some examples of this with natural guesses are
+
+r4 - b2 = (r2 + b)(r2 - b),
+
+r4 + b = r2
+
+r2
+
++
+
+b r2
+
+.
+
+(4.15)
+
+Moreover the same power of r can be transformed differently, for example
+
+1
+
+11
+
+rn - rn-2 |r|2 .
+
+(4.16)
+
+Denoting by Q(r) and P (r) collectively all functions that multiply qI and pI respectively, all such terms should be rewritten as
+
+qI Q(r), pI P (r) = Re ZI Q(r) , Im ZI P (r)
+
+(4.17)
+
+before performing the transformation (4.8). Note that in this case one does not use the rules (4.14).
+Finally the transformed complex scalars are obtained by simply plugging (4.8)
+
+ i(r , ) =  i r + iF () .
+
+(4.18)
+
+4.2.3 Null coordinates
+
+Plugging the transformation (4.8) inside the seed metric and gauge fields (4.6) leads to11
+
+ds2 = -f~t (du +  dr + H d)2 + 2 dr d + f~ d2 + 2H2 d2 , AI = f~I (du + G H d) + pI H d
+
+(4.19a) (4.19b)
+
+where (one should not confuse the primes to indicate derivatives from the primes on the coordinates)
+
+=G +
+
+f~r f~t
+
+F
+
+,
+
+2
+
+=
+
+1
+
++
+
+f~r f~
+
+F
+
+2,
+
+=
+
+f~r f~t
+
+,
+
+ = f~r F H.
+
+(4.20)
+
+11We stress that at this stage these formula do not satisfy Einstein equations, they are just proxies to
+
+simplify later computations.
+
+21
+
+4.2.4 Boyer­Lindquist coordinates The Boyer­Lindquist transformation
+
+du = dt - g(r )dr , d = d - h(r )dr ,
+
+(4.21)
+
+can be used to remove the off-diagonal tr and r components of the metric
+
+The solution to these equations is
+
+gt r = gr  = 0.
+
+(4.22)
+
+g(r ) =
+
+f~tf~r -1 f~ - F G ,
+
+
+h(r
+
+)
+
+=
+
+F H
+
+(4.23)
+
+where
+
+
+
+=
+
+f~ f~r
+
+2
+
+=
+
+f~ f~r
+
++
+
+F
+
+2.
+
+(4.24)
+
+Remember that the changes of coordinate is valid only if g and h are functions of r only. Inserting (4.23) into (4.19) yields
+
+ds2 = -f~t (dt
+
++
+
+H
+
+d
+
+)2
+
++
+
+f~ 
+
+dr
+
+2
+
++
+
+f~
+
+d2 + 2H2 d 2
+
+,
+
+AI = f~I
+
+dt
+
+- 
+
+f~ f~tf~r
+
+dr
+
++ G H d
+
++ pI H d
+
+(4.25a) (4.25b)
+
+where we recall that
+
+=G +
+
+f~r f~t
+
+F
+
+,
+
+2
+
+=
+
+1
+
++
+
+f~r f~
+
+F
+
+2.
+
+(4.26)
+
+Generically one finds Ar = Ar(r) which can be set to zero thanks to a gauge transformation. Before closing this section we simplify the above formulas for few simple cases that are
+often used.
+
+Degenerate Schwarzschild seed A degenerate seed (one unknown function) in Schwar-
+
+zschild coordinates has
+
+fr = ft-1,
+
+f = r2.
+
+(4.27)
+
+The above formulas for this case can be found in section 5.1.
+
+Degenerate isotropic seed A degenerate seed in isotropic coordinates has
+
+ft = f -1,
+
+fr = f,
+
+f = r2f.
+
+In this case the above formulas reduced to
+
+ds2 = -f~-1 (dt + H d)2 + f~2
+
+dr2 
+
++ d2
+
++ 2H2 d2
+
+,
+
+AI = f~I
+
+dt
+
+-
+
+f~2 
+
+dr
+
++
+
+G
+
+H
+
+d
+
++ pI H d
+
+where we recall that  = G + f~F ,
+
+2
+
+=
+
+1
+
++
+
+F2 2
+
+,
+
+ = f~2 + F 2.
+
+(4.28) (4.29a) (4.29b)
+(4.30)
+
+22
+
+Constant F The expressions simplify greatly if F = 0 (for example when  = 0). First all functions depend only on r since F () = cst
+
+f~i(r, ) = f~i(r, 0).
+
+(4.31)
+
+As a consequence the Boyer­Lindquist transformation (4.23)
+
+g(r ) =
+
+f~r f~t
+
+,
+
+h(r ) = 0
+
+(4.32)
+
+is always well-defined. For the same reason it is always possible to perform a gauge transformation. Finally the metric and gauge fields (4.25) becomes
+
+ds2 = -f~t dt + G H d 2 + f~r dr2 + f~ d2, AI = f~I (dt + G H d ) + pI H d .
+
+(4.33a) (4.33b)
+
+4.3 Open questions
+The algorithm we have described help to work with five (four if  = 0) of the six parameters of the Plebaski­Demiaski (PD) solution. It is tempting to conjecture that it can be extended to the full set of parameters by generalizing the ideas described in section 3.2 (shifting , writing a + i. . . ). Indeed we have found that these operations were quite natural in the context of the PD solution and inspiration could be found in [74].
+
+5 Derivation of the transformations
+The goal of this section is to derive the form (4.11a) of the possible complex transformations. This method was first used by Demiaski [7] and then generalized in [59]. The idea is to perform the algorithm in a simple setting (metric with one unknown function and one gauge field), leaving arbitrary the functions F () and G() in (4.8) and f~i before solving the equations of motion to determine them. Then the result can be reinterpreted in terms of rules to get the functions f~i from fi (this last part was not discussed in [7]). This selects the possible complex transformations. Then one can hope that these transformations will be the most general ones (under the assumptions that are made), and one can use these transformations in other cases without having to solve the equations. The latter claim can be justified by looking at the equations of motions for more complex examples: even if one cannot find directly a solution, one finds that the same structure persists [59] (this is also motivated by the solutions in [49, 50]). Another strength of this approach is to remove the ambiguity of the algorithm since the functions are found from the equations of motion, and this may help when one does not know how to perform precisely the algorithm (for example in higher dimensions, see section 8).
+Another goal of this section is to expose the full technical details of the computations: Demiaski's paper [7] is short and results are extremely condensed. In particular we uncover an underlying assumption on the form of the metric function and we show how this lead to an error an in his formula (14) (already pointed out in [21]). A generalization of this hypothesis leads to other equations that we could not solve analytically and which may lead to other complex transformations.
+Finally this analysis shows the impossibility to derive the (a)dS­Kerr(­Newman) solutions from the JN algorithm. As discussed in the previous section generalization of the ansatz may help to avoid this no-go theorem.
+
+23
+
+5.1 Setting up the ansatz
+We first recall the action and equations of motion before describing the ansatz for the metric and gauge fields. We refer to section 4 for the general formulas from which the expressions in this section are derived.
+
+5.1.1 Action and equations of motion
+
+The action for Einstein­Maxwell gravity with cosmological constant  reads
+
+S=
+
+d4x
+
+ -g
+
+1 22
+
+(R
+
+-
+
+2)
+
+-
+
+1 4
+
+F2
+
+,
+
+(5.1)
+
+where 2 = 8G is the Einstein coupling constant, gµ is the metric with Ricci scalar R and F = dA is the field strength of the Maxwell field Aµ. In the rest of this section we will set  = 1. The corresponding equations of motion (respectively Einstein and Maxwell) are
+
+Gµ + gµ = 2 Tµ ,
+
+µF µ = 0,
+
+(5.2)
+
+where energy­momentum tensor for the electromagnetic gauge field Aµ is
+
+Tµ
+
+=
+
+FµF 
+
+-
+
+1 4
+
+gµ F 2.
+
+(5.3)
+
+5.1.2 Seed configuration We are interested in the subcase of (4.2a) where
+
+ft = f,
+
+fr = f -1,
+
+f = r2.
+
+The seed configuration is
+
+ds2 = -f (r) dt2 + f (r)-1 dr2 + r2 d2, A = fA(r) dt
+
+where we consider spherical and hyperbolic horizons
+
+(5.4)
+(5.5a) (5.5b)
+
+d2 = d2 + H()2 d2,
+
+H() = sin   = 1, sinh   = -1.
+
+(5.6)
+
+In terms of null coordinates (4.5) the configuration reads
+ds2 = -f du2 - 2 dudr + r2 d2, A = fA du.
+
+(5.7a) (5.7b)
+
+5.1.3 Janis­Newman configuration
+
+The configuration obtained from the Janis­Newman algorithm with a general transformation
+
+(4.8)
+
+r = r + i F (), u = u + i G()
+
+(5.8)
+
+corresponds to (we omit the primes on the coordinates)
+
+ds2 = -f~(du +  dr + H d)2 + 2 drd + 2 d2 + 2H2 d2 , A = f~A (du + G H d)
+
+(5.9a) (5.9b)
+
+24
+
+where
+
+2 = r2 + F 2,
+
+ = G + f~-1 F ,
+
+2
+
+=
+
+1
+
++
+
+F2 f~2
+
+,
+
+ = f~-1,
+
+ = f~-1 F H.
+
+(5.10)
+
+The Boyer­Lindquist transformation (4.21)
+
+du = dt - g(r)dr, d = d - h(r)dr
+
+(5.11)
+
+with functions
+
+g(r)
+
+=
+
+2
+
+-F 
+
+G
+
+,
+
+h(r)
+
+=
+
+F H,
+
+leads to (omitting the primes on the coordinates)
+
+ = f~2 2
+
+(5.12)
+
+ds2
+
+=
+
+-f~t
+
+(dt
+
++
+
+H
+
+d)2
+
++
+
+2 
+
+dr2
+
++
+
+2
+
+d2 + 2H2 d2
+
+,
+
+A = f~A
+
+2 dt -  dr + G H d .
+
+(5.13a) (5.13b)
+
+5.2 Static solution
+It is straightforward to solve the equations (5.2) for the static configuration (5.5). Only the (t) component of Maxwell equations is non trivial
+
+2fA + rfA = 0,
+
+(5.14)
+
+the prime being a derivative with respect to r, and its solution is
+
+fA(r)
+
+=
+
+
+
++
+
+q r
+
+(5.15)
+
+where q is a constant of integration that is interpreted as the charge and  is an additional constant that can be removed by a gauge transformation.
+The only relevant Einstein equation is
+
+q2 r2
+
+-
+
+
+
++
+
+r2
+
++
+
+f
+
++
+
+rf
+
+=0
+
+(5.16)
+
+whose solution reads
+
+f (r)
+
+=
+
+-
+
+2m r
+
++
+
+q2 r2
+
+-
+
+ 3
+
+r2,
+
+(5.17)
+
+m being a constant of integration that is identified to the mass.
+
+We stress that we are just looking for solutions of Einstein equations and we are not concerned with regularity (in particular it is well-known that only  = 1 is well-defined for
+
+ = 0).
+
+The solution we will find in the next section should reduce to this one upon setting
+
+F, G = 0.
+
+5.3 Stationary solution
+Since Boyer­Lindquist imposes additional restrictions on the solutions we will solve the equations of motion (5.2) for the configuration in null coordinates (5.9).
+
+25
+
+5.3.1 Simplifying the equations
+
+The components (rr) and (r) give respectively the equation
+
+G + H G = ±2F, H
+F G + H G = 2F F . H
+
+(5.18a) (5.18b)
+
+If F = 0 then F is an arbitrary constant and the sign of the first equation can be absorbed into its definition.12 On the other hand if F = 0 one can simplify by the latter in the
+
+second equation and this fixes the sign of the first equation. Then in both cases the relevant
+
+equation reduces to
+
+G + H G = 2F, H
+
+(5.19)
+
+which depends only on  and allows to solve for G in terms of F .
+
+Integrating the r-component of the Maxwell equation gives
+
+f~A
+
+=
+
+r2
+
+qr + F2
+
++
+
+
+
+r2 r2
+
+- +
+
+F2 F2.
+
+(5.20)
+
+The -equation reads
+
+F = 0
+
+(5.21)
+
+which implies  = 0 if F = 0. The - and t-equations follow from these two equations. As
+
+seen above,  can be removed in the static limit F  0 and in the rest of this section we
+
+consider only the case13
+
+ = 0.
+
+(5.22)
+
+The (tr) equation contains only r-derivatives of f~ and can be integrated, giving14
+
+f~ =
+
+
+
+-
+
+2mr
+
+-
+
+q2 + 2F ( F r2 + F 2
+
++
+
+K)
+
+-
+
+ 3
+
+(r2
+
++
+
+F 2)
+
+-
+
+4 3
+
+F2
+
++
+
+8 3
+
+r2
+
+F4 + F2
+
+(5.23)
+
+where again m is a constant of integration interpreted as the mass and the function K is
+
+defined by
+
+2K = F + H F . H
+
+(5.24)
+
+This implies the equations (r) and ().
+
+As explained below (4.12) the -dependence should be contain in F () only. The second term of the function f~ contains some lonely  from the H() in the function K: this means
+
+that they should be compensated by the F , and we therefore ask that the sum F + K be constant15
+
+ F + K = 0 =  F + K = n.
+
+(5.25)
+
+The parameter n is interpreted as the NUT charge. The components (t) and () give the same equation
+
+ F = 0.
+
+(5.26)
+
+Finally one can check that the last three equations (tt), (t) and () are satisfied.
+12In particular all expressions are quadratic in F , but only linear in F . 13We relax this assumption in section 5.4.2. 14In [7] the last term of f~ is missing as pointed out in [21]. 15In section 5.4.1 we relax this last assumption by allowing non-constant F + K. In this context the equations and the function f~ are modified and this provides an explanation for the Demiaski's error in f~ in [7].
+
+26
+
+5.3.2 Summary of the equations
+
+The equations to be solved are
+
+2F = G + H G , H
+ n =  F + K,
+0 = F
+
+(5.27a)
+(5.27b) (5.27c)
+
+and the function f~ is
+
+f~ =
+
+
+
+-
+
+2mr
+
+-
+
+q2 + 2F ( F r2 + F 2
+
++
+
+K)
+
+-
+
+ 3
+
+(r2
+
++
+
+F 2)
+
+-
+
+4 3
+
+F2
+
++
+
+8 3
+
+F4 r2 + F 2 .
+
+(5.27d)
+
+We also defined
+
+2K = F + H F . H
+
+(5.27e)
+
+As explained in the introduction the second step will be to explain (5.27d) in terms of new rules for the algorithm: they have been found in [59] and this was the topic of section 4.2.
+In the next subsections we solve explicitly the equations (5.27) in both cases  = 0 and  = 0.
+
+5.3.3 Solution for  = 0
+
+Equation (5.27c) implies that F = 0, from which K = 0 follows by definition; then one
+
+obtains
+
+F () = n
+
+(5.28)
+
+by compatibility with (5.27b) and since K() = 0. Solution to (5.27a) is
+
+G()
+
+=
+
+c1
+
+-
+
+2
+
+n
+
+ln
+
+H
+
+()
+
++
+
+c2
+
+ln
+
+H (/2) H (/2)
+
+(5.29)
+
+where c1 and c2 are two constants of integration. Since only G appears in the metric we can set c1 = 0. On the other hand the constant c2 can be removed by the transformation
+
+du = du - c2 d
+
+(5.30)
+
+since one has
+
+ln
+
+H H
+
+(/2) (/2)
+
+The solution to the system (5.27) is thus
+
+=
+
+1 H() .
+
+(5.31)
+
+F () = n, The function f~ then takes the form
+
+G() = -2 n ln H().
+
+(5.32)
+
+f~ =
+
+
+
+-
+
+2mr
+
+- q2 r2 +
+
++ 2n2 n2
+
+-
+
+ 3
+
+r4
+
++ 6n2r2 - r2 + n2
+
+3n4 .
+
+(5.33)
+
+This corresponds to the (a)dS­Schwarzschild­NUT solution: compare with (3.18) and (4.33). The parameter  in the BL transformation (4.24) is
+
+
+
+=
+
+r2
+
+-
+
+2mr
+
++
+
+q2
+
++
+
+n4
+
+-
+
+ 3
+
+r4
+
+-
+
+n2(
+
++
+
+2r2).
+
+(5.34)
+
+27
+
+As noted by Demiaski the only parameters that appear are the mass and the NUT charge, and it is not possible to add angular momentum for non-vanishing cosmological constant.16 As a consequence the JN algorithm cannot provide a derivation of the (a)dS­ Kerr­Newman solution.
+
+5.3.4 Solution for  = 0
+
+The solution to the differential equation (5.27b) is
+
+F () = n - a H () + c
+
+1
+
++
+
+H
+
+()
+
+ln
+
+H (/2) H (/2)
+
+(5.35)
+
+where a and c denote two constants of integration. We solve the equation (5.27a) for G
+
+G()
+
+=
+
+c1
+
++
+
+aH
+
+()
+
+-
+
+cH
+
+()
+
+ln
+
+H (/2) H (/2)
+
+-
+
+2 n ln H()
+
++
+
+(a
+
++
+
+c2)
+
+ln
+
+H (/2) H (/2)
+
+(5.36)
+
+and c1, c2 are constants of integration. Again since only G appears in the metric we can set c1 = 0. We can also remove the last term with the transformation
+
+du = du - (c2 + a)d.
+
+(5.37)
+
+One finally gets
+
+F () = n - a H () + c
+
+1
+
++
+
+H
+
+()
+
+ln
+
+H (/2) H (/2)
+
+,
+
+G()
+
+=
+
+a
+
+H
+
+()
+
+-
+
+cH
+
+()
+
+ln
+
+H (/2) H (/2)
+
+-
+
+2 n ln
+
+H ().
+
+(5.38a) (5.38b)
+
+This solution was already found in [49] for the case  = 1 by solving directly Einstein­ Maxwell equations, starting with a metric ansatz of the form (5.9). Our aim was to show that the same solution can be obtained by applying Demiaski's method to all the quantities, including the gauge field.
+The BL transformation is well defined only for c = 0, in which case
+
+g
+
+=
+
+r2
+
++
+
+a2 
+
++
+
+n2 ,
+
+The function f~ reads
+
+h
+
+=
+
+a ,
+
+ = r2 - 2mr + q2 - n2 + a2.
+
+(5.39)
+
+f~ =
+
+-
+
+2mr - q2 2
+
++
+
+ n(n - aH 2
+
+) ,
+
+2 = r2 + (n - a H )2
+
+(5.40)
+
+and this corresponds to the Kerr­Newman­NUT solution [73, sec. 2.2].
+
+5.4 Relaxing assumptions
+In the derivation of section 5.3.1 we have made two assumptions in order to recover the simplest case. The goal of this section is to show how these assumptions can be lifted, even if this does not lead to useful results: one cannot solve the equations in one case while in the other it is not clear how to recast the result in terms of a complex transformation.
+16In [78] Leigh et al. generalized Geroch's solution generating technique and also found that only the mass and the NUT charge appear when  = 0. We would like to thank D. Klemm for this remark.
+
+28
+
+5.4.1 Metric function F -dependence In section 5.3.1 we obtained the equation (5.27b)
+
+ F + K =  n, by requiring that the function (5.27d)
+
+2K = F + H F H
+
+(5.41)
+
+f~ =
+
+
+
+-
+
+2mr
+
+-
+
+q2 + 2F ( F r2 + F 2
+
++
+
+K)
+
+-
+
+ 3
+
+(r2
+
++
+
+F 2)
+
+-
+
+4 3
+
+F2
+
++
+
+8 3
+
+r2
+
+F4 + F2
+
+(5.42)
+
+depends on  only through F (). A more general assumption would be that F + K is some
+
+function  = (F )
+
+ F + K =  (F ).
+
+(5.43)
+
+First if F = 0 then K = 0 and the definition of K implies
+
+ = F = n.
+
+(5.44)
+
+The (t)- and ()-components give the equation
+
+4 F 2F = F F .
+
+(5.45)
+
+If  = 0 we find that
+
+F  = 0 =  = n
+
+(5.46)
+
+which reduces to the case studied in section 5.3.1, while if F = 0 this equation does not provide anything.
+On the other hand if F = 0 and  = 0 then the previous equation becomes
+
+F  = 4F 2
+
+(5.47)
+
+which can be integrated to
+
+(F
+
+)
+
+=
+
+n
+
++
+
+4 3
+
+F
+
+3
+
+(5.48)
+
+(notice that the limit   0 is coherent). Plugging this function into equation (5.43) one
+
+obtains
+
+F +K = 
+
+n
+
++
+
+4 3
+
+F 3
+
+(5.49)
+
+(remember that F = 0). This differential equation is non-linear and we were not able to find an analytical solution. Despite that this provides a generalization of the algorithm with non-constant F in the presence of a cosmological constant this is not sufficient for obtaining (a)dS­Kerr: the form of g given in (5.13) is not the required one.
+Nonetheless by inserting the expression of  in f~ we see that the last term is killed
+
+f~ =  -
+
+2mr - q2 + 2 n F r2 + F 2
+
+-
+
+ 3
+
+(r2 + F 2) -
+
+4 3
+
+F 2.
+
+One can recognize the function given by Demiaski [7] and may explain his error.
+
+(5.50)
+
+29
+
+5.4.2 Gauge field integration constant
+
+In section 5.3.1 we obtained a second integration constant  in the expression of the gauge
+
+field
+
+f~A
+
+=
+
+r2
+
+qr + F2
+
++
+
+
+
+r2 r2
+
+- +
+
+F2 F2.
+
+(5.51)
+
+One of the Maxwell equation gives  = 0 if F = 0, but otherwise no equation fixes its value. For this reason we focus on the case F = 0 or equivalently  = 0 through equation (5.27c).
+In this case the function f~ is modified to
+
+f~ =  -
+
+2mr - q2 + 2F ( F + K) + 42F 2 r2 + F 2
+
+-
+
+ 3
+
+(r2
+
++
+
+F
+
+2)
+
+-
+
+4 3
+
+F
+
+2
+
++
+
+8 3
+
+F4 r2 + F 2 .
+
+(5.52)
+
+Equation (5.27c) is modified but it is still solved by F = 0 and all other equations are left unchanged (in particular F + K is still given by the function (F ) (5.48)). For (F ) = n the configuration with  = 0 provides another solution when  = 0 but it is not clear how to get it from a complexification of the function.
+
+6 Examples
+In this section we list several examples that can be derived from the JN algorithm described in section 4. Other examples were described previously: Kerr­Newman in section 2.3.2, dyonic Kerr­Newman and Yang­Mills Kerr­Newman in section 3.1. For simplicity we will always consider the case  = 1 except when  = 0.
+The first two examples are the Kerr­Newmann­NUT solution (already derived by another path in section 5.3.4) and the charged (a)dS­BBMB­NUT solution in conformal gravity. We will also give examples from ungauged N = 2 supergravity coupled to nv = 0, 1, 3 vector multiplets (pure supergravity, T3 model and STU model): this theory is reviewed in appendix B.
+
+6.1 Kerr­Newman­NUT
+
+The Reissner­Nordström metric and gauge fields are given by
+
+ds2 = -f dt2 + f -1 dr2 + r2d2,
+
+f
+
+=
+
+1
+
+-
+
+2m r
+
++
+
+q2 r2 ,
+
+A = fA dt,
+
+fA
+
+=
+
+q ,
+r
+
+m and q being the mass and the electric charge. The two functions are complexified as
+
+f~
+
+=
+
+1
+
+-
+
+2
+
+Re(mr¯) |r|2
+
++
+
+q2
+
+,
+
+f~A
+
+=
+
+q Re r |r|2 .
+
+Performing the transformation
+
+u = u + a cos  - 2n ln sin  , r = r + i n - a cos  , m = m + in
+
+gives (omitting the primes)
+
+f~
+
+=
+
+1
+
+-
+
+2mr
+
++
+
+2n(n
+
+-a 2
+
+cos
+
+)
+
+-
+
+q2
+
+,
+
+2 = r2 + (n - a cos )2.
+
+(6.1a) (6.1b)
+(6.2) (6.3) (6.4)
+
+30
+
+The metric and the gauge fields in BL coordinates are
+
+ds2
+
+=
+
+-f~(dt
+
++
+
+
+
+d)2
+
++
+
+2 
+
+dr2
+
++
+
+2(d2
+
++
+
+2 H 2 d2 ),
+
+A
+
+=
+
+qr 2
+
+dt - (a sin2  + 2n cos )d
+
++ Ar dr
+
+where
+
+ = -2n cos  - (1 - f~-1) a sin2 ,
+
+2
+
+=
+
+ f~2 ,
+
+ = r2 - 2mr + a2 + q2 - n2.
+
+This corresponds to the Kerr­Newman­NUT solution [73]. One can check that Ar is a function of r only
+
+Ar
+
+=
+
+qr -
+
+and it can be removed by a gauge transformation.
+
+(6.5a) (6.5b)
+(6.6)
+(6.7)
+
+6.2 Charged (a)dS­BBMB­NUT
+
+The action of Einstein­Maxwell theory with cosmological constant conformally coupled to a scalar field is [67]
+
+S=1
+
+d4
+
+x
+
+ -g
+
+R - 2 - 1 R2 - ()2 - 24 - F 2
+
+,
+
+2
+
+6
+
+(6.8)
+
+where  is a coupling constant, and we have set 8G = 1. For F, ,  = 0, the Bocharova­Bronnikov­Melnikov­Bekenstein (BBMB) solution [79,
+80] is static and spherically symmetric ­ it can be seen as the equivalent of the Schwarzschild black hole in conformal gravity.
+The general static charged solution with cosmological constant and quartic coupling reads
+
+ds2 = -f dt2 + f -1 dr2 + r2 d2,
+
+(6.9a)
+
+A = q dt, r
+
+=
+
+m
+
+- 6
+
+, r-m
+
+f
+
+=
+
+ -3
+
+r2
+
++
+
+
+
+(r
+
+- m)2 r2 ,
+
+(6.9b) (6.9c)
+
+where the horizon can be spherical or hyperbolic. There is one constraint among the para-
+
+meters
+
+q2 = m2
+
+1
+
++
+
+ 36
+
+(6.10)
+
+and one has  < 0 in order for  to be real. In order to add a NUT charge one performs the JN transformation17
+
+u = u - 2n ln H(), r = r + in, m = m + in, One obtains the metric (omitting the primes)
+
+=
+
+-
+
+4 3
+
+n2.
+
+(6.11)
+
+ds2 = -f~ dt - 2nH d 2 + f~-1 dr2 + (r2 + n2) d2
+
+(6.12)
+
+17Due to the convention of [67] there is no  in the transformations.
+
+31
+
+where the function f~ is
+
+f~
+
+=
+
+-
+
+ 3
+
+(r2
+
++
+
+n2)
+
++
+
+
+
+-
+
+4 3
+
+n2
+
+(r - m)2 r2 + n2 .
+
+(6.13)
+
+Note that the term (r - m) is invariant. Similarly one obtains the scalar field
+
+
+
+=
+
+ - 6
+
+m2 + n2 r-m
+
+(6.14)
+
+where the m in the numerator as been complexified as |m|. Finally it is trivial to find the
+
+gauge field
+
+A
+
+=
+
+r2
+
+q + n2
+
+dt - 2n cos  d
+
+(6.15)
+
+and the constraint (6.10) becomes
+
+q2 =
+
+
+
+-
+
+4 3
+
+n2
+
+(m2 + n2)
+
+1
+
++
+
+ 36
+
+.
+
+(6.16)
+
+An interesting point is that the radial coordinate is redefined in [67] when obtaining the stationary solution from the static one.
+Note that the BBMB solution and its NUT version are obtained from the limit
+
+,  - 0,
+
+with
+
+-
+
+ 36
+
+-
+
+1,
+
+(6.17)
+
+which also implies q = 0 from the constraint (6.10). Since no other modifications are needed, the derivation from the JN algorithm also holds in this case.
+
+6.3 Ungauged N = 2 BPS solutions
+A BPS solution is a classical solution which preserves a part of the supersymmetry. The BPS equations are obtained by setting to zero the variations of the fermionic partners under a supersymmetric transformation. These equations are first order and under some conditions their solutions also solve the equations of motion.
+In [65, sec. 3.1] (see also [81, sec. 2.2] for a summary), Behrndt, Lüst and Sabra obtained the most general stationary BPS solution for N = 2 ungauged supergravity. The metric for this class of solutions reads
+
+ds2 = f -1(dt +  d)2 + f d2,
+
+(6.18)
+
+with the 3-dimensional spatial metric given in spherical or spheroidal coordinates
+
+d2 = hij dxidxj = dr2 + r2(d2 + sin2  d2)
+
+=
+
+2 r2 + a2
+
+dr2
+
++ 2d2
+
++ (r2
+
++ a2) sin2 
+
+d2,
+
+(6.19a) (6.19b)
+
+where i, j, k are flat spatial indices (which should not be confused with the indices of the
+scalar fields). The functions f and  depend on r and  only. Then the solution is entirely given in terms of two sets of (real) harmonic functions18
+
+32
+
+{H, H}
+
+f = e-K = i(X¯ F - XF¯),
+
+ijkj k = 2e-K Ai = (HiH - HiH),
+
+Fij
+
+=
+
+1 2
+
+ijk k H  ,
+
+G ij
+
+=
+
+1 2
+
+ij k k H ,
+
+i(X - X¯ ) = H, i(F - F¯) = H.
+
+(6.20a) (6.20b) (6.20c) (6.20d)
+
+The object i is the connection of the line bundle corresponding to the fibration of time over the spatial manifold (its curl is related to the Kähler connection). Its only non-vanishing component is    = H.
+Starting from the metric (6.18) in spherical coordinates with  = 0, one can use the JN algorithm of section 4 with
+
+ft = f -1,
+
+fr = f,
+
+f = r2f,
+
+leading to the formula (4.29). The function  reads
+
+ = H = a(1 - f~) sin2  + 2n cos .
+
+(6.21) (6.22)
+
+Then one needs only to find the complexification of f and to check that it gives the
+correct , as would be found from the equations (6.20). However it appears that one cannot
+complexify directly f since it should be viewed as a composite object made of complex functions. Therefore one needs to complexify first the harmonic functions H and H (or equivalently X), and then to reconstruct the other quantities. Nonetheless, equations
+(6.20) ensure that finding the correct harmonic functions gives a solution, thus it is not
+necessary to check these equations for all the other quantities. In the next subsections we provide two examples,19 one for pure supergravity as an
+appetizer, and then one with nv = 3 multiplets (STU model).
+
+6.3.1 Pure supergravity
+
+As a first example we consider pure (or minimal) supergravity, i.e. nv = 0 [65, sec. 4.2].
+
+The prepotential reads
+
+F
+
+=
+
+i -4
+
+(X 0 )2 .
+
+(6.23)
+
+The function H0 and H0 are related to the real and imaginary parts of the scalar X0
+
+H0
+
+=
+
+1 2
+
+(X
+
+0
+
++
+
+X¯ 0)
+
+=
+
+Re X0,
+
+H¯ 0 = i(X0 - X¯ 0) = -2 Im X0,
+
+(6.24)
+
+while the Kähler potential is given by
+
+f = e-K = X0X¯ 0.
+
+(6.25)
+
+The static solution corresponds to
+
+H0
+
+=
+
+X0
+
+=
+
+1
+
++
+
+m r
+
+(6.26)
+
+18We omit the tilde that is present in [65] to avoid the confusion with the quantities that are transformed by the JNA. No confusion is possible since the index position will always indicate which function we are using.
+19They correspond to singular solutions, but we are not concerned with regularity here.
+
+33
+
+Performing the JN transformation for the angular momentum gives
+
+X~ 0
+
+=
+
+1
+
++
+
+m(r
+
++ ia 2
+
+cos
+
+) .
+
+(6.27)
+
+This corresponds to the second solution of which is stationary with
+
+
+
+=
+
+m(2r + 2
+
+m)
+
+a sin2
+
+.
+
+(6.28)
+
+Alternatively one can use the JN algorithm to add a NUT charge. In this case using the
+
+rule
+
+r
+
+-
+
+1 2
+
+(r
+
++
+
+r¯)
+
+=
+
+Re r
+
+=
+
+r
+
+(6.29)
+
+must be use for transforming f and r2 (in front of d), leading to
+
+X0
+
+=
+
+1
+
++
+
+m
+
++
+
+in .
+
+r
+
+(6.30)
+
+Note that it gives
+
+f~ =
+
+1+ m r
+
+2 n2 + r2 .
+
+(6.31)
+
+It is slightly puzzling that the above rule should be used instead of the two others in (4.14). One possible explanation is the following: in the seed solution shift the radial coordinate such that r = R - m and apply the JN transformation in this coordinate system. It is clear that every function of r is left unchanged while the tensor structure transforms identically since dr = dR. After the transformation one can undo the coordinate transformation. As we mentioned earlier the algorithm is very sensible to the coordinate system and to the parametrization (but it is still not clear why the R-coordinate is the natural one). This kind of difficulty will reappear in the SWIP solution (section 6.5).
+
+6.3.2 STU model We now consider the STU model nv = 3 with prepotential [65, sec. 3]
+
+F
+
+=
+
+X1X2X3 - X0 .
+
+(6.32)
+
+The expressions for the Kähler potential and the scalar fields in terms of the harmonic functions are complicated and will not be needed (see [65, sec. 3] for the expressions). Various choices for the functions will give different solutions.
+A class of static black hole-like solutions are given by the harmonic functions [65, sec. 4.4]
+
+H0
+
+=
+
+h0
+
++
+
+q0 r
+
+,
+
+Hi = hi + pi , r
+
+H0 = Hi = 0.
+
+These solutions carry three magnetic pi and one electric q0 charges. Let's form the complex harmonic functions
+
+(6.33)
+
+H0 = H0 + i H0, Hi = Hi + i Hi.
+
+(6.34)
+
+Then the rule for complex function leads to
+
+H0
+
+=
+
+h0
+
++
+
+q0(r
+
++ ia 2
+
+cos
+
+) ,
+
+Hi
+
+=
+
+hi
+
++
+
+pi(r
+
++ ia 2
+
+cos
+
+) ,
+
+(6.35)
+
+34
+
+for which the various harmonic functions read explicitly
+
+H0
+
+=
+
+h0
+
++
+
+q0r 2
+
+,
+
+Hi
+
+=
+
+hi
+
++
+
+pir 2 ,
+
+H0
+
+=
+
+q0
+
+a cos 2
+
+
+
+,
+
+Hi
+
+=
+
+pia cos  2 .
+
+(6.36)
+
+This set of functions corresponds to the stationary solution of [65, sec. 4.4] where the magnetic and electric dipole momenta are not independent parameters but obtained from the magnetic and electric charges instead.
+
+6.4 Non-extremal rotating solution in T 3 model
+The T 3 model under consideration corresponds to Einstein­Maxwell gravity coupled to an axion  and a dilaton  (with specific coupling constants) and the action is given by (6.50) with M = 1. This model can be embedded in N = 2 ungauged supergravity with nv = 1, equal gauge fields A  A0 = A1 and prepotential20
+
+F = -i X0X1,
+
+(6.37)
+
+The dilaton and the axion corresponds to the complex scalar field
+
+ = e-2 + i .
+
+(6.38)
+
+Sen derived the rotating black hole for this theory using the fact that it can be embedded in heterotic string theory [63].
+The static metric, gauge field and the complex field read respectively
+
+ds2
+
+=
+
+- f1 f2
+
+dt2
+
++
+
+f2
+
+f1-1 dr2 + r2 d2
+
+,
+
+A = fA dt, f2
+
+ = e-2 = f2
+
+(6.39a) (6.39b) (6.39c)
+
+where
+
+f1
+
+=
+
+1
+
+-
+
+r1 r
+
+,
+
+f2
+
+=
+
+1
+
++
+
+r2 r
+
+,
+
+fA
+
+=
+
+q .
+r
+
+The radii r1 and r2 are related to the mass m and the charge q by
+
+(6.40)
+
+r1 + r2 = 2m,
+
+r2
+
+=
+
+q2 .
+m
+
+(6.41)
+
+Applying the Janis­Newman algorithm with rotation, the two functions f1 and f2 are
+
+complexified as
+
+f~1
+
+=
+
+1
+
+-
+
+r1r 2
+
+,
+
+f~2
+
+=
+
+1
+
++
+
+r2r 2
+
+.
+
+(6.42)
+
+The final metric in BL coordinates is given by
+
+ds2
+
+=
+
+-
+
+f~1 f~2
+
+dt - a
+
+1
+
+-
+
+f~2 f~1
+
+2
+sin2  d + f~2
+
+2dr2 
+
++ 2d2 +
+
+ f~1
+
+sin2  d2
+
+(6.43)
+
+for which the BL functions are
+
+g(r)
+
+=
+
+^ ,
+
+h(r)
+
+=
+
+a 
+
+(6.44)
+
+20This model can be obtained from the STU model by setting the sections pairwise equal X2 = X0 and X3 = X1 [82]. It is also a truncation of pure N = 4 supergravity.
+
+35
+
+with
+
+ = f~12 + a2 sin2 ,
+
+^ = f~22 + a2 sin2 .
+
+Once fA has been complexified as
+
+f~A
+
+=
+
+qr 2
+
+(6.45) (6.46)
+
+the transformation of the gauge field is straightforward
+
+A
+
+=
+
+f~A f~2
+
+(dt
+
+-
+
+a sin2
+
+
+
+d)
+
+-
+
+qr 
+
+dr.
+
+(6.47)
+
+The Ar depending solely on r can again be removed thanks to a gauge transformation. Finally the scalar field is complex and is transformed as
+
+
+
+=
+
+1
+
++
+
+r2r¯ 2
+
+.
+
+(6.48)
+
+The explicit values for the dilaton and axion are then
+
+e-2 = f~2,
+
+
+
+=
+
+r2a cos 2
+
+
+
+.
+
+(6.49)
+
+This reproduces Sen's solution and it completes the computation from [26] which could
+not derive the gauge field nor the axion. It is interesting to note that for another value of the dilaton coupling we cannot use the transformation [51, 53].21
+
+6.5 SWIP solutions
+
+Let's consider the action [66, 83, sec. 12.2]
+
+S
+
+=
+
+1 16
+
+d4x
+
+|g|
+
+R
+
+-
+
+2()2
+
+-
+
+1 2
+
+e4
+
+()2
+
+-
+
+e-2Fµi F iµ
+
++
+
+ Fµi F~iµ
+
+(6.50)
+
+where i = 1, . . . , M . When M = 2 and M = 6 this action corresponds respectively to N = 2 supergravity with one vector multiplet and to N = 4 pure supergravity, but we keep M arbitrary. The axion  and the dilaton  are naturally paired into a complex scalar
+
+ =  + ie-2.
+
+(6.51)
+
+In order to avoid redundancy we first provide the general metric with a, n = 0, and we explain how to find it from the restricted case a = n = 0. The stationary Israel­Wilson­ Perjés (SWIP) solutions correspond to
+
+ds2 = -e2U W (dt + A d)2 + e-2U W -1d2,
+
+Ait = 2e2U Re(kiH2),
+
+A~it = 2e2U Re(kiH1),
+
+ = H1 , H2
+
+A = 2n cos  - a sin2 (e-2U W -1 - 1),
+
+e-2U = 2 Im(H1H¯2),
+
+W
+
+=
+
+1-
+
+r02 2
+
+.
+
+This solution is entirely determined by the two harmonic functions
+
+(6.52a) (6.52b) (6.52c) (6.52d)
+
+H1
+
+=
+
+1 2
+
+e0
+
+0
+
++
+
+0M + ¯0 r - ia cos 
+
+,
+
+H2
+
+=
+
+1 2
+
+e0
+
+1
+
++
+
+r
+
+M+ - ia cos
+
+
+
+.
+
+21The authors of [52] report incorrectly that [51] is excluding all dilatonic solutions.
+
+(6.53)
+
+36
+
+The spatial 3-dimensional metric d2 reads
+
+d2
+
+=
+
+hij
+
+dxidxj
+
+=
+
+2 - r02 r2 + a2 - r02
+
+dr2
+
++
+
+(2
+
+- r02)d2
+
++
+
+(r2
+
++ a2
+
+- r02) sin2 
+
+d2.
+
+Finally, r0 corresponds to
+
+r02 = |M|2 + ||2 -
+
+i 2
+
+i
+
+where the complex parameters are
+
+(6.54) (6.55)
+
+M = m + in, i = qi + ipi,
+
+(6.56)
+
+m being the mass, n the NUT charge, qi the electric charges and pi the magnetic charges, while the axion­dilaton charge  takes the form
+
+
+
+=
+
+-
+
+1 2
+
+(¯i)2 .
+M
+
+i
+
+(6.57)
+
+The latter together with the asymptotic values 0 are defined by
+
+
+
+
+
+0
+
+-
+
+ie-20
+
+2 .
+r
+
+(6.58)
+
+The complex constant ki are determined by
+
+ki
+
+=
+
+- 1 2
+
+Mi |M|2
+
++ -
+
+¯ ¯i ||2 .
+
+(6.59)
+
+As discussed in the previous section, the transformation of scalar fields is different depending on one is turning on a NUT charge or an angular momentum. For this reason, starting from the case a = n = 0, one needs to perform the two successive transformations
+
+u = u - 2in ln sin , r = r + in, m = m + in, u = u + ia cos , r = r - ia cos ,
+
+(6.60a) (6.60b)
+
+the order being irrelevant (for definiteness we choose to add the NUT charge first), the
+
+reason being that the transformations of the functions are different in both cases (as in
+
+section 6.3.1). As explained in appendix C.1, group properties of the JN algorithm ensure
+
+that the metric will be transformed as if only one transformation was performed. Then the
+
+metric and the gauge fields are directly obtained, which ensures that the general form of the
+
+solution (6.52) is correct. For that one needs to shift r2 by r02 in order to bring the metric (6.54) to the form (6.19). This modifies the function but one does not need this fact to obtain
+
+the general form. Then one can shift by -r02 before dealing with the complexification of the functions. See [66, p. 17] and section 6.3.1 for discussions about the changes of coordinates.
+
+Since all the functions and the parameters depend only on M, H1 and H2, it is sufficient to
+
+explain their complexification.
+
+The function W is transformed as a real function. On the other hand H1 and H2 are
+
+complex harmonic functions and should be transformed accordingly. For the NUT charge
+
+one should use the rule
+
+r - Re r.
+
+(6.61)
+
+Then one can perform the second transformation (6.60b) in order to add the angular mo-
+
+mentum by applying the usual rules (4.14). On can see that it yields the correct result.
+
+Finally let's note that it seems possible to also start from pi = 0 and to turn them on
+
+using the transformation
+
+qi = q i = qi + ipi,
+
+(6.62)
+
+using different rules for complexifying the various terms (depending whether one is dealing with a real or a complex function/parameter).
+
+37
+
+6.6 Gauged N = 2 non-extremal solution
+The simplest deformation of N = 2 supergravity with nv vector multiplets consists in the so-called Fayet­Iliopoulos (FI) gauging. It amounts to gauging (nv + 1) times the diagonal U(1) group of the SU(2) part of the R-symmetry group (automorphism of the supersymmetry algebra). The potential can be entirely written in terms of the quantities defined in appendix B and of the (nv + 1) coupling constants gI , where I = 0, . . . , nv.
+We consider the model with prepotential (see also section 6.4)
+
+F = -i X0X1.
+
+(6.63)
+
+for which the potential generated by the FI gauging is
+
+V
+
+(
+
+,
+
+¯)
+
+=
+
+-
+
+
+
+4 +
+
+¯
+
+g02 + g0g1( + ¯) + g12| |2
+
+.
+
+(6.64)
+
+The goal of this section is to derive the NUT charged black hole from [70] using the JN algorithm.22
+The seed solution is taken to be eq. (4.22) from [70] with j = N = 0
+
+ft
+
+=
+
+-
+
+2mr - 2
+
+2
+f
+
+I gI
+
+ZI
+
+2
+
++
+
+f
+2
+
+,
+
+f = r2 - 2 - 2,
+
+fI
+
+=
+
+(r
+
+- )QI
+
+-  PI ,
+
+f
+
+
+
+=
+
+g0 g1
+
+r r
+
++  - i -  + i .
+
+where the following quantities have been defined
+
+(6.65a) (6.65b) (6.65c) (6.65d)
+
+m=
+
+2P 0 g12 
+
+- (P 1)2P 0 + (Q1)2P 0 - 2Q0Q1P 1
+
+|Z 0 |2
+
+
+
+=
+
+-
+
+Q0 P0
+
+.
+
++
+
+g02P 0
+
+Z0
+
+2
+,
+
+(6.66a) (6.66b)
+
+The independent parameters are given by QI (electric charges), P I (magnetic charges), g (FI gaugings),  (scalar charge) and  = -3/ 2 (the cosmological constant).
+In order to perform the complexification the functions are first rewritten as
+
+2 Re(mr¯) - 2 2
+
+ft =  -
+
+f
+
+I
+
+gI
+
+ZI
+
+2
+
++
+
+f
+2
+
+,
+
+f
+
+=
+
+|r|2
+
+-
+
+2
+
+-
+
+2
+
+=
+
+|r|2
+
+-
+
+2 Z1 2 Im(Z 1 )2
+
+,
+
+fI
+
+=
+
+Re(QI r¯) Im Z1 -  Im(ZI Z1)
+
+Im Z1 f
+
+,
+
+
+
+=
+
+g0 g1
+
+r¯ +  - i r¯ -  + i .
+
+(6.67a) (6.67b) (6.67c) (6.67d)
+
+22The original derivation is due to D. Klemm and M. Rabbiosi and has not been published. I am grateful to them for allowing me to reproduce it here.
+
+38
+
+Applying the transformations (4.8) with (4.11a) gives (omitting the primes)
+
+f~t
+
+=
+
+
+
++
+
+4n2
+2
+
+-
+
+2mr
+
++
+
+2
+
+ + 4n2/ 2 n2 - 2 2 f~
+
+I gI
+
+ZI
+
+2
+
++
+
+f~
+2
+
+,
+
+f~ = r2 + n2 - 2 - 2,
+
+f~I
+
+=
+
+(QI r
+
++
+
+P I n) Im Z1 -  Im(ZI Z1)
+
+Im Z1 f~
+
+,
+
+~
+
+=
+
+g0 g1
+
+r +  - i( r -  + i(
+
++ n) - n) .
+
+The last step is to simplify these expressions
+
+(6.68a) (6.68b) (6.68c) (6.68d)
+
+f~t
+
+=
+
+
+
++
+
+4n2
+2
+
+-
+
+2mr
+
++
+
+2n2
+
++ 8n4/ 2 f~
+
+-
+
+2
+
+2
+
+f~ = r2 + n2 - 2 - 2,
+
+I gI
+
+ZI
+
+2
+
++
+
+f~
+2
+
+,
+
+f~I
+
+=
+
+QI (r
+
+-
+
+) + f~
+
+P I (n
+
+-
+
+) ,
+
+~
+
+=
+
+g0 g1
+
+r +  - i( r -  + i(
+
++ n) - n) .
+
+(6.69a) (6.69b) (6.69c) (6.69d)
+
+It is straightforward to check that the form of the metric and gauge fields are correctly reproduced by the algorithm given in section 4 for the tensor structure. In total this reproduces the eq. (4.22) and formulas below in [70] with j = 0.
+An important thing that we learn here is that the mass parameter needs to be transformed as if it was not composed of other parameters.
+
+7 Five dimensional algorithm
+While in four dimensions we have at our disposal many theorems on the classification of solutions, this is not the case for higher dimensions and the bestiary for solutions is much wider and less understood [18, 84]. Rotating solutions in higher dimensions are characterized by several angular momenta. Important solutions have not yet been discovered, even in the simplest theories such as the charged rotating black holes with several angular momenta in pure Einstein­Maxwell gravity.
+Generalizing the JN algorithm in other dimensions is challenging and only small steps have been taken in this direction. For instance Xu recovered Myers­Perry solution with one angular momentum [68] from the Schwarzschild­Tangherlini solution [23] (see also [85]), and Kim showed how the rotating BTZ black hole [86] can be obtained from its static limit [24, 25]. One of the difficulty is to be able to perform several successive transformations in order to introduce all the allowed angular momenta.
+In this section we report the successful generalization of the JN algorithm to five dimensions where we recover two examples [58]: the complete Myers­Perry black hole [68] and the Breckenridge­Myers­Peet­Vafa (BMPV) extremal black hole [69]. We give of proposal for extending this method to higher dimensions in the next section.
+It appears that the two angular momenta can be added one after the other by performing two successive transformations, each using different rules for complexifying the functions. These rules can be understood as transforming only the functions that appear in the part of the metric which describes the rotation plane associated to the angular momentum. Our method makes use of the Giampieri prescription and we did not succeed in expressing it in terms of the Janis­Newman prescription.
+
+39
+
+A major application of our work would be to find the charged solution with two angular momenta of the 5d Einstein­Maxwell gravity. This problem is highly non-trivial and there is few chances that this technique would work directly [85], but one can imagine that a generalization of Demiaski's approach [7] (see section 5) could lead to new interesting solutions in five dimensions. An intermediate step is represented by the CCLP metric [87] which is a solution of the Einstein­Maxwell theory with a Chern­Simons term, but it cannot be derived from the JN algorithm and we give some intuition about this fact in the last subsection.
+Finally one could seek for an extension of the algorithm to the derivation of black rings [84, 88]. Similarly it may be possible that such techniques could be used in d = 4 to derive multicentre solutions (for instance one could imagine adding rotation to both centres successively, changing coordinate system in-between to place the origin of the coordinates at each centre).
+
+7.1 Myers­Perry black hole
+In this section we show how to recover the Myers­Perry black hole in five dimensions through the Giampieri prescription. This is a solution of 5-dimensional pure Einstein theory which possesses two angular momenta and it generalizes the Kerr black hole. The importance of this solution lies in the fact that it can be constructed in any dimension.
+The seed metric is given by the five-dimensional Schwarzschild­Tangherlini metric
+
+ds2 = -f (r) dt2 + f (r)-1 dr2 + r2 d23
+
+(7.1)
+
+where d23 is the metric on S3, which can be expressed in Hopf coordinates (see ap-
+
+pendix A.3.2)
+
+d23 = d2 + sin2  d2 + cos2  d2,
+
+(7.2)
+
+and the function f (r) is given by
+
+f (r)
+
+=
+
+1
+
+-
+
+m r2 .
+
+(7.3)
+
+An important feature of the JN algorithm is the fact that a given set of transformations in the (r, )-plane generates rotation in the latter. Generating several angular momenta in different 2-planes would then require successive applications of the JN algorithm on different hypersurfaces. In order to do so, one has to identify what are the 2-planes which will be submitted to the algorithm. In five dimensions, the two different planes that can be made rotating are the planes (r, ) and (r, ). We claim that it is necessary to dissociate the radii of these 2-planes in order to apply separately the JN algorithm on each plane and hence to generate two distinct angular momenta. In order to dissociate the parts of the metric that correspond to the rotating and non-rotating 2-planes, one can protect the function r2 to be transformed under complex transformations in the part of the metric defining the plane which will stay static. We thus introduce the function
+
+R(r) = r
+
+(7.4)
+
+such that the metric in null coordinates reads
+
+ds2 = -du (du + 2dr) + (1 - f ) du2 + r2(d2 + sin2  d2) + R2 cos2  d2.
+
+(7.5)
+
+The first transformation ­ hence concerning the (r, )-plane ­ is
+
+u = u + ia cos 1, i d1 = sin 1 d,
+du = du - a sin2  d,
+
+r = r - ia cos 1, with 1 = ,
+dr = dr + a sin2  d,
+
+(7.6)
+
+40
+
+and f is replaced by f~{1} = f~{1}(r, ). Indeed one needs to keep track of the order of the
+transformation, since the function f will be complexified twice consecutively. On the other hand R(r) = Re(r) is transformed23 into R = r and one finds (omitting the primes)
+
+ds2 = -du2 - 2 dudr + 1 - f~{1} (du - a sin2  d)2 + 2a sin2  drd + (r2 + a2 cos2 )d2 + (r2 + a2) sin2  d2 + r2 cos2  d2.
+
+(7.7)
+
+The function f~{1} is
+
+f~{1}
+
+=1-
+
+m |r|2
+
+=
+
+1-
+
+m r2 + a2 cos2  .
+
+There is a cancellation between the (u, r) and the (, ) parts of the metric
+
+(7.8)
+
+ds2u,r = (1 - f~{1}) (du - a sin2  d)2 - du(du + 2dr) + 2a sin2  drd + a2 sin4  d2,
+
+(7.9a)
+
+ds2, = (r2 + a2 cos2 )d2 + r2 + a2(1 - sin2 ) sin2  d2.
+
+(7.9b)
+
+In addition to the terms present in (7.5) one obtains new components corresponding to
+the rotation of the first plane (r, ). Since the structure is very similar one can perform a transformation24 in the second plane (r, )
+
+u = u + ib sin 2, i d2 = - cos 2 d, du = du - b cos2  d,
+
+r = r - ib sin 2, with 2 = ,
+dr = dr + b cos2  d,
+
+(7.10)
+
+can be applied directly to the metric
+ds2 = -du2 - 2 dudr + 1 - f~{1} (du - a sin2  d)2 + 2a sin2  dRd + 2d2 + (R2 + a2) sin2  d2 + r2 cos2  d2
+
+(7.11)
+
+where we introduced once again the function R(r) = Re(r) to protect the geometry of the first plane to be transformed under complex transformations.
+The final result (using again R = r and omitting the primes) becomes
+
+ds2 = -du2 - 2 dudr + 1 - f~{1,2} (du - a sin2  d - b cos2  d)2 + 2a sin2  drd + 2b cos2  drd + 2d2 + (r2 + a2) sin2  d2 + (r2 + b2) cos2  d2
+
+(7.12)
+
+where
+
+2 = r2 + a2 cos2  + b2 sin2 .
+
+Furthermore, the function f~{1} has been complexified as
+
+f~{1,2}
+
+=
+
+1
+
+-
+
+|r|2
+
+m + a2 cos2
+
+
+
+=
+
+1-
+
+r
+
+2
+
++ a2
+
+m cos2 
+
++
+
+b2 sin2 
+
+=
+
+1
+
+-
+
+m 2 .
+
+(7.13) (7.14)
+
+The metric can then be transformed into the Boyer­Lindquist (BL) using
+
+du = dt - g(r) dr, d = d - h(r) dr, d = d - h(r) dr.
+
+(7.15)
+
+23Note that as a function this corresponds to the rule (4.14a) but we will see below that R is better interpreted as a coordinate since below it will appear as dR.
+24The easiest justification for choosing the sinus here is by looking at the transformation in terms of direction cosines, see section 8.2.3. Otherwise this term can be guessed by looking at Myers­Perry nondiagonal terms.
+
+41
+
+Defining the parameters25
+
+ = (r2 + a2)(r2 + b2),  = r4 + r2(a2 + b2 - m) + a2b2,
+
+(7.16)
+
+the functions can be written
+
+g(r)
+
+=
+
+ ,
+
+h(r)
+
+=
+
+ 
+
+r2
+
+a +
+
+a2 ,
+
+h (r)
+
+=
+
+ 
+
+r2
+
+b + b2 .
+
+Finally one gets
+
+ds2 = -dt2 +
+
+1 - f~{1,2}
+
+(dt
+
+-
+
+a
+
+sin2
+
+
+
+d
+
+-
+
+b cos2
+
+
+
+d)2
+
++
+
+r22 
+
+dr2
+
++ 2d2 + (r2 + a2) sin2  d2 + (r2 + b2) cos2  d2.
+
+(7.17) (7.18)
+
+One recovers here the five dimensional Myers­Perry black hole with two angular momenta [68].
+
+7.2 BMPV black hole
+
+7.2.1 Few properties and seed metric
+
+In this section we focus on another example in five dimensions, which is the BMPV black hole [69, 89]. This solution possesses many interesting properties, in particular it can be proven that it is the only asymptotically flat rotating BPS black hole in five dimensions with the corresponding near-horizon geometry [84, sec. 7.2.2, 8.5, 90].26 It is interesting to notice that even if this extremal solution is a slowly rotating metric, it is an exact solution (whereas Einstein equations need to be truncated for consistency of usual slow rotation).
+For a rotating black hole the BPS and extremal limits do not coincide [84, sec. 7.2, 89, sec. 1]: the first implies that the mass is related to the electric charge,27 while extremality28 implies that one linear combination of the angular momenta vanishes, and for this reason we set a = b from the beginning.29 Thus two independent parameters are left and are taken to be the mass and one angular momentum.
+In the non-rotating limit BMPV black hole reduces to the charged extremal Schwarzschild­Tangherlini (with equal mass and charge) written in isotropic coordinates. For nonrotating black hole the extremal and BPS limit are equivalent.
+Both the charged extremal Schwarzschild­Tangherlini and BMPV black holes are solutions of minimal (N = 2) d = 5 supergravity (Einstein­Maxwell plus Chern­Simons) whose bosonic action is [89, sec. 1, 91, sec. 2, 92, sec. 2]
+
+S
+
+=
+
+-
+
+1 16G
+
+R 1 + F  F + 2 F  F  A , 33
+
+(7.19)
+
+where supersymmetry imposes  = 1. Since extremal limits are different for static and rotating black holes we can guess that
+the black hole obtained from the algorithm will not be a solution of the equations of motion and that it will be necessary to take some limit.
+The charged extremal Schwarzschild­Tangherlini black hole is taken as a seed metric [92, sec. 3.2, 93, sec. 4, 94, sec. 1.3.1]
+
+ds2 = -H-2 dt2 + H (dr2 + r2 d23)
+
+(7.20)
+
+25See (8.17) for a definition of  in terms of f~. 26Other possible near-horizon geometries are S1 × S2 (for black rings) and T 3, even if the latter does not seem really physical. BMPV horizon corresponds tothe squashed S3. 27It is a consequence from the BPS bound m  3/2 |q|. 28Regularity is given by a bound, which is saturated for extremal black holes. 29If we had kept a = b we would have discovered later that one cannot transform the metric to Boyer­
+Lindquist coordinates without setting a = b.
+
+42
+
+where d23 is the metric of the 3-sphere written in (7.2). The function H is harmonic
+
+H (r)
+
+=
+
+1
+
++
+
+m r2 ,
+
+(7.21)
+
+and the electromagnetic field reads
+
+
+
+A=
+
+3 2
+
+m r2 dt = (H - 1) dt.
+
+(7.22)
+
+In the next subsections we apply successively the transformations (7.6) and (7.10) with a = b in the case  = 1.
+
+7.2.2 Transforming the metric The transformation to (u, r) coordinates of the seed metric (7.20)
+dt = du + H3/2 dr
+
+(7.23)
+
+gives
+
+ds2 = -H-2 du2 - 2H-1/2 dudr + Hr2 d23 = -H-2 du - 2H3/2 dr du + Hr2 d23.
+
+(7.24a) (7.24b)
+
+For transforming the above metric one should follow the recipe of the previous section: the transformations (7.6)
+
+u = u + ia cos , du = du - a sin2  d,
+
+(7.25)
+
+and (7.10)
+
+u = u + ia sin , du = du - a cos2  d
+
+(7.26)
+
+are performed one after another, transforming each time only the terms that pertain to the corresponding rotation plane.30 In order to preserve the isotropic form of the metric the function H is complexified everywhere (even when it multiplies terms that belong to the other plane).
+Since the procedure is exactly similar to the Myers­Perry case we give only the final result in (u, r) coordinates
+
+ds2 = - H~ -2 du - a(1 - H~ 3/2)(sin2  d + cos2  d) 2
+
+- 2H~ -1/2 du - a(1 - H~ 3/2) (sin2  d + cos2  d) dr + 2aH~ (sin2  d + cos2  d) dr - 2a2H~ cos2  sin2  dd
+
+(7.27)
+
++ H~ (r2 + a2)(d2 + sin2  d2 + cos2  d2) + a2(sin2  d + cos2  d)2 .
+
+After both transformations the resulting function H~ is
+
+H~
+
+=
+
+1
+
++
+
+r2
+
+m + a2 cos2 
+
++
+
+a2 sin2 
+
+=
+
+1
+
++
+
+r2
+
+m + a2
+
+which does not depend on . It is easy to check that the Boyer­Lindquist transformation (7.15)
+
+(7.28)
+
+du = dt - g(r) dr, d = d - h(r) dr,
+30For another approach see section 7.3.
+
+d = d - h(r) dr
+
+(7.29)
+
+43
+
+is ill-defined because the functions depend on . The way out is to take the extremal limit alluded above.
+Following the prescription of [69, 89] and taking the extremal limit
+
+a, m - 0,
+
+imposing
+
+m a2
+
+=
+
+cst,
+
+(7.30)
+
+one gets at leading order
+
+H~ (r)
+
+=
+
+1+
+
+m r2
+
+=
+
+H (r),
+
+a
+
+(1
+
+-
+
+H~
+
+3/2)
+
+=
+
+-
+
+3 ma 2 r2
+
+(7.31)
+
+which translate into the metric
+
+ds2 = -H-2
+
+du
+
++
+
+3 ma 2 r2
+
+(sin2
+
+
+
+d
+
++
+
+cos2
+
+
+
+d)
+
+2
+
+- 2H-1/2
+
+du
+
++
+
+3 ma 2 r2
+
+(sin2
+
+
+
+d
+
++
+
+cos2
+
+
+
+d)
+
+dr
+
++ H r2(d2 + sin2  d2 + cos2  d2).
+
+(7.32)
+
+Then Boyer­Lindquist functions are
+
+g(r) = H(r)3/2, h(r) = h(r) = 0
+
+(7.33)
+
+and one gets the metric in (t, r) coordinates
+
+ds2 = - H~ -2
+
+dt
+
++
+
+3 ma 2 r2
+
+(sin2
+
+
+
+d
+
++
+
+cos2
+
+
+
+d)
+
+2
+
++ H~ dr2 + r2 d2 + sin2  d2 + cos2  d2 .
+
+(7.34)
+
+One can recognize the BMPV solution [69, p. 4, 89, p. 16]. The fact that this solution has only one rotation parameter can be seen more easily in Euler angle coordinates [89, sec. 3, 95, sec. 2] or by looking at the conserved charges in the - and -planes [69, sec. 3].
+
+7.2.3 Transforming the Maxwell potential
+
+The seed gauge field (7.22) in the (u, r) coordinates is
+
+
+
+A=
+
+3 2
+
+(H
+
+-
+
+1)
+
+du,
+
+(7.35)
+
+since the Ar(r) component can be removed by a gauge transformation. One can apply the two JN transformations (7.6) and (7.10) with b = a to obtain
+
+
+
+A=
+
+3 2
+
+(H~
+
+-
+
+1)
+
+du - a (sin2  d + cos2  d)
+
+.
+
+(7.36)
+
+Then going into BL coordinates with (7.15) and (7.33) provides
+
+
+
+A=
+
+3 2
+
+(H~
+
+-
+
+1)
+
+dt - a (sin2  d + cos2  d)
+
++ Ar(r) dr.
+
+(7.37)
+
+Again Ar depends only on r and can be removed by a gauge transformation. Applying the extremal limit (7.30) finally gives
+
+
+
+A=
+
+3m 2 r2
+
+dt - a (sin2  d + cos2  d) ,
+
+(7.38)
+
+44
+
+which is again the result presented in [69, p. 5]. Despite the fact that the seed metric (7.20) together with the gauge field (7.22) solves
+the equations of motion for any value of , the resulting rotating metric solves the equations only for  = 1 (see [89, sec. 7] for a discussion). An explanation in this reduction can be found in the limit (7.30) that was needed for transforming the metric to Boyer­Lindquist coordinates and which gives a supersymmetric black hole ­ which necessarily has  = 1.
+
+7.3 Another approach to BMPV
+
+In section 7.2 we applied the same recipe given in section 7.1 which, according to our claim, is the standard procedure in five dimensions.
+There is another way to derive BMPV black hole. Indeed, by considering that terms quadratic in the angular momentum do not survive in the extremal limit, they can be added to the metric without modifying the final result. Hence we can decide to transform all the terms of the metric31 since the additional terms will be subleading. As a result the BL transformation is directly well defined and overall formulas are simpler, but we need to take the extremal limit before the end (this could be done either in (u, r) or (t, r) coordinates). This section shows that both approaches give the same result.
+Applying the two transformations
+
+u = u + ia cos , u = u + ia sin ,
+
+du = du - a sin2  d, du = du - a cos2  d
+
+(7.39a) (7.39b)
+
+successively on all the terms one obtains the metric
+
+ds2 = - H~ -2 du - a(1 - H~ 3/2)(sin2  d + cos2  d) 2
+
+- 2H~ -1/2 du - a(sin2  d + cos2  d) dr
+
+(7.40)
+
++ H~ (r2 + a2)(d2 + sin2  d2 + cos2  d2) + a2(sin2  d + cos2  d)2 ,
+
+where again H~ is given by (7.28)
+
+H~
+
+=
+
+1
+
++
+
+r2
+
+m +
+
+a2
+
+.
+
+(7.41)
+
+Only one term is different when comparing with (7.27). The BL transformation (7.15) is well-defined and the corresponding functions are
+
+g(r)
+
+=
+
+a2
+
++
+
+(r2 + a2)H~ (r)
+
+r2 + 2a2
+
+,
+
+a h(r) = h(r) = r2 + 2a2
+
+(7.42)
+
+which do not depend on . They lead to the metric
+
+ds2 = - H~ -2 dt - a(1 - H~ 3/2)(sin2  d + cos2  d) 2
+
++ H~ (r2 + a2)
+
+dr2 r2 + 2a2
+
++ d2
+
++ sin2  d2
+
++ cos2  d2
+
+(7.43)
+
++ a2(sin2  d + cos2  d)2 .
+
+At this point it is straightforward to check that this solution does not satisfy Einstein equations and we need to take the extremal limit (7.30)
+
+a, m - 0,
+
+imposing
+
+m a2
+
+=
+
+cst
+
+(7.44)
+
+31In opposition to our initial recipe, but this is done in a controlled way.
+
+45
+
+in order to get the BMPV solution (7.34)
+
+ds2 = - H~ -2
+
+dt
+
++
+
+3 ma 2 r2
+
+(sin2
+
+
+
+d
+
++
+
+cos2
+
+
+
+d)
+
+2
+
++ H~ dr2 + r2 d2 + sin2  d2 + cos2  d2 .
+
+(7.45)
+
+It is surprising that the BL transformation is simpler in this case. Another point that is worth stressing is that we did not need to take the extremal limit at an intermediate stage, whereas in section 7.2 we had to in order to get a well-defined BL transformation.
+
+7.4 CCLP black hole
+
+The CCLP black hole [87] (see also [91, sec. 2]) corresponds to the non-extremal generalization of the BMPV solution and it possesses four independent charges: two angular momenta a and b, an electric charge q and the mass m. It is a solution of d = 5 minimal supergravity (7.19).
+The solution reads
+
+ds2
+
+=
+
+-dt2
+
++
+
+(1
+
+-
+
+f~)(dt
+
+-
+
+a
+
+sin2
+
+
+
+d
+
+-
+
+b
+
+cos2
+
+
+
+d)2
+
++
+
+r22 r
+
+dr2
+
++ 2d2 + (r2 + a2) sin2  d2 + (r2 + b2) cos2  d2
+
+-
+
+2q 2
+
+(b
+
+sin2
+
+
+
+d
+
++
+
+a
+
+cos2
+
+
+
+d)(dt
+
+-
+
+a
+
+sin2
+
+
+
+d
+
+-
+
+b
+
+cos2
+
+
+
+d),
+
+
+
+A=
+
+3 2
+
+q 2
+
+(dt
+
+- a sin2  d -
+
+b cos2  d),
+
+(7.46a) (7.46b)
+
+where the function are given by
+
+2 = r2 + a2 cos2  + b2 sin2 ,
+
+f~ =
+
+1
+
+-
+
+2m 2
+
++
+
+q2 4
+
+,
+
+r =  + 2abq + q2 - 2mr2.
+
+(7.47a) (7.47b) (7.47c)
+
+Yet, using our prescription, it appears that the metric of this black hole cannot entirely be recovered. Indeed while the gauge field can be found straightforwardly, all the terms of the metric but one are generated by our algorithm. The missing term (corresponding to the last one in (7.46a)) is proportional to the electric charge and the current prescription cannot generate it since the latter can only appear in f~ (or in the gauge field); moreover the algorithm cannot explain the first term in parenthesis since a and b always appear with d and d respectively.
+This issue may be related to the fact that the CCLP solution cannot be written as a Kerr­Schild metric but rather as an extended Kerr­Schild one [96­98], which includes an additional term proportional to a spacelike vector. It appears that the missing term corresponds precisely to this additional term in the extended Kerr­Schild metric and it is well-known that the JN algorithm works mostly for Kerr­Schild metrics. Moreover the  computed from (8.17) depends on  and the BL transformation would not be well-defined if the additional term is not present to modify  to r.
+
+8 Algorithm in any dimension
+Following the same prescription in dimensions higher than five does not lead as nicely to the exact Myers­Perry solution. Indeed we show in this section that, while the transformation of
+
+46
+
+the metric can be done along the same line, the ­ major ­ obstacle comes from the function f that cannot be transformed as expected. Finding the correct complexification seems very challenging and it may be necessary to use a different complex coordinate transformation in order to perform a completely general transformation in any dimension. It might be possible to gain insight into this problem by computing the transformation within the framework of the tetrad formalism. One may think that a possible solution would be to replace complex numbers by quaternions, assigning one angular momentum to each complex direction but it is straightforward to check that this approach is not working.
+The key element to perform the algorithm on the metric is to parametrize the metric on the sphere by direction cosines since these coordinates are totally symmetric under permutation of angular momenta (at the opposite of the spherical coordinates). We are able to derive the general form of a rotating metric with the maximal number of angular momenta it can have in d dimensions, but we are not able to apply this result to any specific example for d  6, except if all momenta but one are vanishing. Nonetheless this provides a unified view of the JN algorithm in any d  3. We conclude this section by few examples, including the singly-rotating Myers­Perry solution in any dimension and the rotating BTZ black hole.
+It would be very desirable to derive the general d-dimensional Myers­Perry solution [68], or at least to understand why only the metric can be found, and not the function inside.
+
+8.1 Metric transformation
+We consider the JN algorithm applied to a general static d-dimension metric and show how the tensor structure can be transformed. In the following the dimension is taken to be odd in order to simplify the computations but the final result holds also for d even.
+
+8.1.1 Seed metric and discussion
+
+Consider the d-dimensional static metric (notations are defined in appendix A.1)
+
+ds2 = -f dt2 + f -1 dr2 + r2 d2d-2
+
+where d2d-2 is the metric on Sd-2
+
+n
+
+d2d-2 = dd-2 + sin2 d-2 d2d-3 =
+
+dµ2i + µ2i d2i ).
+
+i=1
+
+The number n = (d - 1)/2 counts the independent 2-spheres. In Eddington­Finkelstein coordinates the metric reads
+
+(8.1) (8.2)
+
+ds2 = (1 - f ) du2 - du (du + 2dr) + r2
+
+dµ2i + µ2i d2i .
+
+i
+
+(8.3)
+
+The metric looks like a 2-dimensional space (t, r) with a certain number of additional 2-spheres (µi, i) which are independent from one another. Then we can consider only the piece (u, r, µi, i) (for fixed i) which will transform like a 4-dimensional spacetime, while the other part of the metric (µj, j) for all j = i will be unchanged. After the first transformation we can move to another 2-sphere. We can thus imagine to put in rotation only one of these spheres. Then we will apply again and again the algorithm until all the spheres have angular momentum: the whole complexification will thus be a n-steps process. Moreover if these 2spheres are taken to be independent this implies that we should not complexify the functions that are not associated with the plane we are putting in rotation.
+To match these demands the metric is rewritten as
+
+ds2 = (1 - f ) du2 - du (du + 2dri1 ) + ri21 (dµ2i1 + µ2i1 d2i1 ) +
+
+ri21 dµ2i + R2µ2i d2i . (8.4)
+
+i=i1
+
+47
+
+where we introduced the following two functions of r
+
+ri1 (r) = r, R(r) = r.
+
+(8.5)
+
+This allows to choose different complexifications for the different terms in the metric. It may be surprising to note that the factors in front of dµ2i have been chosen to be ri21 and not R2, but the reason is that the µi are all linked by the constraint
+
+µ2i = 1
+i
+
+(8.6)
+
+and the transformation of one i1-th 2-sphere will change the corresponding µi1 , but also all the others, as it is clear from the formula (A.14) with all the ai vanishing but one (this can also be observed in 5d where both µi are gathered into ).
+
+8.1.2 First transformation The transformation is chosen to be
+
+ri1 = ri1 - i ai1 1 - µ2i1 ,
+
+u = u + i ai1 1 - µ2i1
+
+(8.7a)
+
+which, together with the ansatz
+
+i dµi1 = µi1 di1 , 1 - µ2i1
+
+(8.7b)
+
+gives the differentials
+
+dri1 = dri1 + ai1 µ2i1 di1 ,
+
+du = du - ai1 µ2i1 di1 .
+
+(8.7c)
+
+It is easy to check that this transformation reproduces the one given in four and five dimensions. The complexified version of f is written as f~{i1}: we need to keep track of the order in which we gave angular momentum since the function f~ will be transformed at each step.
+We consider separately the transformation of the (u, r) and {µi, i} parts. Inserting the transformations (8.7) in (8.3) results in
+
+ds2u,r = (1 - f~{i1})
+
+du - ai1 µ2i1 di1
+
+2
+- du (du + 2dri1 ) + 2ai1 µ2i1 dri1 di1 + a2i1 µ4i1 d2i1 ,
+
+ds2µ, = ri21 + a2i1 (dµ2i1 + µ2i1 d2i1 ) +
+
+ri21 dµ2i + R2µ2i d2i - a2i1 µ4i1 d2i1
+
+i=i1
+
++ a2i1 - µ2i1 dµ2i1 + (1 - µ2i1 )
+
+dµ2i .
+
+i=i1
+
+The term in the last bracket vanishes as can be seen by using the differential of the
+
+constraint
+
+µ2i = 1 = µidµi = 0.
+
+(8.9)
+
+i
+
+i
+
+Since this step is very important and non-trivial we expose the details
+
+
+
+2
+
+[· · · ] = µ2i1 dµ2i1 - (1 - µ2i1 )
+
+dµ2i =  µidµi -
+
+µ2j
+
+dµ2i
+
+i=i1
+
+i=i1
+
+j=i1 i=i1
+
+=
+
+µiµj dµidµj - µ2j dµ2i =
+
+µj µidµj - µj dµi dµi = 0
+
+i,j=i1
+
+i,j=i1
+
+48
+
+by antisymmetry. Setting ri1 = R = r one obtains the metric
+
+ds2 = (1 - f~{i1})
+
+du - ai1 µ2i1 di1
+
+2
+- du (du + 2dr) + 2ai1 µ2i1 drdi1
+
++ r2 + a2i1 (dµ2i1 + µ2i1 d2i1 ) +
+
+r2 dµ2i + µ2i d2i .
+
+i=i1
+
+(8.10)
+
+It corresponds to Myers­Perry metric in d dimensions with one non-vanishing angular momentum. We recover the same structure as in (8.4) with some extra terms that are specific to the i1-th 2-sphere.
+
+8.1.3 Iteration and final result
+
+We should now split again r in functions (ri2 , R). Very similarly to the first time we have
+
+ds2 = (1 - f~{i1})
+
+du - ai1 µ2i1 di1
+
+2
+- du (du + 2dri2 ) + 2ai1 µ2i1 dRdi1
+
++ ri22 + a2i1 dµ2i1 + R2 + a2i1 µ2i1 d2i1 + ri22 (dµ2i2 + µ2i2 d2i2 )
+
++
+
+ri22 dµ2i + R2µ2i d2i .
+
+i=i1 ,i2
+
+(8.11)
+
+We can now complexify as
+
+ri2 = ri2 - iai2 1 - µ2i2 ,
+
+u = u + i ai1 1 - µ2i2 .
+
+(8.12)
+
+The steps are exactly the same as before, except that we have some inert terms. The complexified functions is now f~{i1,i2}.
+Repeating the procedure n times we arrive at
+
+ds2 = - du2 - 2dudr + (r2 + a2i )(dµ2i + µ2i d2i ) - 2 aiµ2i drdi
+
+i
+
+i
+
+2
+
++ 1 - f~{i1,...,in} du +
+
+aiµ2i di .
+
+i
+
+(8.13)
+
+One recognizes the general form of the d-dimensional metric with n angular momenta [68]. Let's quote the metric in Boyer­Lindquist coordinates (omitting the indices on f~) [68]
+
+2
+
+ds2 = -dt2 + (1 - f~) dt -
+
+aiµ2i di
+
++
+
+r22 
+
+dr2
+
++
+
+(r2 + a2i ) dµ2i + µ2i d2i
+
+i
+
+i
+
+which is obtained from the transformation
+
+(8.14)
+
+du = dt - g dr, di = di - hi dr
+
+with functions
+
+g
+
+=
+
+ 
+
+=
+
+1
+
+-
+
+1 F (1
+
+-
+
+f~) ,
+
+hi
+
+=
+
+ 
+
+r2
+
+ai +
+
+a2i ,
+
+and where the various quantities involved are (see appendix A.1.4)
+
+(8.15) (8.16)
+
+=
+
+(r2 + a2i ),
+i
+
+F =1-
+
+i
+
+a2i µ2i r2 + a2i
+
+= r2
+
+i
+
+r22 = F,  = f~r22 + (1 - F ).
+
+r2
+
+µ2i +
+
+a2i
+
+,
+
+(8.17)
+
+49
+
+Before ending this section, we comment the case of even dimensions: the term  r2d2 is complexified as  ri21 d2, since it contributes to the sum
+
+µ2i + 2 = 1.
+i
+
+(8.18)
+
+This can be seen more clearly by defining µn+1 =  (we can also define n+1 = 0), in which case the index i runs from 1 to n + , and all the previous computations are still valid.
+
+8.2 Examples in various dimensions
+8.2.1 Flat space
+A first and trivial example is to take f = 1. In this case one recovers Minkowski metric in spheroidal coordinates with direction cosines (appendix A.1.4)
+
+ds2 = -dt2 + F dr¯2 + (r¯2 + a2i ) dµ¯2i + µ¯2i d¯2i +  r2d2.
+i
+
+(8.19)
+
+In this case the JN algorithm is equivalent to a (true) change of coordinates and there is no intrinsic rotation. The presence of a non-trivial function f then deforms the algorithm.
+
+8.2.2 Myers­Perry black hole with one angular momentum
+The derivation of the Myers­Perry metric with one non-vanishing angular momentum has been found by Xu [23].
+The transformation is taken to be in the first plane
+
+r = r - ia 1 - µ2
+
+(8.20)
+
+where µ  µ1. The transformation to the mixed spherical­spheroidal system (appendix A.1.5
+
+is obtained by setting
+
+µ = sin , 1 = .
+
+(8.21)
+
+In these coordinates the transformation reads
+
+r = r - ia cos .
+
+(8.22)
+
+We will use the quantity 2 = r2 + a2(1 - µ2) = r2 + a2 cos2 .
+
+(8.23)
+
+The Schwarzschild­Tangherlini metric is [99]
+
+ds2 = -f dt2 + f -1 dr2 + r2 d2d-2, Applying the previous transformation results in
+
+f
+
+=
+
+1
+
+-
+
+m rd-3 .
+
+ds2 = (1 - f~)
+
+du - aµ2 d
+
+2
+- du (du + 2dr) + 2aµ2 drd
+
++ r2 + a2 (dµ2 + µ2d2) + r2 dµ2i + µ2i d2i .
+i=1
+
+where f has been complexified as
+
+f~
+
+=
+
+1
+
+-
+
+m 2rd-5
+
+.
+
+(8.24) (8.25) (8.26)
+
+50
+
+In the mixed coordinate system one has [23, 85]
+
+ds2
+
+=
+
+-
+
+f~dt2
+
++
+
+2a(1
+
+-
+
+f~)
+
+sin2
+
+
+
+dtd
+
++
+
+rd-32 
+
+dr2
+
++
+
+2d2
+
++
+
+2 2
+
+sin2  d2 + r2 cos2 2 d2d-4.
+
+(8.27)
+
+where we defined as usual  = f~2 + a2 sin2 ,
+
+2 2
+
+=
+
+r2
+
++ a2
+
++
+
+agt.
+
+(8.28)
+
+This last expression explains why the transformation is straightforward with one angular momentum: the transformation is exactly the one for d = 4 and the extraneous dimensions are just spectators.
+We have not been able to generalize this result for several non-vanishing momenta for d  6, even for the case with equal momenta .
+
+8.2.3 Five-dimensional Myers­Perry
+
+We take a new look at the five-dimensional Myers­Perry solution in order to derive it in
+
+spheroidal coordinates because it is instructive.
+
+The function
+
+1
+
+-
+
+f
+
+=
+
+m r2
+
+(8.29)
+
+is first complexified as
+
+1 - f~{1}
+
+=
+
+m |r1|2
+
+=
+
+r2
+
+m + a2(1 - µ2)
+
+(8.30)
+
+and then as
+
+1
+
+- f~{1,2}
+
+=
+
+|r2|2
+
++
+
+m a2(1 -
+
+µ2)
+
+=
+
+r2
+
+m + a2(1 - µ2) +
+
+b2(1 - 2) .
+
+(8.31)
+
+after the two transformations
+
+r1 = r1 - ia 1 - µ2, r2 = r2 - ib 1 - 2.
+
+(8.32)
+
+For µ = sin  and  = cos  one recovers the transformations from sections 7.1 and 7.2. Let's denote the denominator by 2 and compute
+
+2 r2
+
+=
+
+r2
+
++ a2(1 - µ2) + b2(1 - 2)
+
+=
+
+(µ2
+
++ 2)r2
+
++ 2a2
+
++ µ2b2
+
+= µ2(r2 + b2) + 2(r2 + a2) = (r2 + b2)(r2 + a2)
+
+µ2 r2 + a2
+
++
+
+2 r2 + b2
+
+.
+
+and thus Plugging this into f~{1,2} we have [68]
+
+r22 = F.
+
+(8.33)
+
+1-
+
+f~{1,2}
+
+=
+
+mr2 .
+F
+
+(8.34)
+
+51
+
+8.2.4 Three dimensions: BTZ black hole
+
+As another application we show how to derive the d = 3 rotating BTZ black hole from its static version [86]
+
+ds2 = -f dt2 + f -1 dr2 + r2d2,
+
+f (r)
+
+=
+
+-M
+
++
+
+r2
+2
+
+.
+
+(8.35)
+
+In three dimensions the metric on S1 in spherical coordinates is given by
+
+d21 = d2.
+
+(8.36)
+
+Introducing the coordinate µ we can write it in oblate spheroidal coordinates
+
+d21 = dµ2 + µ2d2
+
+(8.37)
+
+with the constraint Application of the transformation
+
+µ2 = 1.
+
+(8.38)
+
+u = u + ia 1 - µ2, r = r - ia 1 - µ2
+
+(8.39)
+
+gives from (8.13)
+ds2 = - du2 - 2dudr + (r2 + a2)(dµ2 + µ2d2) - 2aµ2 drd + (1 - f~)(du + aµ2d)2.
+
+(8.40)
+
+The transformation of f is
+
+f~
+
+=
+
+-m
+
++
+
+2
+2
+
+,
+
+2 = r2 + a2(1 - µ2).
+
+(8.41)
+
+The transformation (8.16)
+
+g
+
+=
+
+2(1 - 
+
+f~) ,
+
+h
+
+=
+
+a 
+
+,
+
+ = r2 + a2 + (f~ - 1)2
+
+to Boyer­Lindquist coordinates leads to the metric (8.14)
+
+(8.42)
+
+ds2
+
+=
+
+-dt2
+
++
+
+(1
+
+-
+
+f~)(dt
+
++
+
+aµ2d)2
+
++
+
+2 
+
+dr2
+
++
+
+(r2
+
++
+
+a2)(dµ2
+
++
+
+µ2
+
+d2).
+
+(8.43)
+
+Finally the constraint µ2 = 1 can be used to remove the µ. In this case one finds
+
+2 = r2,
+
+ = a2 + f~r2
+
+(8.44)
+
+and the metric simplifies to
+
+ds2
+
+=
+
+-dt2
+
++
+
+(1
+
+-
+
+f~)(dt
+
++
+
+ad)2
+
++
+
+a2
+
+r2 + r2f~
+
+dr2
+
++
+
+(r2
+
++
+
+a2)d2.
+
+We define the function
+
+N2
+
+=
+
+f~ +
+
+a2 r2
+
+=
+
+-M
+
++
+
+r2
+2
+
++
+
+a2 r2 .
+
+Then redefining the time variable as [24, 25]
+
+(8.45) (8.46)
+
+t = t - a
+
+(8.47)
+
+52
+
+we get (omitting the prime)
+
+ds2 = -N 2dt2 + N -2 dr2 + r2(N dt + d)2
+
+(8.48)
+
+with the angular shift
+
+N (r)
+
+=
+
+a r2 .
+
+(8.49)
+
+This is the solution given in [86] with J = -2a. It has already been showed by Kim that the rotating BTZ black hole can be derived
+
+through the JN algorithm in a different settings [24, 25]: he views the d = 3 solution as the
+
+slice  = /2 of the d = 4 solution. Obviously this is equivalent to our approach: we have seen that µ = sin  in d = 4 (appendix A.2), and the constraint µ2 = 1 is solved by  = /2.
+
+Nonetheless our approach is more direct since the result just follows from a suitable choice
+
+of coordinates and there are no need for advanced justification.
+
+Starting from the charged BTZ black hole
+
+f (r)
+
+=
+
+-M
+
++
+
+r2
+2
+
+- Q2 ln r2,
+
+A
+
+=
+
+Q -2
+
+ln r2,
+
+(8.50)
+
+it is not possible to find the charged rotating BTZ black hole from [100, 101, 102, sec. 4.2]: the solution solves Einstein equations, but not the Maxwell ones. This has been already remarked using another technique in [103, app. B]. It may be possible that a more general ansatz is necessary, following section 4 but in d = 3.
+
+Acknowledgments
+I am particularly grateful and indebted to Lucien Heurtier for our collaboration and our many discussions on this project. I thank also Nick Halmagyi and Dietmar Klemm for interesting discussions, and I am grateful to the latter and Marco Rabbiosi for allowing me to reproduce an unpublished example of application. Finally I wish to thank the members of the Harish­Chandra Research Institute (Allahabad, India) for organizing the set of lectures that helped me to transform my thesis in the current review.
+
+A Coordinate systems
+This appendix is partly based on [68, 99, 104]. We present formulas for any dimension before summarizing them for 4 and 5 dimensions.
+
+A.1 d-dimensional
+
+Let's consider d = N + 1 dimensional Minkowski space whose metric is denoted by
+
+ds2 = µ dxµdx , µ = 0, . . . , N.
+
+(A.1)
+
+In all the following coordinates systems the time direction can separated from the spatial (positive definite) metric as
+
+ds2 = -dt2 + d2, d2 = ab dxadxb, a = 1, . . . , N,
+where x0 = t. One defines by n the number of independent 2-planes of rotation
+
+(A.2)
+
+n=
+
+N 2
+
+(A.3)
+
+53
+
+such that
+
+d +  = 2n + 2, N +  = 2n + 1,  = 1 - 
+
+where
+
+
+
+=
+
+1 2
+
+(1
+
+-
+
+(-1)d)
+
+=
+
+0 1
+
+d even (or N odd) d odd (or N even),
+
+and conversely for  .
+
+(A.4) (A.5)
+
+A.1.1 Cartesian system The usual Cartesian metric is
+d2 = abdxadxb = dxadxa = dx2.
+
+(A.6)
+
+A.1.2 Spherical
+
+Introducing a radial coordinate r, the flat space metric can be written as a (N - 1)-sphere
+
+of radius r
+
+d2 = dr2 + r2d2N-1.
+
+(A.7)
+
+The term d2N-1 corresponds the metric on the unit (N - 1)-sphere SN-1, which is parametrized by (N - 1) angles i and is defined recursively as
+
+d2N-1 = dN2 -1 + sin2 N-1 d2N-2.
+
+(A.8)
+
+This surface can be embedded in N -dimensional flat space with coordinates Xa con-
+
+strained by
+
+XaXa = 1.
+
+(A.9)
+
+A.1.3 Spherical with direction cosines
+In d-dimensions there are n orthogonal 2-planes,32 thus we can pair 2n of the embedding coordinates Xa (A.9) as (Xi, Yi) which are parametrized as
+
+Xi + iYi = µieii , i = 1, . . . n.
+
+(A.10)
+
+For d even there is an extra unpaired coordinate that is taken to be
+
+XN = .
+
+(A.11)
+
+Each pair parametrizes a 2-sphere of radius µi. The µi are called the direction cosines
+
+and satisfy
+
+µ2i +  2 = 1
+
+(A.12)
+
+i
+
+since there is one superfluous coordinate from the embedding. Finally the metric is
+
+d2N-1 =
+
+dµ2i + µ2i d2i +  d2.
+
+i
+
+(A.13)
+
+The interest of these coordinates is that all rotational directions are symmetric.
+
+32Note that this is linked to the fact that the little group of massive representation in D dimension is SO(N ), which possess n Casimir invariants [68].
+
+54
+
+A.1.4 Spheroidal with direction cosines
+
+From the previous system we can define the spheroidal (r¯, µ¯i, ¯i) system ­ adapted when some of the 2-spheres are deformed to ellipses ­ by introducing parameters ai such that (for d odd)
+
+r2µ2i = (r¯2 + a2i )µ¯2i ,
+
+µ¯2i = 1.
+
+(A.14)
+
+i
+
+This last condition implies that
+
+r2 = (r¯2 + a2i )µ¯2i = r¯2 + a2i µ¯2i .
+
+i
+
+i
+
+(A.15)
+
+In these coordinates the metric reads
+
+d2 = F dr¯2 + (r¯2 + a2i ) dµ¯2i + µ¯2i d¯2i +  r2d2
+i
+
+(A.16)
+
+and we defined
+
+F =1-
+
+i
+
+a2i µ¯2i r¯2 + a2i
+
+=
+
+i
+
+r¯2µ¯2i r¯2 + a2i
+
+.
+
+(A.17)
+
+Here the ai are just introduced as parameters in the transformation, but in the main text they are interpreted as "true" rotation parameters, i.e. angular momenta (per unit of mass) of a black hole. They all appear on the same footing.
+Another quantity of interest is
+
+ = (r¯2 + a2i ).
+i
+
+(A.18)
+
+A.1.5 Mixed spherical­spheroidal
+We consider the deformation of the spherical metric where one of the 2-sphere is replaced by an ellipse [85, sec. 3].
+To shorten the notation let's define
+
+ = N-1,
+
+ = N-2.
+
+Doing the change of coordinates
+
+sin2  sin2  = cos2 .
+
+(A.19) (A.20)
+
+the metric becomes
+
+d2
+
+=
+
+2 r2 + a2
+
+dr2
+
++ 2d2
+
++
+
+(r2
+
++ a2)
+
+sin2  d2
+
++ r2
+
+cos2 2 d2d-4
+
+(A.21)
+
+where as usual
+
+2 = r2 + a2 cos2 .
+
+(A.22)
+
+Except for the last term one recognizes 4-dimensional oblate spheroidal coordinates (A.31).
+
+A.2 4-dimensional
+In this section one considers
+
+d = 4, N = 3, n = 1.
+
+(A.23)
+
+55
+
+A.2.1 Cartesian system
+
+d2 = dx2 + dy2 + dz2.
+
+(A.24)
+
+A.2.2 Spherical
+
+where d2  d22.
+
+d2 = dr2 + r2d2, d2 = d2 + sin2  d2,
+
+A.2.3 Spherical with direction cosines
+
+(A.25a) (A.25b)
+
+d2 = dµ2 + µ2 d2 + d2, µ2 + 2 = 1,
+
+where
+
+x + iy = rµ ei, z = r,
+
+Using the constraint one can rewrite
+
+d2
+
+=
+
+1 1 - µ2
+
+dµ2
+
++ µ2
+
+d2.
+
+Finally the change of coordinates
+
+ = cos , µ = sin .
+
+solves the constraint and gives back the spherical coordinates.
+
+(A.26a) (A.26b)
+(A.27)
+(A.28)
+(A.29)
+
+A.2.4 Spheroidal with direction cosines The oblate spheroidal coordinates from the Cartesian ones are [71, p. 15]
+
+x + iy = r2 + a2 sin  ei, z = r cos ,
+
+and the metric is
+
+d2
+
+=
+
+2 r2 + a2
+
+dr2
+
++ 2d2
+
++ (r2
+
++ a2) sin2 
+
+d2,
+
+2 = r2 + a2 cos2 .
+
+In terms of direction cosines one has
+
+d2 =
+
+1
+
+-
+
+r2µ2 r2 + a2
+
+dr2 + (r2 + a2) dµ2 + µ2 d2 + r2d2.
+
+(A.30) (A.31) (A.32)
+
+A.3 5-dimensional
+In this section one considers
+
+d = 4, N = 3, n = 1.
+
+(A.33)
+
+A.3.1 Spherical with direction cosines d23 = dµ2 + µ2 d2 + d2 + 2 d2,
+where for simplicity
+µ = µ1, µ = µ2,  = 1,
+
+µ2 + 2 = 1  = 2.
+
+(A.34) (A.35)
+
+56
+
+A.3.2 Hopf coordinates The constraint (A.34) can be solved by
+µ = sin ,  = cos  and this gives the metric in Hopf coordinates
+d23 = d2 + sin2  d2 + cos2  d2.
+
+(A.36) (A.37)
+
+B Review of N = 2 ungauged supergravity
+
+In order for this review to be self-contained we recall the basic elements of N = 2 supergravity without hypermultiplets ­ we refer the reader to the standard references for more details [105­107].
+The gravity multiplet contains the metric and the graviphoton
+
+{gµ , A0}
+
+(B.1)
+
+while each of the vector multiplets contains a gauge field and a complex scalar field
+
+{Ai,  i}, i = 1, . . . , nv.
+
+(B.2)
+
+The scalar fields  i (the conjugate fields ( i) are denoted by ¯¯i) parametrize a special
+Kähler manifold with metric gi¯. This manifold is uniquely determined by an holomorphic function called the prepotential F . The latter is better defined using the homogeneous (or projective) coordinates X such that
+
+i
+
+=
+
+Xi X0 .
+
+The first derivative of the prepotential with respect to X is denoted by
+
+(B.3)
+
+F
+
+=
+
+F X .
+
+Finally it makes sense to regroup the gauge fields into one single vector
+
+(B.4)
+
+A = (A0, Ai).
+
+(B.5)
+
+One needs to introduce two more quantities, respectively the Kähler potential and the Kähler connection
+
+K = - ln i(X¯ F - XF¯),
+
+Aµ
+
+=
+
+i -2
+
+(iK
+
+µ i
+
+-
+
+¯iK
+
+µ¯¯i).
+
+(B.6)
+
+The Lagrangian for the theory without gauge group is given by
+
+L
+
+=
+
+R -2
+
++
+
+gi¯(, ¯)
+
+µ i ¯¯i
+
++
+
+I(,
+
+¯) Fµ F  µ
+
+-
+
+R(,
+
+¯) Fµ
+
+F  µ
+
+where R is the Ricci scalar and F  is the Hodge dual of F . The matrix
+
+(B.7)
+
+N = R+iI
+
+(B.8)
+
+can be expressed in terms of F . From this Lagrangian one can introduce the symplectic
+
+dual of F 
+
+G
+
+=
+
+L F 
+
+=
+
+RF 
+
+- I
+
+F .
+
+(B.9)
+
+57
+
+C Technical properties
+In this chapter we describe few technical properties of the algorithm. We comment on the group properties that some of the JN transformations possess [59]. Another useful property of Giampieri's prescription is to allow to chain all coordinate transformation, making computations easier [57]. Then finally we discuss the fact that not all the rules (4.14) are independent and several choices of complexification are equivalent [57], contrary to what is commonly believed.
+
+C.1 Group properties
+
+We want to study the JN transformations that form a group: the main motivation is to state clearly the effect of chaining several transformations. This observation can be useful for chaining several transformations, therefore adding charges to a solution that is already non-static (for example adding rotation to a solution that already contains a NUT charge). More importantly this provides a setting where the algorithm has good chances to preserve Einstein equations.
+We will make the assumptions that the functions F () and G() are linear in some parameters A (implicit sum over A)
+
+F () = AFA(), G() = AGA(),
+
+(C.1)
+
+where {FA()} and {GA()} are the functions associated to the parameters and A runs over the dimension of this space. Mathematically the functions are member of an additive group G with elements in33 F × F (F being the space of functions with second derivatives) with
+generators FA(), GA() , A = 1, . . . , dim V since there is an identity element 0 and each element with coefficients A possesses an inverse given by -A. Adding the multiplication
+by a scalar turns this group into a vector space but we do not need this extra structure. As a consequence the sum of two functions F1 = 1AFA and F2 = 2AFA gives another function F3 = 3AFA with 3A = 1A + 2A. These assumptions are motivated by the results of section 5 where F and G were solutions of (non-homogeneous) second order linear differential equations where the A are the integration constants.
+After a first transformation
+
+r = r + i F1, u = u + i G1
+
+(C.2)
+
+one obtains the metric (omitting the primes)
+
+ds2 = - f~t{1}(du + HG1 d)2 + f~{1}(d2 + H2d2)
+
+- 2 f~t{1}f~r{1}(du + G1H d)(dr + F1H d)
+
+where
+
+f~i{1} = f~i{1}(r, F1).
+
+Performing a second transformation
+
+(C.3) (C.4)
+
+r = r + i F2, u = u + i G2 the previous metric becomes (omitting the primes)
+
+(C.5)
+
+ds2 = - f~t{1,2} du + H(G1 + G2) d 2 + f~{1,2}(d2 + H2d2) - 2 f~t{1,2}f~r{1,2} du + (G1 + G2)H d dr + (F1 + F2)H d
+
+(C.6)
+
+33For simplicity we consider the case where F and G are expanded over the same parameters, but this is not necessarily the case.
+
+58
+
+where
+
+f~i{1,2} = f~i{1,2}(r, F1, F2).
+
+This function is required to satisfy the following conditions (omitting the primes)
+
+(C.7)
+
+f~i{1,2}(r, F1, 0) = f~i{1}(r, F1),
+
+f~i{1,2}(r, F1, F2) = f~i{2,1}(r, F2, F1).
+
+(C.8)
+
+The second condition means that the order of the transformations should not matter because
+
+we want to obtain the same solution given identical seed metric and parameters.
+
+The metric (C.6) is obviously equivalent to the one we would get with a unique trans-
+
+formation34
+
+r = r + i (F1 + F2), u = u + i (G1 + G2).
+
+(C.9)
+
+Then, for the transformations which are such that
+
+f~i{1,2}(r, F1, F2) = f~i{1}(r, F1 + F2),
+
+(C.10)
+
+the DJN transformations form an Abelian group thanks to the group properties of the function space. This structure implies that we can first add one parameter, and later another one (say first the NUT charge, and then an angular momentum). Said another way this group preserves Einstein equations when the seed metric is a known (stationary) solution. But note that it may be very difficult to do it as soon as one begins to replace the F in the functions by their expression, because it obscures the original function ­ in one word we can not find f~i(r, F ) from f~i(r, ).
+Another point worth to mention is that not all DJN transformation are in this group since the condition (C.10) may not satisfied: we recall that imposing or not the latter is a choice that one is doing when performing the algorithm. A simple example is provided by
+
+f (r) = r2,
+
+(C.11)
+
+which can be transformed under the two successive transformations
+
+r = r + iF1, r = r + iF2
+
+(C.12)
+
+in two ways:
+
+1.
+
+f~{1} = |r|2 = r 2 + F12,
+
+f~{1,2} = |r |2 + F12 = r 2 + F12 + F22,
+
+2. f~{1} = |r|2 = |r + iF1|2,
+
+f~{1,2} = |r + i(F1 + F2)|2 = r 2 + F12 + F22 + 2F1F2.
+
+(C.13a) (C.13b)
+
+Only the second option satisfy the property (C.10) that leads to a group. Such an example is provided in 5d where the function f(r) = r2 is successively transformed as [58]
+
+r2 - |r|2 = r2 + a2 cos2  - |r|2 + a2 cos2  = r2 + a2 cos2  + b2 sin2 ,
+
+(C.14)
+
+with the functions
+
+F1 = a cos ,
+
+The condition (C.10) is clearly not satisfied.
+
+F2 = b sin .
+
+(C.15)
+
+34This breaks down when the metric is transformed with more complicated rules, such as in higher dimensions [58].
+
+59
+
+C.2 Chaining transformations
+The JN algorithm is summarized by the following table
+
+t  u  uC  u
+
+r
+
+ rC  r
+
+
+
+f
+
+ f~
+
+t 
+
+(C.16)
+
+where the arrows correspond to the different steps of the algorithm. A major advantage of Giampieri's prescription is that one can chain all these transform-
+ations since it involves only substitutions and no tensor operations. For this reason it is much easier to implement on a computer algebra system such as Mathematica. It is then possible to perform a unique change of variables that leads directly from the static metric to the rotating metric in any system defined by the function (g, h). For example in the case of rotation for a metric with a single function one finds
+
+dt = dt + ah sin2  (1 - f~-1) - g + f~-1 dr + a sin2  (f~-1 - 1) d , dr = (1 - ah sin2 ) dr + a sin2  d , d = d - h dr ,
+
+(C.17a) (C.17b) (C.17c)
+
+where the complexification of the metric function f can be made at the end. It is impressive that the algorithm from section 2 can be written in such a compact way.
+
+C.3 Arbitrariness of the transformation
+We provide a short comment on the arbitrariness of the complexification rules (4.14). In particular let's consider the functions
+
+f1(r)
+
+=
+
+1 ,
+r
+
+f2(r)
+
+=
+
+1 r2 .
+
+The usual rule is to complexify these two functions as
+
+(C.18)
+
+f~1(r)
+
+=
+
+Re r |r|2 ,
+
+f~2(r)
+
+=
+
+1 |r|2
+
+(C.19)
+
+using respectively the rules (4.14b) and (4.14c) (in the denominator). But it is possible to arrive at the same result with a different combinations of rules. In
+fact the functions can be rewritten as
+
+r f1(r) = r2 ,
+
+f2(r)
+
+=
+
+1 r
+
+1 .
+r
+
+(C.20)
+
+The following set of rules results again in (C.19):
+
+· f1: (4.14a) (numerator) and (4.14c) (denominator); · f2: (4.14a) (first fraction) and (4.14b) (second fraction).
+
+References
+[1] J. F. Plebaski. `A Class of Solutions of Einstein-Maxwell Equations'. Annals of Physics 90.1 (Mar. 1975), pp. 196­255. doi: 10.1016/0003-4916(75)90145-1.
+
+60
+
+[2] J. F. Plebaski and M. Demiaski. `Rotating, Charged, and Uniformly Accelerating Mass in General Relativity'. Annals of Physics 98.1 (May 1976), pp. 98­127. doi: 10.1016/0003-4916(76)90240-2.
+[3] E. T. Newman and A. I. Janis. `Note on the Kerr Spinning-Particle Metric'. Journal of Mathematical Physics 6.6 (June 1965), pp. 915­917. doi: 10.1063/1.1704350.
+[4] E. T. Newman, E. Couch, K. Chinnapared, A. Exton, A. Prakash and R. Torrence. `Metric of a Rotating, Charged Mass'. Journal of Mathematical Physics 6.6 (June 1965), pp. 918­919. doi: 10.1063/1.1704351.
+[5] G. Giampieri. `Introducing Angular Momentum into a Black Hole Using Complex Variables'. Gravity Research Foundation (1990).
+[6] D. Nawarajan and M. Visser. `Cartesian Kerr-Schild Variation on the Newman-Janis Ansatz' (Jan. 2016). arXiv: 1601.03532 [gr-qc].
+[7] M. Demiaski. `New Kerr-like Space-Time'. Physics Letters A 42.2 (Nov. 1972), pp. 157­159. doi: 10.1016/0375-9601(72)90752-9.
+[8] S. P. Drake and P. Szekeres. `Uniqueness of the Newman-Janis Algorithm in Generating the Kerr-Newman Metric'. General Relativity and Gravitation 32.3 (2000), pp. 445­457. doi: 10.1023/A:1001920232180. arXiv: gr-qc/9807001.
+[9] M. Azreg-Aïnou. `From Static to Rotating to Conformal Static Solutions: Rotating Imperfect Fluid Wormholes with(out) Electric or Magnetic Field'. The European Physical Journal C 74.5 (May 2014). doi: 10.1140/epjc/s10052-014-2865-8. arXiv: 1401.4292.
+[10] C. J. Talbot. `Newman-Penrose Approach to Twisting Degenerate Metrics'. Communications in Mathematical Physics 13.1 (Mar. 1969), pp. 45­61. doi: 10.1007/BF01645269.
+[11] M. Gürses and F. Gürsey. `Lorentz Covariant Treatment of the Kerr­Schild Geometry'. Journal of Mathematical Physics 16.12 (Dec. 1975), pp. 2385­2390. doi: 10.1063/1.522480.
+[12] M. M. Schiffer, R. J. Adler, J. Mark and C. Sheffield. `Kerr Geometry as Complexified Schwarzschild Geometry'. Journal of Mathematical Physics 14.1 (Jan. 1973), pp. 52­ 56. doi: 10.1063/1.1666171.
+[13] R. J. Finkelstein. `The General Relativistic Fields of a Charged Rotating Source'. Journal of Mathematical Physics 16.6 (June 1975), pp. 1271­1277. doi: 10.1063/1.522667.
+[14] E. T. Newman. `Complex Coordinate Transformations and the Schwarzschild-Kerr Metrics'. Journal of Mathematical Physics 14.6 (June 1973), pp. 774­776. doi: doi:10.1063/1.1666393.
+[15] E. T. Newman and J. Winicour. `A Curiosity Concerning Angular Momentum'. Journal of Mathematical Physics 15.7 (July 1974), pp. 1113­1115. doi: doi:10.1063/1.1666761.
+61
+
+[16] E. T. Newman. `Heaven and Its Properties'. en. General Relativity and Gravitation 7.1 (Jan. 1976), pp. 107­111. doi: 10.1007/BF00762018.
+[17] R. Ferraro. `Untangling the Newman-Janis Algorithm'. General Relativity and Gravitation 46.4 (Apr. 2014). doi: 10.1007/s10714-014-1705-3. arXiv: 1311.3946,.
+[18] T. Adamo and E. T. Newman. `The Kerr-Newman Metric: A Review'. Scholarpedia 9 (Oct. 2014), p. 31791. doi: 10.4249/scholarpedia.31791. arXiv: 1410.6626.
+[19] F. J. Ernst. `New Formulation of the Axially Symmetric Gravitational Field Problem'. Physical Review 167.5 (Mar. 1968), pp. 1175­1178. doi: 10.1103/PhysRev.167.1175.
+[20] F. J. Ernst. `New Formulation of the Axially Symmetric Gravitational Field Problem. II'. Physical Review 168.5 (Apr. 1968), pp. 1415­1417. doi: 10.1103/PhysRev.168.1415.
+[21] H. Quevedo. `Complex Transformations of the Curvature Tensor'. en. General Relativity and Gravitation 24.7 (July 1992), pp. 693­703. doi: 10.1007/BF00760076.
+[22] H. Quevedo. `Determination of the Metric from the Curvature'. en. General Relativity and Gravitation 24.8 (Aug. 1992), pp. 799­819. doi: 10.1007/BF00759087.
+[23] D.-Y. Xu. `Exact Solutions of Einstein and Einstein-Maxwell Equations in HigherDimensional Spacetime'. en. Classical and Quantum Gravity 5.6 (June 1988), p. 871. doi: 10.1088/0264-9381/5/6/008.
+[24] H. Kim. `Notes on Spinning AdS_3 Black Hole Solution' (June 1997).
+[25] H. Kim. `Spinning BTZ Black Hole versus Kerr Black Hole: A Closer Look'. Physical Review D 59.6 (Feb. 1999), p. 064002. doi: 10.1103/PhysRevD.59.064002. arXiv: gr-qc/9809047.
+[26] S. Yazadjiev. `Newman-Janis Method and Rotating Dilaton-Axion Black Hole'. General Relativity and Gravitation 32.12 (2000), pp. 2345­2352. doi: 10.1023/A:1002080003862. arXiv: gr-qc/9907092.
+[27] L. Herrera and J. Jiménez. `The Complexification of a Nonrotating Sphere: An Extension of the Newman­Janis Algorithm'. Journal of Mathematical Physics 23.12 (Dec. 1982), pp. 2339­2345. doi: 10.1063/1.525325.
+[28] S. P. Drake and R. Turolla. `The Application of the Newman-Janis Algorithm in Obtaining Interior Solutions of the Kerr Metric'. Classical and Quantum Gravity 14.7 (July 1997), pp. 1883­1897. doi: 10.1088/0264-9381/14/7/021. arXiv: gr-qc/9703084.
+[29] E. N. Glass and J. P. Krisch. `Kottler-Lambda-Kerr Spacetime' (May 2004). arXiv: gr-qc/0405143.
+62
+
+[30] N. Ibohal. `Rotating Metrics Admitting Non-Perfect Fluids in General Relativity'. General Relativity and Gravitation 37.1 (Jan. 2005), pp. 19­51. doi: 10.1007/s10714-005-0002-6. arXiv: gr-qc/0403098.
+[31] M. Azreg-Aïnou. `Generating Rotating Regular Black Hole Solutions without Complexification'. Physical Review D 90.6 (Sept. 2014). doi: 10.1103/PhysRevD.90.064041. arXiv: 1405.2569.
+[32] B. Carter. `Hamilton-Jacobi and Schrödinger Separable Solutions of Einstein's Equations'. Communications in Mathematical Physics (1965-1997) 10.4 (1968), pp. 280­ 310.
+[33] G. W. Gibbons and S. W. Hawking. `Cosmological Event Horizons, Thermodynamics, and Particle Creation'. Physical Review D 15.10 (May 1977), pp. 2738­2751. doi: 10.1103/PhysRevD.15.2738.
+[34] D. Klemm, V. Moretti and L. Vanzo. `Rotating Topological Black Holes' (Oct. 1997).
+[35] E. J. G. de Urreta and M. Socolovsky. `Extended Newman-Janis Algorithm and Rotating and Kerr-Newman de Sitter (Anti de Sitter) Metrics' (Apr. 2015). arXiv: 1504.01728 [gr-qc, physics:math-ph].
+[36] R. Mallett. `Metric of a Rotating Radiating Charged Mass in a de Sitter Space'. Physics Letters A 126.4 (Jan. 1988), pp. 226­228. doi: 10.1016/0375-9601(88)90750-5.
+[37] S. Viaggiu. `Interior Kerr Solutions with the Newman-Janis Algorithm Starting with Static Physically Reasonable Space-Times'. International Journal of Modern Physics D 15.09 (Sept. 2006), pp. 1441­1453. doi: 10.1142/S0218271806009169. arXiv: gr-qc/0603036.
+[38] R. Whisker. `Braneworld Black Holes'. PhD thesis. University of Durham, Oct. 2008.
+[39] G. Lessner. `The "complex Trick" in Five-Dimensional Relativity'. en. General Relativity and Gravitation 40.10 (Mar. 2008), pp. 2177­2184. doi: 10.1007/s10714-008-0625-5.
+[40] S. Capozziello, M. De Laurentis and A. Stabile. `Axially Symmetric Solutions in f (R)-Gravity'. Class.Quant.Grav. 27 (2010), p. 165008. doi: 10.1088/0264-9381/27/16/165008.
+[41] F. Caravelli and L. Modesto. `Spinning Loop Black Holes'. Classical and Quantum Gravity 27.24 (Dec. 2010), p. 245022. doi: 10.1088/0264-9381/27/24/245022. arXiv: 1006.0232.
+[42] N. Dadhich and S. G. Ghosh. `Rotating Black Hole in Einstein and Pure Lovelock Gravity' (July 2013). arXiv: 1307.6166 [astro-ph, physics:gr-qc, physics:hep-th].
+[43] S. G. Ghosh and U. Papnoi. `Spinning Higher Dimensional Einstein-Yang-Mills Black Holes' (Sept. 2013). arXiv: 1309.4231 [gr-qc].
+[44] S. G. Ghosh. `Rotating Black Hole and Quintessence' (Dec. 2015). arXiv: 1512.05476 [gr-qc].
+63
+
+[45] M. Azreg-Aïnou. `Comment on "Spinning Loop Black holes" [arXiv:1006.0232]'. Classical and Quantum Gravity 28.14 (July 2011), p. 148001. doi: 10.1088/0264-9381/28/14/148001. arXiv: 1106.0970.
+[46] D. Xu. `Radiating Metric, Retarded Time Coordinates of Kerr-Newman-de Sitter Black Holes and Related Energy-Momentum Tensor'. Science in China Series A: Mathematics 41.6 (June 1998), pp. 663­672. doi: 10.1007/BF02876237.
+[47] M. Demiaski and E. T. Newman. `Combined Kerr-NUT Solution of the Einstein Field Equations'. Bull. Acad. Pol. Sci., Ser. Sci. Math. Astron. Phys. 14 (1966), pp. 653­657.
+[48] L. K. Patel. `Radiating Demianski-Type Space-Times'. Indian J. Pure Appl. Math 9 (1978), p. 1019.
+[49] K. D. Krori, T. Chaudhury and R. Bhattacharjee. `Charged Demianski Metric'. Journal of Mathematical Physics 22.10 (Oct. 1981), pp. 2235­2236. doi: 10.1063/1.524792.
+[50] L. K. Patel, R. P. Akabari and U. K. Dave. `Radiating Demianski-Type Metrics and the Einstein-Maxwell Fields'. The ANZIAM Journal 30.01 (July 1988), pp. 120­126. doi: 10.1017/S0334270000006081.
+[51] Y. F. Pirogov. `Towards the Rotating Scalar-Vacuum Black Holes' (June 2013). arXiv: 1306.4866 [gr-qc, physics:hep-ph, physics:math-ph].
+[52] D. Hansen and N. Yunes. `Applicability of the Newman-Janis Algorithm to Black Hole Solutions of Modified Gravity Theories'. Physical Review D 88.10 (Nov. 2013), p. 104020. doi: 10.1103/PhysRevD.88.104020. arXiv: 1308.6631.
+[53] J. H. Horne and G. T. Horowitz. `Rotating Dilaton Black Holes'. Physical Review D 46.4 (Aug. 1992), pp. 1340­1346. doi: 10.1103/PhysRevD.46.1340. arXiv: hep-th/9203083.
+[54] D. Cirilo-Lombardo. `The Newman-Janis Algorithm, Rotating Solutions and EinsteinBorn-Infeld Black Holes' (Dec. 2006).
+[55] R. D'Inverno. Introducing Einstein's Relativity. Anglais. Clarendon Press, Aug. 1992.
+[56] J. F. Reed. `Some Imaginary Tetrad-Transformations of Einstein Spaces'. PhD thesis. Rice University, 1974.
+[57] H. Erbin. `Janis-Newman Algorithm: Simplifications and Gauge Field Transformation'. General Relativity and Gravitation 47.3 (Mar. 2015), p. 19. doi: 10.1007/s10714-015-1860-1. arXiv: 1410.2602.
+[58] H. Erbin and L. Heurtier. `Five-Dimensional Janis-Newman Algorithm'. Classical and Quantum Gravity 32.16 (Aug. 2015), p. 165004. doi: 10.1088/0264-9381/32/16/165004. arXiv: 1411.2030.
+[59] H. Erbin. `Deciphering and Generalizing Demianski-Janis-Newman Algorithm'. General Relativity and Gravitation 48.5 (May 2016). doi: 10.1007/s10714-016-2054-1. arXiv: 1411.2909.
+64
+
+[60] H. Erbin and L. Heurtier. `Supergravity, Complex Parameters and the Janis-Newman Algorithm'. Classical and Quantum Gravity 32.16 (Aug. 2015), p. 165005. doi: 10.1088/0264-9381/32/16/165005. arXiv: 1501.02188.
+[61] H. Erbin. `Black Holes in N = 2 Supergravity'. PhD thesis. Université Pierre et Marie Curie ­ Paris VI, Sept. 2015.
+[62] A. J. Keane. `An Extension of the Newman-Janis Algorithm'. Classical and Quantum Gravity 31.15 (Aug. 2014), p. 155003. doi: 10.1088/0264-9381/31/15/155003. arXiv: 1407.4478.
+[63] A. Sen. `Rotating Charged Black Hole Solution in Heterotic String Theory'. Physical Review Letters 69.7 (Aug. 1992), pp. 1006­1009. doi: 10.1103/PhysRevLett.69.1006. arXiv: hep-th/9204046.
+[64] M. J. Perry. `Black Holes Are Coloured'. Physics Letters B 71.1 (Nov. 1977), pp. 234­ 236. doi: 10.1016/0370-2693(77)90786-9.
+[65] K. Behrndt, D. Lüst and W. A. Sabra. `Stationary Solutions of N = 2 Supergravity'. Nuclear Physics B 510.1-2 (Jan. 1998), pp. 264­288. doi: 10.1016/S0550-3213(97)00633-0. arXiv: hep-th/9705169.
+[66] E. Bergshoeff, R. Kallosh and T. Ortín. `Stationary Axion/Dilaton Solutions and Supersymmetry'. Nuclear Physics B 478.1-2 (Oct. 1996), pp. 156­180. doi: 10.1016/0550-3213(96)00408-7. arXiv: hep-th/9605059.
+[67] Y. Bardoux, M. M. Caldarelli and C. Charmousis. `Integrability in Conformally Coupled Gravity: Taub-NUT Spacetimes and Rotating Black Holes' (Nov. 2013). arXiv: 1311.1192 [gr-qc, physics:hep-th].
+[68] R. Myers and M. Perry. `Black Holes in Higher Dimensional Space-Times'. Annals of Physics 172.2 (Dec. 1986), pp. 304­347. doi: 10.1016/0003-4916(86)90186-7.
+[69] J. C. Breckenridge, R. C. Myers, A. W. Peet and C. Vafa. `D-Branes and Spinning Black Holes'. Physics Letters B 391.1-2 (Jan. 1997), pp. 93­98. doi: 10.1016/S0370-2693(96)01460-8. arXiv: hep-th/9602065.
+[70] A. Gnecchi, K. Hristov, D. Klemm, C. Toldo and O. Vaughan. `Rotating Black Holes in 4d Gauged Supergravity'. Journal of High Energy Physics 2014.1 (Jan. 2014). doi: 10.1007/JHEP01(2014)127. arXiv: 1311.1795.
+[71] M. Visser. `The Kerr Spacetime: A Brief Introduction'. The Kerr Spacetime. Rotating Black Holes in General Relativity. Ed. by D. L. Wiltshire, M. Visser and S. M. Scott. Cambridge University Press, Feb. 2009.
+[72] S. M. Carroll. Spacetime and Geometry: An Introduction to General Relativity. English. Addison Wesley, 2004.
+65
+
+[73] N. Alonso-Alberca, P. Meessen and T. Ortín. `Supersymmetry of Topological KerrNewmann-Taub-NUT-aDS Spacetimes'. Classical and Quantum Gravity 17.14 (July 2000), pp. 2783­2797. doi: 10.1088/0264-9381/17/14/312. arXiv: hep-th/0003071.
+[74] J. B. Griffiths and J. Podolsky. `A New Look at the Plebanski-Demianski Family of Solutions'. International Journal of Modern Physics D 15.03 (Mar. 2006), pp. 335­ 369. doi: 10.1142/S0218271806007742. arXiv: gr-qc/0511091.
+[75] A. Chamblin, R. Emparan, C. V. Johnson and R. C. Myers. `Large N Phases, Gravitational Instantons and the Nuts and Bolts of AdS Holography'. Physical Review D 59.6 (Feb. 1999). doi: 10.1103/PhysRevD.59.064010. arXiv: hep-th/9808177.
+[76] C. V. Johnson. `Thermodynamic Volumes for AdS-Taub-NUT and AdS-Taub-Bolt'. Class.Quant.Grav. 31 (Nov. 2014), p. 235003. doi: 10.1088/0264-9381/31/23/235003. arXiv: 1405.5941.
+[77] A. Krasiski. Inhomogeneous Cosmological Models. English. Cambridge University Press, Nov. 2006.
+[78] R. G. Leigh, A. C. Petkou, P. M. Petropoulos and P. K. Tripathy. `The Geroch Group in Einstein Spaces'. Classical and Quantum Gravity 31.22 (Nov. 2014), p. 225006. doi: 10.1088/0264-9381/31/22/225006. arXiv: 1403.6511.
+[79] J. D. Bekenstein. `Exact Solutions of Einstein-Conformal Scalar Equations'. Annals of Physics 82.2 (Feb. 1974), pp. 535­547. doi: 10.1016/0003-4916(74)90124-9.
+[80] N. M. Bocharova, K. A. Bronnikov and V. N. Melnikov. `An Exact Solution of the System of Einstein Equations and Mass-Free Scalar Field'. Vestn. Mosk. Univ. Fiz. Astro. 6 (1970), p. 706.
+[81] K. Hristov, H. Looyestijn and S. Vandoren. `BPS Black Holes in N=2 D=4 Gauged Supergravities'. Journal of High Energy Physics 2010.8 (Aug. 2010). doi: 10.1007/JHEP08(2010)103. arXiv: 1005.3650.
+[82] D. D. K. Chow and G. Compère. `Black Holes in N=8 Supergravity from SO(4,4) Hidden Symmetries'. Physical Review D 90.2 (July 2014), p. 025029. doi: 10.1103/PhysRevD.90.025029. arXiv: 1404.2602.
+[83] T. Ortín. Gravity and Strings. English. Cambridge University Press, 2004.
+[84] R. Emparan and H. S. Reall. `Black Holes in Higher Dimensions'. Living Rev.Rel. 11 (Jan. 2008), p. 6.
+[85] A. N. Aliev. `Rotating Black Holes in Higher Dimensional Einstein-Maxwell Gravity'. Physical Review D 74.2 (July 2006), p. 024011. doi: 10.1103/PhysRevD.74.024011.
+66
+
+[86] M. Bañados, C. Teitelboim and J. Zanelli. `The Black Hole in Three Dimensional Space Time'. Physical Review Letters 69.13 (Sept. 1992), pp. 1849­1851. doi: 10.1103/PhysRevLett.69.1849. arXiv: hep-th/9204099.
+[87] Z.-W. Chong, M. Cvetic, H. Lu and C. N. Pope. `General Non-Extremal Rotating Black Holes in Minimal Five-Dimensional Gauged Supergravity'. Physical Review Letters 95.16 (Oct. 2005), p. 161301. doi: 10.1103/PhysRevLett.95.161301. arXiv: hep-th/0506029.
+[88] R. Emparan and H. S. Reall. `A Rotating Black Ring in Five Dimensions'. Physical Review Letters 88.10 (Feb. 2002), p. 101101. doi: 10.1103/PhysRevLett.88.101101. arXiv: hep-th/0110260.
+[89] J. P. Gauntlett, R. C. Myers and P. K. Townsend. `Black Holes of D=5 Supergravity'. Classical and Quantum Gravity 16.1 (Jan. 1999), pp. 1­21. doi: 10.1088/0264-9381/16/1/001. arXiv: hep-th/9810204.
+[90] H. S. Reall. `Higher Dimensional Black Holes and Supersymmetry'. Physical Review D 68.2 (July 2003), p. 024024. doi: 10.1103/PhysRevD.68.024024.
+[91] A. N. Aliev. `Superradiance and Black Hole Bomb in Five-Dimensional Minimal Ungauged Supergravity' (Aug. 2014). arXiv: 1408.4269 [gr-qc, physics:hep-th].
+[92] J. P. Gauntlett, J. B. Gutowski, C. M. Hull, S. Pakis and H. S. Reall. `All Supersymmetric Solutions of Minimal Supergravity in Five Dimensions'. Classical and Quantum Gravity 20.21 (Nov. 2003), pp. 4587­4634. doi: 10.1088/0264-9381/20/21/005. arXiv: hep-th/0209114.
+[93] G. W. Gibbons, D. Kastor, L. A. J. London, P. K. Townsend and J. Traschen. `Supersymmetric Self-Gravitating Solitons'. Nuclear Physics B 416.3 (Apr. 1994), pp. 850­ 880. doi: 10.1016/0550-3213(94)90558-4. arXiv: hep-th/9310118.
+[94] A. Puhm. `Black Holes in String Theory: Guides to Quantum Gravity'. PhD thesis. Université Pierre et Marie Curie - Paris VI, 2013.
+[95] G. W. Gibbons and C. A. R. Herdeiro. `Supersymmetric Rotating Black Holes and Causality Violation'. Classical and Quantum Gravity 16.11 (Nov. 1999), pp. 3619­ 3652. doi: 10.1088/0264-9381/16/11/311. arXiv: hep-th/9906098.
+[96] A. N. Aliev and D. K. Ciftci. `Note on Rotating Charged Black Holes in EinsteinMaxwell-Chern-Simons Theory'. Physical Review D 79.4 (Feb. 2009), p. 044004. doi: 10.1103/PhysRevD.79.044004. arXiv: 0811.3948.
+[97] B. Ett and D. Kastor. `An Extended Kerr-Schild Ansatz'. Classical and Quantum Gravity 27.18 (Sept. 2010), p. 185024. doi: 10.1088/0264-9381/27/18/185024. arXiv: 1002.4378.
+67
+
+[98] [99] [100] [101] [102] [103] [104]
+[105] [106]
+[107]
+
+T. Málek. `Extended Kerr-Schild Spacetimes: General Properties and Some Explicit Examples'. Classical and Quantum Gravity 31.18 (Sept. 2014), p. 185013. doi: 10.1088/0264-9381/31/18/185013. arXiv: 1401.1060.
+F. R. Tangherlini. `Schwarzschild Field in Dimensions and the Dimensionality of Space Problem'. en. Il Nuovo Cimento 27.3 (Feb. 1963), pp. 636­651. doi: 10.1007/BF02784569.
+G. Clément. `Classical Solutions in Three-Dimensional Einstein-Maxwell Cosmological Gravity'. en. Classical and Quantum Gravity 10.5 (1993), p. L49. doi: 10.1088/0264-9381/10/5/002.
+G. Clément. `Spinning Charged BTZ Black Holes and Self-Dual Particle-like Solutions'. Physics Letters B 367.1-4 (Jan. 1996), pp. 70­74. doi: 10.1016/0370-2693(95)01464-0. arXiv: gr-qc/9510025.
+C. Martinez, C. Teitelboim and J. Zanelli. `Charged Rotating Black Hole in Three Spacetime Dimensions'. Physical Review D 61.10 (Apr. 2000), p. 104013. doi: 10.1103/PhysRevD.61.104013. arXiv: hep-th/9912259.
+P.-H. Lambert. `Conformal Symmetries of Gravity from Asymptotic Methods: Further Developments' (Sept. 2014). arXiv: 1409.4693 [gr-qc, physics:hep-th].
+G. W. Gibbons, H. Lu, D. N. Page and C. N. Pope. `The General Kerr-de Sitter Metrics in All Dimensions'. Journal of Geometry and Physics 53.1 (Jan. 2005), pp. 49­ 73. doi: 10.1016/j.geomphys.2004.05.001. arXiv: hep-th/0404008.
+D. Z. Freedman and A. Van Proeyen. Supergravity. English. Cambridge University Press, May 2012.
+L. Andrianopoli, M. Bertolini, A. Ceresole, R. D'Auria, S. Ferrara and P. Fré. `General Matter Coupled N=2 Supergravity'. Nuclear Physics B 476.3 (Sept. 1996), pp. 397­ 417. doi: 10.1016/0550-3213(96)00344-6. arXiv: hep-th/9603004.
+L. Andrianopoli, M. Bertolini, A. Ceresole, R. D'Auria, S. Ferrara, P. Fré and T. Magri. `N=2 Supergravity and N=2 Super Yang-Mills Theory on General Scalar Manifolds: Symplectic Covariance, Gaugings and the Momentum Map'. Journal of Geometry and Physics 23.2 (Sept. 1997), pp. 111­189. doi: 10.1016/S0393-0440(97)00002-8. arXiv: hep-th/9605032.
+
+68
+
+

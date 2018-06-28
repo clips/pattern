@@ -1,0 +1,8744 @@
+arXiv:1701.00009v4 [hep-th] 30 Nov 2017
+
+Generalization of Faddeev­Popov Rules in Yang­Mills Theories: N=3,4
+BRST Symmetries
+Alexander Reshetnyak Institute of Strength Physics and Materials Science of Siberian Branch of RAS,
+634055, Tomsk, Russia
+Abstract
+The Faddeev­Popov rules for a local and Poincare-covariant procedure of Lagrangian quantization for a gauge theory with gauge group are generalized to the case of an invariance of the respective quantum actions, S(N), with respect to N -parametric Abelian SUSY transformations with odd-valued parameters p, p = 1, ..., N and anticommuting generators sp: spsq + sqsp = 0, for N = 3, 4, implying the substitution of an N -plet of ghost fields , Cp, instead of the parameter, , of the infinitesimal gauge transformations:  = Cpp. The total configuration spaces of field variables for a quantum theory of the same classical model coincide in the N = 3 and N = 4 symmetric cases. For the N = 3-parametric SUSY transformations the superspace of the irreducible representation includes, in addition to Yang­Mills fields Aµ, also 3 ghost odd-valued fields Cp, as well as 3 new even-valued Bpq = -Bqp and 1 odd-valued B fields for p, q = 1, 2, 3. It is shown, that in order to construct the quantum action, S(3) a gauge-fixing procedure achieved by adding to the classical action of an N = 3-exact gauge-fixing term (without introduction of non-degenerate odd supermatrix) additionally requires a 1 antighost field C, 3 even-valued Bp and 3 odd-valued Bpq fields, as well as the Nakanishi­Lautrup field B. The action of N = 3 transformations in the space of additional fields, (3) = (C, Bp, Bpq, B), not being entangled with the fields (3) of N = 3-irreducible representation space is realized as well. These transformations are the N = 3 BRST symmetry transformations for the vacuum functional, Z3(0) = d(3)d(3) exp{(i/¯h)S(3)}. It is shown that the total configuration space of the fields ((3), (3)), as the space of reducible N = 3 BRST symmetry transformations, proves to be the space of an irreducible representation of the fields (4) for N = 4-parametric SUSY transformations, which contains, in addition to Aµ the (4 + 6 + 4 + 1) ghost-antighost, Cr = (Cp, C), new even-valued, Brs = -Bsr = (Bpq, Bp4 = Bp), odd-valued Br = (B, Bpq) fields and B for r, s = 1, 2, 3, 4, r = (p, 4). The quantum action S(4) is constructed by adding to the classical action an N = 4-exact gauge-fixing term with a gauge boson, F(4) as the sr-potential as compared to a gauge fermion (3) for N = 3 case. It is proved that the N = 4-parametric SUSY transformations are by N = 4 BRST transformations for the vacuum functional, Z4(0) = d(4) exp{(i/¯h)S(4)}. The procedures are valid for any admissible gauge. The equivalence with N = 1 and N = 2 BRSTinvariant quantization methods are explicitly established. The finite N = 3, 4 BRST transformations are derived from the algebraic SUSY transformations. The Jacobians for a change of variables related to finite N = 3, 4 SUSY transformations with field-dependent parameters in the respective path integral are calculated. The Jacobians imply the presence of a corresponding modified Ward identity which reduces to a new form of the standard Ward identities in the case of constant parameters and describe the problem of a gauge-dependence. The gauge-independent Gribov-Zwanziger models with local N = 3, 4 BRST symmetries are proposed An introduction into diagrammatic Feynman techniques for N = 3, 4 BRST invariant quantum actions for Yang­Mills theory is suggested. A generalization to the case of N = 2K - 1 and N = 2K, K > 2 BRST transformations is discussed1.
+e-mail address: reshet@ispms.tsc.ru 1The paper is dedicated to the memory of the outstanding Soviet and Russian theoretical physicist and mathematician, Academician Ludwig Dmitrievich Faddeev (1934-2017)
+1
+
+1 Introduction
+
+The problem of Lorentz-covariant quantization for gauge theories with a non-Abelian gauge group [1] is a long-standing one, starting with the lecture of R. Feynman [2], showing that the naive one-loop diagram calculation within perturbative techniques with a propagator constructed, according to quantum electrodynamic, for the photon field Aµ in the form
+
+Gµ (k)
+
+=
+
+k2
+
+1 + i0
+
+µ
+
+-
+
+kµk k2
+
++
+
+(k)
+
+kµk k2
+
+,
+
+(1.1)
+
+turns out to be incorrect2. A modification of calculations for reconstructing the one-loop contribution from the tree diagrams, using unitarity and analyticity [2], makes it possible to interpret the additional contributions as an input from a scalar particle, which should be, however, considered as a fermion due to the "-" sign before this summand. The solution of this problem was found by L. Faddeev and V. Popov in their celebrated work [3] by means of a trick known as the insertion of unity, providing the existence of a path integral for Yang­Mills fields, Aµ(x) = Am µ (x)tm, given in Minkowski space-time R1,3 and taking values in a compact Lie group G, with generators tm for its Lie algebra G, in the form
+
+Z0L = Z0F =
+
+dA(µAµ) det M (A) exp
+
+i ¯h
+
+S0(A)
+
+,
+
+dAdB det M (A) exp
+
+i ¯h
+
+S0(A)
+
++
+
+d4x µAµ + g2B B 3,
+
+(1.2) (1.3)
+
+respectively, for the Landau gauge, (A) = 0, (A) = µAµ, and then with the use of the proposal of 't Hooft [5] for the Feynman gauge (A, B), (A, B) = µAµ + g2B, with an arbitrary field B = Bmtm
+known as Nakanishi-Lautrup field [6, 7]. This representation, with a gauge-invariant classical action S0 , in comparison with the case of an Abelian U (1) gauge group, essentially includes a determinant of an
+non-degenerated operator M (A):
+
+M (A) = µDµ = µ µ - [Aµ, ] 4
+
+(1.4)
+
+known as the Faddeev­Popov operator (having multiple zero-mode eigenfunctions as compared to the Abelian case, known as Gribov copies [8]). In [9] (see the review [10]), it was shown, with the use of F. Berezin [11] generalization of the Gaussian integral over Grassmann variables, that the representations (1.2), (1.3) may be equivalently presented in a local form by using fictitious scalar Grassman-odd fields C(x), C(x) = Cm(x), Cm(x) tm
+
+Z0L =
+
+dAdCdCdB exp
+
+i ¯h
+
+SFLP
+
+(A,
+
+C,
+
+C
+
+,
+
+B
+
+)
+
+with SFLP = S0 +
+
+d4x CM (A)C + (A)B , (1.5)
+
+and similarly for Z0F , where, instead of the quantum action SFLP = SFLP (A, C, C, B), one should use the action SFFP = SFLP (A)(A,B) given in the Feynman gauge. Independently. the development of the diagrammatic technique without using Grassmann-odd fictitious fields was suggested by B. DeWitt
+[4]. The representation (1.5) allows one to replace gauge transformations for Yang­Mills fields with arbitrary scalar functions (x) = m(x)tm by global transformations in the total configuration space Mtot of fields A = (A, C, C, B), with a constant Grassmann-odd parameter µ, µ2 = 0 by the rule
+(x) = C(x)µ, being an invariance transformation for the quantum action and for the integral measure
+in (1.5), which is known as a BRST symmetry transformation [12, 13]. The BRST symmetry allows
+
+2Let us point out that the elements of the scattering matrix, among the physical states, do not depend on the value of
+
+(k)
+
+3Because of the integration in (1.3) in powers of B is gaussian, the only way to get after integration the gauge-fixed
+
+term:
+
+-
+
+1 2g2
+
+ µ Aµ
+
+2 to restore coupling constant in the Feynman gauge as it was done above through field B.
+
+4Here the notation for M (A) introduced in [3] was used. In what follows we will use the definition of the covariant
+
+derivative Dµ with opposite sign: Dµ = µ + [Aµ, ].
+
+2
+
+one to prove the gauge-invariant renormalizability of a quantum Yang­Mills theory [14], [15], as well as the path integral independence from a choice of the gauge condition for small variations. This also makes it possible to obtain the Ward identities for generating functionals of Green's functions [16]. In [17, 18] it was shown that the Faddeev­Popov representation (1.2), (1.3) admits the form (1.5) for an antiBRST symmetry transformation with another Grassmann parameter, µ¯: (x) = C(x)µ¯5, which may be considered within the N = 2 BRST ( BRSTantiBRST) symmetry [19] for Yang­Mills theories, describing ghost and antighost fields as an Sp(2)-doublet Cma(x) of fields: (Cm1, Cm2) = (Cm, Cm), as well as the parameters (µ, µ¯) = (µ1, µ2), which follows from the substitution m(x) = Cma(x)µa (with summation over repeated indices). The lifting of N = 1, 2 BRST symmetry transformations, given originally in an infinitesimal algebraic form, to a finite group-like form, with finite field-dependent parameters µ(), µa() has been introduced for N = 1 case in [23], [24] (for gauge theories with a closed algebra and general gauge theories, see [25]),for N = 2 case in [26] (as well as for constrained dynamical systems and general gauge theories in [28, 29, 30, 31] with references therein), which allows one to establish that the path integral in different gauges, such as (1.2) and (1.3), assume the same value.
+Recently [27], we have examined special SUSY (distinct from space-time SUSY) transformations with m Grassmann-odd generators that form an Abelian superalgebra Gm leaving the classical action (in a certain class of field-theoretic models) invariant and realizing a lifting of Gm to an Abelian supergroup Gm, with finite parameters and respective group-like elements being functionals of field variables. We have studied some physical consequences of these transformations at the path integral level. As a consequence, we are interested in the following question.
+Is it possible to find a general solution for the non-local Faddeev­Popov path integral representations (1.2), (1.3) in a local form which admits an extended N = k global SUSY transformation with k  3 Grassmann-odd parameters, such as those realized by N = 1, 2 BRST symmetries? In the case of a positive solution, which depends on a possibility to realize on an appropriate N = k SUSY irreducible representation space the N = k-invariant gauge-fixing procedure to construct N = k-invariant quantum action, S(N), we are interested in investigating such physical consequences as gauge-dependence, unitarity, renormalizability and Ward identities for the Feynman diagrams in the corresponding path integral with local N = 3 and N = 4-BRST invariant quantum actions.
+The paper is devoted to the solution of the problem in question and is organized as follows. In Section 2, we expound a generalization of the non-local Faddeev­Popov path integral to an N = k BRST symmetry realization in Subsection 2.2, starting from the review of N = 1, 2 cases in Subsection 2.1. We derive a local Faddeev­Popov path integral, Z(3), over fields composing total configuration space, which is the reducible representation superspace of N = 3 SUSY transformations being explicitly constructed both for the fields of N = 3 irreducible representation superspace and for auxiliary fields from nonminimal sector in Subsection 2.3 so as to formulate an N = 3 BRST invariant gauge-fixing procedure without a special odd supermatrix. In Section 3 we consider the fields of N = 3 irreducible and additional representation superspaces on equal footing within explicitly constructed N = 4 SUSY transformations, and formulate N = 4 SUSY invariant gauge-fixing procedure for local path integral, Z(4), in Section 4, for which these transformations are N = 4 BRST symmetry transformations. In Section 5, we determine infinitesimal and finite group-like N = k BRST symmetry transformations, for k = 3, 4, with constant and field-dependent parameters and compute respective Jacobians for changes of variables in the path integrals. In Section 6, we apply the results concerning the Jacobians so as to relate the respective path integral in different gauges, and to obtain new Ward identities, accompanied by the study of gauge dependence and gauge-invariant Gribov­Zwanziger formulation both within N = 3 and N = 4 BRST local quantum actions for Yang­Mills theories. The introduction into Feynman diagrammatic technique in N = 3, N = 4 BRST quantum perturbative formulations for Yang­Mills theory is the basic point of Section 7. The results are summarized in Conclusions. The proof of an impossibility to realize N = 3 BRST invariant gauge-fixing on the configuration space consisting of only the fields of N = 3 irreducible representation superspace without an odd nondegenerate supermatrix (based on an explicit construction of quantum action and N = 3 BRST transformations) is given in Appendix A.The details of derivation
+5For superfield and geometrical interpretation of anti-BRST symmetry see e.g.[20], [21], [22] and references therein
+3
+
+of N = 4 BRST invariant quantum gauge-fixed action in R-like gauges is considered in Appendix B.
+We use the DeWitt condensed notation [32]. We denote by (F ) the value of Grassmann parity of a quantity F and also use µ = diag(-, +, ..., +) for the metric tensor of a d-dimensional Minkowski space-time (generalizing the case of d = 4), with the Lorentz indices µ,  = 0, 1, ..., d - 1. A local =oforrt-hro1i2gnhomtrnm(.laeDlftbe)raidsvieasrtitivmvaetsiinvwetishtheanrsdeesmp-ie-csA(Jitm)tpofoletrhLleeifefiteaolldgneevbsa.rraiaTGbhleeosfsGymAismanneotdrrimszoeaudlrizcaeendsdJbaAynttahirseeymKdeminlleointtrgeidzmebdeytirni-c pAtam(-n,dtAnq) products of the tensor quantities, F p and Gq are denoted as: F {pGq}, F {pGq} = F pGq + F qGp; F [pGq], F [pGq] = F pGq - F qGp. The raising and lowering of Sp (2) indices, -s a, -s a = ab-s b, ab-s b , is carried out by a constant antisymmetric tensor ab, accb = ba, 12 = 1.
+
+2 Generalization of the Faddeev­Popov method
+
+Let us consider a configuration space of fields Ai = Aµ(x) = Aµn(x)tn in R1`,d-1, taking their values Aµn(x) in a Lie algebra G= su(N^ ) of a gauge group G = SU (N^ ) for n = 1, ..., N^ 2 - 1, with an action
+S0(A) invariant under gauge transformations, in the condensed notations in finite and infinitesimal form Ai = Ri (A), with the generators Ri (A) of the gauge transformations:
+
+S0(A)
+
+=
+
+1 2g2
+
+ddx tr Gµ (x)Gµ (x), Gµ (x) = [µA](x) + Aµ(x), A (x) ,
+
+(2.1)
+
+Aµ(x)  Aµ (x) = (x)Aµ(x)-1(x) + µ(x)-1(x)  Gµ  Gµ = Gµ -1,   SU (N^ ),(2.2)
+
+S0(A)
+
+=
+
+-
+
+1 4g2
+
+ddxGm µ (x)Gmµ (x), Gµ (x) = Gm µ (x)tm, Gm µ = [µAm ] + f mnlAnµAl ,
+
+(2.3)
+
+Am µ (x) = Dµmn(x)n(x) = ddy Rµmn(x; y)n(y) , where i = (µ, m, x),  = (n, y).
+
+(2.4)
+
+Here Gµ (x), (x), g and Dµmn(x) = mnµ + f monAoµ(x) are by the field strength, arbitrary gauge function taking theirs values in SU (N^ ), (dimensionless for d = 4) coupling constant, covariant derivative with completely antisymmetric structural constants f mno: [tm, tn] = gf mnoto of su(N^ ) and local generators of
+gauge transformations, Rµmn(x; y) = Dµmn(x)(x - y), whereas for the infinitesimal gauge transformations (2.4) the representation, (x) = 1 + m(x)tm holds.
+
+2.1 Review of N = 1, 2 BRST symmetry
+
+In the case of usual BRST symmetry, the path integral, be it in Landau (1.2), Feynman (1.3), or arbitrary
+admissible gauges, may be uniquely presented using a local quantum action, S = S() in the space M(toNt=1)  Mtot of fields A:
+
+Z =
+
+d exp
+
+i ¯h
+
+S
+
+()
+
+,
+
+with S = S0 + ()-s = S0 +
+
+CM (A)C + (A, B)B ,
+
+(2.5)
+
+for M (A) = dy Aµ(y)(A, B) Dµ, with the help of a gauge fermion (), encoding the gauge by a gauge function (A, B) linear in the fields Aµ, B:
+
+() = C(A, B) + (), () = 1, for deg. > 2, deg(A, B) = 1
+
+(2.6)
+
+with the use, first, the condensed notations in (2.5) and (2.6), implying the integration over some region in R1,d-1 and trace over su(N^ ) indices, second, of a nilpotent Grassmann-odd "right-hand" (left-hand) Slavnov generator -s (s), -s 2 = 0, [15] of N = 1 BRST transformations acting on the local coordinates
+
+4
+
+of Mtot, as well as on a functional K(), by the rule [12, 13]
+
+A-s =
+
+Aµ, C, C, B -s =
+
+DµC,
+
+1 2
+
+[C,
+
+C],
+
+B,
+
+0
+
+
+
+Anµ, Cn, Cn, Bn -s =
+
+Dµno C o ,
+
+1 2
+
+f
+
+nop
+
+C
+
+o
+
+C
+
+p
+
+,
+
+Bn,
+
+0
+
+,
+
+sK() = (sA)- AK and K()-s = K-A(A-s )  s A, K = - (-1)AA, (-1)(K)KP -s .(2.7)
+
+The quantum action S and the integration measure d are invariant under BRST transformations A  A with a constant parameter µ,
+
+A = A(1 + -s µ) : µA = A-s µ = µS = 0, sdet (/) = 1,
+
+(2.8)
+
+providing the invariance of the integrand in Z with respect to these transformations. In turn, for the generating functionals of Green's functions, as well as of correlated and one-particle irreducible Green's functions (known as well as, the effective action ( A )), depending, respectively, on the external sources JA, (JA) = A and mean fields, A , we have
+
+Z(J) =
+
+d exp
+
+i ¯h
+
+S
+
+()
+
++
+
+JA
+
+A
+
+= exp
+
+i ¯h
+
+W
+
+(J
+
+)
+
+,
+
+( A ) = W (J ) - JA A
+
+(2.9)
+
+by means of a Legendre transformation of W (J) with respect to JA, for A = - A(J)W and JA = -(/ A ). N = 1 BRST transformations lead to the presence of respective Ward identities:
+
+JA A-s ,J = 0,
+
+JA
+
+A-s
+
+,J = 0,
+
+  A
+
+A-s ,  = 0,
+
+(2.10)
+
+with respective normalized average expectation values L ,J , L ,J , L ,  for a functional L =
+L() calculated using Z(J), W (J),  for a given gauge fermion , with the external sources JA and A .
+
+The infinitesimal field-dependent (FD) N = 1 BRST transformations with a functional parameter
+
+µ() = (i/¯h) allow one to establish gauge-independence for the path integral Z under an infinitesimal
+
+variation of of variables
+
+the gauge (2.8), sdet
+
+conAdi-tioBn,
+
+ =
+
+  + , due to 1 - µ()-s , in the
+
+an input from the superdeterminant integrand of Z+:
+
+of
+
+the
+
+change
+
+Z+ =
+
+dsdet A-B
+
+exp
+
+i ¯h
+
+S+
+
+()
+
+= Z.
+
+(2.11)
+
+In turn, finite FD N = 1 BRST transformations, whose set enlarges the Abelian supergroup, G(1) =
+
+{g(µ) g~(µ) :
+
+: g(µ) = 1 + -s µ}, acting g~(µ) = 1 + -s µ()} with
+
+in Mtot and g~(µ1)g~(µ2) =
+
+providing an g~(µ1-s µ2) =
+
+non-Abelian supergroup, g~(µ2-s µ1) = g~(µ2)g~(µ1),
+
+G(1)= {g~(µ) : introduced for
+
+the first time in [23], allow one to obtain a new form of the Ward identities, depending on an FD
+
+parameter, and to establish gauge-independence for the path integral Z under a finite change of the
+
+gsdaeutge, A-B
+
+ + : = (1 +
+
+Z = Z+. In this case, the superdeterminant of a µ()-s )-1, calculated in [24] ­ see also [25] for general
+
+change of variables (2.8), gauge theories ­ implies a
+
+modified Ward identity:
+
+exp
+
+i ¯h
+
+JA
+
+A-s µ(
+
+)
+
+(1 + µ()-s ) -1
+
+= 1,
+
+,J
+
+for
+
+µ()
+
+=
+
+i ¯h
+
+g(y),
+
+y, g(y) = i/¯h)-s , 1 - exp{y}/y ,
+
+(2.12) (2.13)
+
+and leads to a solution of the gauge dependence problem for the generating functional Z(J):
+
+Z+ (J )
+
+-
+
+Z(J )
+
+=
+
+i ¯h
+
+JA
+
+A-s µ (| -  ,J
+
+
+
+Z+ (J ) - Z(J ) |J=0 = 0.
+
+(2.14)
+
+5
+
+For an N = 2 BRST symmetry realization for the quantum local action we, once again, follow the Faddeev­Popov proposal (1.2), where, instead of the gauge function (A), a Grassmann-even gauge functional Y (A), (Y ) = 0, is utilized:
+
+Z0L=
+
+dA Y (A) det M (A) exp
+
+i ¯h
+
+S0
+
+(A)
+
+,
+
+for Y (A)
+
+=
+
+Y Aµ
+
+Dµ
+
+=
+
+µAµ
+
+ Y
+
+=
+
+YiRi (2.15)
+
+(for Yi  Y /Ai, Ai = Aµ(x)) which leads to a local representation for the path integral in the same configuration space M(toNt=2) = M(toNt=1) of fields A, arranged into Sp(2)-doublet as A = (Aµ, Ca, B) = (Am µ , Cma, Bm)tm
+
+ZY =
+
+d exp
+
+i ¯h
+
+SY
+
+()
+
+,
+
+with SY
+
+=
+
+S0
+
+-
+
+1 2
+
+Y
+
+-s a-s a
+
+and
+
+-
+
+1 2
+
+Y
+
+-s a-s a
+
+=
+
+()-s .
+
+(2.16)
+
+The functional (2.16), in the Feynman gauge condition, providing a particular representative (for  = 1) from the class of R-gauges, µAµ + g2B (Landau gauge for  = 0), takes the form
+
+ZY =
+
+d exp
+
+i ¯h
+
+SY
+
+()
+
+for
+
+Y ()
+
+=
+
+1 2
+
+ddx tr - AµAµ + g2abCaCb ,
+
+SY ()
+
+=
+
+S0
+
+-
+
+1 2
+
+Y
+
+-s a-s a
+
+=
+
+S0
+
++
+
+Sgf
+
++
+
+Sgh
+
++
+
+Sadd,
+
+(2.17) (2.18)
+
+where the gauge-fixing term Sgf and the ghost term Sgh coincide with N = 1 BRST exact term ()-s
+
+in the N = 1 BRST invariant quantum action S , for  = 1, whereas the interaction term Sadd, quartic in ghosts Csa, specific for the N = 2 BRST symmetry, is given by
+
+Sgf + Sgh = ddx
+
+Sadd
+
+=
+
+-
+
+g2 24
+
+µAm µ + g2Bm
+
+Bm
+
++
+
+1 2
+
+ddx (µCma) DµmnCnbab ,
+
+ddx f mnlf lrsCsaCrcCnbCmdabcd6.
+
+(2.19) (2.20)
+
+The quantum action and integration measure are invariant with respect N = 2 BRST symmetry transformations at the algebraic level, with right-hand Grassmann-odd generators -s a satisfying the algebra -s a-s b + -s b-s a = 0, a, b = 1, 2
+
+for A  A = A(1 + -s aµa) :
+
+Aµ, Cb, B -s a =
+
+DµCa, baB
+
++
+
+1 2
+
+[C
+
+b
+
+,
+
+C
+
+a
+
+],
+
+1 2
+
+[B,
+
+Ca]
+
++
+
+1 6
+
+[C
+
+c
+
+,
+
+[C
+
+b,
+
+C a ]]cb
+
+.
+
+(2.21)
+
+As in the N = 1 BRST case, this invariance, for the corresponding generating functionals of Green's functions, ZY (J) = exp{(i/¯h)WY (J)}, Y (  ) constructed by the rules (2.9) with a given gauge condition Y (), leads to the presence of an Sp(2)-doublet of Ward identities:
+
+JA A-s a Y,J = 0,
+
+JA
+
+A-s a
+
+Y,J = 0,
+
+Y  A
+
+A-s a Y,  = 0,
+
+(2.22)
+
+with respective normalized average expectation values L Y,J , L Y,J , L Y,  for a functional L = L() calculated using ZY (J), WY (J), Y for a given gauge boson Y in the presence of external sources JA and mean fields A . The gauge independence of the path integral ZY (0) under an infinitesimal
+variation of the gauge condition, Y  Y + Y , is established using the infinitesimal field-dependent (FD) 1tNh-e=sµu2ap(BerR)dS-seTtae,rtmarasinnfsoaflnolotrmwfosar:ttiohnesc[h3a3n, g3e4]owf vitahritahbelefsun(2c.t8io)nmaladpearianmtehteerinstµeag(ran)d=o(fiZ/2Yh¯+)YY,-ssdaetwhicAh-inBduc=e
+
+ZY +Y =
+
+d sdet A-B
+
+exp
+
+i ¯h
+
+SY
+
++Y
+
+()
+
+= ZY .
+
+(2.23)
+
+6 For
+
+g
+
+=
+
+1,
+
+the
+
+expressions
+
+for
+
+Sgf
+
+(2.19)
+
+and
+
+Sadd
+
+(2.20)
+
+coincide
+
+with
+
+ones
+
+in
+
+[26]
+
+after
+
+rescaling
+
+
+
+
+
+1 2
+
+.
+
+6
+
+The finite N = 2 BRST transformations acting in Mtot, whose set forms an Abelian supergroup,
+
+G(2) =
+
+g(µa)
+
+:
+
+g(µa)
+
+=
+
+1
+
++
+
+-s aµa
+
++
+
+1 4
+
+-s a
+
+-s aµbµb
+
+=
+
+exp
+
+(-s aµa)
+
+,
+
+(2.24)
+
+are restored from the algebraic N = 2 BRST transformations according to [26]:
+
+{K (g(µa)) = K () and K-s a = 0}  g (µa) = exp {-s aµa} ,
+
+(2.25)
+
+where K = K () is an arbitrary regular functional, and -s a, -s 2  -s a-s a are the generators of BRSTantiBRST and mixed BRST-antiBRST transformations in the space of A. These finite transformations,
+in a manifest form [26], for A = A - A, read as follows:
+
+Aµ
+
+=
+
+Dµ C a µa
+
+-
+
+1 2
+
+DµB
+
++
+
+1 2
+
+[C
+
+a
+
+,
+
+DµC
+
+b ]ab
+
+µ2 ,
+
+B
+
+=
+
+1 2
+
+[B,
+
+Ca]
+
++
+
+1 6
+
+[C
+
+c,
+
+[Cb, Ca]]cb
+
+µa ,
+
+Cb =
+
+baB
+
++
+
+1 2
+
+[C
+
+b,
+
+Ca]
+
+µa
+
++
+
+1 2
+
+[B,
+
+Cb]
+
++
+
+1 [Cc, 6
+
+[C a ,
+
+C b ]]ca
+
+µ2 ,
+
+(2.26) (2.27)
+(2.28)
+
+and cannot be presented as group elements (in terms of an exp-like relation) which is not closed under BRST-antiBRST transformations: µa()-s b = 0. N = 2 BRST transformations with functionally-dependent parameters µa =
+
+for an Sp(2)-doublet µa() Once again, the finite FD -s a allow one to derive a
+
+new form of the Ward identities, depending on FD parameters, and to study gauge-independence for the
+
+pgN(1ea(onr-wae|r,mY21ateth)ti(nee=grs)sf2uu-µsih¯pnaagec(­rt-sydio)laeeYn)ta-aedrl,2ssm,f,otcierona.galyac.n,utmZlaofY(todie(r/idJfi4a)h¯eind)acYn[hW2da6-asnZ]rg2Yd­e,,si[odu3efee0nn]dva,teali[srt3royi1aa][dbfi3eln1ep]iste:fenodcrhignAaegnngoeernaoltfhgteAhauep=gageraautmhgAeeeo,gtreY(yµrsaa(µnadY)()Yg+,eY)nsde=er, atZ2lih¯Yfgo=A(rym-)ZYoBYf+-sFY=Da,.
+
+1
+
++
+
+i h¯
+
+JAA
+
+-s aµa()
+
++
+
+1 4
+
+-s 2µ2()
+
+-
+
+1 4
+
+i h¯
+
+2JAA-s aJB
+
+B-s a µ2()
+
+×
+
+1
+
+-
+
+1 2
+
+-s 2
+
+-2 Y,J = 1,
+
+ZY +Y  (J ) - ZY (J ) =
+
+i h¯
+
+JA
+
+A
+
+-s aµa
+
+(|
+
+-
+
+Y
+
+)
+
++
+
+1 4
+
+-s 2µ2
+
+(|
+
+-
+
+Y
+
+)
+
+- (-1)B
+
+i 2h¯
+
+2 JB JA
+
+A-s a
+
+B-s a µ2 (| - Y )
+
+,
+
+Y,J
+
+(2.29) (2.30)
+
+vanishing on the mass shell determining by the hypersurface JA = 0.
+Now, we have all the things prepared to generalize the Faddeev­Popov procedure in order to realize a more general case of N = 3 BRST symmetry for an appropriate local quantum action depending on the entire set of fields, on which the latter symmetry transformations are defined.
+
+2.2 Proposal for non-local Faddeev­Popov path integral with N = 3 BRST symmetry
+
+There are many ways to present the functionals (1.2), (1.3) without using a determinant and a functional -function within perturbation techniques. In the case of Landau and Feynman gauges, we generalize the path integral (1.2), 1.3 by the rule
+
+Z0L = Z0F =
+
+dA (A) det M (A)detkM (A) det-kM (A) exp
+
+i ¯h
+
+S0(A)
+
+, k  0,
+
+(2.31)
+
+dAdB det M (A)detkM (A) det-kM (A) exp
+
+i ¯h
+
+S0
+
+(A)
+
++
+
+d4x µAµ + g2B B .(2.32)
+
+7
+
+The path integral formulations with local quantum action exist for any k  N0 as follows, e.g. for (2.31):
+
+Z0L =
+
+k
+
+k
+
+dAdB dCldCl dBldBl exp
+
+i ¯h
+
+S
+
+L (k)
+
+A, C0, C0, C[k], C[k], B[k], B[k], B
+
+l=0
+
+l=1
+
+k
+
+with
+
+S
+
+L (k)
+
+=
+
+S0
+
++
+
+ddx
+
+ClM (A)Cl + BlM (A)Bl + C0M (A)C0 + (A)B ,
+
+l=1
+
+for D[k] = (D1, ..., Dk), D  {C, C, B, B}, (C0, C0)  (C, C),
+
+(2.33) (2.34) (2.35)
+
+where odd-valued fields C[k], C[k] and even-valued fields B[k], B[k] taking values in Lie group G, whose numbers coincide.
+However, it is not for any k that there exists a local representation for the path integral (2.33) such that the total set of fields, (k), (k) = (A, C0, C0, C[k], C[k], B[k], B[k], B) forms the representation space of Abelian group of SUSY transformations, like N = 1, 2 BRST symmetry, for k = 0, but with larger numbers of N  3, so that the Grassmann-odd: with Cl, Cl; Grassmann-even : with Bl, Bl ghost actions with Faddeev-Popov operator and gauge-fixed term with (A)B would be generated as the exact terms with respect to the action of being searched N -parametric generators of BRST symmetry transformations.
+More exactly, the fact holds that
+Statement 1: In order the action functional SL(k), (2.34) to be given on the configuration space of fields (k) = (A, C0, C0, C[k], C[k], B[k], B[k], B) permitting the local presentation for the path integral, ZL(0), (2.31) in the form (2.33) will be invariant with respect to N = N (k)-parametric Abelian SUSY transformations with Grassmann-odd generators -s pk : -s pk -s qk + -s qk -s pk = 0, qk, pk = 1, ..., N , and will be presented in the form:
+
+S(LN(k))((N(k))) = S0(A) -
+
+(-1)N N!
+
+F(N
+
+(k))
+
+(N (k))
+
+N
+-s pek p1kp2k...pN k , (F(N (k))) = N ,
+
+e=1
+
+(2.36)
+
+with completely antisymmetric N (k)-rank (Levi-Civita) tensors  , p1kp2k...pN k p1kp2k...pN k normalized as,
+
+  p1kp2k...pN k p1kp2k...pN k = N ! for k > 2,
+
+(2.37)
+
+with some gauge-fixing functional, F(N(k)) corresponding to the Landau gauge, so that the fields (N(k))7 should parameterize the irreducible representation superspace of the Abelian superalgebra G(N (k)) of
+N (k)-parametric SUSY transformations, the spectra of integer k = k(N ) should be found as:
+
+1) k(1) = 0, k(N ) = 2N-2 - 1, for N  2 .
+
+(2.38)
+
+If in addition, the gauge-fixing functional F(N(k)) should be determined without introducing auxiliary Grassmann-odd scalar or supermatrix the spectra of integer k = ku(N ) is determined by the relation:
+
+2)
+
+ku(1) = 0,
+
+ku(N
+
+)
+
+=
+
+22[
+
+N -1 2
+
+]
+
+-
+
+1,
+
+for
+
+N
+
+ 2,
+
+(2.39)
+
+for integer part, [x], of real x.
+Note, the local path integral ZFL(N(k)) (0) = d(N(k)) exp{(i/¯h)S(LN(k))((N(k)))} = Z0L for N (k) > 2 due to the presence of possible additional vertexes in fictitious fields in S(LN(k)). In addition, in the second case
+7When the exponential index k in the representations (2.31), (2.32) is related to N = N (k)-parametric SUSY transformations we will denote the fields parameterizing configuration space, the quantum action and gauge-fixing functional as, (N(k)), S(LN(k)), F(N(k)) in opposite case we add "tilde" over it: (k), S(Lk), F(k) so that for N (k) = k in general: (N(k)) = (k), S(LN(k)) = S(Lk).
+
+8
+
+the requirement of the irreducibility of the G(N (k)) (finite-dimensional) representations for each N (k) is weakened. The irreducibility will be hold only for even N : N = 2K, K  N.
+
+Indeed, this leads, for N = 1, k(1) = 0, to the standard Faddeev­Popov representation (1.5) with the BRST symmetry, whereas, for k(2) = 0, this leads to the N = 2 BRST symmetry with a local path integral (2.16).
+
+For N = 3, k(3) = 1, there arises a first non-trivial case for the case 1 (2.38) and ku(3) = 3 for the case 2 (2.39) of the Statement. For N = 4 for both cases we have from (2.38), (2.39): k(4) = ku(4) = 3.
+
+The validity of the first part (2.38) follows from the simple fact that any field finite-dimensional
+
+irreducible tensor representation superspace of the Abelian superalgebra G(N ) with Grassmann-odd gen-
+
+erators -s p:
+
+N +1 l=1
+
+-s pl
+
+=
+
+0,
+
+contains
+
+in
+
+addition
+
+to
+
+the
+
+gauge
+
+fields
+
+Aµ,
+
+on
+
+which
+
+the
+
+infinitesimal
+
+gauge
+
+transformations, are changed on the global transformations with constant Grassmann-odd parameters,
+
+p, (p) = 1:
+
+Aµ(x) = Dµ(x) = DµCp(x)p = Aµ(x) = Aµ(x)-s pp;
+
+(2.40)
+
+(where the summation with respect to repeating indices, p, is implied) the N -plet of Grassmann-odd fields,
+
+Cp,
+
+1 2
+
+N
+
+(N
+
+- 1)
+
+new
+
+Grassmann-even
+
+fields,
+
+B1p1p2 ,
+
+and
+
+so
+
+on
+
+up
+
+to
+
+N -plet
+
+of
+
+new
+
+fields,
+
+Bp1p2...pN-1 ,
+
+((Bp1p2...pN-1) = N - 1) and new single field, B(N), ((B(N)) = N ). All the new fields take theirs values
+
+in su(N^ ) and appear from the chain:
+
+Aµ-s p = DµCp,
+
+Cp1 -s p2 = Bp1p2 + O(CB), . . . ,
+
+(2.41)
+
+............, Bp1p2...pN-2 -s pN-1 = Bp1p2...pN-1 + O(CB), Bp1p2...pN-1 -s pN = p1p2...pN B(N ) + O(CB),
+
+............, Bp1p2...pN-1 -s pN-1 = Bp1p2...pN-1 + O(CB), B(N)-s p = O(CB),
+
+(2.42) (2.43)
+
+generated by a (-d )N+1 = 0.
+
+nilpotent of the order (N The length of the chain,
+
++ 1) differential-like element, -d : -d = l, is equal to, l = (N + 1), whereas its
+
+p -s p, the such that non-vanishing linear
+
+part in fields Cp, Bp1...pl, B, for l = 2, ..., N - 1, due to the last equation in (2.43) has the length,
+
+llin = N . The Grassmann-odd and Grassmann-even numbers of new degrees of freedom for additional to Aµ fields in the multiplet k(N) of the irreducible representation of the superalgebra G(N ) without decomposition in su(N^ ) generators tm are equal to, (2N-1, 2N-1 - 1). Indeed, for N = 1, the only ghost
+
+field C(x) contains in N = 1 irreducible multiplet. For N = 2, two ghost-antighost Cp  Ca, a = 1, 2
+
+and Nakanishi-Lautrup, B2  B, fields. Then, first, extracting the degrees of freedom relating to the usual ghost and antighost C, C and B fields, second, dividing any subset on pairs of Grassmann-odd
+
+(and Grassmann-even) fields as it is given in (2.34), we get to the value of k = k(N ) for the respective
+
+exponent of the determinants in (2.31):
+
+(2N-1, 2N-1 - 1) 
+
+2N-1 - 2, 2N-1 - 2
+
+
+
+1 2
+
+2N-1 - 2, 2N-1 - 2
+
+2=.38
+
+2N-2 - 1, 2N-2 - 1 . (2.44)
+
+However, we meet the problem when going to construct the action functional (quantum action), S(LN(k)), by the rule (2.36) for odd N = 2K - 1, in particular, for N = 3 SUSY transformations on the G(N )irreducible representation superspace. Indeed, the respective gauge-fixing functional, F(3) (3) due to the linear part of the N = 3 SUSY transformations (2.41), (2.43) should be, at least, quadratic in the fields Aµ. The fact that, the Grassmann parity of F(3)) determines it as the fermion, (F(3)) = 1, means the necessity to introduce some additional Grassmann odd non-degenerate supermatrix in order to realize the prescription (2.36) for the quantum action. The details of using of such kind of odd supermatrix, which should both to determine the required Grassmann parity of F(3) and to change the basis of additional fields (C, B) in the configuration space parameterized by (3 to construct N = 3 SUSY invariant action S(L3)((3)) for k(3) = 1 are considered in the Appendix A.
+For k(N ) N=5;6,... = 7; 15, . . ., etc, the situation is more involved, and we leave its detailed consideration out of the paper scope (see as well comments in the Conclusions).
+
+9
+
+The validity of the second part (2.39) of the Statement we consider here only for N = 3 case, whereas
+for even, N = 2K, case its both parts (2.38) and (2.39) coincide.
+To do so we should determine the total configuration space, M(toNt=3)  M(to3t), the fields parameterizing it, (3), (3) =(3) being sufficient to construct the (bare) quantum action, S(L3), must form a finitedimensional field completely reducible representation of Abelian G(3) superalgebra. That means, that on the fields (3) it will be realized the another irreducible representation of N = 3-parametric G(3) superalgebra not being entangled with the irreducible G(3)-representation acting on the fields (3).
+First of all, let us find exactly the action of the generators -s p of G(N )-representation for N = 3 on
+the fields (3), (3) = Aµ, Cp1 , Bp1p2 , B(3) = B parameterizing irreducible representation superspace from (2.41) ­(2.43). Lemma 1: The action of the generators -s p of the Abelian superalgebra G(3) on the fields (3) is given by the relations:
+
+ Aµ C p1 B p1 p2
+B
+
+-s p
+
+p1 p2 p B
+
++
+
+1 2
+
+Dµ (A)C p
+
+B p1 p
+
++
+
+1 2
+
+Cp1 , Cp
+
+Bp1p2 , Cp
+
+-
+
+1 6
+
+C[p1 ,
+
+Cp2], Cp
+
+1 2
+
+B, Cp
+
+-
+
+1 8
+
+Bp1p2 , Cp3 , Cp
+
++
+
+1 6
+
+Bp1p, Cp2 , Cp3
+
+. p1p2p3
+
+(2.45)
+
+The (3)
+
+respective N = are determined
+
+3 SUSY transformations as: (3) = (3)-s pp.
+
+with
+
+triplet
+
+of
+
+anticommuting
+
+parameters,
+
+p,
+
+on
+
+the
+
+fields
+
+To prove the representation (2.45) we start from the boundary condition for such transformation inherited from the gauge transformations for Aµ (2.40) and present the realization for the sought-for
+
+generators as series:
+
+-s p = -s pe :
+e0
+
+Aµ-s p = Aµ-s p0 = Dµ(A)Cp and Cp1 -s p0  0.
+
+(2.46)
+
+Since, first,
+
+Aµ -s p0-s r0 + -s r0-s p0 = 0,
+
+(2.47)
+
+we must add to -s p0 the nontrivial action of new -s p1 on Cp1 (vanishing when acting on Aµ: Aµ-s p1  0), starting from the Grassmann-even triplet of the fields Bp1p2 = Bprmtm (BRST-like variation of Cp1 )
+
+(2.41)
+
+Cp1 -s p12
+
+=
+
+B p1 p2
+
++
+
+(C
+
+1
+
+)p1 p2
+r1 r2
+
+Cr1 , Cr2
+
+,
+
+for Bp1p2
+
+= -Bp2p1
+
+=
+
+B12, B13, B23 , (Bp1p2 ) = 0 (2.48)
+
+(where
+
+the
+
+summation
+
+with
+
+respect
+
+to
+
+repeated
+
+indices
+
+is
+
+assumed)
+
+with
+
+unknown
+
+real
+
+numbers:
+
+(C
+
+1
+
+)p1 p2
+r1 r2
+
+=
+
+(C
+
+)1
+
+p1 p2 r2 r1
+
+,
+
+to
+
+be
+
+determined
+
+from
+
+the
+
+consistency
+
+of
+
+3
+
+×
+
+3
+
+equations:
+
+l
+
+Aµ -s p[11]-s p[12] + -s p[11]-s p[12] = 0, where -s p[l] 
+
+-s pn, and Cp1 -s p02  0,
+
+n0
+
+(2.49)
+
+from which, in fact, follows the property of antisymmetry for Bp1p2 in the indices p1, p2. The solution
+
+for (2.49) determines:
+
+(C
+
+)1
+
+p1 p2 r1 r2
+
+=
+
+1 4
+
+{pr11
+
+rp22}
+
+,
+
+(2.50)
+
+providing the validity of the 2-nd row in the table (2.45). Having in mind, that any completely antisymmetric tensor, p1...pn of the n-th rank, is vanishing for n > 3, there are only the third-rank independent
+
+10
+
+completely antisymmetric constant tensor with upper, p1p2p3 = -p1p3p2 = -p2p1p3 , and lower, p1p2p3 , indices, which are normalized by the conditions (according with (2.37))
+
+123 = 1,   p1p2p3 r1r2p3 = rp11 rp22 - rp12 rp21 ,   p1p2p3 r1p2p3 = 2rp11 .
+
+(2.51)
+
+Second, because of
+
+Cp -s p[11]-s p[12] + -s p[12]-s p[11] = 0,
+
+(2.52)
+
+we should determine, Cp1 -s p2  0), in the
+
+for a form
+
+nontrivial action of -s p2 on Bp1p2 (vanishing of a general anzatz, starting from the new
+
+when acting on Grassmann-odd
+
+Aµ, Cp: Aµ, field variables
+
+B = Bmtm (BRST-like variation of Bp1p2 ) (2.43) up to the third power in Cp with a preservation of
+
+Grassmann homogeneity in each summand, as in the (2.48),
+
+Bp1p2 -s p23
+
+=
+
+p1p2p3 B
+
++
+
+(B
+
+1
+
+)p1 p2 p3
+r1 r2 r3
+
+Br1r2 , Cr3
+
++
+
+(B2
+
+)p1 p2 p3
+r1 r2 r3
+
+Cr1 ,
+
+Cr2 , Cr3
+
+, (B) = 1.(2.53)
+
+with unknown
+
+=
+
+(B2
+
+)p1 p2 p3
+r1 r3 r2
+
+,
+
+real numbers: (B to be determined
+
+)j
+
+p1 p2 p3 r1 r2 r3
+
+=
+
+-(Bj
+
+)p2 p1 p3
+r1 r2 r3
+
+from the fulfillment of
+
+, j = 1, 2; the 3 × 3
+
+(B1
+
+)p1 p2 p3
+r1 r2 r3
+
+=
+
+× 3 equations
+
+-(B1
+
+)p1 p2 p3
+r2 r1 r3
+
+;
+
+(B
+
+2
+
+)p1 p2 p3
+r1 r2 r3
+
+Cp1 -s p[22]-s p[23] + -s p[23]-s p[22] = 0, where Bp1p2 -s pl 3  0, l = 0, 1.
+
+(2.54)
+
+Its general solution has the form:
+
+(B
+
+)1
+
+p1 p2 p3 r1 r2 r3
+
+=
+
+1 4
+
+r[p11
+
+rp22
+
+]
+
+rp33
+
+:
+
+(B
+
+1
+
+)p1 p2 p3
+r1 r2 r3
+
+Br1r2 , Cr3
+
+=
+
+1 2
+
+Bp1p2 , Cp3
+
+,
+
+(B
+
+)2
+
+p1 p2 p3 r1 r2 r3
+
+=
+
+-
+
+1 12
+
+r[p11
+
+rp22
+
+]
+
+rp33
+
+:
+
+(B2
+
+)p1 p2 p3
+r1 r2 r3
+
+Cr1 ,
+
+Cr2 , Cr3
+
+=
+
+-
+
+1 12
+
+C[p1 ,
+
+Cp2], Cp3
+
+(2.55) . (2.56)
+
+providing the validity of the 3-rd row in the table (2.45).
+
+Third, due to
+
+Bp1p2 -s p[23]-s p[24] + -s p[24]-s p[23] = 0,
+
+(2.57)
+
+we should determine for
+
+Aµ, Cp, Bp1p2 -s p33 order nilpotency of
+
+ -s p
+
+:
+
+0)
+
+a nontrivial action of -s p3 on B, (vanishing when acting on
+
+a general ansatz without using the new field variables (due
+
+4 l=1
+
+-s pl
+
+
+
+0)
+
+up
+
+to
+
+the
+
+fourth
+
+order
+
+in
+
+Cp
+
+with
+
+a
+
+preservation
+
+Aµ, Cp, Bp1p2 : to of the 4-th
+of Grassmann
+
+homogeneity in each summand, as in the case of (2.48) and (2.53),
+
+B-s p3 = (B1) B, Cp + (B2)pr1r2r3r4 Br1r2 , Cr3 , Cr4 + (B3)pr1r2r3r4 Br1r2 , Br3r4
+
++(B4)pr1r2r3r4 Cr1 , Cr2 , Cr3 , Cr4 .
+
+(2.58)
+
+Here unknown real numbers -(B3)pr1r2r4r3 = -(B3)pr3r4r1
+
+r2,B(1,B(4)prB12r2)rpr31
+
+r2 r4
+
+r3 r4
+=
+
+= (B
+
+-(B2 )p
+4 r1r2r4
+
+)pr2r1r3r4 , r3 , should
+
+(B be
+
+)p
+3 r1r2r3r4
+
+=
+
+determined
+
+-(B3)pr2r1r3r4 = from the 3 × 3 × 3
+
+equations:
+
+Bp1p2 -s p[33]-s p[34] + -s p[34]-s p[33] = 0, where B-s pl 3  0, l = 0, 1, 2
+
+(2.59)
+
+Its general solution looks as
+
+(B1) =
+
+1 2
+
+,
+
+(B 2 )pr1 r2 r3 r4
+
+=
+
+-
+
+1 8
+
+r1
+
+r2
+
+r3
+
+rp4
+
+-
+
+1 12
+
+[r1
+
+r3 r4
+
+rp2
+
+]
+
+,
+
+(B 3 )pr1 r2 r3 r4
+
+= (B4)pr1r2r3r4
+
+= 0,
+
+(2.60)
+
+providing the validity of the last row in the table (2.45). In deriving (2.60) the use has been made of the symmetry for the commutator [Cp, Cr] = [Cr, Cp], and the following relations
+
+Bp[p1 , Cp2] , Cp3 + Bp1p2 , Cp , Cp3 = pp1p2 P p3 ,
+
+B[pp3 , Cp1 , Cp2] - B[pp3 , Cp2] , Cp1 + C[p, Bp1p3 , Cp2] = pp1p2 Qp3 ,
+
+for P p3 = 1 2
+
+Bpp1 , Cp2 , Cp3 pp1p2 , and Qp3 =
+
+Bpp3 , Cp1 , Cp2 pp1p2 ,
+
+(2.61) (2.62) (2.63)
+
+11
+
+as well as the Jacobi identities, which establish the absence of the 4-th power in the fields Cp in the transformation for B (2.58):
+
+Bp1p2 -s p[33]-s p[34] + -s p[34]-s p[33]
+
+(B=Bpq =0)
+
+=
+
+-
+
+1 12
+
+C[p1 ,
+
+Cp4 ,
+
+Cp2], Cp3
+
++ Cp3 , Cp4 , Cp2]
+
++ Cp2], [Cp3 , Cp4 ] + p1p2{p3 B-s p4} (B=Bpq=0) = p1p2{p3 B-s p4} (B=Bpq=0) = 0,
+
+(2.64)
+
+meaning that we may put (B4) = 0. One can easily see that the 3 × 3 equations (2.57) considered for B
+
+are fulfilled as well:
+
+B -s p[31]-s p[32] + -s p[32]-s p[31] = 0  -s {[3p]1 -s p[32]} = 0.
+
+(2.65)
+
+Therefore, -s p = -s p[3] are the generators of the irreducible representation of G(3) superalgebra of N = 3-
+
+parametric transformations in the field superspace, M(m3i)n, parameterized by the fields, A(33). That fact
+
+completes the proof of the Lemma 1.
+
+Thus, in order to have the superspace of irreducible representation being closed with respect to the action of abelian Lie superalgebra G(3) with Grassmann odd scalar generators -s p this superspace should parameterized by the set of fields:
+
+{A(33)} = Aµ, Cp, Bp1p2 , B = Anµ, Cpn, Bp1p2n, Bn tn
+
+(2.66)
+
+used as local coordinates in the configuration space M(m3i)n with dimension: dim M(m3)in = (N^ 2 - 1) d + 3, 3 + 1 , for an irreducible gauge theory of the fields Aµ with a non-Abelian gauge group SU (N^ ). It is obvious that M(m3)in  M(toi)t for i = 1, 2. We will call M(m3i)n as the minimal configuration space.
+Now, due to insufficiency of the M(m3i)n to provide gauge-fixing procedure without using of additional odd supermatrix or Grassmann-odd parameter let us extend the M(m3i)n by the fields (3) of so-called non-minimal sector, starting from a new antighost field, C(x) = Cm(x)tm, to provide a determination of the gauge fermion F(3)  (3) as the quadratic functional for the Landau gauge, (A) = 0:
+
+L(3)(C, A) = ddx tr C(A).
+
+(2.67)
+
+Properly the fields (3) contain the Nakanishi-Lautrup fields, B, and have the contents
+
+(3) = C, Bp, Bp1p2 , B ,  C, Bp1p2 + (1, 1) =  Bp1 , B = (0, 0)
+
+(2.68)
+
+with even and odd degrees of freedom, (3+1, 1+3) (modulo dim SU (N^ ) indices) and determine the action of generators -s p(n) of the representation of the Abelian superalgebra G(3) in the superspace, M(n3m) , with
+the local coordinates (3). Lemma 2: The action of the generators -s p(n) of the Abelian superalgebra G(3) on the fields (3) is determined by the relations:
+
+C-s p(n) = Bp, Bp1 -s p(n) = Bp1p, Bp1p2 -s p(n) = p1p2pB, B-s p(n) = 0.
+
+(2.69)
+
+The (3)
+
+respective N are given by
+
+= 3 SUSY transformations with the rule: (3) = (3)-s p(n)p.
+
+triplet
+
+of
+
+anticommuting
+
+parameters,
+
+p,
+
+on
+
+the
+
+fields
+
+Indeed, the relations (2.69) repeat by its form linearized chain (2.41) ­(2.43) without non-linear terms. It easy to check, that the generators -s p(n) satisfy to the defining relations:
+
+-s p(n1)-s p(n2) + -s p(n2)-s p(n1) = 0,
+
+4
+-s p(nl ) = 0.
+l=1
+
+(2.70)
+
+12
+
+In particular, we have the exact sequence
+
+C, Bp, Bp1p2 , B  -s p(n3) Bp3 , Bpp3 , p1p2p3 B, 0  -s p(n4) Bp3p4 , pp3p4 B, 0, 0  -s p(n5) p3p4p5 B, 0, 0, 0  0 -s p(n6) (2.71)
+of the length, equal to 4.
+
+We will call the representation (2.69) as the N = 3 trivial representation of the superalgebra G(3).
+
+Finally. we construct the reducible representation of the superalgebra G(3) in the total configuration
+
+space, M(to3t), parameterized by the fields, (3), (3) = (3) , with dimension in each space-time point x  R1,d-1,
+
+dim M(to3t) = (N^ 2 - 1) d + 23 - 1, 23 .
+
+(2.72)
+
+The generators of this representation we will denote as, -s pto3t = -s p3 + -s p(n3), (and then we will omit index "tot" in it as it done for the generally-adopted notations in N = 1, 2 BRST symmetry cases). The action of -s pto3t is completely determined by (2.45) and (2.45).
+Now, let us turn to the gauge-fixing procedure, construction of the quantum action and path integral, whose integrand will be invariant with respect to derived N = 3 SUSY transformations.
+
+2.3 N = 3 BRST-invariant path integral and quantum action
+
+Let us determine the local path integral, Z3, and generating functionals of Green functions in any ad-
+missible gauge, turning to the non-degenerate Faddeev-Popov matrix, for Yang-Mills theory underlying above constructed explicit N = 3 SUSY invariance (2.45), (2.69) in the total configuration space M(to3t), with triplet of anticommuting parameters p and the local quantum action S(3) ((3), (3)) given by the prescription (2.36) as follows:
+
+Z3|(0) = Z3|(J ) =
+
+d(3) d(3) exp
+
+i ¯h
+
+S(3)
+
+(3), (3)
+
+d(3)d(3) exp
+
+i ¯h
+
+S(3)
+
+(3), (3)
+
+with
+
+S(3)
+
+=
+
+S0 (A) +
+
+1 3!
+
+(3)
+
+-s p
+
+-s q
+
+-s r
+
+pqr
+
+,
+
+(2.73)
+
++ J (3) + J (3)
+
+= exp
+
+i ¯h
+
+W3|(J
+
+)
+
+,
+
+(2.74)
+
+with gauge fermion functional, (3) = (3) (3) , depending on the fields (3) as follows (confer with (2.6)):
+
+(3)((3)) = C(3)(A, B) + (3)((3)), for deg(3) > 2, deg(3)(A, B) = 1,
+
+(2.75)
+
+and external sources JAt3 = JA3 , J An3 to the respective Green functions related to the fields A(33), A(3n3) with the same Grassmann parities: (JA3 ) = (A(33)), (J An3 ) = (A(3n3) ).
+
+It is easy to check that both the' functional measure, d(3)d(3) = d(3), as well as the quantum action, S(3) , are invariant with respect to the change of variables, A(3t)  (A3)t generated by N = 3 SUSY transformations (2.45), (2.69), with accuracy up to the first order in constant p (equally with
+infinitesimal p):
+
+(A3)t = A(3t)(1 + -s pp) : A(3t) = A(3t)-s pp = S(3) = o(), sdet (3)/(3) = 1 + o(), (2.76)
+
+We will call, therefore, the transformations:
+
+A(3t) = (A3)t - A(3t) = A(3t)-s pp,
+
+(2.77)
+
+with the explicit action of the generators -s p (2.45), (2.69) on the component fields as N = 3-parametric BRST transformations.
+
+13
+
+The particular representations for the path integrals (2.73), (2.74) in the Landau and Feynman gauges are easily obtained within the same R-family of the gauges as for the N = 1 BRST invariant case (2.5) due to obvious coinciding choice of the gauge functions, (3)(A, B), for (3) = 0, in (2.75) with one, (A, B) = (µAµ + g2B = 0), in (2.6). The quantum action, S(3) , has the representation:
+
+S(3) (3)
+
+=
+
+S0
+
++
+
+1 3!
+
+(3)
+
+-s p
+
+-s q
+
+-s r
+
+pqr
+
+=
+
+S0
+
++
+
+Sgf (3)
+
++
+
+Sgh(3)
+
++
+
+Sadd(3),
+
+Sgf(3) = ddx tr µAµ + g2B B,
+
+(2.78) (2.79)
+
+Sgh(3) =
+
+ddx tr
+
+CM (A)B
+
++
+
+1 2
+
+BpM (A)Bqr + BpqM (A)Cr
+
+pqr ,
+
+Sadd(3)
+
+=
+
+1 6
+
+ddx tr - 3(µBp) Dµ(A)Cq, Cr - (µC) 2 Dµ(A)Cr, Bpq
+
++ Dµ(A)Bpq , Cr + Dµ(A)Cp, Cq , Cr pqr,
+
+(2.80) (2.81)
+
+where we have used the identities,
+
+M (A)-s p = M (A), Cp  M mn(A; x, y)-s p = f mrnM rs(A; x, y)Csp(y), M (A)Cq -s p = -µ Dµ(A)Cp, Cq + M (A) Cq-s p
+
+=
+
+- M (A)Cp, Cq
+
+-
+
+Dµ(A)Cp, µCq
+
++ M (A)
+
+Bqp
+
++
+
+1 2
+
+Cq, Cp
+
+(AB) -s p = (A-s p) B (-1)(B) + A (B-s p) ,
+
+(AB) -s p-s qpqr = A-s p-s qB + 2A-s p (B-s q) (-1)(B) + A (B-s p-s q) pqr,
+
+(AB) -s p-s q-s rpqr = A-s p-s q-s rB(-1)(B) + 3A-s p (B-s q-s r) (-1)(B)
+
++ 3A-s p-s q (B-s r) + A (B-s p-s q-s r) pqr,
+
+(2.82) (2.83) , (2.84) (2.85)
+(2.86)
+
+where the latter relations (2.84)­(2.86) appear by readily established Leibnitz-like properties of the generators of N = 3 BRST transformations, -s p acting on the product of any functions A, B with definite Grassmann parities depending on the fields A(3t). Indeed, e.g. the validity of (2.84) follows from the calculation of variations:
+
+A = AA (3t) A(3t)-s p p = AA (3t) A(3t)-s p  A-s p, (AB) = (A)B + A(B) = (A-s pp)B + A(B-s pp) = (A-s p)B(-1)(B) + A(B-s p)
+
+(2.87) p,(2.88)
+
+and the same for the second: 1 2(AB), and third: 12 2 (AB) variations.
+For instance, the ghost-dependent functional, Sadd(3), with cubic and quartic in fictitious fields terms is derived from the expression:
+
+Sadd(3)
+
+=
+
+1 6
+
+ddx tr 3Bp M (A)Cq, Cr + Dµ(A)Cq, µCr
+
+(2.89)
+
++ C 2 M (A)Cp, Bqr + 2 Dµ(A)Cp, µBqr - M (A)Bpr, Cq - Dµ(A)Bpr, µCq
+
++ M (A)Cr, Cp , Cq + Dµ(A)Cr, µCp , Cq + Dµ(A)Cr, Cp , µCq pqr,
+
+where we have omitted vanishing terms, Cp, Cq pqr  0, and with use of the antisymmetry in p, q, r as well as the integration by parts the representation (2.81) immediately follows from (2.89). Note, the each term in Sadd(3), which determine the interaction vertexes from the sector of fictitious fields, contains the
+
+14
+
+space-time differential operator for any gauge from R-gauges, that looks as more nontrivial analog of Sadd (2.20) for N = 2 BRST symmetry.
+
+Let us study some consequences of the suggested N = 3 BRST transformations. As in the N = 1, 2
+
+BRST case, the N = 3 invariance, for the corresponding generating functionals of Green's functions,
+
+Z3|(J ) , W3|(J ) and effective action, 3|( (3) ): 3|( (3) ) = W3|(J ) - JAt A(3t) , JAt = -(3|/ A(3t) ), A(3t) = - A(Jt)W3|(J ),
+
+(2.90)
+
+with a given gauge condition (3)((3)), leads to the presence of an G(3)-triplet of Ward identities:
+
+JAt A(3t)-s p (3),J = 0,
+
+JAt
+
+A(3t)-s p
+
+(3),J = 0,
+
+3|  A(3t)
+
+A(3t)-s p (3)  = 0,
+
+(2.91)
+
+with respective normalized average expectation values M , (3),J M , (3),J M , (3),  so that
+
+1 (3),J = 1, for a functional M = M ((3)) calculated using Z3|(J ), W3|(J ), 3| for a given gauge fermion (3) in the presence of external sources , JAt and mean fields A(3t) . The gauge independence
+
+of the path integral Z3|(0)  Z3|(3) (0) under an infinitesimal variation of the gauge condition, (3)  (3) + (3):
+
+Z3|(3)+(3) (0) = Z3|(3) (0).
+
+(2.92)
+
+is established using the infinitesimal FD N = 3 BRST transformations with the functional parameters,
+
+p() =
+
+1 3!
+
+i/¯h
+
+(3)()-s q-s rpqr, .
+
+(2.93)
+
+which we consider in details in the Section 5.
+
+The equivalence of N = 3 and N = 1 BRST invariant path integrals Z3|(0) (2.73), Z (2.5),. e.g in R-like gauges immediately follows from the structure of the quantum action S(3) , (2.78). Indeed,
+integrating by the fields Bpq, second, with respect to Cp, then trivially with respect to Bp and Bpq we get:
+
+Z3|()(0) = =
+
+d(3)dCdBpdBpqdet3M (A)(Cp) exp
+
+i ¯h
+
+S(3) (3)
+
+-
+
+ddx tr BpqM (A)Crpqr
+
+ddBpqdet3M (A)det-3M (A)(Bpq) exp
+
+i ¯h
+
+S
+
+
+
+= Z,
+
+(2.94)
+
+where, e.g. (Cp) =
+
+x
+
+3 k=1
+
+(C
+
+k
+
+(x))
+
+appears
+
+by
+
+the
+
+functional
+
+-function
+
+and
+
+S
+
+
+
+is the N = 1
+
+BRST invariant quantum action (2.5) given in the R- gauges. The functional Z coincides with one
+
+given in (2.5) after identification for the field B as B = C which plays now the role of the ghost field.
+
+The crucial point of the found N = 3 BRST symmetry transformations in M(to3t) that the whole fields (3) due to the relations (2.38), (2.39) of the Statement leading to: ku(3) = k(4) = ku(4), maybe organized in the respective multiplet of N = 4 field irreducible SUSY transformations with constant 4 Grassmann-
+odd parameters, r, r = 1, 2, 3, 4. The construction of the respective N = 4 SUSY transformations will be the main aim of the next Section.
+
+3 N = 4 global SUSY transformations
+
+Before introducing the N = 4 SUSY transformations we consider additional N = 1-parametric SUSY
+
+transformations in M(to3t) with new anticommuting with triplet of p:
+
+Grassmann-odd ¯p + p¯ = 0,
+
+nilpotent where as
+
+generator, for N = 1
+
+-s¯ , parameter, ¯: ¯2, -s¯ 2 antiBRST transformations
+
+= 0, [17],
+
+[18] the role of the antighost field C, as well as the rest multiplet (2.68) (3) from the non-minimal sector
+
+should be considered in opposite way ac compared to the multiplet (3) = Aµ, Cp1, Bp1p2 , B from the G(3) irreducible (minimal) representation.
+
+15
+
+3.1 Additional N = 1 BRST transformations on the fields of N = 3 representation
+
+It is valid the following Lemma 3: The action of the generator -s¯ of the Abelian superalgebra G(1) on the fields
+
+parameterizing M(to3t) is determined by the relations:
+
+
+
+-s¯
+
+Aµ
+
+Dµ(A)C
+
+C
+
+1 2
+
+C, C
+
+Bp1
+
+Bp1 , C
+
+B p1 p2 C p1
+
+Bp1p2 , C
+
+.
+
+Bp1 + Cp1 , C
+
+Bp1p2 Bp1p2 + Bp1p2 , C
+
+B
+
+B
+
+B
+
+0
+
+(3), (3) (3.1)
+
+The respective N given by the rule:
+
+= 1 SUSY transformations with anticommuting parameter, ¯(3) = (3)-s¯ ¯. The transformations (3.1) reflects the fact
+
+, on that
+
+the only
+
+fields (3) the field C
+
+are (x)
+
+appears by the active (as compared to Cp) connection.
+
+To prove the correctness of (3.1) it is sufficient to check, the nilpotency of -s¯ on each field from the
+
+multiplet, the gauge
+
+bfieecldauAseµ :ofAthµe-s¯h2om=o0g,enmeietaynsinthGartastshme asnent
+
+grading of local
+
+is obvious. generators
+
+The nilpotency calculated on of the gauge transformations,
+
+Ri (A) = (2.49) but
+
+Rfoµmrn(-sxp;)y:)
+
+(2.4),
+
+for
+
+
+
+=
+
+0,
+
+forms
+
+the
+
+local
+
+algebra
+
+Lie
+
+(as
+
+well
+
+as
+
+for
+
+the
+
+case
+
+of
+
+Lemma
+
+1
+
+Ri (A)- j Rj (A) - (-1) Ri (A)- j Rj (A) = -FRi (A), for F = f mnl(x - z)(x - y). (3.2)
+The nilpotency on any other fields follows, first, from the Leibnitz rule of acting of -s¯ on the commutator of any functions A, B with definite Grassmann parities:
+
+A, B -s¯ = A-s¯ , B (-1)(B) + A, B-s¯ ,
+
+(3.3)
+
+second, from the Jacobi identity: A, C , C (-1)(A) - C, A , C + C, C , A (-1)(A) = 0,
+
+(3.4)
+
+for any A  C, Bp1 , Bp1p2 , Cp1 , Bp1p2 , B, B . E.g. for Grassmann-even A = Bp1p2 we have,
+
+Bp1p2 -s¯ 2 = Bp1p2 + Bp1p2 , C -s¯
+
+=
+
+Bp1p2 , C
+
+-
+
+Bp1p2 +
+
+Bp1p2 , C , C
+
++
+
+1 2
+
+Bp1p2 ,
+
+C, C
+
+= - 1 Bp1p2 , C , C - C, Bp1p2 , C + C, C , Bp1p2 2
+
+= 0,
+
+(3.5)
+
+where we have used the relations (3.1), linearity and Leibnitz rule (3.3) for -s¯ , Jacobi identity (3.4) and
+
+generalized antisymmetry for the (super)commutator.
+
+The transformations,
+
+(3)  (3) = (3)(1 + -s¯ ¯) = (3) + ¯ (3),
+
+appear by the invariance transformations of following path integral and quantum action:
+
+(3.6)
+
+Z1|(0) =
+
+d(3)d(3) exp
+
+i ¯h
+
+S(1)
+
+(3), (3)
+
+, with S(1) = S0(A) + (1)-s¯ ,
+
+(3.7)
+
+16
+
+with a new gauge fermion functional, (1) = (1) (3) , which should determine a non-degenerate
+
+quantum action S(1) on the Mt(o3t), i.e. with non-degenerate supermatrix of the second derivatives in
+
+A(3t), B(3t)
+
+of
+
+S(1)
+
+evaluated -
+
+on
+
+a
+
+some
+
+vicinity
+
+of
+
+the
+
+solutions,
+
+A0(t3)
+
+=
+
+(Aµ0 , 0, ..., 0)
+
+of
+
+the
+
+respective
+
+equations of motions: S0  j = 0:
+
+(1) = B(1)(A, B) + CpBqrpqr + (1)((3)), for deg.(1) > 2, deg(1)(A, B) = 1.
+
+(3.8)
+
+Indeed, from the invariance of the integration measure, d(3), and quantum action, S(1) , due to the same reason as for the standard N = 1 BRST realization in Mtot (2.8):
+
+¯ S(1) = 0, d(3) = d(3)sdet (3)/(3) = d(3),
+
+(3.9)
+
+it follows the invariance of the integrand in Z1|(0) with respect to these transformations. It justifies a definition of the transformations (3.6) as N = 1 antiBRST symmetry transformations in M(to3t).
+Choosing, (1)((3)) = 0 in (3.8) for the quadratic gauge functional, (1), (in particular, for Rgauges: (1)(A, B) = (A, B)) we find for the quantum action, S(1) , the representation:
+
+S(1) = S0(A) + ddx tr µAµ + g2B B + BM (A)C + BpBqr + CpBqr pqr + Sadd(1),(3.10)
+
+Sadd(1) = ddx tr Cp Bqr , C + Cp, C Bqr pqr.
+
+(3.11)
+
+Integrating out of Bp, Bqr fields we get for the path integral:
+
+Z1|(0) =
+
+dAdBdCdBdCpdBqr(Bq1r1 )(Cp1 ) exp
+
+i ¯h
+
+S (1)
+
++ Sadd(1)
+
+(3.12)
+
+=
+
+dAdB dC dB exp
+
+i ¯h
+
+S
+
+(1)
+
+with S = S0(A) +  (1) -s¯ ,  (1) = B(1)(A, B),(3.13)
+
+where the resulting (after integration) fields A(1), in fact, coincide with the fields given by the local formulation for the path integral (2.5) within Faddeev-Popov rules with N = 1 BRST symmetry, in
+particular, for the Landau gauge (1.5) under identification:
+
+A(1) = A, B, C, B  A = A, C, C, B .
+
+(3.14)
+
+The only difference consists in the realization N = 1 antiBRST symmetry for Z1|(0) given in M(to3t) and of N = 1 BRST symmetry for Z (2.5) determine over Mtot. After replacing (B, C)  (C, C) the above path integral will coincide exactly
+Thus, we reached the validity of the
+Statement 2: The path integral, Z1|(0), (3.7) with the quantum action, S(1) , (3.10) at least, for the
+special quadratic gauge fermion, (1), (3.8) with (1) = 0 determined in N = 3 reducible representation space, M(to3t), of G(3) superalgebra, but with realization of the additional N = 1 antiBRST symmetry (3.1), (3.9) coincide with respective path integral (3.12), with the quantum action, S, (3.13) obtained with use of N = 1 antiBRST symmetry transformations acting in the standard configuration space, Mtot.
+Now, we may reveal the physical contents of the fields spectrum for the Z3|(0) (2.73), S(3) (3) (2.78)­(2.81) being invariant with respect to N = 3 BRST symmetry transformations (2.45), (2.69). Namely, the fields B, C from M(to3t) space correspond respectively to the pair of ghost field C inheriting the gauge symmetry and antighost field, C, introducing the gauge condition in the gauge fermion for N = 1 BRST symmetry realization of the standard Faddeev-Popov path integral. The triplet of the ghost fields
+
+17
+
+Cp
+
+and
+
+triplet
+
+of
+
+dual
+
+to
+
+B p1 p2
+
+fields:
+
+Bp3
+
+=
+
+1 2
+
+p1p2
+
+p3
+
+B
+
+p1
+
+p2
+
+=
+
+B23, B31, B12
+
+are organized into the pairs
+
+of N = 3 triplet of Grassmann-odd ghost-antighost pairs: Cp, Bp . The triplet of the Grassmann-even
+
+fictitious
+
+fields
+
+Bp
+
+and
+
+triplet
+
+of
+
+dual
+
+to
+
+B p1 p2
+
+fields:
+
+Bp3
+
+=
+
+1 2
+
+p1
+
+p2
+
+p3
+
+B
+
+p1
+
+p2
+
+=
+
+B23, B31, B12
+
+forms the
+
+pairs of N = 3 triplet of Grassmann-even ghost-antighost pairs: Bp, Bp . The role of the Nakanishi-
+
+Lautrup field B remains the same as in case of standard N = 1 BRST symmetry formulation, i.e. as the
+
+Lagrangian multiplier (at least for Landau gauge) introducing the gauge into the quantum action.
+
+Because of, the term in the ghost part, Sgh(3), (2.80) with Grassmann-even triplet of ghost-antighost pairs maybe presented as follows,
+
+1 2
+
+ddx tr BpM (A)Bqrpqr 
+
+ddx tr BpM (A)Bp
+
+(3.15)
+
+we can immediately identify the fields, (C0, C0; C[3], C[3]; B[3], B[3]) in the quantum action (2.34) for the local representation (2.33) of the generalized path integral (2.31) , for ku(3) = 3, with singlet and Grassmann-odd and Grassmann-even triplets of ghost pairs as follows:
+
+C0, C0; C[3], C[3]; B[3], B[3] = B, C; Cp, Bp; Bp, Bp, .
+
+(3.16)
+
+Note, first, that for N = 1 antiBRST symmetry realization in the configuration space M(to3t) it is possible in addition to the path integral formulation (3.7) introduce all necessary for diagrammatic Feynman tech-
+
+nique generating functionals of Green functions as it was done for N = 1 and N = 3 BRST symmetry case
+
+in the Subsections 2.1, 2.3 and study theirs respective properties (Ward identities, gauge-independence
+
+problem). Second, as for the above developed N = 1 antiBRST symmetry concept in M(to3t) it is possible
+
+mtoatcioonnsstroufcGt (a3)sosu-cpaellreadlgeNbra=w3ithantthiBe RtrSipTlestysmomf tehtreyantrtaicnosmfomrmutaitniogngsenasertahtoersN-s¯=p
+
+3 SUSY transforwith lower indices
+
+p = 1, 2, 3 and Grassmann-odd parameters, ¯p. Doing so we should, to change all the Grassmann-odd
+
+and Grassmann-even ghosts on its antighosts in the N = 3 SUSY transformations described by Lemmas 1, 2, starting from the change for the gauge parameters :  = Bp¯p and the first relations in a chain of
+
+these transformation
+
+Aµ-s¯ p = Dµ(A)Bp,
+
+Bq-s¯ p = pqrBr +
+
+1 2
+
+Bq ,
+
+Bp
+
+,...,
+
+(3.17)
+
+and finishing with the construction of the respective path integral, whose action and functional measure should be invariant with respect to these transformations. We leave the details of this interesting concept out of the paper scope.
+
+3.2 N = 4 = 3 + 1 SUSY transformations
+
+Now, we are able to consider the triplet of the Grassmann-odd ghost fields Cp and singlet C, triplets of the Grassmann-even ghost fields Bpq and Bp, triplet of new Grassmann-odd ghost fields Bpq and singlet B on the equal footing within corresponding Grassmann-odd quartet, Cr, Grassmann-even sextet, Br1r2, and Grassmann-odd quartet, Br1r2r3 for r, r1, r2, r3 = 1, 2, 3, 4 as the elements (with the fields Aµ, B) of the irreducible tensor representation of the Abelian G(4) superalgebra. In fact, the N = 3 and N = 1
+representations of G(3) and G(1) superalgebra in the same G(3)-representation space of the fields (3) are nontrivially entangled in unique N = 4 irreducible representation in the same representation space M(to3t) = M(to4t) whose local coordinates (fields) are organized into G(4)-irreducible antisymmetric tensors, as well as the parameters and generators have the structures:
+
+G(4)
+
+G(3)
+
+G(3)
+
+G(3)
+
+Cr, Br1r2 , Br1r2r3 , B = Cp, C , Bp1p2 , Bp1 , B, Bp1p2 , B ,
+
+r = p, ¯ ; -s r = -s p, -s¯ ; r = (p, 4) = (1, 2, 3, 4).
+
+(3.18) (3.19)
+
+18
+
+Lemma 4: The action of the generators -s r of N = 4-parametric Abelian superalgebra G(4) on the fields (4) = Aµ, Cr, Br1r2 , Br1r2r3 , B is given by the relations:
+
+ Aµ C r1 B r1 r2
+B r1 r2 r3
+B
+with
+
+-s r
+
+Br1r2r
+
++
+
+1 2
+
+Dµ (A)C r
+
+B r1 r
+
++
+
+1 2
+
+Cr1 , Cr
+
+Br1r2 , Cr
+
+-
+
+1 6
+
+C[r1 ,
+
+Cr2], Cr
+
+r1r2r3rB +
+
+1 2
+
+Br1r2r3 , Cr
+
+-
+
+(-1)P (r1,r2,r3)
+
+1 8
+
+Br1r2 , Cr3 , Cr
+
++
+
+1 6
+
+P
+
+1 2
+
+B, Cr
+
+-
+
+1 4!
+
+Br1r2r3 , Cr4 , Cr r1r2r3r4
+
+(-1)P (r1,r2,r3)X r1r2r3r = X r1r2r3r - X r2r1r3r - X r1r3r2r + . . . ,
+
+Br1r, Cr2 , Cr3 (3.20)
+
+P
+
+where the sign, P (-1)P (r1,r2,r3)Xr1r2r3r means the summation over all (odd with sign " - " and even
+
+with " + ") 3! permutations of the indices quartet of anticommuting parameters, r,
+
+(r1, r2, on the
+
+r3). The respective N = 4 fields (4) are determined
+
+SUSY transformations with as: (4) = (4)-s rr.
+
+The form of the transformations (3.20) follows from the chain (2.41), (2.43) for N = 4. To prove the Lemma we will follow the algorithm elaborated when the Lemma 1 was proved. We start from the boundary condition for the transformations (3.20) inherited from the gauge transformations for Aµ (2.40)
+and present the realization for the sought-for generators as series:
+
+-s r = -s re :
+e0
+
+Aµ-s r = Aµ-s r0 = Dµ(A)Cr and Cr1 -s r0  0.
+
+(3.21)
+
+Then, because of,
+
+Aµ -s r01 -s r02 + -s r02 -s r01 = 0,
+
+(3.22)
+
+we Aµ
+
+-sshr1ould0)a, dstdarttoing-sfr0romthethneoGnrtarisvsimalananct-ieovnenosfexnteewt
+
+part of the
+
+-s r1 on fields B
+
+C r1
+r1 r2
+
+(vanishing = Br1r2mtm
+
+when acting on Aµ: (BRST-like variation
+
+of Cr1 ) (2.41)
+
+Cr1 -s r12
+
+=
+
+Br1r2
+
++
+
+(C
+
+1
+
+)rs11
+
+r2 s2
+
+Cs1 , Cs2
+
+,
+
+for Br1r2 = -Br2r1 ,
+
+(Br1r2 ) = 0
+
+(3.23)
+
+with unknown real numbers:
+
+(C
+
+1
+
+)rs11
+
+r2 s2
+
+=
+
+(C
+
+1
+
+)rs12
+
+r2 s1
+
+,
+
+to
+
+be
+
+determined
+
+from
+
+the
+
+consistency
+
+of
+
+4×
+
+4
+
+equations:
+
+l
+
+Aµ -s r[11]-s r[12] + -s r[11]-s r[12] = 0, where -s r[l] 
+
+-s rn, and Cr1 -s r02  0,
+
+(3.24)
+
+n0
+
+from which follows the antisymmetry for Br1r2 in the indices r1, r2. The solution for (3.24) looks as:
+
+(C
+
+1
+
+)rs11
+
+r2 s2
+
+=
+
+1 4
+
+{r1s1
+
+sr22}
+
+,
+
+for {r1s1 sr22}  sr11 sr22 + sr21 sr12 ,
+
+(3.25)
+
+that proves the validity of the 2-nd row in the table (3.20).
+
+Second, in view of
+
+Cr -s r[11]-s r[12] + -s r[12]-s r[11] = 0,
+
+(3.26)
+
+we should Cr1 -s r2 
+
+determine, for 0), in the form
+
+a nontrivial of a general
+
+action anzatz,
+
+of -s r2 on Br1r2 (vanishing when starting from the Grassmann-odd
+
+acting on Aµ, field variables
+
+Cr: Aµ, Br1r2r3 =
+
+Br1r2r3mtm (BRST-like variation of Br1r2 ) (2.43) up to the third power in Cr with a preservation of
+
+Grassmann homogeneity in each summand, as in the (3.23),
+
+Br1r2 -s r23
+
+=
+
+B r1 r2 r3
+
++
+
+(B
+
+1
+
+)sr11
+
+r2 r3 s2 s3
+
+Bs1s2 , Cs3
+
++
+
+(B
+
+2
+
+)rs11
+
+r2 r3 s2 s3
+
+Cs1 ,
+
+Cs2 , Cs3
+
+, (Br1r2r3 ) = 1.(3.27)
+
+19
+
+with
+
+unknown real numbers:
+
+(Bj
+
+)sr11
+
+r2 s2
+
+r3 s3
+
+,
+
+j
+
+=
+
+1, 2;
+
+satisfying
+
+the
+
+same
+
+antisymmetry
+
+properties
+
+as
+
+for
+
+(B
+
+j
+
+)p1 p2 p3
+r1 r2 r3
+
+in
+
+(2.53)
+
+and
+
+to
+
+be
+
+determined
+
+from
+
+the
+
+solution
+
+of
+
+the
+
+4×4×4
+
+equations
+
+Cr1 -s r[22]-s r[23] + -s r[23]-s r[22] = 0, where Br1r2 -s rl 3  0, l = 0, 1.
+
+(3.28)
+
+Its general solution has the form:
+
+(B1
+
+)sr11
+
+r2 s2
+
+r3 s3
+
+=
+
+1 4
+
+s[r11
+
+sr22
+
+]
+
+sr33
+
+:
+
+(B1
+
+)rs11
+
+r2 s2
+
+r3 s3
+
+Bs1s2 , Cs3
+
+=
+
+1 2
+
+Br1r2 , Cr3
+
+,
+
+(B2
+
+)sr11
+
+r2 s2
+
+r3 s3
+
+=
+
+-
+
+1 12
+
+s[r11
+
+sr22
+
+]
+
+sr33
+
+:
+
+(B2
+
+)sr11
+
+r2 s2
+
+r3 s3
+
+Cs1 ,
+
+Cs2 , Cs3
+
+= - 1 C[r1 , 12
+
+Cr2], Cr3
+
+(3.29) . (3.30)
+
+providing the validity of the 3-rd row in the table (3.20).
+Third, there are only the fourth-rank independent completely antisymmetric constant tensor with upper, r1r2r3r4 , and lower, r1r2r3r4 , indices, which are normalized by the conditions (according with (2.37))
+
+1234 = 1,   r1r2r3r4 s1s2s3r4 = det srji , i, j = 1, 2, 3;   r1r2r3r4 s1s2r3r4 = 2 sr11 sr22 - sr12 sr21 ;   r1r2r3r4 s1r2r3r4 = 6sr11 .
+
+(3.31)
+
+due to
+
+Br1r2 -s r[23]-s r[24] + -s r[24]-s r[23] = 0,
+
+(3.32)
+
+we should determine for Aµ, Cr, Br1r2 -s r33  0)
+
+a a
+
+nontrivial action of -s r3 general ansatz with use
+
+on of
+
+Br1r2r3 , the new
+
+(vanishing when acting on Aµ, Cr, Grassman-even field variable, B,
+
+Br1r2
+
+:
+
+Br1r2r3 -s r3
+
+=
+
+r1r2r3r B
+
++
+
+(B
+
+1
+
+)sr11
+
+r2 r3 s2 s3
+
+r s
+
+Bs1s2s3 ,
+
+Cs
+
++
+
+(B2
+
+)sr11
+
+r2 s2
+
+r3r s3 s
+
+Bs1s2 , Cs3 , Cs
+
++
+
+(B
+
+3
+
+)sr11
+
+r2 s2
+
+r3r s3 s
+
+Bs1s2 ,
+
+B s3 s
+
++
+
+(B
+
+4
+
+)sr11
+
+r2 s2
+
+r3r s3 s
+
+Cs1 ,
+
+Cs2 ,
+
+Cs3 , Cs
+
+.
+
+(3.33)
+
+Here
+
+,
+
+the
+
+unknown
+
+real
+
+numbers
+
+(Bi
+
+)sr11
+
+r2 s2
+
+r3 r s3 s
+
+,
+
+i
+
+=
+
+1, 2, 3, 4,
+
+obey
+
+the
+
+analogous
+
+properties
+
+of
+
+(anti)sym-
+
+metry as for the coefficients (B2)pr1r2r3r4 (2.58) in the respective lower and upper indices that is now
+
+dictated by antisymmetry for Br1r2r3, Bs1s2 and symmetry for Cs3 , Cs in G(4)-indices. They should
+
+be determined from the 6 × 4 × 4 equations:
+
+Br1r2 -s r[33]-s r[34] + -s r[34]-s r[33] = 0, where Br1r2r3 -s rl  0, l = 0, 1, 2
+
+(3.34)
+
+Its general solution looks as
+
+(B1
+
+)sr11
+
+r2 r3 s2 s3
+
+r s
+
+Bs1s2s3 , Cs
+
+=
+
+1 2
+
+Br1r2r3 , Cr
+
+,
+
+(B2
+
+)sr11
+
+r2 r3 s2 s3
+
+r s
+
+Bs1s2 , Cs3 , Cs
+
+=-
+
+(-1)P (r1,r2,r3)
+
+1 4
+
+P
+
+(B3
+
+)sr11
+
+r2 r3 s2 s3
+
+r s
+
+=
+
+(B4
+
+)sr11
+
+r2 s2
+
+r3r s3 s
+
+=
+
+0,
+
+Br1r2 , Cr3
+
+, Cr
+
++
+
+1 3
+
+(3.35) Br1r, Cr2 , Cr3 ,(3.36)
+(3.37)
+
+providing the validity of the 4-th row in the table (3.20). In deriving (3.35)­(3.37), the use has been made of the symmetry for the commutator [Cp, Cr] = [Cr, Cp], Jacobi identities both for (Bpp1 , Cp2], Cp3 ) and for (Cp1 , Cp2], Cp3 ), which establish the absence of the 4-th power in the fields Cp in the transformation for Br1r2r3 (3.33) completely repeating the equations (2.64) for N = 3 case, but with replacement: Bp1p2 , B, Cp, -s p[3] on Br1r2 , Br1r2r3 , Cr, -s r[3] .
+
+Fourth, because of,
+
+Br1r2r3 -s r[34]-s r[35] + -s r[35]-s r[34] = 0,
+
+(3.38)
+
+we should determine for a nontrivial action Aµ, Cr, Br1r2 , Br1r2r3 -s r44  0) a general
+
+of -s r4 on B, (vanishing when acting ansatz without new Grassman-odd
+
+on Aµ, Cr, Br1r2 , Br1 field variable due to
+
+r2r3 : 5-th
+
+20
+
+order nilpotency for -s r (
+
+5 l=1
+
+-s rl
+
+
+
+0)
+
+up
+
+to
+
+the
+
+fifth
+
+order
+
+in
+
+Cr
+
+with
+
+a
+
+preservation
+
+of
+
+Grassmann
+
+homogeneity in each summand, as in the case of (3.23), (3.27) and (3.33),
+
+B-s r4 = (B1)rs B, Cs + (B2)rs1s2s3s4s Bs1s2s3 , Cs4 , Cs + (B3)rs1s2s3s4s Bs1s2 , Bs3s4 , Cs + (B4)rs1s2s3s4s Cs1 , Cs2 , Cs3 , Cs4 , Cs
+
+. (3.39)
+
+The above unknown real numbers, (Bi)rs, (Bi)rs1s2s3s4s, i = 2, 3, 4, obey the obvious properties of (anti)symmetry, e,g, as for the coefficients (B2)rs1s2s3s4s = -(B2)rs2s1s3s4s=(B2)rs1s3s2s4s. They should be determined from the 4 × 4 × 4 equations:
+
+Br1r2r3 -s r[44]-s r[45] + -s r[45]-s r[44] = 0, where B-s rl  0, l = 0, 1, 2, 3,
+
+(3.40)
+
+whose general solution has the form
+
+(B 1 )rs
+
+=
+
+1 2
+
+sr
+
+,
+
+(B 2 )rs1 s2 s3 s4 s
+
+=
+
+-
+
+1 4!
+
+sr
+
+s1s2
+
+s3
+
+s4
+
+,
+
+(B
+
+3
+
+)sr11
+
+r2 s2
+
+r3r s3 s
+
+=
+
+(B4
+
+)sr11
+
+r2 s2
+
+r3r s3 s
+
+=
+
+0,
+
+(3.41)
+
+providing the validity of the last row in the table (3.20). In deriving (3.41), we have used the above
+mentioned properties found when establishing (3.35)­(3.37) as well as the Jacobi identity for the fields Br1r2r3, Cr4 , Cr5 ) with the following representations for "4-cocycles", i.e. for 5-th rank tensors being antisymmetric in 4 indices:
+
+1
+
+(-1)P (rr1r2r3)
+
+3!
+
+P
+
+1
+
+(-1)P (rr1r2r3)
+
+2!
+
+P
+
+Brr1r2 , Cr3
+
+, Cr4
+
+= rr1r2r3 P4r4
+
+for
+
+P4r4
+
+=
+
+1 3!
+
+Brr1r2 , Cr3 , Cr4 rr1r2r3,(3.42)
+
+Brr1r4 , Cr2
+
+, Cr3
+
+= rr1r2r3 Qr44
+
+for
+
+Qr44
+
+=
+
+1 2
+
+Brr1r4 , Cr2 , Cr3 rr1r2r3, (3.43)
+
+so that the latter quantities, Qr44 pared for the N = 3 quantities,
+
+, (3.43) do not present in the transformations for Qp  Qp3 (2.62), (2.63), which are non-vanishing
+
+B in when
+
+(3.20) enter
+
+as cominto the
+
+transformations for B (2.45). One can immediately check that the equations (3.40) considered for B,
+
+instead of Br1r2r3 , are fulfilled as well:
+
+B -s r[41]-s r[42] + -s r[42]-s r[41] = 0  -s {[4r]1 -s [r42]} = 0.
+
+(3.44)
+
+Therefore, -s r = -s r[4] are the generators of the irreducible representation of G(4) superalgebra of N = 4-
+parametric SUSY transformations in the field superspace, Mt(o4t), parameterized by the fields, A(44). That fact completes the proof of the Lemma 4.
+
+Note, first, that the transformations on the fields Br1r2 , Br1r2r3 , B do not contain the terms more than
+cubic in the fictitious fields, whereas they depend linearly on the fields B's in the cubic terms. Second, the quantities, Qr4 do not enter into the transformations for Grassmann-even field B as compared to its N = 3 analogs, Qp, which are essentially presented in the transformations for Grassmann-odd B.
+
+Now, we have all necessary to construct N = 4 G(4)-invariant quantum action for the Yang­Mills theory.
+
+4 N=4 BRST invariant gauge-fixing procedure and local path integral
+Let us determine according to the prescription (2.33), (2.36) the local path integral, Z4, generating functionals of Green functions in any admissible gauge, turning to the non-degenerate Faddeev-Popov matrix, for Yang-Mills theory underlying above constructed explicit N = 4 SUSY invariance (3.20) in
+21
+
+the total configuration space M(to4t), M(to4t) = M(to3t), with quartet of anticommuting parameters r and the local quantum action SY(4) ((4)) as follows:
+
+Z4|Y (0) =
+
+d(4) exp
+
+i ¯h
+
+SY(4)
+
+(4)
+
+,
+
+with SY(4)
+
+= S0(A) -
+
+1 4!
+
+Y(4)
+
+-s r1
+
+-s r2
+
+-s r3
+
+-s r4
+
+[r]4
+
+,
+
+(4.1)
+
+Z4|Y (J(4)) =
+
+d(4) exp
+
+i ¯h
+
+SY(4)
+
+(4)
+
++ J(4)(4)
+
+= exp
+
+i ¯h
+
+W4|Y
+
+(J(4)
+
+)
+
+.
+
+(4.2)
+
+with use of the compact notation for, r1r2r3r4  [r]4. Here, W4|Y (J(4)) is the generating functionals of connected correlated Green functions and gauge boson functional, F(N(4)) = Y(4) = Y(4) (4) , depends on the fields (4) as follows (confer with Y (2.17) for N = 2 BRST symmetry):
+
+Y(4)((4)) = Y(04)((4)) + Y(4)((4)), for degY(4) > 2, degY(04)((4)) = 2,
+
+(4.3)
+
+and JAt4 are the external sources (coinciding with ones for N = 3 case, JAt3 ) to the Green functions related to A(4t4) with the same Grassmann parities: (JAt4 ) = (A(4t4)).
+It is not difficult to check that both the' functional measure, d(4), as well as the quantum action, SY(4) , are invariant with respect to the change of variables, A(4t)  (A4)t generated by N = 4 SUSY transformations (3.20) with accuracy up to the first order in constant p (equally with infinitesimal p):
+(A4)t = A(4t)(1 + -s rr) : A(4t) = A(4t)-s rr = SY(4) = o(), sdet (4)/(4) = 1 + o(), (4.4)
+
+These properties justify the definition of the transformations:
+
+A(4t) = (A4)t - A(4t) = A(4t)-s rr,
+
+(4.5)
+
+with the explicit action of the generators -s r (3.20) on the component fields as N = 4-parametric BRST transformations for the functionals Z4|Y (0), Z4|Y (J(4)).
+The particular representations for the path integrals (4.1), (4.2) in the Landau and Feynman gauges may be obtained within the same R-family of the gauges as for the N = 1, 2, 3 BRST invariant cases (2.5), (2.17), (2.73). To do so we determine the quadratic gauge boson functional, Y(04)((4)), which should generate R-like gauges as follows:
+
+Y(04)((4)) = Y(04)(A) + Y(B4)(Brs) =
+
+ddx tr
+
+1 2
+
+Aµ
+
+Aµ
+
+-
+
+g2 4!
+
+B
+
+q1
+
+q2
+
+B
+
+q3
+
+q4
+
+[q]4
+
+8.
+
+(4.6)
+
+The quantum action, SY(4) , has the representation:
+
+SY(4) (4)
+
+=
+
+S0
+
+-
+
+1 4!
+
+Y(4)
+
+-s r1
+
+-s r2
+
+-s r3
+
+-s r4
+
+[r]4
+
+=
+
+S0
+
++
+
+Sgf (4)
+
++
+
+Sgh(4)
+
++
+
+Sadd(4),
+
+Sgf(4) = ddx tr µAµ + g2B B,
+
+Sgh(4) =
+
+ddx tr
+
+1 3!
+
+B
+
+r1
+
+r2 r3
+
+M
+
+(A)C
+
+r4
+
++
+
+1 8
+
+B
+
+r1
+
+r2
+
+M
+
+(A)B
+
+r3
+
+r4
+
+[r]4 ,
+
+(4.7) (4.8) (4.9)
+
+8Instead of the functional Y(B4)(Brs) which generates the -dependent term it is possible to consider the functional
+
+Y~(B4)(C, Brsq )
+
+=
+
+g2 4!
+
+ddx trCq1 Bq2q3q4 [q]4 still leading to the same quadratic term: g2B2 in Sgf(4), but with another
+
+non-quadratic in the fictitious fields summands in Sadd(4).
+
+22
+
+Sadd(4) =
+
+ddx
+
+tr
+
+1 4!
+
+(µAµ) 2 Br1r2r3 , Cr4 -
+
+Br1r2 , Cr3 , Cr4
+
+- Br1r2 Cr3 , M (A)Cr4
+
++ 4 µCr3 , DµCr4 + Cr1 µ DµCr2 , Br3r4 - Cr2 , DµBr3r4 + DµCr2 , Cr3 , Cr4
+
++ g2 4
+
+1 Bq1q2 , Br1r2 4
+
+Bq3q4 , Br3r4
+
++
+
+1 (3!)2
+
+Cq1 ,
+
+Cq2 , Cr2 , Cr1
+
+×
+
+× Cq3 , Cq4 , Cr4 , Cr3 [q]4 [r]4 + S ,
+
+(4.10)
+
+with some Grassmann-even functional S vanishing in the Landau gauge ( = 0). To derive (4.7)­(4.10) we have used the relations (2.82)­(2.86), (3.3) being adapted for N = 4 BRST symmetry, as well as the following from (2.86) Leibnitz-like property of the generators, -s r acting on the product of any functions A, B with definite Grassmann grading:
+
+(AB) -s r1 -s r2 -s r3 -s r4 [r]4 = A-s r1 -s r2 -s r3 -s r4 B + 4A-s r1 (B-s r2 -s r3 -s r4 ) (-1)(B)
+
+(4.11)
+
++6A-s r1-s r2 (B-s r3 -s r4 ) + 4A-s r1 -s r2 -s r3 (B-s r4 ) (-1)(B) + A (B-s r1 -s r2 -s r3 -s r4 ) [r]4 .
+
+The detailed derivation for the quantum action, structure of the additional -dependent term, S, are considered in the Appendix B. Note, the each terms in Sadd(4) contain space-time derivative and, in particular, the second-order differential operator (Faddeev-Popov operator) for any gauge from R-gauges, as for the Sadd(3) (2.89) for N = 3 BRST symmetry. For the Landau gauge, the summands in Sadd(4) proportional to the Lorentz condition: (µAµ) = 0, may be omitted therein due to the presence of ((µAµ)) in the functional integral (4.1) after integrating over the fields B.
+The equivalence of N = 4 and N = 1 BRST invariant path integrals Z4|Y (0) (4.1), Z (2.5),. e.g in the Landau gauge determined by the gauge functional Y(04)(A) (4.6) follows analogously to the derivation (2.94) for N = 3 case from the structure of the quantum action SY(4) , (4.7)­(4.10). Indeed, using the representation for SY(4) (B.22) in terms of dual G(4)-tensor fields Br1r2 , Cr (B.20), (B.21) let us divide the quartets of ghost Grassman-odd fields Cr, Cr as G(3)-triplets and singlets which permits to present the respective term in the ghost part of the action as:
+
+Cr; Cr = (C, Cp); (C, Cp)  CrM (A)Cr = CM (A)C + CpM (A)Cp,
+
+(4.12)
+
+for r = (1, p), p = 1, 2, 3 and C  -B234. Because of the remark above we may omit the terms with
+(µAµ) with except for Nakanishi-Lautrup field B and therefore integrate by the fields Cp, second, with respect to Cp, and then trivially with respect to Br1r2 and Br1r2 for 1  r1 < r2  3 as follows:
+
+Z4|Y (0)(0) = =
+
+ddCpdBr1r2 dBr1r2 det3M (A)(Cp) exp
+
+i ¯h
+
+SY(4)0 (4)
+
+-
+
+ddBr1r2 det3M (A)det-3M (A)(Br1r2 ) exp
+
+i ¯h
+
+S
+
+
+
+|=0
+
+ddx tr CpM (A)Cp
+
+= Z.
+
+(4.13)
+
+The functional Z exactly coincides with one given in (2.5) in the Landau gauge.
+Again, the N = 4 BRST invariance, for the corresponding generating functionals of Green's functions, Z4|Y (J(4)) , W4|Y (J(4)) and effective action, 4|Y ( (4) ) determined by the same rule as for its N = 3 analog (2.90) with a given gauge condition Y(4)((4)), leads to the presence of an G(4)-quartet of Ward identities:
+
+JAt4 A(4t4)-s r Y(4),J = 0,
+
+JAt4
+
+A(4t4)-s r
+
+Y(4),J = 0,
+
+4|Y  A(4t4)
+
+A(4t4)-s r Y(4)  = 0,
+
+(4.14)
+
+23
+
+with corresponding normalized average expectation values (as in (2.91)) in the presence of the external sources JAt4 and mean fields A(4t4) . The gauge independence of the path integral Z4|Y (0)  Z4|Y(4) (0) under an infinitesimal variation of the gauge condition, Y(4)  Y(4) + Y(4):
+
+Z4|Y(4)+Y(4) (0) = Z4|Y(4) (0)
+
+(4.15)
+
+is established using the infinitesimal FD N = 4 BRST transformations with the functional parameters,
+
+r1
+
+((4) )
+
+=
+
+-
+
+1 4!
+
+i/¯h Y(4)((4))
+
+4
+
+-s rk [r]4, .
+
+k=2
+
+(4.16)
+
+which will be carefully elaborated in the next Section 5 as well as some important consequences of the suggested N = 3 and N = 4 BRST transformations, respective quantum actions and gauge-fixing procedures.
+
+5 N = k, k = 3, 4 infinitesimal and finite BRST transformations and their Jacobians
+Here, we consider the algorithm of construction of finite N = k BRST transformations starting from its algebraic (infinitesimal) proposals respectively for k = 3, 4 cases and calculate theirs Jacobians together with some physical corollaries.
+
+5.1 N = 3 BRST transformations
+The finite N = 3 BRST transformations acting on the fields A(3t3), parameterizing configuration space M(to3t), are restored from the algebraic (equivalently, infinitesimal for small p) N = 3 BRST transformations, generalizing the recipe [26] for N = 2 BRST symmetry and following to [27], [35] in two equivalent ways. First, the derivation is based on the condition which follows for any -s p-closed regular functional K (3) to be invariant with respect to right-hand supergroup transformations and, second, from the Lie equations :
+
+1) K g(p)(3) = K (3) and K-s p = 0  g (p) = exp {-s pp} ,
+
+2) A(3t3) (3)| -p = A(3t3) (3)| -s p
+
+for
+
+-p
+
+
+
+- p
+
+9.
+
+(5.1) (5.2)
+
+whose set forms an Abelian 3-parametric supergroup,
+
+G(3) =
+
+g(p) : g(p) = 1 +
+
+3
+
+1 e!
+
+e
+-s pl pl = exp (-s pp)
+
+,
+
+e=1 l=1
+
+(5.3)
+
+where -s p, -s p1 -s p2 [p]3 and -s p1 -s p2 -s p3 [p]3 are respectively the generators of N = 3 BRST, quadratic mixed and cubic mixed N = 3 BRST transformations in the space of fields A(3t3).
+
+For the field-dependent G(3) triplet of odd-valued functionals p((3)), which is not closed under N = 3 BRST transformations, p-s p = 0, but for, /xµp = 0, the finite element g p((3)) cannot be
+
+9For a t-rescaled argument p  tp of A(3t3) (3)|t , the form of Lie equations:
+
+d dt
+
+A(3t3)
+
+(3)|t
+
+= A(3t3) (3)|t -s pp,
+
+is equivalent to (5.2) with a formal solution for constant p: A(3t3) (3)|t = A(3t3) exp t-s pp
+
+24
+
+presented as group element (using an exp-like relation) in (5.3). In this case, the set of algebraic elements G(3) = g~lin(((3))) := 1 + -s pp((3)) forms a non-linear superalgebra which corresponds to a set of formal group-like finite elements:
+
+G~(3) =
+
+g~ p((3))
+
+:
+
+g~
+
+=
+
+1
+
++
+
+-s pp
+
++
+
+1 2
+
+-s p
+
+-s q
+
+q
+
+p
+
++
+
+1 3!
+
+-s p-s q
+
+-s r
+
+r
+
+q
+
+p
+
+,
+
+(5.4)
+
+with loss of the commutativity property: g~ (p1)((3)) , g~ (p2)((3)) = 0. The Jacobian of a change of variables: A(3t3)  (A3)t3 = A(3t3)g~ p((3)) , in M(to3t), in the path integral Z3|(0) (2.73) generated by finite FD N = 3 BRST transformations may be calculated explicitly, following a generalization of the
+recipe proposed in [26] for an irreducible gauge theory with a closed algebra (including the Yang­Mills
+theory, see as well [31]) in the N = 2 case, or following the recipe of [27] for N = m finite FD SUSY
+transformations. The results are as follows:
+
+sdet
+
+A(3t3)g~ p((3))
+
+- B(33t)
+
+= exp
+
+- trG(3) ln [e + m]pq
+
+, for (epq , mpq )  qp, q-s p ,
+
+(5.5)
+
+where trG(3) denotes trace over matrix G(3)-indices. Representation (5.5) is based on the explicit calculation which generalize the algorithm for the Jacobian of the change of variables generated by N = 2
+BRST transformations for Yang-Mills theory [31], [39] as follows
+
+-
+
+sdet   
+
+A(3t3) g~
+PBA33 = (Q1)AB33 (Q2)AB33 (Q3)AB33
+
+p((3))
+
+ B(33t)
+
+= exp Str ln BA33 + MBA33
+
+, for MBA33
+
+A(33)-s p
+
+- p  B3
+
+= p A(33)-s p
+
+, -  B3
+
+-
+
+A(33)-s q-s p
+
+- q  B3
+
+(-1)A3 +1,
+
+= =
+
+1 2
+
+p
+
+q
+
+1 (3!)2
+
+()3
+
+A(A(333)3)-s(-sp -)s3q-B- 3B3(--1)31! Ap3 q+r1 ,A(33)
+
+(-s )3
+
+- r  B3
+
+= ,
+
+PBA33
+
++
+
+3
+(Qi )AB33
+i=1
+
+(5.6) (5.7)
+
+3
+
+2
+
+= Str P + Qi n = Str P + Qi n + n StrP n-1Q3,
+
+(5.8)
+
+i=1
+
+i=1
+
+2
+Str P + Qi n = StrP n + StrFn P, Q1, Q2 with Fn P, Qi (Qi=0) = 0,
+i=1
+
+(5.9)
+
+(where we imply: At3  A3; ()3  q1 q2 q3 [q]3 and (-s )3 given by (5.13)), so that the only supermatrix P gives the non-vanishing contribution into the Jacobian (5.5):
+
+sdet
+
+A(3t3)g~ p((3))
+
+- B(33t)
+
+= exp
+
+-
+
+(-1)n n
+
+Str(PBA33
+
+)n
+
+,
+
+n=1
+
+(5.10)
+
+as compared the Jacobian
+
+w(5i.t5h),thdeuenitlop:otenm kt=1suppkerma0trfoicresm(Q>i3)AB. 33
+
+(entering
+
+in
+
+Fn
+
+(5.9))
+
+which
+
+do
+
+not
+
+contribute
+
+to
+
+For functionally-independent FD p (3) , the Jacobian (5.5) is not -s p-closed in general. For -s p-
+
+potential (thereby, functionally-dependent) parameters
+
+^p1 (3)
+
+=
+
+1 2!
+
+
+
+(3)
+
+[p]3 -s p2 -s p3 ,
+
+(5.11)
+
+25
+
+with an arbitrary potential being by Grassmann-odd-valued functional  (3) the Jacobian (5.5) simplifies to N = 3 BRST exact functional determinant:
+
+J(3) (3)
+
+= sdet
+
+-
+
+A(3t3)g~
+
+^p((3))
+
+ B(33t)
+
+=
+
+1 1 + 3! ((3))[p]3
+
+3
+
+-s pk
+
+-3
+,
+
+J(3)((3))-s p = 0,
+
+(5.12)
+
+k=1
+
+by virtue of the fact that the tensor quantity -s p1-s p2 -s p3 is completely antisymmetric in (p1, p2, p3) indices and can be presented as:
+
+-s p1 -s p2 -s p3 = 1 [p]3 (-s )3 3!
+
+for
+
+(-s )3  -s q1 -s q2 -s q3 [q]3
+
+which permits, because of:
+
+4 k=1
+
+-s qk
+
+
+
+0,
+
+to
+
+have
+
+the
+
+representation
+
+qp + ^q
+
+(3)
+
+-s p
+
+=
+
+qp
+
++
+
+1 2!
+
+
+
+(3)
+
+qp2p3 -s p2 -s p3 -s p
+
+=
+
+qp
+
++
+
+2
+
+1 · 3!
+
+qp2
+
+p3
+
+p2
+
+p3
+
+p
+
+(-s )3
+
+= qp
+
+1
+
++
+
+1 3!
+
+
+
+(-s )3
+
+,
+
+= trG(3) ln
+
+[qp + ^q-s p]
+
+= trG(3) ln
+
+qp
+
+1+
+
+1 3!
+
+
+
+(-s )3
+
+= qq ln
+
+1
+
++
+
+1 3!
+
+
+
+(-s )3
+
+(5.13) (5.14) (5.15)
+
+that proves (5.12).
+In the case of -s p-closed parameters p, p-s q = 0, including constant p, i.e., for G(3) group elements, the Jacobian becomes trivial: J(3) = 1. In turn, for the infinitesimal FD triplet ^p (3) (5.11) the Jacobian (5.12) reduces to:
+
+J(3) ((3) )
+
+=
+
+1-
+
+1 2
+
+((3))
+
+-s
+
+3 + o()
+
+=
+
+exp
+
+-
+
+1 2
+
+((3)
+
+)
+
+-s
+
+3
+
++ o(),
+
+(5.16)
+
+which permits to justify the gauge independence for the path integral Z(3) (and therefore for the conventional S-matrix) under small variation of the gauge condition: (3)  (3) + (3), announced in
+(2.92) because of
+
+Z3|(3)+(3) (0) =
+
+d(3)
+
+sdet
+
+A3
+
+-  B3
+
+exp
+
+i ¯h
+
+S(3)
+
++(3)
+
+()
+
+= Z3|(3) (0).
+
+(5.17)
+
+in accordance with the choice (2.93) for (3) in terms of ((3)) and therefore of ^p = ^p()
+
+ (3)|(3)
+
+=
+
+1 3
+
+i/¯h
+
+(3)
+
+(3)
+
+=
+
+^p()
+
+=
+
+1 3!
+
+i/¯h (3)-s q-s rpqr..
+
+(5.18)
+
+The another properties for the generating functionals of Green functions related to the finite FD N = 3 BRST transformations we will consider in the Section 6.
+
+5.2 N = 4 BRST transformations
+
+The results of the above subsection are easily adapted for N = 4 BRST transformations with some specific. Thus, the finite N = 4 BRST transformations acting on the fields A(4t4), parameterizing configuration space bMy (tto4wt) ocoeiqnuciivdailnegntwwitahysM: o(tro3t)frboymdtihmeecnosniodni,tiaornewrehsitcohrfeodllofrwosmfotrhaenaylg-esbrr-acilcosNed=re4guBlaRrSfuTntcrtaionnsafolrKmati(o4n) s to be invariant with respect to right-hand supergroup transformations {g(r)}, r = 1, 2, 3, 4, or from the
+Lie equations:
+
+1) K g(r)(4) = K (4) and K-s r = 0  g (r) = exp {-s rr} ,
+
+2) A(4t4) (4)| -r = A(4t4) (4)| -s r
+
+for
+
+- r
+
+
+
+-  r
+
+.
+
+(5.19) (5.20)
+
+26
+
+The set of such {g(r)} forms an Abelian 4-parametric supergroup,
+
+G(4) =
+
+g(r) : g(r) = 1 +
+
+4
+
+1 e!
+
+e
+
+-s rl rl = exp (-s rr)
+
+,
+
+e=1 l=1
+
+(5.21)
+
+For the field-dependent BRST transformations,
+
+G(4) quartet of r-s r = 0, the
+
+odd-valued functionals r finite element g r((4))
+
+((4)), which is not closed under N = 4 cannot be presented as group element
+
+in (5.21). The set of algebraic elements G(4) = g~lin(((4))) := 1 + -s rr((4)) forms a non-linear
+
+superalgebra which again corresponds to a set of formal group-like finite elements:
+
+G~(4) =
+
+g~ r((4))
+
+: g~ = 1 +
+
+4
+
+1 e!
+
+e
+
+-s rk
+
+e
+
+re+1-k ((4))
+
+,
+
+e=1 k=1
+
+k=1
+
+(5.22)
+
+The Jacobian of a change of variables: A(4t4)  (A4)t4 = A(4t4)g~ r((4)) , in M(to4t), in the path integral Z4|Y (0) (4.1) and in Z4|Y (J(4)) (4.2) generated by finite FD N = 4 BRST transformations may be calculated explicitly following to the same way as for the Jacobian (5.5) in N = 3 case:
+
+sdet
+
+A(4t4)g~ r ((4))
+
+- B(44t)
+
+= exp
+
+- trG(4) ln [e + m]rr12
+
+, for (err12 , mrr12 )  rr21 , r2 -s r1 , (5.23)
+
+where trG(4) denotes trace over matrix G(4)-indices. The justification of the representation (5.23) is based on the same points (5.6)­(5.10) as for its N = 3 analog (5.5), whose detailed calculation we leave out of
+the paper scope. For -s r-potential, therefore functionally-dependent parameters
+
+^r1 (4)
+
+=
+
+-
+
+1 3!
+
+
+
+(4)
+
+[r]4-s r2 -s r3 -s r4 ,
+
+(5.24)
+
+with an arbitrary potential being by Grassmann-even-valued functional (4) = (4) (4) the Jacobian (5.23) reduces to N = 4 BRST exact functional determinant:
+
+-
+
+J(4) (4)
+
+= sdet
+
+A(4t4)g~
+
+^r ((4))
+
+ B(44t)
+
+=
+
+1+
+
+1 4!
+
+(4)
+
+((4))
+
+-s
+
+4
+
+-4
+,
+
+J(4)((4))-s r = 0,
+
+(5.25)
+
+where we have used the property for tensor quantity
+
+4 k=1
+
+-s rk
+
+to
+
+be
+
+completely
+
+antisymmetric
+
+in
+
+(r1, r2, r3, r4) indices that makes natural the definition:
+
+4
+
+-s rk
+
+=
+
+1 4!
+
+[r]4
+
+(-s )4
+
+for
+
+(-s )4 
+
+4
+-s rk [r]4 .
+
+k=1
+
+k=1
+
+(5.26)
+
+Again, for the case of -s r-closed parameters r, r1 -s r2 = 0, including constant r, i.e., for G(4) group elements, the Jacobian becomes trivial: J(4) = 1, whereas for the infinitesimal FD quartet ^r (4) (5.24) the Jacobian (5.25) reduces to:
+
+J(4) ((4) )
+
+=
+
+1-
+
+1 3!
+
+(4)
+
+((4) )
+
+-s
+
+4
+
++ o((4))
+
+=
+
+exp
+
+-
+
+1 3!
+
+(4)((4)
+
+)
+
+-s
+
+4
+
++ o((4)),
+
+(5.27)
+
+which immediately leads to the gauge independence of the path integral Z4|Y(4) (0) (and therefore for the conventional S-matrix) under small variation of the gauge condition: Y(4)  Y(4) + Y(4), announced in (4.15) because of
+
+Z4|Y(4)+Y(4) (0) =
+
+d(4)
+
+sdet
+
+At4
+
+-  B4t
+
+exp
+
+i ¯h
+
+SY(4)
+
++Y(4)
+
+((4)
+
+)
+
+= Z4|Y(4) (0).
+
+(5.28)
+
+27
+
+according to the choice (4.16) for Y(4) in terms of (4)((4)) and therefore of ^r = ^r((4))
+
+(4) (4)|Y(4)
+
+=
+
+-
+
+1 4
+
+i/¯h
+
+Y(4)
+
+(4)
+
+= ^r1 ((4)) =
+
+1 4!
+
+i/¯h
+
+Y(4)
+
+4
+
+-s rk [r]4 .
+
+k=2
+
+(5.29)
+
+6 Correspondence between the gauges, Ward identities, gauge dependence, gauge-invariant Gribov­Zwanziger model.
+
+Here we consider the physical properties of the respective N = 3, N = 4 finite BRST transformations, including extended by sources (antifields) to the N = 3 or N = 4 BRST transformations effective actions in the Subsection 6.1 and its applications in the Subsection 6.2 to the Gribov­Zwanziger model [36] with gauge-invariant horizon functional suggested in [37] with preservation of the local N = 1, 2 BRST invariance, shown in [38], [39].
+
+6.1 FD Finite N = 3, 4 BRST Symmetry for Ward identities and Gauge Dependence Problem.
+
+First, let us study a relation that exists among the path integrals underlying N = 3 BRST symmetry, Z3|(3)0 (0) and Z3|(3)0+(3) (0) in different admissible gauges, one of which being described by a Grassmann-odd gauge functional (3)0 corresponding to the Landau gauge (2.75) for  = 0. The other one ((3)0 + (3)) corresponds to any family from the gauges within the (3)((3)), including R-gauges for (3) = 0 in (2.75) and for (A, B) = (µAµ + g2B = 0) within the functional (3)((3)). To this end, we use a finite FD N = 3 BRST transformation with functionally-dependent parameters ^p1 |(3)
+(5.11), the N = 3 BRST invariance of the quantum action, S(3) (3) (2.78) for  = 0, and the form of the Jacobian, J(3) (3) , (5.12) of a corresponding change of variables, (3)  (3)g~(^), given as follows
+
+Z3|(3)0 (0)3) = (3)g~(^)
+
+d(3) exp
+
+i ¯h
+
+S(3)0 + 3i¯h ln
+
+1
+
++
+
+1 3!
+
+((3))(-s )3
+
+=
+
+d(3) exp
+
+i ¯h
+
+S(3)0+(3) + 3i¯h ln
+
+1
+
++
+
+1 3!
+
+((3)
+
+)(-s )3
+
+-
+
+1 3!
+
+(3)(-s )3
+
+. (6.1)
+
+The coincidence of the vacuum functionals Z3|(3)0 (0) and Z3|(3)0+(3) (0), evaluated with the respective fermionic functionals (3)0 and (3)0 + (3), takes place in case there holds a compensation equation for an unknown Fermionic functional  = ((3)):
+
+3i¯h ln
+
+1
+
++
+
+1 3!
+
+(-s )3
+
+=
+
+1 3!
+
+(3)(-s )3
+
+
+
+1 3!
+
+(-s )3
+
+=
+
+exp
+
+-
+
+3
+
+·
+
+i 3!¯h
+
+(3)
+
+(-s )3
+
+- 1.
+
+(6.2)
+
+The solution of equation (6.2) for an unknown  (3) , which determines ^p (3) , according to (5.11), with accuracy up to N = 3 BRST exact terms, is given by
+
+ (3)|(3)
+
+=
+
+-
+
+i 3h¯
+
+g(y)(3)
+
+,
+
+for
+
+g(y) = [exp(y) - 1] /y
+
+and
+
+y
+
+
+
+-
+
+3
+
+i · 3!¯h
+
+(3)
+
+-s
+
+3
+
+,
+
+and therefore the corresponding triplet of field-dependent parameters have the form
+
+(6.3)
+
+^p
+
+(3)|(3)
+
+=
+
+-
+
+i 3!¯h
+
+g(y)(3)-s q
+
+-s r
+
+pqr
+
+,
+
+(6.4)
+
+28
+
+whose approximation linear in (3) is given by
+
+^p
+
+(3)|(3)
+
+=
+
+-
+
+i 3!¯h
+
+(3)-s q-s rpqr
+
++ o (3) ,
+
+(6.5)
+
+with opposite sign than in (2.93) because of we started here from the gauge determined by (3)0 instead of (3)0 + (3) in (2.92). Therefore, for any change (3) of the gauge condition (3)0  (3)0 + (3), we can construct a unique FD N = 3 BRST transformation with functionally-dependent parameters (6.4) that allows one to preserve the form of the path integral (6.1) for the same Yang­Mills theory. On the another hand, if we consider the inverse form of compensation equation (6.2) for an unknown gauge variation (3) with a given  (3) , we can present it in the form
+
+3 · 3!i¯h ln
+
+1
+
++
+
+1 3!
+
+(-s )3
+
+= (3)(-s )3  3 · 3!i¯h
+
+-(-1)n (3!)nn
+
+ -s 3
+
+n-1
+
+n=1
+
+whose solution, with accuracy up to an -s p-exact term, is given by
+
+-s 3 = (3) -s 3 , (6.6)
+
+(3) (3)| = 3 · 3!i¯h
+
+-(-1)n (3!)nn
+
+ -s 3
+
+n-1
+
+= 3i¯h
+
+-(-1)n 3n-1n
+
+^p-s p
+
+n-1 (3)
+
+. (6.7)
+
+n=1
+
+n=1
+
+Thereby, for any change of variables in the path integral Z(3)0 given by finite FD N = 3 BRST transfor-
+
+mations
+
+with
+
+the
+
+parameters
+
+^p
+
+=
+
+1 2
+
+-s q
+
+-s r
+
+pqr
+
+,
+
+we
+
+obtain
+
+the
+
+same
+
+path
+
+integral
+
+Z , (3)0+(3)
+
+evaluated,
+
+however, in a gauge determined by the Fermionic functional (3)0 + (3), in complete agreement with
+
+(6.7).
+
+This latter, in particular, implies that we are able to reach any gauge condition for the partition function within the R-like family of gauges, starting, e.g., from the Landau gauge and choosing: (3) = g2 ddxtr CB (for  = 1 in the Feynman gauge).
+Making in Z(3) (J(3)) an FD N = 3 BRST transformation, (3)  (3)g~(^) and using the relations (5.12) and (6.3), we obtain a modified Ward (Slavnov­Taylor ) identity:
+
+exp
+
+i ¯h
+
+JC3t
+
+(C33t)
+
+g~ ^p (3)|
+
+-1
+
+1
+
++
+
+1 3!
+
+(-s )3
+
+-3
+
+= 1,
+
+(3) ,J(3)
+
+(6.8)
+
+where the source-dependent average expectation value corresponding to a gauge-fixing (3) (3) , as in (2.91), explicitly for regular functional L = L (3) :
+
+L = Z (3),J(3)
+
+-1 3|(3)0
+
+J(3)
+
+d(3) L exp
+
+i ¯h
+
+S(3) + JC3t (C33t)
+
+, with 1 (3),J(3) = 1 .
+
+(6.9)
+
+Due to the presence of  (3) , which implies functionally dependent ^p(), the modified Ward identity
+depends on a choice of the gauge Fermion (3) (3) for non-vanishing J(3), according to (6.3), (6.4), and therefore the corresponding Ward identities for Green's functions, obtained by differentiating (6.8) with respect to the sources, contain the functionals ^p() and their derivatives as weight functionals. Due to
+(6.8) for constant p, the usual G(3)-triplet of the Ward identities (2.91) for Z3|(3) (J(3)) follow from the first order in p.
+Then, taking account of (6.4), we find that (6.8) implies a relation which describes the gauge dependence of Z3|(3) (J(3)) for a finite change of the gauge, (3)  (3) + (3):
+
+Z J 3|(3)+(3) (3) = Z3|(3) J(3)
+
+exp
+
+i ¯h
+
+JC3t
+
+(C33t)
+
+g~ ^p (3)| - (3)
+
+-1
+
+,
+(3) ,J(3)
+
+(6.10)
+
+29
+
+so that on the mass-shell for Z3|(3) J(3) : J(3) = 0, the path integral (and therefore the conventional physical S-matrix) does not depend on the choice of (3) (3) .
+Let us introduce extended generating functionals of Green's functions by means of sources KC3t|p, KC3t|pq = -KC3t|qp, KC3t , ((KC3t|p) = (KC3t|pq) + 1 = (KC3t ) = (C3t ) + 1), introduced respectively to N = 3 BRST variations (C33t)-s p, (C33t)-s p-s q, and (C33t)(-s )3:
+
+Z3|(3) J(3), Kp, Kpq, K = +KC3t (C33t) -s 3 + J(3)(3)
+
+d(3) exp
+
+i ¯h
+
+S(3) (3)
+
++ KC3t|p(C33t)-s p + KC3t|pq (C33t)-s p-s q
+
+for Z3|(3) J(3), 0, 0, 0 = Z3|(3) J(3) .
+
+(6.11)
+
+If we make in (6.11) a change of variables in the extended space of (C33t), KC3t|p, KC3t|pq, KC3t
+
+(C33t)  (C33t)g(),
+
+KC3t |pq
+
+
+
+KC3t |pq
+
++
+
+1 2
+
+[q
+
+KC3t
+
+|p]
+
+,
+
+KC3t|p  KC3t|p,
+
+K C3t
+
+
+
+K C3t
+
++
+
+1 3!
+
+pqr
+
+r
+
+KC3t|pq
+
++
+
+1 4
+
+[q
+
+KC3t|p]
+
+(6.12)
+
+f(o-sr )J4(C33)t
+
+= 0
+
+0, with , which
+
+finite constant means that the
+
+parameters p, we find transformations (6.12)
+
+that the integrand in (6.11) is unchanged, due to are extended N = 3 finite BRST transformations
+
+for the functional Z3|(3) J(3), Kp, Kpq, K . For the linearized in the parameters p transformations (6.12) the integrand in (6.11) is invariant with accuracy up to o() justifying to call them as the algebraic
+
+extended N = 3 BRST transformations.
+
+Making in (6.11) a change of variables, which corresponds only to N = 3 BRST transformations (C33t)  (C33t)g~(^) with an arbitrary functional ^p((3)) from (6.4), we obtain a modified Ward identity for
+
+Z3|(3) J(3), Kp, Kpq, K :
+
+exp
+
+i ¯h
+
+JC3t (C33t)
+
+g~ ^((3)|)
+
+-1
+
++ KC3t|p((C33t))-s p
+
+g~ ^((3)|)
+
+-1
+
++
+
+1 3!
+
+pqr
+
+KC3t
+
+|pq
+
+((C33t)
+
+)
+
+-s
+
+3^r
+
+1 + 1  -s 3 -3
+
+=1 ,
+
+3!
+
+(3) ,J(3),Kp,Kpq,K
+
+(6.13)
+
+where the symbol " L " (3),J(3),Kp,Kpq,K for any L = L (3), Kp, Kpq, K stands for a source-dependent average expectation value for a gauge (3) in the presence of sources (extended Zinn­Justin fields)
+KC3t|p, KC3t|pq , KC3t :
+
+L (3),J(3),K(3)
+
+=
+
+Z -1
+3|(3)
+
+J(3), K(3)
+
+d(3) L exp
+
+i ¯h
+
+S(3) ((3), K(3)
+
++ J(3)(3)
+
+,
+
+with S(3) (3), K(3) = S(3) (3) + KC3t|p(C33t)-s p + KC3t|pq (C33t)-s p-s q + K C3t (C33t) -s 3,
+
+(6.14)
+
+for K(3)  Kp, Kpq, K . We can see that (6.8) and (6.13) differ by definitions (6.9) and (6.14), as well as by the presence of terms proportional to the sources KC3t|p, KC3t|pq, except for the Jacobian.
+For constant parameters p, we deduce from (6.13), in the first order in p
+
+JC3t (C33t)-s p + KC3t|q(C33t)-s q -s p +
+
+1 3!
+
+pqr
+
+KC3t|qr
+
+(C33t)
+
+-s
+
+3
+
+=0,
+(3),J(3),Kp,Kpq ,K
+
+Identities (6.15) can be presented as
+
+-
+
+-
+
+-
+
+JC3t
+
+  KC3t |p
+
+-
+
+KC3t |q
+
+  KC3t |pq
+
++
+
+1 3!
+
+pqr
+
+KC3t
+
+|qr
+
+
+
+ K C3t
+
+ln Z3|(3) J(3), Kp, Kpq, K
+
+=0.
+
+(6.15) (6.16)
+
+30
+
+Let us consider an extended generating functional of vertex Green's functions,  (3) , Kp, Kpq, K , being a functional Legendre transform of ln Z3|(3) J(3), Kp, Kpq, K with respect to the sources J(3):
+
+
+
+(3) , Kp, Kpq, K
+
+=
+
+¯h i
+
+ln
+
+Z3|(3)
+
+J(3), Kp, Kpq, K
+
+- JC3t (C33t) ,
+
+-
+
+-
+
+where JC3t = -
+
+(3) , Kp, Kpq, K
+
+  (C33t)
+
+and C3t
+
+=
+
+¯h  i JC3t
+
+ln Z3|(3) (J(3), Kp, Kpq, K).
+
+(6.17) (6.18)
+
+From (6.16)­(6.18), we deduce for (3) =  (3) , Kp, Kpq, K an G(3)-triplet of independent Ward identities:
+
+- -
+
+(3)   (C33t)
+
+ (3)  KC3t |p
+
++
+
+- KC3t|q KC3t|pq
+
+-
+
+1 3!
+
+pqr
+
+KC3t|qr
+
+- K C3t
+
+(3) =
+
+1 2
+
+(3), (3)
+
+p (3)
+
++
+
+V(p3) (3)
+
+=
+
+0,
+
+(6.19)
+
+for p = 1, 2, 3, in terms of G(3)-triplets of extended antibrackets, (·, ·)p(3), and operators V(p3), extending the familiar Sp (2)-covariant Lagrangian quantization for gauge theories [33, 34] (see also [40, 41, 42] as
+
+well as [28, 29, 30]) in the N = 2 case, introduced for general gauge theories
+
+ - -
+
+- - 
+
+(F, G)p(3)
+
+=
+
+F
+
+ (C33t)
+
+  KC3t |p
+
+-
+
+  KC3t |p
+
+ (C33t)
+
+
+
+G
+
+,
+
+-
+
+-
+
+V(p3)
+
+=
+
+KC3t
+
+|q
+
+ KC3t
+
+|pq
+
+-
+
+1 3!
+
+pqr
+
+KC3t|qr
+
+ K C3t
+
+(6.20)
+
+for any functionals F, G with omitting the sign of averaging for the fields (C33t) and with the usual con-
+
+- vention:  /KC3t|pp1 the construction of the
+
+KD3t |qq1
+
+=
+
+(1/2)q[p
+
+qp11
+
+]
+
+C3t
+D3t
+
+.
+
+Note that
+
+extended N = 3 BRST transformations
+
+the algebra (6.12), the
+
+aolgf eobprearaotfogresnVer(p3a)torrespe-sapts, ,i.be.y,
+
+V({3p)V(q3}) = 0.
+
+The Ward identities (6.19) are interesting as they remind of the behavior of the extended quantum
+
+action S(3) (3), Kp, Kpq, K (6.14) ­ being the tree approximation for the extended effective action (3) within the loop expansion ­ and serve as generating equations for a corresponding G(3)-covariant
+method of Lagrangian quantization, covering the case more general than a gauge group.
+
+In turn, the case of N = 4 finite BRST transformations permits to get the same results with some
+peculiarities. We restrict ourselves by only derivation of the respective modified Ward identity and description of the gauge dependence problem, being based on the solution of the compensation equation
+from the change of variables in Z4|Y (0) (4.1) generated by FD N = 4 BRST transformations with quartet of the parameters ^r((4)) (5.24) with jacobian J(4)((4)) (5.25)
+
+4i¯h ln
+
+1
+
++
+
+1 4!
+
+((4))(-s )4
+
+=
+
+-
+
+1 4!
+
+Y(4)
+
+(-s )4
+
+
+
+1 4!
+
+((4))(-s )4
+
+=
+
+exp
+
+4
+
+·
+
+i 4!¯h
+
+Y(4)(-s )4
+
+- 1.
+
+(6.21)
+
+to guarantee the coincidence of the path integrals, Z4|Y (0), (4.1) and Z4|Y +Y  (0) evaluated in different
+admissible gauges corresponding to the Bosonic gauge functionals Y(4) (4) (e.g. for the Landau gauge Y(04)0 (4.6)) and, Y(4) + Y(4), (e.g. for the Feynman gauge Y(04) (4.6) within R-like gauges for  = 1) for finite Y(4) (4) . The solution of (6.21) for an unknown  (4) and hence of ^r (4) , with accuracy up to N = 4 BRST exact terms, is given in terms of the function g(z) (6.3)
+
+ (4)|Y(4)
+
+=
+
+i 4h¯
+
+g(z
+
+)Y(4)
+
+,
+
+for
+
+z
+
+
+
+4
+
+·
+
+i 4!¯h
+
+Y(4)
+
+-s
+
+4
+
+,
+
+^r1
+
+(4)|Y(4)
+
+=
+
+-
+
+i 4!¯h
+
+g(z)Y(4)
+
+4
+
+-s rk [r]4 ,
+
+k=2
+
+(6.22) (6.23)
+
+31
+
+whose approximation linear in Y(4) coincide with (4.16) for Y(4) = Y(4). From the inverse form of compensation equation (6.21) for an unknown gauge variation Y(4) with a given  (4) :
+
+4!4i¯h ln
+
+1
+
++
+
+1 4!
+
+(-s )4
+
+= -Y(4)(-s )4
+
+
+
+4!4i¯h
+
+-(-1)n n=1 (4!)nn
+
+ -s 4 n-1
+
+we find with accuracy up to an -s r-exact term, that
+
+-s 4 = -Y(4) -s 4, (6.24)
+
+Y(4) (4)|
+
+= 4 · 4!i¯h
+
+(-1)n n=1 (4!)nn
+
+ -s 4
+
+n-1 
+
+= 4i¯h
+
+(-1)n n=1 4n-1n
+
+^r-s r
+
+n-1 (4)
+
+.
+
+(6.25)
+
+Thus, for any change of variables in the path integral Z4|Y(4) given by finite FD N = 4 BRST transformations with the parameters ^r (5.24), we obtain the same path integral Z , 4|Y(4)+Y(4) evaluated, however, in a gauge determined by the Bosonic functional Y(4) + Y(4).
+Making in Z4|Y(4) (J(4)) an FD N = 4 BRST transformation, (4)  (4)g~(^) and using the relations (5.25), (6.22) and (6.23), we obtain a N = 4 modified Ward (Slavnov­Taylor ) identity:
+
+exp
+
+i ¯h
+
+JC4t
+
+(C44t)
+
+g~ ^r (4)|
+
+-1
+
+1 + 1 (-s )4 -4
+
+=1.
+
+4!
+
+Y(4) ,J(4)
+
+(6.26)
+
+where the source-dependent average expectation value corresponding to a gauge-fixing Y(4) (4) is determined as in (6.9) for N = 3 case. Due to  (4) , which implies functionally dependent ^r(), the modified Ward identity depends on a choice of the gauge Boson Y(4) (4) for non-vanishing J(4), according to (6.22), (6.23) with the same as for N = 3 case interpretation for the modified Ward identities for the Green functions. Due to (6.26) for constant r, the usual G(4)-quartet of the Ward identities (4.14) for Z4|Y(4) (J(4)) follow from the first order in r.
+Then, taking account of (6.23), we find that (6.26) implies a relation which describes the gauge dependence of Z4|Y(4) (J(4)) for a finite change of the gauge, Y(4)  Y(4) + Y(4):
+
+Z4|Y(4)+Y(4) (J(4)) = Z4|Y(4) (J(4))
+
+exp
+
+i ¯h
+
+JC4t
+
+(C44t)
+
+g~ ^r (4)| - Y(4)
+
+-1
+
+,
+Y(4) ,J(4)
+
+(6.27)
+
+so that on the mass-shell for Z4|Y(4) J(4) : J(4) = 0, the path integral (and therefore the conventional physical S-matrix) does not depend on the choice of Y(4) (4) .
+
+6.2 Gauge-independent Gribov-Zwanziger model with local N = 3, 4 BRST symmetries
+
+Finally, we turn to the Gribov copies problem [8] within the Gribov­Zwanziger model [36] with a gaugeinvariant horizon functional, H(Ah), recently proposed to be added to an N = 1 BRST invariant Yang­
+Mills quantum action [37] in Landau gauge with the use of the gauge-invariant (thereby, invariant with
+respect to a local N = 1, 2 BRST invariance, as it was shown in [39], Eq. (36)­(40)) transverse fields Ahµ = (Ah)nµtn [43]:
+
+Aµ
+
+= Ahµ
+
++
+
+ALµ
+
+:
+
+Ahµ
+
+= (µ
+
+-
+
+µ  2
+
+)
+
+A - ig
+
+A 2
+
+,
+
+A
+
+-
+
+1 2
+
+
+
+
+
+A 2
+
++ O(A3) : Ahµ-s p = 0,
+
+(6.28)
+
+H(Ah) = 2 ddx ddyf mnk(Ah)nµ(x)(M -1)ml(Ah; x, y)f ljk(Ah)jµ(y) + d(N^ 2-1) .
+
+(6.29)
+
+Note, that the systematic study for the original Gribov­Zwanziger model [36] with not BRST-invariant horizon, H(A), within Lagrangian BRST quantization of gauge theories [44], [45] from the viewpoint of
+
+32
+
+so-called soft BRST symmetry breaking was initiated in [46]. Then, as in the case of N = 1, 2 BRST symmetry, the gauge and N = 1, 2 BRST invariant extension of the respective quantum Yang­Mills action within the R-family of gauges with a gauge fermion  and a boson Y prescribed by the Gribov­ Zwanziger actions are given by
+
+S^GZ() = S0 + -s + H(Ah), for S^GZ((1 + -s µ)) = .S^GZ(),
+
+S^GZ ((2))
+
+=
+
+S0
+
+-
+
+1 2
+
+Y
+
+-s a
+
+-s a
+
++
+
+H (Ah ),
+
+for
+
+S^GZ ((2)g(µa)) = .S^GZ ((2)),
+
+(6.30) (6.31)
+
+with allowance made for (1.5), (2.6) and (2.16), (2.17) the same may be done in N = 3 and N = 4
+BRST invariant formulations of the respective quantum actions S(3) (3) (2.78) and SY(4) (4) (4.7). Therefore, the N = 3 and N = 4 BRST invariant and gauge independent Gribov­Zwanziger actions within (3) and respectively within Y(4)-family of gauges related to R-gauges are given by
+
+S^GZ (3)
+
+=
+
+S0
+
++
+
+1 3!
+
+(3)
+
+-s
+
+3 + H(Ah), for S^GZ
+
+(3)g(p)
+
+= .S^GZ (3) ,
+
+S^GZ (4)
+
+= S0 -
+
+1 4!
+
+Y(4)
+
+-s
+
+4 + H(Ah),
+
+for S^GZ
+
+(4) g (r )
+
+= .S^GZ (4) .
+
+(6.32) (6.33)
+
+As in the case of the N = 1, 2 BRST symmetry, one may expect the unitarity of the theory within the suggested N = 3, N = 4 BRST symmetry generalizations of the Faddeev­Popov quantization rules [3]. These problems are under study.
+The same results concerning the problems of unitarity and gauge-independence may be achieved within the local formulations of Gribov­Zwanziger theory [36] when the horizon functional is localized (in the path integral) by means of a quartet of auxiliary fields aux = m µ n, ¯m µ n; µmn, ¯m µ n , having opposite Grassmann parities, (, ¯) = (, ¯) + 1 = 0, and being antisymmetric in su(N^ ) indices m, n. We suggest here the only N = 1 BRST invariant formulation,
+
+S^GZ (1), aux = S0(A) +  (1) -s + S(Ah, aux).
+
+(6.34)
+
+S = ddx ¯m µ nM ml(Ah)µln - ¯µmnM ml(Ah)µln
+
++ f mnl(Ah)µm(nµl - ¯nµl) + 2d(N^ 2 - 1) ,
+
+(6.35)
+
+with additional non-local N = 1 BRST transformations for the fields aux with untouched ones for (1) (2.7)
+
+aux-s = m µ n, ¯m µ n; µmn, ¯m µ n -s = 0, ¯µmn; m µ n -  M -1 mk(Ah)f knl(Ah)lµ, 0 . (6.36)
+The part S in case of N = 3 and N = 4 BRST formulation for the quantum actions (as well as for the N = 2 case) should be modified due to another spectra for the auxiliary fields aux.
+Finally, the non-local gauge-invariant transverse fields, Ahµ, (6.28) can also be localized by using complex SU (N^ )-valued auxiliary field, h(x), with non-trivial own gauge and N = 1 BRST transformations [47] in order to reach really localized Gribov-Zwanziger model still N = 1, 2, 3, 4 BRST invariant without Gribov ambiguity, whose properties are now under study.
+
+7 On Feynman diagrammatic technique in N = 3, N = 4 BRST quantization
+Here, we introduce some new definitions to develop a Feynman diagrammatic technique for the Yang­ Mills theory within suggested N = 3 and N = 4 BRST invariant formulations for the non-renormalized quantum actions S(3) (3) given by (2.78)­(2.81), and SY(4) (4) determined by (4.7)­(4.10). To be complete, we compare the graphs which contain additional lines related to new fictitious fields to ones with
+33
+
+known, i.e. ghost, C(x), antighost, C(x), fields in N = 1 BRST setup and with duplet of ghost-antighost fields, Ca(x), a = 1, 2 in N = 2 BRST setup, having in mind that usually the Nakanishi-Lautrup field B(x) is integrated out from the quantum actions.
+We present the generating functionals of Green functions in R-gauges Z(J) (2.9), ZY (J) determined
+with the quantum action SY () (2.18), Z3| (J ) (2.74), Z4|Y (J(4)) (4.2) respectively for N = 1, 2, 3, 4 BRST symmetry within the perturbation theory according to [48] but for d-dimensional space-time
+
+Z(J) = exp
+
+V
+
+¯h i
+
+ Jµ
+
+;
+
+¯h i
+
+ J
+
+,
+
+¯h i
+
+ J
+
+exp
+
+i 2h¯
+
+ddxddy tr Jµ(x)Dµ (x - y)J (y)
+
++ 2J(x)D(x - y)J(y) ,
+
+(7.1)
+
+ZY (J ) = exp
+
+VY
+
+¯h i
+
+ Jµ
+
+;
+
+¯h i
+
+ Ja
+
++ Ja(x)Dab(x - y)Jb(y)
+
+exp
+
+i 2h¯
+
+,
+
+ddxddy tr Jµ(x)Dµ (x - y)J (y)
+
+(7.2)
+
+Z3| (J ) = exp
+
+V3|
+
+¯h i
+
+ Jµ
+
+;
+
+¯h i
+
+ J(C)
+
+,
+
+¯h i
+
+ J(B)
+
+;
+
+¯h i
+
+ Jp(C)
+
+,
+
+¯h i
+
+ J[(pB]2)
+
+;
+
+¯h i
+
+ Jp(B)
+
+,
+
+¯h i
+
+ J[(pB]2)
+
+× exp
+
+i 2h¯
+
+ddxddy tr Jµ(x)Dµ (x - y)J (y) + 2J(C)(x)DCB(x - y)J(B)(y)
+
++
+
+Jp(C3
+
+)
+
+(x)D[p]3
+CB
+
+(x
+
+-
+
+y)J[(pB]2)(y)
+
++
+
+Jp(B3 )(x)DB[pB]3
+
+(x
+
+-
+
+y)J[(pB]2)(y)
+
+,
+
+(7.3)
+
+Z4|Y (J(4)) = exp
+
+V4|
+
+¯h i
+
+ Jµ
+
+;
+
+¯h i
+
+ Jr(C)
+
+,
+
+¯h i
+
+ J[(rB]3)
+
+;
+
+¯h i
+
+ J[(rB]2)
+
+exp
+
+i 2h¯
+
+ddxddy tr Jµ(x) ×
+
+Dµ (x
+
+-
+
+y)J (y) +
+
+1 3
+
+Jr(1C
+
+)(x)DC[rB]4
+
+(x
+
+-
+
+y)J[(rB]3)(y) +
+
+1 4
+
+J[(rB]2)
+
+(x)DB[rB]4
+
+(x
+
+-
+
+y)Jr(3Br)4 (y)
+
+, (7.4)
+
+for Sp(2)-duplet of sources Ja = J1, J2  J, J to ghost-antighost fields Ca, for G(3)-triplets of
+
+Grassmann-odd J[(pB]2), Grassmann-even J[(pB]2) and Grassmann-odd singlets J(C), J(B) of sources .for the respective fields B[p]2 , B[p]2, C, B mentioned in the round brackets in the indices and for G(4)-quartets
+
+of Grassmann-odd Jr(1C), J[(rB]3) and sextet of Grassmann-even J[(rB]2) sources .for the fields Cr1 , B[r]3 , B[r]2. The causal Green functions for the vector field Aµ: Dµ(x) [48] and for the respective fictitious pair of
+
+fields
+
+D(x),
+
+Dab(x)
+
+for
+
+the
+
+fictitious
+
+Grassmann-odd
+
+fields
+
+in
+
+N
+
+=
+
+2;
+
+for
+
+DCB (x),
+
+D[p]3 (x)
+CB
+
+for
+
+Grassmann-
+
+odd, DB[pB]3 (x) for Grassmann-even fields in N = 3; DC[rB]4(x), DB[rB]4 (x) respectively for Grassmann-odd and
+
+Grassmann-even fields in N = 4 cases are determined in terms of the Feynman propagators in momentum
+
+representation:
+
+Dµ (x) =
+
+1 2 d
+
+ddp e-ipxDµ (p),
+
+for Dµ(p) = -
+
+µ
+
+-
+
+pµp (1 p2 +
+
+- ) i0
+
+D(x) =
+
+1 2 d
+
+ddp e-ipxD(p),
+
+for D(p) =
+
+1su(N^ ) p2 + i0
+
+,
+
+1su(N^ ) 
+
+mn ,
+
+1su(N^ ) p2 + i0
+
+,
+
+Dab
+
+;
+
+DC
+
+B
+
+,
+
+D[p]3
+CB
+
+,
+
+DB[pB]3
+
+;
+
+DC[rB]4
+
+,
+
+DB[rB]4
+
+(x)
+
+=
+
+ab; 1, [p]3 , [p]3 ; [r]4 , [r]4 D(x).
+
+(7.5) (7.6) (7.7)
+
+34
+
+And the respective vertexes look as
+
+V
+
+Aµ; C, C
+
+=
+
+1 4
+
+ddx tr 2[µA] Aµ, A + Aµ, A 2 + 4Cµ Aµ, C ,
+
+(7.8)
+
+VY Aµ; Ca
+
+= V Aµ; C, C
+
+(C,C )C a
+
+-
+
+ 24
+
+ddx tr Ca, Cc Cb, Cd abcd,
+
+(7.9)
+
+V3| Aµ; C, B; Cp, B[p]2 ; Bp, B[p]2
+
+= V Aµ; C, C
+
+(C,C )(B ,C )
+
++
+
+1 2
+
+ddx tr Bp1 µ Aµ, Bp2p3
+
+V4| Aµ; Cr, B[r]3 ; B[r]2
+
++ B[p]2 µ Aµ, Cp3 [p]3 + Sadd(3),
+
+= V Aµ; 0, 0 +
+
+ddx tr
+
+1 8
+
+B
+
+[r]2
+
+
+
+µ
+
+Aµ, Br3r4
+
+-
+
+1 Cr4 µ 3!
+
+Aµ, B[r]3
+
+[r]4 + Sadd(4),
+
+(7.10) (7.11)
+
+where each su(N^ )-commutator implicitly contains interaction coupling g as multiplier, all the integrations above satisfy to the Feynman boundary conditions and the respective expressions (2.81), (4.10), for Sadd(3), Sadd(4) were used.
+The expansion of the functionals (7.1)­(7.4) generates the respective diagrammatic techniques, known for N = 1 BRST symmetric formulation (7.1), e.g. from [48]. The basic elements for each N = m, m = 1, 2, 3, 4 we list in the momentum representation, first, for N = 1:
+
+Dµ (p)  D(p) 
+
+Figure 1: Propagators for the vector field Aµ and for the ghost fields C, C.
+
+Second, for N = 2 case for only different propagator for Sp(2)-duplet of ghost-antighost field Ca and quartic in Ca, Cb ,Cc,Cd (a, b, c, d = 1, 2) interaction vertex V(Y)CaCbCcCd(p) obtained from
+
+trV(Y)CaCbCcCd (x) CaCc
+
+Cb, Cd
+
+=
+
+1 2
+
+d
+
+dd
+
+p
+
+e-ipx
+
+V nln1l1
+(Y )Ca
+
+C
+
+b
+
+C
+
+cC
+
+d
+
+(p)C
+
+l1
+
+a
+
+(p)C
+
+n1
+
+c
+
+(p)C
+
+lb
+
+C
+
+nd
+
+(p)
+
+(7.12)
+
+Dab(p) = CaCb 0 
+
+V(nYln)1Cla1 CbCcCd
+
+=
+
+-
+
+ 24
+
+f
+
+mnl
+
+f
+
+mn1
+
+l1
+
+ab
+
+cd
+
+
+
+Figure 2: Propagators for the fields Ca and self-interaction vertex quartic in the ghost fields Ca.
+Third, for N = 3 propagators for the fictitious fields and with account for antisymmetry (B, B)qr = -(B, B)rq
+
+35
+
+DCB(p) = CB 0 
+
+Dpqr (p) =
+CB
+
+CpBqr 0 
+
+DBpqBr (p) = BpBqr 0 
+Figure 3: Propagators for the fictitious Grassman-odd G(3) singlets, C, B, 3 pairs of triplets Cp, Bqr and 3 pairs of Grassman-even triplets Bp, Bqr.
+Fourth, for N = 4 propagators of the fictitious fields with account for antisymmetry of (Br1r2r3 , Br1r2) = -(Br2r1r3 , Br2r1 )
+
+DC[rB]4 (p) = - Cr4 B[r]3 0 
+DB[rB]4 (p) = Br1r2 Br3r4 0 
+Figure 4: Propagators for the fictitious four pairs of Grassman-odd G(4)-quartets Cr, B[r]3 and 3 pairs of Grassman-even G(4)-sextet Br1r2 , Br3r4 .
+And, for some N = 1, 3, 4 vertexes of the gauge vector fields Aµ with respective fictitious fields (Grassmann-odd for N = 1, 4 and Grassmann-even for N = 3 BRST symmetric formulations from the quadratic in the fictitious fields terms with Faddeev-Popov operator M (A) in the momentum representation found as in (7.12)) in the Figures 5, 6
+Note, starting from the N = 2 case we have introduced the additional notation of the respective (being valid for free (quadratic) theory) averaging fields 0 written under the respective propagator's line to distinguish different fictitious fields corresponding, in fact, to the same function, D(p). From the N = 3 case the propagator's line for the Grassmann-even (Bose) fictitious particle is given by "dash with dot" as compared to the standard "dash" notations for the Grassmann-odd (Fermi) fictitious particle. There are 3 independent propagators for Grassmann-odd fields among CpBqr 0 and 3 ones for Grassmann-even from BpBqr 0 in the Figure 3, which are C1B23 0, C2B31 0, C3B12 0 and B1B23 0, B2B31 0, B3B12 0, i.e. for {p, q, r}={(1, 2, 3); (2, 3, 1).(3, 1, 2)}. For N = 4 BRST symmetric case the Figure 4 contains 4 independent propagators for Grassmann-odd fields - Cr4B[r]3 0 and 3 ones for Grassmann-even from Br1r2 Br3r4 0: C1B234 0, C2B314 0, C3B124 0, C4B132 0 and B12B34 0, B13B42 0, B14B23 0.
+There exist more additional vertexes from (7.9), (7.10), (7.11) which can be analogously represented as in the Figures 5, 6.
+8 Conclusion
+In the present work a generalization of the Faddeev­Popov proposal presenting the Lagrangian path integral for the Yang­Mills theory in Landau and Feynman gauges [3], [9] is proposed for non-local form by inserting the special unity, detkM (A) det-kM (A), depending on non-negative integer k in (2.31),
+36
+
+VACC (p) = f mnlpµ 
+
+V3||ABp B[p]2 (p)
+
+=
+
+1 2
+
+f
+
+mnl
+
+pµ
+
+[p]3
+
+
+
+Figure 5: Interaction vertexes of Aµ: with C, C fields in N = 1, with any pair from G(3)-triplets of even (Bose) fictitious fields Bp, Bqr in N = 3 BRST formulations.
+
+V4||ACr4
+
+B[r]3
+
+(p)
+
+=
+
+-
+
+1 3!
+
+f mnlpµ[r]4
+
+
+
+Figure 6: Interaction vertex of Yang­Mills field Aµ with any pair from G(4)-quartets of odd (Fermi) fictitious fields Cr,B[r]3 in N = 4 BRST formulation.
+
+(2.32) and for local form in (2.33), with numbers of fictitious Grassmann-odd and Grassmann-even fields
+
+(with the same number of physical degrees of freedom as compared to the case of space-time extended
+
+SUSY gauge theories) in the spectrum of the total configuration spaces larger than those for N = 1, 2
+
+BRST symmetry cases. It is shown in the Statement 1, that to realize the N = m BRST symmetry
+
+transformations with more than two Grassmann-odd parameters, p, p = 1, 2, ..., m (in substituting instead of the infinitesimal gauge parameters  = Cpp the m-plet of Grassmann-odd ghost fields) when formulating the corresponding quantum actions, S(LN(k))((N(k))) (2.36) with the gauge-fixing terms
+(respecting N (k) = m BRST invariance) to be added to the classical Yang­Mills action the spectrum
+
+of k = k(N ) should obey to the relation (2.38), whereas to perform the gauge-fixing procedure without
+
+using an odd non-degenerate transformation changing the Grassmann parities for some fictitious fields
+
+its spectrum k = ku(N ) is described by (2.39).
+
+An irreducible representation space, commuting generators -s p with triplet
+
+M(m3i)n, for the 3-parametric abelian superalgebra of Grassmann-odd constant parameters, p, with
+
+G(3) of antiits action on
+
+the local coordinates, fields (3), has been explicitly constructed by Eqs. (2.45). To formulate a local
+
+quantum action with appropriate gauge-fixing procedure, we have followed two ways. First, that proves
+
+the condition (2.38) of the Statement 1, is based on the original using of Grassmann-odd non-degenerate
+
+operator  which changes the Grassmann parities and acts on G(3)-irreducible space of initial Yang­Mills
+
+fields Aµ, triplets Cp, Bpq, odd singlet B, in such a way, that the respective change of variables in the
+
+subspace of part of fictitious fields, M (A.8) has permitted to make possible to pass to a new basis of
+
+fictitious fields in which the local quantum action (A.22) and path integral (A.13) in Landau gauge with
+
+a new form of N = 3 BRST symmetry transformations, (A.23)­(A.28), have been constructed. Second,
+
+the non-minimal sector of the fields (3) containing antighost field (as a connection) C to incorporate the usual gauge condition, (A, B), into a gauge fermionic functional (3) (2.75) has been introduced, on which a new N = 3 representation of G(3)-superalgebra is explicitly realized (2.69). The sector contains
+
+two G(3)-singlets, C, B with usual Nakanishi-Lautrup field and two G(3)-triplets, Bp, Bpq and together
+
+37
+
+with the fields, (3) composes the fields (3) of reducible G(3)-superalgebra representation parameterizing the total configuration space M(to3t), on which the quantum action S(3) (3) (2.78)­(2.81) and path in-
+
+tegral Z3|(0) (2.73) in R-like gauges, determined by the gauge fermionic functional (3) (3) (2.75), have been explicitly constructed. The set of the transformations in M(to3t), (3) = (3)-s pp, determined by (2.45), (2.69), leaving both the quantum action and the integrand of the respective path integral by
+
+invariant,we call N = 3 BRST transformations. The quantum (non-renormalized) action S(3) contains the terms quadratic in fictitious fields leading to the same one-loop contribution for the effective action
+
+as one for the quantum actions constructed according to N = 1 and N = 2 BRST symmetry principles
+
+in smaller configuration space, whereas for more than quadratic in powers of ghost fields terms in S(3) , described by the Sadd(3) (2.81) which generates the ghost vertexes to be different than ones derived from
+the former actions. We have established with the help of G(1)-superalgebra with nilpotent generator -s¯ and parameter ¯
+
+being additional to G(3)-superalgebra, but acting on the fields of M(to3t) by the rule (3.1), the fact that the G(1)- invariant path integral Z1|(0) (3.7) with the quantum action S(1) and, at least for special quadratic gauge fermionic functional (1) (3.8) given on M(to3t) is equivalent to the N = 1 antiBRST invariant path integral (3.12) with the quantum action S, (3.13) constructed by the standard Faddeev-Popov method
+with use of N = 1 antiBRST symmetry transformations acting in the standard configuration space, Mtot of fields Aµ, C, C, B. We call the transformations (3.9) with parameter ¯ which led to the G(1)- invariance of S(1) and integrand of Z1|(0) by N = 1 antiBRST symmetry transformations in M(to3t).
+
+It was shown the Grassmann-odd parameters: G(3)-triplet p and G(1)-singlet ¯, of G(3) and G(1)
+
+superalgebras acting on the space p, ¯ , as well as the quartet of
+
+thMe (tgo3t)e,nearraetournsiq-suerly=com-sbpi,ne-s¯d
+
+within quartet of parameters r = to form a G(4)-superalgebra whose
+
+irreducible representation contains the same fields as reducible one for G(3)-superalgebra in M(to3t) but
+
+organized in G(4)-antisymmetric tensors, (4) = Aµ, Cr, Br1r2 , Br1r2r3 , B according to the rule (3.18),
+
+which parameterize N = 4 total configuration space M(to4t). The explicit action of the generators -s r on
+
+each {-s r1
+
+,co-smrp2o}n=ent0.froTmhe(r4e)spweacstivcoenNstru=ct4edSbUySYEqtsr.an(3sf.o2r0m) awtiitohnsp,reser(v4a)ti=on
+
+of the (4)-s r
+
+G(4)-superalgebra: r have appeared,
+
+according to their definition, by N = 4 BRST transformations for the quantum action SY(4) and local path
+
+integral Z4|Y (0) (4.1) term generated by the
+
+constructed with quartic powers in
+
+help of addition to the classical action of the N = 4 BRST exact -s r applied to the gauge Bosonic functional, Y(4) (4) (4.3). For
+
+R-like family of gauges determined by the functional Y(04)((4)) (4.6) the quantum action SY(4) (4)
+
+(4.7) was exactly calculated for the Landau gauge ( = 0), whereas for the Feynman gauge ( = 1)
+
+the additional summand Sadd(4) (4.10) to the standard gauge-fixed and quadratic [in 4 Grassmann-odd (C1, B234), (C2, B134), (C3, B124), (C4, B123) and 3 Grassmann-even (B12, B34), (B13, B24), (B14, B23)
+
+pairs of ghost fields] parts Sgf(4), Sgh(4) of the quantum action contains the 8-th powers in odd Cr and 4-th power of even Br1r2 fields. For any  classical action and the functionals Sgf(4), Sgh(4) lead to the same contribution into one-loop effective action as those for the known and above quantum actions
+
+constructed according to the N = 1, N = 2 and both N = 3 BRST symmetry recipes. It was explicitly
+
+shown on the level of the non-renormalized path integrals the equivalence among N = 3 BRST invariant
+
+path integral evaluated in the R-like gauges and usual N = 1 BRST invariant path integral in the R
+
+-gauges in (2.94). For N = 4 BRST invariant path integral its equivalence with N = 1 BRST invariant
+
+path integral was found in case of Landau gauge in (4.13).
+
+For both N = 3 and N = 4 BRST invariant formulations of the quantum actions the generating functionals of Greens functions, including effective actions were determined and Ward identities (2.91), (4.14) for them, which follow from the respective algebraic N = m, m = 3, 4 BRST invariance, were derived as well as the independence on the choice of the gauge condition for the respective path integral under the corresponding small variation of the gauge: (3)  (3) + (3) and Y(4)  Y(4) + Y(4) were established by means of infinitesimal FD N = m BRST transformations.
+
+38
+
+The finite N = 3 and N = 4 BRST transformations were restored to form respectively the Abelian supergroups G(m) = exp{-s pp}, p = 1, 2, ..., m acting on the respective configuration space M(tomt) by means of two ways: first, by continuation of the invariance of any regular functional under algebraic
+
+N = m, m = 3, 4 BRST transformations to full invariance under finite transformations, second by means of resolution of the Lie equations. The sets G~(m) (5.4), (5.22) of finite FD N = m BRST transfor-
+
+mations were introduced and the respective Jacobians of the change of variables in M(tomt) generated by
+
+these transformations were calculated in (5.5), (5.23). For functionally-dependent Grassman-odd parame-
+
+ters, ^p1
+
+=
+
+-(-1)m
+
+1 (m-1)!
+
+(m)
+
+(m)
+
+[p]m -s p2 ...-s pm
+
+with a some potential functional (m) Grassmann-
+
+odd(even) for m = 3 (m = 4) (5.11), (5.24) the Jacobians above are transformed to the respective
+
+N = m BRST exact terms (5.12), (5.25). The latter Jacobians were applied, first, to the establishing
+
+of the independence upon the choice of the gauge condition for finite variation of the respective path
+
+integral, Z3|(3) (0) = Z3|(3)+(3) (0), Z4|Y (0) = Z4|Y +Y  (0), from the solutions of the corresponding compensation equations (6.2), (6.21) relating the parameters ^p1 with respective change of the gauge condition (3), Y(4) in (6.4) and (6.23). Second, they were used to derive new modified Ward identities
+
+(6.8), (6.26) for the generating functionals of Green functions Z3|(3) (J(3)), Z4|Y(4) (J(4)) depending on the functionally-dependent FD parameters ^p1 , p1 = 1, 2.., m, and therefore on the finite variation of the
+gauge (3), Y(4) respectively. Third, they have permitted to establish gauge independence of Z3|(3) (J(3)), Z4|Y(4) (J(4)) upon the respective choice of the gauge condition (3)  (3) + (3) and Y(4)  Y(4) + Y(4)
+
+on the corresponding mass-shell: J(3) = 0, J(4) = 0.
+
+The new Ward identities (6.19) for the extended (by means of sources Kp, Kpq, K to the N = 3 BRST variations (3)-s p, (3)-s p-s q, and (3)(-s )3) generating functional of vertex Green's functions,  (3) , Kp, Kpq, K (6.17) obtained from the part of extended N = 3 BRST transformations (6.12) in the space of (3), Kp, Kpq, K for constant p, reproduced the new differential-geometric objects. i.e., G(3)-triplets of antibrackets: (·, ·)p and odd-valued first-order differential operators V p (6.20).
+
+The gauge-independent Gribov-Zwanziger model of Yang­Mills fields without residual Gribov ambiguity in the infrared region of the field Aµ configurations described by gauge-invariant, and therefore N = m BRST invariant, for m = 3, 4, horizon functional H(Ah) (6.29) in terms of gauge-invariant transverse fields Ahµ (6.28) [43], firstly proposed in [37] within N = 1 BRST symmetry realization but with non-local BRST transformations was suggested in non-local form but with local N = 3, N = 4 BRST
+invariance by the Eqs. (6.32), (6.33). The partially local, (in view of residual presence of non-local vector field Ahµ) Gribov-Zwanziger model was proposed with non-local N = 1 BRST symmetry (2.7), (6.36), due to inverse gauge-invariant Faddeev-Popov matrix M -1 (Ah) presence for auxiliary fields in (6.36).
+
+The extension of the basics for the diagrammatic Feynman technique within perturbation theory for the N = 3 and N = 4 BRST invariant quantum actions for the Yang­Mills theory were proposed due to the presence of additional both Grassmann-odd and Geassmann-even fictitious fields.
+
+Concluding, let us present the spectrum of irreducible representations for a G(l) Abelian superalgebra
+
+with l = 0 (non-gauge theories), l = 1 (BRST symmetry algebra), l = 2 (BRST-antiBRST symmetry
+
+algebra), l = 3 (superalgebra with 3 BRST symmetries), and so on according to the chain (2.41)­
+
+(2.43), by a numeric pyramid partially similar to the Pascal triangle (1), which contains in its left-
+
+hand side the symbol "d|A" relating to number of degrees of freedom of the classical Yang­Mills fields
+
+Aµ with suppressed su(N^ ) indices: where an l-th row, corresponding to the field content (l) of an
+
+irrep space for the G(l) superalgebra, is constructed from the symbols of d|A, l|C[r]1, C2l |B[r]2..., 1|B(l)
+
+(Clk = k!/(l!(k - l)!)), corresponding to the degrees of freedom (modulo the dimension of su(N^ )) for Aµ, Cpl , Bplql , ..., B(l), pl = 1, 2, ..., l, whose sum is equal to (2l + d - 1). The symbols related by an arrow:
+
+d|A srl by the
+
+l|C[r]1 meaning the part of rule: Aµ-s rl = DµCrl with
+
+the chain omitting
+
+generated the arrow
+
+by the N over -s rl
+
+= for
+
+l-BRST generator the readability in
+
+-s rl , rl = the Table
+
+1, 1.
+
+2, ..., l From
+
+the second row (N = 2), the rule of filling the triangle starts to work, whereas for N = 0 there is no
+
+39
+
+N = 0: N = 1:
+
+N = 2:
+
+N = 3:
+
+N = 4:
+
+d|A
+
+...
+
+... ...
+
+...
+
+N = 2K: d|A  sr 2K|C[r]1
+
+d|A
+
+d|A
+
+ sa
+
+d|A
+
+ sp
+
+3|C [p]1
+
+ sr
+
+4|C [r]1
+
+ sr
+
+...
+
+...
+
+...
+
+ sr
+
+C22K |B([r2]K2 )
+
+d|A s
+2|C a  sp
+6|B[r]2 ...
+....
+
+1|C
+
+ sa
+
+1|B
+
+3|B[p]2
+
+ sp
+
+1|B
+
+ sr
+
+4||B[r]3
+
+ sr
+
+1|B
+
+...
+
+...
+
+...
+
+...
+
+ sr
+
+2K |B([r2]K2K) -1  sr 1|B
+
+Table 1: Numbers of fictitious fields in addition to Aµ for each N = 0, 1, 2, ..., 2K
+
+fictitious fields, and in the case of N = 1 it is only Aµ and ghost field C that compose an irrep space of the N = 1 BRST algebra without an additional trivial BRST doublet, C¯, B necessary to construct quantum action and local path integral which as the fields from the non-minimal sector, answering for the reducible representation of G(1)-superalgebra, selected into another Table 2. Notice, that the second left-hand side only contains the numbers 1, 2, 3, ..., 2K of Grassmann-odd fictitious fields, C, Cp2 , Cp3 , ..., Cp2K ; the third left-hand side (starting from N = 2) only contains the numbers 1, 3, 6, ..., C22K of Grassmann-even fictitious fields B, Bp3q3 , Bp4q4 , ..., Bp2Kq2K , etc. The final right-hand side of the triangle (1) is composed
+of the Nakanishi­Lautrup G(l)-singlet fields B  B2, B3  B, B4, ..., Bl, with alternating Grassmann parity, (Bl) = l, respectively for l = 2, 3, ..., 2K.
+In turn, for the reducible representation space of G(2K - 1)-superalgebra, for integer K determining the non-minimal sector of fields to be necessary to provide gauge-fixing procedure without odd supermatrix, the spectrum of additional fields is described by the Table 2 corresponding to the exact sequence (2.71). In particular, from Table 1 it follows that, for odd numbers N = 2K - 1 of parameters in the G(N ) superalgebra, the generalized Faddeev­Popov rules must be described by odd non-degenerate transformation, , intended to present the path integral with the Grassmann-even Nakanishi­Lautrup field B(2K-1) = B2k-1 exponentiating the standard gauge condition, added to the classical action using an N = (2K - 1) BRST-exact form.
+It follows from the both Tables that the generalization of the Faddeev-Popov quantizations for the case of N = 2K - 1 BRST invariance without using of an odd non-degenerate transformation, when formulating the local quantum action and path integral leads to the dimension of the total configuration space M(to2tK-1) to coinciding with the one for Mt(o2tK) realizing N = 2K BRST symmetry for the same purpose.
+There are various directions to extend the results of the present study. Let us mention some of them. First, to develop the case of N = 3, 4 BRST symmetries transformations in a Yang-Mills theory as a dynamical system with first-class constraints in the generalized canonical formalism [49], [50], [51]. Second: to develop the case of N = 3, 4 BRST symmetry transformations for irreducible general gauge theories in Lagrangian formalism [44], including theories with a closed algebra of rank 1. Third: to generalize, in a manifest way, the Faddeev­Popov rules in Yang­Mills theories to the case of N = 2K - 1 and N = 2K, K > 2 BRST symmetry transformations in Lagrangian formalism and in generalized canonical formalism. Then, it is intended to examine the case of irreducible dynamical systems subject
+
+N = 1:
+
+1|C
+
+s
+
+1|B
+
+N = 3:
+
+1|C
+
+ sp
+
+3|B[p]1
+
+ sp
+
+3|B[p]2
+
+ sp
+
+1|B
+
+N = 5:
+
+1|C
+
+ sr
+
+5|B(r5)
+
+ sr
+
+10|B([r5])2
+
+ sr
+
+10|B([r5])3
+
+ sr
+
+5|B([r5])4
+
+ sr
+
+1|B
+
+...
+
+... ...
+
+...
+
+...
+
+...
+
+...
+
+...
+
+...
+
+...
+
+...
+
+...
+
+N = 2K - 1: 1|C  sr N |B(rN)
+
+ sr
+
+...
+
+...
+
+...
+
+...
+
+...
+
+ sr
+
+N |B([rN]N) -1  sr 1|B
+
+Table 2: Numbers of fictitious fields from the non-minimal sectors for each odd N = 1, 3, 5, ..., 2K - 1
+
+40
+
+to N = 2K - 1, N = 2K, K > 2 BRST symmetry transformations and to compare the results with superfield formulations with N BRST charges in [52]. Next, it is planned to consider an irreducible general gauge theory subject to N = 2K - 1, N = 2K K > 2 BRST symmetry transformations in the Lagrangian formalism. The problem of study of the renormalizability for the suggested N = 3, 4 BRST invariant formulations of the quantum actions so as to have completely renormalized respective effective actions remains a very important question, as well as adopting of the N = m, m = 2, 3, 4 BRST invariance to the renormalizability of N = 1 space-time super Yang­Mills theory in terms of N = 1 superfields considered for N = 1 BRST symmetry in [53], [54] on the basis of preserving the gaugeinvariance, and, hence, the N = m BRST symmetry, regularization by higher-derivatives [55], recently developed for N = 2 superfield formulation of Abelian and super Yang­Mills theories [56] on a basis of N = 2 harmonic superspace approach [57]. We intend to study these problems in forthcoming works.
+Acknowledgments The author is thankful to J.L Buchbinder for illuminating discussion, V.P, Spiridonov for the comments. He is grateful to P.Yu. Moshin and K.V. Stepanyantz for the comments and advises within many useful discussions, as well as to B.P. Mandal and S. Upadhyay for participation at the initial research stage for the problem.
+
+Appendix
+
+A On N = 3 BRST invariant gauge-fixing in N = 3 irreducible superspace
+
+Here, we will prove that it is impossible to perform N = 3 BRST invariant gauge-fixing procedure within the set of fields A(33) parameterizing the superspace of irreducible representation of G(3)-superalgebra without using of non-degenerate odd-valued change of variables among the components of (3) to explicitly
+construct such a gauge-fixing.
+
+Indeed, it is easy to see that in the basis of additional to Aµ fields in A(33) = (Aµ, Cp, Bpq, B) composing the irreducible representation space of G(3)-superalgebra, on which due to Lemma 1 the N = 3 SUSY
+
+transformations is realized (2.45), there are no enough coordinates to reach a non-local Faddeev­Popov
+
+path integral (2.31) with preservation of the symmetry above. The terms in the functional S(L3)((3))
+
+(2.36)
+
+for
+
+N (k)
+
+=
+
+3,
+
+k
+
+=
+
+1,
+
+with
+
+the
+
+fermionic
+
+gauge-fixing
+
+functional,
+
+1 3!
+
+F(3)
+
+(3)
+
+-s p11 -s p21 -s p31 p11p21p31
+
+are calculated following to the rules (2.82)­(2.86) similar to the N = 2 BRST symmetry case (2.17) for
+
+ = 0, when F(3)0 (3) = F(3)0 A :
+
+F(3)0 A -s p =
+
+ddx
+
+tr
+
+F(3)0 Aµ
+
+Dµ C p
+
+=
+
+-
+
+ddx tr Dµ
+
+F(3)0 Aµ
+
+Cp = -
+
+ddx tr F (A)Cp, (A.1)
+
+F(3)0 A -s p-s qpqr = ddx tr
+
+ddyCp(x)M F (A, x; y)Cq(y) - F (A)Bpq pqr,
+
+(A.2)
+
+for
+
+M F (A, x; y)
+
+=
+
+F (A, x) Aµ(y)
+
+Dµ(y),
+
+(A.3)
+
+F(3)0 A (-s )3 = ddx tr
+
+ddy 2Bqp(x)M F (A, x; y)Cr(y) + Cp(x)M F (A, x; y)Bqr(y)
+
+-
+
+dd
+
+z
+
+C
+
+p(x)
+
+M F (A, x; Aµ(z)
+
+y)
+
+Dµ(z
+
+)C
+
+r
+
+(z
+
+)C
+
+q
+
+(y)
+
+pqr - F (A)
+
+3!B
+
++
+
+1 2
+
+Bpq, Cr
+
+pqr
+
+.
+
+(A.4)
+
+Hence,
+
+SF(3)0 ((3))
+
+
+
+S(L3) ((3) )
+
+=
+
+S0
+
++
+
+1 3!
+
+F(3)0
+
+(A)(-s )3
+
+=
+
+S0
+
++
+
+SF(3)0 |gf
+
++
+
+SF(3)0 |gh
+
++
+
+SF(3)0 |add ,
+
+(A.5)
+
+41
+
+SF(3)0|gf + SF(3)0 |gh =
+
+ddx tr
+
+BF (A)
+
++
+
+1 3!
+
+ddy 2Bqp(x)M F (A, x; y)Cr(y)
+
++ Cp(x)M F (A, x; y)Bqr(y) pqr ,
+
+(A.6)
+
+SF(3)0 |add
+
+=
+
+- pqr 3!
+
+ddx
+
+1 2
+
+F
+
+(A)
+
+Bpq, Cr
+
++
+
+dd
+
+yddz
+
+C
+
+p(x)
+
+
+
+M F (A, x; Aµ(z)
+
+y)
+
+Dµ(z
+
+)C
+
+r
+
+(z
+
+)C
+
+q
+
+(y)
+
+, (A.7)
+
+where F (A) may be interpreted as a Grassmann-odd analog of gauge conditions (2.6), (2.15) used in the N = 1, 2 BRST symmetry realizations for the quantum action, and therefore M F (A, x; y) should be
+considered as a Grassmann-odd analog of the Faddeev­Popov matrix (1.4).
+
+A.1 Non-degenerate odd-valued change of fictitious fields
+
+To provide a satisfactory description, we must deal neither with the appearance in Z0L of the -function (F ) from odd-valued functions, nor with the superdeterminant sdetM F (A) from an odd-valued matrix
+
+M F (A)10, we may pass to another basis of auxiliary fields, (3), in the representation space M(3) of the N = 3 superalgebra G(3) with the same number of Grassmann-odd and Grassmann-even fields. To
+
+this end, we introduce a non-degenerate transformation in M(3): (3)  (3) = (3), with unaffected Yang­Mills fields Aµ, ghost fields C1, C3, bosonic fields B13, and to be transformed fictitious fields M =
+(B23, B12, C2, B), by introducing a Grassmann-odd non-degenerate matrix N = NMN (analogous to the odd supermatrix  = AB = (A, B) , () = 1, resulting from the odd Poisson bracket, (·, ·), calculations with respect to the field-antifield variables A in the field-antifield formalism [44], [45]), composed from the unit matrices 1(N^2-1) with suppressed su(N^ )-indices, as follows:
+
+ B2
+
+ 0
+
+0
+
+ 0   B23 
+
+M  M = N MN N :
+
+
+
+B C1
+
+ = 
+
+0 
+
+0 0
+
+0 0
+
+ 0
+
+ 
+
+B12 C2
+
+ ,
+
+C3
+
+00 0
+
+B
+
+(A.8)
+
+with the odd non-degenerate supermatrix , which turns the only fields of definite parity into new fields with the same properties but with opposite parity:  B23, B12, C2, B = C1, C3, B2, B , so that by definition, the property to be idempotent for  holds: 2 = 1. Notice that the separation of the (un)transformed fields in (3) is not unique for unaffected Aµ. Note, that in the usual sense [11], [58] sdetN = 0.
+The supermatrix N plays the role of an inverse for itself, which make it possible to express the initial fictitious fields N from (A.8) as functions of new fictitious fields N :
+
+M = N MN N , (N ) = 1, because of N 2 = 14(N^2-1).
+
+(A.9)
+
+10If one attempts to exponentiate the non-local path integral (2.31) over M(3) = {A(33)} in the basis of, first, the auxiliary
+fields {Cp, Bpq , B} by means of the one Lie-group G-valued field B12 from the triplet of Grassmann-even fields Bpq , to exponentiate (), second, the pair, C1, C2 from the triplet of Grassmann-odd fields Cp, to exponentiate det M , third, the
+pair B13, B23 from Grassmann-even fields Bpq , and the remaining pair of Grassmann-odd fields, C3, B, to exponentiate, respectively, det-1M and detM , we get:
+
+Z0L =
+
+dA() det2M (A) det-1M (A) exp
+
+i ¯h S0(A)
+
+=
+
+i d(3) exp ¯h SL((3)) ,
+
+for SL((3)) = S0(A) + ddx tr (A)B12 + C1M (A)C2 + B23M (A)B13 + C3M (A)B .
+
+However, to provide N = 3 BRST invariance of the local action SL((3)) for Yang­Mills theory one must impose additional requirement: B12 = 0, being rather restrictive one.
+
+42
+
+A.2 N = 3 BRST-invariance and path integral in new fictitious fields
+
+The following step is based on a definition of the gauge fermion F(3)0(A) with help of the odd matrix  in quadratic form consistent for the Landau gauge:
+
+F(L3)0(A)
+
+=
+
+-
+
+1 2
+
+ddx tr
+
+AµAµ
+
+=
+
+-
+
+1 2
+
+ddx AµmmnAnµ, for (F(L3)0) = 1.
+
+(A.10)
+
+Because the map  acts linearly, turning the points (with coordinates) in a fiber of the respective bundle
+into the same points (with coordinates) in a fiber of another bundle, but with opposite parity, then the respective infinitesimal gauge for Aµ and N (3) SUSY transformations for A(33) make by natural the properties:
+
+Aµ = (Aµ)  Aµ = (Aµ) = Dµ(A)Cpp, µ = µ, Dµ(A)Cp = Dµ(A)Cp   A, Cp = A, Cp ,
+
+(A.11) (A.12)
+
+where the last relation maybe considered as the continuation of the commutativity property of  with partial derivative µ.
+Now, we can write the path integral related to (2.31) in a local form, (2.33) for k = 1 with the action SF(L3)0 (A.5), fermionic functional F(L3)0, in terms of a new basis of {A(33)} for the representation space of the G(3) superalgebra, as follows:
+
+Z = F(L3)0
+
+d(3) exp
+
+i ¯h
+
+SF(L3)0
+
+(3)
+
+SF(L3)0 |gf
+
++ SF(L3)0 |gh
+
+=
+
+1 2
+
+ddx tr
+
+,
+
+with
+
+SF(L3)0
+
+= S0(A) +
+
+1 3!
+
+F(L3)0
+
+(A)
+
+-s
+
+3
+
+(A)
+
++ (A)
+
+B
+
+-
+
+1 2
+
+M(A) Cq
+
+, (A.13)
+M M
+
+-M(A)Cq pqrBpr
+
+,
+M M
+
+(A.14)
+
+SF(L3)0 |add
+
+=
+
+pqr 2 · 3!
+
+ddx tr
+
+1 2
+
+(A) + (A)
+
+Bpq, Cr +
+
+M(A)Cr, Cq
+
++ Dµ(A)Cr, µCq - M(A)Cr, Cq + Dµ(A)Cr, µCq  Cp
+
+, (A.15)
+
+M M
+
+with usual Faddeev-Popov matrix, M = M(A) and with taken account for the relations
+
+F(L3)0
+
+A
+
+-s p =
+
+1 2
+
+ddx tr
+
+F(L3)0
+
+A
+
+-s p-s qpqr =
+
+1 2
+
+DµCpAµ - AµDµCp
+
+=
+
+1 2
+
+ddx tr
+
+(A) + (A) Cp,(A.16)
+
+ddx tr (A) + (A) Bpq - M(A)Cq
+
+-M(A)Cq Cp pqr,
+
+(A.17)
+
+F(3)0
+
+A
+
+(-s )3
+
+=
+
+1 2
+
+ddx tr
+
+(A) + (A)
+
+3!B +
+
+1 2
+
+Bpq, Cr
+
+pqr
+
+- 3 M(A)Cq - M(A)Cq Bpr + M(A)Cr, Cq
+
++ Dµ(A)Cr, µCq  - M(A)Cr, Cq - Dµ(A)Cr, µCq Cp pqr .
+
+(A.18)
+
+Here the relations (2.82), (2.83), (A.11), (A.12) and (B.9) for Landau gauge (A) = 0 were used as well as the vanishing of the terms, Cp1 , Cp2 [p]3  0.
+
+43
+
+Note, first, the terms proportional to the (A) in (A.18) maybe easily elaborated by the rule
+
+tr (A) B = mnn(A)Bm = n(A)mnBm = tr (A)B, tr (A) Bpq, Cr = tr (A) Bpq, Cr ,
+
+(A.19) (A.20)
+
+by virtue of the properties (A.11), (A.12). Second, the quadratic in the fictitious fields with Faddeev­ Popov matrix summands, we can present due to the same properties as follows:
+tr M(A)Cq Bpr = tr BprM(A)Cq = tr BprM(A)Cq = tr (Bpr)M(A)Cq. (A.21)
+
+Expressing the fields M in terms of M , according to the change of variables (A.8) in M(3), we get for the action SF(L3)0 (A.13)­(A.15) with use of (A.19)­(A.21) and with use of dual field B2 = -B13 = 132B13:
+
+SF(L3)0  = S0(A) + ddx tr (A)B + C3M(A)C3 + C1M(A)C1 + B2M(A)B2
+
++
+
+1 3!
+
+1
+
+ddx tr (A) B2, B2 +
+
+C 2k+1, C2k+1
+
+k=0
+
++
+
+pqr 2
+
+M(A)Cr, Cq Cp + Dµ(A)Cr, µCq Cp
+
+- M(A)Cr, Cq + Dµ(A)Cr, µCq Cp
+
+.
+
+(C 2 ,C 2 )(B 2 ,B2 )
+
+(A.22)
+
+Here, the role of Faddeev­Popov ghosts is a mixed one, in comparison with the initial basis of fictitious fields Cp, Bpq, B. For example, in the first row of (A.22) for the fields C, C, used within the original Faddeev­Popov quantization as ghost and antighost fields, we have, respectively, C1, B23 and C3, B12.
+
+Therefore, as far as the last condition in (A.12) holds true, the functional SF(L3)0  , with the gauge functional (A.10) which determines the path integral ZF(L3)0 (A.13) in the Landau gauge with a local quantum action solving the problem of generalization of the Faddeev­Popov rules in the case of the
+irreducible representation N = 3-parametric G(3) superalgebra.
+
+The latter local action (as well as the measure d(3)) corresponding to the Landau gauge is invariant under N = 3 (therefore called as N = 3 BRST) transformations, which, at the algebraic level in a new basis of fields, A(33), are written with allowance for (2.45), (A.8), (A.9), as follows:
+
+Aµ-s p = Dµ C11p + B22p + C33p ,
+
+(A.23)
+
+C1-s p
+
+=
+
+1 2
+
+C1, C1
+
+1p +
+
+C 3
+
++
+
+1 2
+
+C1, B2
+
+2p +
+
+-
+
+B2
+
++
+
+1 2
+
+C1, C3
+
+3p,
+
+B2-s p =
+
+-
+
+C3
+
++
+
+1 2
+
+
+
+B2, C1
+
+1p
+
++
+
+1 2
+
+
+
+B2, B2
+
+2p +
+
+C1 +
+
+1 2
+
+
+
+B2, C3
+
+3p,
+
+C3-s p =
+
+B2
+
++
+
+1 2
+
+C3, C1
+
+1p +
+
+- C1 +
+
+1 2
+
+C3, B2
+
+2p
+
++
+
+1 2
+
+C3, C3
+
+3p,
+
+(A.24)
+
+C3-s p
+
+=
+
+1 2
+
+
+
+C3, C1
+
+-
+
+1 6
+
+C [1 ,
+
+B2], C1
+
+1p
+
++
+
+1 2
+
+
+
+C3, B2
+
+-
+
+1 6
+
+C [1 ,
+
+B2], B2
+
+2p
+
++
+
+B
+
++
+
+1 2
+
+
+
+C3, C3
+
+-
+
+1 6
+
+C [1 ,
+
+B2], C3
+
+3p,
+
+B2-s p
+
+=
+
+1 2
+
+B2, C1
+
++
+
+1 6
+
+C [1 ,
+
+C3], C1
+
+1p +
+
+B
+
++
+
+1 2
+
+B2, B2
+
++
+
+1 6
+
+C [1 ,
+
+C3], B2
+
+(A.25) 2p
+
++
+
+1 2
+
+B2, C3
+
++
+
+1 6
+
+C [1 ,
+
+C3], C3
+
+3p,
+
+(A.26)
+
+44
+
+C1-s p =
+
+B
+
++
+
+1 2
+
+
+
+C1, C1
+
+-
+
+1 6
+
+B[2,
+
+C3], C1
+
+1p
+
++
+
+1 2
+
+
+
+C1, C3
+
+-
+
+1 6
+
+B[2,
+
+C3], C3
+
+3p
+
++
+
+1 2
+
+
+
+C1, B2
+
+-
+
+1 6
+
+B[2,
+
+C3], B2
+
+2p,
+
+B-s p
+
+=
+
+1 2
+
+
+
+B, C11p + B22p + C33p -
+
+1 2
+
+C3, C3 + B2, B2
+
+(A.27)
+
++ C1, C1 , C11p + B22p + C33p
+
++
+
+1 3
+
+C32p - B23p , C[2 , C3]
+
++
+
+1 3
+
+- C31p + C13p
+
+, C[3 , C1]
+
++
+
+1 3
+
+B21p - C12p , C[1 , B2]
+
+, (A.28)
+
+where we introduced the formal identification B2 = B2 to use the antisymmetry of: C[1B2] = C1B2 - B2C1 being inherited from one for C[1C2]11.
+Thus, we see, that the preservation of the explicit N = 3 BRST symmetry for the quantum action S(L3)((3)) in the space of G(3)-irreducible representation M(3) requires the introduction of odd nondegenerate supermatrix N with destroying of G(3)-covariance of the fields (3) to get local path integral (A.13) with N = 3 BRST invariance (A.23)-(A.28).
+This fact proves the validity condition (2.38) of the Statement 1 concerning gauge-fixing procedure for odd N .
+
+B N = 4 BRST Invariant Yang­Mills Action in R-like Gauges
+
+In this Appendix, we present the details of calculations used in Section 4 to find N = 4 BRST invariant
+quantum action (4.7)­(4.10) and establish a correspondence between the gauge-fixing procedures in the
+Yang­Mills theory described by a gauge-fixing function (A, B) = 0 from the class of R-gauges in N = 1 BRST formulation and by a gauge-fixing functional Y(04) in the suggested N = 4 BRST quantization.
+
+To calculate SY(4) (4) we have used the results of applications (2.82)­(2.86), (2.87), (2.88), (3.3) adapted for N = 4 case, as well as the property (4.11) for differentiation of the product and commutator of any two functions by products of the generators -s p up to 4-th order.
+
+the
+
+Thus, for the quadratic gauge preliminary calculations with
+
+bosonic functional, Y(04)((4) action of the first and second
+
+p) o=wYer(0s4)o(Af )-s+r1
+
+Y(B4)(Bq1q2 ), (4.6) we need on Y(04)(A) with use of the
+
+notation for the compact writing, r1r2r3r4  [r]4:
+
+Y(04)(A)-s r1 = ddx trAµDµ(A)Cr1 = - ddx tr(µAµ)Cr1 ,
+
+(B.1)
+
+(µAµ)Cr1 -s r1 -s r2 [r]4 = Cr1 M (A)Cr2 + (µAµ)Br1r2 [r]4,
+
+(B.2)
+
+of the third powers, with account for the identities (B.9) below and equalities ddx trCr1 M (A)Br2r3 = ddx trBr2r3 M (A) - [(µAµ), ] Cr1 , obtained with help of the integration by parts:
+
+3
+
+Y(04)(A)
+
+-s rk [r]4 = -
+
+k=1
+
+ddx tr - Br1r3 M (A)Cr2 + Cr1 M (A)Br2r3 - Cr1
+
++ Dµ(A)Cr3 , µCr2
+
++ Br1r2 M (A)Cr3 + (µAµ)
+
+B r1 r2 r3
+
++
+
+1 2
+
+Br1r2 , Cr3
+
+M (A)Cr3 , Cr2 [r]4
+
+=-
+
+ddx tr 3Br1r2 M (A)Cr3 + Cr1 µ DµCr2 , Cr3 +
+
+Br1r2r3 +
+
+3 2
+
+Br1r2 , Cr3
+
+µAµ [r]4, (B.3)
+
+11The action of the Grassmann-odd operator  may be determined on the su(N^ ) commutator A, B of any Grassmannhomogeneous quantities A, B as  A, B = A, B = (-1)(A) A, B in such a way that  should act only on the fields M (A.8) and M . E.g.  B, C1 = B, C1 and  B, B2 = B, B2 = - B, B2 .
+
+45
+
+and of the fourth power:
+
+4
+
+Y(04) (A)
+
+-s rk [r]4 = -
+
+k=1
+
+ddx tr
+
+-3
+
+B r1 r2 r4
+
++
+
+1 2
+
+Br1r2 , Cr4
+
+M (A)Cr3 + 3Br1r4 M (A)Br2r3
+
++(µAµ)
+
+[r]4 B
+
++
+
+1 2
+
+Br1r2r3 , Cr4 -
+
+(-1)P (r1,r2,r3)
+
+1 4
+
+Br1r2 , Cr3 , Cr4
+
+P
+
++
+
+1 3
+
+Br1r4 , Cr2 , Cr3
+
+-
+
+3 2
+
+Br1r2r4 , Cr3
+
+-
+
+3 4
+
+Br1r2 , Cr4 , Cr3
+
++
+
+B r1 r2 r3
+
++
+
+3 2
+
+Br1r2 , Cr3
+
+M (A)Cr4 + Cr1 µ
+
+DµCr2 , Br3r4 - DµBr2r4 , Cr3
+
++ DµCr4 , Cr2 , Cr3 - 3Br1r2 µ DµCr4 , Cr3 + Br1r4 µ DµCr2 , Cr3 [r]4
+
+(B.4)
+
+= - ddx tr 4Br1r2r3 M (A)Cr4 + 3Br1r2 M (A)Br3r4 + (µAµ)B[r]4
+
++(µAµ) 2 Br1r2r3 , Cr4 - Br1r2 , Cr3 , Cr4 - Br1r2 Cr3 , M (A)Cr4 + 4 µCr3 , DµCr4
+
++Cr1 µ DµCr2 , Br3r4 - Cr2 , DµBr3r4 + DµCr2 , Cr3 , Cr4
+
+[r]4 .
+
+(B.5)
+
+Here, we have used that, gration by parts, relations
+
+Cr1 , Cr2 r1r2 (2.82), (2.83)
+
+r3 r4
+its
+
+ 0, definition of analog, M (A)Br1
+
+the Faddeev-Popov operator (1.4), r2 -s r3 , and easily checked Leibnitz
+
+interule
+
+of the commutator differentiation for covariant derivative, Dµ(A):
+
+M (A)Br1r2 -s r3 = µ Dµ(A)Cr3 , Br1r2 + M (A) Br1r2 -s r3 = M (A)Cr3 , Br1r2 + Dµ(A)Cr3 , µBr1r2
+
++ M (A)
+
+B r1 r2 r3
+
++
+
+1 2
+
+Br1r2 , Cr3
+
+-
+
+1 12
+
+C[r1 ,
+
+Cr2], Cr3
+
+,
+
+Dµ(A) Br1r2 , Cr3 = Dµ(A)Br1r2 , Cr3 + Br1r2 , Dµ(A)Cr3 ,
+
+(B.6) (B.7)
+
+as well as the relations, first, for the terms with permutation, P (r1, r2, r3), and second, for su(N^ )-valued functions F, G:
+
+-
+
+(-1)P
+
+(r1
+
+,r2
+
+,r3
+
+)
+
+1 2
+
+1 4
+
+Br1r2 , Cr3 , Cr4
+
++
+
+1 3
+
+Br1r4 , Cr2 , Cr3
+
++
+
+3 4
+
+P
+
+=-
+
+3 4
+
+Br1r2 , Cr3 , Cr4 +
+
+Br1r4 , Cr2 , Cr3
+
+-
+
+3 4
+
+Br1r2 , Cr3 , Cr4
+
+= - Br1r2 , Cr3 , Cr4 [r]4 ,
+
+Br1r2 , Cr4 , Cr3 [r]4
+
+DµAµ = µAµ ,
+
+ddx tr (DµF ) G = - ddx trF DµG .
+
+[r]4
+(B.8) (B.9)
+
+In turn, the input from the gauge boson part Y(B4)(Bq1q2 ), (4.6) into the quantum action (4.7) may be presented as:
+
+4
+
+Y(B4)
+
+-s rk [r]4
+
+=
+
+-2
+
+g2 4!
+
+k=1
+
+4
+
+3
+
+ddx tr Bq1q2
+
+-s rk Bq3q4 + 4Bq1q2
+
+-s rk Bq3q4 -s r4
+
+k=1
+
+k=1
+
++3Bq1q2 -s r1 -s r2 Bq3q4 -s r3 -s r4 [r]4 [q]4 ,
+
+(B.10)
+
+so that to derive the quadratic in the fields B terms, which should determine the gauge-fixed action for the Feynman-like gauge it is sufficient to calculate the last summand above, because of, Bq1q2 -s r1-s r2 = q1q2r1r2B + o(B, C), according to N = 4 BRST transformations (3.20).
+
+46
+
+Let us find the action of the operators -s r1 [r]4 and -s r1 -s r2 [r]4 on Bq1q2 [q]4 :
+
+Bq1q2 -s r1 [r]4 [q]4 =
+
+B q1 q2 r1
+
++
+
+1 2
+
+Bq1q2 , Cr1
+
+-
+
+1 6
+
+Cq1 ,
+
+Cq2 , Cr1
+
+[r]4 [q]4 ,
+
+Bq1q2 -s r1 -s r2 [r]4 [q]4 = q1q2r1r2 B + Bq1q2r1 , Cr2 + Bq1r1 , Cq2 , Cr2
+
+-
+
+1 3
+
+Bq1r1 , Cr2 , Cq2
+
+-
+
+1 6
+
+Br1r2 , Cq1 , Cq2
+
++
+
+1 6
+
+Cq1 ,
+
+Cq2 , Cr2 , Cr1
+
++
+
+1 2
+
+Bq1q2 , Br1r2
+
+[r]4 [q]4 .
+
+(B.11) (B.12)
+
+Then, for the last term in (B.10) we have
+
+- g2 4
+
+ddx trBq1q2 -s r1 -s r2
+
+Bq3q4 -s r3 -s r4
+
+[r]4 [q]4
+
+=
+
+- g2 4
+
+ddx tr q1q2r1r2 B
+
++ Bq1q2r1 , Cr2 +
+
+Bq1r1 , Cq2
+
+, Cr2
+
+-
+
+1 3
+
+Bq1r1 , Cr2 , Cq2
+
+-
+
+1 6
+
+Br1r2 , Cq1 , Cq2
+
++
+
+1 6
+
+Cq1 ,
+
+Cq2 , Cr2 , Cr1
+
++
+
+1 2
+
+Bq1q2 , Br1r2
+
+× q3q4r3r4 B + Bq3q4r3 , Cr4
+
++
+
+Bq3r3 , Cq4
+
+, Cr4
+
+-
+
+1 3
+
+Bq3r3 , Cr4 , Cq4
+
+-
+
+1 6
+
+Br3r4 , Cq3 , Cq4
+
++
+
+1 6
+
+Cq3 ,
+
+Cq4 , Cr4 , Cr3
+
++
+
+1 2
+
+Bq3q4 , Br3r4
+
+[r]4 [q]4
+
+= -g2
+
+ddx tr 4!B2 + 2B
+
+Bq1q2r1 , Cr2 +
+
+Bq1r1 , Cq2
+
+, Cr2
+
+-
+
+1 3
+
+Bq1r1 , Cr2 , Cq2
+
+-
+
+1 6
+
+Br1r2 , Cq1 , Cq2
+
++
+
+1 6
+
+Cq1 ,
+
+Cq2 , Cr2 , Cr1
+
++
+
+1 2
+
+Bq1q2 , Br1r2
+
+q1 q2 r1 r2
+
++
+
+1 4
+
+Bq1q2r1 , Cr2 +
+
+Bq1r1 , Cq2
+
+, Cr2
+
+-
+
+1 3
+
+Bq1r1 , Cr2 , Cq2
+
+-
+
+1 6
+
+Br1r2 , Cq1 , Cq2
+
++
+
+1 6
+
+Cq1 ,
+
+Cq2 , Cr2 , Cr1
+
+-
+
+1 3
+
+Bq3r3 , Cr4 , Cq4
+
+-
+
+1 6
+
++
+
+1 2
+
+Bq1q2 , Br1r2
+
+Br3r4 , Cq3 , Cq4
+
+× Bq3q4r3 , Cr4 + Bq3r3 , Cq4 , Cr4
+
++
+
+1 6
+
+Cq3 ,
+
+Cq4 , Cr4 , Cr3
+
++
+
+1 2
+
+Bq3q4 , Br3r4
+
+[r]4 [q]4 ,
+
+(B.13)
+
+where we have used the Fierz-like identities for the products of Levi-Civita tensors:
+
+   q1q2r1r2 [r]4 q3q4r3r4 = 4[q]4 , and q1q2r1r2 [r]4 q3q4r3r4 [q]4 = 4 · 4!,
+
+(B.14)
+
+and its normalization (2.37), (3.31). Now, we are waiting that the first and second terms in (B.10) of the third and fourth orders in -s r
+when acting on Bq1q2 will not produce new summands to the gauge-fixed and quadratic in the fictitious
+fields parts of the action (4.7). Their role concerns only to exclude non-diagonal terms from the last
+quantity in (B.10) given explicitly in (B.13). To justify the proposal let us show, that the terms linear in B in (B.13) are absent in SY(4) (4) (4.7). To do so we need the product of three antisymmetrized
+
+47
+
+generators, -s r1 -s r2 -s r3 [r]4 applied to Bq1q2 :
+
+3
+
+B q1 q2
+
+-s rk [r]4 [q]4 =
+
+k=1
+
+q1 q2 r1 r2
+
+1 2
+
+B, Cr3
+
+-
+
+1 4!
+
+Bs1s2s3 , Cs4 , Cr3 s1s2s3s4
+
++ Bq1q2r1 , Br2r3 -
+
+q1q2r1r3 B +
+
+1 2
+
+Bq1q2r1 , Cr3
+
+-
+
+(-1)P (q1,q2,r1)
+
+1 8
+
+Bq1q2 , Cr1 , Cr3
+
+P
+
++
+
+1 6
+
+Bq1r3 , Cq2 , Cr1
+
+, Cr2 +
+
+Bq1r1 , Cq2 , Br2r3 -
+
+Bq1r1 ,
+
+B q2 r3
+
++
+
+1 2
+
+Cq2 , Cr3
+
+, Cr2
+
++
+
+B q1 r1 r3
+
++
+
+1 2
+
+Bq1r1 , Cr3
+
++
+
+1 12
+
+Cr1 ,
+
+Cq1 , Cr3
+
+, Cq2 , Cr2
+
+-
+
+1 3
+
+Bq1r1 , Cr2 ,
+
+B q2 r3
+
++
+
+1 2
+
+Cq2 , Cr3
+
++
+
+1 3
+
+Bq1r1 , Br2r3 , Cq2
+
+-
+
+1 3
+
+B q1 r1 r3
+
++
+
+1 2
+
+Bq1r1 , Cr3
+
++
+
+1 12
+
+Cr1 ,
+
+Cq1 , Cr3
+
+, Cr2 , Cq2
+
+-
+
+1 6
+
+Br1r2 , Cq1 ,
+
+B q2 r3
+
++
+
+1 2
+
+Cq2 , Cr3
+
++
+
+1 6
+
+Br1r2 ,
+
+B q1 r3
+
++
+
+1 2
+
+Cq1 , Cr3
+
+, Cq2
+
+-
+
+1 6
+
+B r1 r2 r3
+
++
+
+1 2
+
+Br1r2 , Cr3
+
+, Cq1 , Cq2
+
++
+
+1 6
+
+Cq1 ,
+
+Cq2 , Cr2 , Br1r3
+
+-
+
+1 6
+
+Cq1 ,
+
+Cq2 , Br2r3 , Cr1
+
++
+
+1 6
+
+Cq1 ,
+
+B q2 r3
+
++
+
+1 2
+
+Cq2 , Cr3
+
+, Cr2 , Cr1
+
+-
+
+1 6
+
+B q1 r3
+
++
+
+1 2
+
+Cq1 , Cr3
+
+, Cq2 , Cr2 , Cr1
+
++
+
+1 2
+
+Bq1q2 ,
+
+B r1 r2 r3
+
++
+
+1 2
+
+Br1r2 , Cr3
+
++
+
+1 2
+
+B q1 q2 r3
+
++
+
+1 2
+
+Bq1q2 , Cr3
+
+-
+
+1 6
+
+Cq1 ,
+
+Cq2 , Cr3
+
+, Br1r2 [r]4 [q]4 . (B.15)
+
+Consider, e.g. the summand, B Bq1q2r1, Cr2 in (B.13). The only second term in (B.10) gives similar contribution from (B.15), so that their sum is equal to:
+
+ddx tr
+
+4 · 3 · 2B Bq1q2r1 , Cr2
+
+q1 q2 r1 r2
+
++
+
+4
+
+·
+
+3 q1q2r1r2
+2
+
+B, Cr3
+
+Bq3q4r4 [r]4 [q]4
+
+= 4! ddx tr B Bq1q2r1 , Cr2 q1q2r1r2 + B, Cr3 B  q3q4r4 q3q4r3r4
+
+= 4! ddx tr B Bq1q2r1 , Cr2 + B Bq1q2r2 , Cr1 q1q2r1r2  0,
+
+(B.16)
+
+due to the antisymmetry in r1, r2 of, Bq1q2r2 , Cr1 q1q2r1r2 = - Bq1q2r1 , Cr2 q1q2r1r2 and the property for su(N^ )-valued functions with definite Grassmann parities:
+
+tr F G, H = F m f mnl Gn Hl = tr F, G H = -tr G F, H (-1)(F )(G).
+
+(B.17)
+
+The checking that the remaining terms linear in B in (B.13) do not contribute in the quantum action (4.7) may be fulfilled analogously, but we leave out of the paper scope the proof of this fact.
+The -dependent part of N = 4 BRST invariant quantum action (4.7) take the form:
+
+
+
+ 
+
+SY(4)
+
+(4)
+
+= g2
+
+ddx tr
+
+B2
+
++
+
+1 4!
+
+1 42
+
+Bq1q2 , Br1r2
+
+Bq3q4 , Br3r4
+
+(B.18)
+
++
+
+1 4!3!
+
+Cq1 ,
+
+Cq2 , Cr2 , Cr1
+
+Cq3 , Cq4 , Cr4 , Cr3
+
+[r]4 [q]4 + S,
+
+without terms of the product
+
+linear in B in S, which of four antisymmetrized
+
+should be determined from (B.10)­(B.13), (B.15) and generators, -s r1 -s r2 -s r3 -s r4 [r]4 applied to Bq1q2 .
+
+the
+
+results
+
+48
+
+Therefore, combining (B.4), (B.18) we have
+
+SY(4) (4) = S0 +
+
+ddx tr
+
+µAµ + g2B B +
+
+1 3!
+
+B
+
+r1
+
+r2
+
+r3
+
+M
+
+(A)C
+
+r4
+
++
+
+1 8
+
+B
+
+r1
+
+r2
+
+M
+
+(A)B
+
+r3
+
+r4
+
+[r]4
+
++
+
+1 4!
+
+(µAµ)
+
+2 Br1r2r3 , Cr4
+
+-
+
+Br1r2 , Cr3 , Cr4
+
+- Br1r2 Cr3 , M (A)Cr4
+
++ 4 µCr3 , DµCr4 + Cr1 µ DµCr2 , Br3r4 - Cr2 , DµBr3r4 + DµCr2 , Cr3 , Cr4
+
++
+
+g2 4!
+
+1 42
+
+Bq1q2 , Br1r2
+
+Bq3q4 , Br3r4
+
++
+
+1 4!3!
+
+Cq1 ,
+
+Cq2 , Cr2 , Cr1
+
+×
+
+[r]4
+
+× Cq3 , Cq4 , Cr4 , Cr3 [r]4 [q]4 + S ,
+
+(B.19)
+
+for S (=0) = 0, that proves the representation (4.7)­(4.10) for the quantum action. Determining the dual fields (with lower G(4)-indices) for Grassmann-even Br1r2 and Grassmann-odd Br1r2r3 fields:
+
+Br1r2
+
+=
+
+1 2
+
+B
+
+r3
+
+r4
+
+r1r2
+
+r3 r4
+
+=
+
+B34, -B24, B23, B14, -B13, B12 ,
+
+Cr4
+
+=
+
+1 3!
+
+B
+
+r1
+
+r2
+
+r3
+
+r1
+
+r2
+
+r3
+
+r4
+
+=
+
+- B234, B134, -B124, B123
+
+(B.20) (B.21)
+
+the action (B.19) can be equivalently presented as follows
+
+SY(4) = S0 + ddx tr µAµ + g2B B + Cr1 M (A)Cr1 +
+
+Br1r2 M (A)Br1r2
+
+1r1<r23
+
++
+
+1 4!
+
+2(µAµ)
+
+3! Cr1 , Cr1
+
+-
+
+Br1r2 , Cr1 , Cr2
+
+- 2Br1r2 Cr1 , M (A)Cr2
+
++ 4 µCr1 , DµCr2
+
++ 2Cr1 µ
+
+DµCr2 , Br1r2
+
+-
+
+Cr2 , DµBr1r2
+
++
+
+1 2
+
+DµCr2 , Cr3 , Cr4 [r]4
+
++
+
+g2 4 · 4!
+
+Bq1q2 , Br1r2
+
+Bq1q2 , Br1r2
+
++
+
+g2 3!(4!)2
+
+Cq1 ,
+
+Cq2 , Cr1 , Cr2
+
+×
+
+× Cq3 , Cq4 , Cr3 , Cr4 [r]4 [q]4 + S ,
+
+(B.22)
+
+by virtue of easily checked identity,
+
+1r1<r23 Br1r2 M (A)Br1r2
+
+
+
+1 4
+
+B
+
+r1
+
+r2
+
+M
+
+(A)Br1
+
+r2
+
+,
+
+justifying
+
+the
+
+representation (2.34) for the quantum action for the case N = 4 (k(4)=3) in the Landau gauge ( = 0)
+
+with the identification:
+
+C0, C[3]; C0, C[3]; B[3], B[3] = Cr; Cr; Br1r2 , Br1r2 for r = 1, ..., 4; 1  r1 < r2  3.
+
+(B.23)
+
+References
+[1] C.N.Yang and R.L.Mills, Phys. Rev. 96 191 (1954). [2] R. P. Feynman, Acta Phys. Pol. 24, 697 (1963). [3] L.D. Faddeev and V.N. Popov, Phys. Lett. B. 25, 29 (1967). [4] B.S. DeWitt, Phys. Rev. 162, 1195 (1967). [5] G. 't Hooft, Nucl. Phys. B 33, 173 (1971).
+
+49
+
+[6] N. Nakanishi, Covariant Quantization of the Electromagnetic Field in the Landau Gauge, Prog. Theor. Phys. 35, 1111 (1966).
+[7] B. Lautrup, Canonical Quantum Electrodynamics in Covariant Gauges, Mat. Fys. Medd. Kon. Dan. Vid.- Sel. Medd. 35, 29 (1967).
+[8] V.N. Gribov, Nucl. Phys. B. 139, 1 (1978). [9] V. N. Popov and L. D. Faddeev, Kiev Inst. Theor. Phys. Acad. Sci. (1967), preprint ITP 67-36
+[English translation: Perturbation theory for gauge-invariant fields (preprint NAL-THY-57, (1972))]. Reprinted e.g. in 50 Years of Yang­Mills Theory, ed. G. 't Hooft (World Scientific, 2005). [10] L.D. Faddeev, Int. J. Mod. Phys. A 25, 1079 (2010). [11] F.A. Berezin, Pure Appl. Phys. 24, 1 (1966). [12] C. Becchi, A. Rouet and R. Stora, Phys. Lett. B 52, 344 (1974); Annals Phys. 98, 287 (1976). [13] I. V. Tyutin, Lebedev Inst. preprint. 39 (1975), [arXiv: 0812.0580 [hep-th]]. [14] A.A. Slavnov and L.D. Faddeev, Theor.Math.Phys. 3 (1970) 312. [15] A.A. Slavnov, Theor.Math.Phys. 10 (1972) 99. [16] J. Zinn-Justin and R. Guida, Scholarpedia 3(12), 8287 (2008).; J. Zinn-Justin, Scholarpedia 4(2), 8674 (2009). [17] G. Curci and R. Ferrari, Phys. Lett. B. 63, 91 (1976). [18] L. Alvarez-Gaume and L. Baulieu, Nucl. Phys. B. 212, 255 (1983). [19] V.P. Spiridonov, Nucl. Phys. B. 308, 527 (1988). [20] L. Bonora and M. Tonin, Phys. Lett. B 98, 48 (1981). [21] P. Gregoire and M. Henneaux, Phys. Lett. B 277, 459 (1992). [22] A.A. Varshovi, Gauge-fixing invariance and antiBRST symmetry, Int. J. Geom. Methods Mod. Phys. 1750168 (2017), [arXiv:1611.08856[hep-th]]. [23] S. D. Joglekar and B. P. Mandal, Phys. Rev. D 51, 1919 (1995). [24] P. Lavrov and O. Lechtenfeld, Phys. Lett. B. 725, 382 (2013), [arXiv:1305.0712[hep-th]]. [25] A. Reshetnyak, Int. J. Mod. Phys. A 29, 1450128 (2014), [arXiv:1312.2092[hep-th]]. [26] P. Yu. Moshin and A. A. Reshetnyak, Nucl. Phys. B. 888, 92 (2014), [arXiv:1405.0790[hep-th]]. [27] S. Upadhyay, A.A. Reshetnyak and B.P. Mandal, Eur. Phys. J. C 76, 391 (2016), [arXiv:1605.02973[physics.gen-ph]]. [28] P.Yu. Moshin and A.A. Reshetnyak, Phys. Lett. B. 739, 110 (2014), [arXiv:1406.0179[hep-th]]. [29] P.Yu. Moshin and A.A. Reshetnyak, Int. J. Mod. Phys. A 29, 1450159 (2014), [arXiv:1405.7549[hepth]]. [30] P.Yu. Moshin and A.A. Reshetnyak, Int. J. Mod. Phys. A 30, 1550021 (2015), [arXiv:1406.5086[hepth]]. [31] P.Yu. Moshin and A.A. Reshetnyak, Int. J. Mod. Phys. A.31,1650111 (2016), [arXiv:1506.04660[hepth]].
+50
+
+[32] B.S. de Witt, Dynamical Theory of Groups and Fields (Gordon and Breach, New York, 1965). [33] I.A. Batalin, P.M. Lavrov and I.V. Tyutin, J. Math. Phys. 31, 1487 (1990). [34] I.A. Batalin, P.M. Lavrov and I.V. Tyutin, J. Math. Phys. 32, 532 (1991). [35] I.A. Batalin, K.Bering, P.M. Lavrov and I.V. Tyutin, Int.J.Mod.Phys. A29 , 1450167(2014),
+[arXiv:1406.4695[hep-th]]. [36] D. Zwanziger, Nucl. Phys. B. 323, 513 (1989). [37] M. Capri, D. Dudal, P. Sorella et all, Phys. Rev. D. 2015. V. 92. P. 045039. [arXiv:1506.06995[hep-
+th]]. [38] P. Yu. Moshin and A. A. Reshetnyak, Phys.Part.Nucl.Lett. 14 (2017) 411, [arXiv:1604.03027[hep-th]]. [39] A.A. Reshetnyak and P.Yu. Moshin, Russ. Phys, Journal 59, 1921 (2017), [arXiv:1607.07253[hep-th]]. [40] M. Henneaux, Phys. Lett. B 282, 372 (1992). [41] C.M. Hull, Mod. Phys. Lett. A 5, 1871 (1990). [42] G. Barnich, R. Constantinescu and P. Gregoire, Phys. Lett. B 293, 353 (1992). [43] M. Semenov-Tyan-Shanskii and V. Franke, A variational principle for the Lorentz condition and
+restriction of the domain of path integration in non-abelian gauge theory, Zap. Nauch. Sem. LOMI im. V. A. Steklov, AN SSSR 120 (1982) 159. (English translation: New York: Plenum Press 1986). [44] I.A. Batalin and G.A.Vilkovisky, Phys. Lett. B 102, 27 (1981). [45] M. Henneaux and C. Teitelboim, Quantization of gauge systems, Princeton, USA: Univ. Press (1992). [46] P. Lavrov, O. Lechtenfeld and A. Reshetnyak, JHEP. 1110, 043 (2011), [arXiv:1108.4820[hep-th]]. [47] M.A.L. Capri, D. Dudal, D. Fiorentini, M.S. Guimaraes, I.F. Justo, A.D. Pereira, B.W. Mintz, L.F. Palhares, R.F. Sobreiro and S.P. Sorella, Phys. Rev. D 94, 025035 (2016), [arXiv:1605.02610[hep-th]]. [48] L.D. Faddeev and A.A. Slavnov, Gauge Fields: Introduction to the Quantum Theory, Addison-Wesley Publishing Company, 1991. [49] E.S. Fradkin and G.A. Vilkovisky, Phys. Lett. B55, 224 (1975). [50] I.A. Batalin and G.A.Vilkovisky, Phys. Lett. B 69, 309 (1977). [51] M. Henneaux, Phys. Pep. 126, 1 (1985). [52] I.A. Batalin, K. Bering, Nucl. Phys. B. 700, 439 (2004), [arXiv:hep-th/0401169]. [53] O. Piguet and K. Sibold, Nucl. Phys. B 197, 257 (1982). [54] S.S. Aleshin, A.E. Kazantsev, M.B. Skoptsov and K.V. Stepanyantz, JHEP 1605, 014 (2016), [arXiv:1603.04347[hep-th]]. [55] A. A. Slavnov, Theor.Math.Phys. 13, 1064 (1972) [Teor. Mat. Fiz. 13, 174 (1972)]. [56] I.L. Buchbinder, N.G. Pletnev and K.V. Stepanyantz, Phys. Lett. B 751, 434 (2015), [arXiv:1509.08055[hep-th]]. [57] A.S. Galperin, E.A. Ivanov, V.I. Ogievetsky and E.S.Sokatchev, Harmonic Superspace, Cambridge University Press, 324 (2007). [58] D.M. Gitman and I.V. Tyutin, Quantization of Fields with Constraints, Springer, 1990.
+51
+
+

@@ -1,0 +1,378 @@
+arXiv:1701.00096v4 [q-bio.NC] 10 Mar 2017
+
+Loss of brain inter-frequency hubs in Alzheimer's disease
+J. Guillona,b, Y. Attalc, O. Colliota,b, V. La Cortee,f, B. Duboisd, D. Schwartzb, M. Chavezb, F. De Vico Fallania,b,
+aInria Paris, Aramis project-team, 75013, Paris, France bCNRS UMR-7225, Sorbonne Universites, UPMC Univ Paris 06, Inserm U-1127, Institut du cerveau
+et la moelle (ICM), Hopital Pitie-Salpetriere, 75013, Paris, France cmyBrain Technologies, Paris, France
+dDepartment of Neurology, Institut de la Memoire et de la Maladie dAlzheimer - IM2A, Paris, France eInstitute of Psychology, University Paris Descartes, Sorbonne Paris Cite, France
+fINSERM UMR 894, Center of Psychiatry and Neurosciences, Memory and Cognition Laboratory, Paris, France
+Abstract Alzheimer's disease (AD) causes alterations of brain network structure and function. The latter consists of connectivity changes between oscillatory processes at different frequency channels. We proposed a multi-layer network approach to analyze multiple-frequency brain networks inferred from magnetoencephalographic recordings during resting-states in AD subjects and age-matched controls.
+Main results showed that brain networks tend to facilitate information propagation across different frequencies, as measured by the multi-participation coefficient (M P C). However, regional connectivity in AD subjects was abnormally distributed across frequency bands as compared to controls, causing significant decreases of M P C. This effect was mainly localized in association areas and in the cingulate cortex, which acted, in the healthy group, as a true inter-frequency hub.
+M P C values significantly correlated with memory impairment of AD subjects, as measured by the total recall score. Most predictive regions belonged to components of the default-mode network that are typically affected by atrophy, metabolism disruption and amyloid- deposition. We evaluated the diagnostic power of the M P C and we showed that it led to increased classification accuracy (78.39%) and sensitivity (91.11%).
+These findings shed new light on the brain functional alterations underlying AD and provide analytical tools for identifying multi-frequency neural mechanisms of brain diseases. Keywords: MEG, Brain connectivity, Multilayer networks, Neurodegenerative diseases
+Corresponding author. Email fabrizio.devicofallani@gmail.com
+
+1. Introduction
+Recent advances in network science has allowed new insights in the brain organization from a system perspective. Characterizing brain networks, or connectomes, estimated from neuroimaging data as graphs of connected nodes has not only pointed out important network features of brain functioning - such as smallworldness, modularity, and regional centrality - but it has also led to the development of biomarkers quantifying reorganizational mechanisms of disease (1). Among others, Alzheimer's disease (AD), which causes progressive cognitive and functional impairment, has received great attention by the network neuroscience community (1­3). AD is histopathologically defined by the presence of amyloid- plaques and tau-related neurofibrillary tangles, which cause loss of neurons and synapses in the cerebral cortex and in certain subcortical regions (2). This loss results in gross atrophy of the affected regions, including degeneration in the temporal and parietal lobe, and parts of the frontal cortex and cingulate gyrus (4).
+Structural brain networks, whose connections correspond to inter-regional axonal pathways are therefore directly affected by AD because of connectivity disruption in several areas including cingulate cortices and hippocampus (5, 6). A decreased number of fiber connections eventually lead to a number of network changes on multiple topological scales. At larger scales, AD brain networks estimated from diffusion tensor imaging (DTI) showed increased characteristic path length as compared to healthy subjects leading to a global loss of network smallworldness (2, 7). Similar topological alterations have been also documented in resting-state brain networks estimated from functional magnetic resonance imaging (fMRI) (8), as well as from magneto/electroencephalographic (M/EEG) signals, the latter ones often reported within the alpha frequency range (8-13 Hz) which is typically affected in AD (9­11). On smaller topological scales, structural brain network studies have demonstrated a loss of connector hubs in temporal and parietal areas that correlates with cognitive decline (2, 12, 13). In addition, higher-order association regions appear to be affected in functional brain networks inferred from fMRI (2, 14) and MEG signals, the latter showing a characteristic loss of parietal hubs in higher (> 14 Hz) frequency ranges (15, 16).
+Graph analysis of brain networks has advanced our understanding of the organizational mechanisms underlying human cognition and disease, but a certain number of issues still remain to be addressed (17, 18). For example, conventional approaches analyze separately brain networks obtained at different frequency bands, or in some cases, they simply focus on specific frequencies, thus neglecting possible insights of other spectral contents on brain functioning (17). However, several studies have hypothesized and reported signal interaction or modulations between different frequency bands that are supportive of cognitive functions such as memory formation (19­21). Moreover, recent evidence shows that neurodegenerative processes in AD do alter functional connectivity in different frequency bands (16, 22, 23). How to characterize this multiple information from a network perspective still remains poorly explored. Here, we proposed a multi-layer network approach to study multi-frequency connectomes as networks of interconnected layers, containing the connectivity maps extracted from different bands. Multi-layer network theory has been previously used to synthesize MEG connectomes from a whole population (24), characterize temporal changes in dynamic fMRI brain networks (12), and integrating structural information from multimodal imaging (fMRI, DTI) (25, 26). Its applicability to multi-frequency brain networks has been recently illustrated in fMRI
+2
+
+connectomes for which, however, the frequency ranges of interest remains quite limited (27).
+We focused on source-reconstructed MEG connectomes, characterized by rich frequency dynamics, that were obtained from a group of AD and control subjects in eyesclosed resting-state condition. We hypothesized that the atrophy process in AD would lead to an altered distribution of regional connectivity across different frequency bands and we used the multiplex participation coefficient to quantify this effect both at global and local scale (28). We evaluated the obtained results, which provide a novel view of the brain reorganization in AD, with respect to standard approaches based on single-layer network analysis and flattening schemes (29). Finally, we tested the diagnostic power of the measured brain network features to discriminate AD patients and healthy subjects.
+2. Methods
+2.1. Experimental design and data pre-processing The study involved 25 Alzheimer's diseased (AD) patients (13 women) and 25 healthy
+age-matched control (HC) subjects (18 women). All participants underwent the MiniMental State Examination (MMSE) for global cognition (30) and the Free and Cued Selective Reminding Test (FCSRT) for verbal episodic memory (31­33). Specifically, we considered the Total Recall (TR) score - given by the sum of the free and cued recall scores - which has been demonstrated to be highly predictive of AD (34).
+Inclusion criteria for all participants were: i) age between 50 and 90; ii) absence of general evolutive pathology; iii) no previous history of psychiatric diseases; iv) no contraindication to MRI examination; v) French as a mother tongue. Specific criteria for AD patients were: i) clinical diagnosis of Alzheimer's disease; ii) Mini-Mental State Examination (MMSE) score greater or equal to 18. Magnetic resonance imaging (MRI) acquisitions were obtained using a 3T system (Siemens Trio, 32-channel system, with a 12-channel head coil). The MRI examination included a 3D T1-weighted volumetric magnetization-prepared rapid-gradient echo (MPRAGE) sequence with 1mm isotropic resolution and the following parameters: repetition time (TR)=2300 ms, echo time (TE)=4.18ms, inversion time (TI)=900 ms, matrix=256x256. This sequence provided a high contrast-to-noise ratio and enabled excellent segmentation of high grey/white matter.
+The magnetoencephalography (MEG) experimental protocol consisted in a restingstate with eyes-closed (EC). Subjects seated comfortably in a dimly lit electromagnetically and acoustically shielded room and were asked to relax and fix a central point on the screen. MEG signals were collected using a whole-head MEG system with 102 magnetometers and 204 planar gradiometers (Elekta Neuromag TRIUX MEG system) at a sampling rate of 1 000 Hz and on-line low-pass filtered at 330 Hz. The ground electrode was located on the right shoulder blade. An electrocardiogram (EKG) Ag/AgCl electrodes was placed on the left abdomen for artifacts correction and a vertical electrooculogram (EOG) was simultaneously recorded. Four small coils were attached to the participant in order to monitor head position and to provide co-registration with the anatomical MRI. The physical landmarks (the nasion, the left and right pre-auricular points) were digitized using a Polhemus Fastrak digitizer (Polhemus, Colchester, VT).
+We recorded three consecutive epochs of approximately 2 minutes each. All subjects gave written informed consent for participation in the study, which was approved by
+3
+
+the local ethics committee of the Pitie-Salpetriere Hospital. Signal space separation was performed using MaxFilter (35) to remove external noise. We used in-house software to remove cardiac and ocular blink artifacts from MEG signals by means of principal component analysis. We visually inspected the preprocessed MEG signals in order to remove epochs that still presented spurious contamination. At the end of the process, we obtained a coherent dataset consisting of three clean preprocessed epochs for each subject.
+2.2. Source reconstruction, power spectra and brain connectivity
+We reconstructed the MEG activity on the cortical surface by using a source imaging technique (36, 37). We used the FreeSurfer 5.3 software (surfer.nmr.mgh.harvard.edu) to perform skull stripping and segment grey/white matter from the 3D T1-weighted images of each single subject (38, 39). Cortical surfaces were then modeled with approximately 20000 equivalent current dipoles (i.e., the vertices of the cortical meshes). We used the Brainstorm software (40) to solve the linear inverse problem though the wMNE (weighted Minimum Norm Estimate) algorithm with overlapping spheres (41). Both magnetometer and gradiometer, whose position has been registered on the T1 image using the digitized head points, were used to localize the activity over the cortical surface. The reconstructed time series were then extracted from 148 regions of interest (ROIs) defined by the Destrieux atlas (42).
+We computed the power spectral density (PSD) of the ROI signals by means of the Welch's method; we chose a 2 seconds sliding Hanning window, with a 25% overlap. The number of FFT points was set to 500 for a frequency resolution of 0.5Hz. We estimated functional connectivity by calculating the spectral coherence between each pair of ROI signals (43). As a result, we obtained for each subject and epoch, a connectivity matrix of size 148 × 148 where the (i, j) entry contains the value of the spectral coherence between the signals of the ROI i and j at a frequency f .
+We then averaged the connectivity matrices within the following characteristic frequency bands (44, 45):  (2-4 Hz);  (4-8 Hz);  = 1 (8-10.5 Hz) and 2 (10.5-13 Hz);  = 1 (13-20 Hz) and 2 (20-30 Hz);  (30-45 Hz). We further averaged the resulting connectivity matrices across epochs to obtain our raw individual brain networks whose nodes were the ROIs (n = 148) and links, or edges, were the spectral coherence values.
+2.3. Single-layer network analysis
+In order to cancel the weakest noisy connections, we thresholded the values in the connectivity matrices and retained the same number of links in each brain network at every frequency band, or layer. We considered six representative connection density thresholds corresponding to an average node degree k = {1, 3, 6, 12, 24, 48}. These values cover the density range [0.007, 0.327] which contains the typical density values used in complex brain network analysis (17, 18, 46). The resulting sparse brain networks, or graphs, were represented by adjacency matrices A, where the aij entry indicates the presence or absence of a link between nodes i and j.
+2.3.1. Participation coefficient Given a network partition, the local participation coefficient (P Ci) of a node i mea-
+sures how evenly it is connected to the different clusters, or modules of the network (47).
+4
+
+Nodes with high participation coefficients are considered central hubs as they allow for the information exchange among different modules. The global participation coefficient P C of a network at layer  is then given by the average of the P Ci values:
+
+P C[] = 1 n
+
+N
+
+P Ci[]
+
+=
+
+1 n
+
+N
+
+i=1
+
+i=1
+
+M []
+1-
+m=1
+
+ki[,m] ki[]
+
+2
+,
+
+(1)
+
+where ki[,m] is the number of weighted links from the node i to the nodes of the module m of the layer . By construction, P C ranges from 0 to 1. Here, the partition of the
+networks into modules was obtained by maximizing the modularity function as defined
+by (48).
+
+2.3.2. Flattened networks
+We also computed the participation coefficients for brain networks obtained by flattening the frequency layers into a single overlapping or aggregated network (28). In an overlapping network, the weight of an edge oij corresponds to the number of times that the nodes i and j are connected across layers:
+
+oij =
+
+a[ij ],
+
+(2)
+
+
+
+In an aggregated network, the existence of an edge indicates that nodes i and j are connected in at least one layer:
+
+aij =
+
+1 if  : a[ij] = 0 , 0 otherwise
+
+(3)
+
+Notice that, by construction, flattened networks do not preserve the original connection density of the single layer networks.
+
+2.4. Multi-layer network analysis
+We adopted a multi-layer network approach to integrate the information from brain networks at different frequency bands, while preserving their original structure. We built for each subject a multiplex network (Fig. 1a,b) where different layers correspond to different frequency bands and each node in one layer is virtually connected to all its counterparts in all the other layers.
+Without loss of generality, if we consider the standard neurophysiological frequency bands, the resulting supra-adjacency matrix A is given by the following intra-layer of adjacency matrices on the main diagonal:
+
+A = {A[], A[], A[], A[], A[]},
+
+(4)
+
+where A[] is adjacency matrix of the frequency layer . By construction, the inter-layer adjacency matrices of multiplexes are intrinsically defined as identity matrices.
+
+5
+
+2.4.1. Multi-participation coefficient
+We considered the multi-layer version of the local participation coefficient M P Ci to measure how evenly a node i is connected to the different layers of the multiplex (28). This way, nodes with high multi-participation coefficients are considered central hubs as they would allow for a better information exchange among different layers. The global multi-participation coefficient is then given by the average of the M P Ci values:
+
+1N
+
+1N M
+
+MPC = n
+
+M P Ci = n
+
+1- M -1
+
+2
+
+N LPi[]
+
+,
+
+(5)
+
+i=1
+
+i=1
+
+
+
+where N LPi[] = ki[]/oi, stands for node-degree layer proportion, which measures the percentage of the total number of links (i.e. in all layers) of node i that are in layer . By construction, if nodes tend to concentrate their connectivity in one layer, the global multiparticipation coefficient tends to 0; on the contrary, if nodes tend to have the same number of connections in every layer, the M P C value tends to 1 (Fig. 1c). Hence, a node with a high M P C has the potential to facilitate communication across layers. The Matlab code for the computation of the M P C is freely available at https://github.com/devuci/BNT.
+We also used the standard coefficient of variation CVi to measure the dispersion of the degree of a node i across layers. A global coefficient of variation CV is then obtained by averaging the CVi values across all the nodes (Supplementary Text).
+
+2.5. Statistical analysis
+We first analyzed network features on global topological scales in order to detect statistical differences between AD and HC subjects at the whole system level. Only for those conditions (e.g., frequency bands) that resulted significantly different on the global scale, we also assessed possible group-differences on the local topological scale of single nodes. This hierarchical approach allowed us to associate brain network differences on multiple topological scales (49). For global network features, we used a non-parametric permutation t-test to assess statistical differences between groups, with a significance level of 0.05. For local network features, we applied a correction for multiple comparisons by computing the rough false discovery rate (FDR) (50, 51). In both cases, surrogate data were generated by randomly exchanging the group labels 10 000 times.
+To test the ability of the significant brain network properties to predict the cognitive/memory impairment of AD patients, we used the non-parametric Spearman's correlation coefficient R. We set a significance level of 0.05 for the correlation of global network features, with a FDR correction in the case of multiple comparisons (local features).
+
+2.6. Classification
+We used a classification approach to evaluate the discriminating power of the local brain network properties which resulted significantly different in the AD and HC group. Because we did not know in advance which were the most discriminating features, we tested different combinations. In particular, for each local network property, we first ranked the respective ROIs according to the p-values returned by the between-group statistical analysis (see previous section). For each subject s, we then tested different
+
+6
+
+feature vectors obtained by concatenating, one-by-one, the values of the network features extracted from the ranked ROIs. The generic feature vector cs reads:
+
+cs = [g1, ..., gk]
+
+(6)
+
+where gk is a generic local network feature and k is a rank that ranges from 1 (the most significant ROI) to the total number of significant ROIs. When different network properties were considered (e.g., P C and M P C), we concatenated the respective cs feature vectors allowing for all the possible combinations.
+To quantify the separation between the feature vectors of AD and HC subjects, we used a Mahalanobis distance classifier. We applied a repeated 5-fold cross-validation procedure where we randomly split the entire dataset into a training set (80%) and a testing test (20%). This procedure was eventually iterated 10 000 times in order to obtain more accurate classification rates. To assess the classification performance we computed the sensitivity (Sens), specificity (Spec) and accuracy (Acc), defined respectively as the percentage of AD subjects correctly classified as AD, the percentage of HC subjects classified as HC and the total percentage of subjects (AD and HC) properly classified. We also computed the receiver operating characteristic (ROC) curve and its area under the curve (AU C) (52).
+
+3. Results
+Power analysis of source-reconstructed MEG signals confirmed the characteristic changes in the oscillatory activity of AD subjects compared to HC subjects (Fig. 2a) (53­56). Significant alpha power decreases were more evident in the parietal and occipital regions (Z < -2.58), while significant delta power increases (Z > 2.58) were more localized in the frontal regions of the cortex (Fig. 2b).
+3.1. Reduced gamma inter-modular connectivity As expected the value of the connection density threshold had an impact on the
+network differences between groups. For the sake of simplicity, we selected the first threshold for which we could observe a significant group difference for both single- and multi-layer analysis. The obtained results determined the choice of a representative threshold, common to all the brain networks, corresponding to an average node degree k = 12 (Fig. S1).
+We first evaluated the results from the single-layer analysis. By inspecting the global participation coefficient P C, we reported in the gamma band a significant decrease of inter-modular connectivity in AD as compared to HC (Z = -2.50, p = 0.017; Fig. 3a inset). This behavior was locally identified in association ROIs including temporal and parietal areas (p < 0.05, FDR corrected; Fig. 3a; Tab. 2). No other significant differences were reported in other frequency bands or in flattened brain networks (Fig. S1).
+3.2. Disrupted inter-frequency hub centrality Then we assessed the results from the multi-layer analysis. Both AD and HC subjects
+exhibited high global multi-participation coefficients (M P C > 0.9), suggesting a general propensity of brain regions to promote interactions across frequency bands. However,
+7
+
+such tendency was significantly lower in AD than HC subjects (Z = -2.24, p = 0.028; Fig. 3b inset). This loss of inter-frequency centrality was prevalent in association ROIs including temporal, parietal and cingulate areas, and with a minor extent in motor areas (p < 0.05, FDR corrected; Fig. 3b; Tab. 2).
+Among those regions, the right cingulate cortex was classified as the main interfrequency hub as revealed by the spatial distribution of the top 25% M P C values in the HC group (Fig. 4a). In HC subjects the connectivity of this region across bands, as measured by the node degree layer proportion N LP , was relatively stable (KruskalWallis test, 2 = 10.79, p = 0.095), while it was significantly altered in AD subjects (Kruskall-Wallis test, 2 = 14.98, p = 0.020). In particular, the AD group exhibited a remarkably reduced alpha2 connectivity and increased theta connectivity (Fig. 4b). Similar results were also reported for the left cingulate cortex (AD: 2 = 11.89, p = 0.064; HC: 2 = 6.98, p = 0.323), although it was not significant in terms of M P C differences (Fig. 3b; Tab. 2).
+3.3. Diagnostic power of brain network features
+We adopted a classification approach to evaluate the power of the most significant local network properties in determining the state (i.e., healthy or diseased) of each individual subject. The best results were achieved neither when we considered single-layer features (i.e., P Ci[]) nor when we considered multi-layer features (M P Ci) (respectively, first column and row of panels in Fig. 5a). Instead, a combination of the two most significant features gave the best classification in terms of accuracy (Acc = 78.39%) and area under the curve (AU C = 0.8625) (Fig. 5a,b). While the corresponding specificity was not particularly high (Spec = 65.68%), the sensitivity was remarkably elevated (Sens = 91.11%).
+3.4. Relationship with cognitive and memory impairment
+We finally evaluated the ability of the significant brain network changes to predict the cognitive and memory performance of AD subjects. We first considered the results from single-layer analysis. We found a significant positive correlation between the global participation coefficient P C in the gamma band and the MMSE score (R = 0.4909, p = 0.0127; Fig. 6a). Then we considered the results from multi-layer analysis. We reported a higher significant positive correlation between the global multi-participation coefficient M P C and the TR score (R = 0.5547, p = 0.0074; Fig. 6c). These relationships were locally identified in specific ROIs including parietal, temporal and cingulate areas of the default mode network (DMN) (57) (p < 0.05, FDR corrected; Fig. 6b,d; Tab. 3).
+4. Discussion
+Graph analysis of brain networks have been largely exploited in the study of AD with the aim to extract new predictive diagnostics of disease progression. Typical approaches in functional neuroimaging, characterized by oscillatory dynamics, analyze brain networks separately at different frequencies thus neglecting the available multivariate spectral information. Here, we adopted a method to formally take into account the topological information of multi-frequency connectomes obtained from source-reconstructed MEG signals in a group of AD and healthy subjects during EC resting states.
+8
+
+Main results showed that, while flattening networks of different frequency bands attenuates differences between AD and HC populations, keeping the multiplex nature of MEG connectomes allow to capture higher-order discriminant information. AD subjects exhibited an aberrant multiplex brain network structure that significantly reduced the global propensity to facilitate information propagation across frequency bands as compared to HC subjects (Fig. 3b, inset). This could be in part explained by the higher variability of the individual node degrees across bands (Fig. S2).
+Such loss of inter-frequency centrality was mostly localized in association areas as well as in the cingulate cortex (Fig. 3b; Tab. 2), which resulted the most important hub promoting interaction across bands in the HC group (Fig. 4a). Because all these areas are typically affected by AD atrophy (4) we hypothesize that the anatomical withering might have impacted the neural oscillatory mechanisms supporting large-scale brain functional integration. Notably, the significant alteration of the connectivity across bands observed in the cingulate cortex could be ascribed to typical M/EEG connectivity changes observed in AD, such as reduced alpha coherence (54­56, 58) (Fig. 4b). We also found a significant decrease in the primary motor cortex (right precentral gyrus). While previous studies have identified this specific region as a connector hub in human brain networks (2), its role in AD still needs to be clarified in terms of node centrality's changes with respect to healthy conditions.
+While flattening network layers represents in general an oversimplification, analyzing single layers can still be a valid approach that is worth of investigation. Because the M P C is a pure multiplex quantity, we considered the conceptually akin version for single-layer networks, the standard participation coefficient P C, which evaluates the tendency of nodes to integrate information from different modules, rather than from different layers (28, 47). AD patients exhibited lower inter-modular connectivity in the gamma band with respect to HC subjects (Fig. 3a; Tab. 2) that was localized in association areas including frontal, temporal, and parietal cortices (Fig. 3a; Tab. 2). Damages to these regions can lead to deficits in attention, recognition and planning (59). Our results support the hypothesis that AD could include a disconnection syndrome (60­62). Furthermore, they are in line with previous findings showing P C decrements in AD, although those declines were more evident in lower frequency bands and therefore ascribed to possible long-range low-frequency connectivity alteration (2, 15).
+Put together, our findings indicated that AD alters the global brain network organization through connection disruption in several association regions, which play important roles in sensory processing by integrating information from other cortical regions through high-frequency channels (63­67). Notably, we showed that the global loss of inter-modular interactions in the gamma band is paralleled by a diffused decrease of inter-frequency centrality. Future studies, involving recordings of limbic structures and/or stimulation-based techniques, should elucidate whether these two distinct reorganizational processes are truly independent or linked through possible cross-frequency mechanisms which are known to be essential for normal memory formation (68­70).
+As a confirmation of the complementary information carried out by the multi-layer approach, we reported an increased classification accuracy when combining the local P C and M P C features. The observed diagnostic power is in line with previous accuracy values obtained with standard graph theoretic approaches (around 80%) but exhibits slightly higher sensitivity (> 90%), which is often desired to avoid false negatives (71­75). Other approaches should determine if and to what extent the use of more sophisticated
+9
+
+machine learning algorithms, or the inclusion of basic connectivity features (76­78) and different imaging modalities (79), can lead to higher classification performance and better diagnosis (2).
+Previous works have documented relationships between brain network properties and neuropsychological measurements in AD, suggesting a potential impact for monitoring disease progression and for the development of new therapies (7, 8, 10, 72, 80, 81). This is especially true for the standard P C which has exhibited stronger correlations and larger between-group differences (2). In line with this prediction, we also reported significant correlations between the MMSE cognitive scores and the P C values of the AD patients in the gamma band (Fig. 6a). An even stronger correlation was found, however, for the global M P C values and the TR scores (Fig. 6b, Tab. 3). Recent studies suggest that TR scores could be more specific for AD (82, 83) as compared to MMSE scores which could be biased by differences in years of education, lack of sensitivity to progressive changes occurring with AD, as well as fail in detecting impairment caused by focal lesions (84). Locally, the regions whose M P C correlated with TR were part of the default-mode network (DMN) (Tab. 3), which is heavily involved in memory formation and retrieval (57, 85). According to recent hypothesis, these areas are directly affected by atrophy and metabolism disruption, as well as amyloid- deposition (86, 87). Put together, our results suggest that AD symptoms related to episodic memory losses could be determined by the lower capacity of strategic DMN association areas to let information flow across different frequency channels.
+Methodological considerations We estimated brain networks by means of spectral coherence, a connectivity measure
+widely used in the electrophysiological literature because of its simplicity and relatively intuitive interpretation (88). While this measure is known to suffer from possible volume conduction effects, recent evidence showed that source reconstruction techniques, like the one we adopted here, could at least mitigate this bias (89) and generate connectivity patterns consistent within and between subjects (90). In a separate analysis, we used the imaginary coherence as a candidate alternative to eliminate volume conduction effects (91). We demonstrated that while no significant between-group differences could be obtained in terms of M P C (data not shown here), the spatial distribution of the M P C values was very similar to that observed in the brain networks obtained with the spectral coherence, especially for the internal regions along the longitudinal fissure (Fig. S3).
+Differently from other multiplex network quantities, such as those based on paths and walks (92), the M P C has the advantage to not depend on the weights of the inter-layer links which, in general, are difficult to estimate or to assign from empirically obtained biological data. This is especially true in network neuroscience where, so far, the strength of the inter-layer connections is parametric and subject to arbitrariness (27) or estimated through measures of cross-frequency coupling (21) whose biological interpretation remains still to be completely elucidated (20).
+5. Conclusions
+We proposed a multi-layer network approach to characterize multi-frequency brain networks in Alzheimer's disease. The obtained results gave new insights into the neural deterioration of Alzheimer's disease by revealing an abnormal loss of inter-frequency
+10
+
+centrality in memory-related association areas as well as in the cingulate cortex. Longitudinal studies, including prodromal mild cognitive impairment subjects, will need to assess the predictive value of this new information as a potential non-invasive biomarker for neurodegenerative diseases.
+Acknowledgments
+We are grateful to F. Battiston for his useful comments and suggestions. This work has been partially supported by the program "Investissements d'avenir" ANR-10-IAIHU06. FD acknowledges support from the "Agence Nationale de la Recherche" through contract number ANR-15-NEUC-0006-02. The content is solely the responsibility of the authors and does not necessarily represent the official views of any of the funding agencies.
+References
+[1] C. J. Stam, Modern network science of neurological disorders, Nat Rev Neurosci 15 (10) (2014) 683­695. doi:10.1038/nrn3801.
+[2] B. M. Tijms, A. M. Wink, W. de Haan, W. M. van der Flier, C. J. Stam, P. Scheltens, F. Barkhof, Alzheimer's disease: Connecting findings from graph theoretical studies of brain networks, Neurobiol. Aging 34 (8) (2013) 2023­2036. doi:10.1016/j.neurobiolaging.2013.02.020.
+[3] C. J. Stam, Use of magnetoencephalography (MEG) to study functional brain networks in neurodegenerative disorders, Journal of the Neurological Sciences 289 (1­2) (2010) 128­134. doi: 10.1016/j.jns.2009.08.028.
+[4] G. L. Wenk, Neuropathologic changes in Alzheimer's disease, J Clin Psychiatry 64 Suppl 9 (2003) 7­10.
+[5] S. E. Rose, F. Chen, J. B. Chalk, F. O. Zelaya, W. E. Strugnell, M. Benson, J. Semple, D. M. Doddrell, Loss of connectivity in Alzheimer's disease: An evaluation of white matter tract integrity with colour coded MR diffusion tensor imaging, J. Neurol. Neurosurg. Psychiatr. 69 (4) (2000) 528­530.
+[6] Y. Zhou, J. H. Dougherty, K. F. Hubner, B. Bai, R. L. Cannon, R. K. Hutson, Abnormal connectivity in the posterior cingulate and hippocampus in early Alzheimer's disease and mild cognitive impairment, Alzheimers Dement 4 (4) (2008) 265­270. doi:10.1016/j.jalz.2008.04.006.
+[7] C.-Y. Lo, P.-N. Wang, K.-H. Chou, J. Wang, Y. He, C.-P. Lin, Diffusion tensor tractography reveals abnormal topological organization in structural cortical networks in Alzheimer's disease, J. Neurosci. 30 (50) (2010) 16876­16885. doi:10.1523/JNEUROSCI.4136-10.2010.
+[8] E. J. Sanz-Arigita, M. M. Schoonheim, J. S. Damoiseaux, S. A. R. B. Rombouts, E. Maris, F. Barkhof, P. Scheltens, C. J. Stam, Loss of `Small-World' Networks in Alzheimer's Disease: Graph Analysis of fMRI Resting-State Functional Connectivity, PLOS ONE 5 (11) (2010) e13788. doi:10.1371/journal.pone.0013788.
+[9] C. J. Stam, W. de Haan, A. Daffertshofer, B. F. Jones, I. Manshanden, A. M. v. C. van Walsum, T. Montez, J. P. A. Verbunt, J. C. de Munck, B. W. van Dijk, H. W. Berendse, P. Scheltens, Graph theoretical analysis of magnetoencephalographic functional connectivity in Alzheimer's disease, Brain 132 (1) (2009) 213­224. doi:10.1093/brain/awn262.
+[10] W. de Haan, Y. A. Pijnenburg, R. L. Strijers, Y. van der Made, W. M. van der Flier, P. Scheltens, C. J. Stam, Functional neural network analysis in frontotemporal dementia and Alzheimer's disease using EEG and graph theory, BMC Neuroscience 10 (2009) 101. doi:10.1186/1471-2202-10-101.
+[11] F. Miraglia, F. Vecchio, P. M. Rossini, Searching for signs of aging and dementia in EEG through network analysis, Behavioural Brain Research 317 (2017) 292­300. doi:10.1016/j.bbr.2016.09. 057.
+[12] D. S. Bassett, N. F. Wymbs, M. A. Porter, P. J. Mucha, J. M. Carlson, S. T. Grafton, Dynamic reconfiguration of human brain networks during learning, PNAS 108 (18) (2011) 7641­7646. doi: 10.1073/pnas.1018985108.
+11
+
+[13] N. A. Crossley, A. Mechelli, J. Scott, F. Carletti, P. T. Fox, P. McGuire, E. T. Bullmore, The hubs of the human connectome are generally implicated in the anatomy of brain disorders, Brain 137 (8) (2014) 2382­2395. doi:10.1093/brain/awu132.
+[14] R. L. Buckner, J. Sepulcre, T. Talukdar, F. M. Krienen, H. Liu, T. Hedden, J. R. Andrews-Hanna, R. A. Sperling, K. A. Johnson, Cortical hubs revealed by intrinsic functional connectivity: Mapping, assessment of stability, and relation to Alzheimer's disease, J. Neurosci. 29 (6) (2009) 1860­1873. doi:10.1523/JNEUROSCI.5062-08.2009.
+[15] W. de Haan, W. M. van der Flier, T. Koene, L. L. Smits, P. Scheltens, C. J. Stam, Disrupted modular brain dynamics reflect cognitive dysfunction in Alzheimer's disease, NeuroImage 59 (4) (2012) 3085­3093. doi:10.1016/j.neuroimage.2011.11.055.
+[16] M. M. Engels, C. J. Stam, W. M. van der Flier, P. Scheltens, H. de Waal, E. C. van Straaten, Declining functional connectivity and changing hub locations in Alzheimer's disease: An EEG study, BMC Neurol 15. doi:10.1186/s12883-015-0400-7.
+[17] F. De Vico Fallani, J. Richiardi, M. Chavez, S. Achard, Graph analysis of functional brain networks: Practical issues in translational neuroscience, Phil. Trans. R. Soc. B 369 (1653) (2014) 20130521. doi:10.1098/rstb.2013.0521.
+[18] E. Bullmore, O. Sporns, Complex brain networks: Graph theoretical analysis of structural and functional systems, Nat. Rev. Neurosci. 10 (3) (2009) 186­198. doi:10.1038/nrn2575.
+[19] R. T. Canolty, R. T. Knight, The functional role of cross-frequency coupling, Trends in Cognitive Sciences 14 (11) (2010) 506­515. doi:10.1016/j.tics.2010.09.001.
+[20] V. Jirsa, V. Mu¨ller, Cross-frequency coupling in real and virtual brain networks, Front Comput Neurosci 7. doi:10.3389/fncom.2013.00078.
+[21] M. J. Brookes, P. K. Tewarie, B. A. E. Hunt, S. E. Robson, L. E. Gascoyne, E. B. Liddle, P. F. Liddle, P. G. Morris, A multi-layer network approach to MEG connectivity analysis, NeuroImage 132 (2016) 425­438. doi:10.1016/j.neuroimage.2016.02.045.
+[22] F. J. Fraga, T. H. Falk, P. A. M. Kanda, R. Anghinah, Characterizing Alzheimer's Disease Severity via Resting-Awake EEG Amplitude Modulation Analysis, PLoS One 8 (8). doi:10.1371/journal. pone.0072240.
+[23] K. J. Blinowska, F. Rakowski, M. Kaminski, F. De Vico Fallani, C. Del Percio, R. Lizio, C. Babiloni, Functional and effective brain connectivity for discrimination between Alzheimer's patients and healthy individuals: A study on resting state EEG rhythms, Clin Neurophysioldoi:10.1016/j. clinph.2016.10.002.
+[24] Y. Ghanbari, L. Bloy, V. Shankar, J. C. Edgar, T. P. L. Roberts, R. T. Schultz, R. Verma, Functionally driven brain networks using multi-layer graph clustering, Med Image Comput Comput Assist Interv 17 (Pt 3) (2014) 113­120.
+[25] T. Simas, M. Chavez, P. R. Rodriguez, A. Diaz-Guilera, An algebraic topological method for multimodal brain networks comparisons, Front Psychol 6. doi:10.3389/fpsyg.2015.00904.
+[26] F. Battiston, V. Nicosia, M. Chavez, V. Latora, Multilayer motif analysis of brain networks, arXiv:1606.09115 [cond-mat, physics:physics, q-bio]arXiv:1606.09115.
+[27] M. De Domenico, S. Sasai, A. Arenas, Mapping multiplex hubs in human functional brain network, arXiv:1603.05897 [cond-mat, physics:physics, q-bio]arXiv:1603.05897.
+[28] F. Battiston, V. Nicosia, V. Latora, Structural measures for multiplex networks, Phys. Rev. E 89 (3) (2014) 032804. doi:10.1103/PhysRevE.89.032804.
+[29] M. De Domenico, A. Sol´e-Ribalta, E. Cozzo, M. Kivel¨a, Y. Moreno, M. A. Porter, S. G´omez, A. Arenas, Mathematical Formulation of Multilayer Networks, Phys. Rev. X 3 (4) (2013) 041022. doi:10.1103/PhysRevX.3.041022.
+[30] M. F. Folstein, S. E. Folstein, P. R. McHugh, "Mini-mental state". A practical method for grading the cognitive state of patients for the clinician, J Psychiatr Res 12 (3) (1975) 189­198.
+[31] H. Buschke, Cued recall in Amnesia, Journal of Clinical Neuropsychology 6 (4) (1984) 433­440. doi:10.1080/01688638408401233.
+[32] E. Grober, H. Buschke, H. Crystal, S. Bang, R. Dresner, Screening for dementia by memory testing, Neurology 38 (6) (1988) 900­903.
+[33] B. Pillon, B. Deweer, Y. Agid, B. Dubois, Explicit memory in Alzheimer's, Huntington's, and Parkinson's diseases, Arch. Neurol. 50 (4) (1993) 374­379.
+[34] M. Sarazin, C. Berr, J. De Rotrou, C. Fabrigoule, F. Pasquier, S. Legrain, B. Michel, M. Puel, M. Volteau, J. Touchon, M. Verny, B. Dubois, Amnestic syndrome of the medial temporal type identifies prodromal AD: A longitudinal study, Neurology 69 (19) (2007) 1859­1867. doi:10.1212/ 01.wnl.0000279336.36610.f7.
+[35] S. Taulu, J. Simola, Spatiotemporal signal space separation method for rejecting nearby interference
+12
+
+in MEG measurements, Phys. Med. Biol. 51 (7) (2006) 1759. doi:10.1088/0031-9155/51/7/008. [36] B. He, Brain electric source imaging: Scalp Laplacian mapping and cortical imaging, Crit Rev
+Biomed Eng 27 (3-5) (1999) 149­188. [37] S. Baillet, J. J. Riera, G. Marin, J. F. Mangin, J. Aubert, L. Garnero, Evaluation of inverse methods
+and head models for EEG source localization using a human skull phantom, Phys Med Biol 46 (1) (2001) 77­96. [38] B. Fischl, D. H. Salat, E. Busa, M. Albert, M. Dieterich, C. Haselgrove, A. van der Kouwe, R. Killiany, D. Kennedy, S. Klaveness, A. Montillo, N. Makris, B. Rosen, A. M. Dale, Whole brain segmentation: Automated labeling of neuroanatomical structures in the human brain, Neuron 33 (3) (2002) 341­355. [39] B. Fischl, D. H. Salat, A. J. W. van der Kouwe, N. Makris, F. S´egonne, B. T. Quinn, A. M. Dale, Sequence-independent segmentation of magnetic resonance images, Neuroimage 23 Suppl 1 (2004) S69­84. doi:10.1016/j.neuroimage.2004.07.016. [40] F. Tadel, S. Baillet, J. C. Mosher, D. Pantazis, R. M. Leahy, F. Tadel, S. Baillet, J. C. Mosher, D. Pantazis, R. M. Leahy, Brainstorm: A User-Friendly Application for MEG/EEG Analysis, Brainstorm: A User-Friendly Application for MEG/EEG Analysis, Computational Intelligence and Neuroscience, Computational Intelligence and Neuroscience 2011, 2011 (2011) e879716. doi:10.1155/2011/879716,\%002010.1155/2011/879716. [41] F.-H. Lin, T. Witzel, S. P. Ahlfors, S. M. Stufflebeam, J. W. Belliveau, M. S. Ha¨m¨al¨ainen, Assessing and improving the spatial accuracy in MEG source localization by depth-weighted minimum-norm estimates, NeuroImage 31 (1) (2006) 160­171. doi:10.1016/j.neuroimage.2005.11.054. [42] C. Destrieux, B. Fischl, A. Dale, E. Halgren, Automatic parcellation of human cortical gyri and sulci using standard anatomical nomenclature, Neuroimage 53 (1) (2010) 1­15. doi:10.1016/j. neuroimage.2010.06.010. [43] G. C. Carter, Coherence and time delay estimation, Proceedings of the IEEE 75 (2) (1987) 236­255. doi:10.1109/PROC.1987.13723. [44] C. J. Stam, A. M. van Cappellen van Walsum, Y. A. L. Pijnenburg, H. W. Berendse, J. C. de Munck, P. Scheltens, B. W. van Dijk, Generalized synchronization of MEG recordings in Alzheimer's Disease: Evidence for involvement of the gamma band, J Clin Neurophysiol 19 (6) (2002) 562­574. [45] C. Babiloni, R. Ferri, D. V. Moretti, A. Strambi, G. Binetti, G. Dal Forno, F. Ferreri, B. Lanuzza, C. Bonato, F. Nobili, G. Rodriguez, S. Salinari, S. Passero, R. Rocchi, C. J. Stam, P. M. Rossini, Abnormal fronto-parietal coupling of brain rhythms in mild Alzheimer's disease: A multicentric EEG study, Eur. J. Neurosci. 19 (9) (2004) 2583­2590. doi:10.1111/j.0953-816X.2004.03333.x. [46] M. Rubinov, O. Sporns, Complex network measures of brain connectivity: Uses and interpretations, NeuroImage 52 (3) (2010) 1059­1069. doi:10.1016/j.neuroimage.2009.10.003. [47] R. Guimer`a, L. A. N. Amaral, Cartography of complex networks: Modules and universal roles, J Stat Mech 2005 (P02001) (2005) P02001­1­P02001­13. doi:10.1088/1742-5468/2005/02/P02001. [48] M. E. J. Newman, Finding community structure in networks using the eigenvectors of matrices, Phys. Rev. E 74 (3) (2006) 036104. doi:10.1103/PhysRevE.74.036104. [49] F. De Vico Fallani, S. Clausi, M. Leggio, M. Chavez, M. Valencia, A. G. Maglione, F. Babiloni, F. Cincotti, D. Mattia, M. Molinari, Interhemispheric Connectivity Characterizes Cortical Reorganization in Motor-Related Networks After Cerebellar Lesions, Cerebellumdoi:10.1007/ s12311-016-0811-z. [50] Y. Benjamini, Y. Hochberg, Controlling the False Discovery Rate: A Practical and Powerful Approach to Multiple Testing, Journal of the Royal Statistical Society. Series B (Methodological) 57 (1) (1995) 289­300. [51] J. H. Zar, Biostatistical Analysis, Prentice Hall PTR, 1999. [52] T. Hastie, R. Tibshirani, J. Friedman, The Elements of Statistical Learning, Springer Series in Statistics, Springer New York, New York, NY, 2009. [53] C. Babiloni, G. Binetti, E. Cassetta, D. Cerboneschi, G. Dal Forno, C. Del Percio, F. Ferreri, R. Ferri, B. Lanuzza, C. Miniussi, D. V. Moretti, F. Nobili, R. D. Pascual-Marqui, G. Rodriguez, G. L. Romani, S. Salinari, F. Tecchio, P. Vitali, O. Zanetti, F. Zappasodi, P. M. Rossini, Mapping distributed sources of cortical rhythms in mild Alzheimer's disease. A multicentric EEG study, Neuroimage 22 (1) (2004) 57­67. doi:10.1016/j.neuroimage.2003.09.028. [54] J. Jeong, EEG dynamics in patients with Alzheimer's disease, Clin Neurophysiol 115 (7) (2004) 1490­1505. doi:10.1016/j.clinph.2004.01.001. [55] J. Dauwels, F. Vialatte, A. Cichocki, Diagnosis of Alzheimer's Disease from EEG Signals: Where Are We Standing?, Current Alzheimer Research 7 (6) (2010) 487­505. doi:10.2174/ 156720510792231720.
+13
+
+[56] R. Wang, J. Wang, H. Yu, X. Wei, C. Yang, B. Deng, Power spectral density and coherence analysis of Alzheimer's EEG, Cogn Neurodyn 9 (3) (2015) 291­304. doi:10.1007/s11571-014-9325-x.
+[57] R. L. Buckner, J. R. Andrews-Hanna, D. L. Schacter, The Brain's Default Network, Annals of the New York Academy of Sciences 1124 (1) (2008) 1­38. doi:10.1196/annals.1440.011.
+[58] C. J. Stam, B. F. Jones, I. Manshanden, A. M. van Cappellen van Walsum, T. Montez, J. P. A. Verbunt, J. C. de Munck, B. W. van Dijk, H. W. Berendse, P. Scheltens, Magnetoencephalographic evaluation of resting-state functional connectivity in Alzheimer's disease, NeuroImage 32 (3) (2006) 1335­1344. doi:10.1016/j.neuroimage.2006.05.033.
+[59] D. Purves, G. J. Augustine, D. Fitzpatrick, L. C. Katz, A.-S. LaMantia, J. O. McNamara, S. M. Williams (Eds.), Neuroscience, 2nd Edition, Sinauer Associates, 2001.
+[60] R. C. Pearson, M. M. Esiri, R. W. Hiorns, G. K. Wilcock, T. P. Powell, Anatomical correlates of the distribution of the pathological changes in the neocortex in Alzheimer disease, Proc. Natl. Acad. Sci. U.S.A. 82 (13) (1985) 4531­4534.
+[61] S. E. Arnold, B. T. Hyman, J. Flory, A. R. Damasio, G. W. Van Hoesen, The topographical and neuroanatomical distribution of neurofibrillary tangles and neuritic plaques in the cerebral cortex of patients with Alzheimer's disease, Cereb. Cortex 1 (1) (1991) 103­116.
+[62] M. Catani, D. H. Ffytche, The rises and falls of disconnection syndromes, Brain 128 (Pt 10) (2005) 2224­2239. doi:10.1093/brain/awh622.
+[63] W. H. Miltner, C. Braun, M. Arnold, H. Witte, E. Taub, Coherence of gamma-band EEG activity as a basis for associative learning, Nature 397 (6718) (1999) 434­436. doi:10.1038/17126.
+[64] T. J. Buschman, E. K. Miller, Top-down versus bottom-up control of attention in the prefrontal and posterior parietal cortices, Science 315 (5820) (2007) 1860­1862. doi:10.1126/science.1138071.
+[65] M. Siegel, T. H. Donner, R. Oostenveld, P. Fries, A. K. Engel, Neuronal Synchronization along the Dorsal Visual Pathway Reflects the Focus of Spatial Attention, Neuron 60 (4) (2008) 709­719. doi:10.1016/j.neuron.2008.09.010.
+[66] G. G. Gregoriou, S. J. Gotts, H. Zhou, R. Desimone, High-frequency, long-range coupling between prefrontal and visual cortex during attention, Science 324 (5931) (2009) 1207­1210. doi:10.1126/ science.1171402.
+[67] J. F. Hipp, A. K. Engel, M. Siegel, Oscillatory synchronization in large-scale cortical networks predicts perception, Neuron 69 (2) (2011) 387­396. doi:10.1016/j.neuron.2010.12.027.
+[68] R. T. Canolty, E. Edwards, S. S. Dalal, M. Soltani, S. S. Nagarajan, H. E. Kirsch, M. S. Berger, N. M. Barbaro, R. T. Knight, High Gamma Power Is Phase-Locked to Theta Oscillations in Human Neocortex, Science 313 (5793) (2006) 1626­1628. doi:10.1126/science.1128115.
+[69] N. Axmacher, M. M. Henseler, O. Jensen, I. Weinreich, C. E. Elger, J. Fell, Cross-frequency coupling supports multi-item working memory in the human hippocampus, PNAS 107 (7) (2010) 3228­3233. doi:10.1073/pnas.0911531107.
+[70] R. Goutagny, N. Gu, C. Cavanagh, J. Jackson, J.-G. Chabot, R. Quirion, S. Krantic, S. Williams, Alterations in hippocampal network oscillations and theta­gamma coupling arise before A overproduction in a mouse model of Alzheimer's disease, Eur J Neurosci 37 (12) (2013) 1896­1902. doi:10.1111/ejn.12233.
+[71] Y. Li, Y. Wang, G. Wu, F. Shi, L. Zhou, W. Lin, D. Shen, Alzheimer's Disease Neuroimaging Initiative, Discriminant analysis of longitudinal cortical thickness changes in Alzheimer's disease using dynamic and network features, Neurobiol. Aging 33 (2) (2012) 427.e15­30. doi:10.1016/j. neurobiolaging.2010.11.008.
+[72] J. Wang, X. Zuo, Z. Dai, M. Xia, Z. Zhao, X. Zhao, J. Jia, Y. Han, Y. He, Disrupted functional brain connectome in individuals at risk for Alzheimer's disease, Biol. Psychiatry 73 (5) (2013) 472­481. doi:10.1016/j.biopsych.2012.03.026.
+[73] C.-Y. Wee, P.-T. Yap, W. Li, K. Denny, J. N. Browndyke, G. G. Potter, K. A. Welsh-Bohmer, L. Wang, D. Shen, Enriched white matter connectivity networks for accurate identification of MCI patients, Neuroimage 54 (3) (2011) 1812­1822. doi:10.1016/j.neuroimage.2010.10.026.
+[74] C.-Y. Wee, P.-T. Yap, D. Zhang, K. Denny, J. N. Browndyke, G. G. Potter, K. A. Welsh-Bohmer, L. Wang, D. Shen, Identification of MCI individuals using structural and functional connectivity networks, Neuroimage 59 (3) (2012) 2045­2056. doi:10.1016/j.neuroimage.2011.10.015.
+[75] B. Horwitz, J. B. Rowe, Functional biomarkers for neurodegenerative disorders based on the network paradigm, Progress in Neurobiology 95 (4) (2011) 505­509. doi:10.1016/j.pneurobio.2011.07. 005.
+[76] D. Dai, H. He, J. Vogelstein, Z. Hou, Network-Based Classification Using Cortical Thickness of AD Patients, in: D. Hutchison, T. Kanade, J. Kittler, J. M. Kleinberg, F. Mattern, J. C. Mitchell, M. Naor, O. Nierstrasz, C. Pandu Rangan, B. Steffen, M. Sudan, D. Terzopoulos, D. Tygar, M. Y.
+14
+
+Vardi, G. Weikum, K. Suzuki, F. Wang, D. Shen, P. Yan (Eds.), Machine Learning in Medical Imaging, Vol. 7009, Springer Berlin Heidelberg, Berlin, Heidelberg, 2011, pp. 193­200. [77] J. Shao, N. Myers, Q. Yang, J. Feng, C. Plant, C. Bo¨hm, H. F¨orstl, A. Kurz, C. Zimmer, C. Meng, V. Riedl, A. Wohlschla¨ger, C. Sorg, Prediction of Alzheimer's disease using individual structural connectivity networks, Neurobiol Aging 33 (12) (2012) 2756­2765. doi:10.1016/j.neurobiolaging. 2012.01.017. [78] L. Zhou, Y. Wang, Y. Li, P.-T. Yap, D. Shen, (adni), the Alzheimer's Disease Neuroimaging Initiative, Hierarchical Anatomical Brain Networks for MCI Prediction: Revisiting Volumetric Measures, PLOS ONE 6 (7) (2011) e21935. doi:10.1371/journal.pone.0021935. [79] Z. Dai, C. Yan, Z. Wang, J. Wang, M. Xia, K. Li, Y. He, Discriminative analysis of early Alzheimer's disease using multi-modal imaging and multi-level characterization with multi-classifier (M3), NeuroImage 59 (3) (2012) 2187­2195. doi:10.1016/j.neuroimage.2011.10.003. [80] N. Shu, Y. Liang, H. Li, J. Zhang, X. Li, L. Wang, Y. He, Y. Wang, Z. Zhang, Disrupted topological organization in white matter structural networks in amnestic mild cognitive impairment: Relationship to subtype, Radiology 265 (2) (2012) 518­527. doi:10.1148/radiol.12112361. [81] C. J. Stam, B. F. Jones, G. Nolte, M. Breakspear, P. Scheltens, Small-world networks and functional connectivity in Alzheimer's disease, Cereb. Cortex 17 (1) (2007) 92­99. doi:10.1093/cercor/ bhj127. [82] E. Grober, A. E. Sanders, C. Hall, R. B. Lipton, Free and cued selective reminding identifies very mild dementia in primary care, Alzheimer Dis Assoc Disord 24 (3) (2010 Jul-Sep) 284­290. doi:10.1097/WAD.0b013e3181cfc78b. [83] L. Velayudhan, S.-H. Ryu, M. Raczek, M. Philpot, J. Lindesay, M. Critchfield, G. Livingston, Review of brief cognitive tests for patients with suspected dementia, Int Psychogeriatr 26 (8) (2014) 1247­1262. doi:10.1017/S1041610214000416. [84] T. N. Tombaugh, N. J. McIntyre, The mini-mental state examination: A comprehensive review, J Am Geriatr Soc 40 (9) (1992) 922­935. [85] R. A. Sperling, B. C. Dickerson, M. Pihlajamaki, P. Vannini, P. S. LaViolette, O. V. Vitolo, T. Hedden, J. A. Becker, D. M. Rentz, D. J. Selkoe, K. A. Johnson, Functional Alterations in Memory Networks in Early Alzheimer's Disease, Neuromolecular Med 12 (1) (2010) 27­43. doi: 10.1007/s12017-009-8109-7. [86] R. L. Buckner, A. Z. Snyder, B. J. Shannon, G. LaRossa, R. Sachs, A. F. Fotenos, Y. I. Sheline, W. E. Klunk, C. A. Mathis, J. C. Morris, M. A. Mintun, Molecular, structural, and functional characterization of Alzheimer's disease: Evidence for a relationship between default activity, amyloid, and memory, J. Neurosci. 25 (34) (2005) 7709­7717. doi:10.1523/JNEUROSCI.2177-05.2005. [87] M. D. Greicius, G. Srivastava, A. L. Reiss, V. Menon, Default-mode network activity distinguishes Alzheimer's disease from healthy aging: Evidence from functional MRI, Proc Natl Acad Sci U S A 101 (13) (2004) 4637­4642. doi:10.1073/pnas.0308627101. [88] R. Srinivasan, W. R. Winter, J. Ding, P. L. Nunez, EEG and MEG coherence: Measures of functional connectivity at distinct spatial scales of neocortical dynamics, J. Neurosci. Methods 166 (1) (2007) 41­52. doi:10.1016/j.jneumeth.2007.06.026. [89] J.-M. Schoffelen, J. Gross, Source connectivity analysis with MEG and EEG, Hum Brain Mapp 30 (6) (2009) 1857­1865. doi:10.1002/hbm.20745. [90] G. L. Colclough, M. W. Woolrich, P. K. Tewarie, M. J. Brookes, A. J. Quinn, S. M. Smith, How reliable are MEG resting-state connectivity metrics?, Neuroimage 138 (2016) 284­293. doi:10. 1016/j.neuroimage.2016.05.070. [91] G. Nolte, O. Bai, L. Wheaton, Z. Mari, S. Vorbach, M. Hallett, Identifying true brain interaction from EEG data using the imaginary part of coherency, Clinical Neurophysiology 115 (10) (2004) 2292­2307. doi:10.1016/j.clinph.2004.04.029. [92] S. Boccaletti, G. Bianconi, R. Criado, C. I. del Genio, J. G´omez-Garden~es, M. Romance, I. Sendin~aNadal, Z. Wang, M. Zanin, The structure and dynamics of multilayer networks, Physics Reports 544 (1) (2014) 1­122. doi:10.1016/j.physrep.2014.07.001.
+15
+
+Figures and tables
+Figure 1: Multi-frequency brain networks. Panel a) shows five representative networks extracted from typical frequency bands. b) Procedure to construct a multi-frequency network by virtually connecting the homologous brain nodes among frequency layers. c) Inter-frequency node centrality. A two-layer multiplex is considered for the sake of simplicity. The blue node acts as an inter-frequency hub (i.e., multi-participation coefficient M P C = 1) as it allows for a balanced information transfer between layer  and ; the red node, who is disconnected in layer , blocks the information flow and has M P C = 0.
+16
+
+Figure 2: Spectral analysis of MEG signals. a) Power spectrum density (PSD) for a representative occipital sensor before source reconstruction. Each line corresponds to a subject. Bold lines show the group-averaged values in the Alzheimer's disease group (AD) and in the healthy control group (HC). b) Statistical PSD group differences. Z-scores are obtained using a non-parametric permutation t-test. Results are represented both as sensor and source space.
+17
+
+Figure 3: Network analysis of brain connectivity. a) Inter-modular centrality. Statistical brain maps of group differences for local participation coefficients P Ci in the gamma band. Only significant differences are illustrated (p < 0.05, FDR corrected). The labels same ranks are used as labels. The inset shows the results for the global P C; vertical bars stand for group-averaged values while error bars denote standard error means. In both cases, Z-scores are computed using a non-parametric permutation t-test. b) Inter-frequency centrality. Statistical brain maps of group differences for local multi-participation coefficients M P Ci. The inset shows the results for the global M P C; same conventions as in a).
+18
+
+Figure 4: Inter-frequency hub centrality distribution. a) The median values of local multi-participation coefficients (M P Ci) are shown over the cortical surface for the healthy group. Only the top 25% is illustrated for the sake of visualization. The corresponding list of ROIs is illustrated in the horizontal bar plot. b) Group-median values of the node-degree layer proportion (N LPi) for the right and left cingulate cortex. The grey line corresponds to the expected value if connectivity were equally distributed across frequency bands (N LPi = 1/7).
+19
+
+Figure 5: Classification performance of brain network features. a) Matrices show the classification rates (accuracy=Acc, specificity=Spec, sensitivity=Sens, area under the curve=AUC) corresponding to the combination of the most significant P Ci[] and M P Ci network features, respectively on the rows and columns of each matrix. Black squares highlight the highest accuracy rate and the corresponding specificity, sensitivity and AUC. b) Scatter plots show the Mahalanobis distance of each subject from the AD and HC classes. Separation lines (y = x: equal distances) are drawn in grey. Red circles stand for Alzheimer's disease (AD) subjects , blue ones for healthy controls (HC). The bottom right plot shows the ROC curve associated with the best network features configuration. The optimal point is marked by a green circle.
+20
+
+Figure 6: Correlation between brain network properties and cognitive/memory scores. a) Scatter plot of the global participation coefficient in the gamma band (P C[]) and the mini-mental state examination (MMSE) score of AD subjects (Spearman's correlation R = 0.4909, p = 0.0127). b) Correlation brain maps of the local participation coefficient in the gamma band (P Ci[]) and the mini-mental state examination (MMSE) score of AD subjects. Only significant R values are illustrated (p < 0.05, FDR corrected). c) Scatter plot of the global multi-participation coefficient (P C) and the total recall (TR) score of AD subjects (Spearman's correlation R = 0.5547, p = 0.0074). d) Correlation brain maps of the local multi-participation coefficient (M P Ci) and the total recall (TR) score of AD subjects. Only significant R values are illustrated (p < 0.05, FDR corrected).
+21
+
+Age MMSE FR TR
+
+Control (HC) 70.8 (9.1) 28.2 (1.4) 31.5 (6.6) 46.3 (1.5)
+
+Alzheimer (AD) 73.5 (9.4) 23.2 (3.6) 14.9 (6.5) 33.9 (10.0)
+
+p-value
+0.3142 < 10-5 < 10-5 < 10-5
+
+Table 1: Characteristics, cognitive and memory scores of experimental subjects. Mean values and standard deviations (between parentheses) are reported. The last column shows the p-values returned by a non-parametric permutation t-tests with 10 000 realizations. MMSE = mini-mental state examination score; TR = total recall memory test score (/48); FR = free recall memory test (/48).
+
+22
+
+Index P Ci[]
+M P Ci
+
+Rank 1 2 3 4 5 1 2 3 4 5 6 7
+
+ROI label Lat Fis-ant-Horizont L Pole temporal R G front inf-Triangul L S temporal transverse L G pariet inf-Supramar L G precentral R G front inf-Opercular R S oc middle and Lunatus L G pariet inf-Supramar L S interm prim-Jensen L S temporal transverse R S pericallosal R
+
+Cortex Frontal Temporal Frontal Temporal Parietal Motor Motor Occipital Parietal Parietal Temporal Limbic
+
+Z score -3.6507 -2.8642 -2.4562 -2.3887 -2.3820 -3.4735 -2.5239 -2.4582 -2.4860 -2.3708 -2.3996 -2.3041
+
+p-value 0.0007 0.0063 0.0198 0.0207 0.0222 0.0006 0.0127 0.0138 0.0142 0.0147 0.0191 0.0203
+
+Table 2: Statistical group differences for local brain network properties. ROI labels, abbreviated according to the Destrieux atlas, are ranked according to the resulting p-values. The same ranks are used as labels in Fig. 3. ROIs highlighted in bold belong to the default mode network (DMN).
+
+23
+
+Correlation P Ci[] - MMSE
+M P Ci - TR
+
+Rank 1 2 3 4 5 6 1 2 3 4 5 6 7 8 9
+10 11 12 13 14 15
+
+ROI label Lat Fis-ant-Vertical R G occipital sup L S interm prim-Jensen R G and S cingul-Ant R S pericallosal R G and S transv frontopol R Lat Fis-ant-Horizont L S collat transv post L S circular insula ant L G parietal sup R S orbital lateral R Pole temporal L S orbital lateral L S temporal sup R G and S occipital inf L G occipital sup R G postcentral L G pariet inf-Supramar R S subparietal R S interm prim-Jensen L S temporal inf L
+
+Cortex Frontal Occipital Parietal Limbic Limbic Frontal Frontal Occipital Frontal Parietal Frontal Temporal Frontal Temporal Occipital Occipital Sensory Parietal Parietal Parietal Temporal
+
+R coeff. 0.5480 0.5005 0.4948 0.4864 0.4735 0.4585 0.6915 0.6706 0.6214 0.6061 0.5920 0.5739 0.5462 0.5457 0.5368 0.5208 0.5191 0.5151 0.5066 0.4915 0.4869
+
+p-value 0.0046 0.0108 0.0119 0.0137 0.0168 0.0212 0.0004 0.0006 0.0020 0.0028 0.0037 0.0052 0.0085 0.0086 0.0100 0.0130 0.0133 0.0142 0.0161 0.0202 0.0216
+
+Table 3: Correlations of local brain network properties and cognitive/memory scores. ROI labels, abbreviated according to the Destrieux atlas, are ranked according to the resulting p-values. ROIs written in bold belong to the default mode network (DMN).
+
+24
+
+Supplementary Material
+
+Supplementary Text
+
+The global coefficient of variation is given by averaging CVi values across all the
+
+nodes:
+
+CV
+
+=
+
+1 n
+
+N
+CVi =
+i=1
+
+1 n
+
+N i=1
+
+·k[ i] ki[·]
+
+(S1)
+
+where ·k[ i] is the standard deviation of the degree of node i across layers and ki[·] is the
+mean value.
+
+Differently from M P C, CV tends to 0 when the links of the nodes tend to evenly
+
+distribute across layers, and give higher values when they rather tend to be concentrated
+
+in one layer or, more in general, differently distributed across layers.
+
+Supplementary Figures
+
+Figure S1: Statistical differences between global brain network properties of AD and HC subjects. These figures illustrate the p-values resulting from the permutation t-tests as a function of the average node degree k used to threshold the layers of the multi-frequency brain networks. In panel a), we show the p-values for multi-layer and flattened analysis whereas in panel b) the p-values resulting from single-layer analysis.
+25
+
+Figure S2: This figure shows the global coefficient of variation (CV ): first the difference between the populations as an inset plot (p = 0.0521) and the correlation with the global multi-participation coefficient (M P C) as a main plot (p < 10-15, R = -0.9742).
+26
+
+Figure S3: Inter-frequency hub centrality distribution for brain networks obtained with imaginary coherence. a) The median values of local multi-participation coefficients (M P Ci) are shown over the cortical surface for the healthy group. Only the top 25% is illustrated for the sake of visualization. The corresponding list of ROIs is illustrated in the horizontal bar plot. b) Group-median values of the node-degree layer proportion (N LPi) for the right and left cingulate cortex. The grey line corresponds to the expected value if connectivity were equally distributed across frequency bands (N LP = 1/7).
+27
+
+

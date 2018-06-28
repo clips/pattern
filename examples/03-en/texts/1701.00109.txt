@@ -1,0 +1,4684 @@
+arXiv:1701.00109v1 [math.NA] 31 Dec 2016
+
+ELASTIC SPLINES II: UNICITY OF OPTIMAL S-CURVES AND G2 REGULARITY OF SPLINES
+Albert Borb´ely & Michael J. Johnson
+Abstract. Given points P1, P2, . . . , Pm in the complex plane, we are concerned with the problem of finding an interpolating curve with minimal bending energy (i.e., an optimal interpolating curve). It was shown previously that existence is assured if one requires that the pieces of the interpolating curve be s-curves. In the present article we also impose the restriction that these s-curves have chord angles not exceeding /2 in magnitude. With this setup, we have identified a sufficient condition for the G2 regularity of optimal interpolating curves. This sufficient condition relates to the stencil angles {j }, where j is defined as the angular change in direction from segment [Pj-1, Pj ] to segment [Pj, Pj+1]. A distinguished angle  ( 37) is identified, and we show that if the stencil angles satisfy |j | < , then optimal interpolating curves are globally G2.
+As with the previous article, most of our effort is concerned with the geometric Hermite interpolation problem of finding an optimal s-curve which connects P1 to P2 with prescribed chord angles (, ). Whereas existence was previously shown, and sometimes uniqueness, the present article begins by establishing uniqueness when || , ||  /2 and | - | < .
+1. Introduction
+Given points P1, P2, . . . , Pm in the complex plane C with Pj = Pj+1, we are concerned with the problem of finding a fair curve which interpolates the given points. The present contribution is a continuation of [3] and so we adopt much of the notation used there. In particular, an interpolating curve is an absolutely-continuously differentiable function F : [a, b]  C, with F  non-vanishing, for which there exist times a = t1 < t2 < · · · < tm = b such that F (tj) = Pj. We treat F as a curve consisting of m - 1 pieces; the j-th piece of F , denoted F[tj,tj+1], runs from Pj to Pj+1. It is known (see [2]) that there does not exist an interpolating curve with minimal bending energy, except in the trivial case when the interpolation points lie sequentially along a line. In [3], it was shown that existence is assured if one imposes the additional condition that each piece of the interpolating curve be an s-curve. Here, an s-curve is a curve which first turns monotonically at most 180 in one direction (either counter-clockwise or clockwise) and then turns monotonically at
+1991 Mathematics Subject Classification. 41A15, 65D17, 41A05. Key words and phrases. spline, nonlinear spline, elastica, bending energy, curve fitting, interpolation. This work was supported and funded by Kuwait University, Research Project No. SM 01/14
+Typeset by AMS-TEX
+1
+
+2
+
+ELASTIC SPLINES II
+
+most 180 in the opposite direction. Incidentally, a c-curve is an s-curve which turns in
+
+only one direction, and a u-turn is a c-curve which turns a full 180. Associated with an
+
+s-curve f : [a, b]  C (see Fig. 1) are its breadth L = |f (b) - f (a)| and chord angles
+
+(, ), defined by
+
+
+
+=
+
+arg
+
+f
+
+f (b)
+
+(a) - f (a)
+
+,
+
+
+
+=
+
+arg
+
+f
+
+f (b)
+
+(b) -f
+
+(a)
+
+,
+
+where arg is defined with the usual range (-, ].
+
+Fig. 1 (a) optimal s-curve of Form 1
+
+(b) optimal s-curve of Form 2
+
+Note that although the chord angles are signed, our figures only indicate their magnitudes.
+
+The chord angles (, ) of an s-curve necessarily satisfy
+
+(1.1)
+
+||, || <  and | - |  .
+
+Defining
+
+A(P1, P2, . . . , Pm)
+
+to be the set of all interpolating curves whose pieces are s-curves, the main result of [3] is
+
+that A(P1, P2, . . . , Pm) contains a curve (called an elastic spline) with minimal bending
+
+energy. Most of the effort in [3] is devoted to proving the existence of optimal s-curves.
+
+Specifically, it is shown that given distinct points P, Q and angles (, ) satisfying (1.1),
+
+the set of all s-curves from P to Q with chord angles (, ) contains a curve with minimal
+
+bending energy.
+
+Denoting the bending energy of such an optimal s-curve by
+
+1 L
+
+E(,
+
+),
+
+it is also shown that E(, ) depends continuously on (, ). In the constructive proof
+
+of existence, all optimal s-curves are described, but uniqueness is only proved in the case
+
+when the optimal curve is a c-curve, but not a u-turn. An optimal s-curve is of Form 1
+
+(resp. Form 2) if it does not (resp. does) contain a u-turn. Optimal s-curves of Form 1
+
+are either line segments or segments of rectangular elastica (see Fig. 1 (a)) while those of
+
+Form 2 (see Fig. 1 (b)) contain a u-turn of rectangular elastica along with, possibly, line
+
+segments and a c-curve of rectangular elastica.
+
+Elastic splines were computed in a computer program Curve Ensemble, written in con-
+
+junction with [9], and it was observed that the fairness of elastic splines can be significantly
+
+degraded when pieces of Form 2 arise. As a remedy, it was suggested that elastic splines
+
+be further restricted by requiring that chord angles of pieces satisfy
+
+(1.2)
+
+|| , ||
+
+
+
+ 2
+
+.
+
+This additional restriction, which is stronger than (1.1), also greatly simplifies the numerical computation and theoretical development, and for these reasons, we have elected to
+
+UNICITY OF OPTIMAL S-CURVES AND G2 REGULARITY OF SPLINES
+
+3
+
+adopt this restriction and so define
+
+A/2(P1, P2, . . . , Pm)
+to be the set of curves in A(P1, P2, . . . , Pm) whose pieces have chord angles satisfying (1.2). Curves in A/2(P1, P2, . . . , Pm) with minimal bending energy are called restricted elastic splines.
+In Section 3, we show that if (1.2) holds and (, )  {(/2, -/2), (-/2, /2)}, then the optimal s-curve from P to Q, with chord angles (, ), is unique and of Form 1. The omitted cases correspond to u-turns (see Fig. 2 (a)) which fail to be unique only because one can always extend a u-turn with line segments without affecting optimality. Nevertheless, the u-turn of rectangular elastica (see Fig. 2 (b)) is the unique C optimal s-curve when (, )  {(/2, -/2), (-/2, /2)}. We mention, belatedly, that the optimality of the u-turn of rectangular elastica was first proved by Linn´er and Jerome [11].
+
+Fig. 2 (a) optimal u-turn
+
+(b) u-turn of rectangular elastica.
+
+With unicity of optimal s-curves in hand, we can then appeal to the framework developed
+
+in [9] for assistance in proving existence and G2-regularity of restricted elastic splines. The
+
+following will be proved in Section 4.
+
+Proposition 1.1. The set A/2(P1, P2, . . . , Pm) contains a curve Fopt with minimal bend-
+ing energy. Moreover, if F  A/2(P1, P2, . . . , Pm) has minimal bending energy, then each piece of F is G2.
+
+Remark. When discussing geometric curves, the notions of geometric regularity, G1 and G2, are preferred over the more familiar notions of parametric regularity, C1 and C2. A curve F has G1 regularity if its unit tangent direction changes continuously with respect to arclength and it has G2 regularity if, additionally, its signed curvature changes continuously with arclength. By our definition of curve (given at the outset), all curves are G1, but not necessarily G2.
+The main concern of the present contribution is to identify conditions under which a restricted elastic spline Fopt will be globally G2. This direction of inquiry is motivated by a result of Lee & Forsyth [10] (see also Brunnett [4]) which says that if an interpolating curve
+F has bending energy which is locally minimal (i.e., minimal among all `nearby' interpolating curves), then F is globally G2. The proofs in [10] and [4] employ variational calculus,
+but we prefer the constructive approach of [9] for its clarity and generality. We now explain our results on G2 regularity assuming that Fopt is a curve in A/2(P1, P2, . . . , Pm) having minimal bending energy. Note that it does not follow from Proposition 1.1 that Fopt is globally G2 because it is possible for the signed curvature to have jump discontinuities
+across the interior nodes P2, P3, . . . , Pm-1. The following is a consequence of Theorem 4.4.
+
+4
+
+ELASTIC SPLINES II
+
+Corollary
+
+1.2.
+
+If
+
+the
+
+chord
+
+angles
+
+at
+
+interior
+
+nodes
+
+are
+
+all
+
+(strictly)
+
+less
+
+than
+
+ 2
+
+in
+
+magnitude, then Fopt is globally G2.
+
+Proposition 1.1 and Corollary 1.2 are analogous to results of Jerome and Fisher [7, 8, 5] in that first additional constraints are imposed in order to ensure existence of an optimal curve, and then it is shown that if these additional constraints are inactive, the optimal curve is globally G2 and its pieces are segments of rectangular elastica. These results are a good start, but they are not entirely satisfying because they shed no light on whether one can expect the added constraints to be inactive.
+Our experience using the program Curve Ensemble is that the hypothesis of Corollary 1.2 holds when the interpolation points {Pj} impose only mild changes in direction. This vague idea can be quantified in terms of the stencil angles {j} (see Fig. 3), defined by
+
+j
+
+:=
+
+arg
+
+Pj+1 Pj -
+
+- Pj Pj-1
+
+,
+
+j = 2, 3, . . . , m - 1.
+
+Fig. 3 the stencil angle j
+
+Fig. 4 a globally G2 restricted elastic spline
+
+The following is a consequence of Theorem 4.6.
+
+Corollary 1.3. Let  ( 37) be the positive angle defined in (4.2). If the stencil angles satisfy |j| <  for j = 2, 3, . . . , m - 1, then the hypothesis of Corollary 1.2 holds and consequently Fopt is globally G2.
+
+For example, the stencil angles in Fig. 4 are all less than  and therefore it follows from Corollary 1.3 that the shown restricted elastic spline is globally G2.
+An outline of the remainder of the paper is as follows. In Section 2, we summarize some notation from [3] which is needed here, and then in Section 3, as mentioned above, we address the unicity of optimal s-curves. The proofs of our results on G2 regularity are complicated by the fact that they are obtained by combining a variety of related results, and so, for the sake of readability, we will `prove' these results in Section 4, but leave the proofs of two key identities, namely (4.1) and (4.3), to later sections. Furthermore, the proofs given in Section 4 make essential use of the framework established in [9], and so Section 4 begins by defining a basic curve method, called Restricted Elastic Splines, which fits into the framework of [9]. Identities (4.1) and (4.3) are proved in sections 7 and 8, but these proofs require a great deal of preparation (sections 5,6) relating to the chord angles of parametrically defined segments of rectangular elastica. In addition to supporting the proofs in sections 7,8, the preparations done in sections 5,6 are also useful in the efficient numerical computation of restricted elastic splines.
+
+UNICITY OF OPTIMAL S-CURVES AND G2 REGULARITY OF SPLINES
+
+5
+
+2. Summary of Notation
+
+The present contribution uses the same notation as in [3]; we summarize it here. As mentioned above, a curve is a function f : [a, b]  C whose derivative f  is absolutely
+continuous and non-vanishing. The bending energy of f is defined by
+
+f
+
+2
+
+:=
+
+1 4
+
+L
+2 ds,
+0
+
+where L denotes the arclength of f and  its signed curvature (the unusual factor 1/4
+
+is used to simplify some formulae related to rectangular elastica). Let g : [c, d]  C
+
+be another curve. We say that f and g are equivalent if they have the same arclength
+
+parametrizations. They are directly similar if there exists a linear transformation T (z) =
+
+c1z+c2 (c1, c2  C) such that f and T g are equivalent; if |c1| = 1, they are called directly
+
+congruent. The notions of similar and congruent are the same except that T is allowed
+
+to have the form T (z) = c1z + c2, where z denotes the complex conjugate of z.
+
+As mentioned earlier, we call f an s-curve if it first turns monotonically at most
+
+180 in one direction and then turns at most 180 in the opposite direction. An s-curve
+
+which turns in only one direction is called a c-curve and a c-curve which turns a full
+
+180 is called a u-turn. A non-degenerate s-curve is called a left-right s-curve if it
+
+first turns clockwise and then turns counter-clockwise; otherwise it is called a right-left
+
+s-curve. S-curves are often associated with a geometric Hermite interpolation problem,
+
+and so to facilitate this we employ the unit tangent vectors u = (f (a), f (a)/|f (a)|) and
+
+v = (f (b), f (b)/|f (b)|) to say that f connects u to v. If g : [c, d]  C is a curve
+
+satisfying (g(c), g(c)/|g(c)|) = (f (b), f (b)/|f (b)|), then f  g denotes the concatenated
+
+curve which, for the sake of clarity, is assumed to have the arclength parametrization.
+
+Most of the s-curves which we will encounter are segments of rectangular elastica; our
+
+preferred parametrization is R(t)
+
+=
+
+sin t+i (t), where (t) is defined by
+
+d dt
+
+=
+
+sin2 t , 1 + sin2 t
+
+(0) = 0. One easily verifies that  is odd and satisfies (t + ) = d + (t), where d := ().
+
+Since the sine function is odd and 2-periodic, we conclude that R(t) is odd and satisfies
+
+R(t + 2) = i 2d + R(t). For later reference, we mention the following.
+
+|R(t)| =
+
+1
+
+,
+
+1 + sin2 t
+
+R(t) |R(t)|
+
+=
+
+cos t
+
+1 + sin2 t + i sin2 t,
+
+R[a,b]
+
+2
+
+=
+
+1 4
+
+b
+(t)2|R(t)| dt = (b) - (a),
+a
+
+(t) = 2 sin t,
+
+where R[a,b] denotes the restriction of R to the interval [a, b].
+
+6
+
+ELASTIC SPLINES II
+
+3. Unicity of optimal s-curves
+
+Let ,   (-, ] and set u = (0, ei) and v = (1, ei). The set S(, ), defined to be the set of all s-curves connecting u to v, was intensely studied in [3], and it is easy to verify that S(, ) is non-empty if and only if (, )  F , where
+
+F := {(, ) : || , || <  and | - |  }.
+
+It is shown in [3] that if S(, ) is non-empty, then S(, ) contains a curve with minimal bending energy; that is, there exists a curve fopt  S(, ) such that fopt 2  f 2 for
+all f  S(, ). The bending energy of fopt is denoted
+
+(3.1)
+
+E(, ) := fopt 2, (, )  F .
+
+Let Sopt(, ) denote the set of all arclength parameterized curves in S(, ) whose bending
+
+energy is minimal. In [3], every curve in Sopt(, ) is `described', but uniqueness is only
+
+established in a few cases. In the present section, we obtain uniqueness results (Theorem
+
+3.1)
+
+for
+
+the
+
+case
+
+when
+
+(, )
+
+belongs
+
+to
+
+the
+
+square
+
+[-
+
+ 2
+
+,
+
+ 2
+
+]2
+
+(note
+
+that
+
+[-
+
+ 2
+
+,
+
+ 2
+
+]2
+
+is
+
+the
+
+largest square of the form [-, ]2 which is contained in F ).
+
+Theorem
+
+3.1.
+
+Assume
+
+(,
+
+)
+
+
+
+[-
+
+ 2
+
+,
+
+ 2
+
+]2.
+
+Then
+
+Sopt(, )
+
+contains a
+
+unique
+
+C
+
+curve
+
+c1(, ). Moreover, the following hold.
+
+(i) If | - | < , then Sopt(, ) = {c1(, )}.
+
+(ii) If | - | = , then every curve in Sopt(, ) is C2.
+
+(iii) If (, ) = (0, 0), then there exist t1 < t2 < t1 + 2 such that c1(, ) is directly
+
+similar to R[t1,t2].
+
+Since the bending energy of a curve is invariant under translations, rotations, reflections
+and reversals (of orientation), when proving items (i) and (ii), we can additionally assume,
+without loss of generality, that   ||. This reduction is also valid for item (iii) since
+R[t1+,t2+] is directly congruent to reflections of R[t1,t2] and R[-t2,-t1] is directly congruent to the reversal of R[t1,t2]. Our proof of Theorem 3.1 uses some definitions and results from [3] which are posed assuming
+
+(3.2)
+
+  (0, ), ||  ,  >  - .
+
+In [3, section 5], the following functions of    := [ - , ]  (-, 0) are introduced:
+
+y1
+
+:=
+
+y1()
+
+:=
+
+1 2
+
+-  sin  d
+0
+
+y2
+
+:=
+
+y2()
+
+:=
+
+1 2
+
+-  sin  d
+0
+
+G()
+
+:=
+
+-
+
+1 sin
+
+
+
+(y1
+
++
+
+y2)2
+
+()
+
+:=
+
+cos
+
+
+
++
+
+sin  y1 + y2
+
+(
+
+sin( - ) +
+
+q()
+
+:=
+
+- sin  y1 + y2
+
+sin( - ))
+
+UNICITY OF OPTIMAL S-CURVES AND G2 REGULARITY OF SPLINES
+
+7
+
+If   0, then all curves in S(, ) are non-degenerate right-left s-curves and so the same is true of Sopt(, ). In contrast, if  < 0 then S(, ) contains right c-curves as well as non-degenerate s-curves (both right-left and left-right). Nevertheless, it turns out that
+the curves in Sopt(, ) are all of the same flavor. The discriminating factor, when  < 0, is the quantity ():
+If () > 0, then all curves in Sopt(, ) are non-degenerate right-left s-curves, while if ()  0, then the unique curve in Sopt(, ) is a right c-curve.
+Regarding the latter case, we have the following which follows from [3, Theorem 6.2].
+
+Theorem 3.2. Let (3.2) be in force and assume that  < 0 and ()  0. Then there exists a unique C curve c(, ) such that Sopt(, ) = {c(, )}. Furthermore, there exist - < t1 < t2  0 such that c(, ) is directly similar to R[t1,t2].
+The following lemma and proposition are consequences of [3, Lemma 5.11] and [3, Corollary 5.12 and Remark 5.10], respectively.
+
+Lemma 3.3. Assume (3.2). The function G :   (0, ) is continuously differentiable,
+
+has
+
+a
+
+minimum
+
+value
+
+Gmin,
+
+and
+
+satisfies
+
+d d
+
+G(
+
+)
+
+=
+
+1 q(
+
+)2
+
+(
+
+)
+
+for
+
+all
+
+
+
+ .
+
+Proposition 3.4. Let (3.2) be in force and in case  < 0, assume () > 0. Suppose that there exists   , with  >  - , such that G is uniquely minimized at  (i.e., G() = Gmin and G() > Gmin for all   \{}). Then () = 0 and there exists a unique C curve c(, ) such that Sopt(, ) = {c(, )}. Moreover, E(, ) = Gmin and c(, ) is directly similar to R[t1,t2], where - < t1 < 0 < t2 <  are uniquely determined by arg R(t1) =  -  and arg R(t2) =  - .
+Remark. That the above conditions arg R(t1) = - and arg R(t2) =  - do determine - < t1 < 0 < t2 <  uniquely can be verified by first noting that arg R(t) decreases continuously from  to 0, as t runs from - to 0, and then increases continuously back up to  as t runs from 0 to . Now, since (3.2) holds,   , and  >  - , it follows that 0 <  -  <  and 0   -  < . What remains is to show that 0 <  - . If   0, then 0 <  -  is clear since  < 0. If  < 0, then we cannot have  =  because () > 0 while () = 0; therefore, 0 <  - .
+We now begin the proof of Theorem 3.1, and, as mentioned above, it suffices to prove the theorem in the canonical case when (, )  [-/2, /2]2 satisfy   ||. We begin with two specific cases.
+
+Proof of Theorem 3.1 in case (, ) = (0, 0). In this case, it is easy to verify that Sopt(0, 0) contains only the line segment from 0 to 1.
+
+Proof of
+
+S
+
+(
+
+ 2
+
+,
+
+-
+
+ 2
+
+Theorem
+
+3.1
+
+in
+
+case
+
+(,
+
+)
+
+=
+
+(
+
+ 2
+
+) is a right u-turn and it is shown
+
+,
+
+-
+
+ 2
+
+).
+
+By definition of an s-curve,
+
+in [3, sections 3,4] that every curve
+
+every curve
+
+in
+
+Sopt(
+
+ 2
+
+,
+
+-
+
+in
+
+ 2
+
+)
+
+is either directly similar to R[-,0] or else equals [0, iq]  f  [1 + iq, 1] where q > 0 and f is
+
+directly similar to R[-,0] (here, [0, iq] and [1 + iq, 1] denote line segments). Among these,
+
+the only where c(
+
+curve
+
+ 2
+
+,
+
+-
+
+ 2
+
+which is C is the first one, and ) is the arclength parameterized
+
+ctuhrevreefoinreSS(o2p,t-( 22,)-w2h)ichCis d=ire{cct(ly2
+
+,
+
+-
+
+ 2
+
+)},
+
+similar
+
+to R[-,0]. Since the signed curvature of R[-,0] vanishes at the endpoints, it follows that
+
+all
+
+curves
+
+in
+
+Sopt(
+
+ 2
+
+,
+
+-
+
+ 2
+
+)
+
+are
+
+C2,
+
+which
+
+proves
+
+item
+
+(ii).
+
+8
+
+ELASTIC SPLINES II
+
+Having proved Theorem 3.1 in these two specific cases, we proceed assuming that
+
+(3.3)
+
+  (0, /2], ||  ,  > -/2,
+
+and we note that (3.3) implies (3.2).
+Lemma 3.5. Assume (3.3) and let   . The following hold. (i) If (, ) = (/2, /2) and   -/2 , then () < 0. (ii) If (, ) = (/2, /2), then (-/2) = 0 but there exists  > 0 such that () < 0 for all   (-/2, -/2 + ]. (iii) If () = 0 and -/2 <  < , then () > 0.
+Proof. We first note that y1 > 0, y2  0, and  is continuous on . And since both sin( - ) and sin( - ) are positive for  in the interior o := ( - , )  (-, 0), it follows that  is C1 on o. Defining H() := y1 + y2,   , we have
+
+H
+
+()
+
+=
+
+-
+
+1 2
+
+sin( - ) +
+
+sin( - ) ,
+
+H  ( )
+
+=
+
+1 4
+
+cos( - ) + cos( - ) sin( - ) sin( - )
+
+and it follows that H is C1 on  and C2 on o. Moreover, we note that H is positive on , while H() < 0 for all    except when - =  =  = /2. We can express  in
+terms of H as
+
+(3.4)
+
+()H() = cos H() - 2 sin H(),   ,
+
+and then differentiation yields (3.5) ()H() + ()H() = - sin H() - cos H() - 2 sin H(),   o.
+
+We first prove (i): Assume (, ) = (/2, /2) and   -/2. Then H() > 0, cos   0, H() < 0 and sin  < 0, and it follows easily from (3.4) that () < 0. We next prove (ii): Assume (, ) = (/2, /2). Then  = [-/2, 0) and it is clear from the definition of  that (-/2) = 0. In order to prove (ii), it suffices to show that ()  - as   -/2+. Now, H(-/2) > 0, H(-/2) = 0, but H()  - as   -/2+. It therefore follows from (3.5) that ()  - as   -/2+. Lastly, we prove (iii): Assume () = 0 and -/2 <  < . Since () = 0 and cos  > 0,
+it follows from the definition of  that y1 + y2 = - tan  sin( - ) + sin( - ) ; that is, H() = 2 tan H(). Substituting this into (3.5) then yields
+()H() = - sin  (2 tan H() + 2H()) - cos H()
+= - 1 tan  (4 sin H() + 4 cos H()) - cos H() 2
+Since H(), -H(), - sin , and cos  are positive, in order to prove that () > 0, it suffices to show that 4 sin H() + 4 cos H() is nonnegative. Using the above formulations for H() and H() and the identity cos(x + y) = cos x cos y - sin x sin y,
+
+UNICITY OF OPTIMAL S-CURVES AND G2 REGULARITY OF SPLINES
+
+9
+
+it is easy to verify that 2 sin H() + 4 cos H() =  cos  +  cos  . Hence,
+
+sin(-)
+
+sin(-)
+
+4 sin H() + 4 cos H() = 2 sin H() +  cos  +  cos  > 0.
+
+sin(-)
+
+sin(-)
+
+Proof of Theorem 3.1 in case (3.3) holds and  < 0. If ()  0, then Theorem 3.1 is an immediate consequence of Theorem 3.2; so assume that () > 0. Note that  = [ - , ] and, by Lemma 3.5 (i), () < 0 for all   [ - , -/2]. Since  is continuous and () > 0, it follows that there exists   (-/2, ) such that () = 0. It follows from Lemma 3.5 (iii) that  is the only   (-/2, ) where  vanishes. Therefore, () < 0 for   [ - , ) and () > 0 for   (, ]. It now follows from Lemma 3.3 that G is uniquely minimized at  and we obtain Theorem 3.1 as a consequence of Proposition 3.4.
+
+Proof of Theorem 3.1 in case (3.3) holds and   0. Note that  = [ - , 0). It follows from Lemma 3.5 (i) and (ii), and the continuity of , that there exists  > 0 such that () < 0 for all   ( - , -/2 + ]. From the definition of , it is clear that lim0- () = 1, and hence there exists   (-/2 + , 0) such that () = 0. As in the previous case, it follows from Lemma 3.3 that G is uniquely minimized at  and we obtain Theorem 3.1 as a consequence of Proposition 3.4.
+
+This completes the proof of Theorem 3.1.
+
+4. The Restricted Elastic Spline and Proofs of Main Results
+
+Although written specifically for s-curves which connect u = (0, ei) to v = (1, ei),
+
+Theorem 3.1 easily extends to general configurations (u, v). To see this, let u = (P1, d1)
+
+and v = (P2, d2) be two unit tangent vectors with distinct base points P1 = P2. The
+
+chord
+
+angles
+
+(, )
+
+determined
+
+by
+
+(u, v)
+
+are
+
+
+
+=
+
+arg
+
+d1 P2-P1
+
+and
+
+
+
+=
+
+arg
+
+d2 P2-P1
+
+.
+
+With
+
+S(u, v) denoting the set of s-curves which connect u to v, and defining T (z) := (P2 -
+
+P1)z + P1, we see that S(u, v) is in one-to-one correspondence with S(, ) (defined in
+
+Section 3): f  S(, ) if and only if T  f  S(u, v). Moreover, with L := |P2 - P1|,
+
+we have
+
+f
+
+2=
+
+1 L
+
+T f
+
+2.
+
+Now, let us assume that ||, ||  /2 and let c1(, ) be
+
+the optimal arc-length parametrized curve described in Theorem 3.1. Then T  c1(, ) is
+
+an optimal curve in S(u, v) having constant speed L (not necessarily 1), and so we define
+
+c(u, v) to be the arclength parametrized curve which is equivalent to T  c1(, ). With
+
+Sopt(u, v) denoting the set of arclength parametrized curves in S(u, v) having minimal
+
+bending energy, Theorem 3.1 translates immediately into the following.
+
+Corollary
+
+4.1.
+
+Let
+
+(u, v)
+
+be
+
+a
+
+configuration
+
+with
+
+chord
+
+angles
+
+(, )
+
+
+
+[-
+
+ 2
+
+,
+
+ 2
+
+]2.
+
+Then
+
+c(u, v) is the unique C curve in Sopt(u, v). Moreover, the following hold.
+
+(i) If | - | < , then Sopt(u, v) = {c(u, v)}.
+
+(ii) If | - | = , then every curve in Sopt(u, v) is C2.
+
+(iii) c(u, v) is directly similar to c1(, ) and
+
+c(u, v)
+
+2
+
+=
+
+1 L
+
+c1(, )
+
+.
+
+In the framework of [9], the curves {c(u, v)} are called basic curves and the mapping (u, v)  c(u, v) is called a basic curve method. We define the energy of basic curves
+
+10
+
+ELASTIC SPLINES II
+
+to be the bending energy. In [9], it is assumed that the basic curve method and energy
+
+are translation and rotation invariant, and this allows one's attention to be focused on the
+
+(canonical) case where u = (0, ei) and v = (L, ei), L > 0. The resulting basic curve
+
+and energy functional are denoted cL(, ) and EL(, ). In our setup, we have the two
+
+additional
+
+properties
+
+that
+
+cL(, )
+
+is
+
+equivalent
+
+to
+
+Lc1(, )
+
+and
+
+EL(, )
+
+=
+
+1 L
+
+E1(,
+
+),
+
+where the latter holds because
+
+EL(, ) :=
+
+cL(, ) 2 =
+
+Lc1(, )
+
+2
+
+=
+
+1 L
+
+c1(, )
+
+2
+
+=
+
+1 L
+
+E1
+
+(,
+
+
+
+).
+
+In the language of [9], we would say that the basic curve method is scale invariant and
+
+the energy functional is inversely proportional to scale. This special case is addressed in
+
+detail in [9, sec. 3], and it allows us to focus our attention on the case L = 1 where we
+
+have,
+
+for
+
+(,
+
+)
+
+
+
+[-
+
+ 2
+
+,
+
+ 2
+
+]2,
+
+the
+
+optimal
+
+curve
+
+c1(,
+
+)
+
+as
+
+described
+
+in
+
+Theorem
+
+3.1
+
+and
+
+its
+
+energy E1(, ) =
+
+c1(, )
+
+2.
+
+Note
+
+that
+
+E1(, ) = E(, )
+
+for
+
+(, )
+
+
+
+[-
+
+ 2
+
+,
+
+ 2
+
+]2,
+
+where
+
+E(, ) is defined in (3.1). The distinction between E1 and E is that the domain of E1 is
+
+[-
+
+ 2
+
+,
+
+ 2
+
+]2,
+
+while
+
+the
+
+domain
+
+of
+
+E
+
+is
+
+the
+
+larger
+
+set
+
+F
+
+(defined
+
+just
+
+above
+
+(3.1)).
+
+In
+
+[3,
+
+sec.
+
+7], it is shown that E is continuous on F and it therefore follows that E1 is continuous on
+
+[-
+
+ 2
+
+,
+
+ 2
+
+]2.
+
+The framework of [9] is concerned with the set A/2(P1, P2, . . . , Pm) consisting of all
+
+interpolating curves whose pieces are basic curves, and the energy of such an interpolating
+
+curve F = c(u1, u2)  c(u2, u3)  · · ·  c(um-1, um) is define to be the sum of the energies
+
+of its constituent basic curves: Energy(F ) :=
+
+m-1 j=1
+
+c(uj , uj+1) 2 =
+
+F 2. Note that
+
+A/2(P1, P2, . . . , Pm) is a subset of A/2(P1, P2, . . . , Pm) and energy in both sets is defined to be bending energy. Since E1 is continuous on [-/2, /2]2, it follows from [9, Th. 2.3]
+
+that there exists a curve in A/2(P1, P2, . . . , Pm) with minimal bending energy.
+
+Remark. Whereas curves in A(P1, P2, . . . , Pm) with minimal bending energy are called
+elastic splines, such curves in A/2(P1, P2, . . . , Pm) are called restricted elastic splines. The following lemma will be needed in our proof of Proposition 1.1.
+
+Lemma 4.2. Given F  A/2(P1, P2, . . . , Pm), let u1, u2, . . . , um be the unit tangent vectors, with base-points P1, P2, . . . , Pm, determined by F , and define
+
+F := c(u1, u2)  c(u2, u3)  · · ·  c(um-1, um)  A/2(P1, P2, . . . , Pm).
+
+Then
+
+F 2
+
+2
+F.
+
+The proof of the lemma is simply that the j-th piece of F has bending energy at least c(uj, uj+1) 2 because it belongs to S(uj, uj+1) while c(uj, uj+1) belongs to Sopt(uj, uj+1).
+
+Proof of Proposition 1.1. Since A/2(P1, P2, . . . , Pm) is a subset of A/2(P1, P2, . . . , Pm) and the former contains a curve with minimal bending energy, it follows immediately from
+Lemma 4.2 that the latter contains a curve with minimal bending energy. Now, assume
+F  A/2(P1, P2, . . . , Pm) has minimal bending energy, and let F be as in Lemma 4.2. Then F 2 = F 2 and we must have F[tj,tj+1] 2 = c(uj , uj+1) 2 for j = 1, 2, . . . , m - 1.
+
+UNICITY OF OPTIMAL S-CURVES AND G2 REGULARITY OF SPLINES
+
+11
+
+Hence F[tj,tj+1] is equivalent to a curve in Sopt(uj, uj+1) and it follows from Theorem 3.1 that F[tj,tj+1] is G2.
+The following definition is taken from [9, sec. 3].
+
+Definition. Let F  A/2(P1, P2, . . . , Pm) have minimal bending energy and let (j, j+1) be the chord angles of the the j-th piece of F . We say that F is conditionally G2 if F is G2 across Pj whenever the two chord angles associated with node Pj satisfy |j|, |j| < /2.
+Let a(f ) and b(f ) denote, respectively, the initial and terminal signed curvatures of a curve f . The following result is an amalgam of [9, Th. 3.3 and Th. 3.5].
+Theorem 4.3. If there exists a constant µ  R such that
+
+(4.1)
+
+-a(c1(,
+
+))
+
+=
+
+µ
+
+ 
+
+E1(,
+
+)
+
+and
+
+b(c1(,
+
+))
+
+=
+
+µ
+
+ 
+
+E1(,
+
+)
+
+for
+
+all
+
+(,
+
+)
+
+
+
+[-
+
+ 2
+
+,
+
+ 2
+
+]2
+
+with
+
+|
+
+-
+
+|
+
+<
+
+,
+
+then
+
+minimal
+
+energy
+
+curves
+
+in
+
+A/2(P1,
+
+P2,
+
+.
+
+.
+
+.
+
+,
+
+Pm)
+
+are conditionally G2.
+
+Remark.
+
+Although [9, Th.
+
+3.3]
+
+is
+
+stated
+
+assuming
+
+that
+
+(4.1)
+
+holds
+
+for
+
+all
+
+(,
+
+)
+
+
+
+[-
+
+ 2
+
+,
+
+ 2
+
+]2,
+
+the given proof remains valid under the weaker assumption that (4.1) holds for all (, ) 
+
+[-
+
+ 2
+
+,
+
+ 2
+
+]2
+
+with
+
+|
+
+-
+
+|
+
+<
+
+.
+
+In the following sections, culminating in Theorem 7.1, we will show that condition (4.1)
+
+holds with µ = 2. Together, Theorem 4.3 and Theorem 7.1 imply that minimal energy
+
+curves in A/2(P1, P2, . . . , Pm) are conditionally G2; we can now prove that this also holds for the larger set A/2(P1, P2, . . . , Pm).
+
+Theorem 4.4. Let F  A/2(P1, P2, . . . , Pm) have minimal bending energy. Then F is G2 across Pj (i.e., b(F[tj-1,tj]) = a(F[tj,tj+1])) whenever the two chord angles associated
+with node Pj satisfy |j|, |j| < /2.
+
+Proof. Let F  A/2(P1, P2, . . . , Pm) be as in Lemma 4.2, and let j  {2, 3, . . . , m - 1} be such that |j|, |j| < /2. By Theorem 4.3 and Theorem 7.1, F is G2 across Pj. The chord angles of the j-th piece of F are (j, j+1) and since |j| < /2, we must have |j+1 - j| <  and it follows from Corollary 4.1 (i) that the j-th piece of F is equivalent
+to the j-th piece of F . Similarly, since |j | < /2, the (j - 1)-th piece of F is equivalent
+to the (j - 1)-th piece of F . We therefore have
+
+b(F[tj-1,tj ]) = b(F[tj-1,tj ]) = a(F[tj,tj+1]) = a(F[tj ,tj+1]).
+
+For t  (0, ], let the chord angles of R[0,t] be denoted (0, t) and (0, t) (these definitions will be extended in Section 5). In Corollary 5.5, we show that there exists a unique t  (0, )
+
+12
+
+ELASTIC SPLINES II
+
+such
+
+that
+
+(0, t)
+
+=
+
+ 2
+
+.
+
+Let
+
+
+
+(see
+
+Fig.
+
+5)
+
+denote
+
+the
+
+positive
+
+angle
+
+defined
+
+by
+
+(4.2)
+
+ :=
+
+ 2
+
+-
+
+(0, t)
+
+.
+
+Fig. 5
+
+Our main result on G2 regularity is obtained as a consequence of the following theorem which is essentially [9, Theorem 5.1] but specialized to the present context.
+
+Theorem
+
+4.5.
+
+Suppose
+
+that
+
+for
+
+every
+
+
+
+
+
+[-
+
+ 2
+
+,
+
+ 2
+
+]
+
+there
+
+exists  ,
+
+with
+
+| | 
+
+ 2
+
+-
+
+,
+
+such that
+
+(4.3)
+
+sign
+
+ 
+
+E1
+
+(,
+
+
+
+)
+
+= sign( -  )
+
+for
+
+all
+
+
+
+satisfying
+
+|| 
+
+ 2
+
+and
+
+| - | < .
+
+Let F  A/2(P1, P2, . . . , Pm) be a curve with minimal bending energy. If Pj is a point where the stencil angle j satisfies |j| < , then the two chord angles associated with node Pj satisfy |j|, |j| < /2 and, consequently, F is G2 across node Pj.
+Proof. Employing the symmetry E1(, ) = E1(, ), conditions (i) and (ii) in the hypothesis of [9, Theorem 5.1] reduce simply to the single condition
+
+(4.4)
+
+sign
+
+ 
+
+E1(,
+
+
+
+)
+
+= sign( -  )
+
+for
+
+all
+
+|| 
+
+ 2
+
+.
+
+and therefore Theorem 4.5, with (4.3) replaced by (4.4), is an immediate consequence of [9,
+Theorem 5.1]. Note that the only distinction between (4.3) and (4.4) is that (4.3) is mute
+when (, ) equals (/2, -/2) or (-/2, /2). With a slight modification (specifically: rather than showing that f () > 0 and f (2 -) < 0, one instead shows that there exists  > 0 such that f () > 0 for  -  <  <  and f () < 0 for 2 -  <  < 2 -  + ), the proof of [9, Theorem 5.1] also proves Theorem 4.5.
+
+Remark. The appearance of (4.3), rather than (4.4), in Theorem 4.5 is simply a conse-
+
+quence
+
+of
+
+the
+
+fact
+
+that
+
+ 
+
+E1(,
+
+)
+
+=
+
+0
+
+when
+
+(, )
+
+equals
+
+(/2, -/2)
+
+or
+
+(-/2, /2).
+
+This distinction is not without consequence. In [9, Theorem 5.1], the conclusion is obtained
+
+when i  , while in Theorem 4.5 we require i < . In Section 8, we prove that (4.3) holds and we therefore obtain the conclusion of Theorem
+
+4.5 regarding minimal energy curves in A/2(P1, P2, . . . , Pm). We will now show that the same holds for the larger set A/2(P1, P2, . . . , Pm).
+
+UNICITY OF OPTIMAL S-CURVES AND G2 REGULARITY OF SPLINES
+
+13
+
+Theorem 4.6. Let F  A/2(P1, P2, . . . , Pm) have minimal bending energy. Then F is G2 across Pj whenever the stencil angle satisfies |j| < .
+
+Proof. Let F  A/2(P1, P2, . . . , Pm) be as in Lemma 4.2, and let j  {2, 3, . . . , m - 1} be
+
+such that |j| < . It follows from Theorem 4.5 and Section 9 that the two chord angles
+
+at
+
+node
+
+Pj
+
+satisfy
+
+|j | , |j|
+
+<
+
+ 2
+
+,
+
+and
+
+therefore,
+
+by
+
+Theorem
+
+4.4,
+
+F
+
+is
+
+G2
+
+across
+
+Pj .
+
+5. The chord angles of R[t1,t2]
+
+In this section and the next, we establish relations between the parameters (t1, t2),
+
+with t1 < t2, and the chord angles (, ) of the segment R[t1,t2] of rectangular elastica (defined in Section 2). Our primary purpose in this section is to prove Theorem 5.3 and
+
+Corollary 5.4.
+
+Recall
+
+from
+
+Section
+
+2
+
+that
+
+the
+
+chord
+
+angles
+
+are
+
+given
+
+by
+
+
+
+:=
+
+(t1,
+
+t2)
+
+=
+
+arg
+
+R (t1 ) R(t2 )-R(t1 )
+
+and
+
+
+
+:=
+
+(t1, t2)
+
+=
+
+arg
+
+R (t2 ) R(t2 )-R(t1
+
+)
+
+.
+
+We mention that since (t) is increasing, it follows
+
+that the chord angles (t1, t2) and (t1, t2) never equal  (i.e., the branch cut in the
+
+definition of arg is never crossed).
+
+Fig. 9 notation for R[t1,t2] Assuming t1 < t2, we introduce the following notation (see Fig. 9):
+x := sin(t2) - sin(t1),  := (t2) - (t1), l := |R(t2) - R(t1)|,
+whereby l2 = (x)2 + ()2 and R[t1,t2] 2 = . We refer to the quantity l R[t1,t2] 2 as the normalized bending energy of R[t1,t2] because this would be the resultant bending energy if R[t1,t2] were scaled by the factor 1/l. Note that if R[t1,t2] is similar to a curve in Sopt(, ) (defined in Section 3), then we have
+E(, ) = l R[t1,t2] 2 = l.
+Let Q denote the mapping (t1, t2)  (, ) so that
+(, ) = Q(t1, t2).
+
+14
+
+ELASTIC SPLINES II
+
+We leave it to the reader to verify the following formulae for partial derivatives (these are valid for any sufficiently smooth curve):
+
+(5.1)
+
+ t1
+
+=
+
+|R(t1)|
+
+sin l
+
+
+
++
+
+(t1)
+
+ t1
+
+=
+
+|R(t1)|
+
+sin l
+
+
+
+ t2
+
+=
+
+-|R(t2)|
+
+sin l
+
+
+
+ t2
+
+=
+
+|R(t2)|
+
+- sin  l
+
++ (t2)
+
+ 
+
+The determinant of DQ :=
+
+ t1 
+
+ t2 
+
+is therefore given by
+
+t1 t2
+
+(5.2)
+
+det(DQ) = |R(t1)||R(t2)|
+
+(t1)(t2)
+
++
+
+(t2
+
+)
+
+sin l
+
+
+
+-
+
+(t1)
+
+sin l
+
+
+
+.
+
+Let the cross product in C be defined by (u1 + iv1) × (u2 + iv2) := u1v2 - v1u2. Noting that l|R(t1)| sin  = (R(t2) - R(t1)) × R(t1) = - cos t1 + (t1)x and l|R(t2)| sin  = (R(t2) - R(t1)) × R(t2) = - cos t2 + (t2)x, the generic formulation in (5.2) can be
+written specifically as:
+
+(5.3)
+
+det(DQ) =
+
+4 sin t1 sin t2
+
++ 2 sin t2
+
+1 + sin2 t1 1 + sin2 t2 l2 1 + sin2 t2
+
+- l2
+
+2 sin t1 1 + sin2 t1
+
+- cos t2  + (t2)x .
+
+- cos t1  + (t1)x
+
+Note that if both sin t1 = 0 and sin t2 = 0, then det(DQ) = 0.
+
+Lemma 5.1. Suppose (t1, t2) belongs to the first or third set defined in Theorem 5.3. If sin t1 sin t2 = 0, then det(DQ) < 0.
+
+Proof. We prove the lemma assuming t1 = 0 < t2 <  since the proof in the other three cases is similar. Since (0) = 0 and  > 0, it follows from (5.3) that det(DQ) =
+2 sin t2 (-) < 0. l2 1 + sin2 t2
+If sin t1 sin t2 = 0, then (5.3) can be factored as
+
+(5.4)
+
+det(DQ) = l2
+
+2 1 + sin2 t1
+
+1 + sin2 t2
+
+sin t1 sin t2 W (t1, t2),
+
+where
+
+W (t1, t2) := 2 +
+
+(x)2 
+
++
+
+cos t2
+
+1 + sin2 t2 sin t2
+
+-
+
+cos t1
+
+1 + sin2 t1 . sin t1
+
+Note that the sign of det(DQ) is the same as that of sin t1 sin t2 W (t1, t2).
+
+Lemma 5.2. If sin t1 sin t2 = 0, then
+
+W t1
+
+=
+
+1 + sin2 t1 ()2
+
+cos t1 sin t1
+
+-
+
+sin t1x
+
+2
+ 0,
+
+1 + sin2 t1
+
+and
+
+W t2
+
+=-
+
+1 + sin2 t2 ()2
+
+cos t2 sin t2
+
+-
+
+sin t2x
+
+2
+ 0.
+
+1 + sin2 t2
+
+UNICITY OF OPTIMAL S-CURVES AND G2 REGULARITY OF SPLINES
+
+15
+
+Proof.
+
+We only prove the result
+
+pertaining to
+
+W  t1
+
+since the proof of the other is the same,
+
+mutatis mutandis. Direct differentiation yields
+
+W t1
+
+=
+
+-2(t1)+
+
+-2x
+
+cos t1 + ()2
+
+(x)2(t1)
+
+- sin2 t1 -
+which then simplifies to
+
+1 + sin2 t1
+
++
+
+ cos2 t1 sin2 t1
+1+sin2 t1
+
+- cos2 t1
+
+sin2 t1
+
+1 + sin2 t1 ,
+
+W t1
+
+=
+
+-2 cos t1x
+
++
+
+ sin2 t1 (x)2
+1+sin2 t1
+
+()2
+
++
+
+1 + sin2 sin2 t1
+
+t1
+
+-
+
+1 + sin2 t1 1 + sin2 t1
+
+=
+
+-2 cos t1x
+
++
+
+ sin2 t1 (x)2
+1+sin2 t1
+
+()2
+
++
+
+cos2
+
+t1 1 sin2
+
++ t1
+
+sin2
+
+t1
+
+.
+
+A simple computation then shows that this last expression can be factored as stated in the lemma.
+
+Theorem 5.3. There exists a unique t  (0, ) such that W (-t, t) = 0. Moreover
+det(DQ) < 0 on the following sets:
+(i) {(t1, t2) : -  t1 < t2  0, (t1, t2) = (-, 0)}, (ii) {(t1, t2) : -t < t1 < 0 < t2 < t} (iii) {(t1, t2) : 0  t1 < t2  , (t1, t2) = (0, )}, (iv) {(t1, t2) :  - t < t1 <  < t2 <  + t}
+
+Proof. For - < t1 < 0 < t2 < , the function W (t1, t2) is analytic in both t1 and t2, and
+
+consequently, it follows from Lemma 5.2 that W (t1, t2) is increasing in t1 and decreasing in
+
+t2. Furthermore, the function W (-t, t) is analytic and decreasing for t  (0, ). Note that
+
+if
+
+-
+
+ 2
+
+
+
+t1
+
+particular,
+
+< 0 < t2  W (-t, t) >
+
+ 2
+
+,
+
+then
+
+sin
+
+t1
+
+<
+
+0 for all t  (0,
+
+0 and
+
+ 2
+
+].
+
+It
+
+it is
+
+is clear easy to
+
+(from verify
+
+(5.4)) that W (t1, (by inspection of
+
+t2) > 0. In (5.4)) that
+
+limt- W (-t, t) = -, and so it follows that there exists a unique t  (0, ) such that
+
+W (-t, t) = 0.
+
+If (t1, t2) belongs to set (ii), then W (t1, t2) > W (-t, t2) > W (-t, t) = 0 and since sin t1 sin t2 < 0, it follows that det(DQ) < 0. This proves that det(DQ) < 0 for all (t1, t2)
+
+in set (ii).
+
+We will show that det(DQ) < 0 for all (t1, t2) in set (i). This has already been proved in Lemma 5.1 if 0 = t1 < t2 <  or 0 < t1 < t2 = , so assume 0 < t1 < t2 < . As
+
+above, the function W (t, t2) is analytic and increasing for t  (0, t2). It is easy to see (by
+inspection of (5.4)) that limtt- 2 W (t, t2) = 0, and therefore W (t, t2) < 0 for all t  (0, t2); in particular, W (t1, t2) < 0. Since sin t1 sin t2 > 0, we have det(DQ) < 0. This completes
+the proof that det(DQ) < 0 for all (t1, t2) in set (i).
+
+Finally, if (t1, t2) belongs to set (iii) or set (iv), then (t1 - , t2 - ) belongs to set (i) or set (ii) and det(DQ(t1, t2)) = det(DQ(t1 - , t2 - )) < 0.
+
+16
+
+ELASTIC SPLINES II
+
+Corollary 5.4. Let
+
+ 2
+
+.
+
+Moreover,
+
+(0, t)
+
+t is
+
+ (0, ) be increasing
+
+as defined for t  (0,
+
+in t]
+
+Theorem 5.3. Then t and decreasing for t 
+
+>
+
+ 2
+
+and
+
+[t, ].
+
+(0,
+
+t)
+
+>
+
+Proof.
+
+Since
+
+W (-t, t) > 0
+
+for
+
+t
+
+
+
+(0,
+
+ 2
+
+],
+
+it
+
+is
+
+clear
+
+that
+
+t
+
+>
+
+ 2
+
+.
+
+Since
+
+W (-t, t) = 0,
+
+it
+
+follows from (5.4) that det(DQ(-t, t)) = 0, and therefore, by (5.1), we must have
+
+(-t)(t)
+
++
+
+(t)
+
+sin((-t, t)) l(-t, t)
+
+-
+
+(-t)
+
+sin((-t, t l(-t, t)
+
+))
+
+=
+
+0.
+
+From the definition of  and  it is clear that (-t, t) = (-t, t) > 0 and (t) =
+
+-(-t)
+
+>
+
+0,
+
+so
+
+the
+
+above
+
+equality
+
+reduces
+
+to
+
+(t)
+
+-
+
+2 sin((-t, t)) l(-t, t)
+
+= 0.
+
+From the
+
+symmetry of the curve R one has sin((-t, t)) = sin((0, t)) and l(-t, t) = 2l(0, t)
+
+which
+
+yields
+
+(t
+
+)
+
+-
+
+sin((0,t l(0,t)
+
+))
+
+=
+
+0.
+
+It
+
+now follows
+
+from (5.1) that
+
+ t2
+
+(0,
+
+t)
+
+=
+
+0.
+
+Moreover,
+
+the uniqueness of t  (0, ) shows (running the above argument backwards) that t = t
+
+is the unique increasing on
+
+t  (0, ) (0, t] and
+
+where
+
+ t2
+
+(0,
+
+t)
+
+decreasing on [t
+
+= 0. This implies that the , ]. Consequently, (0, t) >
+
+function (0, ) =
+
+(0,
+
+ 2
+
+.
+
+t)
+
+is
+
+Corollary 5.5.
+
+There
+
+exists
+
+a
+
+unique
+
+t
+
+
+
+(0, t)
+
+such
+
+that
+
+(0, t)
+
+=
+
+ 2
+
+.
+
+Moreover, we have
+
+(0, t) <
+
+ 2
+
+for
+
+all
+
+0<t<t
+
+and
+
+(0, t) >
+
+ 2
+
+for
+
+all
+
+t < t < .
+
+Proof.
+
+Since
+
+limt0+ (0, t) = 0, (0, t) >
+
+ 2
+
+,
+
+and
+
+(0,
+
+)
+
+=
+
+ 2
+
+,
+
+the
+
+result
+
+follows immedi-
+
+ately from Corollary 5.4.
+
+6. Unicity of Parameters
+
+For
+
+(, )
+
+
+
+[-
+
+ 2
+
+,
+
+ 2
+
+]2
+
+,
+
+recall
+
+that
+
+c1(, )
+
+is
+
+the
+
+unique
+
+C
+
+s-curve in Sopt(, ).
+
+In
+
+Theorem 3.1 (iii), it is shown that if (, ) = (0, 0), then there exist t1 < t2 < t1 + 2
+
+such that c1(, ) is directly similar to R[t1,t2]. In this section, we are concerned with the
+
+unicity of the parameters (t1, t2). The rectangular elastic curve R is periodic in the sense
+
+that R(t + 2) = i2d + R(t), and it follows that R[t1,t2] is directly congruent to R[t1,t2] whenever (t1, t2) = (t1, t2)+k(2, 2) for some integer k; in particular Q(t1, t2) = Q(t1, t2). With the identification (t1, t2)  (t1, t2), the half-plane Y := {(t1, t2) : t1  t2} becomes a half-cylinder, with boundary t1 = t2, and we adopt the view that Q is defined on the
+
+interior of the cylinder Y .
+
+In this section, we will prove the following.
+
+Theorem
+
+6.1.
+
+For
+
+all
+
+(, )
+
+
+
+[-
+
+ 2
+
+,
+
+ 2
+
+]2\{(0,
+
+0)},
+
+there
+
+exists
+
+a
+
+unique
+
+(t1, t2)
+
+in
+
+the
+
+cylinder Y such that t1 < t2 < t1 + 2 and R[t1,t2] is an s-curve with chord angles (, ).
+
+Theorem 6.2. Let t1 < t2 < t1 + 2 be such that R[t1,t2] is an s-curve with chord angles
+
+(, )
+
+
+
+[-
+
+ 2
+
+,
+
+ 2
+
+]2.
+
+Then
+
+R[t1 ,t2 ]
+
+is
+
+directly
+
+similar
+
+to
+
+c1(, ).
+
+We define the following subsets of the interior of Y :
+
+U0 := {(t1, t2) : -  t1 < t2  0} U2 := {(t1, t2) : 0  t1 < t2  }
+
+V1 V3
+
+:= :=
+
+{(t1, t2) {(t1, t2)
+
+: :
+
+-  t1 < 0  t1 < 
+
+0 < t2  } < t2  2}
+
+.
+
+UNICITY OF OPTIMAL S-CURVES AND G2 REGULARITY OF SPLINES
+
+17
+
+These sets are pairwise disjoint subsets of the cylinder Y , and for t1 < t2, it is easy to verify that R[t1,t2] is a right c-curve if and only if (t1, t2)  U0, a non-degenerate rightleft s-curve if and only if (t1, t2)  V1, a left c-curve if and only if (t1, t2)  U2, and a non-degenerate left-right s-curve if and only if (t1, t2)  V3.
+The restriction t1 < t2 < t1 + 2 eliminates (-, ) from V1 and (0, 2) from V3, and we therefore have the following as a consequence of Theorem 3.1 (iii).
+
+Proposition 6.3.
+
+For
+
+all
+
+(,
+
+)
+
+
+
+[-
+
+ 2
+
+,
+
+ 2
+
+]2\{(0,
+
+0)},
+
+there
+
+exists
+
+(t1, t2)  U0 V1 U2 V3\{(-, ), (0, 2)} such that c1(, ) is directly similar to R[t1,t2].
+
+In particular, we have the following corollary.
+
+Corollary
+
+6.4.
+
+For
+
+all
+
+(,
+
+)
+
+
+
+[-
+
+ 2
+
+,
+
+ 2
+
+]2
+
+\{(0,
+
+0)},
+
+there
+
+exists
+
+(t1, t2)  U0  V1  U2  V3\{(-, ), (0, 2)} such that Q(t1, t2) = (, ).
+
+We intend to show that the pair (t1, t2) is unique, but before beginning the proof of this, we will harmlessly replace V1, V3 with smaller sets U1, U3, defined below.
+With t as defined in Corollary 5.5, we define
+
+U1 := {(t1, t2) : -t  t1 < 0 < t2  t} U3 := {(t1, t2) :  - t  t1 <  < t2   + t} .
+
+Lemma 6.5. If (t1, t2) belongs to V1\U1 or V3\U3 and satisfies t2 - t1 < 2, then (, ) 
+
+[-
+
+ 2
+
+,
+
+ 2
+
+]2.
+
+Proof. We will only prove the lemma for V1\U1 since the proof for V3\U3 is similar. Let
+
+(t1, t2)  V1\U1 satisfy t2 - t1 < 2. We can assume, without loss of generality, that
+
+t2  -t1, since the remaining case t2 < -t1 is similar.
+
+We
+
+will
+
+show
+
+that
+
+
+
+>
+
+ 2
+
+.
+
+If t2 = -t1, then we must have t < t2 <  and, by symmetry,  = (0, t2); hence
+
+
+
+=
+
+(0, t2)
+
+>
+
+ 2
+
+by
+
+Corollary
+
+5.5.
+
+So assume t2 > -t1, which implies t < t2  .
+
+The chord [R(t1), R(t2)] must intersect the negative x-axis, since otherwise we would have
+
+t2
+
+
+
+-t1.
+
+Therefore,
+
+
+
+>
+
+(0, t2)
+
+>
+
+ 2
+
+.
+
+As a consequence of the lemma, the set U0 V1 U2 V3 in Corollary 6.4 can be replaced with U := U0  U1  U2  U3:
+
+Corollary
+
+6.6.
+
+For
+
+all
+
+(, )
+
+
+
+[-
+
+ 2
+
+,
+
+ 2
+
+]2\{(0,
+
+0)},
+
+there
+
+exists
+
+(t1, t2)
+
+
+
+U
+
+such
+
+that
+
+Q(t1, t2) = (, ).
+
+Fig. 10 (a) the sets U0, U1, U2, U3
+
+(b) the set U and its boundary 0  
+
+18
+
+ELASTIC SPLINES II
+
+In Fig. 10(a), the sets U0, U1, U2, U3 are depicted on the fundamental domain -  t1 <  of the cylinder Y , and their union U is depicted in Fig. 10(b). The set U is bounded
+below by the line 0 := {(t1, t2) : t1 = t2} (which is not contained in U ) and above by the staircase path  := [T1, T2, . . . , T9] (which is contained in U ). Here, T1 = (-, t - ), T2 = (-, 0), T3 = (-t, 0), T4 = (-t, t), and Ti = Ti-4 + (, ) for i = 5, 6, 7, 8, 9. Note that on the cylinder Y , the vertical half line starting from 0 and passing through T9 is identified with the same, but passing through T1; in particular T9 is identified with T1.
+At present, Q is defined and is C on the interior of the cylinder Y . On the boundary
+of Y (the line 0), we define Q to be (0, 0); in other words, we define (t, t) := 0 and (t, t) := 0 for all t  R.
+
+Lemma 6.7. Q is continuous on the cylinder Y .
+
+Proof. We will show that |(t1, t2)|+|(t1, t2)|  2(t2-t1) whenever t1 < t2. It is generally
+
+true that the absolute sum of the chord angles is bounded by the absolute turning angle
+
+of the curve.
+
+In the present context, this means that || + || 
+
+t2 t1
+
+|(t)|
+
+|R(t)|
+
+dt.
+
+Since |(t)| = |2 sin t|  2 and |R(t)| = 1/ 1 + sin2 t  1, the desired inequality is
+
+immediate.
+
+Fig. 11 (a) the image  := Q()
+
+(b) the parameters -t < t1 < t0 < 0
+
+Fig.
+
+11
+
+(a)
+
+depicts
+
+the
+
+image
+
+
+
+:=
+
+Q()
+
+where
+
+Qi
+
+:=
+
+Q(Ti)
+
+are
+
+given
+
+by
+
+Q1
+
+=
+
+(,
+
+-
+
+ 2
+
+),
+
+Q2
+
+=
+
+(
+
+ 2
+
+,
+
+-
+
+ 2
+
+),
+
+Q3
+
+=
+
+(
+
+ 2
+
+,
+
+-),
+
+Q4
+
+=
+
+(
+
+ 2
+
+,
+
+ 2
+
+),
+
+and
+
+Qi
+
+=
+
+-Qi-4
+
+for
+
+i
+
+=
+
+5, 6, 7, 8, 9;
+
+here
+
+ := |(0, t)|. The staircase path  consists of eight segments [Ti, Ti+1], i = 1, 2, . . . , 8, and
+
+it is apparent in Fig. 11(a) that their images {Q([Ti, Ti+1])} belong to eight non-overlapping
+
+unbounded
+
+rectangles
+
+{ri}.
+
+Specifically,
+
+r1
+
+:=
+
+[,
+
+ 2
+
+]
+
+×
+
+(-,
+
+-
+
+ 2
+
+],
+
+r2
+
+:=
+
+[
+
+ 2
+
+,
+
+)
+
+×
+
+[-
+
+ 2
+
+,
+
+-],
+
+r3
+
+:=
+
+[
+
+ 2
+
+,
+
+)
+
+×
+
+[-,
+
+ 2
+
+],
+
+r4
+
+:=
+
+[-,
+
+ 2
+
+]
+
+×
+
+[
+
+ 2
+
+,
+
+),
+
+and
+
+ri
+
+:=
+
+-ri-4
+
+for
+
+i
+
+=
+
+5, 6, 7, 8.
+
+Lemma. For i = 1, 2, . . . , 8, Q is injective on [Ti, Ti+1] and maps the interior of [Ti, Ti+1] into the interior of ri.
+
+Proof.
+
+Let us first consider the case i = 4, where r4
+
+=
+
+[-,
+
+ 2
+
+]×[
+
+ 2
+
+,
+
+).
+
+Along the segment
+
+[T4, T5] (see Fig. 10(b)), t1 ranges from -t to 0, while t2 = t is fixed. At the endpoints, we
+
+have (-t, t) it is clear (see
+
+=
+
+(-t, t) =
+
+ 2
+
+and
+
+(0, t)
+
+Fig. 11(b)) that (t1, t) >
+
+= -,  (0, t) =
+
+(20,atn)d=(2t.1
+
+Since , t) <
+
+(t) (t1,
+
+< 0 for t  (-, 0),
+
+0)
+
+=
+
+(0, -t1)
+
+<
+
+ 2
+
+for t1  (-t, 0).
+
+UNICITY OF OPTIMAL S-CURVES AND G2 REGULARITY OF SPLINES
+
+19
+
+Recall
+
+from
+
+(5.1)
+
+that
+
+  t1
+
+=
+
+|R(t1)|
+
+sin  
+
++ (t1)
+
+.
+
+Note
+
+that
+
+if
+
+t1
+
+
+
+(-t, 0) and
+
+(t1, t)
+
+
+
+0, then
+
+  t1
+
+< 0.
+
+From this, one easily deduces that there exists t0  (-t, 0) such that
+
+(t1, t) > 0 for t1  (-t, t0) and (t1, t) < 0 for t1  (t0, 0]. Furthermore, (t1, t) is
+
+decreasing
+
+for
+
+t1
+
+
+
+[t0, 0],
+
+and
+
+therefore
+
+we
+
+have
+
+(t1, t)
+
+
+
+(-,
+
+ 2
+
+)
+
+for
+
+t1
+
+
+
+(-t, 0).
+
+This
+
+completes the proof that Q maps the interior of [T4, T5] into the interior of r4. We will now
+
+show
+
+that
+
+Q
+
+is
+
+injective
+
+on
+
+[T4, T5].
+
+Recall
+
+from
+
+(5.1)
+
+that
+
+  t1
+
+=
+
+|R(t1)|
+
+sin 
+
+
+
+and hence
+
+(t1, t) is increasing when  is positive (i.e., for t1  [-t, t0)) and (t1, t) is decreasing
+
+when  is negative (i.e., for t1  (t0, 0]). Consequently, Q is injective on [T4, T5]. This
+
+proves the lemma in the case i = 4 and the cases i = 3, 7, 8 follow by symmetry.
+
+We
+
+next
+
+consider
+
+the
+
+case
+
+i
+
+=
+
+5,
+
+where
+
+r5
+
+=
+
+[-
+
+ 2
+
+,
+
+-]
+
+×
+
+[
+
+ 2
+
+,
+
+).
+
+Along
+
+the
+
+segment
+
+[T5, T6]
+
+(see Fig. 10(b)), t1 = 0 is fixed while t2 ranges from t to . It is shown in Corollary 5.5
+
+that (0, t2) >
+
+ 2
+
+for all t2  (t, ).
+
+Recall from (5.1) that
+
+  t2
+
+=
+
+-|R
+
+(t2)|
+
+sin 
+
+
+
+.
+
+Since
+
+(0, t2)
+
+>
+
+0,
+
+it
+
+follows
+
+that
+
+  t2
+
+<
+
+0
+
+for
+
+all
+
+t2
+
+
+
+[t, ]
+
+and
+
+hence
+
+(0, t2)
+
+is
+
+decreasing
+
+for
+
+t2  [t, ]. Consequently, Q is injective on [T5, T6], and since (0, t) = - and (0, ) =
+
+-
+
+ 2
+
+,
+
+it
+
+also
+
+follows
+
+that
+
+Q
+
+maps
+
+the
+
+interior
+
+of
+
+[T5, T6]
+
+into
+
+the
+
+interior
+
+of
+
+r5.
+
+This
+
+proves
+
+the lemma for the case i = 5 and the cases 1, 2, 6 follow by symmetry.
+
+Proposition 6.8. The following hold.
+(i) Q is continuous on U  0. (ii) In the interior of U , Q is C and its Jacobian is nonzero.
+(iii) Q(0) = {(0, 0)} and Q(t1, t2) = (0, 0) for all (t1, t2)  U (iv) Q is injective on .
+
+Proof. Item (i) is a consequence of Lemma 6.7, and (ii) is proved in Theorem 5.3. The
+first assertion in (iii), Q(0) = {(0, 0)}, holds by definition. It is easy to verify that if f is an s-curve with chord angles (, ) = (0, 0), then f is a line segment. But R[t1,t2] is never a line segment because the signed curvature of R only vanishes at times k, k  Z. Since
+R[t1,t2] is an s-curve for all (t1, t2)  U , we obtain the second assertion in (iii). Since the rectangles r1, r2, . . . , r8 are non-overlapping, we obtain (iv) as a consequence of the above lemma.
+
+On the basis of Proposition 6.8, we have the following, which is proved in the Appendix.
+
+Theorem 6.9. Q is injective on U .
+
+Remark. The proof of Theorem 6.9 can be extended to show that Q is injective on the larger set U obtained with U1 and U3 defined with t in place of t.
+We can now easily prove Theorems 6.1 and 6.2.
+
+Proof of Theorem 6.1.
+
+Let
+
+(, )
+
+
+
+[-
+
+ 2
+
+,
+
+ 2
+
+]2\{(0,
+
+0)}.
+
+It follows from Corollary 6.6 and
+
+Theorem 6.9 that there exists a unique (t1, t2)  U such that Q(t1, t2) = (, ); this
+
+establishes existence. Now, if (t1, t2)  Y is such that t1 < t2 < t1 + 2 and R[t1,t2] is an s-curve with chord angles (, ), then it follows from Lemma 6.5 and the observations
+
+made above Proposition 6.3 that (t1, t2)  U , whence follows uniqueness.
+
+Proof of Theorem 6.2. Assume t1 < t2 < t1 + 2 and that R[t1,t2] is an s-curve. From the observations above Proposition 6.3, it follows that (t1, t2), as a point on the cylinder Y , belongs to U0  V1  U2  V3\{(-, ), (0, 2)}. Assume that the chord angles (, )
+
+20
+
+ELASTIC SPLINES II
+
+of R[t1,t2]
+
+belong
+
+to
+
+[-
+
+ 2
+
+,
+
+ 2
+
+].
+
+As
+
+mentioned
+
+in
+
+the
+
+proof
+
+of
+
+Proposition 6.8
+
+(iii), we must
+
+have (, ) = (0, 0) and therefore, by Proposition 6.3, there exists (t1, t2)  U0  V1 
+
+U2  V3\{(-, ), (0, 2)} such that c1(, ) is directly similar to R[t1,t2]. Since Q(t1, t2) = (, ) = Q(t1, t2), it follows from Theorem 6.1 that (t1, t2) = (t1, t2) (in the cylinder Y )
+
+and therefore R[t1,t2] is directly congruent to R[t1,t2]; hence R[t1,t2] is directly similar to
+
+c1(, ).
+
+7. Proof of Condition (4.1)
+
+In this section we prove that condition (4.1) holds with µ = 2:
+
+Theorem 7.1.
+
+For
+
+all
+
+(0, 0)
+
+
+
+[-
+
+ 2
+
+,
+
+ 2
+
+]2\{(-
+
+ 2
+
+,
+
+ 2
+
+),
+
+(
+
+ 2
+
+,
+
+-
+
+ 2
+
+)},
+
+(7.1)
+
+[-a(c1(0, 0)), b(c1(0, 0))] = 2E1(0, 0).
+
+Proof.
+
+Fix
+
+(0,
+
+0)
+
+
+
+[-
+
+ 2
+
+,
+
+ 2
+
+]2
+
+\{(-
+
+ 2
+
+,
+
+ 2
+
+),
+
+(
+
+ 2
+
+,
+
+-
+
+ 2
+
+)}.
+
+We first address the easy case (0, 0) =
+
+(0, 0), where c1(0, 0) is a line segment. In the proof of [3, Prop. 7.6], it is shown that there
+
+exists a constant C such that E1(, ) = E(, )  C(tan2  + tan  tan  + tan2 ) for
+
+all (, )  [-/3, /3]2. From this it easily follows that E1(0, 0) = [0, 0], and since the
+
+line segment c1(0, 0) has 0 curvature, we obtain (7.1) for the case (0, 0) = (0, 0).
+
+We
+
+proceed
+
+assuming
+
+(0, 0)
+
+
+
+[-
+
+ 2
+
+,
+
+ 2
+
+]2\{(-
+
+ 2
+
+,
+
+ 2
+
+),
+
+(
+
+ 2
+
+,
+
+-
+
+ 2
+
+),
+
+(0,
+
+0)}.
+
+It
+
+follows
+
+from
+
+Corol-
+
+lary 6.6 that there exists (1, 2)  U such that Q(1, 2) = (0, 0). The restriction
+
+(0,
+
+0)
+
+
+
+{(-
+
+ 2
+
+,
+
+ 2
+
+),
+
+(
+
+ 2
+
+,
+
+-
+
+ 2
+
+)}
+
+ensures
+
+that
+
+(1,
+
+2)
+
+
+
+{(0,
+
+),
+
+(-,
+
+0)},
+
+and
+
+consequently,
+
+it
+
+follows from Theorem 5.3 that DQ(1, 2) is nonsingular. Since Q is C on the interior
+
+of the cylinder Y (defined in Section 6), it follows that there exists an open neighborhood
+
+N of (1, 2) such that Q is injective on N , DQ is nonsingular on N , Q(N ) is an open neighborhood of (0, 0), and Q-1 is C on Q(N ). We define E : Q(N )  [0, ) as
+
+follows. For (, )  Q(N ),
+
+E(, ) := l R[t1,t2] 2, where (t1, t2) := Q-1(, ) and l := |R(t1) - R(t2)| .
+
+Claim.
+
+If
+
+(, )
+
+
+
+Q(N )
+
+
+
+[-
+
+ 2
+
+,
+
+ 2
+
+]2,
+
+then
+
+E(, )
+
+=
+
+E1(, )
+
+and
+
+c1(, )
+
+is
+
+directly
+
+congruent
+
+to
+
+1 l
+
+R[t1
+
+,t2
+
+]
+
+.
+
+proof.
+
+Assume
+
+(,
+
+)
+
+
+
+Q(N
+
+)[-
+
+ 2
+
+,
+
+ 2
+
+]2.
+
+Since Q(t1, t2) = (, ), it follows from Theorems
+
+6.1 and 6.2 that c1(, ) is directly similar to R[t1,t2]. Consequently, c1(, ) is directly
+
+congruent
+
+to
+
+1 l
+
+R[t1
+
+,t2
+
+]
+
+and
+
+E1(, )
+
+:=
+
+c1(, ) 2 = E(, ), as claimed.
+
+We recall, from Section 2, that the curvature of R is given by (t) = 2 sin t, and hence
+a(c1(, )) = 2l sin t1 and b(c1(0, 0)) = 2l sin t2. So with the claim in view, in order to establish (7.1) it suffices to show that
+
+(7.2)
+
+[-l sin t1, l sin t2] = E(, ), for all (, )  Q(N ).
+
+UNICITY OF OPTIMAL S-CURVES AND G2 REGULARITY OF SPLINES
+
+21
+
+The bending energy of R[t1,t2] (see Section 2) is given by R[t1,t2]) 2 = (t2) - (t1) =: , and hence E(, ) = l. Defining E : N  [0, ) by E(t1, t2) := l, we have E = E  Q, and therefore, since DQ is nonsingular on N , (7.2) is equivalent to
+
+[-l sin t1, l sin t2]DQ = E(t1, t2), for all (t1, t2)  N.
+
+This can be written explicitly as
+
+(7.3)
+
+-l
+
+sin
+
+t1
+
+ t1
+
++
+
+l
+
+sin
+
+t2
+
+ t1
+
+=
+
+ t1
+
+(l
+
+)
+
+-l
+
+sin
+
+t1
+
+ t2
+
++
+
+l
+
+sin
+
+t2
+
+ t2
+
+=
+
+ t2
+
+(l
+
+)
+
+Using (5.1) and the formulae above (5.3) the first equality is proved as follows.
+
+-l
+
+sin
+
+t1
+
+ t1
+
++
+
+l
+
+sin
+
+t2
+
+ t1
+
+=
+
+|R(t1)| sin x - l sin t1|R(t1)|(t1)
+
+=
+
+(-
+
+cos
+
+t1
+
++
+
+
+
+(t1)x)
+
+x l
+
+-
+
+2l(t1)
+
+=
+
+(-
+
+cos
+
+t1
+
++
+
+
+
+(t1)x)
+
+x l
+
+-
+
+x2
+
++ l
+
+2
+
+(t1)
+
+-
+
+l(t1)
+
+=
+
+- - cos t1x - l
+
+(t1) 
+
+-
+
+l(t1)
+
+=
+
+ t1
+
+(l).
+
+We omit the proof of the second equality since it is very similar.
+
+Corollary
+
+7.2.
+
+E1
+
+is C
+
+on
+
+[-
+
+ 2
+
+,
+
+ 2
+
+]2\{(-
+
+ 2
+
+,
+
+ 2
+
+),
+
+(
+
+ 2
+
+,
+
+-
+
+ 2
+
+),
+
+(0,
+
+0)}
+
+Proof.
+
+Fix
+
+(0, 0)
+
+
+
+[-
+
+ 2
+
+,
+
+ 2
+
+]2\{(-
+
+ 2
+
+,
+
+ 2
+
+),
+
+(
+
+ 2
+
+,
+
+-
+
+ 2
+
+),
+
+(0,
+
+0)}
+
+and
+
+let
+
+N
+
+and
+
+E
+
+be
+
+as
+
+in
+
+the
+
+proof above. Then E is C on Q(N ), an open neighborhood of (0, 0). The desired
+
+conclusion is now a consequence of the Claim in the above proof.
+
+8. Proof of Condition (4.3)
+
+In this section,
+
+ ,
+
+with
+
+| |
+
+
+
+ 2
+
+we prove condition - , such that
+
+(4.3);
+
+namely
+
+that
+
+for
+
+every
+
+
+
+
+
+[-
+
+ 2
+
+,
+
+ 2
+
+]
+
+there
+
+exists
+
+(8.1)
+
+sign
+
+ 
+
+E1(,
+
+
+
+)
+
+= sign( -  ) for
+
+all
+
+
+
+satisfying
+
+|| 
+
+ 2
+
+and
+
+| - | < .
+
+With Theorem 6.9 in view, we treat the mapping Q as a bijection between U and Q(U ),
+
+which
+
+(by
+
+Corollary
+
+6.6)
+
+contains
+
+[-
+
+ 2
+
+,
+
+ 2
+
+]2\{(0,
+
+0)}.
+
+Let
+
+
+
+
+
+[-
+
+ 2
+
+,
+
+ 2
+
+]
+
+be
+
+fixed.
+
+For the
+
+sake of clarity our proof is broken into three -dependent cases.
+
+Case
+
+1:
+
+0
+
+<
+
+
+
+
+
+ 2
+
+.
+
+22
+
+ELASTIC SPLINES II
+
+Set
+
+B
+
+=
+
+[-
+
+ 2
+
+,
+
+ 2
+
+]\{
+
+-
+
+}.
+
+It
+
+follows
+
+from
+
+Corollary
+
+7.2
+
+that
+
+the
+
+function
+
+
+
+
+
+E1(, )
+
+is C on B, and, from Theorem 7.1, we have that
+
+ 
+
+E1
+
+(,
+
+
+
+)
+
+=
+
+1 2
+
+b(c1
+
+(,
+
+)).
+
+Note
+
+that if (t1, t2) = Q-1(, ), then R[t1,t2] is directly similar to c1(, ), and consequently
+
+sign
+
+ 
+
+E1(,
+
+)
+
+= sign(sin t2) since the signed curvature of R(t) is (t) = 2 sin t.
+
+Fig. 12 the parameter -t
+
+Fig. 13 the parameter -t2
+
+By Theorem 5.3 and symmetry, there exists a unique -t  [-t, 0) such that (-t, 0) = .
+
+Set  := (-t, 0) < 0 and note that R[-t,0] (see Fig. 12) has chord angles (,  ) while
+
+sign
+
+ E1 
+
+(,
+
+
+
+)
+
+= sign(sin 0) = 0. Furthermore, we have | | = |(0, t)|  (0, t) =
+
+ 2
+
+-
+
+,
+
+and
+
+it
+
+is
+
+shown
+
+in
+
+[3,
+
+Lemma
+
+6.3]
+
+that
+
+| |
+
+=
+
+|(0, t)|
+
+<
+
+(0, t)
+
+=
+
+.
+
+Claim:
+
+If
+
+
+
+B
+
+is
+
+such
+
+that
+
+ E1 
+
+(,
+
+)
+
+=
+
+0,
+
+then
+
+
+
+=  .
+
+proof.
+
+Assume   B
+
+is such
+
+that
+
+ E1 
+
+(,
+
+)
+
+=
+
+0.
+
+Set (t1, t2) = Q-1(, ).
+
+Then t2
+
+equals
+
+either 0 or  (since sin t2 = 0 and (t1, t2)  U ). If t2 = 0, then (t1, t2)  U0 and it follows
+
+from Theorem 5.3 and symmetry that t1 = -t and hence  =  . On the other hand,
+
+if t2 =  then (t1, t2)  U0 and it follows that  = (t1, t2) < 0 which is a contradiction;
+
+hence the claim.
+
+Note that R[-t,t] has chord angles (, ) and hence sign
+
+ E1 
+
+(,
+
+)
+
+= sign(sin t) >
+
+0. Since  > 0 >  , it follows from continuity that sign
+
+ E1 
+
+(,
+
+
+
+)
+
+> 0 for   B with
+
+ >  .
+
+Now, in order to complete the proof (of Case I), it suffices to show that there exists   B
+
+such that sign
+
+ E1 
+
+(,
+
+
+
+)
+
+<
+
+0.
+
+Since
+
+(-t, 0)
+
+=
+
+(0, t)
+
+>
+
+ 2
+
+
+
+,
+
+it
+
+follows
+
+that
+
+there
+
+exists -t2  (-t, 0) such that (-t, -t2) = . Set  := (-t, -t2) < 0 (see Fig. 13).
+
+It
+
+is
+
+easy
+
+to
+
+verify
+
+that
+
+||
+
+<
+
+ 2
+
+and
+
+therefore
+
+
+
+
+
+B.
+
+Note that sign
+
+ E1 
+
+(,
+
+
+
+)
+
+=
+
+sign(sin(-t2) < 0. This completes the proof for Case I.
+
+Case
+
+II:
+
+-
+
+ 2
+
+
+
+
+
+<
+
+0
+
+This case
+
+follows
+
+from
+
+Case I and
+
+the symmetry
+
+E1(, )
+
+=
+
+E1(-, -).
+
+Case III:  = 0.
+
+Set
+
+0
+
+:=
+
+0.
+
+It
+
+is
+
+shown
+
+in
+
+Theorem
+
+7.1
+
+that
+
+ E1 
+
+(0,
+
+0)
+
+=
+
+0.
+
+Claim:
+
+If
+
+
+
+
+
+[-
+
+ 2
+
+,
+
+ 2
+
+]
+
+is
+
+such
+
+that
+
+ E1 
+
+(0,
+
+
+
+)
+
+=
+
+0,
+
+then
+
+
+
+=
+
+0.
+
+proof.
+
+By way of contradiction,
+
+assume
+
+
+
+
+
+[-
+
+ 2
+
+,
+
+ 2
+
+]\{0}
+
+is
+
+such
+
+that
+
+ E1 
+
+(0,
+
+
+
+)
+
+=
+
+0.
+
+Set
+
+(t1, t2) = Q-1(0, ). Then t2 equals either 0 or . If t2 = 0, then t1  [-, 0) and it follows
+
+UNICITY OF OPTIMAL S-CURVES AND G2 REGULARITY OF SPLINES
+
+23
+
+that  > 0, which is a contradiction. On the other hand, if t2 = , then t1  [0, ) and it follows that  < 0, which again is a contradiction; hence the claim.
+
+The
+
+symmetry
+
+E1(0, )
+
+=
+
+E1(0, -)
+
+ensures
+
+that
+
+ E1 
+
+(0,
+
+-
+
+)
+
+=
+
+-
+
+ E1 
+
+(0,
+
+
+
+)
+
+and
+
+there-
+
+fore
+
+it
+
+suffices
+
+to
+
+show
+
+that
+
+ E1 
+
+(0,
+
+
+
+)
+
+>
+
+0
+
+for
+
+all
+
+
+
+
+
+(0,
+
+ 2
+
+].
+
+Define g() := E1(0, ),
+
+
+
+
+
+[0,
+
+ 2
+
+]
+
+so
+
+that
+
+g()
+
+=
+
+ E1 
+
+(0,
+
+).
+
+Then g
+
+is
+
+continuous
+
+on
+
+[0,
+
+ 2
+
+]
+
+and
+
+is
+
+C
+
+on
+
+(0,
+
+ 2
+
+].
+
+oIstingfno(0l(lg,o2w)]s,=ftrh1oemonnwt(he0e,wc2ol]auialmdndhthatahvteissEcigo1n(m0(p,gl2e))tie<ss ntEohn1e(z0pe,rr0oo)oaf=nodf0,ctohwnehsfiitcanhnatliscoaansce(o0. n, t2r]a.dIifctsiiognn;(tgh)er=efo-r1e
+
+9. Appendix
+The goal of this section is to prove Theorem 6.9. The proof that Q is injective on U uses ideas from the proof of the Hadamard-Caccioppoli theorem, which states [1, Th. 1.8, page 47]
+Theorem (Hadamard-Caccioppoli). Let M, N be metric spaces and F  C(M, N ) be proper and locally invertible on all of M . Suppose that M is arcwise connected and N is simply connected. Then F is a homeomorphism from M to N .
+Unfortunately, not all the conditions of the Hadamard-Caccioppoli theorem are satisfied, for Q is not locally invertible on 0. To remedy this we are going to use results needed in the proof the Hadamard-Caccioppoli theorem [1, Th. 1.6, page 47].
+Let M, N be metric spaces. For a map F  C(M, N ) denote by  = {u  M : F is not locally invertible at u} the singular set of F and for v  N denote by [v] the cardinal number of the set F -1(v).
+Theorem 9.1. [1, Th. 1.6, page 47] Let F  C(M, N ) be proper. Then [v] is constant on every connected component of N - F ().
+In our case M = U  0, F = Q and N = Q(M ). The properties of Q are summarized in Proposition 6.8.
+Let us recall from Section 6 that M is topologically an annulus, the boundary M consists of two curves 0 and the staircase curve  depicted in Fig. 10 (b). Since M is compact Q will be proper (Q-1(K) is compact if K is compact). Q(0) = {(0, 0)} and Q() =  (depicted in Fig. 10 (a)) is a simple closed curve ((iv) of Proposition 6.8) and Q is injective on .
+First we will show that Q maps M onto the union of the interior of  and  and it maps the interior of M onto the interior of  minus the point (0, 0).
+Since  is a Jordan curve it has an interior. Let us denote by N0 = { interior of }  .
+Proposition 9.2. N = N0 and Q(M - {, 0}) = N -   {(0, 0)} .
+Proof. Claim 1. If x  intM , then Q(x)  N0 (where intM = M - {, 0}). Suppose it is not true and there is a point x  intM such that Q(x) / N0.
+By Proposition 6.8 the Jacobian of Q is not zero at the points of intM therefore it is an open mapping, that is Q(intM ) is an open set. The indirect assumption means that
+
+24
+
+ELASTIC SPLINES II
+
+Q(intM ) has a point outside N0 and since it is a bounded set (obvious from the definition of Q) it must have a boundary point y outside N0. Let xn  intM be a sequence such that lim Q(xn) = y. Passing on to a subsequence if necessary we can assume that xn is convergent with lim xn = x. Clearly x / {, 0} since Q(0) = (0, 0) and Q() = . Since the Jacobian of Q at x is not zero therefore it maps an open neighborhood of x onto an open neighborhood of Q(x) = y, which is a contradiction.
+Claim 2. If x  intM , then Q(x)  N0 - {, (0, 0)}. Item (iii) of Proposition 6.8 states that Q(x) = (0, 0). Since Q is a local diffeomorphism at x ((ii) Proposition 6.8) if Q(x)   that would imply that there is a point y  intM near x such that Q(y) / N0. That would be in contradiction with Claim 1.
+Claim 3. The map Q : M  N0 is onto. Since Q(0) = (0, 0), Q() =  and Q(M ) compact if Q(M ) = N0 there has to be a boundary point u of Q(M ) such that u  Q(M ) - (  {(0, 0)}). To find u one has to connect a point inside the image different from (0, 0) to a point of N0 which is outside Q(M ) with a curve avoiding both the point (0, 0) and the curve . On this curve one can find u.
+Let x  intM be a point such that Q(x) = u. Since Q is a local diffeomorphism at x, u = Q(x) cannot be a boundary point of the image. This leads to a contradiction and the claim is proved.
+Therefore we have N = N0 and the Proposition is proved.
+Proposition 9.3. For any v  , Q-1(v) consists of one single point.
+Proof. Since Q() =  it is clear that Q-1(v) is not empty. From the Previous Proposition it follows that if x, y  Q-1(v), then both x, y  . Since Q is injective on  ((iv) Theorem 7.8) it implies that x = y
+To show that the singular set of Q (the set of points where Q is not locally invertible) is 0 only, we need the following:
+Proposition 9.4. Q is locally invertible at every point of .
+The proof will rely on the fact [6, Lemma 3, page 239] that proper local homeomorphisms are covering maps, therefore they have the unique path-lifting property. The precise statement is as follows.
+Proposition 9.5. [6, Lemma 3] Let X, Y be two Hausdorff spaces and let Y be pathwise connected. Any surjective, proper local homeomorphism f : X  Y must be a covering projection.
+Proof of Proposition 9.4. Let x   be any point and set y = Q(x)  . Choose  < dist(, (0, 0)) small enough such that N  B(y, ) is connected therefore simply connected. Here B(y, ) denotes the closed ball of radius  centered around y. Since the boundary of N is a piecewise differentiable curve one can find such .
+Let  > 0 be chosen such that Q(M  B(x, )  B(y, ). Such  exists because Q is continuous at x. It is enough to show that Q is one-to-one on M  B(x, ) since a continuous, one-to-one map between compact subsets of R2 has a continuous inverse.
+Suppose it is not true. Then there are points x1 = x2  M  B(x, ) such that Q(x1) = Q(x2). From the previous propositions (Proposition 9.3 and Proposition 9.2) it follows that x1, x2 / . Let h : [0, 1]  intM B(x, ) be a curve connecting x1 to x2 and set g = Q(h).
+
+UNICITY OF OPTIMAL S-CURVES AND G2 REGULARITY OF SPLINES
+
+25
+
+Then g is a closed curve in intN B(y, ) which is simply connected. Note that intN B(y, ) does not contain (0, 0). Therefore, there is a homotopy H : [0, 1] × [0, 1]  N  B(y, ) such that H(0, t) = g(t) and H(s, 0) = H(s, 1) = H(1, t) = Q(x1) for all s, t  [0, 1].
+The map Q : intM  intN - {(0, 0)} is proper (Proposition 9.2) and since the Jacobian of Q is not zero, it is a local homeomorphism, hence by Proposition 9.5 it is a covering map. This means that we can lift H (the image of H avoids the point (0, 0)) to a homotopy H¯ : [0, 1] × [0, 1]  intM with the property that Q(H¯ (s, t)) = H(s, t). This implies that H¯ (s, 0) = x1 and H¯ (s, 1) = x2 for all s  [0, 1], therefore we have curve t  H¯ (1, t) in intM connecting x1 to x2 such that the image of this curve by Q is one point Q(x1). This contradicts the fact that Q is a local homeomorphism on intM .
+Proof of Theorem 6.9. We have already proved that Q is proper. Since Q is locally invertible at the points of intM (the Jacobian of Q is not zero) and at the points of  (Proposition 9.4) we see that the singular set of Q is 0 only and since Q(0) = {(0, 0)} from Theorem 9.1 we obtain that for all v  N - {(0, 0)} [v] is constant. Since Q is injective on  and if u  M - {, 0} then Q(u) /  we obtain that [v] = 1 for all v  , therefore [v] = 1 for all v  N - {(0, 0)}. This means that Q is injective on U and the proof of Theorem 6.9 is complete.
+
+References
+1. A. Ambrosetti & G. Prodi, A Primer of Nonlinear Analysis (1993), Cambridge University Press. 2. G. Birkhoff & C.R. de Boor, Piecewise polynomial interpolation and approximation, Approximation
+of Functions, Proc. General Motors Symposium of 1964, H.L. Garabedian ed., Elsevier, New York and Amsterdam, 1965, pp. 164-190. 3. A. Borb´ely & M.J. Johnson, Elastic Splines I: Existence, Constr. Approx. 40 (2014), 189­218. 4. G.H. Brunnett, Properties of minimal-energy splines, Curve and surface design, SIAM, Philadelphia PA, 1992, pp. 3-22. 5. S.D. Fisher & J.W. Jerome, Stable and unstable elastica equilibrium and the problem of minimum curvature, J. Math. Anal. Appl. 53 (1976), 367­376. 6. Chung-Wu Ho, A note on proper maps, Proc. Amer. Math. Soc.. 51 (1975), 237-241. 7. J.W. Jerome, Minimization problems and linear and nonlinear spline functions I: Existence, SIAM J. Numer. Anal. 10 (1973), 808­819. 8. J.W. Jerome, Interpolating Curves of Prescribed Length and Minimum Curvature, Proc. Amer. Math. Soc. 51 (1975), 62­66. 9. M.J. Johnson, H.S. Johnson, A constructive framework for minimal energy planar curves, Appl. Math. Comp. 276 (2016), 172­181. 10. E.H. Lee & G.E. Forsyth, Variational study of nonlinear spline curves, SIAM Rev. 15 (1975), 120­133. 11. A. Linn´er & J.W. Jerome, A unique graph of minimal elastic energy, Trans. Amer. Math. Soc. 359 (2007), 2021­2041.
+
+Department of Mathematics, Faculty of Science, Kuwait University, P.O. Box 5969, Safat 13060, Kuwait
+E-mail address: borbely.albert@gmail.com, yohnson1963@hotmail.com
+
+

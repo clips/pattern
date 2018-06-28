@@ -1,0 +1,213 @@
+arXiv:1701.00106v1 [physics.optics] 31 Dec 2016
+
+In-situ tuning of whispering gallery modes of levitated silica microspheres
+Yosuke Minowa, Yusuke Toyota, and Masaaki Ashida Graduate School of Engineering Science,
+Osaka University, Toyonaka, Osaka 560-8531, Japan
+(Dated: January 3, 2017)
+Abstract
+We demonstrated the tuning of whispering gallery modes (WGMs) of a silica microsphere during optical levitation through the annealing process. We determined the annealing temperature from the power balance between the CO2 laser light heating and several cooling processes. Cooling caused by heat conduction through the surrounding air molecules is the dominant process. We achieved a blue shift of the WGMs as large as 1 %, which was observed in the white-light scattering spectrum from the levitated microsphere.
+1
+
+INTRODUCTION
+Optomechanical response of a single levitated solid microsphere to light is largely affected by whispering gallery modes (WGMs) excitation[1]. Therefore, precise tuning of the WGMs is necessary, as the radiation pressure can be resonantly enhanced through WGM excitation[2­4]. The optomechanical effect on the levitated micro and nanospheres is at the core of the active or passive cooling of the center of motion of the levitated particles[5­ 9] down to the quantum ground state, which would lead to the macroscopic quantum phenomena[10, 11]. Furthermore, the exploration of optical binding effect and optomechanical coupling between multiple microshperes[12­16] requires mutual tuning of the WGMs. Since it is impossible to levitate an exact predetermined particle with commonly used loading techniques[7, 17­19], in-situ modification of the particle size or refractive index is needed to tune the WGMs.
+Solid microspheres are one of the most intriguing microcavity structures, which could have WGM resonances with an extremely high quality factor and small mode volume due to the three dimensional light confinement [20]. The high quality factor and small mode volume of the solid microspheres lead to cavity quantum electrodynamic phenomena[21], ultra-low threshold lasing[22], and highly efficient optical nonlinearity[23]. Liquid microspheres or microdroplets also show excellent cavity performance due to naturally smooth surface and high-sphericity[24, 25]. The size and shape of the microdroplet can be controlled through evaporation[24] or coagulation[26] and radiation pressure[27], leading to the tuning of the WGM resonances. The WGM tuning of the solid microspheres, however, continues to be a challenge owing to the technical difficulties that stems from the stable and strong atomic bonding. One of the most reliable methods is the temperature control through the thermal expansion and the temperature dependent refractive index[28]. Although the method provides the precise and repeatable tuning of WGMs, the requirement of the temperature stabilization prevents its use in many situations including optical levitation.
+Here, this study reports on the in-situ tuning of WGMs in levitated silica microspheres through the annealing process. The annealing of silica affects the microscopic silica network structure and the amount of impurity, leading to changes in the optical properties and the volume of the silica sample[29, 30]. Therefore, we can achieve different WGM resonances after different annealing conditions. The annealing was performed with the CO2 laser irra-
+2
+
+diation on the levitated silica microsphere. CO2 laser light with the wavelength of 10.6 µm resonantly excites the broad Si-O-Si bands and the strong absorption occurs. The thermal balance between CO2 laser heating and several different cooling processes determines the annealing temperature. Thus, we can tune the WGMs by changing the CO2 laser irradiation power. We identified the WGM resonances from white light scattering spectra as the scattering cross section of the microspheres reflects the WGMs[31, 32].
+EXPERIMENTAL SETUP
+We optically levitated 3-µm-diameter microspheres (Polysciences, Silica Microspheres, 24330) with a dual-beam optical trap by using long-working-distance aspheric lenses to have enough space for CO2 laser irradiation (Fig. 1). A continuous-wave Ti:Sapphire laser beam with the wavelength of 785 nm was split into two parts using a polarizing beam splitter (PBS). The half-wave plate before the PBS was rotated to ensure equal power (1 W) in the two beams. The two identical aspheric lenses (thorlabs, C240TME-B) focused the beams onto the same point, which leads to a cancelation of the scattering forces[7]. Silica microspheres were loaded into the trapping sight via an ultrasonic nebulizer (Omron, NEU22)[17­19]. 100 µl of the stock solution was dried, redissolved in 15 ml ethanol, and was sonicated in an ultrasonic bath for 20 minutes before use.
+From a single optically levitated silica microsphere, we measured the white light scattering spectrum. The spectrum represents the WGMs in the microsphere according to Mie scattering theory[31, 32]. Then, the optically levitated microsphere was heated with the CO2 laser irradiation for 2 minutes. The CO2 laser light was focused onto the levitated microsphere with a ZnSe lens of 100 mm focal length. After switching off the CO2 laser light, we measured the white light scattering spectrum again. The spectrum reflects the change in the WGMs due to the annealing. We repeated the process with different CO2 laser powers, i.e., different annealing conditions.
+RESULTS AND DISCUSSION
+Figure 2 illustrates the white light scattering spectrum from the levitated silica microsphere. The widths of the resonances were determined by several loss mechanisms including
+3
+
+FIG. 1. Schematic representation of the dual beam optical trap setup for in-situ tuning of WGM resonances. Light from a continuous-wave Ti:Sapphire laser was split into two beams using a PBS. The power ratio between the two beams was controlled by rotating a half wave plate. Each beam was tightly focused by an aspherical lens (L1) with a common focal point forming a optical trapping potential. Optically levitated microspheres can be illuminated by CO2 laser light or white light from tungsten halogen lamp. We measured the scattering spectrum from a single optically levitated microsphere using a spectrograph.
+intrinsic or impurity material absorption loss, tunneling loss, and surface absorption or scattering loss. The original white light source spectrum shows a gradual increase toward longer wavelength as depicted in the inset of Fig. 2 and well describes the different peak heights for different resonances.
+After the CO2 laser irradiation with the power of 2 kW/cm2, the white light scattering spectrum exhibited a slight blue shift of 3 nm as shown in Fig. 3 (red curve). The white light scattering spectrum continued to shift to shorter wavelength with increasing the CO2
+4
+
+Intensity (a.u.)
+
+1.0
+
+1.0
+
+0.8
+0.8 0.6
+
+0.4
+
+0.6
+
+0.2 0.0
+
+600
+
+700
+
+0.4
+
+wavelength (nm)
+
+0.2
+
+0.0
+
+560
+
+600
+
+640
+
+680
+
+720
+
+Wavelength (nm)
+
+FIG. 2. White light scattering spectrum obtained from a single levitated microsphere. Each peak corresponds to a particular whispering gallery mode resonance. The inset shows the original white light source spectrum.
+
+laser power. Figure 4 summarizes the blue shift of the peak around 660 nm as a function of the laser power. We achieved the WGMs tuning as large as 7 nm via in-situ annealing. Note that very-little or no blued shift was observed, if we re-irradiated the levitated microsphere using the CO2 laser with the same power.
+The temperature of the levitated microsphere during the annealing was determined by power balance among the CO2 laser heating, heat conduction through the surrounding gas, and thermal radiation. Here, we assume that the temperature distribution is homogeneous within the microsphere. Although this assumption seems unrealistic[33], the result gives us a rough estimation of the microsphere's steady state temperature.
+Heat loss due to natural convection is negligible in our case, since the system's Grashof Number[34] is very small owing to the small size of the microspheres (the radius r = 1.5 µm). Using kinematic viscosity and thermal expansion coefficient of air, 1.5 × 10-5 m2/s[35] and 3.6 × 10-3 K-1[36], the Grashof number is calculated to be G = 5.3T × 10-10, where T
+5
+
+is the temperature difference between the heated microsphere and the air without heating. Then, the natural convective heat loss can be neglected compared with the conductive heat
+ loss[34] when the distance from the microsphere's surface is less than r × 1/ G. Even if we take impractically large value T =10 000 K, the critical distance is enough large 700 µm, which justifies the omission of the natural convection effect for the following calculation.
+Since the size of the microsphere is of the same order as the wavelength of the CO2 laser, Mie scattering theory[31] enables us to estimate the absorption cross section[37] from the extinction coefficient of the silica. As the value of the extinction coefficient of silica ranges from 0.02 to 0.5 depending on the sample[38], we use the typical value  = 0.2 for the calculation, which gives the absorption cross section Cabs 3.2 µm2. The laser heating power is
+qlaser = CabsICO2,
+
+where ICO2 is the CO2 laser intensity at the surface of the microspheres.
+
+We assumed that the heat conduction through the surrounding gas occurs in the contin-
+
+uum regime, as the system's Knudsen number is  0.02. The conductive cooling power is
+
+calculated to be[39]
+
+Tp
+qair = 4r kgdT,
+Tg
+
+where kg is the temperature dependent heat conduction coefficient and Tp (Tg) is the tem-
+
+perature of the microspheres (the surrounding gas).
+
+We calculate the radiative heat loss also from Mie scattering theory[31, 40] using frequency
+
+dependent complex refractive index and absorption cross section[38] as
+
+qrad = f (Tp) - f (Tg),
+
+
+
+f (T ) = f (T ) = d4Pe(T )Cabs()
+
+0
+
+=
+
+0
+
+
+
+d
+
+h¯3 43c2
+
+4Pe(T )Cabs() exp (h¯/kBT ) - 1
+
+,
+
+where Pe(T ) is Plank distribution. The resulting cooling power is three orders of magnitude smaller than the conductive cooling power at the temperature less than 1000 K. Therefore, we neglect the radiative cooling process here.
+The steady state temperature of the levitated microsphere under CO2 laser irradiation is determined by numerically solving the equation qlaser = qair. With the maximum CO2 laser
+
+6
+
+intensity in our experiment, ICO2 =7180 W/cm2, we achieve the temperature 600 K. After the annealing at this temperature, we expect a few percentage reduction of the radius of the microsphere due to the removal of water molecules and organic impurities from the interior of micropores and the surface of the silica microspheres[30]. This shrinkage is consistent with the observed 7 nm blue shift of the WGM resonances ( 1 percent change of the wavelength).
+
+Intensity (a.u.)
+
+1.2
+0.7
+1.0 0.6
+0.5
+0.8 0.4
+
+before irradiation after irradiation 1 ~ 4
+
+0.3
+
+0.6
+
+650 655 660 665 670
+
+Wavelength (nm)
+
+0.4
+
+0.2
+
+0.0
+
+560
+
+600
+
+640
+
+680
+
+720
+
+Wavelength (nm)
+
+FIG. 3. Blue shift of the white light scattering spectrum from a single levitated microsphere after repeated CO2 laser irradiations. The inset shows an expansion of the peak around 660 nm.
+
+CONCLUSION
+This study demonstrated the in-situ tuning of WGM resonances of optically levitated microspheres through the annealing process. The thermal balance between CO2 laser heating and the heat conduction into the surrounding air determines the annealing temperature. With changing temperature, we can achieve the different WGM resonances because of the shrinkage of the microspheres.
+The rapidly growing field of the levitated optomechanics requires the diversity of the material for the levitated particles[41­43], as the internal degree of freedom in the material
+7
+
+666
+
+Peak wavelength (nm)
+
+664
+
+662
+
+660
+
+658
+
+656 0
+
+2000 4000 6000 8000 CO2 laser intensity at focal point (W/cm2)
+
+FIG. 4. Peak wavelength shift after each CO2 laser irradiation. The color of the data points correspond to the color in Fig. 3
+
+could couple with the optomechanical interaction and will open up the new protocol for the quantum state control of the levitated particles[44]. Our results suggest the possibility of adjusting the material properties finely and even chemically modifying the particles during the levitation. In-situ fine control of the levitated particle's properties in vacuum need further research, which would result in the melting and vaporization of the levitated particles. Further selective doping with specific dopants is also possible, which will expand the available internal degree of freedom of the levitated particles.
+Funding Information. JSPS KAKENHI Grant Number JP15K13501, JP16H06505, JP16H03884.; The Murata Science Foundation.; the Izumi Science and Technology Foundation.
+
+ minowa@mp.es.osaka-u.ac.jp [1] A. Ashkin and J. M. Dziedzic, "Observation of Resonances in the Radiation Pressure on
+Dielectric Spheres," Physical Review Letters 38, 1351­1354 (1977).
+8
+
+[2] P. F. Barker, "Doppler Cooling a Microsphere," Physical Review Letters 105, 073002 (2010). [3] Y. L. Li, J. Millen, and P. F. Barker, "Cooling the centre-of-mass motion of a silica mi-
+crosphere," Proc. SPIE, Optical Trapping and Optical Micromanipulation XI 9164, 916404 (2014). [4] Y. L. Li, J. Millen, and P. F. Barker, "Simultaneous cooling of coupled mechanical oscillators using whispering gallery mode resonances," Optics Express 24, 1392­1401 (2016). [5] O. Romero-Isart, M. L. Juan, R. Quidant, and J. I. Cirac, "Toward quantum superposition of living organisms," New Journal of Physics 12, 033015 (2010). [6] D. E. Chang, C. A. Regal, S. B. Papp, D. J. Wilson, J. Ye, O. Painter, H. J. Kimble, and P. Zoller, "Cavity opto-mechanics using an optically levitated nanosphere," Proceedings of the National Academy of Sciences 107, 1005 ­1010 (2010). [7] T. Li, S. Kheifets, and M. G. Raizen, "Millikelvin cooling of an optically trapped microsphere in vacuum," Nat Phys 7, 527­530 (2011). [8] V. Jain, J. Gieseler, C. Moritz, C. Dellago, R. Quidant, and L. Novotny, "Direct Measurement of Photon Recoil from a Levitated Nanoparticle," Physical Review Letters 116, 243601 (2016). [9] J. Vovrosh, M. Rashid, D. Hempston, J. Bateman, and H. Ulbricht, "Controlling the Motion of a Nanoparticle Trapped in Vacuum," arXiv:1603.02917 [physics, physics:quant-ph] (2016). ArXiv: 1603.02917. [10] O. Romero-Isart, "Quantum superposition of massive objects and collapse models," Physical Review A 84, 052121 (2011). [11] M. Rashid, T. Tufarelli, J. Bateman, J. Vovrosh, D. Hempston, M. S. Kim, and H. Ulbricht, "Experimental Realisation of a Thermal Squeezed State of Levitated Optomechanics," arXiv:1607.05509 [physics, physics:quant-ph] (2016). ArXiv: 1607.05509. [12] J. Ng, C. T. Chan, P. Sheng, and Z. Lin, "Strong optical force induced by morphologydependent resonances," Optics Letters 30, 1956 (2005). [13] M. L. Povinelli, S. G. Johnson, M. Lonar, M. Ibanescu, E. J. Smythe, F. Capasso, and J. D. Joannopoulos, "High-Q enhancement of attractive and repulsive optical forces between coupled whispering-gallery-mode resonators," Optics Express 13, 8286­8295 (2005). [14] S. Yang and V. N. Astratov, "Spectroscopy of coherently coupled whispering-gallery modes in size-matched bispheres assembled on a substrate," Optics Letters 34, 2057­2059 (2009). [15] Y. Arita, M. Mazilu, T. Vettenburg, E. M. Wright, and K. Dholakia, "Rotation of two trapped
+9
+
+microparticles in vacuum: observation of optically mediated parametric resonances," Optics Letters 40, 4751­4754 (2015). [16] T. Kudo, S.-F. Wang, K.-i. Yuyama, and H. Masuhara, "Optical Trapping-Formed Colloidal Assembly with Horns Extended to the Outside of a Focus through Light Propagation," Nano Letters 16, 3058­3062 (2016). [17] L. P. Neukirch, J. Gieseler, R. Quidant, L. Novotny, and A. Nick Vamivakas, "Observation of nitrogen vacancy photoluminescence from an optically levitated nanodiamond," Optics Letters 38, 2976­2979 (2013). [18] T. S. Monteiro, J. Millen, G. a. T. Pender, F. Marquardt, D. Chang, and P. F. Barker, "Dynamics of levitated nanospheres: towards the strong coupling regime," New Journal of Physics 15, 015001 (2013). [19] Y. Minowa, R. Kawai, and M. Ashida, "Optical levitation of a microdroplet containing a single quantum dot," Optics Letters 40, 906­909 (2015). [20] S. M. Spillane, T. J. Kippenberg, and K. J. Vahala, "Ultralow-threshold Raman laser using a spherical dielectric microcavity," Nature 415, 621­623 (2002). [21] J. R. Buck and H. J. Kimble, "Optimal sizes of dielectric microspheres for cavity QED with strong coupling," Physical Review A 67, 033806 (2003). [22] S. Okamoto, K. Inaba, T. Iida, H. Ishihara, S. Ichikawa, and M. Ashida, "Fabrication of singlecrystalline microspheres with high sphericity from anisotropic materials," Scientific Reports 4, 5186 (2014). [23] F. Treussart, V. S. Ilchenko, J.-F. Roch, J. Hare, V. Lefvre-Seguin, J.-M. Raimond, and S. Haroche, "Evidence for intrinsic Kerr bistability of high-Q microsphere resonators in superfluid helium," The European Physical Journal D - Atomic, Molecular, Optical and Plasma Physics 1, 235­238 (1998). [24] A. Kiraz, A. Kurt, M. A. Dndar, M. Y. Yce, and A. L. Demirel, "Volume stabilization of single, dye-doped water microdroplets with femtoliter resolution," JOSA B 24, 1824­1828 (2007). [25] J. Schafer, J. P. Mondia, R. Sharma, Z. H. Lu, A. S. Susha, A. L. Rogach, and L. J. Wang, "Quantum Dot Microdrop Laser," Nano Lett. 8, 1709­1712 (2008). [26] R. J. Hopkins, L. Mitchem, A. D. Ward, and J. P. Reid, "Control and characterisation of a single aerosol droplet in a single-beam gradient-force optical trap," Physical Chemistry
+10
+
+Chemical Physics 6, 4924­4927 (2004). [27] M. Aas, A. Jon, A. Kiraz, O. Brzobohat, J. Jeek, Z. Pilt, and P. Zemnek, "Spectral tuning of
+lasing emission from optofluidic droplet microlasers using optical stretching," Optics Express 21, 21380 (2013). [28] A. Chiba, H. Fujiwara, J.-i. Hotta, S. Takeuchi, and K. Sasaki, "Resonant Frequency Control of a Microspherical Cavity by Temperature Adjustment," Japanese Journal of Applied Physics 43, 6138 (2004). [29] P. Kaiser, "Drawing-induced coloration in vitreous silica fibers," JOSA 64, 475­481 (1974). [30] S.-H. Cho, S. Y. Park, C. Kim, P.-P. Choi, and J.-K. Park, "Stabilization of monodispersed spherical silica particles and their alignment with reduced crack density," Colloids and Surfaces A: Physicochemical and Engineering Aspects 441, 354­359 (2014). [31] C. F. Bohren and D. R. Huffman, Absorption and scattering of light by small particles (Wiley, 1983). [32] S. Schietinger and O. Benson, "Coupling single NV-centres to high-Q whispering gallery modes of a preselected frequency-matched microresonator," Journal of Physics B: Atomic, Molecular and Optical Physics 42, 114001 (2009). [33] J. Millen, T. Deesuwan, P. Barker, and J. Anders, "Nanoscale temperature measurements using non-equilibrium Brownian dynamics of a levitated nanosphere," Nature Nanotechnology 9, 425­429 (2014). [34] J. J. Mahony, "Heat Transfer at Small Grashof Numbers," Proceedings of the Royal Society of London A: Mathematical, Physical and Engineering Sciences 238, 412­423 (1957). [35] Dwight E. Gray (Ed.), American Institute of Physics Handbook (McGraw-Hill, New York, 1957). [36] J. R. Roebuck, "The Joule-Thomson Effect in Air. Second Paper," Proceedings of the American Academy of Arts and Sciences 64, 287­334 (1930). [37] J. Leinonen, "Python code for calculating Mie scattering from single- and dual-layered spheres. Available at https://github.com/jleinonen/pymiecoated/." . [38] R. Kitamura, L. Pilon, and M. Jonasz, "Optical constants of silica glass from extreme ultraviolet to far infrared at near room temperature," Applied Optics 46, 8118­8133 (2007). [39] F. Liu, K. J. Daun, D. R. Snelling, and G. J. Smallwood, "Heat conduction from a spherical nano-particle: status of modeling heat conduction in laser-induced incandescence," Applied
+11
+
+Physics B 83, 355­382 (2006). [40] F. Liu, K. J. Daun, V. Beyer, G. J. Smallwood, and D. A. Greenhalgh, "Some theoretical
+considerations in modeling laser-induced incandescence at low-pressures," Applied Physics B 87, 179­191 (2006). [41] L. P. Neukirch, E. von Haartman, J. M. Rosenholm, and A. N. Vamivakas, "Multi-dimensional single-spin nano-optomechanics with a levitated nanodiamond," Nature Photonics 9, 653­657 (2015). [42] A. T. M. A. Rahman, A. C. Frangeskou, M. S. Kim, S. Bose, G. W. Morley, and P. F. Barker, "Burning and graphitization of optically levitated nanodiamonds in vacuum," Scientific Reports 6, 21633 (2016). [43] M. L. Juan, G. Molina-Terriza, T. Volz, and O. Romero-Isart, "Near-field levitated quantum optomechanics with nanodiamonds," Physical Review A 94, 023841 (2016). [44] Z.-q. Yin, T. Li, X. Zhang, and L. M. Duan, "Large quantum superpositions of a levitated nanodiamond through spin-optomechanical coupling," Physical Review A 88, 033614 (2013).
+12
+
+

@@ -1,0 +1,3764 @@
+TIFR/TH/16-48
+The shear viscosity of two-flavor crystalline color superconducting quark matter
+Sreemoyee Sarkar1, 2,  and Rishi Sharma1,  1TIFR, Homi Bhabha Road, Navy Nagar, Mumbai 400005, India 2UM-DAE Centre for Excellence in Basic Sciences Health Centre, University of Mumbai, Vidyanagari Campus, Kalina, Santacruz (East), Mumbai 400098, India.
+(Dated: January 3, 2017)
+We present the first calculation of the shear viscosity for two-flavor plane wave (FF) color superconducting quark matter. This is a member of the family of crystalline color superconducting phases of dense quark matter that may be present in the cores of neutron stars. The paired quarks in the FF phase feature gapless excitations on surfaces of crescent shaped blocking regions in momentum space and participate in transport. We calculate their contribution to the shear viscosity. We note that they also lead to dynamic screening of transverse t1, t2, t3 gluons which are undamped in the 2SC phase. The exchange of these gluons is the most important mechanism of the scattering of the paired quarks. We find that the shear viscosity of the paired quarks is roughly a factor of 100 smaller compared to the shear viscosity of unpaired quark matter. Our results may have implications for the damping of r-modes in rapidly rotating, cold neutron stars.
+PACS numbers: 21.65.Qr,67.10.Jn,97.60.Jd,67.85.-d
+
+arXiv:1701.00010v1 [hep-ph] 30 Dec 2016
+
+CONTENTS
+I. Introduction
+II. Review A. LOFF phase
+III. Formalism A. Boltzmann transport equation B. Quark species C. Spectrum of excitations D. Interactions E. Contribution of phonons 1. Quark-Phonon scattering 2. Momentum transport via phonons
+IV. Results for a simple interaction for isotropic pairing A. Unpaired fermions B. Paired fermions 1. BCS pairing 2. Isotropic gapless pairing
+V. Results for anisotropic pairing A. Debye screened gluon exchange B. Two-flavor FF phase using t1, t2, t3 exchange
+VI. Conclusions
+VII. Acknowledgements
+A. Pairing and blocking regions
+ sreemoyee.sinp@gmail.com  rishi@theory.tifr.res.in
+
+B. Evaluation of the collision integral
+
+27
+
+1
+
+References
+
+28
+
+3
+
+6
+
+I. INTRODUCTION
+
+7
+
+7
+
+The discovery of neutron stars with masses close to
+
+8 2M [1, 2], (see Ref. [3] for a recent review), has provided
+
+8 a strong constraint on the equation of state of matter
+
+10 in neutron stars [4­8] ruling out large parameter spaces
+
+13 in various models of dense matter. (For quark matter
+
+13 see Ref. [9].) Refinements in the measurements on the
+
+14 radii of neutron stars provide additional constraints on
+
+the equation of state [10, 11].
+
+In addition to analyzing constraints on the equation of 14 state, characterising the nature of the phases of matter 15 in neutron stars will require observationally constraining 16 the transport properties of neutron stars. These obser-
+
+16 vations can help eliminate models of dense matter incon-
+
+18 sistent with the data [4]. Transport properties are sensi-
+
+tive to the spectrum of excitations above the equilibrium 20 state (which is essentially the ground state because the 20 temperatures of neutron stars are much smaller than the
+
+other relevant energy scales). These excitations can differ 22 substantially for phases with similar equations of state.
+
+For example, the short time (time scales of many days) 24 thermal evolution already constrains the thermal conduc-
+
+26
+
+tivity and the specific heat of matter in the neutron star crust ([12, 13] and references therein). Neutrino cool-
+
+26 ing on much longer time scales (105 years) depends on the phase of matter inside the cores (see Ref. [14­16]
+
+for a review). A neutron star of mass around 1.4M ,
+
+with a core of only protons, electrons and neutrons cools
+
+"slowly". The presence of condensates, strange particles,
+
+or unpaired quark matter in the cores, leads to "fast"
+
+cooling. One hopes that observations of the tempera-
+
+2
+
+tures and the ages of neutron stars will be able to tell us whether neutron star cores feature such exotic phases.
+A set of observables sensitive to the viscosity of matter in the cores of neutron stars are the spin frequencies, temperatures, and the spin-down rates of fast rotating neutron stars [17]. In the absence of viscous damping, the fluid in rotating neutron stars is [18, 19] unstable to a mode which couples to gravity which radiates away the angular momentum of the star. If the mode grows the neutron stars are expected to spin down rapidly. This is the famous r-mode instability.
+The connection between the viscosity and the spin observables is subtle because it depends on the amplitude [20, 21] (determined by non-linear physics) at which the r-mode saturates if the star winds up in the regime where the r-mode is unstable in the linear approximation. But the essence of the connection can be understood easily [18, 19, 22] by ignoring the saturation dynamics. In this regime the amplitude of the mode changes with time as,
+
+Ae-(GW +Bulk +Shear )t
+
+(1)
+
+where GW < 0. Bulk and Shear are both positive and depend on the bulk and shear viscosities throughout the star and therefore depend on the phase of matter in the core and the temperature of the star. The magnitude of GW grows with the rotational frequency, , of the star [18].
+If  is large enough such that GW +Bulk+Shear < 0, the neutron star can be expected to spin down rapidly. This will continue till  is small enough that the shear and bulk viscosities can damp the r-modes. This argument implies that at any given temperature T , the neutron star frequency should be below a maximum [17] determined by the shear and bulk viscosities at that temperature. The shear moduli dominate at smaller T and the bulk moduli at larger temperatures, and the crossover point depends on the phase.
+Assuming there are no other damping mechanisms and that the r-modes do not saturate at unnaturally small amplitudes, fluids in neutron stars [23, 24] made up of only neutrons, protons and electrons do not have sufficient viscosity to damp r-modes in many rapidly rotating neutron stars [17, 25­27]. Large damping at the crust-core interface [26, 28, 29] could stabilize the r-mode in such stars, but would require unnaturally large shear moduli for hadronic matter [30] and may not be sufficient even for extremely favourable assumptions about this contribution [17]. Appearance of various condensates and strange particles like hyperons could enhance the viscosity of the hadronic phase. This is a very active field of research [31­39].
+At some high enough density we expect that a description based on deconfined quarks (and gluons) is a better description for dense matter than a description in terms of hadrons (though it is hard to say how high with existing techniques) [40] and hence it is worthwhile if the
+
+transport properties of quark matter are consistent with observations.
+Viscosities of unpaired quark matter have been extensively analyzed in the literature [41, 42]. They are dominated by excitations of quarks near their Fermi surfaces and are efficient due to the large density of states of low energy excitations. Models of neutron stars featuring a core of unpaired quarks [17, 27] are consistent with the observations of their rotation frequencies. (Interactions between quarks might play an important role [43] in this agreement.) Similarly, neutrino emission in unpaired quark matter would lead to "fast" cooling of neutron stars [44, 45].
+However, quarks in the cores of neutron stars are likely to be in a paired phase (see Refs. [46­48] for reviews). Pairing affects the spectrum of quasi-particles and can change the transport properties qualitatively. For example, at asymptotically high density, quark matter exists in the Color Flavor Locked (CFL) phase [49]. All the fermionic excitations in this phase are gapped and transport is carried out by Goldstone modes. The shear viscosity of the Goldstone mode associated with U(1)B breaking was calculated in [50, 51]. A star made only of CFL matter is not consistent with the observed rotational frequencies [50, 52], but in a star featuring a core of CFL surrounded by hadronic matter (hybrid neutron star) some mechanism involving dynamics at the interface (analogous to the one discussed in Ref. [53]) might be able to saturate r-mode amplitudes at a level consistent with observations.
+At intermediate densities, the nature of the pairing pattern of quark matter is not known [48]. We review some of the candidate phases below (Sec. II). One exciting possibility is that quarks form a crystalline color superconductor [54]. (See Ref. [55] for a recent review.) These phases are well motivated ground states for quark matter at intermediate densities [56, 57] although their analysis is challenging because the condensate is position dependent [58]. Unlike the CFL phase, crystalline color superconductors feature gapless fermionic excitations. Therefore, we expect transport properties of these phases to resemble unpaired quark matter.
+Neutrino emission in the crystalline color superconducting phases for the simplest three-flavor condensate was computed in Ref. [59]. Stars featuring these phases in the core do indeed cool rapidly [59, 60] and this rules out the presence of these phases in several neutron stars which have been observed to cool slowly [15, 16]. It is possible that these stars have a smaller central density (because they are lighter) than the fast rotating neutron stars for which observations are consistent with a phase with a large viscosity to damp r-modes. Such interesting questions can be answered by more observations and microscopic calculations of the transport properties of various phases of quark matter.
+In this paper we present the first calculation of the shear viscosity in the simplest member in the family of the crystalline color superconducting phases: the two-
+
+3
+
+flavor Fulde-Ferrel (FF) [61] phase. The shear viscosity depends on the spectrum of the low energy modes as well as their strong interactions. Hence it is different from the neutrino emissivity where the strong interactions between quasi-particles do not play a role.
+In the two-flavor FF phase, (just like the isotropic 2SC phase [62, 63], reviewed below) the "blue" (b) colored up (u) and down (d) quarks do not participate in pairing. Their transport properties were analyzed in Ref. [64]. But because of the presence of gapless modes, (unlike the 2SC phase), the "red" (r) and "green" (g) colored u and d quarks also contribute to the viscosity.
+We argue that ur - dg - ug - dr quarks scatter dominantly via exchange of transverse t1, t2, and t3 gluons (for details see Sec. III D). These gluons are Landau damped (in the 2SC phase the longitudinal and transverse t1, t2, and t3 gluons are neither screened nor Landau damped [65­68]). The polarization tensor of the t1, t2, and t3 gluons are anisotropic.
+Therefore, both the quasi-particle dispersions and their interactions are anisotropic, and the usual techniques to simplify the collision integral in the Boltzmann equation [42] are not applicable, making its evaluation challenging. Furthermore, the Boltzamann analysis needs to be modified to accommodate the fact that the excitations are Bogoliubov quasi-particles. To address this we find it convenient to separate the modes in the two Bogoliubov branches (Eq. 43) into modes (Eq. 46) corresponding to momenta (|p|) greater than the chemical potential (µ) (in the absence of pairing these are associated with particle states) and |p| < µ (in the absence of pairing these are associated with hole states).
+Quasi-particle modes near the gapless surface dominate transport, but the shape of the surface of gapless modes in the FF phase is non-trivial. In addition, the momentum transferred between the quasi-particles can be large and a small momentum expansion can not be always made. Therefore we evaluate the collision integral (Eq. 21) numerically.
+The main result of the computation is given in Fig. 8 and Eq. 126. The central conclusion is that the viscosity of the ur - dg - ug - dr quarks is reduced compared to their contribution in unpaired quark matter by a factor of roughly 100. The detailed analyses and the dependence on the shear viscosity on T and the splitting between the Fermi surfaces µ, are shown in Sec. V B.
+The reduction of the viscosity by a large factor depends on the properties of the mediators between the quasiparticles. For example, if we use Debye screened longitudinal gluons (this is appropriate for one flavor FF pairing and is also a good model for condensed matter systems like the FF phase in cold atoms) then the viscosity of the paired fermions is the unchanged from its value in the absence of pairing: the geometric factors associated with the reduced area of the Fermi surface cancel out. (See Sec. V A for details.) We give an intuitive argument to clarify the difference between long ranged and short ranged interactions. These results (Sec. V A), though
+
+not directly relevant for the two-flavor FF phase, provide intuition for the three-flavor crystalline phases where both longitudinal and transverse gluons are screened, and may also be relevant for condensed matter systems where transverse gauge bosons don't play a role.
+To understand some aspects of the numerical results obtained for the FF phase (Sec. V) we use our formalism to calculate the viscosity in isotropically paired systems with Fermi surface splitting in Sec. IV. For these systems it is possible to compare the numerical results with simple analytic expressions in certain limits. The results of Sec. IV -- the shear viscosity of fermions participating in isotropic pairing and interacting via a simple model interaction (the exchange of Debye screened longitudinal gluons) -- are not novel, but clarify some physical aspects of the of the problem. For example we study the role played by the scattering of paired fermions with phonons in suppressing their transport that have not been highlighted before. While the role played by phonon-fermion scattering is only of academic importance in the extreme limits  T and  T , it may be important in the intermediate regime where  > T but not  T .
+The plan of the paper is as follows. We quickly review the low energy excitations in some relevant phases of quark matter in Sec. II to compare and contrast with the FF phase. In Sec. III we set up the problem. The basic formalism is the multi-component Boltzmann transport equation (Sec. III A) which we solve in the relaxation time approximation. We describe the low energy modes (Secs. III B, III C) and their interactions (Sec. III D). We also clarify the role played by phonons in Sec. III E. In Sec. IV we show results for isotropic pairing. In Sec. V we show results for the FF phase. We summarize the results and speculate about some implications for neutron star phenomenology in Sec. VI. A quick review of the gapless fermionic modes in FF phases (Appendix A) and the details about the numerical implementation of the collision integrals (Appendix B) are given in the Appendix.
+
+II. REVIEW
+
+We now review some proposed phases of quark matter in neutron stars. We discuss the excitation spectra and the interactions between the quasi-particles in the phases and this will help us in identifying the ingredients required in setting up the Boltzmann transport equation for the crystalline phase. Experts in the field can skip to the end of the section and start from Sec. III A.
+In the absence of attractive interactions, fermions at a finite chemical potential µ and a temperature much smaller than µ are expected to form a Fermi gas, filling up energy levels up to the Fermi sphere.
+For massless weakly coupled quarks in the absence of pairing, the excitation spectrum is simply
+
+E = || = ||p| - µ|
+
+(2)
+
+where  = |p| - µ is the radial displacement of the mo-
+
+4
+
+mentum vector from the Fermi surface. The excitations at the Fermi surface (defined by  = 0) are gapless, can be excited thermally, and therefore fermions near the Fermi surface are very efficient at transporting momentum and charge. They exhibit "fast" neutrino cooling and sufficiently large viscosities to damp r-modes.
+The interactions between the quarks are mediated by gluons (eight gluons corresponding to the generators t1, . . . t8 1) and the photon. In the absence of pairing, the longitudinal components of these mediators are Debye screened [41]. The transverse components of the mediators (magnetic components) are unscreened in the presence of static fluctuations of the current, and are only dynamically screened (Landau damping). Consequently, they have a longer range compared to the longitudinal gauge bosons and dominate scattering in relativistic systems [42].
+Pairing, induced by the attractive color interaction between the quarks, qualitatively affects the transport properties of quark matter.
+At asymptotically high densities (corresponding to a quark number chemical potential µ sufficiently larger than the strange quark mass), the strange quark mass can be ignored, and the lagrangian is symmetric under SU(3) transformations between the up (u or 1), down (d or 2) and (s or 3) quarks. They can all be treated as massless and form Cooper pairs in a pattern that locks the color and flavor symmetries (CFL phase) [49]
+
+cfsL(r)c f s L(r) =  Icc Iff ss
+
+I
+
+(3)
+
+csfR(r)cs f R(r) = -  Icc Iff ss .
+
+I
+
+s, s are the Weyl spinor indices, f are flavor indices that run from 1 to 3. c, c are color labels that run over 1 (colloquially red or r), 2 (green or g), and 3 (blue or b). The left handed quarks (L) and the right handed quarks (R) pair among themselves and can be treated independently. The condensate is translationally invariant, which corresponds to pairing between quarks of opposite momenta.
+The SU(3) color symmetries and the global SU(3)L and SU(3)R flavor symmetries are broken by the condensate to a global subgroup consisting of simultaneous color and flavor transformations,
+
+SU(3)c × SU(3)L × SU(3)R × U(1)B  SU(3)c+L+RZ2 . (4)
+
+A diagonal subgroup of the SU(3)L × SU(3)R is weakly gauged by the electric charge Qe, where Qe is a diagonal
+matrix in the flavor space with entries equalling the elec-
+tric charges of the u, d and s quarks, and a linear combination of the t8 and Q (known as Q~) is unbroken [49, 65].
+
+1We use the standard notation for the Gell-Mann matrices [69] as the generators of the color SU(3).
+
+The fermionic excitations are 9 Bogoliubov quasiparticles [49] (for each hand) which are all gapped. In the NJL model [70], the condensate  is related to the gap in the excitation spectrum, 0CFL as follows [49],
+
+0CFL =  ,
+
+(5)
+
+where  is a measure of the interaction strength between quarks (the condensate , as well as 0CFL depend on µ, but we are not explicitly writing the dependence here.)
+Using the BCS theory one can show that eight fermionic quasi-particles in the CFL phase have excitation energies [71­73]
+
+E = 2 + 20CFL
+
+(6)
+
+and another branch of quasi-particles have (approximately) the spectrum of excitation
+
+E = 2 + 420CFL .
+
+(7)
+
+0CFL is expected to be of the order of a few 10s of MeV while the temperatures of the neutron stars of interest is at most a few keV, and therefore the quarks do not participate in transport.
+Pairing also qualitatively modifies the propagation of the gauge fields. The Debye screening of the longitudinal gauge bosons is proportional to the susceptibility of the free energy to changes in the color gauge potential and therefore is largely unaffected if (0CFL/µ)2 1 (as we shall assume). But pairing generates a Meissner mass for the transverse gluons. In the limit e  0 all the eight gluons have equal Meissner masses. Turning on the weak electromagnetic interaction, (e g where g is the strong coupling) [49, 73, 74] leads to a mixing between the transverse gauge fields and a linear combination of the gauge fields associated with the Q~ charge does not develop a Meissner mass while the orthogonal combination has a Meissner mass approximately equal to that of the other gluons.
+Since the fermions are all gapped, the low energy theory consists of the Goldstone modes ("phonons") associated with the broken global symmetries [49, 75­81]. While the phonon viscosity [50] formally diverges at small T , what this really means is that the hydrodynamic approximation breaks down at a temperature small enough that mean free path becomes equal to the size of the neutron star (or vortex separation [51]). Flow on smaller length scales is dissipationless, and the r-modes can not be efficiently damped at very small temperatures. The conclusion from the discussion of the unpaired and the CFL phase of quark matter is that the phenomenology of r-mode damping suggests that phases featuring gapless fermionic excitations might be consistent with the data.
+Even at the highest densities expected in neutron stars [4], the strange quark mass can not be ignored. The finite strange quark mass stresses [82] the cross species pairing (Eq. 3) in the CFL phase.
+
+5
+
+To understand the origin of this stress, note that in the absence of pairing, the Fermi surfaces of the quarks in neutral quark matter in weak equilibrium Refs. [54, 71] are given [83] by
+
+pdF
+
+= puF
+
++
+
+m2s , 4µ
+
+psF
+
+= puF
+
++
+
+m2s 4µ
+
+(8)
+
+implying in particular that the splitting between the u-d and the d - s Fermi surfaces
+
+2pF
+
+=
+
+m2s 4µ
+
+.
+
+(9)
+
+On the other hand pairing between fermions of oppo-
+site momenta (Eq. 3) is strongest if the pairing species
+have equal Fermi momenta. This argument suggests that
+when pF  0CFL, the symmetric pairing pattern in Eq. 3 may get disrupted. A detailed analysis [84] bears out this intuition. For m2s/µ > 20CFL, a condensate with unequal pairing strengths between various species has a lower free energy than the condensate in Eq. 3 2.
+
+cfsL(r)c f s L(r) = I Icc Iff ss .
+I
+
+(10)
+
+The pairing between the s and the d quarks is the weakest because the splitting between their Fermi surfaces is the largest (Eq.8). The s and the u pairing is also reduced, while the u - d pairing is not significantly affected [84].
+The resultant phase has a remarkable property that certain fermionic excitations are gapless [72]. To see how this behavior arises, note that if two fermions i and j with a chemical potential difference |µi - µj| = 2µ, form Cooper pairs with a gap parameter  ( =  is not the gap in the excitation spectrum for finite µ), the Bogoliubov quasi-particles have eigen-energies
+
+E± = µ ± 2 + 2 .
+
+(11)
+
+For  < µ, the set of gapless fermions lie on the surface
+
+|| = ± µ2 - 2 .
+
+(12)
+
+The gapless CFL phase was found to be unstable in Refs. [95­97]. The Meissner mass squared of some of the gluons is negative in this phase. (This chromomagnetic instability was found earlier in the 2SC phase [98, 99] that we discuss below.) This instability can be seen as an instability towards the formation of a position dependent condensate [100, 101], which bear resemblance to the LOFF (Larkin, Ovcinnikov, Fulde, Ferrell)
+
+2Other ways by which the CFL phase can respond to the stress on pairing include the formation of K0 condensates (CFL - K0) [85­89] and K0 condensates with a current (currCFL - K0) [88, 90­92]. The bulk viscosity in the CFL - K0 phase was
+calculated in Refs. [93, 94]. In the absence of additional damping mechanisms, the viscosity of CFL - K0 appears to be insufficient
+to damp r-modes [52].
+
+phases [61, 102] previously considered in condensed matter systems. (It has been argued in Refs. [103, 104] that the chromomagnetic instability might instead lead to a condensation of gluons, a possibility we won't explore further here.) We review the LOFF phases in Sec. II A, and the possibility that LOFF phases are the ground state of baryonic matter in the cores of neutron stars motivates the analysis of transport in FF phases, which is the prime objective of present manuscript.
+Restricting, for the moment, to spatially homogeneous and isotropic condensates, another possibility that has been considered in detail in the literature [62, 63] is one where the stress due to the s quark mass lead to the s quarks dropping out from pairing. The u and d quarks form a two-flavor, two color condensate (2SC pairing)
+
+cf sc f s = 3 3cc 3f f ss .
+
+(13)
+
+The u-b, the d-b are also unpaired, while the ur quarks pair with the dg quarks and the ug with the dr.
+Taking, for the moment, equal u and d Fermi surfaces, 2SC pairing (Eq. 13) leaves a SU(2) sub group of color unbroken. The symmetry breaking pattern is
+
+SU(3)c × SU(2)L × SU(2)R × U(1)B 
+
+(14)
+
+SU(2)(r-g) × SU(2)L×SU(2)R × U(1)B~ ,
+
+Since the SU(2) transformations associated with r - g quarks are unbroken, the t1, t2, t3 gluons do not pick up
+a Meissner mass [65, 66]. As we shall see, because of this, the t1, t2, t3 gluons play a special role in the two-flavor
+FF phase that we consider.
+If the strange quark mass is large enough that their
+contribution to the thermodynamics can be ignored, the longitudinal components of the t1, t2, t3 gluons remain
+un-screened [66, 68]. This can be intuitively understood
+as follows. Debye screening (at low T ) requires the pres-
+ence of ungapped excitations (here ungapped fermions)
+that can couple with the relevant gauge field. Here, the
+r and g quarks of both u and d quarks are gapped (with
+a gap 2SC0) due to pairing. Furthermore, the condensate is also neutral under the t1, t2, t3 gluons. Therefore, both longitudinal and transverse gluons t1, t2, t3
+can mediate long range interactions between quarks, and
+give rise to confinement on an energy scale much smaller
+than QCD [67]. The color transformations corresponding to the t4 . . . t7 generators and the associated trans-
+verse gauge fields do develop a Meissner mass. The longitudinal components of the t4 . . . t7 gauge fields are Debye screened [66, 68]. Similarly, the t8 gluons feature
+Meissner and Debye screening [66, 68]. As in the case
+of the CFL phase, the transverse components of a linear combination of t8 and Q gauge bosons (Q~ photon) have
+0 Meissner mass. Electrical neutrality is maintained by
+electrons. Finally, since no global symmetries are broken
+by the condensate, there are no Goldstone modes.
+The low energy dynamics are therefore dominated by
+the unpaired u - b and d - b quarks interacting predominantly via the Q~ photon and the electrons interacting via
+
+6
+
+the photons. Transport in this phase has been analyzed in detail in Ref. [64]. The bulk viscosity for the 2SC phase was computed in Ref. [105]. Since the b quarks are unpaired, the transport properties in this mode are similar to that in unpaired quark matter and hence we expect that viscosities should be large enough to damp r-mode instabilities if a large volume of 2SC matter is present in the cores of neutron stars.
+For weak and intermediate coupling strengths [106, 107], the 2SC phase has a smaller free energy compared to the CFL phase and unpaired quark matter, only for temperatures larger than a few MeV [106­109]. For large couplings [106, 107] however, it is favoured over the CFL and the unpaired phase over a range of chemical potentials expected to be present in some region in the cores of neutron stars (350 to 400MeV) and the occurrence of a 2SC phase may provide a plausible mechanism for the damping of r-modes. It is however worth exploring other compelling possibilities, viable in particular for intermediate and weak coupling.
+As in the case of three-flavor pairing, the requirements of neutrality and weak equilibrium tend to split the u - d Fermi surfaces [110] and impose a stress on pairing. For large enough stress (µ  2SC0), the u and d quarks that participate in pairing exhibit gapless excitations as suggested by Eqs. 12 and 13 [110, 111].
+The low energy theory of the gapless 2SC phase features the unpaired b quarks near the Fermi surface, as well as Bogoliubov quasi-particles (linear combinations of ur - dg - ug - dr quarks and holes) near the gapless spheres (Eq. 12). The gapless quasi-particles interact via the t1, t2, t3, and t8 gluons and the photon with each other. They can also exchange t4 . . . t7 gluons to change to b quarks. In terms of the participants in the low energy theory, this phase resembles the two-flavor FF phase that we shall study in detail in the paper.
+The transverse t1, t2, t3 gluons remain massless since the SU(2)c(r-g) is unbroken in the gapless phase. (The global SU(2)L × SU(2)R in Eq. 14 are no longer relevant because it is broken by µ.) The presence of gapless excitations generates a Debye screening mass [98, 99] for the longitudinal modes of all the gauge fields.
+However, like three-flavor pairing, the 2SC phase with gapless Bogoliubov excitations is unstable [98] since the Meissner mass squared of a linear combination of photon and the t8 gluon (orthogonal to the Q~ photon) becomes negative for µ > 2SC0. In addition, the mass squared of t4, t5, t6, and the t7 gluons become negative for µ > 2SC0/ 2 [98]. As in three-flavor case, this instability can be seen as an instability towards the formation for a LOFF phase.
+Finally, it is possible that the stress due to µ disrupts the inter species pairing altogether and leads to the formation of Cooper pairs of a single flavor [112­115]. If the pairing is weaker than keV scale, then for hotter neutron stars it will be irrelevant and results found for unpaired quark matter shall apply. For stronger pairing, only few transport properties of these single flavor states
+
+have been studied (see Ref. [116] for the calculation of neutrino emissivity and Ref. [117] for electronic properties.) and it will be interesting to calculate their viscosities. Some of the phases feature gapless fermionic modes and would be expected to behave similarly to unpaired quark matter, though more detailed analyses would be interesting.
+The two points we want to take away from this brief review are (a) the analyses of r-mode damping suggest that if a quark matter core damps the r-modes, then it features gapless fermionic excitations (b) at neutron star densities for a range of parameters, uniform and isotropic pairing phases are unstable towards the formation of a position dependent condensate. We now review the salient features of phases with such pairing.
+
+A. LOFF phase
+
+A natural candidate for a position dependent pairing condensate is the LOFF phase which was proposed as the plausible ground state for stressed quark matter [54, 118] before the discovery of the chromomagnetic instabilities. The motivation for this proposal is that a condensate of the form,
+
+i(r)j (r) = e2ib·r ,
+
+(15)
+
+allows pairing along rings on split Fermi surfaces for b = |b| > µ [54] 3 (b, µ and  are all taken to be much smaller than µ). b defines the wave-vector for the periodic variation of the condensate.
+In the NJL model, the phase with condensate Eq. 15 is preferred over unpaired matter as well as the space independent condensate for µ  [0.7070, 0.7540] [54]. At the upper end, the transition from the crystalline phase to the normal phase is second order as we increase µ, and   0 smoothly as µ  0.7540 from the left. The crystalline phase is favoured over normal matter for µ < 0.7540, where 0 is the two-flavor gap for µ = 0. The most favoured momentum b near µ = 0.7540 is
+
+b = µ ,
+
+(16)
+
+with   1.1996786... [61, 83, 102, 119, 120]. (This number is conventionally called  in the literature but in this manuscript we give it a different symbol to avoid confusion with the viscosity .) The homogeneous phase with pairing parameter 0 is favoured for µ < 0.707. (For single gluon exchange the window of favorability is larger [121].)
+
+3The real number b refers to |b| which is different from the "blue" colored quark. b as an index in the set {a, b, c, d} refers to the branch of the dispersion as we discuss below. We apologize for the degeneracy in notation but the contexts are quite different and hence unlikely to cause confusion.
+
+7
+
+Intuitively one expects [119] that condensates featuring multiple plane waves
+
+i(r)j (r) =  e2ibm·r ,
+m
+
+(17)
+
+can pair quarks along multiple rings and give a stronger Free energy benefit as long at the pairing rings do not overlap. The set of plane waves {bm} define a crystal structure. A detailed calculation [119] till the 6th order in the pairing parameter in the Ginsburg-Landau approximation confirms this. A more recent sophisticated numerical analyses reveals [58] that higher order terms are important for determining the favoured crystal structure, and may predict different favoured crystal structures than what the Ginsburg-Landau analysis predicts.
+For the three-flavor problem, the form of the LOFF condensate [56, 120, 122] is
+
+cfs(r)c f s (r) =
+
+I e2iqm·r Icc If f ss .
+
+I {qm}I
+
+(18)
+
+Within the Ginzburg-Landau approximation [56], condensates of the form Eq. 18 for two crystalline phases have a lower free energy than unpaired quark matter as well as homogeneous pairing phases over a wide range of parameters of µ,  and ms that are expected to exist in neutron star cores [57].
+Therefore it is natural to evaluate its transport properties and test whether they are consistent with existing and future observations. As mentioned above, neutrino emissivity for a three-flavor LOFF phase with the simplest three flavor crystal structure were computed in Ref. [59].
+In this paper we take the first step in the calculation of the shear viscosity in crystalline color superconductors. To simplify the calculations we ignore the s quarks completely and consider phases with a single plane wave condensate,
+
+cfs(r)c f s (r) = 3e2ib·r 3cc 3ff ss ,
+
+(19)
+
+which corresponds to taking 1 = 2 = 0 in Eq. 18, as well as limiting the set of momentum vectors {bm}3 to just one vector b. This is also known as the Fulde-Ferrel
+(FF) state.
+Eq. 19 models FF pairing between u and d quarks
+with Fermi surfaces split by 2µ = µd - µu [which can be thought of as the measure of the strange quark mass µ  m2s/(4µ) [71] (Eq. 8) in 2SC + s [48] or the electron chemical potential µ  µe/2 [110] in the 2SC phase without s quarks]. This simplifies the calculations signifi-
+cantly since the dispersions of the fermions [54] in the FF
+state have a compact analytic form (Eq. 42). We shall
+see that even with these approximations, the calculation
+of the viscosity contributions of the ur - ug - dr - dg
+quarks is non-trivial because of pairing.
+
+Eq. 19 can be seen as denoting pairing between two Fermi surfaces with radii µ ± µ and centres displaced by 2b. For b > µ, the two Fermi surfaces intersect. For 3  0 (true near the second order phase transition between the inhomogeneous and unpaired phase), the pairing parameter is small and pairing can not occur when either the u or the d momentum state is unoccupied [54]. (See Appendix A for a quick reminder.) The boundary of these "pairing regions" feature gapless fermionic excitations. This suggests that the contributions of the paired ur - dg - ug - dr quarks is not very different from their contributions in unpaired quark matter.
+However, the shapes of the gapless "Fermi surfaces" in LOFF pairing is quite complicated, and their areas drop rapidly as 3 increases as we decrease µ from 0.7540. Therefore, it is not clear how their contributions behave in the neutron star core. We answer this question in this paper. In the following section we develop the formalism to calculate shear viscosity coefficient in crystalline color superconducting phase.
+
+III. FORMALISM
+This section develops the theoretical aspect of calculation of transport coefficients in the LOFF phase. We start our discussion with Boltzmann equation in an anisotropic system.
+
+A. Boltzmann transport equation
+
+In a system of multiple species, the relaxation times i for the species i can be found by solving a matrix equation,
+
+L(in) = [Ri(jn)]j(n) ,
+j
+
+(20)
+
+where Li is related to the phase space of quasi-particles that participate in transport, and [Rij] is the collision integral. We have labelled the collisional integral with an additional index (n) associated with the tensor structure of the transport property we are considering.
+To be concrete, consider a situation where transport is dominated by fermionic particles and their interaction with each other provides the most important scattering mechanism. Following the notation of Ref. [64] the Boltzmann transport equation for each species i can be written
+
+8
+
+as,
+
+where
+
+L(in)
+
+=
+
+1  (n)
+
+d3pi (2)3
+
+df0i d
+
+(ai biab)
+
+[Ri(jn)]j(n) = -
+
+11 (n) T 2
+
+j
+
+234
+
+d3pi d3p2 d3p3 d3p4 (2)3 (2)3 (2)3 (2)3
+
+|M(i2  34)|2
+
+i(n)
+
+=
+
+(-
+
+3 2
+
+ (n)
+
+i)[L(in)]i(n)
+
+.
+
+(28)
+
+To evaluate Eq. 21 we need to identify the relevant species and the interactions between them. We do these in turn in the next two sections.
+
+(2)4( pµ)[fif2(1 - f3)(1 - f4)]
+
+B. Quark species
+
+3i.[i(n)i(n) + 2(n)2(n) - 3(n)3(n) - 4(n)4(n)] ,
+(21)
+
+We shall consider phases with a condensate of the form
+
+cfs(r)c f s (r) = 3(r) 3cc 3ff ss .
+
+(29)
+
+where f is the Fermi-Dirac distribution function. M(12  34) refers to the transition matrix element for the scattering of the initial state featuring 1, 2 (defined by momenta p1, p2 and additional quantum numbers like spin, color and flavor) to the final state 2, 4. The sum over 2, 3, 4 runs over all the species that interact with i.
+The form of the flows  and  in Eq. 21, relevant for the calculation of the shear viscosity, are given by
+
+ai b = pavb iab = (n)ab ai b,
+
+(22)
+
+where
+
+va
+
+=
+
+dE dpa
+
+.
+
+(23)
+
+(n)ab are operators that project the shear viscosity
+tensor into susbspaces, (n), invariant under the rotational symmetries of the system. n defined by
+
+(n) = (n)ab ab
+
+(24)
+
+are the dimensions of these subspaces. For example, in an isotropic system, the shear viscosity
+tensor should be invariant under all rotations, and the only projection operator is the traceless symmetric tensor
+
+We shall ignore the contribution of the s quarks which, if present (2SC+s phase [110]), are unpaired. Only ur -dg and ug-dr quark pairs participate in pairing. The ub and db (b color) quarks as well as the electrons are unpaired.
+Transport effected by the ub and the db quarks, as well as by the electrons in the homogeneous and isotropic 2SC phase has been studied in detail in Ref. [64]. Since they are unpaired, techniques from condensed matter theory for calculating the transport in Fermi liquids can be used to simplify the calculation, although there are new features associated with the fact that the quarks are relativistic [123] and due to the non-trivial color and flavor structure of the interaction [64].
+Here we want to focus on the effect of crystalline pairing on the quark transport. In the full three-flavor theory with 1, 2 = 0, the ub and db species as well as the strange quarks will participate in crystalline pairing (Eq. 18). Therefore we need to develop techniques to calculate fermionic transport properties in the presence of a crystalline order parameter. In this paper, we shall limit ourselves to the calculation of transport in the two-color two-flavor subsystem of ur -dg -ug -dr quarks. Even in this two-color, two-flavor subspace, the theory of transport is quite rich and we will learn valuable lessons that will help in future attempts to extend the calculations to the three-flavor problem.
+
+ab = ( 1 ab + 1 a b
+
+2
+
+2
+
+- 1 ab) , 3
+
+(25)
+
+with  = 5. We will consider system where the condensate chooses
+a particular direction and such systems have 5 independent forms. In particular, we will focus on n = 0 for which
+
+(0)
+
+=
+
+3 ( 2 )(babb
+
+-
+
+1 3 ab)(bb
+
+-
+
+1 3 )
+
+(0) = 1 .
+
+(26)
+
+The contribution to the viscosity tensor for each species i is given by
+
+iab =
+
+i(n)(n)ab ,
+
+(n)
+
+(27)
+
+C. Spectrum of excitations
+
+The mean field lagrangian for ur, ug, dr, and dg quarks [46] quarks is given by
+
+ L = -2 +
+
+
+1 2
+
+4L
+
+i¯µµ + µu -e2ib·r -e-2ib·r iµµ - µd
+
+4L + (L  R) , (30)
+
+where
+
+ urLa(x) 
+
+ ugLa(x) 
+
+4L(x)
+
+=
+
+  
+
+-
+
+a b dgLb (x)
+
+  
+
++ a b drLb (x)
+
+(31)
+
+9
+
+FIG. 1. (color online) The four (Eq. 46) branches [solid red (a,  < 0), dashed green (b,  > 0), solid blue (c,  < 0), and dashed cyan (d,  > 0) ] for µ = 100,  = 1MeV, µ = 1.4MeV, b = 1.3MeV, and cos  = -0.1 (Eq. 43). The gap between the lower and upper branches is 2, and for  T only excitations near E = 0 participate in transport.
+
+or more compactly as
+
+4L(x) =
+
+uL(x) -[ c]dCL (x)
+
+(32)
+
+where, [ c]cc = cc is the antisymmetric matrix in a two dimensional sub-space of color.
+For the ur, dg quarks, it can be written as
+
+ L=- +
+
+
+1 2
+
+L
+
+i¯µµ + µu -e2ib·r -e-2ib·r iµµ - µd
+
+L + (L  R) (33)
+
+where [46],
+
+ = 3
+
+(34)
+
+and the two dimensional Nambu-Gorkov spinors  are defined as
+
+L(x) =
+
+urLa(x) - a b dgLb (x)
+
+=
+
+urL(x) -dCgL(x)
+
+L(x) = (urLa (x), - acdgLc(x)) = (urL(x), -dCgL(x)) , (35)
+
+where x = (t, r). Similarly, the Nambu-Gorkov spinor for ug - dr
+
+L(x) =
+
+ugLa(x) a b drLb (x)
+
+=
+
+ugL(x) dCrL(x)
+
+L(x) = (ugLa (x), acdrLc(x)) = (ugL(x), dCrL(x)) ,
+
+(36)
+
+has the same form as Eq. 33. For h = -1/2, p ·  = -p = -|p|, (This the cor-
+rect helicity for L handed quarks. These are the "large" components in the Fourier decomposition of the Dirac spinor [120].) and the dispersion relation for the paired quarks is obtained by diagonalising finding the energy eigenvalues of
+
+(E - |p + b|) + µu
+
+-
+
+-
+
+(E + |p - b|) - µd
+
+.
+
+(37)
+
+The eigenvalues and the eigenvectors are given by,
+
+E1 =(|p + b| - |p - b| + 2µ)/2
+
+- 2 + 2
+
+
+
+
+
+1 =
+
+11 12
+
+1 1 - 
+
+=
+
+2
+
+
+
+-e-i 1 1 + 
+
+2
+
+(38)
+
+and,
+
+E2 =(|p + b| - |p - b| + 2µ)/2
+
++ 2 + 2
+
+
+
+
+
+2 =
+
+21 22
+
+1 1 + 
+
+= 2
+
+
+
+e-i 1 1 - 
+
+2
+
+(39)
+
+ = (|p + b| + |p - b| - 2µ)/2, = 2 + 2 and  is the phase of . µ = (µu + µd)/2 is the mean of the chemical potentials and µd - µu = 2µ.
+The Bogoliubov coefficients can be arranged in a orthonormal matrix form,
+
+[] =
+
+11 21 12 22
+
+(40)
+
+We simplify the momentum integrals Eq. 21 in the limit µ µ, b, , and µ, T . Near the Fermi surface
+
+d3p (2)3
+
+=
+
+p2dpd (2)3
+
+
+
+µ2
+
+d
+
+d (2)3
+
+.
+
+(41)
+
+In this approximation
+
+E1(p) = µ + b · vF - 2 + 2
+
+(42)
+
+E2(p) = µ + b · vF + 2 + 2 ,
+
+or in polar coordinates with ^b = z^,
+
+E1(, ) = µ + b cos  - 2 + 2
+
+(43)
+
+E2(, ) = µ + b cos  + 2 + 2 ,
+
+where  = p - µ and vF = (d/dp)p^ = p^ is the Fermi velocity.
+
+10
+
+The mode decomposition of  is
+
+L(x) =
+
+d4p e-ipµxµ [ (2)4
+
+(2)(p0 - E1)
+
+11eib·r-(p) 12e-ib·r-(p)
+
+L
+
+(44)
+
++ (2)(p0 - E2)
+
+21eib·r-(p) 22e-ib·r-(p)
+
+L] ,
+
+where (-) is the two component spinor satisfying
+
+p · -(p) = -p-(p) .
+
+(45)
+
+Now, with the two energy eigenstates Eq. 42 in hand, it is tempting to treat Eq. 21 as a two species problem in the eigenstates Eq. 38 and Eq. 39 which corresponds to an appropriate linear combination of u particles and d holes (Eq. 44).
+Since, u and d quarks have different couplings (which is the case for Q~ "photons") with the gauge fields, we treat it as a four species problem, labelling the species as
+
+a  E1,  < 0
+
+b  E1,  > 0
+
+(46)
+
+c  E2,  < 0
+
+d  E2,  > 0 .
+
+This labelling also clarifies the contributions to the shear viscosity from the various branches of the Bogoliubov dispersions (Fig.(1)).
+The matrix equation, Eq. 21, is now a 4 × 4 matrix equation which gives the four relaxation times i and the viscosities can be found by using Eq. 28.
+
+D. Interactions
+
+The interactions between the quarks are mediated by the gauge bosons: the gluons and the photon. The gluonquark vertex is
+
+Sg = (g) d4x¯µtmAm µ
+
+(47)
+
+where g is the strong coupling constant, and the photonquark vertex is
+
+Se = (-e) d4x¯µQAµ
+
+(48)
+
+where tm are the Gell-Mann matrices and Q = diag{2/3, -1/3} in flavor space.
+To contrast with the properties of the mediators in the FF phase, we revise the main features in the unpaired phase. Transport in the unpaired phase is dominated by the quarks and the electron. The mediators of their interactions have the following properties.
+
+The longitudinal components of the gluons as well as the photon are Debye screened. The relevant propagators for the gauge boson are
+
+-q2
+
+i -
+
+l(q)
+
+[q^iq^j ]ab
+
+(49)
+
+where (, q) = pµ3 - pµ1 = pµ2 - pµ4 is the four momentum carried by the gauge field, q2 = qiqi, q = |q|, and l 4 is longitudinal polarization tensor. We have neglected 2
+in the propagator. In the limit of small q,
+
+l(q)
+
+
+
+l(0)
+
+=
+
+m2D
+
+=
+
+2Nf
+
+(
+
+g 2
+
+)2
+
+µ2 2
+
+,
+
+(50)
+
+up to corrections of the order (µ/µ)2. Nf = 2 in the two-flavor FF problem.
+In the absence of pairing the transverse gluons are dynamically screened
+
+2
+
+-
+
+i q2 -
+
+t(q) [ij
+
+-
+
+q^iq^j ]ab
+
+(51)
+
+where t is transverse polarization function, which in the limit of small , q,
+
+t(,
+
+q)
+
+
+
+(
+
+-i 4q
+
+)2Nf
+
+(
+
+g 2
+
+)2
+
+µ2 2
+
+.
+
+(52)
+
+Since the energy exchange, , is governed by the temper-
+
+ature, while the momentum exchange can be much larger
+
+(typically of the order of gµ), the transverse gluons have
+
+a longer range compared to the longitudinal and there-
+
+fore their exchange is the dominant scattering mechanism
+
+for the quarks. Consequently, the momentum exchange
+
+q that dominates the collision integral for the transverse
+
+gauge bosons is  (T l(0))1/3 [123], while for the longitudinal gauge bosons it is  (l(0))1/2.
+
+Similarly, for the photon the Debye screening mass
+
+can
+
+be
+
+obtained
+
+from
+
+Eq.
+
+50
+
+by
+
+replacing
+
+2Nf
+
+(
+
+g 2
+
+)2
+
+cbaynNbcee2o(bQt2uain+edQ2dfr)omandEqt.he52trbaynsrveeprlsaecipnogla2rNizfa(tig2o)n2
+
+t by
+
+Nce2(Q2u + Q2d) with Nc = 3.
+
+We now consider the gauge bosons in the two-flavor
+
+FF phase. As far as the Debye screening masses are con-
+
+cerned, these are determined by the total density of gap-
+
+less states. For gluons that couple with the species that
+
+participate in pairing, this density of states is affected by
+
+two competing effects.
+
+First, there is a geometric factor associated with a re-
+
+duction in size of the surface of gapless excitations [54]
+
+(Appendix A),
+
+µ2 µ2
+
+
+
+2  2 (1 - 2 b ),
+
+(53)
+
+4The projection operator, also called  in the previous section, always appears with indices (n) and can be easily distinguished
+from the polarization.
+
+11
+
+since the blocking region is absent for cos  
+
+[
+
+µ- b
+
+,
+
+µ+ b
+
+].
+
+Second, the Fermi velocity on the surface of gapless
+
+excitations is reduced due to pairing. In spherical coor-
+
+dinates, the Fermi velocity is given by
+
+dE (, ) = p^
+dp  p^
+
+ 2 +
+
+2
+
+|=(µ+b cos )2-2
+
++
+
+b ^ p
+
+ 2 +
+
+2 |=(µ+b cos )2-2
+
+<
+
+p^ .
+
+(54)
+
+The reduction of the velocity enhances the density of states at the gapless point [124] for certain values of .
+Consequently, we expect that for the gluons
+
+l(0)
+
+=
+
+2Nf
+
+( g )2 2
+
+µ2 2
+
+ f( ,
+µ
+
+b )
+µ
+
+(55)
+
+where f is expected to be of order 1 [125]. Similar arguments hold for the photon.
+We leave a detailed analysis of screening of the longitudinal modes for future work. The two main points we want to emphasize are as follows. First the longitudinal t1, t2, t3 gluons are screened and hence unlike in the 2SC phase [67] the ur - dg - ug - dr quarks are not confined. Second, the longitudinal modes of all the mediators are screened and therefore can be ignored compared to the Landau damped transverse mediators while calculating the transport properties. The transverse screening masses for the gauge bosons in the two-flavor FF phase were analyzed in detail in Ref. [100, 126] and we summarize the main conclusions here.
+In contrast with unpaired phase, in the two-flavor FF phase, the Meissner masses for the t4 . . . t7 gluons are non-zero [100, 126, 127]. The FF condensate cures the instability seen in the gapless 2SC phase, and the squares of all the four Meissner masses are positive, and are functions of , µ, µ, and b.
+The Meissner masses tend to 0 as   0 and hence naturally
+
+m2M
+
+
+
+(
+
+g 2
+
+)2
+
+µ2 2
+
+2 µ2
+
+.
+
+(56)
+
+2 tends to 0 at µ = 0.7542SC0, i.e., the transition point. Away from the transition point,  is much larger
+than T , and screening is strong if the Meissner mass is
+non-zero. The fate of the t8 and the photon is more interesting.
+As in the 2SC phase, the condensate is neutral under the linear combination associated with the Q~ charge which is unscreened. The Q~ photon is weakly coupled to the
+quarks and is less important than the unscreened glu-
+ons [46]. The orthogonal linear combination,
+
+AXµ = cos A8µ + sin AQµ ,
+
+(57)
+
+with
+
+
+
+3g
+
+cos  =
+
+,
+
+(58)
+
+e2 + 3g2
+
+is strongly coupled. Because b chooses a particular direction, the trans-
+verse polarization tensor is not invariant in the range of the transverse projection operator
+
+[ij - q^iq^j] .
+
+(59)
+
+Ref. [126] showed that a further projection by bibj (note that Ref. [126] uses q to denote what we call b and k to denote what we call q) gives a polarization tensor which vanishes in the 0 momentum limit (the "longitudinal transverse gluon"). The projection on to ij - bibj (the "transverse transverse gluon") has a finite Meissner mass.
+While the "longitudinal transverse" part of AXµ is long ranged as well as strongly coupled, its contribution is smaller compared to the t1, t2, t3 gluons as we argue below (below Eq. 75). The transverse t1, t2, t3 gluons are massless as in the 2SC phase [125, 126]. What has not been appreciated in the literature is that they are Landau damped.
+To express the transverse polarization tensor in a compact form we choose an orthogonal basis for the range of Eq. 59 as follows.
+
+^b × q^
+
+y^ = |^b × q^|
+
+(60)
+
+x^ = y^ × ^b .
+
+On general grounds,
+
+ti
+
+j
+
+(, q)
+
+=
+
+-i
+
+(
+
+)
+
+4q
+
+2Nf
+
+(
+
+g 2
+
+)2
+
+µ2 2
+
+hit
+
+j
+
+ (,
+µ
+
+b µ , cos bq)
+
+.
+
+(61)
+
+For unpaired quark matter hi j = i j . Numerical results for the Landau damping coefficient
+for b/µ =  are well described by the expressions
+
+htx
+
+x
+
+ (,
+µ
+
+b ,
+µ
+
+cos
+
+bq )
+
+
+
+1
+
+-
+
+(
+
+ b
+
+)1/4
+
+1 1.65
+
+(1
+
+-
+
+cos
+
+b4q )1/2
+
+hyt
+
+y
+
+ (,
+µ
+
+b ,
+µ
+
+cos
+
+bq )
+
+
+
+1
+
+-
+
+(
+
+ b
+
+1 )
+1.75
+
+(1
+
+-
+
+cos
+
+b2q )1/2
+
+htx
+
+y
+
+ (,
+µ
+
+b ,
+µ
+
+cos
+
+bq )
+
+
+
+0
+
+.
+
+(62)
+
+We note that h < 1, which is expected because the gapless surface (For a quick refresher on the gapless modes in the FF phase see Appendix A. For details see [54, 83, 119, 120]) in the FF phase has a smaller surface area compared to the unpaired phase The details of the calculation will be given elsewhere [128].
+To summarize, scattering between the ur - dg - ug - dr quarks is dominated by exchange of the transverse t1, t2, t3 gluons. Their propagator is of the form
+
+iDµab
+
+=
+
+2 - q2
+
+i - it j
+
+(, q) [Pµi j
+
+]ab
+
+.
+
+(63)
+
+12
+
+The projection operator,
+
+Similarly, for R we obtain
+
+Pµi j = µi j
+
+(64)
+
+projects into the subspace spanned by the unit vectors
+ei, ej (Eq. 60), it j (, q) are given by Eq. 61. The interaction can be written in terms of the Nambu-
+Gorkov spinors 5 as follows.
+
+LAR =
+
+d4p1 (2)4
+
+d4p3 (2)4
+
+g
+
+(11 12)R (2)(p03 - E1) + (21 22)R(2)(p03 - E2)
+
+1+ (p)µ+(p)
+
+0
+
+0
+
+1+ (p)¯µ+(p)
+
+Sg = (g) d4x¯µtmAm µ
+
+(
+
+11 12
+
+)R(2)(p01
+
+-
+
+E1)
+
++
+
+(
+
+21 22
+
+)R(2)(p01
+
+-
+
+E2)
+
+= (g) d4x¯L¯µtmLAm µ + (g) d4x¯RµtmRAm µ . tmAm µ (p3 - p1) .
+
+(70)
+
+(65)
+
+A nice way to separate the spinor and the NambuGoing to momentum bases and using Eq. 44 we obtain, Gorkov structure is to re-combine the L (69) and R (69)
+
+LAL =
+
+d4p1 d4p3 (2)4 (2)4
+
+g (11 12)L (2)(p03 - E1) + (21 22)L(2)(p03 -
+
+1- (p3)¯µ-(p1)tm
+
+0
+
+0
+
+-1- (p3)C¯T µC-(p1)
+
+ c
+
+(tm
+
+)T
+
+E2)
+c
+
+components
+
+LALR =
+
+d4p1 d4p3 (2)4 (2)4
+
+g (u¯s(p3)µus(p1))
+
+(11 12)s(2)(p03 -
+
+E1)
+
++
+
+(21
+
+22)s(2)(p03
+
+-
+
+E2)
+
+(
+
+11 12
+
+)L(2)(p01
+
+-
+
+E1)
+
++
+
+(
+
+21 22
+
+)L(2)(p01
+
+-
+
+E2)
+
+Aaµ(p3 - p1) . (66)
+
+(
+
+11 12
+
+)s(2)(p01
+
+-
+
+E1)
+
++
+
+(
+
+21 22
+
+)s(2)(p01
+
+-
+
+E2)
+
+tmAm µ (p3 - p1) . (71)
+
+Now we can use the conjugation relation for t1, t2, t3 generators,
+
+The final ingredient we need is the simplification of the color structure in the interaction. For this we use the relation (a = 1, 2, 3)
+
+-1 c(tm)T c = tm ,
+
+(67)
+
+and the tm get decoupled from the Nambu-Gorkov struc-
+ture. [This step won't work for the other SU(3) gener-
+ators and works because the SU(2) subgroup generated by t1 . . . t3 is unbroken in two-flavor FF. See Eq. 99 for
+an analysis of a broken generator.] We also use the conjugation relation for ¯µ,
+
+C¯T µC = µ ,
+
+(68)
+
+to simplify the spin structure. This gives,
+
+LAL =
+
+d4p1 (2)4
+
+d4p3 (2)4
+
+g
+
+tm ij tm kl
+
+=
+
+-1 [ 4 ij kl
+
++
+
+1 2 ilkj ]
+
+(72)
+
+Summing over the final colors (j, l) and averaging over the initial colors (i, k) gives (the sum over colors runs over only two colors r and g)
+
+1 4
+
+tm ij tm kltnijtnkl
+
+=
+
+1 4
+
+tm ij
+
+tm kl
+
+tnjitnlk
+
+3 =.
+16
+
+(73)
+
+Therefore, the square of the scattering matrix element averaged over initial color and spin and summed over the
+
+(11 12)L (2)(p03 - E1) + (21 22)L(2)(p03 - E2)
+
+1- (p3)¯µ-(p1)
+
+0
+
+0
+
+1- (p3)µ-(p1)
+
+(
+
+11 12
+
+)L(2)(p01
+
+-
+
+E1)
+
++
+
+(
+
+21 22
+
+)L(2)(p01
+
+-
+
+E2)
+
+tmAm µ (p3 - p1) . (69)
+
+5Since we are considering transverse gluons there are no vertex corrections.
+
+13
+
+final color and spin are given by 6
+
+|iM¯ |2
+
+=
+
+g 3(
+
+)4
+
+2
+
+|(i31 i32)
+
+i11 i12
+
+|2|(i41 i42)
+
+i21 i22
+
+|2
+
+1 4
+
+1 2p12p22p32p4
+
+tr[p/3
+
+
+
+µp/1
+
+
+
+]tr[p/4
+
+
+
+p/2
+
+
+
+]Dµ
+
+D
+
+=
+
+3(
+
+g 2
+
+)4i1i3 i2i4
+
+1 4
+
+1 2p12p22p32p4
+
+tr[p/3
+
+
+
+µp/1
+
+
+
+]tr[p/4
+
+
+
+p/2
+
+
+
+]Dµ
+
+D
+
+,
+
+(75)
+
+where i1, i2, i3, and i4 run over 1, 2 where 1 corresponds to  and 2 to . Note that the orthogonality of
+[] (Eq. 40) ensures that i1 = i3 and i2 = i4, and the nature of the Bologliubov particles doesn't change at the
+vertex. This can be traced to the residual SU(2) symmetry. The factor 1/(2p12p22p32p4) appears in |M|2 due to the convention of the phase space integrals in Eq. 21:
+the spinors us are normalized to be dimensionless. Eq. 75 can also be used to complete the argument that
+we made earlier about why the exchange of transverse AX is less important than the exchange of t1, t2, t3
+even though they have 0 Meissner mass. In matrix elements the exchange of AX comes with a coherence fac-
+tor (Eq. 99) where two terms of similar size cancel. This is because i31, i31, i12, and i12 in Eq. 99 are all roughly 1/ 2 for   0 and in Eq. 99 their products ap-
+pear with a - sign. On the other hand the coherence factors in Eq. 75 add for t1, t2, t3 gluons. Therefore we expect the numerical contribution from AXµ to be smaller than the contribution from t1, t2, t3 gluons. (There is an
+additional reduction by a factor of  1/2 because the
+"transverse transverse gluon" is massive.) Therefore we neglect the scatterings mediated by AXµ . This numerical suppression is not parametric and in a future, more com-
+plete calculation, these scatterings should be included. We note that AXµ induces coupling between the b quarks and the paired quarks and complicates the Boltzmann
+equation Eq. 21 significantly.
+There are additional mediators of quark-quark inter-
+actions in the two-flavor FF phase. Phonons [129] asso-
+ciated with the periodicity of the condensate [130, 131],
+are derivatively coupled to the fermion fields.
+The interaction between quark species i and j, and phonon a can generically be written as
+
+L
+
+=
+
+cµ fij
+
+µ
+
+a¯j
+
+µ
+
+i
+
+.
+
+(76)
+
+6The only subtle step is noting
+
+tr[p/30µ0p/10 0] =tr[p/3µp/1 ]
+
+(74)
+
+if µ,  are both spatial or both 0.
+
+where cµ is naturally of the order of vF . Therefore, the scattering matrix in the absence of pair-
+ing can be written as
+
+iM
+
+
+
+(
+
+cµqµc q (fij )2
+
+)
+
+2
+
+i - v2 q2
+
+[u¯3µu1][u¯4µu2]
+
+(77)
+
+where qµ = (, q)µ is the four momentum carried by the phonon. For  q
+
+iM
+
+
+
+(
+
+c2i (fij )2
+
+)
+
+i -v2
+
+[u¯30u1][u¯40u2]
+
+.
+
+(78)
+
+This should be compared with the matrix element for the exchange of a Debye screened gauge field.
+
+iM
+
+
+
+(ig)2
+
+q2
+
+i +
+
+m2D
+
+[u¯30u1][u¯40u2]
+
+
+
+-i(g)2
+
+1 m2D
+
+[u¯30u1][u¯40u2]
+
+.
+
+(79)
+
+Noting that both mD and f can be related to thermodynamic susceptibilities [75], and that v  1 in relativistic systems
+
+m2D  g2f2
+
+(80)
+
+we see that Eq. 78 is of the same order as Eq. 79 7. Therefore, the contributions to quark-quark scattering from phonon exchanges can be ignored in our calculation.
+
+E. Contribution of phonons
+Phonons, the Goldstone modes associated with broken symmetries, are also low energy modes. Here we make a quick estimate of their contribution to transport and to the collision integral. They are not relevant in the FF phase but play an important role in gapped phases.
+
+1. Quark-Phonon scattering
+
+For quark-phonon scattering, the collision term is
+
+[i(pi)] = -
+3
+
+d3l (2)3
+
+d3p3 (2)3
+
+(2)4
+
+[f^i^b2(1 - f^3)(4)(pi + l - p3)|M(il  3)|2
+
++ f^i(1 + ^b2)(1 - f^3)(4)(pi - l - p3)|M(i  3l)|2
+
+- f^3^b2(1 - f^i)(4)(pi - l - p3)|M(i  3l)|2
+
+- f^3(1 + ^b2)(1 - f^i)(4)(pi + l - p3)|M(il  3)|2] , (81)
+
+7In non-relativistic systems [132], the magnetic gauge bosons do not contribute due to the small speeds and the exchange of phonons and the longitudinal gauge bosons comepete. For v 1, the phonon exchange is the dominant scattering mechanism. We thank Sanjay Reddy for his comment on this point.
+
+14
+
+where f^ and ^b are non-equilibrium distribution functions,
+
+The kinetic theory estimate for the shear viscosity of
+
+and lµ = (, l) is the four momentum of the phonon the phonon gas is,
+
+satisfying ()2 - v2 (l2) = 0.
+
+To the lowest order in gradient of the fluid velocity ua,
+
+f^i
+
+-
+
+fi
+
+=
+
+fi
+
+=
+
+-
+
+df d
+
+i
+
+[i],
+
+where
+
+  n p v .
+
+(86)
+
+The density of phonons at temperature T is given by
+
+i =
+
+(in) =
+
+3i(n)(n)iab
+
+1 2 (aub
+
++
+
+bua)
+
+(82)
+
+n
+
+
+
+T3 v3
+
+and
+
+p
+
+
+
+T v
+
+.
+
+Consequently,
+
+(n)
+
+(n)
+
+Substituting Eq. 82 in the Boltzmann equation one can
+
+
+
+
+
+1 v3
+
+T
+
+4
+
+
+
+.
+
+(87)
+
+obtain the analogue of Eq. 21
+
+[Ri(n)]
+
+=
+
+1 - (n)
+
+1 T
+
+2
+
+d3pi (2)3
+
+d3l (2)3
+
+d3p3 (2)3
+
+(2)43i·
+
+[fib2(1 - f3)(4)(pi + l - p3)(ii(n))|M(il  3)|2
+
+ is very sensitive to the nature of the excitations present in the low energy theory. For example, if all the fermionic modes are gapped, then the phonons only scatter with each other. Since the phonons are coupled derivatively, the relaxation time in these cases is very long
+
++ fi(1 + b2)(1 - f3)(4)(pi - l - p3)(ii(n))|M(i  3l)|2 - f3b2(1 - fi)(4)(pi - l - p3)(33(n))|M(i  3l)|2
+
+due to the small density of phonons at low temperatures, and hence the viscosity is very large. It is well known that in the absence of gapless fermions these "phonons"
+
+- f3(1 + b2)(1 - fi)(4)(pi + l - p3)(33(n))|M(il  3)|2] . (83)
+
+dominate the viscosity at low T (Ref. [133, 134]) For example, if the dominant scattering rate is 2  2
+
+scattering [135, 136]
+
+where b is the Bose distribution. The scattering matrix element associated with the ver-
+tex Eq. 76 is given by
+
+
+
+
+
+1 v3
+
+f8 T5
+
+.
+
+(88)
+
+|M|2
+
+=
+
+i | fij
+
+1  
+2 2p1 2p3
+
+|24[2pi
+
+·
+
+lp3
+
+·
+
+l
+
+-
+
+pi
+
+·
+
+p3l2]|
+
+l2
+
+
+
+ (fij )2  (fij )2
+
+(84)
+
+where we have taken cµ to be 1 for convenience. Simplifying the momentum integrals for the fermions
+(d3pi and d3p3) as in Eq. 41, noting that 1, 3 and  are all of the order of T , and that  and  are of the order
+of µ, we can see without evaluating the integrals that,
+
+[R(q-ph)ij ] 
+
+µ3T 4 (fij )2
+
+ µT 4,
+
+(85)
+
+where we have used a rough estimate for f: f  µ. When unpaired quarks participate in transport and T
+is much less than the chemical potential µ, the contribution from Eq. 85 is subleading compared to the collision term associated with quark-quark scattering in Eq. 96. This is simple to understand because the phase space for fermions near the Fermi surface is enhanced. We shall see in Sec. IV B 1 that this is not true for paired systems.
+
+2. Momentum transport via phonons
+If phonons are present in the low energy theory then they can also transport energy and momentum. While this is not the main topic of the paper, we make a quick estimate to see how this contribution compares with the fermionic contribution.
+
+In both the unpaired phase and in the FF phase,
+
+phonons can scatter off gapless fermionic excitations
+
+which have a large density of states near the Fermi
+
+surface. This effect is simply the Landau damping of
+
+the phonons. The scattering rate of the phonons is
+
+  1/
+
+
+
+T µ2
+f2
+
+[137].
+
+A
+
+quick
+
+estimate
+
+gives
+
+
+
+
+
+1 v3
+
+f2 µ2
+
+T
+
+3
+
+.
+
+(89)
+
+In the next section we will compare the phonon contribution Eq.89 with the fermion contribution.
+
+IV. RESULTS FOR A SIMPLE INTERACTION FOR ISOTROPIC PAIRING
+
+As discussed in the previous section, pairing affects transport properties of fermions in two important ways. First, it modifies the dispersion relations of the fermions. Second, it changes the mediator interactions.
+To get some understanding of how the modification of the dispersion relations due to pairing affects transport (which is the dominant effect because of the exponential thermal factors in Eq. 21), we solve the Boltzmann equations with and without pairing for a simple system featuring two species of quarks 1 and 2 interacting via a single abelian gauge field Aµ which couples to the two species in the following manner
+
+LA
+
+=
+
+g 2
+
+¯Aµ
+
+µ
+
+,
+
+(90)
+
+15
+
+where
+
+ = (1, 2)T .
+
+(91)
+
+Furthermore, we focus on scattering via longitudinal Aµ, which is not affected by pairing. We approximate the polarization tensor of the longitudinal mode of Aµ by the Debye screened mass which has the standard form as given in Eq.(50) with Nf = 1.
+The square of the matrix element averaged over initial spins and summed over the final spins [64] (after making some simplifying approximations) is given by
+
+|iM¯ (i1i2
+
+
+
+i3i4)|2
+
+=
+
+( ig )4× 2
+
+[ q2
+
+1
+
+]2[1
+
++ l(0)
+
+-
+
+q2 ][1
+4p1p3
+
+-
+
+q2 4p2p4
+
+]
+
+.
+
+(92)
+
+We first review the results for the unpaired phase and then see how pairing modifies them.
+
+A. Unpaired fermions
+
+The dispersions are given by Eq. 43 with b = 0,  = 0. Dropping the absolute sign in , E = µ ±  and we don't need to distinguish between the  > 0 and  < 0 modes. For convenience here we can put µ = 0 and the two species can be treated as identical. (The corrections to the results are suppressed by µ/µ.)
+In this case the left hand side of Eq. 21 is simply given by the integral,
+
+Lu1n
+
+=
+
+1  (n)
+
+2µ2 (2)3
+
+1 T
+
+
+
+1
+
+1
+
+- d (e/T + 1) (e-/T + 1) (93)
+
+d cos µ2 3 (cos2  - 1 )2 .
+
+2
+
+3
+
+Using (0) = 1, we obtain,
+
+[Lui n] =
+
+-
+
+4 15
+
+µ4 (2)2
+
+-
+
+4 15
+
+µ4 (2)2
+
+.
+
+(94)
+
+(We will use the superscript "un" to denote the values of L, R,  and  for one unpaired species.)
+The right hand side of Eq. 21 can be obtained following Refs. [42, 64]. The interaction Eq. 90 does not change flavor, and hence the species index 3 is the same as i, and 2 the same as 4. There are two relevant integrals
+
+which give,
+
+su1n
+
+=
+
+1 - (n)
+
+1 T
+
+
+
+|M(i2  34)|2
+
+d3pi d3p2 d3p3 d3p4 (2)3 (2)3 (2)3 (2)3
+
+(2)4( pµ)[fif2(1 - f3)(1 - f4)]
+
+3i.[i(n) - 3(n)]
+
+g4 3 µ4T 2
+
+ - 16 · 5 (2)5 l(0)
+
+(95)
+
+su2n
+
+=
+
+1 - (n)
+
+1 T
+
+
+
+d3pi d3p2 d3p3 d3p4 (2)3 (2)3 (2)3 (2)3
+
+|M(i2  34)|2
+
+(2)4( pµ)[fif2(1 - f3)(1 - f4)]
+
+3i.[2(n) - 4(n)] 0.
+
+The analytic approximations for the collision integrals
+are obtained by assuming q µ dominates the integral.
+(Only an interference between transverse and longitudi-
+nal gauge field exchange contributes to s2.) The matrix R is related to sun by,
+
+[Riujn] =
+
+(2su1n + su2n)
+
+su2n
+
+su2n
+
+(2su1n + su2n)
+
+g3T 2µ3 =- 
+640 2
+
+10 01
+
+,
+
+(96)
+
+where the final form is obtained by taking Eq. 50 with Nf = 1 in Eq. 95.
+Eqs. 96, 94 can be used to compute the viscosity for unpaired quarks with which we can compare the results in the paired system. In the approximation q µ one obtains
+
+1un
+
+= 2un
+
+= 
+
+Lu1n 2su1n
+
+=
+
+256 l(0) 3g4T 2
+
+128 2µ
+
+= 3g3T 2
+
+(97)
+
+1un
+
+=
+
+2un
+
+=
+
+-
+
+3 2
+
+
+
+Lu1n
+
+
+
+un
+
+=
+
+128 l(0)µ4 15g42T 2
+
+
+
+64 2µ5
+
+= 15g33T 2 ,
+
+where the final forms are obtained by taking Eq. 50 with Nf = 1.
+The total viscosity of the system is
+
+un = 1un + 2un = 21un .
+
+(98)
+
+Typically the system described above will feature additional low energy modes. For example, to ensure the neutrality of the system a background of oppositely charged particles is necessary, and fluctuations in their
+
+16
+
+density is gapless. (A real world example is the electron "gas" in a lattice of ions.) Quarks can scatter off these "phonons". In Sec. III E 1 we made a quick estimate of how these processes affect quark transport and found that Riqj-ph  µT 4, which is parametrically smaller than Eq. 96. Therefore they can be ignored for unpaired quark matter. However, these scattering processes will turn out to be important in the next section.
+Finally, it is easy to see that the viscosity of unpaired quarks (Eq. 97) is much larger than that of phonons in the presence of unpaired fermions (Eq. 89).
+
+B. Paired fermions
+
+We now consider the effect of isotropic pairing on transport to get some intuition into the anisotropic problem. For b = 0, we can simplify the integrals Rij (Eq. 21) using rotational symmetry (Appendix B). In Sec. IV B 1 we take µ = 0 and see how pairing affects the fermionic contribution to viscosity. In Sec. IV B 2 we take µ = 0 and see how the gapless modes that arise when  < µ contribute to transport. In the FF phase, the fermions at the boundary of the blocking regions are gapless and we expect to see that they share some features of the system considered in Sec. IV B 2.
+The scattering matrix element for Bogoliubov quasiparticles (following the steps used for obtaining Eq. 75) for an interaction of the form Eq. 90 is given by
+
+|iM¯ (i1i2
+
+
+
+i3i4)|2
+
+=
+
+( ig )4 2
+
+|[i31i31 - i12i12][i41i41 - i22i22]|2
+
+[ q2
+
+1
+
+]2[1
+
++ l(0)
+
+-
+
+q2 4p1p3
+
+][1
+
+-
+
+q2 4p2p4
+
+]
+
+(99)
+
+where i's run over 1, 2 corresponding to the two eigen-
+
+states Eq. 43. 's are the coherence factors Eq. 38, Eq. 39. There are vertex corrections [138] for the longitudinal mode but since we are are only looking for qualitative insight for the simple interaction in this section, we do not consider these here.
+
+1. BCS pairing
+
+We first consider the standard BCS pairing with µ = 0. The results are shown in Fig. 2. The top left panel shows Li i = a, b, c, d (Eq. 46). In this symmetric situation, Li are equal for all the species and are represented by four overlapping curves (red, green, blue and cyan online). Similarly, Rii (i not summed) are all equal. (This is shown on the top right panel. We don't show the cross terms.) Results for  (Eq. 20) and i (Eq. 28) are shown in the bottom left and right panel respectively.
+  0-- When the pairing parameter   0 (0 of the x-axis in Fig. 2), we get back a system of unpaired fermions and one should obtain the result in Sec. IV A in the language of Bogoliubov quasi-particles (Eq. 46).
+Li is given by half the values given in Eq. 94 (the factor of 1/2 arises because we restrict the integrals in  to  > 0 or < 0 corresponding to Eq. 46)
+
+[L](
+
+=
+
+0)
+
+=
+
+1 2
+
+Lu1n
+
+(1,
+
+1,
+
+1,
+
+1)
+
+(100)
+
+The dashed horizontal line (green online) on the top left
+
+panel
+
+of Fig. 2
+
+corresponds to Li
+
+=
+
+1 2
+
+Lu1n
+
+(Eq.
+
+100,
+
+Eq. 94). A numerical evaluation of the integral for Li
+
+in Eq. 21 agrees with the analytic result Eq. 94 to a very
+
+high accuracy. For the collision integral, we numerically
+
+find that to a high accuracy the matrix Rij has the form
+
+
+
+1 2
+
++
+
+f(
+
+T µ
+
+,
+
+1 g
+
+)
+
+
+
+Rij
+
+(
+
+=
+
+0)
+
+=
+
+2su1n
+
+ 
+
+0 0
+
+
+
+1 2
+
+-
+
+f(
+
+T µ
+
+,
+
+1 g
+
+)
+
+0
+
+1 2
+
++
+
+f(
+
+T µ
+
+,
+
+1 g
+
+)
+
+1 2
+
+-
+
+f(
+
+T µ
+
+,
+
+1 g
+
+)
+
+0
+
+0
+
+1 2
+
+-
+
+f(
+
+T µ
+
+,
+
+1 g
+
+)
+
+1 2
+
++
+
+f(
+
+T µ
+
+,
+
+1 g
+
+)
+
+0
+
+1 2
+
+-
+
+f(
+
+T µ
+
+,
+
+1 g
+
+)
+
+
+
+0
+
+
+
+0 
+
+1 2
+
++
+
+f(
+
+T µ
+
+,
+
+1 g
+
+)
+
+(101)
+
+(with su2n = 0 and su1n given in Eq. 95 8). The dashed horizontal lines (green online) on the top right panel of Fig. 2 corresponds to R1u1n = 2su1n (Eq. 101, Eq. 96).
+The structure of the matrix Eq. 101 is easy to understand. The diagonal entries correspond to scattering
+8For the parameters of Fig. 2 numerical result for R1u1n/µ5 = -1.23 × 10-9. The analytic expressions (Eq. 95) give R1u1n/µ5 = -1.31 × 10-9.
+
+of species i with i. For  = 0 the branch a is con-
+
+nected to d and b to c, and these scattering contributions
+
+are finite and they add up to 2su1n. In a wide range
+
+of T
+
+µ,
+
+f(
+
+T µ
+
+,
+
+1 g
+
+)
+
+is
+
+relatively
+
+insensitive
+
+to
+
+T /µ
+
+and
+
+increases
+
+with
+
+increasing
+
+1 g
+
+(weak
+
+coupling).
+
+This
+
+is
+
+be-
+
+cause
+
+f(
+
+T µ
+
+,
+
+1 g
+
+)
+
+is
+
+related
+
+to
+
+the
+
+scatterings
+
+between
+
+a
+
+and
+
+d (or b and c) species which is more prominent if the
+
+scatterings that dominate the collision integral are small
+
+angle (q  gµ µ).
+
+Finally, the contribution to the collisional integral from
+
+17
+
+FIG. 2. (color online) Plots of Li, the diagonal entries of R, i and i (anticlockwise from top left) for |M¯ |2 given in Eq. 99. The overall scale is set by µ. Keeping T /µ = 3.34 × 10-4 fixed and µ = 0, we plot these as a function of /T for the "four species"
+i =, a, b, c, and d (Eq. 46). The four solid curves [red (a), green (b), blue (c), and cyan (d) online which are indistinguishable
+in the plots] denote the results for the four species. The dotted curves (not visibly distinguishable in the plots) signify the
+errors in the numerical integration for R (Eq. B1). The dashed horizontal curves (green online) are proportional to values for
+unpaired quarks (see text). The dot dashed curves (yellow online) show an exponential fall off,  exp(-/T ), for Li (Eq. 103), an exponential fall off,  exp(-2/T ), for Rii (Eq. 104), and an exponential increase,  exp(/T ), for i. The horizontal dashed line for L [R,  , ] corresponds to Lun/2 (Eq. 94) [R1u1n (Eq. 96), 1un and 1un/2 (Eq. 97)].
+
+scattering of particles in the branch a with b or c is 0 from
+
+rotational symmetry (just like su2n = 0 in Eq. 95). For
+
+g
+
+=
+
+1
+
+in
+
+Eq.
+
+50,
+
+f(
+
+T µ
+
+,
+
+1 g
+
+)
+
+
+
+0.32.
+
+From Eq. 100 and Eq. 101 one can easily obtain relax-
+
+ation time i( = 0) = 1un and hence the shear viscosity
+
+is i =
+
+1 2
+
+1un
+
+for
+
+all
+
+four
+
+species.
+
+The total viscosity is
+
+given by
+
+( = 0) = i( = 0) = 4i( = 0) = 21un .
+i
+(102)
+The dashed horizontal line (green online) on the bottom
+left (bottom right) panel of Fig. 2 corresponds to i (i = 1un/2) (Eq. 97).
+ T -- As  is increased, the participation of
+fermions in transport is thermally suppressed. Since Li
+
+involves single particle excitations, it is easy to see that
+
+Li()  Li( = 0)e-/T .
+
+(103)
+
+This is shown in Fig. 2 by the dot-dashed curve (yellow online). Similarly, since Ri involve two particle excitations, we expect that
+
+Rij ()  Rij ( = 0)e-2/T .
+
+(104)
+
+We see in Fig. 2 that this turns out to be true for /T larger than 4 and the suppression for /T 4 while present, is a little weaker. Consequently, one can quickly deduce that i()  i( = 0)e/T : the few thermally excited quarks rarely scatter with each other. The large relaxation time compensates for the small number of mo-
+
+18
+
+mentum carrying fermions and for /T 4 the viscosity converges back to the value for unpaired quark matter.
+This result is puzzling since we expect the paired fermions to be frozen at temperatures smaller than the pairing gap and hence not contribute to the viscosity. We expect only the low energy phonons to participate in transport at low energies [135].
+We argued in the previous section (Sec. IV A) that in the absence of pairing for T µ, the contribution to the quark collision integral R from quark-phonon scattering (Eq. 96) is sub-dominant to the contribution from quark-quark scattering (Eq. 85). Pairing, however, affects these two contributions differently. Since quarkphonon scattering involves only one gapped mode, we expect the Rij(q-ph)()  Rij(q-ph)(0)e-/T rather than as in Eq. 104 and dominates scattering. Then i doesn't grow exponentially and i is exponentially suppressed.
+More systematically, for  T
+
+Li
+
+
+
+-2 15
+
+µ4 (2)2
+
+e-/T
+
+,
+
+i = a, b, c, d
+
+(105)
+
+and (Eqs. 104, 85),
+
+Rii()
+
+1 [-
+2
+
+g3T
+
+2
+
+µ3 
+
+
+
+e-2/T
+
+640 2
+
+-
+
+cµT 4e-/T ]
+
+ - cµT 4e-/T i = a, b, c, d
+
+(106)
+
+where we have taken l(0) = (gµ/(2))2 and c is a number O(1). Hence,
+
+2c µ3 i  15(2)2 T 4
+
+i = a, b, c, d .
+
+(107)
+
+Therefore, the fermionic contribution to the shear viscosity is given by
+
+i
+
+=
+
+-3iLi
+
+
+
+4 75(2)4
+
+µ7 T4
+
+e-/T
+
+i = a, b, c, d , (108)
+
+which is subdominant to the phonon contribution (Eq. 88, since we are assuming no other gapless fermions are present).
+This entire argument relies on the existence of a gapless mode in the low energy theory, but in most of the paired systems we know such a mode is present. If the symmetry broken by the fermion condensate is global or has a global component 9 then the pairing itself gives rise to a Goldstone mode which can scatter off fermions. If the symmetry broken by the condensate is local rather
+
+than global, then pairing does not by itself give rise to a phonon mode. For example in ordinary BCS superconductors the local U (1)  Z2 gives a mass to the transverse photons (the Meissner effect). However even in this case there is a Goldstone mode associated with the breaking of translational symmetry by the underlying lattice.
+10
+
+Therefore the common statement that the paired
+
+fermions don't contribute to transport at low temper-
+
+atures is generically true, but subtle. Things are cleaner
+
+if there are fermionic modes that are gapless, in which
+
+case they dominate transport when µ T . This is the
+
+situation we shall explore next.
+
+In drawing Figs. 2 we have taken g = 1. Obtaining
+
+results for arbitrary g is simple. The top left panel (Li)
+
+doesn't depend on the collisions and square of the matrix element, |M|2,
+
+is not scales
+
+modified. as g4 and
+
+The l
+
+scales as g. Consequently i and i scale as 1/g3.
+
+2. Isotropic gapless pairing
+
+To analyze the effect of gapless fermions in this simple system let us consider an isotropic gapless paired phase (b  0,  > µ). As discussed in Sec. II, this phase is unstable, but the analyses will give us insight into the anisotropic calculation. In Fig. 3 we keep  > T fixed (/T = 2.5), and consider the effect of increasing µ keeping b equal to 0.
+Based on the discussion in Sec. IV B 1, we expect that for  > µ both Li and Rij to be exponentially suppressed from the unpaired value. Whereas for  < µ (Eq. 42) E1 = 0 for  = ± µ2 - 2 and therefore the branches a and b in Eq. 46 are gapless while the branches c and d are gapped. Therefore, for µ >  we expect Li, and Rij corresponding a and b to be unsuppressed compared to the unpaired value.
+More specifically, for  - µ T
+
+La,b(, µ) 
+
+1 2
+
+Lu1n
+
+e-
+
+(-µ) T
+
+=
+
+La(
+
+=
+
+0,
+
+µ
+
+=
+
+0)e-
+
+(-µ) T
+
+Lc,d(, µ) 
+
+1 2
+
+Lu1n
+
+e-
+
+(+µ) T
+
+= La(
+
+=
+
+0,
+
+µ
+
+=
+
+0)e-
+
+(+µ) T
+
+.
+
+(109)
+
+In the top left panel of Fig. 3, the curves for Li for the a and b branches (red and green online) split from the c and d branches (blue and cyan online) on switching on a small µ. The splitting increases as we increase µ and for µ -  T , near the gapless surfaces  =
+
+9For the quark pairing the condensate breaks baryon number conservation. For cold atoms fermion number conservation is a global symmetry. In both these cases the dispersion of the resultant mode is vF / 3 and hence absorption of phonons by fermions is kinematically allowed.
+
+10The sound speed of the lattice phonons is much smaller than the Fermi speed of the fermions and fermion phonon scattering is kinematically allowed. However hypothetically one can consider a situation where this is not the case. Then the statement that gapped contributions do not contribute to transport will not hold. Since this is not germane to our paper we will not explore this further here.
+
+19
+
+FIG. 3. (color online) Plots of Li, the diagonal entries of R, i and i (anticlockwise from top left) with |M¯ |2 given in Eq. 99 for the four species a, b, c, and d (Eq. 46). The dashed horizontal lines correspond to the values for unpaired matter (see the caption of Fig. 2 for details). The pairing is isotropic (b = 0). T /µ = 3.34 × 10-4 and /T = 2.5 are held fixed, and µ is
+varied from 0 to 2. For  > µ (µ/T < 2.5 in all the plots) all fermionic excitations are gapped and all components of R are
+exponentially suppressed. For  < µ, branches a and b feature gapless fermionic excitations. The asymptotic value (µ ) for a = b = 21un. The dot dashed curves (yellow online) for L are the simple forms given in Eq. 110 for µ > , and Eq. 109 for µ < . The error bands are shown by the dashed curves of the color of the corresponding solid curves, and are associated
+with errors in the five dimensional Monte Carlo integration used for evaluating Rij (Eq. B1). c, d are noisy but don't affect the final result for .
+
+± µ2 - 2, both a and b branches resemble unpaired fermions. Therefore,
+
+La,b(, µ)µ   Lu1n = 2La( = 0, µ = 0)
+
+Lc,d(, µ)
+
+
+
+1 2
+
+Lu1n
+
+e-
+
+(+µ) T
+
+.
+
+(110)
+
+The limiting behaviors Eq. 109 and Eq. 110 are shown by
+dot dashed curves (yellow online) on the top left panel of
+Fig. 3.
+Similarly, for -µ T we expect Rii for each i to be suppressed compared to Riuin. For example, for µ = 0, we see that for /T = 2.5, Rii( = 2.5T, µ = 0)  Riuin/15. The suppression factor of 15 is consistent with Rii( = 2.5T, µ = 0)/Riuin in Fig. 2.)
+
+As µ is increased, the gapless branches a (green online), b (red online) split from c (blue online) and d (cyan online), and eventully for µ -  T
+
+Raa,bb(, µ)|µ   R1un
+
+(111)
+
+the top right panel of Fig. 3 shows this behavior clearly. Rcc,dd(, µ)  R1un exp(-2( + µ)/T ). The offdiagonal terms of R are also exponentially suppressed.
+This pattern is repeated for  and : a (a), b (b) tend towards 1un (1un) for µ -  T while c (c), d (d) are weakly (exponentially) suppressed. All this is just a complicated way to obtain the well understood
+result (for eg. see Ref. [84]) that the transport in gap-
+less superfluids is dominated by fermionic modes near
+
+20
+
+FIG. 4. (color online) Plot of /0 versus µ/0 for b = µ from [120]. 0 is the gap for the 2SC phase in the absence of the Fermi surface split. At µ = 0.7540,  = 0.
+
+the gapless surfaces (Eq. 12) and the result for the total viscosity in the limit µ -  T is the same as for an unpaired system,
+
+(µ ) = i  a + b  21un .
+i
+
+(112)
+
+In light of the simple and intuitive result Eq. 112, the analysis of this section seems needlessly complicated: one could restrict to modes near the gapless spheres (mode a near  = - µ2 - 2 and mode b near  =
++ µ2 - 2) and neglect modes c and d. Near the gapless , the dispersion of the modes can be approximated as linear, which means that standard Fermi liquid techniques would lead to Eq. 112 for gapless fermions if µ .
+While the discussion of the isotropic gapless phase clarifies some aspects of the calculation of the collision integrals for the FF phase, the details of the analysis is more subtle because the pairing pattern is anisotropic. In the following section we present the results for anisotropic pairing.
+
+V. RESULTS FOR ANISOTROPIC PAIRING
+
+From the dispersions Eq. 43, one can think of the problem in terms of an angle dependent Fermi surface splitting,
+
+µeff (cos ) = µ + b cos  .
+
+(113)
+
+For µ + b cos  > , species a and b are gapless, for  > µ + b cos  > - all four modes are gapped, and for µ + b cos  < - modes c and d are gapless (Eq. 43) [54, 83]. Therefore, the shape of the gapless
+
+surface depends on the values of µ and the gap parameter  which is a function of µ. Furthermore, even the nature of the gapless modes changes with the angle depending upon whether |µeff (cos )|  (in which case the dispersion near the gapless modes is linear and the mode velocity v  1) or |µeff (cos )|   (in which case the dispersion near the gapless modes is quadratic and the mode velocity v  0). Consequently, the results for the FF phase can not be obtained by a simple extension of the isotropic analysis and a detailed calculation of the collision integral is necessary. We perform this analysis for a simple model for quark interactions: exchange of Debye screened, longitudinal gluons described by Eqs. 79 90, in the next section (Sec. V A). In Sec. V B we show the analysis for the two-flavor FF phase with the realistic interaction: exchange of dynamically screened, transverse t1, t2, and t3 gauge bosons.
+A. Debye screened gluon exchange
+To evaluate the integrals Li and Rij appearing in Eq. 21 with the dispersions Eq. 43 for any given T and µ, we need  and b as a function of µ. For a given b and µ,  can be found by solving the gap equation for the FF phase [120].
+We take the solution of the gap equation,  as a function of µ, from Fig. 3 in Ref. [120]. The calculations in Ref. [120] were performed for three-flavor pairing with an FF pairing pattern for ud and sd pairing. When the angle  between the two plane waves is 0, the two pairing rings on the u interfere minimally and hence we use the corresponding solution to the gap equation (green curve in Fig. 3 in Ref. [120]), reproduced in Fig. 4.
+Near the second order phase transition at µ < 0.7540, /0 1 and b = µ minimizes the free energy. Here, 0 is the gap in the 2SC phase in the absence of Fermi surface splitting and the precise value of  is 1.1996786... [61, 83, 102, 119, 120].  is zero at the transition and increases with decreasing µ Fig. 4. In this paper we will use b/µ = 1.19 for the entire range µ/0  (0.575, 0.75).
+Even though the FF phase is not favoured compared to the homogeneous pairing phase (in which the paired fermions are gapped since  = 0 > µ) for µ < 0.707, we will explore this range because of the possibility that the higher plane wave states may be favoured in a wider region and may be governed by similar physics. (Also see Ref. [121].)
+In Fig. 5 we plot the results for L, R,  and  as a function of µ with b and  chosen as described above. For a fixed µ, which sets the overall scale, there are two dimensionless ratios that are needed to specify the transport properties of the FF phase as a function of µ, T /µ, and 0/µ. We show the results for T /µ = 3.34 × 10-4 and 0/µ = 1.67 × 10-2 in Fig. 5 though the results should be unchanged as long as the hierarchy of scales T 0 and 0 µ are satisfied.
+
+21
+
+FIG. 5. (color online) Plots of Li, the diagonal entries of R, i and i (anticlockwise from top left) with |M¯ |2 given in Eq. 99 for the four species a, b, c, and d (Eq. 46). The pairing is anisotropic with b = 1.19µ and  is taken from Fig. 4. T /µ = 3.34×10-4 is held fixed and T /0 = 0.02. The central values are given by filled circles and the error bars are are shown by the dashes of the corresponding color. The error bars for Rij are associated with errors in the seven dimensional Monte Carlo integration used for evaluating Rij (Eq. B2) and are propagated to  and . The large errors in c and d (blue and cyan online) do not affect the final . The dashed horizontal lines correspond to the values for unpaired matter (see the caption of Fig. 2 for details). The upper dot dashed curves in the panels for La and Lb (Raa, Rbb) [yellow online] are associated with geometric reduction due to a smaller gapless surface as described in Eq. 115 (Eq. 116). The lower dot dashed curves in the panels for Lc and Ld (Rcc, Rdd) [yellow online] are associated with exponential reduction due to pairing. The results are discussed from Eqs. 115 to Eq. 118 in the text.
+
+To get a concrete feel for numbers, one can take µ = 300MeV, 0 = 5MeV (which is on the lower edge of 0 for model studies) and T = 0.1MeV. We choose 0 = 5MeV so that the exponential suppression exp(-/T ) is small enough to be clearly visible in the results, but still large enough to be accessible within numerical errors.
+First considering Li (top left panel of Fig. 5) as a function of µ, we note that the branches a and b are gapless for
+
+-µ + 
+
+cos   [
+
+, 1]
+
+b
+
+(114)
+
+throughout the range µ/0  (0.575, 0.75) (Appendix A). The gapless surface is the boundary of a cres-
+
+cent
+
+with
+
+arc-length
+
+1
+
++
+
+µ- b
+
+instead
+
+of
+
+2.
+
+Therefore,
+
+we
+
+expect
+
+La
+
+=
+
+Lb
+
+=
+
+Lun
+
+× g(
+
+µ b
+
+,
+
+ b
+
+)
+
+where
+
+g
+
+is
+
+a
+
+dimension-
+
+less function smaller than 1 corresponding to the limited
+
+range for which the modes are gapless. The following
+
+geometric estimate turns out to be reasonably accurate
+
+La
+
+=
+
+Lb
+
+
+
+Lun
+
+×
+
+1 (1
+2
+
++
+
+µ b
+
+-
+
+ )
+b
+
+.
+
+(115)
+
+This is shown by the upper dot dashed line (yellow on-
+line).
+On the other hand, the branches c and d are gapped for
+µ/0 < 0.735 and hence Lc and Ld are exponentially suppressed. A rough estimate is Lc = Ld  e-/T . The
+
+22
+
+lower dot dashed curve (yellow online) is Lune-/T and shows the right form up to a scale. The proportionality factor depends upon T .
+Similarly, Rij is expected to be suppressed by the square of the phase space factor,
+
+Raa
+
+=
+
+Rbb
+
+
+
+1 2
+
+R1u1n
+
+1 × ( (1 +
+2
+
+µ b
+
+-
+
+ ))2 b
+
+.
+
+(116)
+
+This is shown by the upper dot dashed line (yellow on-
+line) on the top right panel of Fig. 5. Rcc and Rdd are exponentially suppressed and their evaluation is noisy (see
+Appendix B for details). However, a reasonable estimate is Rcc = Rcc  R1u1n × e-/T . We stop the results for µ/0 = 0.74 since for larger µ,   0 and the numerical evaluation of the integral is noisy.
+From Eqs. 115 and 116 we expect,
+
+a = b  2 un a = b  un .
+
+(117)
+
+c and d are noisy but do not contribute significantly to the final  and can be ignored.
+Consequently,
+
+(b = 0) = i  a + b  21un .
+i
+
+(118)
+
+This is a remarkable result and is once again a consequence of the intricate interplay between  and  that we saw in Sec. IV B 1. The reduced phase space due to pairing increases a and b by the same factor as it decreases La and Lb because R goes as the square of this factor. Consequently, in the product, the two effects cancel out.
+The key results that we obtained in this section are that
+
+1. La and Lb are only geometrically suppressed by the smaller gapless surface (Eq. 115)
+
+2. Lc and Ld are exponentially suppressed
+3. For Debye screened mediators, Raa and Rbb are only geometrically suppressed (Eq. 116)
+4. Rcc and Rdd are exponentially suppressed
+
+B. Two-flavor FF phase using t1, t2, t3 exchange
+Now we use the interaction mediated by the Landau damped t1, t2, t3 to calculate  in the two-flavor FF phase. In the Eq. 21 the left hand sides, Li, depend only on the spectrum of quasi-particles and not the interaction. Therefore, they are not modified. For T /0 = 0.02 they are as shown in the top left panel of Fig. 5 in Sec. V A.
+The difference from Sec. V A appears in the collision integral [Rij], where the square of the matrix element |M(12  34)|2 in Eq. 21 (or Eq. B2) is given by Eq. 75
+
+FIG. 6. (color online) Plots of the diagonal entries of R for the four species a, b, c, and d (Eq. 46) with |M¯ |2 given by
+Eq. 119. The pairing is anisotropic with b = 1.19µ and  is taken from Fig. 4. T /µ = 3.34 × 10-4 is held fixed and
+T /0 = 0.02 (the same as in Fig. 5). The central values are given by filled circles and the error bars (from the Monte
+Carlo integration for R) are are shown by the dashes of the
+corresponding color. The dashed horizontal line corresponds
+to R11 for unpaired matter with the interaction specified by Eqs. 51, 52.
+
+instead of Eq. 99. As discussed in Sec. III D, the matrix element in the collision integral is (Eq. 75)
+
+|iM¯ |2
+
+=
+
+3(
+
+g 2
+
+)4
+
+i2
+
+i4
+
+i1
+
+i3
+
+1 4
+
+2p1
+
+1 2p22p3
+
+2p4
+
+tr[p/3
+
+µ
+
+p/1
+
+
+
+]tr[p/4
+
+
+
+
+
+p/2
+
+
+
+]Dµ
+
+D
+
+.
+
+(119)
+
+Evaluating the Dirac traces we obtain,
+
+|M¯ |2 = 3
+
+g 2
+
+4
+
+Lxt x |q2
+
+1 - w2 +
+
+xt x|2
+
++
+
+Lyt y |q2
+
+-
+
+1 w2 +
+
+yt y|2
+
++2
+
+e[Lxt y
+
+q2
+
+-
+
+1 w2
+
++
+
+xt x
+
+q2
+
+-
+
+1 w2 +
+
+(yt y)
+
+]
+
+,
+
+(120)
+
+where,
+
+Lxt x = (cos(1) cos(2))2
+
+Lyt y = (sin(1) sin(2))2
+
+Lxt y
+
+=
+
+1 4 (sin(21) sin(22))
+
+Lyt x = Lxt y ,
+
+(121)
+
+saynsdtemxt x, xtxyt y=areyt syp=ecifiedfobr ywEhqicsh.
+
+61 62. In Eq. 120
+
+an isotropic matches the
+
+expressions in Refs. [42, 64].
+
+Before exploring the main results of anisotropic pairing
+
+with anisotropic Landau damping, we quickly review well
+
+23
+
+FIG. 7. (color online) Plots of i (anticlockwise from top left) for the four species a, b, c, and d (Eq. 46) for anisotropic pairing with b = 1.19µ. T /µ = 3.34 × 10-4 is held fixed and T /0 = 0.025, T /0 = 0.05, T /0 = 0.1, T /0 = 0.2.
+
+known results for the the simpler unpaired system. For isotropic Landau damping (Eq. 52) a rough estimate [42, 64] is
+
+
+
+R1t 1un R1u1n
+
+3
+
+4 2gµ 2T
+
+1/3
+
+,
+
+(122)
+
+where R1u1n is given by Eq. 96. For T /µ = 3.34×10-4 and g = 1 the estimated enhancment factor is numerically
+about 36. Evaluating the collision integral numerically, one obtains R1t1un/µ5  -7.2×10-8 shown by the dashed horizontal line (green online) in Fig. 6 . Comparing with
+the numerical result for the longitudinal gluon exchange, R1u1n/µ5  -1.23 × 10-9 from the dashed horizontal line in (green online) on the top right column of Fig. 5, we see
+that numerically the enhancement factor is  58, which
+shows that the estimate (Eq. 122) is in the right ballpark.
+This also impies we can ignore the longitudinal gluons.
+This also applies to the FF phase.
+The non-trivial results shown in Fig. 6 are the val-
+ues of Raa and Rbb for the FF phase. The pairing is
+
+anisotropic with b = 1.19µ and  is taken from Fig. 4. T /µ = 3.34 × 10-4 is held fixed and T /0 = 0.02 (the same as the parameters used in Fig. 5). The geometric
+suppression due to the smaller gapless surface (Eq. 116)
+would lead to a reduction in Raa and Rbb. The actual numerical evaluation for Raa and Rbb shows that they are enhanced over the unpaired isotropic result. This can
+be understood as follows.
+For small q,
+
+Ep3
+
+- Ep1
+
+
+
+dEp1 dp1
+
+
+
+p1
+
++
+
+d
+
+dEp1 cos p1
+
+
+
+cos
+
+p1
+
+
+
+vp1 p1
+
+,
+
+(123)
+
+where
+
+vp1
+
+=
+
+dEp1 dp1
+
+=
+
+p
+
+, p1 = |p1 + q| - |p1| .
+
+p2 + 2
+
+(124)
+
+Therefore, the energy conserving  functions can be approximately written as (vp1 p1 - )(-vp2 p2 - ).
+
+24
+
+For |µ + b cos |  , the dispersion is gapless for   0
+
+(Eq. A3) implying vp  0 and the jacobian for the  functions diverges. Higher order terms in the Taylor ex-
+
+pansion of p prevent Rij from diverging, but this shows up as an increase in Rij. A similar phenomenon for the isotropic gapless CFL phase was seen earlier in Ref. [124].
+
+There are two reasons why this effect is not seen in
+
+Fig. 5 where the interaction is mediated by Eq. 90. First,
+
+the relative - sign between the coherence factor in Eq. 99
+
+compared with the + sign in Eq. 75 implies that the ma-
+
+trix element Eq. 99 tends to 0 if   0 while Eq. 75 does
+
+not (we also discussed a similar effect in Sec. III D). Sec-
+
+ond, this effect is more important if the collision integral
+
+is dominated by small q compared to µ and the linear
+
+expansion (Eq. 123) is accurate: The effect is therefore
+
+more pronounced where the exchanged gauge boson is Landau damped. 11
+
+With the collision integral R in hand, we can calculate
+
+ and . The results for  for four different values of the
+
+temperatures, T /0 = 0.025, T /0 = 0.05, T /0 = 0.1, T /0 = 0.2, are shown in Fig. 7 and clearly show a reduction in  by a factor of roughly 100 associated with
+
+the enhancement in the collision integral.
+
+One technical comment about the numerical evalua-
+
+tion is that because of the more peaked nature of the
+
+integrand due to the two reasons mentioned above, the
+
+Monte Carlo integration for Rij (Eq. B2) converges very slowly. Therefore to improve the statistics, we have av-
+
+eraged Raa and Rbb (which should be equal), and Rab and Rba (which should be equal) while making Fig. 7 and added the errors in quadrature. Similarly, we have
+
+combined the data for the c and d branches in Fig. 7
+
+Fig. 8 shows viscosity as a function of T for anisotropic phases for µ/µ = 10-2. The blue curve is the analytic
+
+estimate
+
+
+
+1t
+
+un
+
+=
+
+1un
+
+1 3
+
+4 2gµ 2T
+
+-1/3
+
+(125)
+
+based on Eq. 122, where 1un is given in Eq. 97. The green curve is the numerical evaluation of the vis-
+cosity in the unpaired phase using Eq. B1. The result for the FF phase is denoted by the solid points with errors denoted by error bars. The error bars are large enough that we do not attempt a fit but a rough description of the data in this T range is given by
+
+  10-21t un .
+
+(126)
+
+Since  is relatively flat with respect to µ for all the T 's in a wide range of T  (Fig. 6), we propose Eq. 126 as a fair parameterization of the shear viscosity in the FF phase for T  throughout the two-flavor FF window. Eq. 126 is a concise summary of our main result.
+
+11There is an additional source of enhancement when the gauge boson polarization is given by Eq. 52 rather than Eq. 61. Since h < 1, |M|2 is larger in the anisotropic paired phase than the isotropic unpaired phase. However, since h is not 1 for all cos , this is not the dominant effect.
+
+VI. CONCLUSIONS
+We present the first calculation of the shear viscosity of the two-flavor FF phase of quark matter.
+We identify the low energy quasi-particles that play an important role in transporting momentum and energy at low T . Due to the large density of states near the Fermi surface, the u and d quarks, and the electrons dominate transport properties if they are gapless. The "blue" u and d quarks, and the electrons do not participate in pairing and their viscosity is the same as in the 2SC phase, calculated in Ref. [64].
+The ur -dg -ug -dr quarks pair and form Bogoliubov quasi-particles. The main difference between the twoflavor FF and the 2SC phase is that the spectra of Bogoliubov quasi-particles feature gapless modes near surfaces that form the boundaries of crescent shaped blocking regions. The technical advance made in the paper is the calculation of their viscosity.
+The other low energy modes, the phonons associated with the compressions and rarefactions of the iso-phase surfaces of the order parameter [130], are Landau damped and do not contribute significantly to energy-momentum transport at low temperatures.
+By comparing the strength and the ranges of the particles that mediate quark interactions (see Sec. III D for details) we conclude that the dominant mechanism of scattering of the ur - dg - ug - dr Bogoliubov quasiparticles in the two-flavor FF phase is the exchange of transverse t1, t2 and t3 gluons which are Landau damped. Note in particular that the longitudinal t1, t2 and t3 gluons are Debye screened and can be ignored. The Landau damping is anisotropic. The gluon polarization tensor is given in Eqs. 61 62. (More details about the calculation of the gluon polarization will be given in a forthcoming publication [128].) We also show that the scattering of the Bogoliubov quasi-particles via exchange of the Goldstone modes, and due to their absorption and emission is subdominant for T µ and can be ignored.
+We give a novel formalism to describe the scattering of Bogoliubov quasi-particles. We separate the two branches of the quasi-particle dispersions (Eq. 43) into  > 0 and  < 0 (Eq. 46, Fig. 1) modes. This doubles the dimension of the collision integral matrix [Rij], with four modes a, b, c and d (Eq. 46). The utility of this formalism is that it interpolates between two pairing regimes. When T is comparable to  (near the superconducting phase transition) the collision integral includes processes involving a + c  a + c ("inter-band" processes). When T  the collision integral only features a + a  a + a, b + b  b + b, and a + b  a + b ("intra-band" processes). Pair breaking processes are frozen. For isotropic gapless pairing in this regime (b = 0, µ > ) a simpler formalism involving only the E1 branch (Eq. 43) would be sufficient. The subtlety in the FF phases is that both E1 and E2 branches can become gapless depending on the values of b, µ,  and the angle  of the momentum with the ^b direction. Our formalism allows for all these
+
+25
+
+FIG. 8. (color online) i for species a and b for anisotropic pairing with /0 = 0.35, µ/0 = 0.6, and b = 1.19µ as a function of T . The viscosities are obtained from Fig. 7.
+
+possibilities. Our main result is given in Fig. 7 and Fig. 8. The key
+result is that the viscosity of the ur - dg - ug - dr quarks for a wide range of µ in the LOFF window is reduced by a factor of roughly 10-2 compared to the viscosity of unpaired quarks interacting via Landau damped transverse gluons. This is summarized in a compact parameterization of the viscosity Eq. 126.
+This is a surprising result. In the 2SC phase the ur - dg - ug - dr quarks are fully gapped and are frozen. In the FF phase the geometric area of the gapless surface is reduced by pairing. But at the same time the phase space for collisions is also reduced by the square of the geometric factor. Hence this simple argument suggests that the shear viscosity should be comparable to that for unpaired quarks. Indeed this is precisely what happens if the interaction between the quarks is assumed to be mediated by Debye screened longitudinal gluons corresponding to the broken generators, as shown in Fig. 5. For long range interactions (dominated by smaller momentum exchanges), however there is an additional effect due to the increase of the density of states satisfying the energy conservation equation due to small velocities over a part of the Fermi surface. The collision integral is enhanced and the shear viscosity is reduced (Eq. 126). This effect is particularly pronounced for t1, t2, t3 gluons because the coherence factors in the matrix element don't cancel (Eq. 75).
+Comparing the shear viscosity of the paired quarks in the FF phase with the contribution of the ub and db quarks Ref. [64] we note that it is suppressed due to two effects. First, the paired quarks dominantly scatter via Landau damped gluons. As discussed above (Eq. 126), the viscosity is further reduced by a factor 100 due to pairing effects. In contrast the transverse gluons exchanged by b quarks all have a Meissner mass and only the transverse Q~ photon is Landau
+
+damped. For (µ/T )1/3 (s3/2/5/3), Q~ exchange dominates b - b scattering and paired/b  10-2s5/3/5/3. For (µ/T )1/3 (s3/2/5/3), gluon exchange dominates b - b scattering and paired/b  10-2(T /µ)1/3. This implies that the sum of the viscosities due to the b quarks and the electrons calculated for the 2SC phase in [64] gives the shear viscosity of the two-flavor FF phase to a very good approximation.
+In this paper we have only given results for the projection operator (0). It will be interesting to repeat the calculation for the other projection operators (1) and (2) ((3) and (4) are Hall projections and the associated viscosities are expected to be zero in a system without magnetic fields). The difference between the three is related to the anisotropy in the shear viscosity tensor and might have interesting implications, although condensation in multiple direction will tend to isotropise the shear viscosity.
+Looking ahead, one can think of several advances that can improve upon our calculation; for example considering more complicated pairing patterns and including the strange quark. In the following discussion we attempt to present a plausible picture of how the shear viscosity of these more realistic phases might behave based on the intuition gained from our calculation, and make some speculations about the physical implications for neutron star phenomenology.
+For example, one can consider more realistic two-flavor LOFF structures [119] involving multiple plane waves. Even these more complex condensates [129] feature gapless fermionic excitations, and while the details are more complicated, the two main features (a) gapless quasiparticle excitations over a Fermi surface with a complicated shape (b) transverse t1, t3, and t3 gluons are Landau damped, are expected to be present also in these more complicated phases. Consequently the shear viscosity of the ur - dg - ug - dr quarks can be ignored as
+
+26
+
+in the FF phase.
+
+Depending on the strange quark mass and the cou-
+
+pling strength between quarks, quark matter in neutron
+
+stars may also feature strange quarks. In the 2SC + s
+
+phase, the electron number is suppressed and numerous
+
+unpaired strange quarks contribute to transport. One
+
+expects their contributions to be comparable to that of
+
+the ub and db quarks in the 2SC phase. The same is also expected for the two FF+s phase. 12 In all these cases
+
+our calculation suggests that whether unpaired s quarks
+
+are present or not it is impossible to distinguish two fla-
+
+vor LOFF pairing from 2SC pairing by comparing the
+
+shear viscosity of the two phases. The paired quarks are
+
+suppressed, though not exponentially.
+
+Qualitative differences, however, are expected to arise
+
+if the strange quarks are also paired. That is, the three-
+
+flavor FF [120] or three-flavor LOFF phases [56]. In these
+
+phases the electrons are few in number and can be ig-
+
+nored as a first approximation. The fermionic excitations
+
+are gapless on non-trivial surfaces [120], as in the two
+
+flavor case. But importantly all Meissner masses are fi-
+
+nite [127] [even if they are smaller by a factor  (/µ)2
+
+compared to their values in the CFL phase]. Scatter-
+
+ing of the Bogoliubov quasi-particles is carried out by long ranged Q~ photon (weakly coupled) and short ranged
+
+gluons (screened). Furthermore, for statically screened
+
+gauge boson exchanges (Fig. 5) we find that that the ge-
+
+ometric reduction in the size of the Fermi surface does
+
+not lead to the suppression of the shear viscosity rela-
+
+tive to unpaired matter since the geometric factor cancels
+
+out in . If this intuition holds for the three-flavor FF,
+
+it would imply that three-flavor FF where all the gluons
+
+are screened (and perhaps even three flavor LOFF), has a
+
+significantly larger shear viscosity compared to unpaired
+
+quark matter.
+
+For example for (µ/T )1/3 (s3/2/5/3), we expect
+
+that the viscosity of three-flavor FF phases will be larger
+
+than the results for unpaired quark matter by a factor
+
+
+
+(µ
+
+ µ
+
+/T
+
+)1/3
+
+.
+
+On
+
+the
+
+T
+
+versus
+
+
+
+(rotational
+
+frequency)
+
+plot (for example, see the left panel of Fig. 1 in [17]),
+
+it implies that the stability edge determined by shear
+
+viscosity {left most curve (blue online) in Fig. 1 in [17]}
+
+for three-flavor FF will be on the right of the curve shown
+
+for unpaired (but interacting) quark matter. This may
+
+affect the observed distribution of the neutron stars in
+
+the T -  plane [139].
+
+Currently, the temperatures of several fast spinning
+
+neutron stars are not well known (they are simply upper
+
+bounds), and no neutron stars are known which lie close
+
+to the shear viscosity stability edge (cooler than 107 K).
+
+A discovery of such a star could in principle distinguish
+
+between three-flavor paired and unpaired quark matter
+
+as the source of damping of r-modes, if one can simultaneously pin down the damping by other mechanisms (for example phase boundaries or Eckman layers).
+Making this speculation more quantitative will require finding a better estimate of the LOFF window in threeflavor quark matter, making models of hybrid neutron stars with quark matter and LOFF cores with equations of states compatible with recent constraints on masses and radii of neutron stars, and a calculation of the shear viscosity in three-flavor LOFF phases as a function of the T and µ.
+Presently, stronger constraints on the viscosities of dense matter come from hotter, fast rotating neutron stars. The bulk viscosity provides the damping mechanism in this regime and only selected phases of dense matter are consistent with the observations unless the r- modes saturate at small amplitudes [17]. Since the bulk viscosity in quark matter does not involve the scattering between two quarks it is not sensitive to the nature of screening of the gluons but it is sensitive to the presence of gapless quark modes. Therefore it may be interesting to calculate the bulk viscosity in these phases to find out how the geometric reduction in the gapless surface affects the bulk viscosity in LOFF phases.
+
+VII. ACKNOWLEDGEMENTS
+We thank the workshop on the Phases of Dense Matter organized at the INT in University of Washington, Seattle, where part of this work was completed. We thank Mark Alford, Nils Andersson, Sophia Han, Sanjay Reddy, Andras Schmitt and especially Kai Schwenzer for discussions. Sreemoyee Sarkar acknowledges the support of DST under INSPIRE Faculty award. We also thank Prashanth Jaikumar for comments.
+
+Appendix A: Pairing and blocking regions
+
+At T = 0, all energy eigenstates with E < 0 are filled and the E > 0 eigenstates are empty. This defines the pairing and the blocking regions [54, 83]. (For a geometrical description see Fig. 2 in Ref. [54].)
+In the pairing region E1 < 0 and E2 > 0 (Eq. 43) and the quasi-particle excitation energies (the magnitude of the dispersion relations) as a function momenta (in terms of  and cos ) are
+
+E-(, ) = E1 = -µ - b cos  + 2 + 2 E+(, ) = E2 = µ + b cos  + 2 + 2 .
+
+(A1)
+
+12Some details will be modified. The t1, t2 and t3 will get additional Landau damping contributions from the s quarks. The qualitative answers, however, are not expected to change.
+
+27
+
+The pairing region is expressed by the relation
+
+Appendix B: Evaluation of the collision integral
+
+-µ - 
+
+cos   [-1, max(
+
+, -1)]
+
+b
+
+  (-, - (µ + b cos )2 - 2)
+
+ ( (µ + b cos )2 - 2, )
+
+or
+
+-µ -  -µ + 
+
+cos   [
+
+,
+
+]
+
+b
+
+b
+
+  (-, +)
+
+or
+
+-µ + 
+
+cos   [min(
+
+, 1), 1]
+
+b
+
+  (-, - (µ + b cos )2 - 2)
+
+ ( (µ + b cos )2 - 2, ) .
+
+(A2)
+
+The system is cyllindrically symmetric and polar angle   [0, 2].
+The complementary region in momentum space is the blocking region consists of two disconnected regions crescent shaped regions near the Fermi sphere. The boundaries of the blocking regions are the place where the dispersions Eq. 43 are gapless.
+In the d (larger) blocking region, E1 > 0, E2 > 0. Then,
+
+E-(, ) = -E1 = µ + b cos  - 2 + 2 E+(, ) = E2 = µ + b cos  + 2 + 2 .
+
+(A3)
+
+This requires,
+
+-µ + 
+
+cos   [min(
+
+, 1), 1]
+
+b
+
+  (- (µ + b cos )2 - 2,
+
+(µ + b cos )2 - 2) . (A4)
+
+At the edge of the d blocking region, E- is gapless. From Fig. 4,  < 0.6µ for µ  [0.55, 0.754]0 and therefore (-µ + )/b = (-µ + )/1.19µ < 0, and hence the d blocking region never closes.
+The u (smaller) blocking region is defined as the momenta where E1 < 0, E2 < 0. Then,
+
+E-(, ) = -µ - b cos  - 2 + 2 E+(, ) = -µ - b cos  + 2 + 2
+
+(A5)
+
+This requires,
+
+-µ - 
+
+cos   [-1, max(
+
+, -1)]
+
+b
+
+  - (µ + b cos )2 - 2,
+
+(µ + b cos )2 - 2 . (A6)
+
+At the edge of the u blocking region, E+ is gapless. For (-µ - )/b = (-µ - )/1.19µ < -1, the u blocking region closes and the associated gapless surface disappears. This happens for /µ > 0.19 which corresponds to µ/0 < 0.735.
+
+The evaluation of the left hand side (Li) of the Boltzmann equation (Eq. 21) is straightforward. For  = 0, µ = 0, b = 0 the integral can be performed analytically for T µ [42, 64] and gives Lun (Eq. 94). For µ , Fermi liquid theory predicts that the result is 2Lun. For generic , µ, b one can use Azimuthal symmetry to write the integral as a two dimensional integral which can be evaluated easily numerically.
+The general evaluation of the collision integral R is more difficult. For b = 0, spherical symmetry can be used to simplify the integral [42, 64]. Performing d3p4 integration using the momentum  function, changing variables from p3 to q = p3 - p1, and using Eq. 41
+
+Ri(jn)
+
+=
+
+1 - (n)
+
+1 T
+
+2
+
+(2)2 (2)9
+
+µ2i
+
+µ2j
+
+dp1 dp2 dp2 dq(4) d
+
+|M(12  34)|2[f1f2(1 - f3)(1 - f4)]
+
+3 1 · ((0)1 (0)1 - (0)3 (0)3)
+
++ 1 · ((0)2 (0)2 - (0)4 (0)4) |Ep3 -Ep1 ==Ep2 -Ep4 . (B1)
+
+The azimuthal angle p1 can be set to be 0. The five dimensional integration can be done easily
+using Monte Carlo techniques and we find converged answers with 105 - 106 points. The results for Rij shown in Figs. 2, 3 are obtained using 106 points. The error bars
+are the estimated error in the Monte Carlo integration.
+More points are required for Landau damped exchange bosons since the |M(12  34)|2 and hence the integrand
+is more sharply peaked at q  0.
+For the anisotropic case, simplifications associated
+with spherical symmetry are not applicable and one is
+left with a seven dimensional integral. The direction z is
+taken as the direction of the unit vector parallel to b.
+
+Ri(jn)
+
+=
+
+1 - (n)
+
+1 T
+
+2
+
+(2)2 (2)9
+
+µ2i
+
+µ2j
+
+dp1 d cos p1 dp2 d cos p2 dp2 dqz d
+
+|M(12
+
+
+
+34)|2
+
+1 Jq
+
+[f1f2(1
+
+-
+
+f3)(1
+
+-
+
+f4)]
+
+3 1 · ((0)1 (0)1 - (0)3 (0)3)
+
++ 1 · ((0)2 (0)2 - (0)4 (0)4) |Ep3 -Ep1 ==Ep2 -Ep4 . (B2)
+
+The azimuthal angle p1 can be set to be 0. Because of the higher dimensions the convergence of
+the Monte Carlo evaluation of Eq. B2 is much slower
+compared to Eq. B1. In making Fig. 5 where the mediator is Debye screened, we used 7×107 points and obtained
+
+28
+
+reasonably converged results. The evaluation of Rij for Figs. 6, 7 was more computationally involved because the
+dispersions as well as the interactions are anisotropic and
+the interactions are mediated by Landau damped gluons.
+Thus the integrand is sharply peaked at small q. To evaluate Rij for Figs. 6 7 we used 2.2×108 Monte Carlo points which took about a week on a modern cluster with 100
+
+nodes. The most challenging part of the computation is simultaneously solving for the momentum energy conservation constraint Ep3 -Ep1 =  = Ep2 -Ep4 and required writing a robust solver in c. The convergence of Rij is poor, as seen by the large error bars in Rij and . Substantial improvements would require significantly higher computing resources and/or a better algorithm which we leave for future.
+
+[1] P. Demorest, T. Pennucci, S. Ransom, M. Roberts, and J. Hessels, Nature 467, 1081 (2010), arXiv:1010.5788 [astro-ph.HE].
+[2] J. Antoniadis et al., Science 340, 6131 (2013), arXiv:1304.6875 [astro-ph.HE].
+[3] F. Ozel and P. Freire, (2016), 10.1146/annurev-astro081915-023322, arXiv:1603.02698 [astro-ph.HE].
+[4] D. Page and S. Reddy, Annual Review of Nuclear and Particle Science 56, 327 (2006).
+[5] F. Ozel, D. Psaltis, S. Ransom, P. Demorest, and M. Alford, Astrophys. J. 724, L199 (2010), arXiv:1010.5790 [astro-ph.HE].
+[6] A. Y Potekhin, Physics Uspekhi 53, 1235 (2010), arXiv:1102.5735 [astro-ph.SR].
+[7] J. M. Lattimer, Ann. Rev. Nucl. Part. Sci. 62, 485 (2012), arXiv:1305.3510 [nucl-th].
+[8] M. Prakash, Pramana 84, 927 (2015), arXiv:1404.1966 [astro-ph.SR].
+[9] I. F. Ranea-Sandoval, S. Han, M. G. Orsaria, G. A. Contrera, F. Weber, and M. G. Alford, Phys. Rev. C93, 045812 (2016), arXiv:1512.09183 [nucl-th].
+[10] A. W. Steiner, J. M. Lattimer, and E. F. Brown, Astrophys. J. 765, L5 (2013), arXiv:1205.6871 [nucl-th].
+[11] J. M. Lattimer and A. W. Steiner, Astrophys. J. 784, 123 (2014), arXiv:1305.3242 [astro-ph.HE].
+[12] N. Chamel and P. Haensel, Living Rev. Rel. 11, 10 (2008), arXiv:0812.3955 [astro-ph].
+[13] D. Page and S. Reddy, (2012), arXiv:1201.5602 [nuclth].
+[14] C. J. Pethick, Rev. Mod. Phys. 64, 1133 (1992). [15] D. G. Yakovlev, A. D. Kaminker, O. Y. Gnedin, and
+P. Haensel, Phys. Rept. 354, 1 (2001), arXiv:astroph/0012122 [astro-ph]. [16] D. G. Yakovlev, O. Y. Gnedin, A. D. Kaminker, K. P. Levenfish, and A. Y. Potekhin, Adv. Space Res. 33, 523 (2003). [17] M. G. Alford and K. Schwenzer, Phys. Rev. Lett. 113, 251102 (2014), arXiv:1310.3524 [astro-ph.HE]. [18] N. Andersson, Astrophys. J. 502, 708 (1998), arXiv:grqc/9706075 [gr-qc]. [19] N. Andersson and K. D. Kokkotas, Mon. Not. Roy. Astron. Soc. 299, 1059 (1998), arXiv:gr-qc/9711088 [grqc]. [20] L. Lindblom, J. E. Tohline, and M. Vallisneri, Phys. Rev. Lett. 86, 1152 (2001), arXiv:astro-ph/0010653 [astro-ph]. [21] M. G. Alford, S. Mahmoodifar, and K. Schwenzer, Phys. Rev. D85, 044051 (2012), arXiv:1103.3521 [astroph.HE]. [22] M. Alford, S. Mahmoodifar, and K. Schwenzer, Phys. Rev. D85, 024007 (2012), arXiv:1012.4883 [astro-
+
+ph.HE]. [23] E. Flowers and N. Itoh, Astrophys. J. 206, 218 (1976). [24] E. Flowers and N. Itoh, Astrophys. J. 230, 847 (1979). [25] N. Andersson, D. I. Jones, K. D. Kokkotas, and N. Ster-
+gioulas, Gravitational waves: A challenge to theoretical astrophysics. Proceedings, Trieste, Italy, June 69, 2000, Astrophys. J. 534, L75 (2000), [,297(2000)], arXiv:astro-ph/0002114 [astro-ph]. [26] L. Bildsten and G. Ushomirsky, Astrophys. J. 529, L33 (2000), arXiv:astro-ph/9911155 [astro-ph]. [27] P. Jaikumar, G. Rupak, and A. W. Steiner, Phys. Rev. D78, 123007 (2008), arXiv:0806.1005 [nucl-th]. [28] Y. Levin and G. Ushomirsky, Mon. Not. Roy. Astron. Soc. 324, 917 (2001), arXiv:astro-ph/0006028 [astroph]. [29] L. Lindblom, B. J. Owen, and G. Ushomirsky, Phys. Rev. D62, 084030 (2000), arXiv:astro-ph/0006242 [astro-ph]. [30] G. Rupak and P. Jaikumar, Phys. Rev. C88, 065801 (2013), arXiv:1209.4343 [nucl-th]. [31] L. Lindblom and G. Mendell, Phys. Rev. D61, 104003 (2000), arXiv:gr-qc/9909084 [gr-qc]. [32] L. Lindblom and B. J. Owen, Phys. Rev. D 65, 063006 (2002). [33] P. Haensel, K. P. Levenfish, and D. G. Yakovlev, Astron. Astrophys. 357, 1157 (2000), arXiv:astroph/0004183 [astro-ph]. [34] P. Haensel, K. P. Levenfish, and D. G. Yakovlev, "Astron. Astrophys." 372, 130 (2001), astro-ph/0103290. [35] P. Haensel, K. P. Levenfish, and D. G. Yakovlev, "Astron. Astrophys." 381, 1080 (2002), astro-ph/0110575. [36] P. S. Shternin and D. G. Yakovlev, Phys. Rev. D 78, 063006 (2008). [37] B. Haskell and N. Andersson, "Mon. Not. Roy. Astron. Soc." 408, 1897 (2010), arXiv:1003.5849 [astro-ph.SR]. [38] C. Manuel and L. Tolos, Phys. Rev. D88, 043001 (2013), arXiv:1212.2075 [astro-ph.SR]. [39] G. Colucci, M. Mannarelli, and C. Manuel, Astrophys. 56, 104 (2013), [Astrofiz.56,117(2013)]. [40] P. Jaikumar, S. Reddy, and A. W. Steiner, Mod. Phys. Lett. A21, 1965 (2006), arXiv:astro-ph/0608345 [astroph]. [41] J. Madsen, Phys. Rev. D 46, 3290 (1992). [42] H. Heiselberg and C. Pethick, Physical Review D 48, 2916 (1993). [43] K. Schwenzer, (2012), arXiv:1212.5242 [nucl-th]. [44] N. Iwamoto, Phys. Rev. Lett. 44, 1637 (1980). [45] N. Iwamoto, Annals of Physics 141, 1 (1982). [46] K. Rajagopal and F. Wilczek, (2000), arXiv:hepph/0011333 [hep-ph]. [47] M. G. Alford, J. A. Bowers, and K. Rajagopal,
+
+29
+
+Strangeness in quark matter. Proceedings, 5th International Conference, Strangeness 2000, Berkeley, USA, July 20-25, 2000, J. Phys. G27, 541 (2001), [Lect. Notes Phys.578,235(2001)], arXiv:hep-ph/0009357 [hep-ph]. [48] M. G. Alford, A. Schmitt, K. Rajagopal, and T. Schäfer, Rev. Mod. Phys. 80, 1455 (2008), arXiv:0709.4635 [hep-ph]. [49] M. G. Alford, K. Rajagopal, and F. Wilczek, Nucl. Phys. B537, 443 (1999), arXiv:hep-ph/9804403 [hepph]. [50] C. Manuel, A. Dobado, and F. J. Llanes-Estrada, JHEP 09, 076 (2005), arXiv:hep-ph/0406058 [hep-ph]. [51] M. Mannarelli, C. Manuel, and B. A. Sa'd, Phys. Rev. Lett. 101, 241101 (2008), arXiv:0807.3264 [hep-ph]. [52] G. Rupak and P. Jaikumar, Phys. Rev. C82, 055806 (2010), arXiv:1005.4161 [nucl-th]. [53] M. G. Alford and S. Han, Eur. Phys. J. A52, 62 (2016), arXiv:1508.01261 [nucl-th]. [54] M. G. Alford, J. A. Bowers, and K. Rajagopal, Phys. Rev. D63, 074016 (2001), arXiv:hep-ph/0008208 [hepph]. [55] R. Anglani, R. Casalbuoni, M. Ciminale, N. Ippolito, R. Gatto, M. Mannarelli, and M. Ruggieri, Rev. Mod. Phys. 86, 509 (2014), arXiv:1302.4264 [hep-ph]. [56] K. Rajagopal and R. Sharma, Phys. Rev. D74, 094019 (2006), arXiv:hep-ph/0605316 [hep-ph]. [57] N. D. Ippolito, G. Nardulli, and M. Ruggieri, JHEP 04, 036 (2007), arXiv:hep-ph/0701113 [hep-ph]. [58] G. Cao, L. He, and P. Zhuang, Phys. Rev. D91, 114021 (2015), arXiv:1502.03392 [nucl-th]. [59] R. Anglani, G. Nardulli, M. Ruggieri, and M. Mannarelli, Phys. Rev. D74, 074005 (2006), arXiv:hep-ph/0607341 [hep-ph]. [60] D. Hess and A. Sedrakian, Phys. Rev. D 84, 063015 (2011). [61] P. Fulde and R. A. Ferrell, Physical Review 135, A550 (1964). [62] M. G. Alford, K. Rajagopal, and F. Wilczek, Phys. Lett. B422, 247 (1998), arXiv:hep-ph/9711395 [hepph]. [63] R. Rapp, T. Schäfer, E. V. Shuryak, and M. Velkovsky, Phys. Rev. Lett. 81, 53 (1998), arXiv:hep-ph/9711396 [hep-ph]. [64] M. G. Alford, H. Nishimura, and A. Sedrakian, Phys.Rev. C90, 055205 (2014), arXiv:1408.4999 [hepph]. [65] M. G. Alford, J. Berges, and K. Rajagopal, Nucl. Phys. B571, 269 (2000), arXiv:hep-ph/9910254 [hep-ph]. [66] D. H. Rischke, Phys. Rev. D62, 034007 (2000), arXiv:nucl-th/0001040 [nucl-th]. [67] D. H. Rischke, D. T. Son, and M. A. Stephanov, Phys. Rev. Lett. 87, 062001 (2001), arXiv:hep-ph/0011379 [hep-ph]. [68] D. H. Rischke and I. A. Shovkovy, Phys. Rev. D66, 054019 (2002), arXiv:nucl-th/0205080 [nucl-th]. [69] M. E. Peskin and D. V. Schroeder, An Introduction to Quantum Field Theory; 1995 ed. (Westview, Boulder, CO, 1995) includes exercises. [70] Y. Nambu and G. Jona-Lasinio, Physical Review 122, 345 (1961). [71] M. G. Alford, J. Berges, and K. Rajagopal, Nucl. Phys. B558, 219 (1999), arXiv:hep-ph/9903502 [hep-ph]. [72] M. G. Alford, J. Berges, and K. Rajagopal, Phys. Rev. Lett. 84, 598 (2000), arXiv:hep-ph/9908235 [hep-ph].
+
+[73] R. Casalbuoni, R. Gatto, and G. Nardulli, Phys. Lett. B498, 179 (2001), [Erratum: Phys. Lett.B517,483(2001)], arXiv:hep-ph/0010321 [hep-ph].
+[74] D. H. Rischke, Phys. Rev. D62, 054017 (2000), arXiv:nucl-th/0003063 [nucl-th].
+[75] D. T. Son and M. A. Stephanov, Phys. Rev. D61, 074012 (2000), arXiv:hep-ph/9910491 [hep-ph].
+[76] D. T. Son and M. A. Stephanov, Phys. Rev. D62, 059902 (2000), arXiv:hep-ph/0004095 [hep-ph].
+[77] R. Casalbuoni and R. Gatto, Phys. Lett. B469, 213 (1999), arXiv:hep-ph/9909419 [hep-ph].
+[78] M. Rho, A. Wirzba, and I. Zahed, Phys. Lett. B473, 126 (2000), arXiv:hep-ph/9910550 [hep-ph].
+[79] D. K. Hong, T. Lee, and D.-P. Min, Phys. Lett. B477, 137 (2000), arXiv:hep-ph/9912531 [hep-ph].
+[80] C. Manuel and M. H. G. Tytgat, Phys. Lett. B479, 190 (2000), arXiv:hep-ph/0001095 [hep-ph].
+[81] M. Rho, E. V. Shuryak, A. Wirzba, and I. Zahed, Nucl. Phys. A676, 273 (2000), arXiv:hep-ph/0001104 [hepph].
+[82] K. Rajagopal and A. Schmitt, Phys. Rev. D73, 045003 (2006), arXiv:hep-ph/0512043 [hep-ph].
+[83] J. A. Bowers, Color superconducting phases of cold dense quark matter, Ph.D. thesis, MIT, LNS (2003), arXiv:hep-ph/0305301 [hep-ph].
+[84] M. Alford, C. Kouvaris, and K. Rajagopal, Phys. Rev. D 71, 054009 (2005).
+[85] P. F. Bedaque and T. Schäfer, Nucl. Phys. A697, 802 (2002), arXiv:hep-ph/0105150 [hep-ph].
+[86] T. Schäfer, Phys. Rev. D67, 074502 (2003), arXiv:heplat/0211035 [hep-lat].
+[87] M. Buballa, Phys. Lett. B609, 57 (2005), arXiv:hepph/0410397 [hep-ph].
+[88] M. M. Forbes, Fermionic Superfluids: From Cold Atoms To High Density Qcd Gapless (breached Pair) Superfluidity And Kaon Condensation, Ph.D. thesis, Massachusetts Inst. Technology (2005).
+[89] H. J. Warringa, (2006), arXiv:hep-ph/0606063 [hep-ph]. [90] A. Kryjevski and D. Yamada, Phys. Rev. D71, 014011
+(2005), arXiv:hep-ph/0407350 [hep-ph]. [91] A. Gerhold, T. Schäfer, and A. Kryjevski, Phys. Rev.
+D75, 054012 (2007), arXiv:hep-ph/0612181 [hep-ph]. [92] A. Kryjevski, Phys. Rev. D77, 014018 (2008),
+arXiv:hep-ph/0508180 [hep-ph]. [93] M. G. Alford, M. Braby, S. Reddy, and T. Schäfer,
+Phys. Rev. C75, 055209 (2007), arXiv:nucl-th/0701067 [nucl-th]. [94] M. G. Alford, M. Braby, and A. Schmitt, J. Phys. G35, 115007 (2008), arXiv:0806.0285 [nucl-th]. [95] R. Casalbuoni, R. Gatto, M. Mannarelli, G. Nardulli, and M. Ruggieri, Phys. Lett. B605, 362 (2005), [Erratum: Phys. Lett.B615,297(2005)], arXiv:hepph/0410401 [hep-ph]. [96] K. Fukushima, Phys. Rev. D72, 074002 (2005), arXiv:hep-ph/0506080 [hep-ph]. [97] M. Alford and Q.-h. Wang, J. Phys. G31, 719 (2005), arXiv:hep-ph/0501078 [hep-ph]. [98] M. Huang and I. A. Shovkovy, Phys. Rev. D70, 051501 (2004), arXiv:hep-ph/0407049 [hep-ph]. [99] M. Huang and I. A. Shovkovy, Phys. Rev. D70, 094030 (2004), arXiv:hep-ph/0408268 [hep-ph]. [100] I. Giannakis and H.-C. Ren, Phys. Lett. B611, 137 (2005), arXiv:hep-ph/0412015 [hep-ph]. [101] K. Fukushima, Phys. Rev. D73, 094016 (2006),
+
+30
+
+arXiv:hep-ph/0603216 [hep-ph]. [102] A. Larkin and Y. N. Ovchinnikov, Zh. Eksperim. i Teor.
+Fiz. 47 (1964). [103] E. V. Gorbar, M. Hashimoto, and V. A. Miransky,
+Phys. Lett. B632, 305 (2006), arXiv:hep-ph/0507303 [hep-ph]. [104] O. Kiriyama, D. H. Rischke, and I. A. Shovkovy, Phys. Lett. B643, 331 (2006), arXiv:hep-ph/0606030 [hepph]. [105] M. G. Alford and A. Schmitt, J. Phys. G34, 67 (2007), arXiv:nucl-th/0608019 [nucl-th]. [106] H. Abuki and T. Kunihiro, Nucl. Phys. A768, 118 (2006), arXiv:hep-ph/0509172 [hep-ph]. [107] S. B. Ruester, V. Werth, M. Buballa, I. A. Shovkovy, and D. H. Rischke, Phys. Rev. D72, 034004 (2005), arXiv:hep-ph/0503184 [hep-ph]. [108] M. Alford and K. Rajagopal, JHEP 06, 031 (2002), arXiv:hep-ph/0204001 [hep-ph]. [109] A. W. Steiner, S. Reddy, and M. Prakash, Phys. Rev. D66, 094007 (2002), arXiv:hep-ph/0205201 [hep-ph]. [110] I. Shovkovy and M. Huang, Phys. Lett. B564, 205 (2003), arXiv:hep-ph/0302142 [hep-ph]. [111] M. Huang and I. Shovkovy, Nucl. Phys. A729, 835 (2003), arXiv:hep-ph/0307273 [hep-ph]. [112] M. G. Alford, J. A. Bowers, J. M. Cheyne, and G. A. Cowan, Phys. Rev. D67, 054018 (2003), arXiv:hepph/0210106 [hep-ph]. [113] T. Schäfer, Phys. Rev. D62, 035013 (2000), arXiv:hepph/0003290 [hep-ph]. [114] M. Buballa, J. Hosek, and M. Oertel, Phys. Rev. Lett. 90, 182002 (2003), arXiv:hep-ph/0204275 [hep-ph]. [115] A. Schmitt, Phys. Rev. D71, 054016 (2005), arXiv:nuclth/0412033 [nucl-th]. [116] A. Schmitt, I. A. Shovkovy, and Q. Wang, Phys. Rev. D73, 034012 (2006), arXiv:hep-ph/0510347 [hep-ph]. [117] A. Schmitt, Q. Wang, and D. H. Rischke, Phys. Rev. Lett. 91, 242301 (2003), arXiv:nucl-th/0301090 [nuclth]. [118] J. Kundu and K. Rajagopal, Phys. Rev. D65, 094022 (2002), arXiv:hep-ph/0112206 [hep-ph]. [119] J. A. Bowers and K. Rajagopal, Phys. Rev. D66, 065002 (2002), arXiv:hep-ph/0204079 [hep-ph]. [120] M. Mannarelli, K. Rajagopal, and R. Sharma, Phys. Rev. D 73, 114012 (2006). [121] A. K. Leibovich, K. Rajagopal, and E. Shuster, Phys.
+
+Rev. D64, 094005 (2001), arXiv:hep-ph/0104073 [hepph]. [122] R. Casalbuoni, R. Gatto, N. Ippolito, G. Nardulli, and M. Ruggieri, Phys. Lett. B627, 89 (2005), [Erratum: Phys. Lett.B634,565(2006)], arXiv:hepph/0507247 [hep-ph]. [123] G. Baym, H. Monien, C. J. Pethick, and D. G. Ravenhall, Phys. Rev. Lett. 64, 1867 (1990). [124] M. Alford, P. Jotwani, C. Kouvaris, J. Kundu, and K. Rajagopal, Physical Review D 71, 114011 (2005). [125] R. Casalbuoni, E. Fabiano, R. Gatto, M. Mannarelli, and G. Nardulli, Phys. Rev. D66, 094006 (2002), arXiv:hep-ph/0208121 [hep-ph]. [126] I. Giannakis and H.-C. Ren, Nucl. Phys. B723, 255 (2005), arXiv:hep-th/0504053 [hep-th]. [127] M. Ciminale, G. Nardulli, M. Ruggieri, and R. Gatto, Phys. Lett. B636, 317 (2006), arXiv:hep-ph/0602180 [hep-ph]. [128] In preparation. [129] R. Casalbuoni, R. Gatto, M. Mannarelli, and G. Nardulli, Phys. Lett. B511, 218 (2001), arXiv:hepph/0101326 [hep-ph]. [130] M. Mannarelli, K. Rajagopal, and R. Sharma, Phys. Rev. D76, 074026 (2007), arXiv:hep-ph/0702021 [hepph]. [131] L. Radzihovsky and A. Vishwanath, Physical Review Letters 103, 010404 (2009), arXiv:0812.3945 [condmat.supr-con]. [132] E. Adams, Journal of Physics and Chemistry of Solids 15, 359 (1960). [133] L. Landau and I. Khalatnikov, Zh. Eksp. Teor. Fiz. 19 (1949). [134] H. J. Maris, Physical Review A 8, 1980 (1973). [135] G. Rupak and T. Schäfer, Phys. Rev. A76, 053607 (2007), arXiv:0707.1520 [cond-mat.other]. [136] C. Manuel and L. Tolos, Phys. Rev. D84, 123007 (2011), arXiv:1110.0669 [astro-ph.SR]. [137] D. N. Aguilera, V. Cirigliano, J. A. Pons, S. Reddy, and R. Sharma, Phys. Rev. Lett. 102, 091101 (2009), arXiv:0807.4754 [nucl-th]. [138] J. Schrieffer, Theory of Superconductivity, Advanced Book Program Series (Advanced Book Program, Perseus Books, 1983). [139] Y. Levin, Astrophys. J. 517, 328 (1999), arXiv:astroph/9810471 [astro-ph].
+
+

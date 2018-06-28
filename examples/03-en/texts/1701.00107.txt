@@ -1,0 +1,1741 @@
+arXiv:1701.00107v1 [math.PR] 31 Dec 2016
+
+TOWARDS A UNIVERSALITY PICTURE FOR THE RELAXATION TO EQUILIBRIUM OF KINETICALLY CONSTRAINED MODELS
+F. MARTINELLI AND C. TONINELLI
+ABSTRACT. Recent years have seen a great deal of progress in our understanding of bootstrap percolation models, a particular class of monotone cellular automata. In the two dimensional lattice Z2 there is now a quite satisfactory understanding of their evolution starting from a random initial condition, with a strikingly beautiful universality picture for their critical behavior. Much less is known for their non-monotone stochastic counterpart, namely kinetically constrained models (KCM). In KCM each vertex is resampled (independently) at rate one by tossing a p-coin iff it can be infected in the next step by the bootstrap model. In particular infection can also heal, hence the non-monotonicity. Besides the connection with bootstrap percolation, KCM have an interest in their own as they feature some of the most striking features of the liquid/glass transition, a major and still largely open problem in condensed matter physics. In this paper we pave the way towards proving universality results for KCM similar to those for bootstrap percolation. Our novel and general approach establishes a close connection between the critical scaling of characteristic time scales for KCM and the scaling of the critical length in critical bootstrap models. Although the full proof of universality for KCM is deferred to a forthcoming paper, here we apply our general method to the Friedrickson-Andersen k-facilitated models, amongst the most studied KCM, and to the Gravner-Griffeath model. In both cases our results are close to optimal.
+1. INTRODUCTION
+In recent years remarkable progress have been obtained in understanding the behaviour of a particular class of monotone cellular automata known as bootstrap percolation. A general bootstrap cellular automata [4] is specified by its update family U = {U1, . . . , Um} of finite subsets of Zd \ 0. Once U is given, the U -bootstrap percolation process on e.g. the d dimensional torus of linear size n, Zdn, is as follows. Given a set A  Zdn of initially infected vertices, set A0 = A, and define recursively for each tN
+At+1 = At  {x  Zdn : x + Uk  At for some k  (1, . . . m)}. In other words a vertex x becomes infected at time t + 1 if the translate by x of at least one element of the update family is already entirely infected at time t, and infected vertices remain infected forever. A much studied example is the classical r-neighbour model (see [2] and references therein) in which a vertex gets infected if at least r among its nearest neighbours are infected, namely the update family is formed by all the r-subsets of the set of the nearest neighbours of the origin.
+A central problem for bootstrap models is their long time evolution when the initial infected set A0 is q-random, i.e. each vertex of Zdn, independently from the other vertices, is initially declared to be infected with probability q  (0, 1). A key quantity is then the critical percolation threshold qc(n; U ) defined as the smallest q such that the probability (over A0) that eventually the whole torus becomes infected is at least 1/2. Closely related quantities are the critical length
+Lc(q, U ) := min{n : qc(n, U ) = q},
+and the mean infection time of the origin E( (A, U )), where
+ (A, U ) := min(t 0 : 0  At).
+In [3­5] beautiful universality results for general U -bootstrap percolation processes in two dimension satisfying limn qc(n, U ) = 0 have been established, yielding the sharp
+This work has been supported by the ERC Starting Grant 680275 MALIG . 1
+
+2
+
+F. MARTINELLI AND C. TONINELLI
+
+behavior of qc(n) as n   and of Lc(q, U ) and  (A, U ) as q  0. For a nice review of these results we refer the reader to [20, Section 1].
+A quite natural stochastic counterpart of bootstrap percolation models are particular interacting particle systems known as kinetically constrained models (KCM). Given a U -
+bootstrap model, the associated KCM is the continuos time reversible Markov process on  = {0, 1}Zd constructed as follows. Call a vertex infected if it is in the zero state. Then each vertex x, with rate one and independently across Zd, is resampled by tossing a p-coin (Prob(1) = p) iff the update rule of the bootstrap process at x was fulfilled by
+the current configuration [9]. It is easy to check that such a process is reversible w.r.t. the Bernoulli(p) product measure on . Notice that if q := 1 - p  1, it is very unlikely
+for a vertex to become infected (even if it would have been infected by the bootstrap
+process). Observe moreover that infected vertices may heal. The latter feature implies,
+in particular, that the KCM is not monotone/attractive, a fact that rules out several
+powerful tools from interacting particle systems theory like monotone coupling and
+censoring.
+Besides the connection with cellular automata, KCM are of interest in their own.
+They have been in fact introduced in the physics literature in the '80's to model the
+liquid/glass transition, a major and still largely open problem in condensed matter
+physics [14]. Extensive numerical simulations indicate that they display a remarkable
+glassy behavior, including heterogeneous dynamics, the occurrence of ergodicity break-
+ing transitions, multiple invariant measures and anomalously long time scales (see for
+example [14] and references therein).
+It has been proved in [9] that a KCM undergoes an ergodicity breaking transition at qc := lim infn qc(n, U ) and a major problem, both from the physical and mathematical point of view, is to determine the precise divergence of its characteristic time scales when q  qc. A very natural time scale is the first time 0(Zd; U ) at which the state of the origin is updated when the initial law is the reversible measure (i.e. the initial configuration consists of i.i.d. Bernoulli(p) variables). Via a general argument based on the finite-speed of propagation considerations, it is possible to prove [9] that E(0(Zd; U )) is lower bounded by the critical length Lc(q; U ) of the corresponding bootstrap percolation model, where E(·) denotes the average w.r.t. the stationary process. Unfortunately a general upper bound on E(0(Zd; U )), related to the best constant in the Poincar´e inequality for the KCM, is much poorer and of the form E(0(Zd; U )) exp(cLdc ) [9]. Though this bound has been greatly improved for special choices of the update family U , yielding in some cases the correct behavior (cf. [8, 10, 11]), for general KCM and
+contrary to the situation of bootstrap percolation in two dimensions there is yet no universality picture for the scaling of E(0(Zd; U )).
+For all those KCM such that limn qc(n; U ) = 0 it is possible to find in [20, Section 2] some conjectures, formulated jointly with the author R. Morris, on the classification of their universality classes and on the link between the scaling of E(0(Zd; U )) and that of Lc(q; U ). For such KCM it is necessary to introduce a more refined1 classification of their universality classes w.r.t. bootstrap percolation models in order to take into account the effect of the presence of energy barriers on the scaling of E(0(Zd; U )) as q  0.
+In this paper we develop a novel and general approach to pin down the dominant relaxation mechanism and obtain a much tighter upper bound for Eµ(0(Zd; U )) in terms of the critical length Lc(q; U ). Our method is designed particularly for KCM such that limn qc(n; U ) = 0. By applying our strategy it is possible to prove that, for a large class of KCM in two dimensions (the critical -unrooted models in the language
+of [20]),
+Eµ(0(Zd; U )) = O(Lc(q; U )(q)), (q) = poly(log log Lc(q; U )) as q  0. (1.1)
+
+1It is necessary to distinguish between update families U for which the critical droplet (in bootstrap
+percolation jargon) is constrained to move inside a cone or not. Examples of the first instance are the d-dimensional East model and the Duarte model in Z2. In the first case U consists of the 1-subsets of di=1{-ei} and in the second case of the 2-subsets of {e1, ±e2}.
+
+3
+The proof of this result together with the analysis of the universality picture of KCM in two dimensions, including the proof of the conjectures in [20] for the supercritical models, is postponed to a forthcoming work [19]. Here we apply our technique to the KCM with update family corresponding to k-neighbour bootstrap percolation in any dimension, a much studied KCM known in the physics literature as the Friedrickson Andersen k-facilitated model [1]. We also consider the two dimensional Gravner-Griffeath model [16], in which the update family U are the 3-subsets of the set consisting of the nearest neighbours of the origin together with the vertices (±2, 0), a model featuring a striking anisotropy in its bootstrap evolution. In both cases our results (Theorem 4.3) establishes (1.1) in d = 2 and a tight connection between E(0) and Lc(q; U ) in d  3.
+1.1. Plan of the paper. In section 2, after introducing the relevant notation and motivated by the connection between E(0) and the Poincar´e inequality, we prove a (constrained) Poincar´e inequality for very general KCM (Theorem 1) satisfying a rather flexible condition involving the range of the update family U and the probability that an update is feasible. Constrained Poincar´e inequality for KCM, implying positive spectral gap and exponential mixing, have already been established [9], mainly using the so-called halving method. Here, inspired by our previous analysis of KCM on trees [8, 18], we develop an alternative method which, besides being more natural and direct, applies as well to update families with a large (depending on q) or infinite number of elements. As an example, in section 2.2 we prove a Poincar´e inequality for the KCM for which the constraint requires that the oriented neighbors of the to-be-update vertex belong to an infinite cluster of infected vertices.
+Section 3, and its main outcomes summarised in Corollary 3.9, is somehow the core of the work. By applying Theorem 1 together with a renormalization argument and canonical paths arguments, we prove a sharp bound on the best constant in the Poincare' inequality for general KCM. This bound involves the probability of occurence of a critical droplet (in the bootstrap percolation language) together with certain congestion constants related to the cost of moving around the droplet. In this section we made an effort to keep the framework as general as possible, in order to construct a very flexible tool that can be applied to any choice of constraints in any dimensions.
+In section 4 we introduce the Friedrickson-Andersen k-facilitated (FA-kf) and GravnerGriffeath (GG) models and state our main result Theorem 4.3 for the scaling of E(0(Zd; U )) in these cases. Finally in section 5 we prove Theorem 4.3 by bounding (model by model) the congestion constants appearing in the key inequality of Corollary 3.9.
+
+2. A CONSTRAINED POINCAR´E INEQUALITY FOR PRODUCT MEASURES
+
+2.0.1. Notation. For any integer n we will write [n] for the set {1, 2, . . . , n}. Given
+
+x = (x1, . . . , xd)  Zd we denote its 1-norm by x 1 =
+
+d i=1
+
+|xi|
+
+and
+
+by
+
+d1(·,
+
+·)
+
+the
+
+associated distance function. Given two vertices x = y we will say that x precedes y
+
+and we will write x  y if xi yi for all i  [d]. The collection B = {e1, e2, . . . , ed} will denote the canonical basis of Zd. Given a set   Zd we define its external boundary as
+
+the set
+
+ = {y  Zd \  :  x   with x - y 1 = 1} .
+
+2.0.2. The probability space. Given a finite set S and   Zd, we will denote by  the product space S endowed with the product topology. Given V   and    we will write V for the restriction of  to V . Finally we will denote by µ the product measure µ = x µ^x on , where µ^x = µ^ x  Zd and µ^ is a positive probability measure on S. Expectation and variance w.r.t. µ are denoted by E(·), Var(·) respectively. If  = Zd the subscript  will be dropped from the notation.
+In several applications the probability space (S, µ^) will be the "particle space" S = {0, 1}V where V is a finite subset (a "block" as it is sometimes called) of Zd and µ^ =
+xV B(p), B(p) being the p-Bernoulli measure.
+
+4
+
+F. MARTINELLI AND C. TONINELLI
+
+z
+
+0
+
+L3
+
+L2
+
+L1 L0
+
+FIGURE 1. An example in two dimensions of a constraint satisfying the
+exterior condition w.r.t. a sequence of increasing half-spaces. Only the slices {Ln}3n=0 are drawn. The constraint c0 requires that the restriction of the configuration  to each one of the four vertices around the origin (black dots) belongs to a certain subset G  S.
+
+2.0.3. The constraints. For each x  Zd let x  Zd \ {x} be a finite set, let Ax be an event depending on the variables {y}yx and let cx be its indicator function. By construction cx does not depend on x. In the sequel we will refer to cx as the constraint at x and to x := µ(1 - cx) = µ(Acx) and x as its failure probability and support respectively. In our approach based on a martingale decomposition of the variance Var(f ) of any local function f :   R, a key role is played by constraints satisfying the following exterior condition.
+Definition 2.1 (Exterior condition). Given an exhausting2 collection of subsets {Vn} n=- of Zd, let Ln := Vn \ Vn-1 be the nth-shell and, for any x  Ln, let the exterior of x be the set Extx :=  j=n+1Lj. We then say that the family of constraints {cx}xZd satisfies the exterior condition w.r.t. {Vn} n=- if x  Extx for all x.
+Example 1. A concrete example of a class of constraints satisfying the exterior condition and entering in the applications to kinetically constrained models is as follows. Fix a vertex z  0 and let L0 = {x  Zd : x, z = 0}, where ·, · is the usual scalar product and x, z are treated as vectors in Rd. For n  1 let Ln = L0 + nz where  = sup{ > 0 : (L0 + z)  Zd = }. Similarly for n - 1. Finally set Vn := nj=-Lj (cf. Figure 1). Then the constraints are defined as follows. Let G  S be an single site event and let U = (U1, . . . , Um) be a finite family of subsets of the half-space {x  Zd : x, z > 0} =  i=1Li. Then c0() is the indicator of the event that there exists U  U such that x  G for all x  U . The constraint cx at any other vertex x is obtained by translating the above construction by x. For example in d = 2 one could take S = {0, 1}, G = {0}, z = (1, 1), m = 1 and U = {(0, 1), (1, 0)}, a case known as the North-East model (cf. e.g. [9]). In all the applications discussed in this paper z = (1, . . . , 1) but in order to prove the universality results discussed in the introduction more general choices of z will be necessary.
+2.1. Poincare´ inequality. For simplicity we state our main result directly for the infinite lattice Zd. There is also a finite volume version in a box   Zd which is proved exactly in the same way. Let {c(xi)}xZd , i = 1, . . . , k be a family of constraints with supports (xi) and failure probabilities (xi). For any non-empty I  [k] let I  (0, +) be a positive weight, let x(I) = µ( iI (1 - c(xi))) and let x(I) = iI x(i).
+2That is Vn  Vn+1 for all n and nVn = Zd.
+
+5
+
+Theorem 1. Assume that there exists a choice of {I }I[k] such that
+
+2
+
+I
+
+I [k] I =
+
+sup
+z I[k]
+
+-I 1x(I) < 1/4.
+xZd
+
+I= x(xI)z
+
+(2.1)
+
+Suppose in addition that there exists an exhausting family {Vn} n=- of sets of Zd such that, for any i  [k], the constraints {c(xi)}xZd satisfy the exterior condition w.r.t. {Vn} n=-. Then, for any local (i.e. depending on finitely many variables) function f :   R,
+
+Var(f )
+
+4µ
+x
+
+k
+c(xi) Varx(f ) .
+i=1
+
+(2.2)
+
+Remark 2.2. As it is well known, the Poincar´e inequality (2.2) is equivalent to say that
+
+the spectral gap of the reversible Markov process on  with Dirichlet form given by D(f ) =
+
+xµ
+
+k i=1
+
+cx(i)
+
+Varx(f )
+
+is greater than 1/4. Such a process, a kind of generalised
+
+KCM, can be informally described as follows. With rate one and independently across Zd
+
+each variable x(t)  S, x  Zd, is resampled from µ^x iff
+
+k i=1
+
+c(xi)((t))
+
+=
+
+1.
+
+Remark 2.3. It is easy to construct examples of constraints for which the exterior con-
+dition is violated and the r.h.s. of (2.2) is zero for a suitable local function f . Take for
+instance S = {0, 1}, d = 2 and cx the indicator of the event that at least three nearest neighbors of x are in the zero state. If f () = 0e1e1+e2e2 then cx() Varx(f ) = 0 for all  and all x  Zd while Var(f ) > 0. In this case there does not exist an exhausting family {Vn} n=1 such that the constraints satisfy the exterior condition w.r.t. {Vn} n=1.
+
+Remark 2.4. For certain applications the following monotonicity property turns out to be useful. Suppose that {c(xi)}xZd, i[k] satisfy the condition of the theorem and let {c^x(i)}xZd, i[k]
+be another family of constraints which are dominated by the first ones in the sense that cx(i) c^x(i) for all i, x. Then clearly (2.2) holds with c(xi) replaced bt c^x(i) even if the latter does not satisfy the exterior condition. As an example take S = {0, 1}, k = 1 and c^x the constraint that at least one neighbor of x is in the zero state and cx the same but restricted to the neighbors of the form x + ei, i  [d].
+
+Proof of Theorem 1. We first treat the case of a single constraint k = 1. After that we will explain how to generalize the argument to k > 1 constraints. We begin with a simple result.
+
+Lemma 2.5. For any local function f
+
+Var(f )
+
+µ Varx µExtx (f ) .
+x
+
+(2.3)
+
+Proof of the Lemma. Let {Vi} i=- be the exhausting family of sets w.r.t. which all the constraints satisfy the exterior condition, let Li = Vi \ Vi-1 be the corresponding ithshell and assume w.l.o.g. that the support of f is contained in ni=0Li. Let finally j = ni=n-jLi, j n. Using the formula for conditional variance together with the fact that µ is a product measure we get:
+
+Var(f ) = µ Var0(f ) + Var µ0(f )
+= µ Var0 (f ) + µ Var1 µ0 (f ) + Var µ1 µ0 (f ) ...
+n-1
+= µ Var0 [f ] + µ Varj+1 µj (f ) .
+j=0
+
+Recall now the standard inequality valid for any product probability measure  = 1  2:
+Var(f ) (Var1(f )) + (Var2(f )).
+
+6
+
+F. MARTINELLI AND C. TONINELLI
+
+If we apply the inequality to Varj+1 µj (f ) and observe that µj (f ) does not depend on the variables in j, we get immediately
+
+µ(Varj+1 µj (f ) ) Analogously,
+
+µ Varx µj (f ) =
+
+µ Varx µExtx (f ) .
+
+xj+1\j
+
+xj+1\j
+
+µ Var0 [f ]
+
+µ Varx(f ) =
+
+µ Varx(µExtx (f )) ,
+
+x0
+
+x0
+
+because µExtx(f ) = f for any x  0. The proof of the claim is complete.
+
+We can now prove the theorem for k = 1 and the starting point is (2.3). We begin by examining a generic term µ Varx(µExtx(f )) for which we write
+
+µExtx (f ) = µExtx cxf + µExtx 1 - cx f ,
+
+so that
+
+Varx µExtx (f ) 2 Varx µExtx cxf + 2 Varx µExtx 1 - cx f .
+
+(2.4)
+
+Since cx() does not depend on x, the convexity of the variance implies that the first term in the above r.h.s. satisfies
+
+Varx µExtx cxf
+
+µExtx Varx cxf = µExtx cx Varx(f ) .
+
+We now turn to the analysis of the more complicated second term in the r.h.s. of (2.4).
+
+Varx µExtx [1 - cx f
+
+= Varx µExtx 1 - cx f - µExtx{x}(f ) + µExtx{x}(f ) = Varx µExtx 1 - cx g ,
+
+where g := f -µExtx{x}(f ) and we used the fact that Varx µExtx ([1-cx]µExtx{x}(f )) = 0.
+Recall now that the constraint cx depends only on {y}yx with x  Extx. Thus
+µExtx 1 - cx g = µExtx [1 - cx]µExtx\x (g)
+and a Schwarz-inequality then gives:
+
+Varx µExtx 1 - cx g
+
+µx µExtx 1 - cx µExtx\x g 2
+
+xµExtx{x} µExtx\x (g) 2 .
+
+(2.5)
+
+Next we note that µExtx{x} µExtx\x (g) 2 = µxx µExtx\x (g)2 = Varxx µExtx\x (g) , (2.6)
+
+where we used the fact that µxx µExtx\x(g) = µExtx{x}(g) = 0 by the definition of g. Then by using (2.3), (2.5) and (2.6) we get
+
+Varx µExtx 1 - cx g
+
+x
+
+µxx Varz µExtz µExtx\x (g)
+
+zxx
+
+x
+
+µExtx{x} (Varz(µExtz (g))
+
+zxx
+
+= x
+
+µExtx{x} (Varz(µExtz (f )) ,
+
+zxx
+
+where we use the convexity of the variance to obtain the second inequality. In conclusion,
+
+(2.7)
+
+µ Varx µExtx (f )
+x
+
+2 µ cx Varx(f ) + 2 x
+
+µ Varz µExtz (f )
+
+x
+
+x
+
+zxx
+
+(2.8)
+
+2 µ cx Varx(f ) + 2 sup
+
+x
+
+µ Varz µExtz (f ) .
+
+x
+
+z x: xxz
+
+z
+
+7
+
+If supz x: xxz x 1/4 we get
+
+µ Varx µExtx (f )
+x
+
+4 µ cx Varx(f ) .
+x
+
+We now turn to the general case k > 1. Let cx = i c(xi) and recall the definition of x(I) and of x(I) for any non-empty I  [k]. Let also dx(I) = iI (1 - c(xi)) so that x(I) = µ(dx(I)). Notice that (inclusion/exclusion formula)
+
+1 - cx =
+
+(-1)Parity(I)+1dx(I) =
+
+(-1)1+Parity(I) I dx(I)/ I .
+
+I [k] I =
+
+I [k] I =
+
+Thus the delicate term Varx µExtx [1 - cx f in (2.4) can be bounded from above using the Schwartz inequality by
+
+I
+
+-I 1 Varx µExtx dx(I) f .
+
+I [k]
+
+I [k]
+
+I =
+
+I =
+
+At this stage we apply the steps leading to (2.7) to each term Varx µExtx dx(I) f to get
+
+Varx µExtx [1 - cx f
+
+I
+I [k] I =
+
+-I 1x(I)
+
+µExtx{x} (Varz(µExtz (f )) .
+
+I [k] I =
+
+zx(xI)
+
+As in (2.8) we conclude that
+
+µ Varx µExtx (f )
+x
+
+2 µ cx Varx(f ) + 2
+
+I
+
+x
+
+I [k]
+
+I =
+
+sup
+z I[k] I =
+
+-I 1x(I)
+x x(xI)z
+
+µ Varz µExtz (f ) ,
+z
+
+which proves the theorem if
+
+I
+I [k] I =
+
+sup
+z I[k] I =
+
+-I 1x(I)
+x x(xI)z
+
+1/4.
+
+2.2. An application within supercritical percolation in two dimensions. In this section we restrict ourselves to the case in which the single site probability space (S, µ^) coincides with ({0, 1}, B(p)) and the lattice dimension is equal to two. Given    := Z2 we will say that x  C() := {x  Z2 : x = 0} belongs to an infinite cluster of zeros if the connected (w.r.t. to the graph structure of Z2) component of C() containing x is unbounded. It is well known that there exists pc  (0, 1)3 such that
+(p) := µ(the origin belongs to an infinite cluster)
+
+is positive iff p < pc and that moreover there exists µ-a.s. a unique unbounded component of C(). Let c x be the indicator function of the event that at least two nearest neighbors of x belong to an infinite cluster of zeros.
+
+Theorem 2.6. There exists p0  (0, pc) such that for any p p0 and any local function f
+
+Var(f ) 4 µ c x Varx(f ) .
+x
+
+(2.9)
+
+Remark 2.7. It follows in particular that, for all p sufficiently small, the kinetically con-
+strained model (cf. Section 4 for a detailed definition) with the above constraints is exponentially ergodic in L2(µ) with relaxation time bounded by 4.
+
+3The conjectured treshold pc is approximately 1 - pc  0.59 [15]
+
+8
+
+F. MARTINELLI AND C. TONINELLI
+
+R(51)
+
+R(31)
+
+R(41)
+
+R(61)
+
+x
+FIGURE 2. A drawing of the first five rectangles {Rn(1) + x}5n=1 together with a pictorial representation of the hard crossings of zeros (the solid lines) required by the auxiliary contraint c(xn,1). The dashed curved line represents a piece of the hard crossing for the next rectangle R6(1) + x (the two horizontal dashed lines). Notice that each rectangle has its leftmost lowermost vertex always at x + e2 and that the first rectangle R1(1) consists of only two vertices, x + e2 and x + 2e2.
+
+Proof. We will make use of the following standard construction for super-critical percolation [7]. Let n = 2n and define Rn to be a rectangle of the form either [n] × [n-1] or [n-1] × [n] according to whether n is even or odd. We will also denote by Rn(1)(Rn(2)) the rectangle obtained by translating Rn by the vector -e1(-e2) (see Figure 2). With the help of the families {Rn(1), Rn(2)}nN we finally introduce a new family of constraints
+as follows. For i = 1, 2 let cx(n,i) be the indicator function of the event that inside the rectangle
+Rn(i) + x there exists a path  = (x(1), . . . , x(m)) joining the two opposite shortest sides such that x(j) = 0 for all j  [m]4. Let also c(x0) be the indicator of the event that x+e1 = x+e2 = 0. Notice that, by construction, the above constraints satisfy the exterior condition 2.1 w.r.t. to the half-spaces defined in Example 1 with z = (1, 1).
+Moreover it is easy to check that
+
+
+
+c(x0)
+
+c(xn,1)cx(n,2)
+
+n=1
+
+c x x,
+
+(2.10)
+
+so that it is enough to prove the constrained Poincar´e inequality (2.9) with c x replaced
+
+by c(x0)
+
+ n=1
+
+c(xn,1) cx(n,2) .
+
+More
+
+precisely
+
+we
+
+will
+
+prove
+
+that,
+
+for
+
+any
+
+k
+
+
+
+N
+
+and
+
+any
+
+local
+
+function f ,
+
+Var(f )
+
+k
+
+4 µ c(x0) c(xn,1)c(xn,2) Varx(f ) .
+
+x
+
+n=1
+
+(2.11)
+
+4A path  in Zd of length || := k is a ordered sequence of k vertices of Z2 such that two consecutive sites are nearest neighbors of each other. A path with the properties described in the text is usually referred to as a hard crossing.
+
+9
+
+The theorem will then follow by taking the limit k  + and using (2.10). In order
+to prove (2.11) we want to apply Theorem 1 which in turn requires finding a family of weights {I }I[k]{0} satisfying (2.1). For this purpose we first recall a standard estimates from super-critical site percolation [15] valid for all p small enough:
+
+µ(1 - cx(n,i)) µ(1 - c(x0))
+
+e-m(p)n , 2p,
+
+with limp0 m(p) = +. In particular, recalling the definition of x(I) and x(I) from Section 2.1, we have the following bounds:
+
+x(I) e-m(p)n(I) ,
+
+x(I) 32n(I)
+
+if n(I) := max{i  I} > 0,
+
+x(I) 2p,
+
+x(I) 2
+
+otherwise.
+
+Let
+
+now
+
+I
+
+=
+
+e-
+
+m(p) 2
+
+n(I
+
+)
+
+if
+
+I
+
+=
+
+{0}
+
+and
+
+I
+
+=
+
+p
+
+if
+
+I
+
+=
+
+{0}.
+
+With
+
+this
+
+choice
+
+it
+
+is
+
+easy
+
+to check that there exists p0 independent of k such that for p < p0
+
+I 1
+I [k]{0}
+
+and
+
+sup
+z I[k]{0}
+
+-I 1x(I)
+xZd
+
+I =
+
+x(xI)z
+
+3
+
+2n(I
+
+)
+
+e-
+
+m(p) 2
+
+n(I
+
+)
+
++
+
+4p
+
+I [k]{0}
+
+I=, I={0}
+
+3
+
+
+
+2n
+
+4n
+
+e-
+
+m(p) 2
+
+n
+
++
+
+4p
+
+1/4.
+
+n=1
+
+In conclusion (2.1) holds for all small enough p independent of k and the theorem follows.
+
+3. A GENERAL APPROACH TO PROVE A POINCAR´E INEQUALITY FOR KINETICALLY
+CONSTRAINED SPIN MODELS
+
+In this section we start from the general constrained Poincar´e inequality proved in Theorem 1 to develop a quite robust and general scheme proving a special kind of Poincar´e constrained inequality (cf. Theorem 3.2 and Corollary 3.9) inspired by kinetically constrained models. The approach developed below will allow us, in particular, to relate the scaling of the persistence time of certain kinetically constrained models near the ergodicity threshold to the scaling of the critical length scale of the corresponding bootstrap percolation model. The application of the techniques developed here to the whole class of two dimensional critical models is deferred to a future work [10]. Concrete and succesful applications to basic kinetically constrained models (cf. Theorem 4.3) will be given in the next section. The starting point of our approach is the definition of good and super-good single site events.
+Given two events G1, G2 in the probability space (S, µ^) let p1 := µ^(G1) and p2 := µ^(G2). We will assume that G1 is very likely while G2 is very unlikely. In the sequel we will refer to G1 and G2 as the good and super-good events respectively.
+Definition 3.1 (Good and super-good paths). Given    = SZd we will say that a vertex x is good if x  G1 and super-good if x  G2. We will say that a path  = (x(1), . . . , x(k)) is a good path for  if each vertex in  is good. A path will be called super-good if it is good and it contains at least one super-good vertex.
+
+Before stating the main result we need a last notion. For any mapping G1  G2 let
+
+
+
+=
+
+max
+G2
+
+ G1 :
+
+( )=
+
+µ^() µ^()
+
+,
+
+(3.1)
+
+10
+
+F. MARTINELLI AND C. TONINELLI
+
+and, for any  such that x  G1, let (x) :    be given by
+
+(x)()z :=
+
+(x) z
+
+if z = x otherwise.
+
+(3.2)
+
+Theorem 3.2. There exist   1 and c > 0 such that, for any G1  G2 and all p1, p2 with max(p2, (1 - p1) log(1/p2)2) , the following holds:
+
+Var(f ) c (p-2 4)d
+
+µ
+x
+
+½{x+ei G2} Varx(f )
+i[d]
+
++
+
+µ ½{xG1,yG2} f ((x)()) - f () 2 .
+
+x,y: d1(x,y)=1
+
+(3.3)
+
+Remark 3.3. We could have stated Theorem 3.2 in a more general form in which the
+
+constraint by yA+x
+
+½i{[yd] ½G{2}x,+weiheGre2}A, appEeaxrti0ngisinsotmhee
+
+first term in the finite set whose
+
+r.h.s. of (3.3), is replaced cardinality is independent
+
+of p1, p2. For example in two dimensions A could be {e1}{e2+e1}{e2}· · ·{e2-me1}.
+
+For future applications [19] the freedom given by the choice of the set A will be quite
+
+crucial. The proof in this slightly more general case is identical to the one given below. The
+
+same applies for the developments discussed in Section 3.1.
+
+The first term in the r.h.s of (3.3) is a constrained Dirichlet form D(f ) as in the
+r.h.s. of (2.2), with constraints cx := ½ i[d] {x+eiG2}. These constraints satisfy the
+exterior condition w.r.t. the half-spaces defined in Example 1 with z = (1, . . . , 1) but, at
+the same time, they are very unlikely (recall that µ^(G2)  1) so that we cannot apply directly Theorem 1 to our setting. Moreover the fact that the {cx} are unlikely implies that a Poincar´e inequality of the form Var(f ) CD(f ) for all local f and some finite constant C cannot hold. To see that take for instance {fn} n=1 to be a sequence of local functions approximating the indicator of the event that the origin belongs to an infinite oriented cluster of not super-good vertices 5. Thus the second term in the r.h.s. of (3.3)
+plays an important role.
+Our approach is first to prove a different kind of constrained Poincar´e inequality (cf.
+Proposition 3.4) in which the term in (3.3) involving  is missing and the constraint
+cx above is replaced by the weaker (and very likely) constraint that for all i  [d] there exists a super-good path (i) in Z2 \ {x} starting at x + ei and of length not larger than 1/p22. Secondly (cf. Lemma 3.5), using repeatedly the mapping x for each x  (i) starting at the super-good vertex of (i), we "bring" the super-good vertex of (i) at
+x + ei. In doing that we pay a cost which is embodied in the second term in the r.h.s. of (3.3).
+
+Proof. In what follows we assume that we have fixed some mapping G1  G2. We begin by proving the first step of the roadmap just described.
+
+Proposition 3.4. There exists   1 such that, for all p1, p2 satisfying max(p2, (1 -
+p1) log(1/p2)2) , the following holds. Let ½x be the indicator of the event that i  [d]
+there exists a super-good path (i) of length at most 1/p22 starting at x + ei. Then, for any local f ,
+
+Var(f ) 4 µ (½x Varx(f )) .
+x
+
+(3.4)
+
+Proof of the proposition. In what follows all the auxiliary constraints that we will need to introduce will satisfy the exterior condition w.r.t. the exhausting family of half-spaces defined in Example 1 with z = (1, . . . , 1).
+
+5In other words there exists a infinite path  = (x(1), . . . , x(k), . . . ) starting at the origin such that x(i)  x(i+1) and x(i) / G2 for all i.
+
+11
+
+Let  = 2 log(1/p2), L = e and let us define two family of constraints {c(x1), c(x2)}xZd as follows:
+
+c(x1) =
+
+1 0
+
+if for all i  [d] and all k  [] the vertex x + kei is good, otherwise,
+
+ 1 c(x2) =  0
+
+if for all i  [d]  a super-good path in Extx of length at most L starting in the set {x + ei, . . . , x + ei} otherwise.
+
+Notice that c(x1)c(x2) ½x. In order to apply theorem 1 to the above constraints we
+need to verify the key condition (2.1). For this purpose we begin to observe that the corresponding supports satisfy (x1)  di=1{x + ei, . . . , x + ei} and (x2)  {y  Zd : d1(x, y)  + L}. In particular there exists a numerical constant ^ such that the condition for the validity of Theorem 1 holds if
+
+dµ(1 - c(x1)) + ( + L)d µ((1 - c(x2))) + µ((1 - c(x1))(1 - c(x2))) ^.
+
+(3.5)
+
+A simple union bound proves that µ(1 - c(x1)) d(1 - p1), while standard super-critical percolation bounds 6 valid for large enough values of p1 prove that
+
+µ((1 - c(x1))(1 - c(x2))) µ(1 - c(x2)) d e-c log(1/(1-p1)) + (1 - p2)L
+
+for some constant c > 0. It is now immediate to verify that given ^ > 0 there exists  > 0 small enough such that max(p2, (1 - p1) log(1/p2)2)  implies (3.5).
+
+Notice that so far the mapping  played no role. We will now use it in order to
+bound a generic term µ (½x Varx(f )) appearing in (3.4). Without loss of generality we
+only treat the case x = 0.
+
+Lemma 3.5. In the same setting of Theorem 3.2 there exists c > 0 independent of p1, p2,  such that
+
+µ ½0 Var0(f )
+
+c (p-2 2)d µ
+
+½{ei G2} Var0(f )
+i[d]
+
++
+
+µ ½{xG1,yG2} f ((x)()) - f () 2 ,
+
+x,y:\{0}
+
+d1 (x,y)=1
+
+(3.6)
+
+where  is the box centered at the origin of side 2 1/p22 .
+
+By combining together Lemma 3.5 and Proposition 3.4 we get the statement of the theorem.
+
+Proof of Lemma 3.5. Recall that ½0 is the indicator of the event, call it SGi, that there
+exists a super-good path (i) in Z2 \ {0} of length at most L  1/p22 starting at x + ei. Clearly SGi is identical to the event that there exists  = (x(1), . . . , x(L))  Z2 \ {0}, such that:
+· each vertex x(j) appears exactly once (i.e. the path is simple) and x(1) = ei, · there exist n L such that x(n) is super-good, · all the vertices x(j) with j n are good.
+Fix i = 1 and let us order in some way the set P of simple paths in Zd \ {0} of length L starting at e1. For any   i[d]SGi let  be the smallest path in P satisfying the
+
+6 Fix e.g. the first direction. The probability that none of the vertices x + e1, . . . , x + e1 belong to an
+infinite good path in Extx is exponentially small in  while the probability that a given path of length L is super-good conditionally on being good is at least 1 - (1 - p2)L.
+
+12
+
+F. MARTINELLI AND C. TONINELLI
+
+above set of conditions and let  = () be the index of the first super-good vertex in . Thus
+
+L
+
+d
+
+µ ½0 Var0(f ) =
+
+½ ½ µ {=} {=n} ½{SGj} F ,
+
+P n=1
+
+j=2
+
+(3.7)
+
+where
+
+F ()
+
+:=
+
+Var0(f )()
+
+=
+
+1 2
+
+µ^()µ^() f (  ) - f (  ) 2 ,
+
+, S
+
+where the notation    denotes the configuration equal to  at x = 0 and equal to 
+
+elsewhere. Given  = (x(1), . . . , x(L))  P and n L together with  
+() =  and () = n, let (i)() be given by (recall (3.2))
+
+j[d] SGj such that
+
+(i)()x =
+
+(x(i))(x) x
+
+if i n - 1 otherwise.
+
+Thus the mapping (i), i n - 1, makes the configuration  super-good in x(i) and leaves it unchanged elsewhere. For i = n the mapping (n) is the identity. With the
+above notation and using the Cauchy-Schwartz inequality we get
+
+F () 2F ((1)()) + 4
+
+µ^()
+
+f ((1)()  ) - f (  )
+
+2
+.
+
+S
+
+(3.8)
+
+The first term in the r.h.s. of (3.8) gives a contribution to the r.h.s of (3.7) not larger than
+
+d
+½ 2µ {e1 G2} ½{SGj} Var0(f ) . j=2
+
+(3.9)
+
+Above, after the change of variable  := (1)(), we used (3.1) together with the
+
+obvious facts that  is super-good at e1 and it belongs to
+
+½ d
+j=2
+
+SGj .
+
+In order to bound from above the contribution of the second term in the r.h.s. of
+
+(3.8) we write
+
+f ((1)()  ) - f (  )
+
+2
+=
+
+n-1
+f ((i+1)()  ) - f ((i)()  )
+
+2
+
+i=1
+
+n-1
+(n - 1)
+
+f ((i+1)()  ) - f ((i)()  )
+
+2
+
+i=1
+
+n-1
+L
+
+f ((i+1)()  ) - f ((i)()  )
+
+2
+.
+
+(3.10)
+
+i=1
+
+In turn each summand is bounded from above by
+
+2
+
+f ((i+1)((i)())  ) - f ((i)()  )
+
+2
++2
+
+f ((i+1)()  ) - f ((i+1)((i)())  )
+
+2
+.
+
+Using the fact that (i+1)((i)()) = (i)((i+1)()), we see that both terms in the r.h.s. above have a similar structure. We will therefore treat explicitly only the first
+
+13
+
+one. Recalling that  is the box centered at the origin with side 2 1/p22 , we get
+
+L n-1
+
+d
+
+2Lµ
+
+½ ½ ½ {=} {=n}
+
+{S Gj } ×
+
+P n=1 i=1
+
+j=2
+
+× µ^() f ((i+1)((i)())  ) - f ((i)()  ) 2
+
+S
+
+= 2Lµ
+
+½SG1
+
+d
+
+-1
+½{S Gj }
+
+f ((i+1)((i)())  ) - f ((i)()  ) 2
+
+j=2
+
+i=1
+
+2L
+
+µ ½{xG1, yG1} f ((x)((y)())  ) - f ((y)()  ) 2 .
+
+x,y\{0}
+
+d1 (x,y)=1
+
+After the change of variable   (y)() inside the expectation, the above quantity can be bounded from above by
+
+2L
+
+µ ½{xG1,yG2} f ((x)())  ) - f (  ) 2 .
+
+x,y\{0}
+
+d1 (x,y)=1
+
+Putting all together we get that there exist a constant c > 0 such that
+
+µ ½0 Var0(f )
+
+d
+
+½ cp-2 2 µ {e1 G2}
+
+½{SGj} Var0(f )
+
+j=2
+
++
+
+µ ½{xG1,yG2} f ((x)())  ) - f (  ) 2 .
+
+x,y\{0} d1 (x,y)=1
+
+We can now analyse the first term inside the above square bracket by repeating the above analysis for the second direction. In d - 1 steps the proof is complete.
+
+3.1. A canonical paths bound of the r.h.s. of (3.3). In this section we proceed further by analysing the r.h.s. of (3.3) in the special case in which S = {0, 1}V , V = di=1[ni] for some integers {ni}di=1, and µ^ is the Bernoulli(p) product measure. We will write |V | for the cardinality of V . In this setting the probability space (SZd , µ) becomes isomorphic to (, µ) where  = {0, 1}Zd and µ is the Bernoulli(p) product measure. It is therefore convenient to do a relabelling of the variables   SZd as follows.
+Let Zd(n) be the renormalised lattice di=1(niZ) and let, for x  Zd(n), Vx := V + x. We will write x  y iff x, y are nearest neighbor in the renormalised lattice Zd(n). The old "block" variable x  S associated to Vx is renamed as Vx = {y}yVx with now y  {0, 1} for all y's. In particular the local variance term Varx(f ) appearing in the r.h.s. of (3.3) becomes VarVx(f ). Accordingly we rewrite the mapping (x), x  Zd(n), as (Vx).
+In order to formulate our bounds we need to define the canonical paths (cf. e.g. [22]).
+Definition 3.6 (Canonical paths). Let ,    be two configurations which differ in finitely many vertices. We say that ,  ((1), (2), . . . , (k)) is a canonical path between ,  if (i) (1) = , (k) = , (ii) (i) = (j) for all i = j (no loops) and (iii) for any i  [k - 1] the configuration (i+1) is obtained from (i) by a single spin flip. The integer k will be referred to as the length of the path.
+The bounds on the individual terms in the r.h.s. of (3.3) are then as follows.
+Lemma 3.7. We assume that, for any x  Zd(n), any z  Vx and any  such that Vx+ei  G2 for all i  [d] , a canonical path ,z has been defined such that a generic
+
+14
+
+F. MARTINELLI AND C. TONINELLI
+
+transition in the path consists of a spin flip in Vx  (di=1{Vx + ei}). Let
+
+A
+
+=
+
+sup
+xZd(n)
+
+max
+zVx
+
+sup
+
+
+:
+
+Vx+ei G2, i[d]
+
+µ() µ()
+
+.
+
+,z
+
+be the congestion constant of the family of canonical paths and let NA be their maximal length. Then
+
+µ
+xZd (n)
+
+½{Vx+ei G2} VarVx (f )
+i[d]
+
+cANA|V |2
+
+µ ½Ay () Vary(f ) ,
+
+yZd
+
+for a numerical constant c > 0, where ½Ay () is the indicator of the event that there exists
+x  Zd(n), z  Vx and ¯ such that ¯Vx+ei  G2, i  [d] and the pair (, y) form a transition of the canonical path between ¯ and ¯z.
+
+Lemma 3.8. We assume that, for any x  y and any    such that Vx  G1 and Vy  G2, a canonical path between  and (Vx)() has been defined such that a generic transition in the path consists of a spin flip in Vx  Vy. Let
+
+B
+
+= sup sup
+ xy
+
+: Vx G1, Vy G2
+
+µ() µ()
+
+ ,(Vx ) ()
+
+and let NB be the maximal length of the paths. Then
+µ ½{Vx G1,Vy G2} f ((Vx)()) - f () 2
+xy
+
+cBNB |V | µ ½Bz () Varz(f )
+zZd
+
+for a numerical constant c > 0, where ½Bz () is the indicator of the event that there exists
+x  y and  such that V x  G1, V y  G2 and the pair (, z) form the transition of the canonical path between  and (Vx)().
+
+The proof of the above two lemmas is practically identical so we only prove the first one.
+
+Proof of Lemma 3.7. The starting inequality is
+
+VarVx (f )
+
+µ(Varz(f )).
+
+zVx
+
+For simplicity in the sequel we assume x = 0. Given  such that V +ei  G2 i  [d] and z  V , let ,z = ((1), (2), . . . , (k)) be the corresponding canonical path. Then
+
+Varz(f )() = p(1 - p)[f (z) - f ()]2
+
+k
+p(1 - p)k [f ((i+1)) - f ((i))]2,
+j=1
+
+so that
+
+½ µ {V +ei G2 i[d]} Varz (f )
+
+NAp(1 - p)µ k-1 f ((i+1)) - f ((i)) 2
+i=1
+
+cANA
+
+µ ½Ay () Vary(f ) ,
+
+yV (di=1V +ei)
+
+where ½Ay () is as in the statement and, after the change of variables  = (i), we used
+the definition of A to bound the relative density between (i) and . The statement of
+the lemma now follows at once.
+
+For future purpose we summarise the conclusion of our bounds.
+
+15
+
+Corollary 3.9. In the same assumptions of Lemmas 3.7 and 3.8
+
+Var(f )
+
+c (p-2 4)d ANA|V |2 µ ½Az () Varz(f )
+z
++BNB|V | µ ½Bz () Varz(f )
+z
+
+Remark 3.10. In the application to KCM the choice of the canonical paths entering in the
+above corollary will always be such that max ½Az (), ½Bz () cz(), where cz is the
+constraint of the KCM at z  Zd. Thus in this case the conclusion of the Corollary implies
+a Poincar´e inequality Var(f ) CD(f ), where D(f ) = z µ(cz Varz(f )) is the Dirichlet form of the KCM (cf. Remark 2.2) and C satisfies
+
+C c (p-2 4)d max ANA|V |2, BNB|V | .
+
+4. APPLICATION TO SPECIFIC KCM MODELS
+
+In this section we begin by recalling the definition of the Fredrickson-Andersen constrained spin models with k-facilitation (FA-kf in the sequel) introduced by H.C. Andersen and G.H. Friedrikson in [1] and of the GG constrained spin model. As it will clear in a moment, the FA-kf models are closely related to the so-called k-neighbor model in bootstrap percolation, while the GG model is related to the anisotropic bootstrap percolation model introduced by Gravner-Griffeath [16]. As such, the dynamical properties of both models near the ergodicity threshold are intimately related to the scaling properties of the corresponding bootstrap percolation models in the same regime. Finally we state our main result relating the persistence time with the critical bootstrap percolation length. This will be proven in section 5 using Corollary 3.9. The key step will consist in finding suitable (i.e. depending on the specific choice of the constraints) good and super-good events G1, G2, map  and canonical paths.
+
+4.0.1. The models. We will work with the probability space (, µ) where  = {0, 1}Zd and µ is the product Bernoulli(p) and we will be interested in the asymptotic regime q  0 where q = 1 - p. A generic kinetically constrained model (KCM in the sequel) is a particular interacting particle system, i.e. a Markov process on , described by the Markov generator
+(Lf )() = cx() µx(f ) - f (),
+xZd
+where µx(f ) is the Bernoulli(p)-average of f () w.r.t. to the variable x. The constraints {cx}xZd are defined as follows. Let U = {U1, . . . , Um} be a finite collection of finite subsets of Zd \ {0}. We call U the update family of the process and each X  U an update rule. Then cx is the indicator function of the event that there exists an update rule X  U such that y = 0 y  X + x. We emphasize that we do not assume that the constraints satisfy the exterior property of Section 2.0.3. Using these assumptions it is easy to check (cf. [9] for a detailed analysis) that L becomes the generator of a reversible Markov process on , with reversible measure µ.
+In the FA-kf model one takes as U the family of k-subsets of the set of nearest neighbors of the origin. In the GG model in two dimensions one takes U as the family of 3-subsets of the set of nearest neighbors of the origin together with the vertices {±2e1}. In the terminology of bootstrap percolation (see e.g. [3] and the recent survey [20])
+the FA-kf models belong to the family of critical balanced models while the GG model is
+critical and unbalanced. Such a difference will appear clearly in the sequel.
+We now define the two main quantities characterising the dynamics of the KCMs. The first one is the relaxation time Trel(q; U ) of the generator L, defined as the best constant C in the Poincar´e inequality
+
+Var(f ) CD(f ) for all local f,
+
+(4.1)
+
+where
+
+D(f )
+
+=
+
+1 2
+
+x µ cx Varx(f ) is the Dirichlet form associated to L. A finite relax-
+
+ation time implies that the reversible measure µ is mixing for the semigroup Pt with
+
+16
+
+F. MARTINELLI AND C. TONINELLI
+
+exponentially decaying time auto-correlations,
+
+Var etLf
+
+e-t/Trel Var(f ),
+
+f  L2(µ).
+
+The second (random) quantity is the first time the spin at the origin reaches the zero
+state: 0 = inf{t  0 : 0(t) = 0}.
+In the physics literature the hitting time 0 is usually referred to as the persistence time, while, in the bootstrap percolation framework, it would be more conveniently dubbed
+infection time.
+It is well known (cf. [9]) that for the FA-kf models Trel and Eµ(0) are finite for any q > 0, where Eµ(·) denotes the average w.r.t. the law of the stationary KCM. The methods of [9] together with the results of [3] also prove this result for GG model. Our
+aim is to compute the rate at which Trel and  diverge (the latter either in mean or with high probability w.r.t. the stationary KCM) as q  0. In order to compare our results to similar divergences found in bootstrap percolation models on the finite torus Zdn of side n, we first formally define, following [4], these processes and their critical behaviour.
+
+Definition 4.1 (The bootstrap process on Zdn). Given an update family U , a set A  Zdn and   {0, 1}Zdn such that x = 0 iff x  A, one sets recursively for t  N,
+At+1 = At  {x  Zdn : x + Uk  At for some k  [m]}, A0 = A. We then define the U -update closure of A the set
+[A]U =  t=0At. Definition 4.2. We say that A  Zdn is q-random and we will write Pq for its law, if A coincides with the set {x  Zdn : x = 0},   µ. We then define the critical probability qc(n; U ) and the critical length Lc(q; U ) of the U -process as
+qc(n; U ) = inf{q : Pq([A]U = Zdn)  1/2}, Lc(q; U ) = min{n : qc(n, U ) = q}.
+
+4.1. Main result. We begin to recall what is known on the asymptotic scaling of the
+critical length Lc(q; U ), relaxation time Trel(q; U ) and hitting time 0 as q  0 for the FA-kf and GG models.
+For the FA-kf model in Zd it was proved in [2] (cf. the introduction there for a short
+account of previous relevant results) that for any d, k with d  k  2 there exists an explicit constant (d, k) such that
+
+Lc(q; U ) = exp(k-1)
+
+(d, k) + o(1) q1/(d-k+1)
+
+,
+
+(4.2)
+
+where exp(r) denotes the r-times iterated exponential, exp(r+1)(x) = exp(exp(r)(x)). For the GG model it was established [12] (see also [13] for a detailed analysis of the o(1) term below) that instead
+
+Lc(q; U ) = exp
+
+(log(1/q))2 12q
+
+(1
+
++
+
+o(1))
+
+.
+
+As far as the asymptotic behaviour Trel(q; U ) as q  0 is concerned, only the FA-kf model has been considered so far and the following bounds have been proved in [9]. There exists c > 0 such that
+
+Lc(q; U )1-o(1) Trel(q; U ) exp c/q5
+
+d = k = 2,
+
+Lc(q; U )1-o(1) Trel(q; U ) exp(d-1) c/q
+
+d  3, k d.
+
+Notice that the above upper bounds are very far from Lc(q; U ). In [9, Theorem 3.6] it was also proved that the large deviations of 0 can be controlled in terms of Trel(q; U ).
+More precisely it holds in great generality that
+
+Pµ(0  t) exp -cq t/Trel(q; U )
+for some c > 0 independent of q. In particular Eµ(0) = O(Trel(q; U )/q). A matching lower bound in terms of Trel(q; U ) was missing. Instead in [9, Section 6.3] a rather
+
+17
+
+general and simple argument, based on the so-called "finite speed of propagation", proved that, for all models considered here,
+
+Eµ(0)  Lc(q; U )1-o(1).
+
+In conclusion, while the control of the critical length Lc(q; U ) is rather sharp, the relaxation time Trel(q; U ) and the mean hitting time Eµ(0) are still poorly controlled. The main outcome of the theorem below is a much tighter connection between Trel(q; U ), and therefore Eµ(0), and Lc(q; U ).
+
+Theorem 4.3. For the FA-2f model in Zd and the GG model there exists  > 0 such that
+
+Trel(q; U ) = O Lc(q; U )log(1/q) .
+
+(4.3)
+
+For FA-kf model in Zd with 3 k d there exists c > (d, k) such that Trel(q; U ) exp(k-1) c/q1/(d-k+1) .
+
+(4.4)
+
+5. PROOF OF THEOREM 4.3
+
+5.0.1. Reader's guide and notation. The proof of the theorem uses all the machinery
+
+which was developed in the previous sections. Therefore, for all the above models, the
+
+coarse-grained probability space (S, µ^) (cf. e.g. the beginning of Section 3.1) will be of
+
+the form S = {0, 1}V , with V =
+
+d i=1
+
+[ni]
+
+and
+
+µ^
+
+the
+
+product
+
+Bernoulli(p)
+
+measure.
+
+The starting point of the proof is to make an appropriate choice for the value of
+
+n = (n1, . . . , nd) together with a working definition of the good and super-good events G1, G2  S and of the mapping G1  G2 (cf. Section 3) for each model. Clearly, in
+order to apply Theorem 3.2 and Corollary 3.9, our choice of (n, G1, G2) must ensure that the probabilities p1 = µ^(G1) and p2 = µ^(G2) satisfy the basic condition limq0(1 - p1) log(1/p2) 2 = 0 of Theorem 3.2. In the FA-kf models no direction plays a special
+role (it is a balanced model in the language of [20]) and therefore we choose ni = n for all i  [d]. In the GG the above symmetry is broken and we will need to distinguish
+
+between the two directions. This part of the proof is carried out in Part I (see below).
+
+The second part of the proof (cf. Part II below) involves defining appropriately the
+
+canonical paths appearing in Lemma 3.7 and 3.8 (see also Corollary 3.9) and bounding
+
+the corresponding length and congestion constants.
+
+Carrying out the above program could become particularly heavy from a notational
+
+point of view. Therefore we will sometimes adopt a more descriptive and informal approach. More specifically, given a configuration   {0, 1}Zd and a region   Zd,
+
+we will declare  empty (occupied) if    = 0 (1). While constructing the canonical
+
+paths appearing in Lemmas 3.7 and 3.8 we will say that we empty (fill)  if we flip to
+
+0 (1), one by one according to some preassigned schedule (i.e. an ordering of the to-do
+
+flips), all the occupied/empty sites of . It is important to emphasize that the schedules
+
+involved in the operations of emptying or filling a region will always be such that each
+
+spin flip dictated by the schedule will occur while fulfilling the specific constraint of
+
+each model. Schedules with this property will be dubbed legal schedules. A closely
+
+related notion is that of legal canonical path.
+
+Definition 5.1. Given a KCM let {cx}xZd be the corresponding family of constraints. A legal canonical path between two configurations ,  is a canonical path ,  ((1), (2), . . . , (m)) with the additional property that cx(i) ((i)) = 1 i  [m - 1], where x denotes the configuration obtained from  by flipping the value x and x(i) is the vertex such that (i+1) = ((i))x(i). We say that the canonical path is decreasing (increasing) if for any i  [m - 1] and any x  Zd x(i+1) x(i) (x(i+1)  x(i)).
+
+We now recall the notion of an internally spanned set which will play a crucial role in the definition of the good and super-good events.
+
+Definition 5.2 (Internally spanned). Consider a KCM with updating family U . Given   Zd and   {0, 1}Zd , we say that  is U -internally spanned (for ), and write  
+I(U , ), iff [{x   : x = 0}]U = . When the KCM is the FA-kf model in d dimensions
+
+18
+
+F. MARTINELLI AND C. TONINELLI
+
+we will sometimes write I(d, k, ) instead of I(U , ) and we will say that  is k-internally spanned.
+
+Remark 5.3. For the FA-kf model it is known that [6] for L  CLc(q; U ), L  N and C a large enough numerical constant,
+
+µ^(I(d, k, [L]d)  1 - exp(-L/Lc(q; U )).
+
+(5.1)
+
+Clearly for any KCM the following holds. If  is such that the region  is U -internally spanned by  and  is the configuration equal to zero in  and equal to  elsewhere,
+then there exists a legal decreasing canonical path , which only uses flips inside . In particular the length of , is at most ||. By reversing the path we get a legal increasing path between  and .
+Before starting the actual proof, it will be useful to fix some additional notation. Given the hypercube  = [n]d and i  [d], we set Ei() = {x   : xj = 1, j = i} and we call it the ith-edge of 7 . Any (d - 1)-dimensional set of the form   {x : xi = j}, j  [n], will be called an i-slice and it will be denoted by Slj(; i). A generic i-frame Fj(; i), j  [n], is the (d - 2)-dimensional subset of Slj(; i) consisting of the vertices x such that xk = 1 for some k = i. If  = x +  then Ei() = Ei() + x etc. If clear from the context we will drop the specification  from the notation.
+
+5.1. Part I. Here we define the blocks of the coarse-grained analysis together with the good and super-good events and the mapping .
+
+5.1.1. The FA-kf model with k  3. Let  be the critical length for the FA-(k-1)f model in Zd-1 given by (4.2) with d  d - 1 and k  k - 1, and fix n = A log  with
+A > 2(d - 1) + 1 for all i  [d].
+
+Definition 5.4 (G1, G2, ). The good event G1 consists of all   S such that for all i  [d] every i-slice of V is (k - 1)-internally spanned. The super-good event G2 consists of all   G1 such that the first slice in any direction is empty. The mapping G1  G2 is defined by ()x = 0 if x  di=1Sl1(V ; i) and ()x = x otherwise.
+
+With the triple (G1, G2, ) we get immediately that
+
+(1 - p1) dn(1 - µ^(I(d - 1, k - 1, [n]d-1))),
+
+p2 = µ^(G2)  (1 - p1)qdnd-1 ,
+
+
+
+2 q
+
+dnd-1
+.
+
+Using (5.1) together with the definition of n, we get immediately that 1-p1 A-(A-1) log  so that limq0(1 - p1) log(1/p2) 2 = 0 for all A > 2d - 1.
+
+5.1.2. The FA-kf model with k = 2. In this case we choose V = i[d][ni] with ni =
+
+A q
+
+log(1/q)
+
+1/(d-1)
+
+with
+
+A > 3/(d - 1).
+
+Definition 5.5 (G1, G2, ). The good event G1 consists of all   S such that, for all i  [d] every i-slice of V contains at least one empty vertex. The super-good event G2 consists of all   G1 such that any i-edge of V is empty. The mapping G1  G2 is defined by ()x = 0 if x  dj=1Ej and ()x = x otherwise.
+
+As before we easily get
+
+1 - p1 = µ^(Gc1)
+
+dn(1 - q)nd-1
+
+dnqA, p2 = µ^(G2)  qnd, 
+
+2nd qnd
+
+,
+
+where 2nd is the number of possible configurations   {0, 1}iEi. In particular, for all A > 3/(d - 1), limq0(1 - p1) log(1/p2) 2 = 0.
+
+7Strictly speaking an edge of V is a set of the form {x  V : xj  {1, n} j = i}. Here we will only need edges with one end-point at the vertex (1, . . . , 1).
+
+19
+
+5.1.3.
+
+The GG model.
+
+Here we choose n1
+
+=
+
+
+
+A
+
+log(1/q) q2
+
+
+
+and
+
+n2
+
+=
+
+A
+
+log(1/q) q
+
+,
+
+A
+
+>
+
+6.
+
+Definition 5.6. We say that   G1 if all columns of V = [n1] × [n2] contain at least one empty vertex and all rows contain at least one pair of adjacent empty vertices (x, x). We say that   G2 if   G1 and the first two adjacent columns of V are empty. The mapping  is the one which empties the first two columns of V .
+
+Again we easily obtain that
+
+1 - p1 = O q(A-2)/2 log(1/q) ,
+
+p2 = O
+
+exp
+
+-
+
+2A q
+
+log(1/q)2
+
+,
+
+ = O 22n2 /q2n2 .
+
+so that limq0(1 - p1) log(1/p2) 2 = 0 for A > 6. Notice that for all models the factor /p42 d|V | appearing in Corollary 3.9 is bounded
+from above by the r.h.s. of (4.3) and (4.4).
+
+5.2. Part II. Here we complete the proof of Theorem 4.3 by defining the canonical paths appearing in Lemmas 3.7 and 3.8 in such a way that:
+(a) they are legal canonical paths; (b) the congestion constants A, B and the maximum length of the paths NA, NB are
+such that max (ANa, BNB) is bounded from above by r.h.s. of (4.3) for the FA-2f and the GG models and by the r.h.s. of (4.4) for the FA-kf model, k  3.
+A very useful strategy to carry out this program is based on the following simple result.
+
+Lemma 5.7. Fix  and let 1, 2, . . . , N be N regions with the property that, for any j and k = j ± 1, if we empty j then we can also empty k by means of a legal schedule using only flips in k. Assume that  is such that 1 is empty and let  be obtained from  by emptying N . Then there exists a legal canonical path , = ((1), . . . , (m)), m 2 i |i|, such that for any j  [m] the following holds. If the configuration (j+1) is obtained from (j) by flipping a vertex in kj then all the discrepancies (i.e. the vertices
+where they differ) between  and (j) are contained in kj-1  kj  kj+1 if kj < N and in N-1  N if kj = N .
+
+Proof. By assumption we can first empty 2 and then 3 by using flips first in 2 and then in 3. Let  be the new configuration and let  be the configuration obtained from  by emptying 3. We can then restore the original values of  in 2 by reversing the legal canonical path ,. Starting from  we can iteratively repeat the above procedure and get a final legal canonical path , with the required property.
+
+Remark 5.8. The fact that the discrepancies between an intermediate step of the path (j)
+
+and the starting configuration  are contained in a triple of consecutive i's allows us
+
+to easily upper bound the congestion constant  := sup~
+
+: , ~
+
+µ() µ(~ )
+
+of
+
+the
+
+family
+
+{, }S by (2/q)maxi(|i-2|+|i-1|+|i|). This observation will be the main tool to bound
+
+the congestion constants A, B appearing in Corollary 3.9.
+
+5.2.1. The FA-kf model with k  3. As before set V = [n]d with n as in Section 5.1.1.
+
+The proof is based on a series of simple observations which, under certain natural
+
+assumptions, ensure the existence of legal canonical paths with some prescribed prop-
+
+erties.
+
+Claim 5.9. Let  be a configuration such that the i-slice Slj(V ; i) is empty and the i-slice Slj-1(V ; i) is (k - 1)-internally spanned. Let  be such that   Slj-1(V ; i) = 0 and  coincides with  elsewhere. Then there is a legal decreasing canonical path , which uses only flips inside Sj-1(V ; i). Similarly if we replace Sj-1(V ; i) with Sj+1(V ; i).
+
+Proof. The result can be immediately proven by noticing that each site in Slj-1(V ; i) has an empty neighbour in Slj(V ; i). Since Slj-1(V ; i) is (k -1)-internally spanned, the legal (w.r.t. to the FA-(k-1)f constraint) monotone path which empties it is also legal
+w.r.t. the FA-kf constraint.
+
+Claim 5.10. Fix i  [d], m  [n] and let (, ) be a pair of configurations satisfying at least one of the following conditions:
+
+20
+
+F. MARTINELLI AND C. TONINELLI
+
+(a)  is such that the first i-slice is empty and all the others are (k - 1)-internally spanned and  is obtained from  by emptying the mth i-slice and the first m - 1 i-frames.
+(b)  is such that di=1Sl1(V ; i) is empty and  is obtained from  by emptying Slm(V ; i). Then there exists a legal canonical path , = ((1), (2), . . . , (N)) with N 2nd such that the only discrepancies between  and (j), j  [N ], belong to the set
+Slkj-1(V, i)  Slkj (V, i)  Slkj+1(V ; i)  k=j 1F(V ; i) ,
+where kj is such that the flip connecting (j) to (j+1) occurs in the kjth i-slice.
+Proof. Case (a). In this case we simply apply Lemma 5.7 and Claim 5.9 to the first m islices with a twist. After emptying the jth i-slice, j = 1, 2, . . . , m, instead of reconstructing the original values of  in the previous slice we do so only in Slj-1(V ; i)\Fj-1(V ; i). In such a way the i-frames once emptied remain so and we get to the final configuration  by a legal canonical path satisfying the required property.
+Case (b). We use again Lemma 5.7 and Claim 5.9. The base case k = 2, d = 2 follows by observing that the i-slices, i = 1, 2, are 1-internally spanned since they all contain an empty site. The case k = 2 and d > 2 follows by induction. In fact Sl2(V ; i) is of the form  × {xi = 2} with  isomorphic to [n]d-1. Moreover di=-11Sl1(; j) × {xi = 2}  dj=1Sl1(V ; j) and therefore it is empty by assumption. By the inductive hypothesis for k = 2, d - 1 we can empty Sl2(V ; i) using only flips inside Sl2(V ; i). This concludes the proof for k = 2 and any d  2. We thus assume the result true for (k - 1, d - 1) and prove it for (k, d), d  k. In this case we apply Lemma 5.7 to the regions j := Slj(V ; i)  di=1Sl1(V ; i) . For simplicity and w.l.o.g we only verify the assumption of the lemma for the pair 1, 2. In this case we aim at constructing a legal canonical path that empties Sl2(V ; i) using only flips there.
+Thus, using the inductive hypothesis and the fact that each site on Sl2(V ; i) has an additional empty neighbour in Sl1(V ; i), we can empty Sl2(V ; i) by a legal canonical path which uses flips only in Sl2(V ; i).
+We are now ready to state the main result for the case under consideration.
+
+Proposition 5.11. In the above setting there exists a choice of the canonical paths occurring in Lemmas 3.7 and 3.8 such that, for a suitable positive constant c,
+· each path is a legal canonical path and max(NA, NB) cnd; · max(A, B) (1/q)cnd-1 .
+
+Using that n = A log ,  being the critical length for the FA-(k-1)f model in Zd-1
+
+given by (cf. (4.2))
+
+ = exp(k-2)
+
+(d - 1, k - 1) + o(1) q1/(d-k+1)
+
+,
+
+the proposition implies that
+
+max(ANA, BNB) r.h.s. of (4.4), so that the conclusion of Theorem 4.3 for the case k  3 follows from Corollary 3.9.
+
+Proof of the proposition. We begin by examining the choice of the canonical paths ap-
+pearing in Lemma 3.8. Using the definition of the good and super-good events G1, G2
+given in Section 5.1.1, our choice for the canonical paths is the one dictated by (a) of Claim 5.10. In this case, using Remark 5.8, NB cnd and B (1/q)nd-1 for some constant c > 0.
+We now turn to the canonical paths appearing in Lemma 3.7. Fix  and z as in the
+lemma and observe that, using (b) of claim 5.10, we can empty all the slices Szi+1(V ; i), i  [d], via a legal schedule. Call  the configuration obtained in this way. In  we
+can make a flip at z since z has at least d empty neighbors. We can finally reverse the path from  to  to obtain our final legal canonical path between  and z. Claim 5.10 again implies that NAA cn2d1/qcnd-1 .
+
+21
+
+5.2.2. The FA-kf model with k = 2. As before set V = [n]d with n as in Section 5.1.2. For any x  V we define the cross at x as the set Cx(V ) := di=1Cx(V ; i) with
+Cx(V ; i) := {x  V : xj = xj j = i}.
+Notice that the cross of the vertex (1, 1, . . . , 1)  V is the union of the edges Ei(V ).
+Claim 5.12. Given x, y  V such that y = x ± ei for some i  [d], let  be such that Cx(V ) is empty and let  be the configuration obtained from  by emptying the cross at y. Then there exists a legal decreasing canonical path , = ((1), . . . , (m)), m 2dn, using only flips in Cx(V )  Cy(V ).
+Proof. Since y = x + ±ei then necessarily Cy(V ; i) = Cx(V ; i). Consider now the vertex z = y ± ej with j = i. This vertex has two empty neighbors: one is y and another belongs to Cx(V ). Therefore z can be emptied. We can iterate until we empty the jth arm of the cross Cy(V ) and then repeat the procedure for all the remaining direction but the ith-one.
+
+As for the case k  3 we have:
+
+Proposition 5.13. In the above setting there exists a choice of the canonical paths occurring in Lemmas 3.7 and 3.8 such that, for a suitable positive constant c,
+· each path is a legal canonical path and max(NA, NB) cn2; · max(A, B) (1/q)cn.
+
+Using that n =
+
+A q
+
+log(1/q)
+
+1/(d-1), the
+
+proposition
+
+implies that
+
+max(ANA, BNB) r.h.s. of (4.3),
+
+so that the conclusion of Theorem 4.3 for the case k = 2 follows from Corollary 3.9.
+
+Proof of Proposition 5.13. We begin by examining the choice of the canonical paths appearing in Lemma 3.8. Fix  and suppose that we have two hypercubes V = [n]d and V  = V + (n + 1)e1 such that   V is good and   V  is super-good. Let also  be obtained from  by emptying the cross of the vertex (1, 1, . . . , 1)  V so that   V is super-good. Let now z(i) be the first (according to some apriori order) vertex in the (n-i+1)th 1-slice Sln-i+1(V ; 1) which is empty and let z¯(i) = z(i) +e1. Observe that the vertex z¯(i) belong to the same 1-slice of V as the vertex z(i-1) and that the vertex z(i) exists for all i  [n] because   V is good. Finally let  = (x(1), . . . x(m)), m n2, be the geometric path connecting x(1) := (1, . . . , 1) + ne1  V  with x(m) := (1, . . . , 1)  V
+constructed according to the following schedule:
+(a) join x(1) with z¯(1) by first adjusting the second coordinate, then the third one etc; (b) join z¯(1) to z(1); (c) repeat the above steps with x(1) replaced by z(1) and z¯(1) by z¯(2) etc.
+Next, for i  [m], let i be the cross Cx(i)(V (i)) where V (i) is the hypercube V + (x(1i) - 1)e1. Notice that x(i)  Sl1(V (i); 1). We claim that the above sets satisfy the assumption of Lemma 5.7. If the hypercubes V (i), V (i+1) are the same then the claim follows immediately from Claim 5.12. If V (i+1) = V (i) - e1 then necessarily the pair (x(i), x(i+1)) must be of the form (z¯(j), z(j)) for some j and having the cross Cx(i)(V (i)) empty implies that also the cross Cx(i)(V (i+1)) is empty because, by assumption, z(j) = 0. Thus we can apply again Claim 5.12, this time in the hypercube V (i+1), and empty i+1. It is now a simple check to verify that the path defined in this way satisfy NB cn2 and B ecn for some constant c > 0.
+We now examine the canonical paths entering in Lemma 3.7. Let  be such that all the hypercubes V + ei, i  [d], are super-good, let z  V and let  be obtained from  by flipping z. W.l.o.g. we assume in the sequel that z = (1, . . . , 1).
+Let ~ be the intermediate configuration obtained from  by emptying the cross (in V ) of the vertex x(1) := (n, . . . , n). Using Lemma 5.12 it is easy to check that there exists a legal canonical path ,~ with a congestion constant  (1/q)cn for some constant c > 0. Next let  = (x(1), . . . , x(m)) be a geometric path connecting x(1) with
+
+22
+
+F. MARTINELLI AND C. TONINELLI
+
+the vertex z +
+
+d i=1
+
+ei
+
+and
+
+define
+
+i
+
+=
+
+Cx(i) (V
+
+).
+
+Using
+
+Claim
+
+5.12
+
+and
+
+the
+
+definition
+
+of
+
+~ the sets {i}mi=1 satisfy the assumption of Lemma 5.7. In conclusion we have proved
+
+the existence of a legal canonical path ,^ where ^ is obtained from  by emptying
+
+the cross of x(m). Now we can legally flip z and then reverse the path ,^ to finally
+
+get to  = z. In conclusion we have obtained a legal canonical path , and the
+
+claimed properties of NA and A follow at once from its explicit construction.
+
+5.2.3. The GG model. Recall that in this case the basic block V is the [n1] × [n2] rectangle, with n1, n2 as in Section 5.1.3. Moreover, given   {0, 1}V , the block V is good if every column contains an empty site and every row contains a pair of adjacent empty
+sites. It is super-good if it is good and the first two columns are empty.
+In this setting two basic observations will be at the basis of our definition of the canonical paths appearing in Lemmas 3.7 and 3.8. Fix an integer n together with   {0, 1}[4]×[n+1] and consider four consecutive columns Ci = {x = (i, j), j  [n]}, i  [4].
+(1) If C1, C2 are empty and C3 contains an empty site, then C3 can be emptied by a legal decreasing canonical path using only flips in C3. Similarly if the role of C1 and C3 is interchanged.
+(2) If C1, C2 are empty and the two vertices x = (3, n + 1) and y = (4, n + 1) above the 3th and 4th column are also empty, then C3 and C4 can be emptied by a legal decreasing canonical path using only flips in C3  C4. Similarly if the role of the pair (C1, C2) and (C3, C4) is interchanged and the sites x, y are replaced by x = (1, n + 1), y = (2, n + 1).
+Using the above we can prove our final proposition.
+
+Proposition 5.14. For the GG model there exists a choice of the canonical paths occurring
+in Lemmas 3.7 and 3.8 such that, for a suitable positive constant c,
+· each path is a legal canonical path and max(NA, NB) cn1n2; · max(A, B) (1/q)cn2 .
+Proof. We begin with the definition of the canonical paths appearing in Lemma 3.8 with, for simplicity, Vx = V and Vy = V  where V  is either V + (n1 + 1)e1 or V + (n2 + 1)e2. For simplicity we will not make any attempt to optimize our construction, i.e. to improve over the constant c above.
+In the first case, V  = V + (n1 + 1)e1, let   {0, 1}V V  be such that V is good and V  is super-good and let  be obtained from  by emptying the first two columns of V . Then we can use observation (1) above together with Lemma 5.7 to get that there exists a legal canonical path , of maximal length cn1n2 and congestion constant B (1/q)cn2 for some constant c > 0. Notice that in this case we didn't use the fact that if V is good then every row contains a pair of adjacent empty sites (cf. Figure 3).
+In the second case, V  = V + (n2 + 1)e2, for i  [n] define ai as the smallest integer j  [n - 1] such that x = (j, n - i + 1) and y = (j + 1, n - i + 1) are both empty. Using that V is good the integer ai is well defined. Let also i denotes the two semi-columns in V  V  above the vertices (ai, n - i + 1) and (ai + 1, n - i + 1) (cf. Figure 4).
+Using observation (1) together with Lemma 5.7 we can then obtain a legal canonical path between  and , whose length is at most cn1n2 and whose congestion constant is bounded from above by (1/q)cn2 for some c > 0 independent of i, as follows:
+(a) starting from the first two empty columns in V , we begin to empty 1. Then, starting from the two empty semi-columns 1  {a1, n}  {a1 + 1, n}, we empty the two sites x = (1, n), x = (2, n) while restoring the original values of  in all the other sites of V  V .
+(b) We now repeat the same procedure with 1 replaced by 2 and (x, x) replaced by x^ = (1, n - 1), x^ = (2, n - 1), starting from the two empty semi-columns obtained by adding to the first two columns of V  the empty sites (1, n), (2, n).
+(c) We iterate until reaching .
+
+··
+
+··
+
+·· ·
+
+·
+
+··
+
+·
+
+··
+
+··
+
+· ··
+
+V
+
+23
+V
+
+FIGURE 3. A sketch of the canonical path , appearing in Lemma 3.8 for two horizontally adjacent blocks. Only the 1st and 2nd empty columns of the right super-good block are drawn (black). The black
+dots in the left block denote the empty sites, while the gray columns
+denote the different positions of the pair of adjacent columns inside the
+path. Notice the pair of adjacent empty sites on each row.
+
+V
+
+··
+
+··
+
+·· ·
+
+·
+
+·· V
+
+· ·5 ··
+
+· ··
+
+FIGURE 4. A sketch of the canonical path , for two vertically adjacent blocks. The sequence of the dashed arrows must be read from top to bottom. Initially the 1st and 2nd empty columns of the top block (drawn in thick black) travel until they sit above the first pair of adjacent
+empty sites on the top row of the bottom block. At this time their height
+grows by one unit. Later in the path this new pair of empty columns
+is moved above the first pair of adjacent empty sites on the next to top row of the bottom block and so forth until the 1st and 2nd columns of the bottom block become empty.
+
+It remains to consider the construction of the canonical paths appearing in Lemma 3.7
+and for that we use both (1) and (2) above.
+Fix  such that V1 := V + (n1 + 1)e1 and V2 := V + (n2 + 1)e2 are super-good, let z  V and let  = z. For simplicity and w.l.o.g. we assume z = (1, 1). We can then obtain a legal canonical path between  and  with the required properties as follows:
+(a) by combining observation (1) with Lemma 5.7 we first empty the last two columns
+of V2 without doing any flip inside V  V1; (b) at this stage the last two columns of V2 are empty because of (a) and the first two
+columns of V1 are also empty because V1 was super-good. Thus, using observation (2), we empty the last two columns of V ; (c) finally we restore the original configuration in V2 by reverting the path in the first step. (d) We repeat the above three steps with a twist: we first empty the 4th and 3rd last column of V2, then the 4th and 3rd last column of V . We then restore the original
+
+24
+
+F. MARTINELLI AND C. TONINELLI
+
+V2 ·z
+
+Vx
+
+V1
+
+FIGURE 5. A sketch of the canonical path , appearing in Lemma 3.7. Assuming that the path has been able to empty the two black columns of V , then it is possible to move these two columns one step further to the left as follows. First move the initial pair of double empty columns in V2 to the new position encircled by the dashed ellipse, then, starting with the vertex z, empty the dashed black column in V and finally restore the original values of  to the right of x and then in V2.
+
+configuration  in the last two columns of V and, subsequently, we finally restore
+ in V2. We have now reached the intermediate configuration obtained from  by emptying the 4th and 3rd last column of V .
+(e) We iterate the above step until reaching the configuration obtained from  by emptying the 2nd and 3rd column of V .
+(f) Finally, using again (2) above and Lemma 5.7, we empty the vertex (1, 2). At this
+stage we can do a flip in the corner (1, 1) since the vertices (1, 2), (2, 1) and (3, 1)
+are all empty.
+(g) The final step is to retrace the steps of the path which emptied (1, 2) and then those of the path which emptied the 2nd and 3rd column of V in such a way that we end up in the configuration .
+
+ACKNOWLEDGMENTS
+We are deeply in debt to R. Morris for several enlightening and stimulating discussions on bootstrap percolation models. We also acknowledge the hospitality of our respective departments during several exchange visits and the organizers of the 2016 Oberwolfach's workshop "Large Scale Stochastic Dynamics" for their hospitality in a stimulating atmosphere.
+REFERENCES
+[1] H. C. Andersen and G. H. Fredrickson, Kinetic Ising Model of the Glass Transition, Phys. Rev. Lett. 53 (1984), no. 13, 1244­1247.
+[2] J. Balogh, B. Bollobas, H. Duminil-Copin, and R. Morris, The sharp threshold for bootstrap percolation in all dimensions, Transactions of the American Mathematical Society 364 (2012), no. 5, 2667­2701.
+[3] B. Bollobas, H. Duminil-Copin, R. Morris, and P. Smith, Universality of two-dimensional critical cellular automata, arXiv.org (2014), available at 1406.6680.
+[4] B. Bollobas, P. Smith, and A. Uzzell, Monotone cellular automata in a random environment, Combin.Probab.Comput. 24 (2015), no. 4, 687­722.
+[5] P. Balister, B. Bollobas, Przykucki M.J., and P. Smith, Subcritical U­bootstrap percolation models have non­trivial phase transitions, Trans.Amer.Math.Soc. 368 (2016), 7385­7411.
+
+25
+[6] R. Cerf and F. Manzo, The threshold regime of finite volume bootstrap percolation, Stochastic Processes and their Applications (2002).
+[7] J. T. Chayes and L. Chayes, Percolation and random media, Critical phenomena, Random systems, Gauge theories, NATO Advanced Study Institute, Les Houches, Session 43, (K. Osterwalder and R. Stora, eds.), Elsevier, Amsterdam, 1984.
+[8] N Cancrini, F Martinelli, C Roberto, and C Toninelli, Mixing time of a kinetically constrained spin model on trees: power law scaling at criticality, Probability Theory and Related Fields 161 (2015), no. 1-2, 247­266.
+[9] N. Cancrini, F. Martinelli, C. Roberto, and C. Toninelli, Kinetically constrained spin models, Probab. Theory Rel. 140 (2008), no. 3-4, 459­504.
+[10] P. Chleboun, A. Faggionato, and F. Martinelli, Time scale separation and dynamic heterogeneity in the low temperature East model, Commun. Math. Phys. 328 (2014), 955-993.
+[11] P. Chleboun, A. Faggionato, and F. Martinelli, Relaxation to equilibrium of generalized East processes on Zd: Renormalization group analysis and energy-entropy competition, Annals of Probability, to appear (2014).
+[12] H. Duminil Copin and A. van Enter, Sharp metastability threshold for an anisotropic bootstrap percolation model., Annals of Probability 41 (2013), no. 3A, 1218­1242.
+[13] H. Duminil Copin, A. van Enter, and T. Hulshof, Higher order corrections for anisotropic bootstrap percolation, arXiv.org (2016), available at 1611.03294v1.
+[14] J. P. Garrahan, P. Sollich, and C. Toninelli, Kinetically constrained models, in "Dynamical heterogeneities in glasses, colloids, and granular media", Oxford Univ. Press, Eds.: L. Berthier, G. Biroli, J-P Bouchaud, L. Cipelletti and W. van Saarloos. Preprint arXiv:1009.6113 (2011).
+[15] G R Grimmett, Percolation, Grundlehren der mathematischen Wissenschaften, vol. 321, Springer Verlag, Berlin-Heidelberg, 1999.
+[16] J Gravner and D Griffeath, Scaling laws for a class of critical cellular automaton growth rules, Random walks (Budapest), 1999.
+[17] A. E Holroyd, Sharp metastability threshold for two-dimensional bootstrap percolation, Probability Theory and Related Fields 125 (2003), no. 2, 195­224.
+[18] F Martinelli and C Toninelli, Kinetically constrained spin models on trees, Annals of Applied Probability 23 (2013), no. 5, 1967­1987.
+[19] L. Mareche, F. Martinelli, R. Morris, and C. Toninelli, On the persistence time of kinetically constrained models: universality in two dimensions (in preparation).
+[20] R. Morris, Bootstrap percolation, and other automata, European Journal of Combinatorics (to appear).
+[21] Y. Peres and A. Sly, Mixing of the upper triangular matrix walk, Probab. Theory Rel. math.PR (2012), no. 3-4, 581­591.
+[22] L. Saloff-Coste, Lectures on finite Markov chains (P. Bernard, ed.), Lecture Notes in Mathematics, vol. 1665, Springer Berlin Heidelberg, 1997.
+E-mail address: martin@mat.uniroma3.it
+DIPARTIMENTO DI MATEMATICA E FISICA, UNIVERSIT`A ROMA TRE, LARGO S.L. MURIALDO 00146, ROMA, ITALY
+E-mail address: Cristina.Toninelli@lpt.ens.fr
+LABORATOIRE DE PROBABILIT´ES ET MOD`ELES AL`EATOIRES CNRS-UMR 7599 UNIVERSIT´ES PARIS VI-VII 4, PLACE JUSSIEU F-75252 PARIS CEDEX 05 FRANCE
+
+

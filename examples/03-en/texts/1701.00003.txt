@@ -1,0 +1,694 @@
+Draft version March 27, 2017 Preprint typeset using LATEX style emulateapj v. 12/16/11
+
+arXiv:1701.00003v2 [astro-ph.GA] 24 Mar 2017
+
+A LOCAL LEAKY-BOX MODEL FOR THE LOCAL STELLAR SURFACE DENSITY - GAS SURFACE DENSITY - GAS PHASE METALLICITY RELATION
+Guangtun Ben Zhu1,2, Jorge K. Barrera-Ballesteros1, Timothy M. Heckman1, Nadia L. Zakamska1,3, Sebastian F. Sa´nchez4, Renbin Yan5, Jonathan Brinkmann6
+Draft version March 27, 2017
+ABSTRACT
+We revisit the relation between the stellar surface density, the gas surface density, and the gas-phase metallicity of typical disk galaxies in the local Universe with the SDSS-IV/MaNGA survey, using the star formation rate surface density as an indicator for the gas surface density. We show that these three local parameters form a tight relationship, confirming previous works (e.g., by the PINGS and CALIFA surveys), but with a larger sample. We present a new local leaky-box model, assuming star formation history and chemical evolution is localized except for outflowing materials. We derive closed-form solutions for the evolution of stellar surface density, gas surface density and gas-phase metallicity, and show that these parameters form a tight relation independent of initial gas density and time. We show that, with canonical values of model parameters, this predicted relation match the observed one well. In addition, we briefly describe a pathway to improving the current semi-analytic models of galaxy formation by incorporating the local leaky-box model in the cosmological context, which can potentially explain simultaneously multiple properties of Milky Way-type disk galaxies, such as the size growth and the global stellar mass-gas metallicity relation. Subject headings: galaxies ­ evolution: galaxies ­ spiral: galaxies ­ star formation: galaxies ­ abun-
+dances
+
+1. INTRODUCTION
+Over the past few decades, a standard cosmological model of structure formation emerged in a series of major observational and theoretical advances (e.g., White & Rees 1978). However, most of these studies have largely focused on the global properties of galaxies (e.g., Kauffmann et al. 1993; Springel et al. 2005; Somerville & Dav´e 2015).
+Recent integral-field-unit (IFU) spectroscopic surveys from the ground (e.g., Bacon et al. 2001; RosalesOrtega et al. 2010; S´anchez et al. 2012), high-spatial resolution deep imaging surveys with the Hubble Space Telescope (e.g., Scoville et al. 2007; Koekemoer et al. 2011), and high-resolution hydrodynamical simulations (e.g., Vogelsberger et al. 2014; Hopkins et al. 2014) have shifted the focus of the investigations of galaxy formation to small-scale astrophysics and to the relationships between local and global properties of galaxies. In particular, the MaNGA survey (Bundy et al. 2015) in SDSSIV (Blanton et al. 2017) is obtaining IFU spectroscopy for about 10, 000 nearby galaxies and will provide the largest sample of galaxies with kpc-scale resolved optical spectroscopy, enabling systematic investigations of local properties and also their correlations with global parameters. In this paper, using the MaNGA data ob-
+1 Department of Physics & Astronomy, Johns Hopkins University, 3400 N. Charles Street, Baltimore, MD 21218, guangtun.ben.zhu@gmail.com
+2 Hubble Fellow 3 Deborah Lunder and Alan Ezekowitz Founders' Circle Member, Institute for Advanced Study, Einstein Dr., Princeton, NJ 08540, USA 4 Instituto de Astronom´ia, Universidad Nacional Aut´onoma de M´exico, A.P. 70-264, 04510 M´exico, D.F., M´exico 5 Department of Physics and Astronomy, University of Kentucky, 505 Rose St., Lexington, KY 40506-0057 6 Apache Point Observatory, P.O. Box 59, Sunspot, NM 88349
+
+tained in the first two years, we investigate the relation between the stellar surface density (), gas surface density (gas), and gas-phase metallicity (Z) in typical disk galaxies, using the star formation rate (SFR) surface density (SFR) as a proxy for gas. In particular, we show that a simple leaky-box model can explain well the observed relation between these parameters and propose a new way of thinking about disk galaxy formation.
+The rest of the paper is organized as follows. In Section 2 and 3, we describe the data we use and the observed relation. We present the local leaky-box model in Section 4. In Section 5, we outline a global semianalytic model for disk galaxy formation. We summarize our results in Section 6. When necessary, we assume the CDM cosmogony, with  = 0.7, m = 0.3, and H0 = 70 km s-1 Mpc-1.
+2. DATA
+The SDSS-IV/MaNGA IFU survey uses the BOSS spectrographs (Smee et al. 2013) on the 2.5-m SDSS telescope (Gunn et al. 2006) at the Apache Point Observatory. Detailed description of the MaNGA surveys are available in Bundy et al. (2015, overview), Drory et al. (2015, instrumentation), Law et al. (2015, 2016, observation, data reduction), and Yan et al. (2016a,b, calibration, survey design). We use the fourth internal data release of the MaNGA survey (MPL-4), which includes 1390 galaxies observed as of June 2015.
+For our purposes, we are interested in typical disk galaxies and we select our sample and use the same data as we did in Barrera-Ballesteros et al. (2016). We select 653 disk galaxies spanning stellar masses between 108.5 M and 1011 M . The data cubes include about 507, 000 star-forming spaxels with spatial resolution ranging from  1.5 kpc to  2.5 kpc. For the parameter measurements, we use the estimates from the
+
+2
+
+Zhu et al.
+
+8.8
+
+8.8
+
+8.7
+
+8.7
+
+8.6
+
+8.6
+
+8.5
+
+8.5
+
+12 + log10 O/H 12 + log10 O/H
+
+8.4
+
+8.4
+
+8.3
+
+8.3
+
+8.2
+
+Blue: -2 < log10 SFR < - 1
+
+8.2
+
+Blue: -2 < log10 SFR < - 1
+
+Green: -3 < log10 SFR < - 2
+
+Green: -3 < log10 SFR < - 2
+
+8.1
+
+Red: -4 < log10 SFR < - 3 [SFR] : M kpc-2
+
+8.1
+
+Red: -4 < log10 SFR < - 3 [SFR] : M kpc-2
+
+8.00.0 0.5 1.0 1.5 2.0 2.5 3.0 3.5 log10   /[M pc-2]
+
+8.00.0 0.5 1.0 1.5 2.0 2.5 3.0 3.5 log10 [(SFR/ )1/k + (1 + /(1 - R))] - log10[(SFR/ )1/k]
+
+Fig. 1.-- Left: The observed  - Z relation of star-forming regions in typical disk galaxies. The contours enclose 90% of the subsamples with highest (blue), intermediate (green) and lowest (red) SFR surface density. Right: The observed  - SFR - Z relation (gray scale, Eq. 10), assuming R = 0.3, = 0.0004, k = 2.2, and  = 1. The dashed line shows the relation with the best-fit yield y = 0.003. The
+errorbars show the typical measurement uncertainties, 0.06 dex for metallicity and 0.15 dex for stellar and SFR surface density.
+
+PIPE3D pipeline (S´anchez et al. 2016). PIPE3D estimated the stellar mass at a given spaxel by fitting the underlying stellar continuum with spectral templates taken from MIUSCAT SSP library (Vazdekis et al. 2012), assuming a Salpeter (1955) IMF. The pipeline also took into account of dust attention (Calzetti 2001). We estimated SFR using the dust attenuation-corrected flux of H. We have also corrected the surface densities for the inclination effect (see Barrera-Ballesteros et al. 2016). For gas-phase metallicity, we use the O3N2 indicator based on the [O III] 5008 and [N II] 6584 ratio (e.g., Marino et al. 2013). For more details regarding the data and the survey, we refer the reader to references above.
+3. THE LOCAL  - SFR - Z RELATION
+Early works (e.g., Edmunds & Pagel 1984; Vila-Costas & Edmunds 1992) have already suggested that there exists a relationship between the local stellar surface density and the gas-phase metallicity. More recently, the PINGS and CALIFA surveys have presented conclusive evidence for such a relationship (Rosales-Ortega et al. 2012; S´anchez et al. 2013). In Barrera-Ballesteros et al. (2016), we presented further evidence with the MaNGA survey. Rosales-Ortega et al. (2012) and S´anchez et al. (2013) further showed that, including the local SFR surface density indicates that the three parameters together form a tight relationship. Our objective is to revisit this relation with a larger sample and then devise a local chemical evolution model for its interpretation.
+In the left panel of Figure 1, we show the  - Z relation (the same as in Figure 2 of Barrera-Ballesteros et al. 2016). In addition, we divide the star-forming regions into three subsamples with the highest, intermediate, and lowest SFR surface density and show their distributions in blue, green, and red contours, respectively. We find that these three parameters, , SFR and Z, form a tight correlation with each other. We therefore
+
+confirm the findings by Rosales-Ortega et al. (2012) with the PINGS survey (Rosales-Ortega et al. 2010), who used luminosity surface density as a proxy for stellar surface density and H equivalent width for specific SFR, and also the recent results with the derived physical parameters from the larger CALIFA survey (S´anchez et al. 2013).
+The gas-phase metallicity is the ratio of the amount of heavy elements (in our case, oxygen) to the total amount of gas in the galaxy, i.e., Z = metal/gas. Both metals and stars are integrated products of the star-formation history, while the SFR is closely correlated to the amount of gas available, through the Kennicutt-Schmidt (K-S) law (Schmidt 1959; Kennicutt 1998). The relations between the three parameters must therefore be closely related to the local star-formation history. In the next section, we present a leaky-box model of the local starformation history and chemical evolution and show that it can naturally explain our observation.
+4. THE LOCAL LEAKY-BOX MODEL
+We assume a disk galaxy grows inside out (e.g., Larson 1976; Matteucci & Francois 1989; Governato et al. 2007; Pilkington et al. 2012; Gibson et al. 2013, among others), and gas falls in onto the outskirts, collapses and triggers star formation.7 In this scenario all processes ­ star formation and metal production ­ are localized within the same region except for the outflowing gas. These assumptions enable us to construct a model of the localized star formation history and chemical evolution, which we describe in detail below.
+If gas is accreted onto the galaxy with initial gas surface density 0  gas(t0) at accretion time t0, we can
+7 We note if we start with a disk of gas right from the beginning, our analysis still applies.
+
+Leaky-box Model for the Local Relation
+
+3
+
+8.8
+
+8.8
+
+8.7
+
+r < reff
+
+8.7
+
+r > reff
+
+8.6
+
+8.6
+
+8.5
+
+8.5
+
+12 + log10 O/H
+
+12 + log10 O/H
+
+8.4
+
+8.4
+
+8.3
+
+8.3
+
+8.2
+
+Blue: -2 < log10 SFR < - 1
+
+8.2
+
+Blue: -2 < log10 SFR < - 1
+
+Green: -3 < log10 SFR < - 2
+
+Green: -3 < log10 SFR < - 2
+
+8.1
+
+Red: -4 < log10 SFR < - 3 [SFR] : M kpc-2
+
+8.1
+
+Red: -4 < log10 SFR < - 3 [SFR] : M kpc-2
+
+8.00.0 0.5 1.0 1.5 2.0 2.5 3.0 3.5 log10 [(SFR/ )1/k + (1 + /(1 - R))] - log10[(SFR/ )1/k]
+
+8.00.0 0.5 1.0 1.5 2.0 2.5 3.0 3.5 log10 [(SFR/ )1/k + (1 + /(1 - R))] - log10[(SFR/ )1/k]
+
+Fig. 2.-- Radial dependence of the local  - SFR - Z relation. Left: Regions within reff . Right: Regions outside reff . The dashed lines are the same as in Fig. 1.
+
+8.8
+
+8.8
+
+8.7
+
+M < 1010 M
+
+8.7
+
+M > 1010 M
+
+8.6
+
+8.6
+
+8.5
+
+8.5
+
+12 + log10 O/H
+
+12 + log10 O/H
+
+8.4
+
+8.4
+
+8.3
+
+8.3
+
+8.2
+
+Blue: -2 < log10 SFR < - 1
+
+8.2
+
+Blue: -2 < log10 SFR < - 1
+
+Green: -3 < log10 SFR < - 2
+
+Green: -3 < log10 SFR < - 2
+
+8.1
+
+Red: -4 < log10 SFR < - 3 [SFR] : M kpc-2
+
+8.1
+
+Red: -4 < log10 SFR < - 3 [SFR] : M kpc-2
+
+8.00.0 0.5 1.0 1.5 2.0 2.5 3.0 3.5 log10 [(SFR/ )1/k + (1 + /(1 - R))] - log10[(SFR/ )1/k]
+
+8.00.0 0.5 1.0 1.5 2.0 2.5 3.0 3.5 log10 [(SFR/ )1/k + (1 + /(1 - R))] - log10[(SFR/ )1/k]
+
+Fig. 3.-- Mass dependence of the local  - SFR - Z relation. Left: Regions in host galaxies with M < 1010 M . Right: Regions in host galaxies with M > 1010 M . The dashed lines are the same as in Fig. 1.
+
+define a total surface density:
+
+tot(t) = (t) + gas(t) + out(t)
+
+= tot(t0)
+
+= 0 ,
+
+(1)
+
+where gas(t) and (t) are the surface densities of gas and long-lived stars at a given time t, respectively. For
+convenience we have defined out(t) to represent the would-be density of the expelled gas should it stay within
+the same area, even though it can be anywhere in the
+circum-/inter-galactic media. If there is no outflow (i.e.,
+
+out = 0), we have a closed-box model. There has been ample evidence showing that star-forming galaxies exhibit ubiquitous outflows (e.g., Lynds & Sandage 1963; Bland & Tully 1988; Heckman et al. 1990; Shapley et al. 2003; Rupke et al. 2005; Martin & Bouch´e 2009; Weiner et al. 2009; Rubin et al. 2014; Zhu et al. 2015, among others). Outflows also help explain the large amount of metals found outside galaxies in the circum-/inter-galactic media (e.g., Bergeron 1986; Steidel et al. 2010; Tumlinson et al. 2011; Stocke et al. 2013; Borthakur et al. 2013; Werk et al. 2014; Bordoloi et al. 2014; Zhu et al. 2014,
+
+4
+
+Zhu et al.
+
+among others). We here therefore assume a leaky-box model.
+Another assumption of our model is that the expelled gas does not fall back onto the galaxy. Theoretical studies have suggested at least a fraction of the expelled gas would be reaccreted (e.g., Oppenheimer et al. 2010; Bower et al. 2012; Marasco et al. 2012; Brook et al. 2012; Henriques et al. 2013; Christensen et al. 2016). If some of the expelled gas falls right back onto the same region, its effect is equivalent to a smaller outflow rate and our model still applies. If some of the expelled gas gets mixed with gas outside and falls back in onto the outskirts, the formalism applies as well since the recycled gas does not invalidate the locality. If a significant fraction of the expelled gas is spread out and falls back over the whole galaxy (e.g., as in the galaxy fountain model, Marasco et al. 2012), it may have a non-negligible effect on the chemical evolution. This last scenario is more complicated than our simple model can yet address and we leave it for future work.
+With the assumptions above, the total surface density defined above stays constant over the cosmic time (= 0). This synthetic density, tot(t), includes the outflowing gas, while the total density within the disk would only include the gas and stars in the disk ((t) + gas(t)). The constancy of this density and the direct connection between the amount of outflowing gas and the instantaneous SFR make it possible to derive a closed-form solution of the full chemical evolution history, as described below.
+The SFR surface density is related to the gas surface density through the K-S law:
+
+SFR
+
+
+
+1
+
+1 -
+
+R
+
+d(t) dt
+
+=
+
+kgas(t) ,
+
+(2)
+
+where R is the "return fraction", i.e., the fraction of the stellar mass formed that is assumed to be instantaneously returned to the gas from short-lived massive stars, and is the effective SF efficiency and k is the K-S index. Note is not unitless and its dimension depends on k. Following convention, we express  and gas in unit of M pc-2, while SFR in unit of M kpc-2. We also expect there is a threshold below which SF cannot continue, and we assume this threshold to be 10 M pc-2 (e.g., Skillman 1987; Schaye 2004; Leroy et al. 2008).
+In global models, the outflow rate is usually assumed to be proportional to the total SFR (e.g., Springel & Hernquist 2003; Dalla Vecchia & Schaye 2008) and we extend this assumption to our local model. The outflow rate is related to the SFR through
+
+dout(t) dt
+
+=
+
+ SFR
+
+=
+
+ 1-R
+
+d(t) dt
+
+,
+
+(3)
+
+where  is the mass loading factor and we assume it is constant (e.g., Springel & Hernquist 2003; Heckman et al. 2015).
+Combining the above equations gives the relation between gas consumption rate, SFR surface density, and gas surface density:
+
+dgas(t) = -(1 +  ) d(t)
+
+(4)
+
+dt
+
+1 - R dt
+
+= -(1 - R + ) kgas(t) ,
+
+(5)
+
+12 + log10 O/H
+
+9.0
+
+0=20
+
+8.8
+
+0=50 0=100
+
+0=200
+
+8.6
+
+0=400 0=800
+
+0=1000
+
+8.4
+
+0=2000 0=3000
+
+0=5000
+
+8.2
+
+0=8000
+
+8.0
+
+7.8
+
+7.6 4.0 3.5 3.0 2.5 2.0 1.5 1.0 0.5 0.0
+log10 gas/[M pc-2]
+
+12 + log10 O/H
+
+9.0 8.8 8.6 8.4 8.2 8.0 7.8 7.6
+0
+
+1
+
+2
+
+3
+
+log10 /[M pc-2]
+
+0=20 0=50 0=100 0=200 0=400 0=800 0=1000 0=2000 0=3000 0=5000 0=8000
+4
+
+9.0
+
+0=20
+
+8.8
+
+0=50 0=100
+
+0=200
+
+8.6
+
+0=400 0=800
+
+0=1000
+
+8.4
+
+0=2000 0=3000
+
+0=5000
+
+8.2
+
+0=8000 Observed
+
+8.0
+
+12 + log10 O/H
+
+7.8
+
+7.6 0.0 0.5 1.0 1.5 2.0 2.5 3.0 3.5 4.0
+log10 0/[M pc-2] - log10 gas/[M pc-2]
+
+Fig. 4.-- The predicted evolutionary tracks of the local star formation history as a function of 0 (in M pc-2). For each track, time increases from left to right and from bottom to top, gas decreases with time, while  and Z increase with time. Top: the gas - Z relation. We have reversed the order of gas for display purposes. Middle: the  - Z relation. Bottom: the  - gas - Z relation, as given by Equation 10. All tracks with different 0 overlap for this relation. The black dashed line is the same as the
+magenta dashed line in the right panel of Figure 1, showing the
+range probed by the MaNGA survey, slightly shifted downwards
+for clarity.
+
+Leaky-box Model for the Local Relation
+
+5
+
+from which we can solve for the full star-formation history, including gas(t), (t), SFR(t), out(t), massweighted age of the stars, etc. In particular, assuming k > 1, gas(t) is given by
+
+1g-ask(t) = 10-k - (1 - R + ) (1 - k)(t - t0) . (6)
+
+We can now derive the chemical evolution of this leaky-
+box model. The metallicity (Z  metal/gas) growth rate is given by
+
+dZ (t) dt
+
+=
+
+1 gas(t)
+
+dmetal(t) dt
+
+-
+
+metal(t) 2gas(t)
+
+dgas(t) dt
+
+1 =
+
+dmetal(t) - Z(t) dgas(t) , (7)
+
+gas(t)
+
+dt
+
+dt
+
+where metal is the surface density of metals in the gas. If y is the total metal mass yield that a stellar population releases into the ISM normalized by the mass locked up in long-lived stars, the amount of new metals that stay in the gas in the galaxy is given by the total yield minus that locked in stars and expelled along with outflows:
+
+dmetal(t) = y d(t) - Z(t) d(t) + dout(t)
+
+dt
+
+dt
+
+dt
+
+dt
+
+ = y - Z(t) - Z(t)
+
+d
+
+1 - R dt
+
+
+
+= y - Z(t) - Z(t)
+
+×
+
+1-R
+
+-1
+
+dgas(t) .
+
+(8)
+
+1 + /(1 - R) dt
+
+where we have assumed the metallicity in the outflowing gas is the same as in the ISM at the time.
+The metallicity growth rate is then given by
+
+dZ(t) = dgas(t)
+
+y
+
+.
+
+(9)
+
+dt gas(t)dt 1 + /(1 - R)
+
+Eliminating dt gives the dependence of the metallicity on 0 and gas(t):
+
+Z (t)
+
+-
+
+Z0
+
+=
+
+1
+
++
+
+y /(1
+
+-
+
+R)
+
+log
+
+0 gas(t)
+
+log(10)y = 1 + /(1 - R) [log10 0 - log10 gas(t)] .
+
+(10)
+
+We have thus derived the local version of the well-known global leaky-box model of chemical evolution (e.g., Tinsley 1980), which has been used to study the global massmetallicity relation (e.g., Zahid et al. 2014; Belfiore et al. 2016). We assume Z0 is 0.1% of the solar value, though as long as it is lower than 1% solar, it has no effect on any of our conclusions.
+Based on the assumptions of the model (Eq. 1 and Eq. 3), we can also calculate 0 as
+
+
+
+0 = gas(t) +
+
+1+ 1-R
+
+(t) ,
+
+(11)
+
+and the metallicity can now be fully determined if we can observe  and gas and if we know  and y. This
+
+ -gas -Z relation is a fundamental relation predicted by the local leaky-box model.
+Now if we assume the K-S law (Eq. 2) holds and we can
+measure SFR, we can estimate the gas density gas(t) with
+
+gas(t) =
+
+SFR(t)
+
+1/k
+.
+
+(12)
+
+In principle, we can constrain the parameters (R, y, , , k) directly using the observation. The model, however, is non-linear and the parameters are degenerate with each other. For example, the yield y and the loading factor  are degenerate in the amplitude, thus a closedbox model (with  = 0) with high yield can also fit the data well. A robust modeling therefore requires careful treatments of the completeness (as a function of the observables). In this first work, we choose to investigate the relation using a fiducial model with values calibrated from the literature. In particular, we first fix the return fraction R to be 0.3 for a Salpeter IMF (e.g., Tinsley 1980; Madau & Dickinson 2014). We use = 0.0004 and k = 2.2 for the K-S law in normal spiral galaxies (e.g., Misiriotis et al. 2006; Bigiel et al. 2008). The K-S law is observed to be non-linear. For normal galaxies, the slope is k  2.2 when total gas surface density is considered, and is smaller (k  1.2) if only molecular gas density is included (e.g., Wong & Blitz 2002; Boissier et al. 2003; Luna et al. 2006). For star-burst galaxies, the K-S law is shallower (e.g., Bigiel et al. 2008). As we are interested in the total gas density for typical star-forming galaxies, we here adopt a linear K-S relation with k = 2.2 and take the amplitude from Bigiel et al. (2008). For the mass loading factor , we set it to be 1, a choice consistent with suggestions by past studies (e.g., Martin 1999; Veilleux et al. 2005; Schaye et al. 2010; Heckman et al. 2015). The right panel of Figure 1 shows the observed relation with these choices. Fixing these three values ( = 0.0004, k = 2.2 and  = 1), we fit the normalization for the metal yield and obtain y  0.003. This yield is for oxygen (16O), and the total metal yield is larger by about a factor of two, ytotal  0.006. The values above are for a Salpeter IMF. For a Chabrier or Kroupa IMF (Chabrier 2003; Kroupa 2001), the oxygen and total metal yield would be about 0.0045 and 0.009, respectively. We plot this best-fit relation with the dashed line. We find it remarkable that, with these canonical values, we obtain a tight  - gas/SFR - Z relation, and the fiducial model matches the observation very well. Our best-fit metal yield is at the lower end of the theoretical estimates (e.g., Henry et al. 2000; Kobayashi et al. 2006; Zahid et al. 2012; Vincenzo et al. 2016). As it is degenerate with the mass loading factor (), if we choose a larger , we will get a larger yield. To take a further look at this local relation, we separate the parent spaxel samples by their galactocentric distance and the stellar mass of their host galaxy. In Figure 2, we plot the local relation for star-forming regions outside (left) and within (right) the effective radius. In Figure 3, we show the relation for low-mass (left) and high-mass (right) galaxies. The dash lines in all panels are the same as in Figure 1. We show the best-fit local relation fits well the data of all the subsamples. We observe
+
+6
+
+Zhu et al.
+
+a weak dependence of the relation on the galactocentric distance and stellar mass: regions at larger radius and in more massive galaxies tend to be distributed above the best-fit relation with higher metallicity. We suspect that this weak dependence may be caused by some of the simple assumptions we made in the model: constant yield and mass loading factor, no recycled gas and metals, and no radial mixing. We leave detailed investigation for future work.
+As similar in the global leaky-box model, given an initial gas surface density 0, the leaky-box model fully describes the local star formation history and chemical evolution. In Figure 4, we show for the fiducial model the predicted evolutionary tracks of metallicity for different 0 as a function of gas,  and log10 0/gas. Each line shows that as time increases, the metallicity and stellar surface density increase, while the gas surface density decreases. We show that the evolution of metallicity, stellar and gas surface density, as well as their relations, are strong functions of the initial gas surface density, while the  - gas - Z relation (bottom) does not depend on either time or 0 and is a fundamental relation predicted by the local leaky-box model.
+Since the local leaky-box model is fully determined by the initial gas surface density 0, for any typical disk galaxy, if we can determine the initial surface density at the accretion time at any given radius, we can connect the small-scale astrophysics with the large-scale cosmological context. We briefly discuss how to expand the local model to a cosmological inside-out growth model in the next section.
+Some of the earlier works have presented similar ideas of localized star formation history and chemical evolution (e.g., Rosales-Ortega et al. 2012; S´anchez et al. 2013; Fu et al. 2013; Ho et al. 2015; Carton et al. 2015; Kudritzki et al. 2015). In particular, Ho et al. (2015) and Carton et al. (2015) extended a global gas regulatory model (Lilly et al. 2013) by ignoring radial mass transfer, which is also an assumption of our model, and showed that it could reproduce the radial metallicity profile for a large fraction of disk galaxies in their samples. They used global parameters (total stellar mass, total SFR) except for the metallicity in their models to reconstruct the observed density/metallicity gradient from resolved IFU observations. Although they did not provide a formalism for the localized star-formation history as we did, they presented new ideas to connect the global properties of the galaxy with the local ones. The model we suggest below outlines a way to integrate these ideas presented in their pioneering works and our local leaky-box model to build a typical disk galaxy analytically in the cosmological context.
+
+5. THE COSMOLOGICAL INSIDE-OUT GROWTH MODEL
+Suppose the dark matter accretion rate of a given dark matter halo (with mass MDM) at a given time (t) is
+
+M DM
+
+
+
+dMDM(t) dt
+
+=
+
+M DM(MDM, t) ,
+
+(13)
+
+which is a function of MDM and t and can be calibrated from simulations (e.g., Wechsler et al. 2002; Correa et
+al. 2015), the gas accretion rate (onto the galaxy) is then
+
+given by
+
+M gas(t)
+
+
+
+dMgas(t) dt
+
+=
+
+ fb
+
+M DM(MDM, t) ,
+
+(14)
+
+where fb is the cosmic ratio of baryon mass to dark matter and  is the fraction of baryons that fall all the way in onto the galaxy.
+We assume the newly-accreted gas only stays on the outskirts and the galaxy grows from inside out. In this case the gas accretion rate is naturally connected to the size growth of the galaxy R (t) and the initial surface density at the galaxy-size radius at the accretion time 0(R):
+
+M gas(t)
+
+=
+
+n
+
+h(R)
+
+2R(t)
+
+dR dt
+
+(15)
+
+= 0(R) 2R(t) R ,
+
+(16)
+
+where n is the volume density when gas starts to form stars and must be closely connected to the SF density threshold for giant molecular clouds, R(t) is the galaxy size at t, h(R) is the initial scale height at R, and 0(R) is the initial total surface density at R.
+If we can calibrate M gas(t) with simulations, we can infer the radial profile of the initial density 0(R) from the size growth of the galaxy R , and vice versa. In particular, if we know the size R(t) and its growth rate R (t) of a typical disk galaxy (e.g., van Dokkum et al. 2013; van der Wel et al. 2014), by applying the local leaky-box model, we can fully derive the radial profiles of gas(r, t), (r, t), SFR(r, t), Z(r, t), and mass-weighted stellar age t (r, t), where r < R(t). IFU surveys such as CALIFA and MaNGA have started to obtain these radial profiles for a large sample of disk galaxies (e.g., S´anchez et al. 2013; P´erez et al. 2013). Galactic surveys, such as RAVE (Steinmetz et al. 2006) and APOGEE (Majewski et al. 2015), have also started to provide chemical gradient measurements of Galactic stars (e.g., Boeche et al. 2013; Hayden et al. 2014; Ness et al. 2016), lending support to an inside-out growth scenario for our own Milky Way. We can also compare the relations among the above parameters and their dependence on global properties should we observe a large sample of systems, such as the stellar mass/SFR (in-)dependence of the  - Z relation observed in our previous paper (e.g., BarreraBallesteros et al. 2016) and the relation between global stellar mass, SFR, and central-region metallicity (e.g., Mannucci et al. 2010; Lara-L´opez et al. 2010; S´anchez et al. 2013; Salim et al. 2014, 2015; Bothwell et al. 2016). We therefore expect a full semi-analytical model can be compared with observations directly, not only for global properties as previous-generation models, but also for local and structural properties revealed by IFU spectroscopic and deep high-spatial resolution imaging surveys. We leave the full modeling for future work.
+
+6. CONCLUSIONS
+With the most recent data from the MaNGA survey, we have confirmed a tight relation between the stellar surface density, gas surface density, and gas-phase metallicity. We introduced a new local leaky-box model, in which star formation and metal production are localized within the same region except for the outflowing gas.
+
+Leaky-box Model for the Local Relation
+
+7
+
+With this model we derived closed-form solutions for the evolution of stellar surface density, gas surface density, and gas-phase metallicity, and showed that they follow a tight relation regardless of initial gas density and time. We further demonstrated that, with canonical values for the model parameters, the closed-form relation predicted by the model matches the observed one well. Our local leaky-box model therefore provided a natural explanation for the relationship between local parameters by the recent IFU observations and suggested a new look at the evolution of typical disk galaxies like our own Milky Way. We briefly introduced how to build a cosmological semianalytical inside-out growth model that can take into account of the small-scale astrophysics by including the localized star formation history.
+We can further refine and improve the local leaky-box model. For example, if we can observe the gas density (e.g., , as in the DiskMass Survey, Martinsson et al. 2013), then we can investigate the local relation directly without the assumption of the Kennicutt-Schmidt law. The current local leaky-box model also neglects several possible effects. We have assumed the parameters ( , k, , y) are all constant. In reality, the K-S index depends on gas (e.g., Bigiel et al. 2008), and the mass loading factor must also depend on SFR (Heckman et al. 2015) and also the local and/or global gravitational potential. It is believed that radial migration of stars and gas happens on some level (e.g., Haywood 2008), though it is yet unclear how important it is in the general evolution of disk galaxies. The expelled gas can also be recycled back to the galaxy (e.g., Oppenheimer et al. 2010; Christensen et al. 2016). Mergers can also affect the distribution of metals (e.g., Rupke et al. 2010). In addition, the model we described does not address the formation and evolution of bulges and bars at the center. It is also a statistical model and neglects structures such as spiral arms. We expect these open issues to be the focuses of future investigations.
+On a larger scale, the outflow component can be connected to quenching due to stellar/supernova feedback. The cosmological inside-out growth model with the localized star formation history is a natural next step of the gas regulatory model used for global evolution of galaxies (e.g., Bouch´e et al. 2010; Lilly et al. 2013). Instead of adding more gas to the total gas reservoir, the insideout growth model simplifies the physical treatments as it adds new gas to the outskirts without interfering with the (local) reservoir on the inside.
+The MaNGA survey is continuing its operation and will provide us with six times more data by the end of the survey. With such a large dataset, we will be able to
+
+investigate not only the local properties with IFU data themselves, but also the correlations between them and global properties and large-scale structures. Together with the rapid development of high-resolution hydrodynamical simulations and new analytical models as the one described in this paper, we are entering a new era of galaxy formation and evolution where we can now connect directly small-scale astrophysics with the cosmological context in both observation and theory.
+G.B.Z. acknowledges support provided by NASA through Hubble Fellowship grant #HST-HF2-51351 awarded by the Space Telescope Science Institute, which is operated by the Association of Universities for Research in Astronomy, Inc., under contract NAS 5-26555. We thank an anonymous referee for many constructive comments that have helped improve this paper.
+Funding for the Sloan Digital Sky Survey IV has been provided by the Alfred P. Sloan Foundation, the U.S. Department of Energy Office of Science, and the Participating Institutions. SDSS-IV acknowledges support and resources from the Center for High-Performance Computing at the University of Utah. The SDSS web site is www.sdss.org.
+SDSS-IV is managed by the Astrophysical Research Consortium for the Participating Institutions of the SDSS Collaboration including the Brazilian Participation Group, the Carnegie Institution for Science, Carnegie Mellon University, the Chilean Participation Group, the French Participation Group, HarvardSmithsonian Center for Astrophysics, Instituto de Astrof´isica de Canarias, The Johns Hopkins University, Kavli Institute for the Physics and Mathematics of the Universe (IPMU) / University of Tokyo, Lawrence Berkeley National Laboratory, Leibniz Institut fu¨r Astrophysik Potsdam (AIP), Max-Planck-Institut fu¨r Astronomie (MPIA Heidelberg), Max-Planck-Institut fu¨r Astrophysik (MPA Garching), Max-Planck-Institut fu¨r Extraterrestrische Physik (MPE), National Astronomical Observatories of China, New Mexico State University, New York University, University of Notre Dame, Observat´ario Nacional / MCTI, The Ohio State University, Pennsylvania State University, Shanghai Astronomical Observatory, United Kingdom Participation Group, Universidad Nacional Aut´onoma de M´exico, University of Arizona, University of Colorado Boulder, University of Oxford, University of Portsmouth, University of Utah, University of Virginia, University of Washington, University of Wisconsin, Vanderbilt University, and Yale University.
+
+REFERENCES
+
+Bacon, R., Copin, Y., Monnet, G., et al. 2001, MNRAS, 326, 23 Barrera-Ballesteros, J. K., Heckman, T. M., Zhu, G. B., et al.
+2016, MNRAS, 463, 2513 Blanton, M. R., Bershady, M. A., Abolfathi, B., et al. 2017,
+arXiv:1703.00052 Belfiore, F., Maiolino, R., & Bothwell, M. 2016, MNRAS, 455,
+1218 Bergeron, J. 1986, A&A, 155, L8 Bigiel, F., Leroy, A., Walter, F., et al. 2008, AJ, 136, 2846 Bland, J., & Tully, B. 1988, Nature, 334, 43 Boeche, C., Siebert, A., Piffl, T., et al. 2013, A&A, 559, A59
+
+Boissier, S., Prantzos, N., Boselli, A., & Gavazzi, G. 2003, MNRAS, 346, 1215
+Bordoloi, R., Tumlinson, J., Werk, J. K., et al. 2014, ApJ, 796, 136
+Borthakur, S., Heckman, T., Strickland, D., Wild, V., & Schiminovich, D. 2013, ApJ, 768, 18
+Bothwell, M. S., Maiolino, R., Peng, Y., et al. 2016, MNRAS, 455, 1156
+Bouch´e, N., Dekel, A., Genzel, R., et al. 2010, ApJ, 718, 1001 Bower, R. G., Benson, A. J., & Crain, R. A. 2012, MNRAS, 422,
+2816
+
+8
+
+Zhu et al.
+
+Brammer, G. B., van Dokkum, P. G., Franx, M., et al. 2012, ApJS, 200, 13
+Brook, C. B., Stinson, G., Gibson, B. K., et al. 2012, MNRAS, 419, 771
+Bundy, K., Bershady, M. A., Law, D. R., et al. 2015, ApJ, 798, 7 Calzetti, D. 2001, PASP, 113, 1449 Carton, D., Brinchmann, J., Wang, J., et al. 2015, MNRAS, 451,
+210 Chabrier, G. 2003, PASP, 115, 763 Christensen, C. R., Dav´e, R., Governato, F., et al. 2016, ApJ,
+824, 57 Correa, C. A., Wyithe, J. S. B., Schaye, J., & Duffy, A. R. 2015,
+MNRAS, 450, 1514 Dalla Vecchia, C., & Schaye, J. 2008, MNRAS, 387, 1431 Dav´e, R., Finlator, K., & Oppenheimer, B. D. 2012, MNRAS,
+421, 98 Drory, N., MacDonald, N., Bershady, M. A., et al. 2015, AJ, 149,
+77 Edmunds, M. G., & Pagel, B. E. J. 1984, MNRAS, 211, 507 Fu, J., Kauffmann, G., Huang, M.-l., et al. 2013, MNRAS, 434,
+1531 Gibson, B. K., Pilkington, K., Brook, C. B., Stinson, G. S., &
+Bailin, J. 2013, A&A, 554, A47 Governato, F., Willman, B., Mayer, L., et al. 2007, MNRAS, 374,
+1479 Gunn, J. E., Siegmund, W. A., Mannery, E. J., et al. 2006, AJ,
+131, 2332 Hayden, M. R., Holtzman, J. A., Bovy, J., et al. 2014, AJ, 147,
+116 Haywood, M. 2008, MNRAS, 388, 1175 Heckman, T. M., Armus, L., & Miley, G. K. 1990, ApJS, 74, 833 Heckman, T. M., Lehnert, M. D., Strickland, D. K., & Armus, L.
+2000, ApJS, 129, 493 Heckman, T. M., Alexandroff, R. M., Borthakur, S., Overzier, R.,
+& Leitherer, C. 2015, ApJ, 809, 147 Henriques, B. M. B., White, S. D. M., Thomas, P. A., et al. 2013,
+MNRAS, 431, 3373 Henry, R. B. C., Edmunds, M. G., K¨oppen, J. 2000, ApJ, 541, 660 Hopkins, P. F., Keres, D., On~orbe, J., et al. 2014, MNRAS, 445,
+581 Ho, I.-T., Kudritzki, R.-P., Kewley, L. J., et al. 2015, MNRAS,
+448, 2030 Kauffmann, G., White, S. D. M., & Guiderdoni, B. 1993,
+MNRAS, 264, 201 Kennicutt, R. C., Jr. 1998, ApJ, 498, 541 Kennicutt, R. C., & Evans, N. J. 2012, ARA&A, 50, 531 Kobayashi, C., Umeda, H., Nomoto, K., Tominaga, N., &
+Ohkubo, T. 2006, ApJ, 653, 1145 Koekemoer, A. M., Faber, S. M., Ferguson, H. C., et al. 2011,
+ApJS, 197, 36 Kroupa, P. 2001, MNRAS, 322, 231 Kudritzki, R.-P., Ho, I.-T., Schruba, A., et al. 2015, MNRAS,
+450, 342 Lara-Lo´pez, M. A., Cepa, J., Bongiovanni, A., et al. 2010, A&A,
+521, L53 Larson, R. B. 1976, MNRAS, 176, 31 Law, D. R., Yan, R., Bershady, M. A., et al. 2015, AJ, 150, 19 Law, D. R., Cherinka, B., Yan, R., et al. 2016, arXiv:1607.08619 Leroy, A. K., Walter, F., Brinks, E., et al. 2008, AJ, 136, 2782 Lilly, S. J., Carollo, C. M., Pipino, A., Renzini, A., & Peng, Y.
+2013, ApJ, 772, 119 Luna, A., Bronfman, L., Carrasco, L., & May, J. 2006, ApJ, 641,
+938 Lynds, C. R., & Sandage, A. R. 1963, ApJ, 137, 1005 Madau, P., & Dickinson, M. 2014, ARA&A, 52, 415 Majewski, S. R., Schiavon, R. P., Frinchaboy, P. M., et al. 2015,
+arXiv:1509.05420 Marino, R. A., Rosales-Ortega, F. F., S´anchez, S. F., et al. 2013,
+A&A, 559, A114 Mannucci, F., Cresci, G., Maiolino, R., Marconi, A., & Gnerucci,
+A. 2010, MNRAS, 408, 2115 Marasco, A., Fraternali, F., & Binney, J. J. 2012, MNRAS, 419,
+1107 Martin, C. L. 1999, ApJ, 513, 156 Martin, C. L., & Bouch´e, N. 2009, ApJ, 703, 1394 Martin, C. L., & Kennicutt, R. C., Jr. 2001, ApJ, 555, 301
+
+Martinsson, T. P. K., Verheijen, M. A. W., Westfall, K. B., et al. 2013, A&A, 557, A131
+Matteucci, F., & Francois, P. 1989, MNRAS, 239, 885 Misiriotis, A., Xilouris, E. M., Papamastorakis, J., Boumis, P., &
+Goudis, C. D. 2006, A&A, 459, 113 Ness, M., Hogg, D. W., Rix, H.-W., et al. 2016, ApJ, 823, 114 Oppenheimer, B. D., Dav´e, R., Keres, D., et al. 2010, MNRAS,
+406, 2325 Pilkington, K., Few, C. G., Gibson, B. K., et al. 2012, A&A, 540,
+A56 P´erez, E., Cid Fernandes, R., Gonz´alez Delgado, R. M., et al.
+2013, ApJ, 764, L1 Rosales-Ortega, F. F., Kennicutt, R. C., S´anchez, S. F., et al.
+2010, MNRAS, 405, 735 Rosales-Ortega, F. F., Sa´nchez, S. F., Iglesias-P´aramo, J., et al.
+2012, ApJ, 756, L31 Rubin, K. H. R., Prochaska, J. X., Koo, D. C., et al. 2014, ApJ,
+794, 156 Rupke, D. S., Veilleux, S., & Sanders, D. B. 2005, ApJS, 160, 115 Rupke, D. S. N., Kewley, L. J., & Barnes, J. E. 2010, ApJ, 710,
+L156 Salim, S., Lee, J. C., Ly, C., et al. 2014, ApJ, 797, 126 Salim, S., Lee, J. C., Dav´e, R., & Dickinson, M. 2015, ApJ, 808,
+25 Salpeter, E. E. 1955, ApJ, 121, 161 S´anchez, S. F., Kennicutt, R. C., Gil de Paz, A., et al. 2012,
+A&A, 538, A8 S´anchez, S. F., Rosales-Ortega, F. F., Jungwiert, B., et al. 2013,
+A&A, 554, A58 S´anchez, S. F., P´erez, E., S´anchez-Bl´azquez, P., et al. 2016,
+RMxAA, 52, 21 Schaye, J. 2004, ApJ, 609, 667 Schaye, J., Dalla Vecchia, C., Booth, C. M., et al. 2010, MNRAS,
+402, 1536 Schmidt, M. 1959, ApJ, 129, 243 Scoville, N., Aussel, H., Brusa, M., et al. 2007, ApJS, 172, 1 Shapley, A. E., Steidel, C. C., Pettini, M., & Adelberger, K. L.
+2003, ApJ, 588, 65 Skillman, E. D. 1987, NASA Conference Publication, 2466, Smee, S. A., Gunn, J. E., Uomoto, A., et al. 2013, AJ, 146, 32 Somerville, R. S., & Dav´e, R. 2015, ARA&A, 53, 51 Springel, V., & Hernquist, L. 2003, MNRAS, 339, 289 Springel, V., White, S. D. M., Jenkins, A., et al. 2005, Nature,
+435, 629 Steidel, C. C., Erb, D. K., Shapley, A. E., et al. 2010, ApJ, 717,
+289 Steinmetz, M., Zwitter, T., Siebert, A., et al. 2006, AJ, 132, 1645 Stocke, J. T., Keeney, B. A., Danforth, C. W., et al. 2013, ApJ,
+763, 148 Tinsley, B. M. 1980, Fund. Cosmic Phys., 5, 287 Tumlinson, J., Thom, C., Werk, J. K., et al. 2011, Science, 334,
+948 Tremonti, C. A., Heckman, T. M., Kauffmann, G., et al. 2004,
+ApJ, 613, 898 van der Wel, A., Franx, M., van Dokkum, P. G., et al. 2014, ApJ,
+788, 28 van Dokkum, P. G., Leja, J., Nelson, E. J., et al. 2013, ApJ, 771,
+L35 Vazdekis, A., Ricciardelli, E., Cenarro, A. J., et al. 2012,
+MNRAS, 424, 157 Veilleux, S., Cecil, G., & Bland-Hawthorn, J. 2005, ARA&A, 43,
+769 Vila-Costas, M. B., & Edmunds, M. G. 1992, MNRAS, 259, 121 Vincenzo, F., Matteucci, F., Belfiore, F., & Maiolino, R. 2016,
+MNRAS, 455, 4183 Vogelsberger, M., Genel, S., Springel, V., et al. 2014, Nature, 509,
+177 Wechsler, R. H., Bullock, J. S., Primack, J. R., Kravtsov, A. V.,
+& Dekel, A. 2002, ApJ, 568, 52 Weiner, B. J., Coil, A. L., Prochaska, J. X., et al. 2009, ApJ, 692,
+187 Werk, J. K., Prochaska, J. X., Tumlinson, J., et al. 2014, ApJ,
+792, 8 White, S. D. M., & Rees, M. J. 1978, MNRAS, 183, 341 Wong, T., & Blitz, L. 2002, ApJ, 569, 157 Yan, R., Tremonti, C., Bershady, M. A., et al. 2016, AJ, 151, 8 Yan, R., Bundy, K., Law, D. R., et al. 2016, arXiv:1607.08613
+
+Leaky-box Model for the Local Relation
+
+9
+
+Zahid, H. J., Dima, G. I., Kewley, L. J., Erb, D. K., & Dav´e, R. 2012, ApJ, 757, 54
+
+Zahid, H. J., Dima, G. I., Kudritzki, R.-P., et al. 2014, ApJ, 791, 130
+Zhu, G., M´enard, B., Bizyaev, D., et al. 2014, MNRAS, 439, 3139 Zhu, G. B., Comparat, J., Kneib, J.-P., et al. 2015, ApJ, 815, 48
+
+

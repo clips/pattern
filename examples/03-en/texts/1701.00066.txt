@@ -1,0 +1,142 @@
+A POS Tagger for Code Mixed Indian Social Media Text -- ICON-2016 NLP Tools Contest Entry from Surukam
+Sree Harsha Ramesh and Raveena R Kumar
+Surukam Analytics, Chennai {harsha,raveena}@surukam.com
+
+arXiv:1701.00066v1 [cs.CL] 31 Dec 2016
+
+Abstract
+Building Part-of-Speech (POS) taggers for code-mixed Indian languages is a particularly challenging problem in computational linguistics due to a dearth of accurately annotated training corpora. ICON, as part of its NLP tools contest has organized this challenge as a shared task for the second consecutive year to improve the state-of-the-art. This paper describes the POS tagger built at Surukam to predict the coarse-grained and fine-grained POS tags for three language pairs -- Bengali-English, Telugu-English and Hindi-English, with the text spanning three popular social media platforms -- Facebook, WhatsApp and Twitter. We employed Conditional Random Fields as the sequence tagging algorithm and used a library called sklearn-crfsuite -- a thin wrapper around CRFsuite for training our model. Among the features we used include -- character n-grams, language information and patterns for emoji, number, punctuation and web-address. Our submissions in the constrained environment, i.e., without making any use of monolingual POS taggers or the like, obtained an overall average F1-score of 76.45%, which is comparable to the 2015 winning score of 76.79%.
+1 Introduction
+The burgeoning popularity of social media in India has produced enormous amounts of user generated text content. India's rich linguistic diversity coupled with its affinity towards English -- India has the largest number of speakers of English as a Second Language (ESL) in the world -- has led to the online conversations being
+
+rife with Code Switching (CS) and Code Mixing (CM). Code Switching is the practice of alternating between two or more languages or varieties of a language in the course of a single utterance (Gumperz, 1982). In Code Switching, unlike Code Mixing where one or more linguistic units of a language such as phrases, words and morphemes are embedded into an utterance of another language (Myers-Scotton, 1997), there is a distinct boundary separating the chunks corresponding to each language used in the discourse. So, a combination of language identification and monolingual language taggers could be used for Code Switched utterances. Solorio and Liu (2008) used a Spanish POS tagger and Vyas et al. (2014) used a Hindi POS tagger in conjunction with English monolingual taggers to handle Spanish-English and HindiEnglish code-switched discourses respectively.
+Part-of-speech (POS) tagging, the process of assigning each word its proper part of speech, is one of the most fundamental parts of any natural language processing pipeline and it is also an integral part of any syntactic analysis. There are highly accurate monolingual POS taggers available for resource-rich languages like English and French, the stateof-the-art being 97.6% (Choi, 2016) and 97.8% (Denis and Sagot, 2009), in large part due to extensively annotated million word corpora such as PennTreeBank (Santorini, 1990) and French TreeBank (Abeille´ et al., 2003) respectively. Annotated data for code-mixed data is extremely scarce and the efforts to build a POS tagger for it have mostly advanced through the shared tasks organized at FIRE (Choudhury et al., 2014), EMNLP(Barman et al., 2014; Solorio et al., 2014) and ICON(Soman, 2015; Pimpale and Patel, 2016) in the past 2 years. In this paper, we describe our POS tagger for three widely spoken Indian languages (Hindi, Bengali, and Telugu), mixed with English, which was sub-
+
+Language (English+) Telugu Hindi Bengali
+
+CMI all mixed 31.94 39.10 11.78 20.06 23.76 24.77
+
+Num utt. 989 882 762
+
+Mixed (%)
+81.70 58.73 95.93
+
+Table 1: Code-Mixing-Index: Facebook Corpus
+
+Language (English+) Telugu Hindi Bengali
+
+CMI all mixed 34.94 35.37 25.66 28.13 29.45 29.50
+
+Num utt. 991 1206 585
+
+Mixed (%)
+98.79 91.21 99.83
+
+Table 2: Code-Mixing Index: Twitter Corpus
+
+Language (English+) Telugu Hindi Bengali
+
+CMI all mixed 36.55 36.88 5.88 27.60 0.31 30.05
+
+Num utt. 690 981 1052
+
+Mixed (%)
+99.13 21.30 1.05
+
+Table 3: Code-Mixing Index: WhatsApp Corpus
+
+Language (English+) Telugu Hindi Bengali
+
+CMI all mixed 11.62 32.60 18.76 23.37 3.71 24.72
+
+Num utt. 617 728 3718
+
+Mixed (%)
+35.66 80.22 15.01
+
+Table 4: Code-Mixing Index: ICON 2015
+
+mitted to the shared task organized at ICON 2016. The POS tagger was trained using Conditional Random Fields (Lafferty et al., 2001), which is known to perform particularly well for this task (Toutanova et al., 2003) among many other applications in biomedical named entity recognition (Settles, 2004) and information extraction (Ramesh et al., 2016).
+2 Dataset
+The contest task was to predict the POS tags at the word level for code-mixed utterances, collected from WhatsApp, Facebook and Twitter accross three language pairs, English-Hindi (En-Hi), English-Bengali (En-Bn) and English-Telugu (EnTe).
+The words were also annotated with certain language tags -- en for English, hi/bn/te for Hindi, Bengali and Telugu respectively, univ for punctuations, emoticons, symbols, @ mentions, hashtags, mixed for intra-word language mixing for e.g., jugaading 1, acro for acronyms like lol, rofl, ne for named entities, and undef for undefined.
+Our submission included models to predict the coarse-grained (Petrov et al., 2011) and finegrained POS tags (Jamatia et al., 2015) and was trained in a constrained environment, thus precluding any use of external POS taggers.
+2.1 Code-Mixing Index
+In order to compare code-mixed POS taggers trained on different data-sets, it is necessary to have a measure of the code-
+1The Hindi noun jugaad which means frugal innovation is transformed into an English verb by adding the suffix ing.
+
+mixing complexity. Code-Mixing Index(CMI) (Gamba¨ck and Das, 2014) is one such metric that describes the complexity of code-switched corpora and it amounts to finding the most frequent language in the utterance and then counting the frequency of the words belonging to all other languages present. Thus utterances that have only a single language, have a CMI of 0.
+Tables 1, 2, 3, and 4, show the following CMI metrics that were calculated for Facebook, Twitter, WhatsApp data of 2016 and the training data of ICON 2015 respectively.
+1. CMI all: average CMI for all sentences in a corpus
+2. CMI mixed: average CMI for the sentences with non-zero CMI.
+3. Mixed %: percentage of code-mixed sentences in the corpus
+4. Num utt.: total number of utterances in the corpus.
+We observed that the WhatsApp corpus for Bengali has a very low fraction of code-mixed sentences i.e., there are an extremely low number of words tagged as en in the data-set. On closer inspection of the dataset, there were exactly 13 instances of words that were tagged en and these were actually words such as Kolkata and San Antonio, that should have been annotated as ne instead. Effectively, CMI for WhatsApp-Bengali corpus is 0.
+
+3 Model and Results
+POS tagging is considered to be a sequence labelling task, where each token of the sentence needs to be assigned a label. These labels are usually interdependent, because the sentence follows grammar rules inherent to the language.
+We have used the CRF implementation of sklearn-crfuite2 because it is particularly well suited for sequence labelling tasks.
+3.1 Features
+The feature-set consisted of character-case information, character n-grams of gram size upto 3, which would thereby also encompass all prefixes and suffixes, patterns for email and web-site urls, punctuations, emoticons, numbers, social media specific characters like @,# and also the language tag information.
+We chose a CRF window size of two and performed grid-search to choose the best optimization algorithm and L1/L2 regularization parameters3. There were a total of 18 models trained using this pipeline, one for each case in the cross-product:
+{bn-en, hi-en, te-en} X
+{WhatsApp, Twitter, Facebook} X
+{Fine-Grained, Coarse-Grained}
+3.2 Results
+The F1 measure of our model against the social networks is depicted in Table 5 and the results with respect to the POS granularity is shown in Table 6. These results were calculated on the private test data-set shared by the organizers. With the system described in the paper, we achieved an overall average score of 76.45%, across all 18 models. This is only marginally lesser than 76.79%, which was the the score of winning entry of ICON 2015, and we are awaiting the results of ICON 2016.
+4 Conclusion & Future Work
+In this paper, we presented a CRF based POS tagger for code-mixed social media text in the constrained environment, without making use of any external corpora or monolingual POS taggers. We achieved an overall F1- Score of 76.45%.
+2http://sklearn-crfsuite.readthedocs.io/en/latest 3Our code is available at https://github.com/lescientifique/code-mixing-social-media
+
+Language (English +) Telugu Hindi Bengali
+
+WhatsApp
+74.43 75.68 76.71
+
+Twitter
+79.15 86.80 69.64
+
+Facebook
+74.10 77.44 74.1
+
+Table 5: Model Performance (F1-Score) w.r.t Social Networks
+
+Language (English +) Telugu Hindi Bengali
+
+FineGrained 73.50 83.40 73.28
+
+CoarseGrained 78.30 76.60 76.39
+
+Table 6: Model Performance (F1-Score) w.r.t POS Granularity
+
+We would like to evaluate the performance improvement or lack thereof upon training a POS tagger in an unconstrained environment by utilizing monolingual taggers trained on Indic languages. Multilingual tools are still a ways off from matching the state-of-the-art of the tools available for monolingual linguistic analysis. There is promising research in the field of developing tools for resource poor languages by applying Transfer Learning (Zoph et al., 2016), which could also be evaluated in the future. Upon inspecting the dataset, we observed a few inaccuracies in annotation, which could be addressed by leveraging crowd-sourcing platforms that can execute Human Intelligence Tasks.
+
+References
+Anne Abeille´, Lionel Cle´ment, and Franc¸ois Toussenel. Building a treebank for French. Treebanks. Springer Netherlands, 2003. 165-187.
+Anupam Jamatia and Amitava Das TASK REPORT: TOOL CONTEST ON POS TAGGING FOR CODEMIXED INDIAN SOCIAL MEDIA (FACEBOOK, TWITTER, AND WHATSAPP) TEXT @ ICON 2016 In: Proceedings of ICON 2016. 2016
+Anupam Jamatia, Bjo¨rn Gamba¨ck, and Amitava Das. Part-of-Speech Tagging for CodeMixed EnglishHindi Twitter and Facebook Chat Messages In: Proceedings of Recent Advances in Natural Language Processing. 2015, pp. 239248
+Arnav Sharma and Raveesh Motlani POS Tagging For Code-Mixed Indian Social Media Text : Systems from IIIT-H for ICON NLP Tools Contest 12th Inter-
+
+national Conference on Natural Language Processing
+Barret Zoph, Deniz Yuret, Jonathan May, and Kevin Knight. Transfer Learning for Low-Resource Neural Machine Translation. In: Proceedings of the 2016 Conference on Empirical Methods in Natural Language Processing, pages 15681575, arXiv preprint arXiv:1604.02201 (2016).
+Beatrice Santorini Part-of-speech tagging guidelines for the Penn Treebank Project (3rd revision). 1990
+Bjo¨rn Gamba¨ck, and Amitava Das. On Measuring the Complexity of Code-Mixing. In Proceedings of the 11th International Conference on Natural Language Processing, Goa, India, pp. 1-7. 2014.
+Burr Settles Biomedical named entity recognition using conditional random fields and rich feature sets. In Proceedings of the International Joint Workshop on Natural Language Processing in Biomedicine and its Applications, pp. 104-107. Association for Computational Linguistics, 2004.
+Carol Myers-Scotton Duelling languages: Grammatical structure in codeswitching. Oxford University Press, 1997.
+Jinho D. Choi Dynamic feature induction: The last gist to the state-of-the-art. Proceedings of NAACLHLT. 2016.
+John J. Gumperz Discourse strategies. Vol. 1. Cambridge University Press, 1982.
+John Lafferty, Andrew McCallum, and Fernando Pereira Conditional random fields: Probabilistic models for segmenting and labeling sequence data. In Proceedings of the eighteenth international conference on machine learning, ICML, vol. 1, pp. 282289. 2001.
+K. P. Soman AMRITA CEN @ ICON-2015: Part-ofSpeech Tagging on Indian Language Mixed Scripts in Social Media. 12th International Conference on Natural Language Processing
+Kristina Toutanova, Dan Klein, Christopher D. Manning, and Yoram Singer Feature-rich part-of-speech tagging with a cyclic dependency network. In Proceedings of the 2003 Conference of the North American Chapter of the Association for Computational Linguistics on Human Language TechnologyVolume 1, pp. 173-180. Association for Computational Linguistics, 2003.
+Pascal Denis, and Benot Sagot. Coupling an Annotated Corpus and a Morphosyntactic Lexicon for State-of-the-Art POS Tagging with Less Human Effort. PACLIC. 2009.
+Prakash B. Pimpale, and Raj Nath Patel. Experiments with POS Tagging Code-mixed Indian Social Media Text. 12th International Conference on Natural Language Processing arXiv preprint arXiv:1610.09799 (2016).
+
+Monojit Choudhury, Gokul Chittaranjan, Parth Gupta, and Amitava Das Overview of FIRE 2014 Track on Transliterated Search. FIRE (2014).
+Slav Petrov, Dipanjan Das, and Ryan McDonald. A Universal Part-of-Speech Tagset. In: The International Conference on Language Resources and Evaluation. 2011
+Sree Harsha Ramesh, Arnab Dhar, Raveena R. Kumar, V. Anjaly, K. S. Sarath, Jason Pearce, and Krishna R. Sundaresan. Automatically identify and label sections in scientific journals using conditional random fields. In Semantic Web Evaluation Challenge, pp. 269-280. Springer International Publishing, 2016.
+Thamar Solorio, Elizabeth Blair, Suraj Maharjan, Steven Bethard, Mona Diab, Mahmoud Ghoneim, Abdelati Hawwari, Fahad AlGhamdi, Julia Hirschberg, Alison Chang and Pascale Fung. Overview for the First Shared Task on Language Identification in Code-Switched Data. Proceedings of EMNLP'14 Workshop on Code Switching, 2014.
+Thamar Solorio and Yang Liu. In Proceedings of the Conference on Empirical Methods in Natural Language Processing, pp. 1051-1060. Association for Computational Linguistics, 2008.
+Utsab Barman, Amitava Das, Joachim Wagner, and Jennifer Foster. Code mixing: A challenge for language identification in the language of social media. The 1st Workshop on Computational Approaches to Code Switching, EMNLP 2014 , pages 1323, October, 2014, Doha, Qatar.
+Yogarshi Vyas, Spandana Gella, Jatin Sharma, Kalika Bali, and Monojit Choudhury. POS Tagging of English-Hindi Code-Mixed Social Media Content. In EMNLP, vol. 14, pp. 974-979. 2014.
+
+

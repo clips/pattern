@@ -1,0 +1,807 @@
+Compressed sensing and optimal denoising of monotone signals
+Eftychios A. Pnevmatikakis Center for Computational Biology, Flatiron Institute, Simons Foundation, New York, NY
+10010
+
+arXiv:1701.00056v1 [math.ST] 31 Dec 2016
+
+Abstract
+We consider the problems of compressed sensing and optimal denoising for signals x0  RN that are monotone, i.e., x0(i + 1)  x0(i), and sparsely varying, i.e., x0(i + 1) > x0(i) only for a small number k of indices i. We approach the compressed sensing problem by minimizing the total variation norm restricted to the class of monotone signals subject to equality constraints obtained from a number of measurements Ax0. For random Gaussian sensing matrices A  Rm×N we derive a closed form expression for the number of measurements m required for successful reconstruction with high probability. We show that the probability undergoes a phase transition as m varies, and depends not only on the number of change points, but also on their location. For denoising we regularize with the same norm and derive a formula for the optimal regularizer weight that depends only mildly on x0. We obtain our results using the statistical dimension tool.
+
+1 Introduction
+
+We consider N -dimensional signals x0 that are sparse in a certain basis. We are interested in the following problems
+
+min f (x), subject to Ax = Ax0,
+
+x
+
+and
+
+min
+x
+
+1 2
+
+y-x
+
+2 + f (x),
+
+(CS) (DN)
+
+with y = x0 +  and   N (0, 2IN ). Here f : RN  R  {} is a convex function that characterizes the structure of x0. For the compressed sensing problem (CS) we are interested in
+deriving the minimum number of measurements m such that the solution of (CS) coincides with x0 with high probability for standard normal i.i.d. sensing matrices A  Rm×N . For the denoising
+problem (DN) we are interested in calculating the minimax risk, i.e., the optimal value of (DN) minimized over  for the worst case of noise power 2. The two quantities are closely related due
+to some recent results reviewed briefly next.
+
+1
+
+2 Basic tools
+
+Definition 2.1 (Descent cones). The descent cone of a convex function f : RN  R at a point x  RN is defined as the set of all non-increasing directions, i.e.,
+D(f, x) = {y  RN : f (x +  y)  f (x)}.
+ >0
+
+Definition 2.2 (Statistical dimension (Amelunxen et al., 2014)). The statistical dimension (SD) of a convex closed cone C  RN is defined as
+(C) = EgN (0,IN ) C (g) 2,
+where g is a standard Gaussian vector, and C is the projection onto C.
+
+In a groundbreaking work, Amelunxen et al. (2014) shows that the SD of the descent cone at the true point x0, coincides with the phase transition curve (PTC) of the CS problem.
+
+Theorem 2.3 (Phase transitions (Amelunxen et al., 2014)). For an i.i.d. standard random Gaussian matrix A  Rm×N the convex problem (CS) succeeds with probability at least 1 - exp(-t2/4)
+
+if
+
+
+
+m  (D(f, x0)) + t N ,
+
+and fails with probability at least 1 - exp(-t2/4) if 
+m  (D(f, x0)) - t N .
+
+Furthermore, Amelunxen et al. (2014) shows that the SD can also be expressed as the expected distance from the subdifferential of f at x0:
+
+(D(f, x0)) = EgN (0,IN )[min0 dist(g,  f (x0))2]
+
+(1)
+
+Theorem 2.4 (Minimax risk (Oymak and Hassibi, 2012)). Let x() the solution of the denoising problem (DN) with regularizer weight  and let
+
+f
+
+(x0)
+
+=
+
+min
+0
+
+max
+>0
+
+E
+
+x() - x0 2
+
+2
+,
+
+the minimax risk for x0 over all possible . Then:
+
+f
+
+(x0)
+
+=
+
+min
+ 0
+
+EgN
+
+(0,I)[dist(g,
+
+
+
+f
+
+(x0))2],
+
+(2)
+
+where g is a standard normal vector. Moreover the risk is maximized for   0 and if   is the value that minimizes (2), then  =   is the optimal choice as   0.
+
+The similarity between (1) and (2) is striking and actually Amelunxen et al. (2014) proves that the two quantities are indeed close:
+
+sup w
+
+(D(f,
+
+x0))
+
+
+
+f
+
+(x0)
+
+
+
+(D(f,
+
+x0))
+
++
+
+2
+
+wf (x0)
+f (x0/ x0
+
+).
+
+2
+
+3 Phase transitions for the recovery of sparsely varying monotone signals
+
+We consider signals x  RN that are increasing, i.e., x(i + 1)  x(i) and are sparsely varying, i.e, x(i + 1) > x(i) for a number of k indexes. A convex function that promotes this structure can be derived by restricting the total variation (TV) norm to the space of monotone signals:
+
+f (x) =
+
+x(N ) - x(1), x(i + 1)  x(i), i  [N - 1]
+
+,
+
+otherwise.
+
+(3)
+
+where [N ] = {1, 2, . . . , N }. Our results rely heavily on the following calculation of the SDs of the cones induced by monotone signals, proven in Amelunxen et al. (2014, App. C.4).
+
+Fact 3.1. Let the cones
+
+C1N = {x  RN : x(1)  x(2)  . . .  x(N )} C2N = {x  RN : 0  x(1)  x(2)  . . .  x(N )}.
+
+Then
+
+we
+
+have
+
+(C1N )
+
+=
+
+HN ,
+
+and
+
+(C2N )
+
+=
+
+1 2
+
+HN
+
+,
+
+where
+
+HN
+
+=
+
+N i=1
+
+1 i
+
+,
+
+denotes
+
+the
+
+N -th
+
+harmonic
+
+number.
+
+3.1 Computation of the statistical dimension
+
+According to Theorem 2.3 to compute the PTC for the CS problem, we need to characterize D(f, x0).
+
+Lemma 3.2. Let  = {i  {2, . . . , N } : x0(i) > x0(i - 1)} and define i1 < i2 < . . . < ik the elements of  in increasing order. The descent cone of the norm f of (3) at x0 is given by
+
+D(f, x0) = y  RN :
+
+y(i1)  y(i1 + 1)  . . .  y(i2 - 1) ...
+
+
+ .
+
+(4)
+
+y(ik-1)  y(ik-1 y(ik)  . . .  y(N )
+
++ 1)   y(1)
+
+...   ...
+
+y(ik -  y(i1
+
+1) - 1)
+
+
+
+Proof. From Definition 2.1, y  D(f, x0) if there exists  > 0, such that x0 +  y is monotone, and f (x0 +  y)  f (x0):
+x0(N ) +  y(N ) - x0(1) -  y(1)  x0(N ) - x0(1)  y(N )  y(1).
+For the monotonicity of x0 +  y, we consider two cases: If i  , then x0(i) = x0(i - 1), and x0(i) +  y(i)  x0(i - 1) +  y(i - 1)  y(i)  y(i - 1).
+If i  , then x0(i) > x0(i - 1) and y(i) can be chosen arbitrarily since there is always a small enough  that will preserve monotonicity. Combining everything we get (4).
+3
+
+Lemma 3.2 states that the descent cone D(f, x0) can be expressed as the product of k disjoint convex cones of monotonically increasing signals. Using Fact 3.1, we derive the following simple formula for (D(f, x0)) as the sum of the SDs of the simpler disjoint cones.
+
+Theorem 3.3. Let  = {i  {2, . . . , N } : x0(i) > x0(i - 1)} and define i1 < i2 < . . . < ik the elements of  in increasing order. The SD of the descent cone at x0 equals
+
+k
+
+(D(f, x0)) = Hij-ij-1 + HN+i1-ik .
+
+(5)
+
+j=2
+
+3.2 Dependence on the change points location
+
+The closed form of the SD allows for a characterization of the worst case analysis for a given number
+of variations k. These locations have to occur periodically every N/k steps, with i1  N/2k. If rN,k = mod(N, k), then the SD becomes (k - rN,k)H[N/k] + rN,kH[N/k]+1., where [·] here denotes the integer part. For moderately large N/k this converges to kHN/k  k(log(N/k) + ), where   0.577 is the Euler-Mascheroni constant.
+
+Similarly, the best case occurs when all change points occur consecutively. In this case the SD becomes (k - 1) + HN+1-k. What is perhaps of most interest is the average SD under certain distribution assumptions of the k change points. We can asymptotically compute this in the case where these k points are distributed uniformly at random.
+
+Theorem 3.4. Assume that the k change points are chosen uniformly at random and let N, k   with k/N = , 0 <  < 1. Define U () the normalized (divided by the ambient dimension) SD averaged over all possible choices of k = N "jump" points. Then we have
+
+U ()
+
+=
+
+
+
+log(1/) 1-
+
+.
+
+(6)
+
+Proof. Let i1 < i2 < . . . < ik the change points selected uniformly randomly and define the sequence of lengths lj = ij+1 - ij for j  [k - 1] and lk = N - ik + i1. When N, k   the distribution of each lj converges to a geometric distribution with parameter  = k/N . Then we have
+
+
+
+
+
+U
+
+()
+
+=
+
+lim
+N 
+
+1 N
+
+E
+
+
+
+k
+
+Hlj  = E
+
+Hlj
+
+j=1
+
+=
+
+
+2 Hn(1 - )n-1
+n=1
+
+=
+
+2 1-
+
+ n=1
+
+1 n
+
+
+(1
+m=n
+
+- )m
+
+=
+
+2 1-
+
+ n=1
+
+1 n
+
+(1 - )n 
+
+=
+
+
+
+log(1/) 1-
+
+.
+
+Fig. 1 shows the three different cases for the SD, and illustrates its dependence on the location of the jump points.
+4
+
+Normalized statistical dimension: /N
+
+1
+
+0.9
+
+0.8
+
+0.7
+
+0.6
+
+0.5
+
+0.4
+
+0.3
+
+best
+
+average
+
+0.2
+
+worst
+
+0.1
+
+45o line
+
+0
+
+0
+
+0.2 0.4 0.6 0.8
+
+1
+
+Level of sparsity: k/N
+
+Figure 1: Behavior of the SD as a function of the degree sparsity and location of change points. The best (blue, dash-dot), average (red, solid), and worst (yellow, dashed) cases are shown.
+
+Normalized statistical dimension: /N Difference in normalized statistical dimensions
+
+1
+
+0.9
+
+0.8
+
+0.7
+
+0.6
+
+0.5
+
+0.4
+
+0.3
+
+0.2 0.1
+
+l1 positive TV monotone
+
+0
+
+0
+
+0.2 0.4 0.6 0.8
+
+1
+
+Level of sparsity: k/N
+
+0.01
+
+(l1 pos) - <(TV mon)>
+
+0.009
+
+0.008
+
+0.007
+
+0.006
+
+0.005
+
+0.004
+
+0.003
+
+0.002
+
+0.001
+
+0
+
+0
+
+0.2
+
+0.4
+
+0.6
+
+0.8
+
+1
+
+Level of sparsity: k/N
+
+Figure 2: Comparison of the SD for monotone sparsely varying signals and sparse non-negative signals. The SD for reconstructing sparse non-negative signals (red, solid) as computed in Donoho et al. (2009) compared to the asymptotic average limit of (6) (blue, dashed). Somewhat surprisingly, the two curves almost coincide with the positive l1 norm PTC being always larger than the PTC of for the monotone signals for the same number of variations. The difference is plot in the right panel.
+
+5
+
+In Fig. 2 we plot the SD as computed in (6) (blue), compared to the PTC for the reconstruction of sparse non-negative signals (red) as this is computed in Donoho et al. (2009), using the l1 norm restricted to non-negative signals as the structure inducing function f and solving (CS). The two curves are very near, although the PTC curve for sparse non-negative signals is slightly larger. The difference between the two different curves (Fig. 2 right) attains a maximum of  0.0096 for k/N  0.0731. We examined this difference in practice: For the sparse non-negative signal we considered signals x0  RN , N = 1000, with k = 73 non-zero entries. Then random Gaussian matrices A  Rm×N were constructed, with m = 201, . . . , 220, and we tried to reconstruct x0 from the samples Ax0 by solving (CS). We solved the same problem also for the case of sparsely varying increasing signals, where now k = 73, refers to the number of change points, chosen uniformly at random. For each m we performed 300 iterations, and the reconstruction x^ was deemed successful if x^ - x0 / x0  10-4. The results show that the probability of accurate reconstruction crosses 50% within one measurement from the point predicted by the theoretical calculation of the SD, and that the difference of measurements required for 50% reconstruction probability is around 10 measurements, as predicted by the difference of the two SDs (data not shown due to space constraints). These simulation results validate the theoretical analysis.
+
+3.3 The case of non-negative monotone signals
+
+We also consider the case of increasing and sparsely varying signals x  RN , that are also nonnegative, which we denote without loss of generality as x(0) = 0, and consider the first entry as a change point if x(1) > 0. In this case we consider the following convex regularizer f (x) = x(N ) for monotonically increasing signals and f (x) =  otherwise. Using a similar procedure we can derive the descent cone D(f, x0) and from Fact 3.1 get a similar formula for the SD:
+
+Theorem 3.5. Let  = {i  [N ] : x0(i) > x0(i - 1)} and define i1 < i2 < . . . < ik the elements of  in increasing order. Then the SD of the descent cone at x0 is given by
+
+(D(f, x0))
+
+=
+
+1 2
+
+Hi1
+
+-1
+
++
+
+1 2
+
+HN
+
++1-ik
+
++
+
+k
+
+Hij -ij-1 .
+
+j=2
+
+4 Optimal denoising
+
+For the case of monotone, sparsely varying, non-negative signals it is also possible to compute the
+minimax denoising risk, by using Theorem 2.4. To consider the risk of the denoising problem (DN),
+we first derive the subdifferential of f . Let G be the N × N matrix with [G]ij = 1{i=j} - 1{i=j+1} and define the function h : RN  R  {}, with
+
+h(z) =
+
+1z, z(i)  0, i  [N ] , otherwise.
+
+Then f (x) = h(Gx) and f (x) = Gh(Gx) and
+
+f (x) = Gw, with
+
+w(i) = 1, w(i)  1,
+
+x(i) > x(i - 1) x(i) = x(i - 1)
+
+.
+
+6
+
+Therefore the distance of any vector g  RN from f (x0) can be computed by solving the following quadratic program
+
+minimize g - Gw 2,
+w,
+subject to:   0, {w(j) = , j  }, {w(j)  , j  c}.
+
+(QP)
+
+Lemma 4.1. Consider the quadratic program (QP) and let ik denote the last element of . Then the optimal   is given by
+
+
+
+
+
+
+
+N
+
+
+
+  = max  max
+
+g(n) , 0 .
+
+(7)
+
+j=ik,...,N n=j
+
+
+
+Proof. We consider the Lagrangian function
+
+L(w, ,
+
+,  )
+
+=
+
+1 2
+
+g - Gw
+
+2 -   + (w -  1N ).
+
+(8)
+
+The dual variable constraints and the first order optimality conditions of (QP) can be written as
+
+GGw - Gg +  = 0,
+
+(9)
+
+1 +  = 0,
+
+(10)
+
+(j)  0, w(j)  , j  
+
+(11)
+
+(j)(w(j) -  ) = 0, j  
+
+(12)
+
+w(j) = , j  
+
+(13)
+
+  0,   = 0.
+
+(14)
+
+From (9)
+
+w = (GG)-1G g - (GG)-1 ,
+
+(15)
+
+E
+
+F
+
+where the matrices E, F can be computed explicitly: [E]ij = 1{ji} and [F ]ij = N - max{i, j} + 1, and using (10) gives
+
+N
+
+N
+
+w(j) = g(i) + (N - j + 1) + (i - j)(i),
+
+(16)
+
+i=j
+
+i=j+1
+
+for j  [N ]. Now suppose let ik the last change point and suppose that M = maxj=ik,...,N
+
+N n=j
+
+g(n)
+
+.
+
+Consider first the case where M < 0 and suppose that  > 0. In this case from (14) we have  = 0.
+
+Plugging this into (16) for j = N we get w(N ) = g(N ) < 0  w(N ) -  < 0 (12) (N ) = 0. De-
+
+creasing j and proceeding similarly we get (N ) = (N - 1) = . . . = (ik + 1) = 0. Now for j = ik
+
+we get w(ik) =
+
+N j =ik
+
+g(j)
+
+<
+
+0,
+
+and
+
+(13)
+
+cannot
+
+be
+
+satisfied
+
+for
+
+
+
+>
+
+0.
+
+Therefore
+
+
+
+=
+
+0.
+
+Now assume that M > 0, and that this maximum occurs at the location N - l. Then by plugging j = N - l into (16) and the nonnegativity of the dual variables we have that w(N - l) 
+
+7
+
+M    M   = 0. We proceed as before: For j = N (16) gives w(N ) < M    (N ) = 0. And similarly (N ) = (N - 1) = . . . = (N - l + 1) = 0. Plugging this into (16) for j = N - l we get w(N - l) = M . Since w(N - l)   we get that  = M .
+
+Lemma 4.1 allows us to estimate the regularizer that minimizes (2) by estimating  avg that arises in
+
+(1), and consequently set the regularizer  =  avg. In general  avg = M (N - ik + 1) where M (n)
+
+is 0.
+
+the expectedvalue of M (1) = 1/ 2, and
+
+tMhe(2m)a=xi(m1u+mo2f )a/(s2tand)a.rdInGgaeunsesriaalnMra(nnd)omcanwnaolkt
+
+of be
+
+n steps, truncated at computed explicitly,
+
+but can be easily upper bounded: Let Xi  N (0, 1), Sk =
+
+k i=1
+
+Xi
+
+,
+
+and
+
+En
+
+=
+
+max1kn Sk.
+
+Using
+
+the L´evy inequality
+
+P (En  x)  2P(Sn  x) 
+
+M (n) =
+
+
+P (En  x) dx 
+0
+
+
+erfc
+0
+
+x 2n
+
+dx =
+
+2n 
+
+.
+
+5 Discussion
+
+The (DN) problem for monotone signals was first discussed in Donoho et al. (2013) in the context of monotone regression without regularization. There an upper bound was derived and the relation of the minimax error with the PTC for the (CS) problem was established. For the CS problem Pnevmatikakis and Paninski (2013) examined, in the context of sparse deconvolution, the case of signals where x(i + 1) - x(i) is sparse and non-negative, with 0 <  < 1 and close to 1, and identified the best, average, and worst cases depending on the location of the change points, without deriving a closed form expression. To the best of our knowledge, this paper presents for the first time an non-asymptotic closed form expression that captures the dependence on both the number and the location of the change points, and also characterizes the optimal regularizer. Future work includes the case of non-monotone sparsely varying signals, with the TV norm acting as the structure inducing function. The striking resemblance between the average SD (6) and the PTC for the case of non-negative sparse signals (Donoho et al., 2009), motivates a comparison between the average SD for this case and the PTC for recovering sparse signals using the l1 norm. While a closed form solution for the SD is not available, some upper bounds appear in Cai and Xu (2015), simulations suggest a close match (Fig. 3).
+
+6 Acknowledgements
+Part of the work was performed while the author was with the Department of Statistics, Columbia University, NewYork, NY 10027. The author thanks L. Paninski, M. McCoy and J. Tropp for useful discussions.
+
+8
+
+# of measurements
+
+Probability of reconstruction with TV norm minimization
+
+50
+
+1
+
+45
+
+0.9
+
+40
+
+0.8
+
+35
+
+0.7
+
+30
+
+0.6
+
+25
+
+0.5
+
+20
+
+0.4
+
+15
+
+0.3
+
+10
+
+0.2
+
+5
+
+l1 phase transition
+
+0.1
+
+empirical phase transition
+
+0
+
+10
+
+20
+
+30
+
+40
+
+50
+
+# of change points
+
+Figure 3: Empirical calculation of reconstruction probability for sparsely varying signals. 50dimensional piecewise constant signals were constructed with variable number of change points k and locations chosen uniformly at random. For each signal a random Gaussian sensing matrix was constructed with variable number of rows (measurements) m. Reconstruction was attempted by minimizing the TV norm subject to the measurements, and for each pair (k, m), 50 iterations were performed. The probability of success (color coded in the background) undergoes a phase transition. The empirical 50% success line (yellow) lies very close to the PTC for sparse signals (magenta) as is theoretically computed in Donoho et al. (2009).
+
+References
+Amelunxen, D., M. Lotz, M. B. McCoy, and J. A. Tropp (2014). Living on the edge: Phase transitions in convex programs with random data. Information and Inference, iau005.
+Cai, J.-F. and W. Xu (2015). Guarantees of total variation minimization for signal recovery. Information and Inference, iav009.
+Donoho, D., I. Johnstone, and A. Montanari (2013). Accurate prediction of phase transitions in compressed sensing via a connection to minimax denoising. IEEE Trans. Informat. Theory 59(6), 3396­3433.
+Donoho, D., A. Maleki, and A. Montanari (2009). Message-passing algorithms for compressed sensing. Proceedings of the National Academy of Sciences 106(45), 18914.
+Oymak, S. and B. Hassibi (2012). On a relation between the minimax risk and the phase transitions of compressed recovery. In Communication, Control, and Computing (Allerton), 2012 50th Annual Allerton Conference on, pp. 1018­1025. IEEE.
+Pnevmatikakis, E. and L. Paninski (2013). Sparse nonnegative deconvolution for compressive calcium imaging: algorithms and phase transitions. In Advances in Neural Information Processing Systems, Volume 26, pp. 1250­1258.
+
+9
+
+

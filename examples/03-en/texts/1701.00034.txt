@@ -1,0 +1,1990 @@
+arXiv:1701.00034v1 [math.AP] 30 Dec 2016
+
+TOPOLOGY AND NESTING OF THE ZERO SET COMPONENTS OF MONOCHROMATIC RANDOM WAVES
+YAIZA CANZANI AND PETER SARNAK
+Abstract. This paper is dedicated to the study of the topologies and nesting configurations of the components of the zero set of monochromatic random waves. We prove that the probability of observing any diffeomorphism type, and any nesting arrangement, among the zero set components is strictly positive for waves of large enough frequencies. Our results are a consequence of building Laplace eigenfunctions in Euclidean space whose zero sets have a component with prescribed topological type, or an arrangement of components with prescribed nesting configuration.
+
+1. Introduction
+
+For n  1 let E1(Rn) denote the linear space of entire (real valued) eigenfunctions f of the Laplacian  whose eigenvalue is 1
+
+f + f = 0.
+
+(1)
+
+The zero set of f is the set V (f ) = {x  Rn : f (x) = 0}.
+
+The zero set decomposes into a collection of connected components which we denote by C(f ). Our interest is in the topology of V (f ) and of the members of C(f ). Let H(n - 1) denote the (countable and discrete) set of diffeomorphism classes of compact connected smooth (n - 1)-dimensional manifolds that can be embedded in Rn. The compact components c in C(f ) give rise to elements t(c) in H(n - 1) (here we are assuming that f is generic with respect to a Gaussian measure so that V (f ) is smooth, see Section 2). The connected components of Rn\V (f ) are the nodal domains of f and our interest is in their nesting properties, again for generic f . To each compact c  C(f ) we associate a finite connected rooted tree as follows. By the Jordan-Brouwer separation Theorem [Li] each component c  C(f ) has an exterior and interior. We choose the interior to be the compact end. The nodal domains of f , which are in the interior of c, are taken to be the vertices of a graph. Two vertices share an edge if the respective nodal domains have a common boundary component (unique if there is one). This gives a finite connected rooted tree denoted e(c); the root being the domain adjacent to c (see Figure 2). Let T be the collection (countable and discrete) of finite connected rooted trees. Our main results are that any topological type and any rooted tree can be realized by elements of E1(Rn).
+
+Theorem 1. Given t  H(n - 1) there exists f  E1(Rn) and c  C(f ) for which t(c) = t.
+
+Theorem 2. Given T  T there exists f  E1(Rn) and c  C(f ) for which e(c) = T .
+1
+
+2
+
+Y. CANZANI AND P. SARNAK
+
+Theorems 1 and 2 are of basic interest in the understanding of the possible shapes of nodal sets and domains of eigenfunctions in Rn (it applies equally well to any eigenfunction with eigenvalue 2 > 0 instead of 1). Our main purpose however is to
+apply it to derive a basic property of the universal monochromatic measures µC and
+µX whose existence was proved in [SW]. We proceed to introduce these measures. Let (Sn, g) be the n-sphere endowed with a smooth, Riemannian metric g. Our
+results apply equally well with Sn replaced by any compact smooth manifold M ; we restrict to Sn as it allows for a very clean formulation. Consider an orthonormal basis {j} j=1 for L2(Sn, g) consisting of real-valued eigenfunctions, gj = -2j j. A monochromatic random wave on (Sn, g) is the Gaussian random field f = f,
+
+f := D-,1/2
+
+aj j ,
+
+(2)
+
+j [,+]
+
+where the aj's are real valued i.i.d standard Gaussians, aj  N (0, 1)R,  = () is a non-negative function satisfying () = o() as   , and D, = #{j : j  [,  + ]}. When choosing   0 the 's we consider in forming the f,'s
+are the square roots of the Laplace eigenvalues. To a monochromatic random wave we
+
+associate its (compact) nodal set V (f ) and a corresponding finite set of nodal domains.
+
+The connected components of V (f ) are denoted by C(f ) and each c  C(f ) yields a
+
+t(c)  H(n - 1). Each c  C(f ) also gives a tree end e(c) in T which is chosen to be the
+
+smaller of the two rooted trees determined by the inside and outside of c  Sn. The
+
+topology of V (f ) is described completely by the probability measure µC(f) on H(n - 1) given by
+
+µC(f )
+
+:=
+
+1 |C(f )|
+
+t(c),
+
+cC(f )
+
+where t is a point mass at t  H(n - 1). Similarly, the distribution of nested ends of nodal domains of f is described by the measure µX(f) on T given by
+
+µX(f )
+
+:=
+
+1 |C(f )|
+
+e(c),
+
+cC(f )
+
+with e is the point mass at e  T . The main theorem in [SW] asserts that there exist probability measures µC and µX
+on H(n - 1) and T respectively to which µC(f) and µX(f) approach as   , for almost all f = f,, provided one has that for every x0  Sn
+
+sup ukvj Cov(fx,0(u), fx,0(v)) - Cov(fx0 (u), fx0 (v)) = o(1),
+
+(3)
+
+u,vB(0,r)
+
+as   . Here, r = o(), fx,0 : Tx0Sn  R is the localized wave on Tx0Sn defined as
+
+fx,0(u) = f,
+
+expx0
+
+(
+
+u 
+
+)
+
+, and fx0
+
+is the Gaussian random field on Tx0Sn
+
+characterized
+
+by the covariance kernel Cov(fx0 (u), fx0 (v)) = Sx0 Sn ei u-v,w gx0 dw (see Section 2). The probability measures µC and µX are universal in that they only depend on the
+
+dimension n of M .
+
+Monochromatic random waves on the n-sphere equipped with the round metric are
+
+known as random spherical harmonics whenever   0. It is a consequence of the
+
+ZERO SET OF MONOCHROMATIC RANDOM WAVES
+
+3
+
+Mehler-Heine [Meh] asymptotics that they satisfy condition (3) for all x0  Sn. Also, on any (Sn, g) the fields f, with    satisfy condition (3) for all x0  Sn. Finally, monochromatic random waves f, on (Sn, g) with   c, for some c > 0, satisfy condition (3) for every x0  Sn satisfying that the set of geodesic loops that close at x0 has measure 0 (see [CH]). On general manifolds one can define monochromatic random waves just as in (Sn, g). Monochromatic random waves with   0 on the ntorus are known as arithmetic random waves. They satisfy condition (3) for all x0  Tn if n  5, and on Tn with 2  n  4 provided we work with a density one subsequence of 's [EH]. On general (M, g) monochromatic random waves with   c, for some c > 0, satisfy condition (3) for every x0  M satisfying that the set of geodesic loops that close at x0 has measure 0 (see [CH]). Examples of such manifolds are surfaces without conjugate points, or manifolds whose sectional curvature is negative everywhere.
+Our main application of Theorems 1 and 2 is the following result.
+Theorem 3. Let (Sn, g) be the n-sphere equipped with a smooth Riemannian metric.
+Let µC and µX be the limit measures (introduced in [SW]) arising from monochromatic random waves on (Sn, g) for which condition (3) is satisfied for every x0  Sn.
+(i) The support of µC is H(n - 1). That is, every atom of H(n - 1) is positively charged by µC.
+
+(ii) The support of µX is all of T . That is, every atom of T is positively charged by µX .
+
+Remark 1. Theorem 3 asserts that every topological type that can occur will do so with a positive probability for the universal distribution of topological types of random monochromatic waves in [SW]. The reduction from Theorems 1 and 2 to Theorem 3 is abstract and is based on the `soft' techniques in [NS, SW] (see also Section 2). In particular, it offers us no lower bounds for these probabilities. Developing such lower bounds is an interesting problem. The same applies to the tree ends.
+
+Remark 2. Theorem 3 holds for monochromatic random waves on general compact,
+smooth, Riemannian manifolds (M, g) without boundary. Part (i) actually holds without modification. The reason why we state the result on the round sphere Sn is that, by the Jordan-Brouwer separation Theorem [Li], on Sn every component of the zero set separates Sn into two distinct components. This gives that the nesting graph for
+the zero sets is a rooted tree. On general (M, g) this is not necessarily true, so there
+is no global way to define a tree that describes the nesting configuration of the zero set in all of M , for all c  C(f ). However, according to [NS2] almost all c's localize to
+small coordinate patches and hence our arguments apply.
+
+We end the introduction with an outline of the paper. Theorem 1 for n = 3 (which is the first interesting case) is proved in [SW] by deformation of the eigenfunction
+
+u(x, y, z) = sin(x) sin(y) + sin(x) sin(z) + sin(y) sin(z).
+
+(4)
+
+The proof exploits that the space H(2) is simply the set of orientable compact surfaces which are determined by their genus. So in engineering a component of a deformation of f to have a given genus it is clear what to aim for in terms of how the singularities (all are conic) of f = 0 resolve. For n  4, little is known about the space H(n - 1)
+
+4
+
+Y. CANZANI AND P. SARNAK
+
+and we proceed in Section 3 quite differently. We apply Whitney's approximation Theorem to realize t as an embedded real analytic submanifold of Rn. Then, following some techniques in [EP] we find suitable approximations of f  E1(Rn) and whose zero set contains a diffeomorphic copy of t. The construction of f hinges on the Lax-
+Malgrange Theorem and Thom's Isotopy Theorem. As far as Theorem 2, the case
+n = 2 is resolved in [SW] using a deformation of sin(x) sin(y) and a combinatorial
+chess board type argument. In higher dimensions, for example n = 3 we proceed in
+Section 4 by deforming
+
+u(x, y, z) = sin(x) sin(y) sin(z).
+
+(5)
+
+This f has enough complexity (as compared to the u in (4)) to produce all elements in T after deformation. However, it is much more difficult to study. Unlike (4) or sin(x) sin(y), the zero set u-1(0) in (5) has point and 1-dimensional edge singularities. The analysis of its resolution under deformation requires a lot of care, especially as far as engineering elements of T . The pay off as we noted is that it is rich enough to prove Theorem 2.
+In Section 2 we review some of the theory of monochromatic Gaussian fields and their representations. Section 3 is devoted to the proof of Theorem 1. Section 4 is devoted to the proof of Theorem 2. The latter begins with an interpolation theorem of Mergelyan type, for elements in E1(Rn). We use that to engineer deformations of (5) which achieve the desired tree end, this being the most delicate aspect of the paper.
+
+2. Monochromatic Gaussian waves
+
+Our interest is in the monochromatic Gaussian field on Rn which is a special case of
+
+the band limited Gaussian fields considered in [SW], and which is fundamental in the
+
+proof of [SW, Theoem 1.1]. For 0    1, define the annulus A = {  Rn :  
+||  1} and let  be the Haar measure on A normalized so that (A) = 1. Using
+that the transformation   - preserves A we choose a real valued orthonormal basis {j} j=1 of L2(A, ) satisfying
+
+j(-) = (-1)j j(),
+
+j  {0, 1}.
+
+(6)
+
+The band limited Gaussian field Hn, is defined to be the random real valued functions
+
+f on Rn given by
+
+
+f (x) = bj ij j(x)
+
+(7)
+
+j=1
+
+where
+
+j(x) = j()e-i x, d()
+
+(8)
+
+Rn
+
+and the bj's are identically distributed, independent, real valued, standard Gaussian
+
+variables. We note that the field Hn, does not depend on the choice of the orthonormal
+
+basis {j}.
+
+The distributional identity
+
+ j=1
+
+j ( )j ()
+
+=
+
+(
+
+- )
+
+on
+
+A
+
+together
+
+with
+
+(6)
+
+lead
+
+to the explicit expression for the covariance function:
+
+Cov(x, y) := EHn, (f (x)f (y)) = ei x-y, d().
+
+(9)
+
+Rn
+
+ZERO SET OF MONOCHROMATIC RANDOM WAVES
+
+5
+
+From (9), or directly from (7), it follows that almost all f 's in Hn, are analytic in x [AT]. For the monochromatic case  = 1 we have
+
+Cov(x, y)
+
+=
+
+1
+
+(2
+
+)
+
+n 2
+
+J(|x - y|) |x - y|
+
+,
+
+(10)
+
+where to ease notation we have set
+
+
+
+:=
+
+n
+
+- 2
+
+2.
+
+In this case there is also a natural choice of a basis for L2(Sn-1, d) = L2(A1, µ1) given by spherical harmonics. Let {Ym}dm=1 be a real valued basis for the space of spherical harmonics E (Sn-1) of eigenvalue ( + n - 2), where d = dim E (Sn-1). We
+
+compute the Fourier transforms for the elements of this basis.
+
+Proposition 4. For every  0 and m = 1, . . . , d , we have
+
+Ym(x)
+
+=
+
+(2)
+
+n 2
+
+i
+
+Ym
+
+x |x|
+
+J
+
++ (|x|) |x|
+
+.
+
+(11)
+
+Proof. We give a proof using the theory of point pair invariants [Sel] which places such calculations in a general and conceptual setting. The sphere Sn-1 with its round metric is a rank 1 symmetric space and x , y for x , y  Sn-1 is a point pair invariant (here , is the standard inner product on Rn restricted to Sn-1). Hence, by the
+theory of these pairs we know that for every function h : R  C we have
+
+h( x , y ) Y (y) d(y) = h( )Y (x ),
+
+(12)
+
+Sn-1
+
+where Y is any spherical harmonic of degree and h( ) is the spherical transform. The latter can be computed explicitly using the zonal spherical function of degree .
+
+Fix any x  Sn-1 and let Zx be the unique spherical harmonic of degree which is rotationally invariant by motions of Sn-1 fixing x and so that Zx (x ) = 1. Then,
+
+h( ) =
+
+h( x , y )Zx (y) d(y).
+
+(13)
+
+Sn-1
+
+The function Zx (y) may be expressed in terms of the Gegenbauer polynomials [GR,
+
+(8.930)] as
+
+C x , y
+
+Zx (y) = C(1) .
+
+(14)
+
+Now, for x  Rn,
+
+Ym(x) =
+
+hx
+
+x |x|
+
+,
+
+y
+
+Ym(y)d(y),
+
+Sn-1
+
+where we have set hx(t) = e-i|x|t. Hence, by (12) we have
+
+with hx ( ) =
+
+Ym(x) = hx ( ) Ym
+
+x |x|
+
+,
+
+e-i|x|
+Sn-1
+
+x |x|
+
+,
+
+y
+
+Zx (y) d(y)
+
+=
+
+vol(Sn-2) C  (1)
+
+1
+
+e-it|x|
+
+C  (t)(1
+
+-
+
+t2
+
+)
+
+-
+
+1 2
+
+dt.
+
+-1
+(15)
+
+6
+
+Y. CANZANI AND P. SARNAK
+
+The last term in (15) can be computed using [GR, (7.321)]. This gives
+
+hx (
+
+)
+
+=
+
+(2)
+
+n 2
+
+i
+
+J
+
++ (|x|) |x|
+
+,
+
+as desired.
+
+Corollary 5. The monochromatic Gaussian ensemble Hn,1 is given by random f 's of
+
+the form
+
+
+
+f
+
+(x)
+
+=
+
+(2)
+
+n 2
+
+d
+
+b ,m Ym
+
+x |x|
+
+J
+
++ (|x|) |x|
+
+,
+
+=0 m=1
+
+where the b ,m's are i.i.d standard Gaussian variables.
+
+The functions x  Ym
+
+x |x|
+
+J
+
++ (|x|) |x|
+
+,
+
+x
+
+
+
+ei
+
+x,
+
+with || = 1, and those in (7) for
+
+which the series converges rapidly (eg. for almost all f in Hn,1), all satisfy (1), that is f  E1(Rn). In addition, consider the subspaces P1 and T1 of E1(Rn) defined by
+
+P1 := span
+
+x  Ym
+
+x |x|
+
+J
+
++ (|x|) |x|
+
+:
+
+ 0, m = 1, . . . , d
+
+,
+
+T1 := span
+
+x  ei x,
+
++ e-i x, 2
+
+, x  ei x,
+
+- e-i x, 2i
+
+:
+
+|| = 1
+
+.
+
+Proposition 6. Let f  E1(Rn) and let K  Rn be a compact set. Then, for any t  0 and  > 0 there are g  P1 and h  T1 such that
+
+f - g Ct(K) <  and
+
+f - h Ct(K) < .
+
+That is, we can approximate f on compact subsets in the Ct-topology by elements of
+
+P1 and T1 respectively.
+
+Proof. Let f  E1. Since f is analytic we can expand it in a rapidly convergent series
+
+in the Ym's. That is,
+
+d
+
+f (x) =
+
+am,
+
+(|x|)Ym(
+
+x |x|
+
+).
+
+=0 m=1
+
+Moreover, for r > 0,
+
+d
+
+|f (rx )|2 d(x ) =
+
+|am, (r)|2.
+
+Sn-1
+
+=0 m=1
+
+(16)
+
+In polar coordinates, (r, )  (0, +) × Sn-1, the Laplace operator in Rn is given by
+
+
+
+=
+
+r2
+
++
+
+n
+
+- r
+
+1 r
+
++
+
+1 r2
+
+Sn-1 ,
+
+and hence for each , m we have that
+
+r2am, (r) + (n - 1)ram, (r) + (r2 - ( + n - 2))am, (r) = 0.
+
+(17)
+
+where is some positive integer. There are two linearly independent solutions to (17). One is r-J +(r) and the other blows up as r  0. Since the left hand side of (16) is
+
+ZERO SET OF MONOCHROMATIC RANDOM WAVES
+
+7
+
+finite as r  0, it follows that the am, 's cannot pick up any component of the blowing up solution. That is, for r  0
+
+for some cm,  R. Hence,
+
+am,
+
+(r)
+
+=
+
+c
+
+J
+,m
+
++ (r) r
+
+,
+
+
+f (x) =
+
+d
+
+c ,m Ym
+
+x |x|
+
+J
+
++ (|x|) |x|
+
+.
+
+(18)
+
+=0 m=1
+
+Furthermore, this series converges absolutely and uniformly on compact subsets, as
+
+also do its derivatives. Thus, f can be approximated by members of P1 as claimed, by simply truncating the series in (18).
+
+To deduce the same for T1 it suffices to approximate each fixed Ym
+
+x |x|
+
+J
+
++ (|x|) |x|
+
+.
+
+To
+
+this end let 1, -1, 2, -2, . . . , N , -N be a sequence of points in Sn-1 which become equidistributed with respect to d as N  . Then, as N  ,
+
+1N 2N
+j=1
+
+e-i x,j Ym(j ) + (-1) ei x,j Ym(j )
+
+-
+
+e-i x, Ym() d().
+Sn-1
+
+(19)
+
+The
+
+proof
+
+follows
+
+since
+
+(2)
+
+n 2
+
+i
+
+Ym
+
+x |x|
+
+J + (|x|) |x|
+
+=
+
+Sn-1 e-i x, Ym() d(). Indeed,
+
+the convergence in (19) is uniform over compact subsets in x.
+
+Remark 3. For   Rn open, let E1() denote the eigenfunctions on  satisfying f (x) + f (x) = 0 for x  . Any function g on  which is a limit (uniform over
+compact subsets of ) of members of E1 must be in E1(). While the converse is not true in general, note that if  = B is a ball in Rn, then the proof of Proposition 6
+shows that the uniform limits of members of E1 (or P1, or T1) on compact subsets in B is precisely E1(B).
+
+With these equivalent means of approximating functions by suitable members of Hn,1, and particularly E1(Rn), we are ready to prove Theorems 1 and 2. Indeed, as
+shown in [SW] the extension of condition (4) of [NS2, Theorem 1] suffices. Namely, for c  H(n - 1) it is enough to find an f  T1 with f -1(0) containing c as one of
+its components for Theorem 1, and for T  T it suffices to find an f  T1 such that e(c) = T for some component c of f -1(0).
+
+3. Topology of the zero set components
+In this section we prove Theorem 1. By the discussion above it follows that given a representative c of a class t(c)  H(n - 1), it suffices to find f  E1(Rn) for which C(f ) contains a diffeomorphic copy of c.
+To begin the proof we claim that we may assume that c is real analytic. Indeed, if we start with c~ smooth, of the desired topological type, we may construct a tubular neighbourhood Vc~ of c~ and a smooth function
+Hc~ : Vc~  R with c~ = Hc~-1(0).
+
+8
+
+Y. CANZANI AND P. SARNAK
+
+Note that without loss of generality we may assume that infxVc~ Hc~(x) > 0. Fix any > 0. We apply Thom's isotopy Theorem [AR, Thm 20.2] to obtain the existence of a constant c~ > 0 so that for any function F with F - Hc~ C1(Vc~) < c~ there exists F : Rn  Rn diffeomorphism with
+F (c~) = F -1(0)  Vc~.
+To construct a suitable F we use Whitney's approximation Theorem [Wh, Lemma 6] which yields the existence of a real analytic approximation F : Vc~  Rmc~ of Hc~ that satisfies F - Hc~ C1(Vc~) < c~. It follows that c~ is diffeomorphic to c := F (c~) and c is real analytic as desired.
+By the Jordan-Brouwer Separation Theorem [Li], the hypersurface c separates Rn into two connected components. We write Ac for the corresponding bounded component of Rn\c. Let 2 be the first Dirichlet eigenvalue for the domain Ac and let h be the corresponding eigenfunction:
+
+( + 2)h(x) = 0 x  Ac,
+
+h(x) = 0
+
+x  c.
+
+Consider the rescaled function
+
+h(x) := h(x/),
+
+defined on the rescaled domain Ac := {x  Rn : x/  Ac}. Since ( + 1)h = 0 in Ac, and (Ac) is real analytic, h may be extended to some open set Bc  Rn with
+
+Ac  Bc so that
+
+( + 1)h(x) = 0 x  Bc,
+
+h(x) = 0
+
+x  c,
+
+where c is the rescaled hypersurface c := {x  Rn : x/  c}. Note that since h is the first Dirichlet eigenfunction, then we know that there exists a tubular neighbour-
+hood Vc of c on which infxVc h(x) > 0 (see Lemma 3.1 in [BHM]). Without loss of generality assume that Vc  Bc.
+We apply Thom's isotopy Theorem [AR, Thm 20.2] to obtain the existence of a
+constant  > 0 so that for any function f with f - h C1(Vc) <  there exists f : Rn  Rn diffeomorphism so that
+
+f (c) = f -1(0)  Vc.
+
+Since Rn\Bc has no compact components, Lax-Malgrange's Theorem [Kr, p. 549] yields the existence of a global solution f : Rn  R to the elliptic equation (+1)f = 0 in Rn with
+f - h C1(Bc) < .
+We have then constructed a solution to ( + 1)f = 0 in Rn, i.e. f  E1, for which f -1(0) contains a diffeomorphic copy of c (namely, f (c)). This concludes the proof of the theorem.
+
+We note that the problem of finding a solution to ( + 1)f = 0 for which C(f ) con-
+tains a diffeomorphic copy of c is related to the work [EP] of A. Enciso and D. PeraltaSalas. In [EP] the authors seek to find solutions to the problem ( - q)f = 0 in Rn so
+
+ZERO SET OF MONOCHROMATIC RANDOM WAVES
+
+9
+
+that C(f ) contains a diffeomorphic copy of c, where q is a nonnegative, real analytic, potential and c is a (possibly infinite) collection of compact or unbounded "tentacled" hypersurfaces. The construction of the solution f that we presented is shares ideas with [EP]. Since our setting and goals are simpler than theirs, the construction of f is much shorter and straightforward.
+
+4. Nesting of nodal domains
+
+The proof of Theorem 2 consists in perturbing the zero set of the eigenfunction
+u0(x1, . . . , xn) = sin(x1) . . . sin(xn) so that the zero set of the perturbed function will have the desired nesting. The nodal domains of u0 build a n-dimensional chess board made out of unit cubes. By adding a small perturbation to u0 the changes of topology in u-0 1(0) can only occur along the singularities of u-0 1(0). Therefore, we will build an eigenfunction f , satisfying -f = f , by prescribing it along the singularities L = a,bZ ni,j=1, i=j {(x1, . . . , xn)  Rn : xi = a, xj = b} of the zero set of u0. We then construct a new eigenfunction u = u0 + f which will have the desired nesting among a subset of its nodal domains. The idea is to prescribe f on the singularities of
+the zero set of u0 in such a way that two adjacent cubes of the same sign will either glue or disconnect along the singularity. The following theorem shows that one can always find a solution f to -f = f with prescribed values on a set of measure zero
+(such as L). We prove this result following the first step of Carleson's proof [Car] of
+Mergelyan's classical Theorem about analytic functions.
+
+Theorem 7. Let K  Rn be a compact set with Lebesgue measure 0 and so that Rn\K is connected. Then, for every  > 0 and h  Cc2(Rn) there exists f : Rn  R satisfying
+-f = f and sup{|f - h| + f - h }  .
+K
+Remark 4. In the statement of the theorem the function h  Cc2(Rn) can be replaced by h  Cc1(), where   Rn is any open set with K  . This is because Cc2(Rn) is dense in Cc1() in the C1-topology.
+Proof. Consider the sets
+
+A = {(, x1, . . . , xn) :   ker( + 1)}, B = {(, x1, . . . , xn) :   Cc2(Rn)},
+and write AK, BK for the restrictions of A, B to K. Both AK and BK are subsets of the Banach space nk=0C(K), and clearly AK  BK C0 . It follows that the claim in the theorem is equivalent to proving that
+
+BK  AK C0 .
+
+(20)
+
+To prove (20), note that a distribution D in the dual space (nk=0C(K)) can be identified with an (n + 1)-tuple of measures (0, 1, . . . , n) with j  (C(K)) for each j = 0, . . . n. That is, for each (0, 1, . . . , n)  nj=0C(K),
+
+n
+
+D(0, 1, . . . , n) =
+
+j dj.
+
+(21)
+
+j=0 K
+
+10
+
+Y. CANZANI AND P. SARNAK
+
+Since AK C0 = (AK), proving (20) is equivalent to showing that for each D  (nk=0C(K)) satisfying D() = 0 for all   AK, one has that D() = 0 for all   BK. Using that each D  (nk=0C(K)) is supported in K, we have reduced our problem to showing that
+
+If D (nk=0C(K)) satisfies D() = 0   A,
+
+then D() = 0   B.
+
+(22)
+
+We proceed to prove the claim in (22). Fix D  (nk=0C(K)) satisfying the assumption in (22). Given   Cc2(Rn) we need to prove that D(, y1, . . . , yn) = 0. Consider the fundamental solution
+
+N (x, y)
+
+:=
+
+n(n
+
+1 - 2)n
+
+|x
+
+-
+
+1 y|n-2
+
+,
+
+where n is the volume of the unit ball in Rn. Note that there exists C > 0 so that
+
+N yj
+
+(x,
+
+y)
+
+<
+
+C |x-y|n-1
+
+for
+
+all
+
+j
+
+=
+
+0, . . . n.
+
+Therefore,
+
+for
+
+y
+
+fixed,
+
+N (x, y)
+
+and
+
+N yj
+
+(x,
+
+y
+
+)
+
+are
+
+locally
+
+integrable
+
+in
+
+Rn.
+
+In
+
+particular,
+
+N (x, y) |d0(y)| dx
+
+and
+
+N yj
+
+(x,
+
+y)
+
+|dj
+
+(y)|
+
+dx
+
+are integrable on the product K × Rn, where the j's are as in (21). Also, note that
+
+(y) = ( + 1)(x)N (x, y)dx
+Rn
+
+and
+
+ yj
+
+(y)
+
+=
+
+Rn
+
+(
+
++
+
+1)(x)
+
+N yj
+
+(x,
+
+y)dx.
+
+By these observations, and since K has measure zero, we may apply Fubini to get
+
+D(, y1, . . . , yn) =
+
+=
+
+n
+
+(y) d0(y) +
+
+K
+
+j=1
+
+K
+
+ yj
+
+(y)
+
+dj (y)
+
+=
+
+K
+
+n
+
+( + 1)(x)N (x, y)dxd0(y) +
+
+Rn\K
+
+j=1
+
+K
+
+Rn\K
+
+(
+
++
+
+1)(x)
+
+ 
+
+N yj
+
+(x,
+
+y
+
+)dxdj
+
+(y)
+
+=
+
+Rn\K
+
+n
+
+( + 1)(x)N (x, y)dxd0(y) +
+
+K
+
+j=1
+
+Rn\K
+
+K
+
+(
+
++
+
+1)(x)
+
+N yj
+
+(x,
+
+y)dxdj
+
+(y)
+
+=
+
+( + 1)(x)F (x)dx,
+
+Rn\K
+
+where
+
+F (x) :=
+
+n
+
+N (x, y) d0(y) +
+
+K
+
+j=1
+
+K
+
+N yj
+
+(x,
+
+y) dj(y).
+
+The claim that D(, y1, . . . , yn) = 0 follows from the fact that F (x) = 0 for x  R3 \ K. To see this, let R > 0 be large enough so that K  B(0, R). Then,
+for x  Rn\B(0, R), the map x(y) := N (x, y) is in ker( + 1)|B(0,R). Applying Proposition 6 we know that there exists a sequence {x}  ker( + 1) for which
+
+x - x C1(B(0,R)) - 0.
+
+ZERO SET OF MONOCHROMATIC RANDOM WAVES
+
+11
+
+Hence, by the assumption in (22), for each x  Rn\B(0, R)
+
+0 = D(x, y1 x, . . . , yn x) =
+
+n
+
+N (x, y) d0(y) +
+
+K
+
+j=1
+
+K
+
+N yj
+
+(x, y)
+
+dj (y)
+
+=
+
+F (x).
+
+(23)
+
+Now, the integral defining F (x) converges absolutely for x  Rn \ K and defines an analytic function of x in this set. Since F (x) vanishes for x  Rn\B(0, R), and Rn \ K
+is connected, it follows that
+
+F (x) = 0 for all x  Rn \ K,
+
+as claimed.
+
+4.1. Construction of the rough domains. We will give a detailed proof Theorem 2 in R3 since in this setting it is easier to visualize how the argument works. In Section 4.6 we explain the modifications one needs to carry in order for the same argument to hold in Rn.
+Let u0 : R3  R be defined as
+u0(x, y, z) = sin(x) sin(y) sin(z).
+Its nodal domains consist of a collection of cubes whose vertices lie on the grid Z3. Throughout this note the cubes are considered to be closed sets, so faces and vertices are included. We say that a cube is positive (resp. negative) if u0 is positive (resp. negative) when restricted to it. We define the collection B+ of all sets  that are built as a finite union of cubes with the following two properties:
+· R3\ is connected. · All the cubes in  that have a face in  are positive.
+We define B- in the same way only that the faces in  should belong to negative cubes.
+Engulf operation. Let C  B+. We proceed to define the "engulf" operation as follows. We define E(C) to be the set obtained by adding to C all the negative cubes that touch C, even if they share only one point with C. By construction E(C)  B-. If C  B-, the set E(C) is defined in the same form only that one adds positive cubes to C. In this case E(C)  B+.
+
+12
+
+Y. CANZANI AND P. SARNAK
+
+C
+
+E (C )
+
+Join operation. Given C  B+  B- we distinguish two vertices using the lexicographic order. Namely, for any set of vertices   Z3, for i  {1, 2, 3} we set
+Ami in = (x1, x2, x3)   : xi = min{xi : (x1, x2, x3)  }  Z3.
+In the same way we define Ami ax replacing the minimum function above by the maximum one. For C  B+  B-, let C = C  Z3 be the set of vertices of cubes in C. We then set
+v+(C) = Am1 ax(Am2 ax(Am3 ax(C ))) and v-(C) = Am1 in(Am2 in(Am3 in(C ))).
+Given the vertex v+(C) we define the edge e+(C) to be the edge in C that has vertex v+(C) and is parallel to the x-axis. The edge e-(C) is defined in the same way.
+We may now define the "join" operation. Given C1  B+ and C2  B+ we define J(C1, C2)  B+ as follows. Let C~2 be the translated copy of C2 for which e+(C1) coincides with e-(C~2). We "join" C1 and C2 as
+J (C1, C2) = C1  C~2.
+In addition, for a single set C we define J(C) = C, and if there are multiple sets C1, . . . , Cn we define
+J (C1, . . . , Cn) = J (C1, J (C2, J (C3, . . . J (Cn-1, Cn)))).
+
+Definition of the rough nested domains. Let T :=  k=0Nk. A rooted tree is characterized as a finite set of nodes T  T satisfying that
+
+·   T, · (k1, . . . , k +1)  T = (k1, . . . , k )  T, · (k1, . . . , k , j)  T = (k1, . . . , k , i)  T
+
+for all i  j.
+
+To shorten notation, if v  T is a node with N children, we denote the children by
+(v, 1), . . . , (v, N ). Given a tree T we associate to each node v  T a structure Cv  R3 defined as
+follows. If the node v  T is a leaf, then Cv is a cube of the adequate sign. For the rest of the nodes we set
+
+Cv = J E(C(v,1)), . . . , E(C(v,N)) ,
+
+ZERO SET OF MONOCHROMATIC RANDOM WAVES
+
+13
+
+
+
+(1)
+
+(2)
+
+(3)
+
+(1, 1) (1, 2)
+
+(2, 1)
+
+(3, 1) (3, 2) (3,3)
+
+(1, 2, 1) (1, 2, 2)
+
+(3, 1, 1)
+
+(3, 3, 1) (3, 3, 2)
+
+Figure 1. Example of a tree and a transversal cut of the corresponding nesting of nodal domains. All the domains in figures below are labeled after this example.
+where N is the number of children of the node v. It is convenient to identify the original structures E(C(v,j)) with the translated ones E~(C(v,j)) that are used to build Cv. After this identification,
+N
+Cv := E(C(v,j)).
+j=1
+E~(C1)
+
+E(C2)
+
+z y
+x
+
+Figure 2. This picture shows J(E(C1), E(C2)). The edge e+(E(C2) = e-(E~(C1) is depicted in red.
+
+4.2. Building the perturbation. Let v  T be a node with N children. We define the set of edges connected to Cv on which the perturbation will be defined.
+
+14
+
+Y. CANZANI AND P. SARNAK
+
+· We let Ejoin(Cv) be the set of edges in Cv through which the structures {E(C(v,j))}Nj=1 are joined. We will take these edges to be open. That is, the edges in Ejoin(Cv) do not include their vertices.
+
+· We let Eext(Cv) be the set of edges in Sext(Cv) that are not in Ejoin(Cv). Here Sext(Cv) is the surface
+
+Sext(Cv) := {x  R3 : dmax x, Nj=1Cv,j = 1}.
+
+(24)
+
+If v is a leaf, we set Sext(Cv) = Cv. All the edges in Eext(Cv) are taken to be closed (so they include the vertices).
+
+· We let Eint(Cv) be the set of edges that connect Sext(Cv) with Sext(Cv,j) for some j  {1, . . . , N }. If v is a leaf, then we set Eint(Cv) = .
+
+Remark 5. Note that if v  T , and Cv  B-, then E(Cv)\Cv is the set of positive cubes that are in the bounded component of Sext(Cv) and touch Sext(Cv). Also, if a negative cube in R3\Cv is touching Cv, then it does so through an edge in Eext(Cv).
+Eext(C(1,2))
+Eext(C(1,2,2))
+
+Eext(C(1,2,1))
+
+Ejoin(C(1,2))
+
+Eint(C(1,2))
+
+Remark 6. Given a node v with children {(v, j)}Nj=1, let G(C(v,j)) be the set of edges in {x  R3 : d(x, C(v,j)) = 1}. It is clear that for each j = 1, . . . , N the set G(C(v,j)) is connected. Also, Eext(Cv) = Nj=1G(C(v,j))\Ejoin(Cv). Since the edges in Ejoin(Cv) are open, the structures Eext(Cv) are connected.
+We proceed to define a perturbation h : K  R, where
+K = Eext(Cv)  Eint(Cv)  Ejoin(Cv).
+vT
+We note that by construction K is formed by all the edges in C. Also, it is important to note that if two adjacent cubes have the same sign, then they share an edge in K. The function h is defined by the rules A, B and C below.
+
+ZERO SET OF MONOCHROMATIC RANDOM WAVES
+
+15
+
+A) Perturbation on Eext(Cv). Let v  T and assume Cv  B-. We define h on every edge of Eext(Cv) to be 1. If Cv  B+, we define h on every edge of Eext(Cv)
+to be -1.
+
+Rule A is meant to separate Cv from all the exterior cubes of the same sign that surround it. Note that for all v  T we have Eext(Cv)  Eext(C(v,j)) = , where (v, j) is any of the children of v, so Rule A is well defined.
+
+B) Perturbation on Eint(Cv). Let e be an edge in Eint(Cv). Then, we already know that h is 1 on one vertex and -1 on the other vertex. We extend h smoothly to the entire edge e so that it has a unique zero at the midpoint of e, and so that the absolute value of the derivative of h is  1. We also ask for the derivative of h to be 0 at the vertices. For example, if the edge is {(a, b, z) : z  [0, 1]} where a, b, c  Z, we could take h(a, b, z) = cos(z).
+
+Rule B is enforced to ensure that no holes are added between edges that join a structure Cv with any of its children structures C(v,j).
+Next, assume CvB-. Note that for any edge e in Ejoin(Cv) we have that the function h takes the value 1 at their vertices, since those vertices belong to edges in Eext(Cv) and the function h is defined to be 1 on Eext(Cv). We have the same picture if Cv  B+, only that h takes the value -1 on the vertices of all the joining edges. We therefore extend h to be defined on e as follows.
+
+C) Perturbation on Ejoin(Cv). Let v  T and assume Cv  B-. Given an edge in Ejoin(Cv) we already know that h takes the value 1 at the vertices of the edge. We extend h smoothly to the entire edge so that it takes the value -1 at the midpoint of the edge, and so that it only has two roots at which the absolute value of the derivative of h is  1. We further ask h to have zero derivative at the endpoints of the edge. For example, if the edge is {(a, b, z) : z  [c, c + 1]} where a, b, c  Z, we could take h(a, b, z) = cos(2z). In the case in which Cv  B+ we need h to take the value +1 at the midpoint of the edge.
+Rule C is meant to glue the structures {E(C(v,j))}Nj=1 through the middle point of the edges that join them, without generating new holes.
+
+Remark 7. By construction the function h is smooth in the interior of each edge. Furthermore, since we ask the derivative of h to vanish at the vertices in K, the function h can be extended to a function h  C1() where   R3 is an open neighborhood of K.
+Definition 1. Given a tree T , let h  C1() be defined following Rules A, B and C and Remark 7, where   R3 is an open neighborhood of K. Since K is compact and
+
+16
+
+Y. CANZANI AND P. SARNAK
+
+R3\K is connected, Theorem 7 gives the existence of f : R3  R that satisfies
+
+-f = f
+
+and
+
+sup{|f - h| +
+
+f - h
+
+}
+
+1 100
+
+.
+
+K
+
+For  > 0 small set
+
+u := u0 + f.
+
+We will show in Lemma 9 that the perturbation was built so that the nodal domain of
+
+u corresponding to v  T is constituted by the deformed cubes in
+
+N j=1
+
+E
+
+(C(v,j))\C(v,j
+
+)
+
+after the perturbation is performed.
+
+We illustrate how Rules A, B, and C work in the following examples. In what follows
+
+we shall use repeatedly that the singularities of the zero set of u0 are on the edges and
+
+vertices of the cubes. Therefore, the changes of topology in the zero set can only occur
+
+after perturbing the function u0 along the edges and vertices of the cubes.
+
+Example 1. As an example of how Rules A and B work, we explain how to create
+a domain that contains another nodal domain inside of it. The tree corresponding to
+this picture is given by two nodes, 1 and (1, 1), that are joined by an edge. We start with a positive cube C(1,1)  B+ and work with its engulfment C1 = E(C(1,1))  B-. All the edges of C(1,1) belong to Eext(C(1,1)). Therefore, the function u takes the value - on Eext(C(1,1)). Also, all the positive cubes that touch C(1,1) do so through an edge in Eext(C(1,1)). It follows that all the positive cubes surrounding C(1,1) are disconnected from C(1,1) after the perturbation is performed. The cube C(1,1) then becomes a positive nodal domain (1,1) of u that is contractible to a point.
+
+(1,1)
+
+1
+
+transversal cut of 1
+
+Next, note that all the negative cubes that touch C(1,1) (i.e., cubes in E(C(1,1))\C(1,1)) do so through a face whose edges are in Eext(C(1,1)), or through a vertex that also belongs to one of the edges in Eext(C(1,1)). Therefore, all the negative cubes are glued together after the perturbation is performed, and belong to a nodal domain 1 that contains the connected set Eext(C(1,1)).
+So far we have seen that 1 contains the perturbation of the cubes in E(C(1,1))\C(1,1). We claim that no other cubes are added to 1. Indeed, all the negative cubes that touch the boundary of E(C(1,1)) = C1 do so through edges in Eext(C1). Then, since u takes the value  on Eext(C1), all the surrounding negative cubes are disconnected from
+E(C(1,1)) after we apply the perturbation. Since along the edges connecting C(1,1) with C1 the function u has only one sign change (it goes from - to ) it is clear
+
+ZERO SET OF MONOCHROMATIC RANDOM WAVES
+
+17
+
+that 1 can be retracted to (1,1).
+
+Example 2. Here we explain how Rule C works. Suppose we want to create a nodal
+domain that contains two disjoint nodal domains inside of it. The tree corresponding
+to this picture is given by three nodes, 1, (1, 1), and (1, 2). The node 1 is joined by
+an edge to (1, 1) and by another edge to (1, 2). Assume that C(1,1) and C(1,2) belong to B+. Then, C1 = E(C(1,1))  E(C(1,2))  B-. When each of the structures E(C(1,1)) or E(C(1,1)) are perturbed, we get a copy of the negative nodal domain in Example 1. Since in C1 the structures E(C(1,1)) and E(C(1,1)) are joined by an edge, the two copies of 1 will also be glued. The reason for this is that the function u takes the value - in the middle point of the edge joining E(C(1,1)) and E(C(1,1)). Therefore, a small negative tube connects both structures.
+
+ - 
+
+joining cubes
+
+1
+
+4.3. Local behavior of the zero set. In this section we explain what our perturbation does to the zero set of u0 at a local level. Given a tree T , and  > 0, let
+u = u0 + f
+be defined as in Definition 1. Using that f is a continuous function, and that we are working on a compact region of Rn (we call it D), it is easy to see that there exists a 0 > 0, so that if T is the -tubular neighborhood of K, then u has no zeros in Tc  C as long as   0 and
+ = c12,
+where c1 is some positive constant that depends only on f C0(D). This follows after noticing that |u0| takes the value 1 at the center of each cube and decreases radially until it takes the value 0 on the boundary of the cube.
+The construction of the tubular neighborhood T yields that in order to understand the behavior of the zero set of u we may restrict ourselves to study it inside T for   0. We proceed to study the zero set of u in a -tubular neighborhood of each edge in K. Assume, without loss of generality, that the edge is the set of points {(0, 0, z) : z  [0, 1]}.
+Vertices. At the vertex (0, 0, 0) the function h takes the value 1 or -1. Assume h(0, 0, 0) = -1 (the study when the value is 1 is identical). In this case, we claim
+
+18
+
+Y. CANZANI AND P. SARNAK
+
+that the zero set of u(x, y, z) near the vertex is diffeomorphic to that of the function (x, y, z) := u0(x, y, z) -  provided  (and hence  = ()) is small enough. To see this, for  > 0 set V to be one of the connected components of u- 1(B(0, )) intersected with T.
+We apply the version of Thom's Isotopy Theorem given in [EP, Theorem 3.1] which
+asserts that for every smooth function satisfying
+
+u -
+
+C1(V)  min
+
+/4, 1 , inf
+V
+
+u
+
+(25)
+
+there exists a diffeomorphism  : R3  R3 making
+
+(u-1(0)  V) = -1(0)  V.
+
+We observe that the statement of [EP, Theorem 3.1] gives the existence of an  > 0
+so that the diffeomorphism can be built provided  - u C1(V)  . However, it can be tracked from the proof that  can be chosen to be as in the RHS of (25).
+Applying [EP, Theorem 3.1] to the function  we obtain what we claim provided we can verify (25). First, note that u -  C1(V) = (f - 1) C1(V). It is then easy to check that
+
+u -  C1(V)  c2
+
+(26)
+
+for some c2 > 0 depending only on f C0(D). Next, we find a lower bound for the gradient of u when restricted to the zero set u- 1(0). Note that for (x, y, z)  T  u- 1(0) we have
+
+u(x, y, z) =  - f (x, y, z) cot(x), cot(y), cot(z) + f (x, y, z) (27)
+
+
+
+1 x2
+
++
+
+1 y2
+
++
+
+1 z2
+
+-
+
+f (x, y, z)
+
+
+
+1 
+
+-
+
+f (x, y, z)
+
++ O().
+
++ O()
+
+On the other hand, since  Hess u(x, y, z), (x, y, z) = O() for all (x, y, z)  V, we conclude
+
+inf
+V
+
+u
+
+>
+
+1 
+
+-
+
+f (x, y, z)
+
++ O() + O()
+
+(28)
+
+whenever  is small enough. Using the bounds in (26) and (28) it is immediate to check that (25) holds provided
+we choose  = c3 for a constant c3 > 0 depending only on f , and for  small enough. In the image below the first figure shows the zero set of u0 near 0. The other two
+figures are of the zero set of (x, y, z).
+
+ZERO SET OF MONOCHROMATIC RANDOM WAVES
+
+19
+
+This shows that at each vertex where h takes the value -1 the negative cubes that touch the vertex are glued together while the positive ones are disconnected.
+Edges. Having dealt with the vertices we move to describe the zero set of the perturbation near a point inside the edge. There are three cases. In the first case (case A) the perturbation h is strictly positive (approx. ) or strictly negative (approx -) along the edge. In the second case (case B) the perturbation f is strictly positive (approx. ) at one vertex and strictly negative (approx. -) at the other vertex. In the third case (case C), the edge is joining two adjacent structures so the perturbation f takes the same sign at the vertices ( it is approx. ) and the opposite sign (it is approx. ) at the midpoint of the edge having only two zeros along the edge.
+In case A the zero set of u(x, y, z) near the edge is diffeomorphic to the zero set of the map (x, y, z) := u0(x, y, z) - . The proof of this claim is the same as the one given near the vertices, so we omit it. In the picture below the first figure shows the zero set of u0 near the edge while the second figure shows the zero set of .
+
+This shows that two cubes of the same sign, say negative, that are connected through an edge are going to be either glued if the perturbation takes the value -1 along the edge, or disconnected if the perturbation takes the value +1 along the edge.
+
+In case B, it is clear that the only interesting new behavior will occur near the
+
+points on the edge at which the function f vanishes. Since
+
+h-f
+
+C1() <
+
+1 100
+
+and
+
+h(0, 0, b) = 0, there is only one point at which f vanishes; say the point is (0, 0, b). Note
+
+that f was built so that (0, 0, b) is the only zero of f along the edge. We claim that
+
+the zero set of u near (0, 0, b) is diffeomorphic to the zero set of the map (x, y, z) :=
+
+u0(x, y, z) - f (0, 0, z). The proof of this claim is similar to the one given near the
+
+20
+
+Y. CANZANI AND P. SARNAK
+
+vertices, so we omit it. The only relevant difference is that in order to bound u
+
+from below, one uses that u(x, y, z)  f (x, y, z) - u0(x, y, z) , and that
+
+u0(x, y, z) = O() in a ball of radius  centered at (0, 0, b) while f (0, 0, b) >
+
+1-
+
+1 100
+
+.
+
+Of
+
+course,
+
+if
+
+one
+
+is
+
+away
+
+from
+
+the
+
+value
+
+z
+
+=
+
+b,
+
+then
+
+the
+
+analysis
+
+is
+
+the
+
+same
+
+as that of case A. The first figure in the picture below shows the zero set of u0 along
+
+the edge while the second figure shows the zero set of  when f (0, 0, z) = cos(z).
+
+This shows that two consecutive cubes sharing an edge along which the perturbation changes sign will be glued on one half of the edge and disconnected along the other half.
+
+In case C, the zero set of u is diffeomorphic to that of (x, y, z) = u0(x, y, z) +
+
+f (0, 0, z) where f satisfies
+
+h-f
+
+C 1 ()
+
+<
+
+1 100
+
+and
+
+h(0, 0, 0)
+
+=
+
+h(0, 0, 1)
+
+=
+
+1
+
+and
+
+h(0, 0, 1/2) = -1. The zero set of  when f (0, 0, z) = cos(2z) is plotted in the figure
+
+below.
+
+This shows that two cubes that are joining two consecutive structures will be glued though the midpoint while being disconnected at the vertices.
+
+4.4. Definition of the nodal domains. Given a tree T and  > 0 we continue to work with
+u = u0 + f,
+as defined in Definition 1. Fix v  T , and suppose it has N children. Assume without loss of generality that Cv  B+. For every j  {1, . . . , n} the perturbed function u takes the value  on Eext(C(v,j)), and Eext(C(v,j)) is connected. It follows that for each j  {1, . . . , N } there exists a positive nodal domain N(v,j) of u that contains Eext(C(v,j)). We define the set v = v() as
+
+N
+v := N(v,j).
+j=1
+
+(29)
+
+ZERO SET OF MONOCHROMATIC RANDOM WAVES
+
+21
+
+Throughout this section we use the description of the local behavior of u- 1(0) that we gave in Section 4.3. In the following lemma we prove that v is a nodal domain of u.
+Lemma 8. Let T be a tree and for each  > 0 let u be the perturbation defined in (1). Then, for each  > 0 and v  T , the set v = v() defined in (29) is a nodal domain of u.
+Proof. Let v  T and suppose v has N children. Assume without loss of generality that Cv  B-. By definition, v = Nj=1N(v,j) where N(v,j) is the nodal domain of u that contains Eext(C(v,j)). To prove that v is itself a nodal domain, we shall show that N(v,j) = N(v,j+1) for all j  {1, . . . , N - 1}.
+Fix j  {1, . . . , N - 1}. The structures E(C(v,j)) and E(C(v,j+1)) are joined through an edge ej in Ejoin(Cv). If we name the middle point of ej as mj, then by Rule C we have u(mj) = f (mj) < 0.
+The edge ej is shared by a cube cj  E(C(v,j)) and a cube cj+1  E(C(v,j+1)). Note that every cube in E(C(v,j)) has at least one vertex that belongs to an edge in Eext(C(v,j)) (same with E(C(v,j+1))). Let pj be a vertex of cj that belongs to an edge in Eext(C(v,j)). In the same way we choose qj to be a vertex in cj+1 that belongs to an edge in Eext(C(v,j+1)). In particular, by Rule A we have that u(pj) < 0 and u(qj) < 0.
+
+C(v,j+1) qj
+
+j
+
+ej
+
+mj
+
+cj+1
+
+pj
+
+cj
+
+C(v,j)
+
+Figure 3.
+Since both cj and cj+1 are negative cubes, there exists a curve j  u- 1((-, 0)) that joins pj with qj while passing through the middle point mj.
+Finally, since pj  Eext(C(v,j))  N(v,j), qj  Eext(C(v,j+1))  N(v,j+1), and j is a connected subset of u- 1((-, 0)), we must have that N(v,j) = N(v,j+1) as claimed.
+In the following lemma we describe the set of cubes that end up building a nodal domain after the perturbation is performed.
+
+22
+
+Y. CANZANI AND P. SARNAK
+
+Lemma 9. Let T be a tree and for each  > 0 let u be the perturbation defined in (1). For each v  T with N children we have
+
+N
+
+lim v() =
+0
+
+E(C(v,j))\C(v,j).
+
+j=1
+
+Proof. First, we show that all the cubes in Nj=1E(C(v,j))\C(v,j) glue to form part of v after the perturbation is performed. Assume, without loss of generality, that Cv  B+. Then, C(v,j)  B- for every child (v, j) of v. All the cubes in Nj=1E(C(v,j))\C(v,j) have an edge in Eext(C(v,j)). Since such cubes are positive, and u takes the value  on
+Eext(C(v,j)), it follows that the cubes become part of the nodal domain that contains
+Eext(C(v,j)). That is, all the cubes in Nj=1E(C(v,j))\C(v,j) become part of v after the perturbation is added to u0.
+Second, we show that no cubes, other than those in Nj=1E(C(v,j))\C(v,j), will glue
+to form part of v. Indeed, any other positive cube in R3\ Nj=1 E(C(v,j)) that touches
+(Nj=1E(C(v,j))) does so through an edge in Eext(Cv). Since the function u takes the
+value - on Eext(Cv), those cubes will disconnect from Nj=1E(C(v,j)) after we perturb.
+On the other hand, any positive cube in Nj=1C(v,j)  B- is touching Nj=1E(C(v,j))
+through edges in Ni=j1Eext(C(v,j,i)) where Nj is the number of children of (v, j). Since f takes the value - on Ni=j1Eext(C(v,j,i)), the cubes in Nj=1C(v,j) will also disconnect from Nj=1E(C(v,j))\C(v,j).
+
+It is convenient to define the partial collections of nested domains. Given a tree T , a perturbation u, and v  T , we define the collection v = v() of all nodal domains that are descendants of v as follows. If v is a leaf then v = v. If v is not a leaf and has N children, we set
+N
+v := v  (v,j).
+j=1
+
+Remark 8. A direct consequence of Lemma 9 is the following. Let T be a tree and for each  > 0 let u be the perturbation defined in (1). For each v  T ,
+
+lim
+0
+
+v ()
+
+=
+
+Cv .
+
+4.5. Proof of Theorem 2. We will use throughout this section that we know how the zero set behaves at a local scale (as described in Section 4.3). Let T be a tree and for each  > 0 let u be the perturbation defined in (1). We shall prove that there is a subset of the nodal domains of u that are nested as prescribed by T . Since for every v  T the set v is a nodal domain of u, the theorem would follow if we had that for all v  T
+
+(i) (v,j)  int(v) for every (v, j) child of v.
+
+(ii) (v,j)  (v,k) =  for all j = k.
+
+ZERO SET OF MONOCHROMATIC RANDOM WAVES
+
+23
+
+(iii) R3\v has no bounded component.
+
+Statements (i), (ii) and (iii) imply that R3\v has N + 1 components. One component is unbounded, and each of the other N components is filled by (v,j) for some j. We prove statements (i), (ii) and (iii) by induction. The statements are obvious for
+the leaves of the tree.
+
+Remark 9. The proof of Claim (iii) actually shows that v can be retracted to the arc
+
+connected set
+
+N j=1
+
+(v,j)
+
+
+
+N -1 j=1
+
+j
+
+where
+
+j
+
+
+
+v
+
+is
+
+the
+
+curve
+
+introduced
+
+in
+
+Lemma
+
+8 connecting Eext(C(v,j)) with Eext(C(v,j+1)) that passes through the midpoint of the
+
+edge joining E(C(v,j)) with E(C(v,j+1)).
+
+Proof of Claim (i). Since v = v 
+
+N j=1
+
+(v,j),
+
+we
+
+shall
+
+show
+
+that
+
+there
+
+exists
+
+an
+
+open neighborhood U(v,j) of (v,j) so that U(v,j)  v.
+
+Assume without loss of generality that Cv  B+. Then, for every child (v, j), all
+
+the faces in C(v,j) belong to cubes in C(v,j) that are negative. Also, all the other
+
+negative cubes in R3\C(v,j) that touch C(v,j) do so through an edge in Eext(C(v,j)).
+
+Since the function u takes the value  on Eext(C(v,j)), all the negative cubes in C(v,j)
+
+are disconnected from those in R3\C(v,j) after the perturbation is performed. While
+
+all the negative cubes touching C(v,j) are disconnected, an open positive layer L(v,j)
+
+that surrounds (v,j) is created. The layer L(v,j) contains the grid Eext(C(v,j)) and so
+
+it is contained inside v. The result follows from setting U(v,j) := L(v,j)  (v,j).
+
+Proof of Claim (ii). This is a consequence of how we proved the statement (i) since both (v,j) and (v,k) are surrounded by a positive layer inside v.
+
+Proof of Claim (iii). Note that lim0 Nj=1(v,j)() = Nj=1C(v,j) and that by the
+induction assuption R3\ Nj=1 (v,j) has no bounded components . On the other hand,
+we also have that lim0 v() = Nj=1E(C(v,j))\C(v,j). This shows that, in order to prove that R3\v has no bounded components, we should show that the cubes in Nj=1E(C(v,j))\C(v,j) glue to those in Nj=1C(v,j) leaving no holes. Note that all the cubes in Nj=1E(C(v,j))\C(v,j) are attached to the mesh Nj=1Eext(C(v,j)) through some faces or vertices.
+Assume without loss of generality that Cv  B+. For each j  {1, . . . , N } the layer L(v,j) is contained in v and all the cubes in E(Cv)\Cv are glued to the layer thorugh an entire face or vertex. The topology of v will depend exclusively on how the cubes in E(C(v,j))\C(v,j) will join or disconnect each other along the edges that start at Eext(C(v,j)) and end at a distance 1 from Eext(C(v,j)). The function u takes the value  on Eext(C(v,j)). Also, note that if a pair of positive cubes in the unbounded component of R3\L(v,j) share an edge e that starts at Eext(C(v,j)) and ends at a distance 1 from it, then the end vertex belongs to Eext(Cv), and the function u takes the value - at
+this point. Since the function u has only one root on e, we have that no holes are
+added to v when applying the perturbation to those two cubes. For cubes in the
+
+24
+
+Y. CANZANI AND P. SARNAK
+
+-
+
+ L(v,j)
+
+L(v,j)
+
+bounded component that share an edge one argues similarly and uses the value of u on iN=j1Eext(Cv,j,i) where Nj is the number of children of (v, j).
+To finish, we note that two consecutive structures E(C(v,j)) and E(C(v,j+1)) are joined through an edge separating two cubes as shown in Figure 3. The function u is negative (approximately equal to -) at the vertices of the edge, and is positive at
+the middle point (approximately equal to +). Since along the edge u was prescribed to have only two roots, no holes are introduced when joining the structures.
+
+4.6. Higher dimensions. The argument in higher dimensions is analogue to the one in dimension 3. We briefly discuss the modifications that need to be carried in this setting. Let
+u0(x1, . . . , xn) = sin(x1) . . . sin(xn).
+We will work with cubes in Rn that we identify with a point c  Zn. That is, the cube corresponding to c = (c1, . . . , cn)  Zn is given by c = {x  Rn : xk  [ck, ck + 1]}. As before, we say that a cube is positive (resp. negative) if u0 is positive (resp. negative) when restricted to it. The collection of faces of the cube c is 1in xi{ci,ci+1} {x  Rn : xk  [ck, ck + 1] k = i}. The collection of edges is
+
+1i,jn
+
+Hc(ai, aj)
+ai{ci,ci+1} aj {cj ,cj +1}
+
+where each edge is described as the set
+
+Hc(ai, aj) = {x  Rn : xi = ai, xj = aj, xk  [ck, ck + 1] k = i, j}.
+We note that if two cubes of the same sign are adjacent, then they are connected through an edge or a subset of it. In analogy with the R3 case, we define the collection B+ of all sets  that are built as a finite union of cubes with the following two properties:
+· Rn\ is connected. · If c is a cube in B+ with a face in B+, then c must be a positive cube.
+We define B- in the same way only that the cubes with faces in  should be negative cubes.
+
+Engulf operation. Let C  B+. We define E(C) to be the set obtained by adding to C all the negative cubes that touch C, even if they share only one point with C. By
+
+ZERO SET OF MONOCHROMATIC RANDOM WAVES
+
+25
+
+construction E(C)  B-. If C  B-, the set E(C) is defined in the same form only that one adds positive cubes to C. In this case E(C)  B+.
+
+Join operation. Given C  B+  B- we distinguish two vertices using the lexicographic order. For C  B+  B-, let C = C  Zn be the set of its vertices. We let v+(C) be the largest vertex in C and v-(C) be the smallest vertex in C. Given the vertex v+(C) we define the edge e+(C) to be the edge in C that contains the vertex v+(C) and is parallel to the hyperplane defined by the x1, . . . , xn-2 coordinates. The edge e-(C) is defined in the same way.
+Given C1  B+ and C2  B+ we define J (C1, C2)  B+ as follows. Let C~2 be the translated copy of C2 for which e+(C1) coincides with e-(C~2). We "join" C1 and C2 as J (C1, C2) = C1  C~2.
+In addition, for a single set C we define J(C) = C, and if there are multiple sets
+C1, . . . , Cn we define J (C1, . . . , Cn) = J (C1, J (C2, J (C3, . . . J (Cn-1, Cn)))).
+
+Definition of the rough nested domains. Given a tree T we associate to each node v  T a structure Cv  Rn defined as follows. If the node v  T is a leaf, then Cv is a cube of the adequate sign. For the rest of the nodes we set Cv = J E(C(v,1)), . . . , E(C(v,N)) , where N is the number of children of the node v. We continue to identify the original structures E(C(v,j)) with the translated ones E~(C(v,j)) that are used to build Cv. After this identification,
+N
+Cv = E(C(v,j)).
+j=1
+
+Building the perturbation. Let v  T be a node with N children. We define the sets of edges Eext(Cv), Eint(Cv) and Ejoin(Cv) in exactly the same way as we did in R3 (see Section 4.2). We proceed to define a perturbation h : K  R, where
+
+K = Eext(Cv)  Eint(Cv)  Ejoin(Cv).
+vT
+The function h is defined by the rules A, B and C below. Let  : [0, ]  [-1, 1] be a smooth increasing function satisfying
+
+(0) = -1, (1/2) = 0 and (t) = 1 for t  1.
+
+We also demand
+
+ (0) = 0 and  (1/2)  1.
+
+(30)
+
+A) Perturbation on Eext(Cv). Let v  T and assume Cv  B-. We define h on every edge of Eext(Cv) to be 1. If Cv  B+, we define h on every edge of Eext(Cv) to be -1.
+B) Perturbation on Eint(Cv). Let Hc(ai, aj) be an edge that touches both Eext(Cv) and Eext(C(v, )) for some of the child structures C(v, ) of Cv. Assume Cv  B-. Then we know that we must have h|Eext(Cv) = 1 and h|Eext(C(v, )) = -1. Let
+
+26
+
+Y. CANZANI AND P. SARNAK
+
+xi1, . . . , xik be the set of directions in Hc(ai, aj) that connect Eext(Cv) and Eext(C(v, )). We let
+h|Hc(ai,aj) : Hc(ai, aj )  [-1, 1]
+be defined as
+
+ h(x1, . . . , xn) =  
+
+
+k
+(xim - cim )2 .
+m=1
+
+With this definition, since whenever x  Eext(C(v, )) we have xim = cim for
+
+all m = 1, . . . , k, we get h(x) = (0) = -1. Also, whenever x  Eext(Cv)
+
+we have that there exists a coordinate xim for which xim = cim + 1. Then, m(xim - cim)2  1 and so h(x) = 1. Note that h vanishes on the sphere
+
+S = {x  Rn :
+
+k m=1
+
+(xim
+
+-
+
+cim )2
+
+=
+
+1/4}
+
+and
+
+that
+
+h
+
+ 1 on S because of
+
+(30). If Cv  B+, simply multiply  by -1.
+
+C) Perturbation on Ejoin(Cv). Let v  T and assume Cv  B-. We set
+
+ h(x1, . . . , xn) =  2
+
+
+
+n-2
+
+xik
+
+-
+
+2cik +1 2
+
+2,
+
+k=1
+
+where ik ranges over the indices {1, . . . , n}\{i, j}. With this definition, when-
+
+ever x is at the center of the edge Hc(ai, aj) we have h(x) = (0) = -1. Also,
+
+if x  Hc(ai, aj) we have
+
+xk
+
+-
+
+2ck +1 2
+
+2 = 1/4 for some k, and so h(x) = 1.
+
+Also note that h vanishes on a sphere of radius 1/4 centered at the midpoint
+
+of Hc(ai, aj) and that the gradient of h does not vanish on the sphere because of (30). If Cv  B+, simply multiply  by -1
+
+Remark 10. By construction the function h is smooth in the interior of each edge. Furthermore, since according to (30) we have  (0) = 0 and  (1) = 0, the gradient of h vanishes on the boundaries of the edges in K. Therefore, the function h can be extended to a function h  C1() where   Rn is an open neighborhood of K.
+
+Given a tree T , let h  C1() be defined following Rules A, B and C and Remark 10, where   Rn is an open neighborhood of K. Since K is compact and Rn\K is connected, Theorem 7 gives the existence of f : Rn  R that satisfies
+
+-f = f
+
+and
+
+sup{|f - h| +
+
+f - h
+
+}
+
+1 100
+
+.
+
+K
+
+For  > 0 small set
+
+u := u0 + f.
+
+The definitions in Rules A, B and C are the analogues to those in dimension 3. For
+
+example, when working in dimension 3 on the edge e = {(0, 0, z) : z  [0, 1]}, we could
+
+have set
+
+h(0, 0, z) = (z)
+
+if e  Eint(Cv) with Cv  B-,
+
+ZERO SET OF MONOCHROMATIC RANDOM WAVES
+
+27
+
+and
+
+h(0, 0, z) = (2|z - 1/2|))
+
+if e  Ejoin(Cv) with Cv  B-.
+
+Note that all the edges in C are edges in K. Also, it is important to note that if two adjacent cubes have the same sign, then they share a subset of an edge in K.
+
+If two adjacent cubes are connected through a subset of Eext(Cv), then the cubes
+
+will be either glued or separated along that subset. This is because the function f is
+
+built to be strictly positive (approx. ) or strictly negative (approx. -) along the
+
+entire edge.
+
+If two adjacent cubes share an edge through which two structures are being joined,
+
+then they will be glued to each other near the midpoint of the edge. This is because
+
+f is built so that it has the same sign as the cubes in an open neighborhood of the
+
+midpoint of the joining edge.
+
+If two adjacent cubes in Cv of the same sign share a subset of an edge in Hc(ai, aj)  Eint(Cv), then with the same notation as in Rule B, there exists a subset of directions
+
+{xim1 , . . . xims }  {xi1 , . . . , xik } so that the set R = {x  Hc(ai, aj) : ximt 
+
+[cimt , cimt + 1] t = 1, . . . , s} is shared by the cubes. By construction, the cubes will be
+
+glued through the portion R1 of R that joins (cim1 , . . . , cims ) with the point (z1, . . . , zs)
+
+near the midpoint
+
+cim1
+
++
+
+1 2
+
+,
+
+.
+
+.
+
+.
+
+,
+
+cims
+
++
+
+1 2
+
+, while being disconnected through the portion
+
+R2 of R that joins the point (z1, . . . , zs) with (cim1 + 1, . . . , cims + 1). This is because
+
+f is prescribed to have the same sign as the cubes along R1, while taking the opposite
+
+sign of the cubes along R2.
+
+Let Cv  B-, with Cv = Nj=1E(C(v, )). Running a similar argument to the one
+
+given in R3 one obtains that all the cubes in Eext(C(v, ))\C(v, ) will glue to form a
+
+negative nodal domain v of u. We sketch the argument in what follows. All the
+
+negative cubes in Rn\Cv that touch Cv do so through an edge in Eext(Cv) since they
+
+will be at distance 1 from the children structures {C(v, )} . Since the perturbation f
+takes a strictly positive value (approx. +) along any edge in Eext(Cv), the negative cubes in Rn\Cv will be separated from those in in Cv. Simultaneously, for each ,
+
+all the cubes in E(C(v, ))\C(v, ) are glued to each other since they are negative cubes that touch Eext(C(v, )) and Eext(C(v, )) is a connected set on which the perturbation f takes a strictly negative value (approx. -). This gives that Eext(C(v, )) belongs to a negative nodal domain of u, and that the negative cubes in E(C(v, ))\C(v, ) are glued to the nodal domain after the perturbation is performed. Furthermore,
+
+two consecutive structures E(C(v, )) and E(C(v, +1)) are joined through an edge in Eint(Cv). This edge, which joins a negative cube in E(C(v, )) and a negative cube in E(C(v, +1)) has its boundary inside Eext(C(v, )). Since f is strictly positive (approx.
+
++) on Eext(C(v, )), we know that the parts of the two cubes that are close to the boundary will be disconnected. However, since the perturbation was built so that f
+
+is strictly negative (approx. -) at the midpoint of the edge, both negative cubes
+
+are glued to each other. In fact, one can build a curve  contained inside the nodal
+
+domain that joins Eext(C(v, )) with Eext(C(v, +1)). It then follows that all the cubes in
+
+Nj=1E(C(v, ))\C(v, ) are glued to each other after the perturbation is performed and they will form the nodal domain v of u containing n=1Eext(C(v, )). One can carry
+
+28
+
+Y. CANZANI AND P. SARNAK
+
+the same stability arguments we presented in Section 4.3 to obtain that at a local
+
+level there are no unexpected new nodal domains. For this to hold, as in the R3 case,
+
+the argument hinges on the fact that in the places where both u0 and f vanish, the
+
+gradient of f is not zero (as explained at the end of each Rule). Finally, Rule B is
+
+there to ensure that the topology of each nodal domain is controlled in the sense that
+
+when the cubes in Eext(C(v, ))\C(v, ) glue to each other they do so without creating unexpected handles. Indeed, the cubes in Eext(C(v, ))\C(v, ) can be retracted to the set
+
+N =1
+
+(v,
+
+)
+
+
+
+N -1 =1
+
+
+
+where (v, ) := v,
+
+
+
+N =1
+
+(v,
+
+,j)
+
+and
+
+{(v,
+
+, j) :
+
+j = 1, . . . , N }
+
+are the children of (v, ).
+
+The argument we just sketched also shows that the nodal domains v with v  T
+
+are nested as prescribed by the tree T . Indeed, claims (i), (ii) and (iii) in the proof of
+
+Theorem 2 are proved in Rn in exactly the same way we carried the argument in R3.
+
+References
+[AR] R. Abraham and J. Robbin. Transversal mappings and flows. Benjamin, New York (1967). [AT] R. Adler and J. Taylor. Random fields and geometry. Springer Monographs in Mathematics. Vol
+115 (2009). [BHM] R. Brown, P. Hislop and A. Martinez. Lower bounds on eigenfunctions and the first eigenvalue
+gap. Differential equations with Applications to Mathematical Physics. Mathematics in Science and Engineering (1993) 192, 1-352. [Car] L. Carleson. Mergelyan's theorem on uniform polynomial approximation. Mathematica Scandinavica (1965): 167-175. [CH] Y. Canzani, B. Hanin. C scaling asymptotics for the spectral projector of the Laplacian. Accepted for publication in The Journal of Geometric Analysis. Preprint available: arXiv: 1602.00730 (2016). [DX] F. Dai and Y. Xu. Approximation Theory and Harmonic Analysis on Spheres and Balls. New York: Springer (2013). [Li] E. Lima. The Jordan-Brouwer separation theorem for smooth hypersurfaces. American Mathematical Monthly (1988): 39-42. [EH] P. Erdo¨s and R. R. Hall. On the angular distribution of Gaussian integers with fixed norm. Discrete Math., 200 (1999), pp. 8794. (Paul Erdo¨s memorial collection). [EP] A. Enciso and D. Peralta-Salas. Submanifolds that are level sets of solutions to a second-order elliptic PDE. Advances in Mathematics (2013) 249, 204-249. [GR] I. Gradshteyn and M. Ryzhik. Table of integrals, series, and products. Academic Press (2007). [Kr] M. Krzysztof. The Riemann legacy: Riemannian ideas in mathematics and physics. Springer (1997) Vol. 417. [Meh] F. Mehler. Ueber die Vertheilung der statischen Elektricitt in einem von zwei Kugelkalotten begrenzten Krper. Journal fr Reine und Angewandte Mathematik (1868) Vol 68, 134150. [NS] F. Nazarov and M. Sodin. On the number of nodal domains of random spherical harmonics. American Journal of Mathematics 131.5 (2009) 1337-1357. [NS2] F. Nazarov and M. Sodin. Asymptotic laws for the spatial distribution and the number of connected components of zero sets of Gaussian random functions. Preprint arXiv:1507.02017 (2015). [Sel] A. Selberg. Harmonic analysis and discontinuous groups in weakly symmetric Riemannian spaces with applications to Dirichlet series. Journal of the Indian Mathematical Society 20 (1956): 47-87. [Sod] M. Sodin. Lectures on random nodal portraits. Lecture Notes for a Mini-course Given at the St. Petersburg Summer School in Probability and Statistical Physics (2012). [SW] P. Sarnak and I. Wigman. Topologies of nodal sets of random band limited functions. Preprint arXiv:1312.7858 (2013). [Wh] H. Whitney. Analytic extension of differentiable functions defined on closed sets. Transactions of the American Mathematical Society (1934) 36, 63-89.
+
+ZERO SET OF MONOCHROMATIC RANDOM WAVES
+
+29
+
+(Y. Canzani) University of North Carolina at Chapel Hill. E-mail address: canzani@email.unc.edu
+(P. Sarnak) Institute for Advanced Study and Princeton University. E-mail address: sarnak@math.ias.edu
+
+

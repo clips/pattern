@@ -1,0 +1,1234 @@
+Nonlinear response of biased bilayer graphene at terahertz frequencies
+Riley McGouran1 and Marc M. Dignam1 1Department of Physics, Engineering Physics and Astronomy,
+Queens University, Kingston, Ontario K7L 3N6, Canada (Dated: Dec 29, 2016)
+A density-matrix formalism within the length gauge is developed to calculate the nonlinear response of both doped and undoped biased bilayer graphene (BBLG) at terahertz frequencies. Employing a tight-binding model, we derive an effective two-band Hamiltonian with which we calculate the conduction and valence band dispersion, as well as their respective Bloch states. We then solve for the dynamic equations of the density matrix elements, allowing for the calculation of the intraband and interband current densities and the transmitted and reflected terahertz fields. We find that for undoped BBLG with a gap size of 4 meV, the reflected field exhibits a third harmonic amplitude that is 45% of the fundamental in the reflected field (0.07% of the incident field fundamental) for an incident 1 THz single-cycle pulse with a field amplitude of 2.0 kV/cm. We find for doped BBLG, although the dispersion becomes highly nonparabolic as a bias is applied, the third harmonic is a maximum of 8% of the fundamental in the reflected field (0.56% of the incident field fundamental) when there is no bias and diminishes with an increase in bias.
+
+arXiv:1701.00028v1 [cond-mat.mes-hall] 30 Dec 2016
+
+I. INTRODUCTION
+In recent years there has been intense research focused on both monolayer graphene (MLG), and unbiased bilayer graphene (UBLG). Much of this interest is due to the remarkable transport properties possessed by both of these materials. This is highlighted by very large carrier mobilities and thermal conductivities. In addition, its mechanical properties (stiffness, strength and flexibility) make it ideal as a basis for new composite materials, while its transparency to white light (95%) makes it ideal for flexible touch screen displays. It even has potential to serve in new energy applications, including batteries[1­ 10].
+Furthermore, the nonparabolic gapless electron energy bands found in MLG and UBLG lead to an intriguing nonlinear optical and terahertz (THz) response, with theoretical studies predicting that third-harmonic generation (THG) is expected to be observed[11­13]. Thus, a portion of the interest in MLG and UBLG arises from the fact that it may be used for THz harmonic generation. In a recent paper we found that for undoped, suspended UBLG, a third harmonic is generated that is 30% of the fundamental in the reflected field, for an incident 1 THz single-cycle pulse with a field amplitude of 1.5 kV/cm [13].
+Harmonic generation is only one of the reasons that MLG and UBLG are so appealing to researchers. Perhaps one of the most exciting properties of bilayer graphene is the ability to open a gap in its energy dispersion by applying an external DC bias perpendicular to the layers. We refer to this system as biased bilayer graphene (BBLG). The conduction and valence bands of BBLG do not touch at the Dirac point, and instead exhibit a gap, the size of which is controlled by the bias[14­ 17]. The ability to control the size of the gap makes BBLG the first semiconductor with a widely tunable gap, thus making it potentially very important to the modern fields of nanoelectronics and optoelectronics.
+The application of a bias to bilayer graphene results in
+
+a difference in the potential energy of the atoms in the top and bottom layers, thereby breaking the inversion symmetry of the lattice. The breaking of inversion symmetry by the bias leads to more than the opening of a band gap. The symmetry breaking also allows for a non-zero Berry curvature. It is well known that in the presence of an inplane electric field, an electron will acquire an anomalous velocity in a direction transverse to the field, and with magnitude proportional to the Berry curvature, (k), of the band structure[18, 19]. This provides an anomalous contribution to the intraband current density. We shall derive an explicit expression for the Berry curvature of BBLG, which allows for the calculation of the anomalous velocity, as well as valley currents - which are localized around the Dirac points within the first Brillouin zone. Additionally, we find that there is also an anomalous interband current, which is also a result of inversion symmetry breaking, and has not yet been reported in the literature.
+As in MLG and UBLG, the absorption of optical and THz radiation in BBLG can be characterized by interband and intraband transitions. For an external bias that only induces a gap on the order of a few meV, the low THz photon energy is sufficient to probe transitions between the valence and conduction bands (interband transitions) in undoped BBLG at low temperatures. These interband transitions will be strongly affected by the presence of an external bias as transitions will be greatly suppressed when the gap size is greater than the energy of the incident THz field. Additionally, the intraband current arising from the carriers in the conduction and valence bands will be affected by the distortion of the band dispersions resulting from the bias. For larger biases (corresponding to gap sizes of a few hundred meV), a 'sombrero' feature in the dispersion is manifest[14, 15, 20]. This feature serves to move the minimum of the bands away from the Dirac point.
+Previous theoretical studies of MLG and UBLG have suggested the presence of a strong nonlinearity at optical and THz frequencies[21­26]. Experiments have been per-
+
+2
+
+formed with the intent of observing THG in mono and mullti-layer graphene. It has been observed by using a 45-layer sample, however it has not yet been successfully observed in MLG or UBLG [27, 28]. In recent theoretical work on MLG and UBLG, it was shown that if the Fermi level is reduced to within only a few meV of the Dirac point, the magnitude of the interband current is comparable to the intraband current, and a strong nonlinearity in the interband current can arise [11, 13]. Similarly, we expect that the presence of a tunable gap in the band structure of BBLG may lead to a unique interplay between the interband and intraband current densities, and open the possibility to interesting higher order behavior.
+In this paper, we present a derivation of a two-band tight-binding model for the intraband and interband dynamics of undoped and doped suspended BBLG in response to a single-cycle pulse at 1 THz. We use this model to explore the dependency of the nonlinear response on a number of parameters. Specifically, we study the role of the external bias on third and higher harmonic generation. The current densities and the corresponding harmonics are numerically calculated for both undoped and doped BBLG. We find that the ratio of the amplitude of the third harmonic to the fundamental in the reflected field is larger for undoped BBLG with a gap size of 4 meV, than it is for UBLG under identical conditions. Finally, we examine the nonlinear response of doped BBLG with a number of gap sizes. We find that as the size of the gap increases, the third harmonic amplitude decreases; reaching a maximum for a gap size of zero.
+The paper is organized as follows. In section II, we first present the results of the tight binding model used to obtain the dispersions and eigenvectors corresponding to the low energy conduction and valence bands of BBLG. The eigenvectors allow us to determine expressions for the interband and intraband connection elements, as well as the Berry connections and curvatures of the conduction and valence bands. We then use these expressions to determine the dynamic equations for the density matrix, and the expressions for the intraband and interband current densities. In section III, we present the results of numerical simulations for both undoped and doped BBLG. The conclusions are presented in section IV.
+II. THEORY
+The calculations that we perform are based on a theoretical approach employing a density-matrix formalism in the length gauge (also known as the electric dipole gauge). A nearest-neighbor tight-binding model is used to treat the -electrons in the graphene, which are taken to provide the conduction electrons[29].
+
+II.1. Energy Bands
+
+The tight binding model we employ for BBLG makes use of the solutions found in the case of UBLG. Beginning with the unbiased bilayer Bloch functions [13], we obtain the eigenvalues and eigenvectors of BBLG by solving the characteristic equation for an effective two band Hamiltonian, obtained through the coupling of the lower energy bands: conduction band c1 and valence band v2, as outlined in Ref. [13].
+The tight-binding expression for the Bloch states is given by
+
+nk(r) = An (k)
+
+Cin (k) pz (r - R - ri) eik·R,
+
+iR
+(1)
+
+where An (k) is a normalization factor, n labels the con-
+
+duction and valence bands, and the sum is over the
+
+Bravais lattice vectors R. The sublattice coefficients,
+
+Cin (k), are associated with the four carbon atoms within the unit cell; the pz (r) are the 2pz orbitals of car-
+
+bon. The index i indicates a sum over the basis vectors
+
+rA1 , rB1 , rA2 , rB2 , which give the position of sublattice sites A1 and B1 in the top layer, and A2 and B2 in the
+
+bottom layer. Explicitly, they are given by rA1 = 0, rB1 = aox, rA2 = -aox and rB2 = 0.
+Formally, when an external bias is applied perpendic-
+
+ularly to the plane of the bilayer, we can express the
+
+Hamiltonian of BBLG in the basis of the sublattice Bloch
+
+states as
+
+ a f (k) t
+
+0
+
+t 
+
+Hb
+
+=
+
+  
+
+f
+
+(k) 0
+
+t
+
+a 0
+
+0 -a
+
+0 f (k) t
+
+ 
+
+,
+
+
+
+(2)
+
+t
+
+0 f (k) t -a
+
+where, due to the DC bias, the potential energy difference between the atoms in the top and bottom layers is 2a. The vector of the sublattice coefficients is given by
+
+kn = CAn1 (k) , CBn1 (k) , CAn2 (k) , CBn2 (k) .
+
+Here k is the crystal momentum and the function f (k) 
+
+(1 + e-ik·a1 + e-ik·a2 ) is a result of the nearest-neighbor
+
+intralayer electron hopping, where the ai are the primi-
+
+tive translation vectors of graphene, given explicitly by
+
+
+
+
+
+a1
+
+=
+
+3ao x 2
+
++
+
+3ao y, 2
+
+a2
+
+=
+
+3ao x 2
+
+-
+
+3ao y. 2
+
+(3)
+
+Here ao is the nearest-neighbor separation (ao 1.42 °A). Also, the intralayer hopping energy, t , and the interlayer hopping energy, t, are approximately equal to 3.03 eV and 0.3 eV, respectively [30, 31].
+We separate the BBLG Hamiltonian into two parts: Hb = Hu + V, where Hu is the Hamiltonian for unbiased bilayer graphene, and V is the matrix representing the potential due to the external bias,
+
+a 0 0 0 
+
+V
+
+=
+
+ 
+
+0 0
+
+a 0
+
+0 -a
+
+0 0
+
+. 
+
+(4)
+
+0 0 0 -a
+
+3
+
+Because photons in pulses at THz frequencies possess energies on the order of tens of meV or less, the interband carrier transitions resulting from THz absorption occur almost exclusively between the c1 and v2 bands (low energy bands). For all biases of interest in this work, the next lowest energy transitions between v2  c2 and v1  c1 occur at approximately 75 THz, which is a much higher frequency than we are considering here. Thus, we may obtain an effective biased Hamiltonian, Hb(2), in the basis of the low energy Bloch functions of UBLG (here the superscript (2) denotes that we use as our basis only the Bloch functions that correspond to the conduction and valence bands closest in energy to the Dirac point: c1 and v2).
+We take our trial variational wavefunction to be a linear combination of the low energy Bloch functions of UBLG:
+
+kb = aj(k) kj ,
+
+(5)
+
+j
+
+where the aj(k) are expansion coefficients that are determined by solving for the eigenvectors of Hb(2), and the
+kj are eigenstates of Hu where j takes on the values
+c1, v2. Explicitly, we find that in the original sublattice basis, the unbiased eigenstates are given by [13]
+
+
+
+-
+
+~-t ~
+
+1/2
+
+
+
+kc1
+
+=
+
+1
+
+  
+
+-
+
+2
+
+
+
+~+t ~
+~+t ~
+
+1/2 e-i 1/2 ei
+
+
+
+ 
+
+,
+
+
+
+
+
+(6)
+
+~-t 1/2
+
+~
+
+
+
+~-t 1/2
+
+
+
+~
+
+kv2
+
+=
+
+1
+
+ 
+
+ 2
+
+
+
+- -
+
+~+t ~
+~+t ~
+
+1/2 e-i 1/2 ei
+
+
+
+ 
+
+,
+
+
+
+
+
+(7)
+
+~-t 1/2
+
+~
+
+where ~(k) =
+
+t2 + 4|f (k) |2 and ei(k) =
+
+f (k) / |f (k)|. In Eqs. (6) and (7), we have suppressed
+
+the explicit k-dependencies for simplicity.
+
+The matrix elements of Hb(2) are then given by Hb(2)ij = ki| [Hu + V ] |kj , for i, j = {c1, v2}. Since the unbiased
+
+Hamiltonian Hu is diagonal in the basis of the Bloch
+functions |kj , the off-diagonal elements of Hb(2) will be due entirely to the potential V . Thus, our effective biased
+
+Hamiltonian takes the form
+
+Hb(2) =
+
+Huc1 c1
+
+0
+
+0 Huv2v2
+
++
+
+V c1c1 V c1v2 V v2c1 V v2v2
+
+(8)
+
+=
+
+E0(k)
+
+at ~(k)
+
+at ~(k)
+
+-E0(k)
+
+,
+
+where
+
+we
+
+have
+
+that
+
+V c1v2
+
+= V v2c1
+
+=
+
+at ~(k)
+
+.
+
+Here
+
+E0(k)
+
+is
+
+the energy of the low energy conduction band (c1) in the
+
+unbiased
+
+case:
+
+E0(k) =
+
+~(k)-t 2
+
+[13].
+
+We may now solve for the eigenvalues and eigenvectors
+of Hb(2). Doing so, we have for the dispersions of the biased conduction and valence bands
+
+Ecb1 (k) = Eb(k),
+
+Evb2 (k) = -Eb(k),
+
+(9)
+
+Eb(k) = E02(k) + S2(k),
+
+where
+
+we
+
+have
+
+defined
+
+S(k)
+
+
+
+at ~(k)
+
+.
+
+The
+
+calculated
+
+dis-
+
+persions are shown in Fig. 1 for two different bias values.
+
+As has been found by previous researchers[14, 16], there
+
+is an opening of a band gap in the presence of a non-zero
+
+bias. The 'sombrero' feature also becomes clearly present
+
+as the external bias is increased to larger values.
+
+FIG. 1. Energy bands of BBLG as a function of the crystal momentum k for two different biases. A gap between conduction and valence bands is present for both bias values (measured in meV); we see a flattening of the bands at the 40 meV bias.
+
+The corresponding eigenvectors for the biased conduction and valence bands are found by solving for the coefficients of the unbiased Bloch functions, aj(k), in Eq.(5). Solving for these coefficients allows us to express the eigenvectors explicitly as
+
+kbc1 = A(k) S(k) kc1 - (E0(k) - Eb(k)) kv2 , (10)
+
+kbv2 = A(k) (E0(k) - Eb(k)) kc1 + S(k) kv2 , (11)
+where A is a normalization constant given by
+
+1
+
+A(k) =
+
+.
+
+(12)
+
+2Eb(k)(Eb(k) - E0(k))
+
+It is easy to show that these eigenvectors are orthonormal: kbi kbj = ij. We can also show that in the limit a  0, these expressions for the Bloch functions of the biased conduction and valence bands reduce to the cor-
+responding unbiased Bloch functions, kc1 & kv2 , re-
+spectively. As was done in our study on unbiased bilayer graphene,
+we employ the length gauge in order to model the interaction of BBLG with THz radiation. This method avoids
+
+4
+
+low-frequency divergences that arise when using the velocity gauge [32, 33]. The Hamiltonian in the length gauge is expressed as H = H0 - er · E, where H0 is the effective Hamiltonian for BBLG (Eq. 8), e = -|e| is the charge of an electron, r is the electron position vector, and E(t) is the THz electric field at the graphene. For normally incident plane waves, the field is taken to be uniform over the graphene sheets.
+
+II.2. Connection Elements
+Modelling the carrier dynamics in BBLG requires the calculation of the connection elements between the different electron bands. These arise from the matrix elements of the position operator r, between the Bloch states of BBLG [11, 34]:
+
+n, k |r |m, k = (k - k )nm(k) + inmk(k - k ), (13)
+where the connection elements are defined as
+
+(2)2 i nm(k) = 
+
+d3run,k (r) kum,k (r) .
+
+
+(14)
+
+Here  is the volume of a unit cell and unk(r) is the periodic part of the Bloch function. We can evaluate this expression using the biased Bloch functions given in Eqs. (10) and (11). In these calculations we ignore the overlap of the wave functions on different atomic sites. To simplify notation, in all that follows we shall replace c1 with c and v2 with v and shall simply refer to them as conduction and valence bands.
+Due to the symmetry between the sublattices, the conduction and valence states in graphene are degenerate at two Dirac points, given by:
+
+4
+
+Kao =  y,
+
+33 8
+
+(15)
+
+K
+
+ao
+
+=
+
+ y. 33
+
+For energies close to the Dirac points - within a few hundred meV - we can expand the crystal momentum around the Dirac points as k = K + k and k = K + k, where k = kxx^ + kyy^. With this expansion, we find that the biased interband connection element between the conduction and valence bands, vbc(k), is given by
+
+vbc
+
+(K
+
++
+
+k)
+
+=
+
+E0 Eb
+
+vc(k)
+
+-
+
+iS 4Eb2
+
+(~ +
+
+2E0)
+
+k ~2
+
+k^,
+
+(16)
+
+where for simplicity, the explicit k-dependencies of
+
+Eb(k), E0(k), S(k) and ~(k) have been suppressed, and k is the magnitude of the crystal momentum k  |k|.
+
+Here we have defined the constant  = 4 2vF2 , where vF = 3a0t/2 is the Fermi velocity. We have also used
+the results of our calculations for the unbiased interband
+
+and intraband connection elements: i kv k kc =
+vc(k), and i kn k kn = nn(k) = 0, respectively[13]. Around the K-Dirac point we can express vc(k) as
+
+vc (K + k) =
+
+~ + t 2~
+
+ .
+k
+
+(17)
+
+In these expressions for the connection elements, k^ = cos()x^ + sin()y^ and ^ = -sin()x^ + cos()y^ are, respectively, the radial and angular unit vectors in cylindrical coordinates with the origin at the K-Dirac point. In comparison to that for UBLG, we find that the biased connection element has both ^ and k^ components (Eq. (16)). It is easy to show that in the limit a  0, we have that vbc(k)  vc(k), as expected. We shall see that the two component nature of the biased connection element leads to a significant interband current density contribution that is absent in the unbiased case.
+Next, we calculate the biased intraband connection elements. As discussed previously, these intraband connection elements are identical to Berry connections[18][19], and were shown to be zero in the case of UBLG [13]. However, in the presence of a non-zero bias, the intraband connections do not vanish. They are given explicitly by
+
+cbc(k)
+
+=
+
+S Eb vc(k),
+
+(18)
+
+vbv(k) = -cbc(k).
+
+To calculate the full nonlinear response of BBLG, we also require the expressions for the biased interband and intraband connection elements around the K -Dirac point. Explicitly, these are given by
+
+vbc (K
+
++
+
+k)
+
+=
+
+-
+
+E0 Eb
+
+vc(k)
+
+-
+
+iS 4Eb2
+
+(~ + 2E0)
+
+k ~2
+
+k^,
+
+(19)
+
+and
+
+cbc (K + k) = -cbc (K + k) ,
+
+(20)
+
+vbv (K + k) = -vbv (K + k) ,
+
+respectively. Thus, we find that the ^-component of the interband connection element, vbc(k), changes sign as we move from K  K , but the k^-component does not. We
+also find that both of the intraband connection elements
+change sign upon moving from K  K , as they only have components in the ^ direction.
+
+II.3. Berry Curvature
+The non-zero intraband connection elements lead directly to non-zero Berry curvatures of the respective bands. This is one of the factors that makes BBLG an interesting system to study. To calculate the Berry curvature of the conduction and valence bands, we simply
+
+5
+
+need to take the curl of the Berry connections of these bands: nn(k) = k × nb n(k). Explicitly, for the conduction band, we obtain for the Berry curvature around
+the K-point,
+
+S cc(k) = k × Eb vc(k),
+
+-S = 4Eb3~3
+
+2tEb2 + E0(2~ - t)(~ + t)
+
+z^.
+
+(21)
+
+From the relationship we have between the Berry connec-
+
+tions of the conduction and valence bands, we see that
+
+cc(k) = -vv(k). As a check, we can determine the
+
+Berry curvature in the limit of very small electron mo-
+
+mentum k. One can show in this limit that Eq. (21)
+
+reduces to
+
+2k2
+
+2
+
+lim cc(k) = -
+k0
+
+(k4 + 22)3/2 + 2
+
+z^,
+
+(22)
+
+where  = t/ vF , and  = a/ vF . The above approximation predicts a non-zero Berry curvature at the Dirac point, i.e., when k is zero. We find explicitly that it reduces to the value 2 2vF2 /t2 at the Dirac point, irrespective of the strength of the bias. We can see this in Fig. 2 where we plot Eq. (21) vs. the electron momentum for two different bias values. This differs from other calculations of the Berry curvature found in the literature, where the curvature is predicted to go to zero at the Dirac point[35]. Note that there is no contradiction in this because when a  0, the bands touch and so there is an ambiguity as to what the (degenerate) states are at k = 0. We will see later that the Berry curvature contributes a first order, anomalous contribution to the intraband current density around each Dirac point, as mentioned in the introduction.
+
+FIG. 2. Absolute value of the Berry curvature of the conduc-
+tion band in BBLG near the Dirac point. Results are given by
+Eq. (21), shown for biases of 4 and 40 meV. Each curvature has the value 2 2vF2 /t2 at the Dirac point ( k = 0), shown by the dotted black line.
+
+II.4. Current Density
+
+In order to calculate the current density in BBLG, we require the dynamic equations for the reduced density matrix elements. The dynamic equations for BBLG take the same form as those of UBLG [13] and are given by
+
+dnm(k)
+
+=
+
+e i E(t)
+
+·
+
+dt
+
+(nb l(k)lm(k) - nl(k)lbm(k))
+
+l
+
+e - E(t) ·
+
+knm(k) - inm(k)(nb n(k) - mb m(k))
+
+- inm(k)nm(k)
+
+- nm (k) - nmenqm(k) , nm (23)
+where n, m = {c, v}, nm(k) = [Enb (k) - Emb (k)]/ , and enqm(k) = fn(k, T )nm is the carrier population in equilibrium when n = m, and is zero otherwise; fn(k, T ) is
+the Fermi-Dirac distribution with a temperature T. In
+
+our numerical work, we model the populations of valence
+
+band vacancies (hh(k)) rather than valence band electrons (vv(k)), as this allows us to only include states near the Dirac point, which greatly reduces computa-
+
+tion time. The relationship between the two is simply,
+
+hh(k) = 1 - vv(k). Because scattering times in graphene are on the or-
+
+der of tens of femtoseconds [27][28], to accurately model
+
+the THz response we must take into account scattering
+
+processes. Following the approach used for MLG and
+
+UBLG[11, 13], we treat scattering phenomenologically.
+
+We introduce an interband decoherence time, nm, for the interband coherences, nm(k), where n = m. We assume the decoherence time to be independent of k. The
+
+populations, nn(k), we take to relax back to Fermi-Dirac thermal distributions, fn(k, T ), with relaxation times, n. As the simulation proceeds, we adjust the temperature of the Fermi-Dirac distribution so that the carri-
+
+ers relax to the correct total carrier populations at each
+
+time-step. We neglect interband relaxation since the time
+
+taken for the conduction band electrons to relax to the
+
+valence band is much longer than intraband scattering
+
+times[36].
+
+In our simulations we use a direct computational ap-
+
+proach to solve the above equations. To do so we put
+
+k on a grid and step through time using a Runge-Kutta
+
+algorithm. To facilitate this, we make use of balanced
+
+difference approximations to the gradients. Given the
+
+geometry of the graphene lattice and Brillouin zone, we
+
+employ a hexagonal grid with a uniform point density in
+
+k space.
+
+The expression for the current density in BBLG can
+
+now be determined using the dynamic equations for the
+
+density matrix elements. Following the formalism of
+
+Aversa and Sipe[34] the current density can be expressed
+
+as
+
+e
+
+J(t) = Tr {p(t)} .
+
+(24)
+
+m
+
+Using
+
+the
+
+fact
+
+that
+
+p m
+
+=
+
+1 i
+
+[r, H] ,
+
+and
+
+decomposing
+
+the
+
+6
+
+position operator into intraband and interband parts, r = ri + re, we can write this as[34]
+
+e J(t) = Tr {[r, H] (t)}
+i
+
+e
+
+= i
+
+n, k | [ri, H] (t) |n, k
+
+(25)
+
+nk
+
+e
+
++ i
+
+n, k | [re, H] (t) |n, k ,
+
+nk
+
+where the trace is over the single electron states, and (t) is the reduced density matrix with matrix elements nm(k). The decomposition of the position operator allows us to define the total current density as the sum of an intraband contribution, Ji, and an interband contribution, Je. Using our effective Hamiltonian, as well as the matrix elements of the position operator (Eq. 13), one may determine expressions for these contributions. The procedure is similar to that presented in recent work on MLG and UBLG[13, 37]. After considerable work, the intraband current density near the Dirac point can be shown to be given by
+
+e Ji =
+
+kEcb1 (k) - eE × c1c1 (k) (cc(k) + hh(k))
+
+k
+
+2e2
+
+-
+
+Re {cv(k)} E × (k)
+
+k
+
+2e2 -
+
+Re cv(k) (E · k) vbc(k)
+
+k
+
+- 2Im cv(k) E · cbc(k) vbc(k) , (26)
+
+where we have defined
+
+(k)  k - 2cbc(k) × vbc(k).
+
+(27)
+
+Next, we calculate the interband current density by taking the time derivative of the polarization density,
+
+Je
+
+=
+
+dPe , dt
+
+(28)
+
+where the polarization density is given by
+
+this degeneracy. However, in the case of BBLG, due to the nature of the connection elements and density matrix elements, it is not immediately obvious whether the current densities around each unique Dirac point are identical or not. To deal with this, in our simulation, we calculate the current densities around each individual Dirac point and combine the contributions.
+We consider a suspended graphene sample such as employed in experiments on MLG[28], and use the timedependent current densities to calculate the transmitted and the reflected THz fields, using a procedure identical to that used for MLG[37]. We have verified convergence in the nonlinear regime by changing the grid density, the extent of the grid, the time-step tolerance, and the polarization of the incident field.
+
+II.5. Linear Response
+
+Before considering the nonlinear response of BBLG, we first examine the linear response to an incident THz field. In order to calculate the linear response we need to calculate expressions for the first order density matrix elements. Once we have these, we may then use Eq. (26) to express the first order intraband current density as
+
+Ji(1) = 2e
+
+k
+
+ 
+
+
+E0
+
+-
+
+2S2 ~
+
+Eb
+
+k 2~
+
+(c1c)(k) + (h1h)(k)
+
++ eE × cc(k) (c0c)(k) + (h0h)(k) .
+(30) Here we have included the factor of 2 to account for spin degeneracy. We have also defined the difference between the zeroth order populations near the K and K -points as
+
+(n0n)(k) = (n0n)(K+k) - (n0n)(K +k), (31)
+
+and the sum of the first order populations near the K and K -points as
+
+(n1n)(k) = (n1n)(K+k) + (n0n)(K +k).
+
+(32)
+
+Pe = 2e Re vbc(k)cv(k) .
+
+(29)
+
+k
+
+This procedure is different than what is proposed in Eq. (24), and ultimately allows for the simplest calculation of the interband current density.
+The sums over k in the expressions for the intraband and interband current densities are restricted to a region near the K-Dirac point. We also need to take into account the current density near the K point. For MLG and UBLG, we found that due to the symmetry of the Brillouin zone, the current densities around both Dirac points are identical[13, 37]. To obtain the total current density in these cases, we simply multiplied the results calculated at the K-point by two in order to account for
+
+It is well known that if the band structure of a crystalline solid has a non-zero Berry curvature, the electrons in those bands will acquire a component to their velocity that is transverse to an applied electric field [19]. This component is commonly known as the anomalous velocity. We can see in Eq. (30) that there is a component of the intraband current density that is perpendicular to the direction of the field, the magnitude of which is proportional to the Berry curvature of the conduction band, cc(k). This contribution arises from the anomalous velocity of the electrons, and is equivalent to a Hall current. We see that there is a first order contribution to the anomalous intraband current density around each individual Dirac point, however, the full anomalous contribution goes to zero because the zeroth order population
+
+7
+
+difference, given by Eq.(31), vanishes. In this situation, the sum of the populations at each Dirac point, given by Eq. (32), goes to twice the population at one of the points. If one were able to introduce through optical or electrical means a population difference between the carriers at the two Dirac points so that Eq.(31) is non-zero, there exists the ability to change the direction and magnitude of the anomalous current contribution.
+As the anomalous contribution to the intraband current density goes to zero to first order, the sole first order contribution is due to the first term in Eq. (30). The first order populations of the conduction and valence bands, (n1n)(k), are proportional to the gradients of their respective Fermi-Dirac distributions, fn(k, T ). We can use this relationship to integrate Eq. (30) by parts. By changing the integration variable from k to ~ (k)  ~(k) - t, we arrive at our final expression for the first order intraband current density:
+
+
+
+Ji(1) = C(p)
+
+d~
+
+0
+
+Ei 2t2 Eb (~ + t)3
+
++
+
+(~ + t)(2~ + t) + 8S2 Eb2 - Ei2 ~ (~ + 2t)
+
+Eb3
+
+(~ + t)3
+
+× e-Eb + cosh(Eb) . cosh(EF ) + cosh(Eb) (33)
+Here we have defined the variable Ei  E0(~ + t) - 2S2 for simplicity. Also,  = kBT and EF is the Fermi level of the system. C(p) is a time and frequency-dependent coefficient that includes the electric field:
+
+C (p )
+
+=
+
+i|e|2E (p) e-ipt , 2 2 (p + i/c)
+
+and we take our field to be harmonic,
+
+E (t) = E (p) e-ipt.
+
+It is possible to show that in the limit that a  0, Eq. (33) is identical to the expression for the UBLG case [13].
+We follow the same approach for the interband current as we did for the intraband current; calculate the current near each Dirac point, then determine the contribution from both points combined. The first order polarization density near the K-point is given by Eqs. (29) and (16):
+
+Pe(1)(K) = 4e Re
+k
+
+E0 ~ + t ^ Eb 2~ k
+
+(34)
+
+-
+
+iS 4Eb2
+
+(~ +
+
+2E0)
+
+k ~2
+
+k^
+
+(c1v)(k)
+
+,
+
+where we have included the factor of 2 to account for spin degeneracy. The first order matrix element describing the coherence between conduction and valence band is given explicitly by,
+
+(c1v) (k) =
+
+eE · cbv(k)e-ipt (cv(k) - p - i/cv)
+
+(v0v) (k) - (c0c)(k)
+
+.
+
+(35)
+
+Here cv(k) = [Ecb(k) - Evb(k)]/ = 2Eb(k)/ , and the (n0n)(k) are the zeroth order populations of the conduction
+
+and valence bands. From Eq. (35), we can see that the
+
+first order coherence is proportional to the dot-product of
+
+the electric field with the interband connection element:
+
+E · cbv(k). As such, when converting the sum into an
+
+integral via the substitution, k  0,
+
+k
+
+
+
+1 (2)2
+
+dk,
+
+we must take care when calculating the integral over the
+
+angle, . To simplify our calculation of the interband po-
+
+larization density, let us define vbc(k)  R(k)^ - iI(k)k^, where R(k) and I(k) are the amplitudes of the real and imaginary parts of vbc(k), respectively,
+
+R(k) = E0
+
+~ + t
+
+1 ,
+
+Eb 2~ k
+
+(36)
+
+S
+
+k
+
+I(k) = 4Eb2 (~ + 2E0) ~2 .
+
+Our expression for the first order polarization density around the K-point is then given by,
+
+Pe(1)(K)
+
+=
+
+2|e|2
+
+e-ipt (2)2
+
+
+
+ 
+
+(v0v) (k) - (c0c)(k)
+
+kdk
+
+0
+
+ (cv(k) - p - i/cv)
+
+2
+× d R(k)^ - iI(k)k^ E · R(k)^ + iI(k)k^
+0
++ c.c.
+(37) Using the relations k^ = cos()x^ + sin()y^, ^ = -sin()x^ + cos()y^ and E = Exx^ + Eyy^, and integrating over , we obtain
+
+2
+d R(k)^ - iI(k)k^ E · R(k)^ - iI(k)k^
+
+0
+= E R(k)2 + I(k)2
+
+(38)
+
+- i2R(k)I(k) (Eyx^ - Exy^) .
+
+The last term in this integral can be expressed in terms of a cross product with the incident field by noting that Eyx^ - Exy^ = E × z^. Finally, simplifying once more by employing the relations,
+
+R(k)2 + I(k)2 = vbc(k) · vbc(k),
+
+(39)
+
+2iR(k)I(k)z^ = vbc(k) × vbc(k),
+
+(40)
+
+we can express the first order interband polarization density as,
+
+Pe(1)(K) = D(p)
+
+E
+
+0
+
+
+
+kdk
+
+vbc (k) (cv(k) -
+
+· vbc(k) p - i/cv
+
+)
+
+N
+
+(Eb)
+
+- E×
+
+ 0
+
+kdk
+
+vbc(k) × vbc(k) (cv(k) - p - i/cv
+
+)
+
+N
+
+(Eb
+
+)
+
++ c.c.
+
+(41)
+
+Here
+
+we
+
+have
+
+defined
+
+the
+
+coefficient
+
+D(p)
+
+=
+
+|e|2 2
+
+e-ipt.
+
+Also, we have defined the zeroth order population differ-
+
+ence between the valence and conduction bands as
+
+N (Eb) = (v0v) (k) - (c0c)(k)
+
+=
+
+sinh(Eb)
+
+(42) ,
+
+cosh(EF ) + cosh(Eb)
+
+Eq. (41) is interesting in the sense that even to first order, the incident field should induce an interband polarization density which has a component that is perpendicular to the direction of the field. There is therefore an anomalous interband current density around the Kpoint.
+Finally, by changing the integration variable from k to ~ (k), and putting in the full expression for vbc(k) given in Eq. (16), we obtain for the positive frequency portion of the interband polarization density around the K-point,
+
+Pe(1)(K) =  (p)(1)E (p) e-ipt,
+
+(43)
+
+where we define the elements of the first order susceptibility matrix  (p)(1) as,
+
+xx(p)(1) =
+
+|e|2  d~
+8 0
+
+E02
+
+(~ + 2t)
+
+Eb2 ~ (~ + t) (cv - p - i/cv)
+
++
+
+E0S2 (2~ + t)2 (~ + 2t) 2Eb4 (~ + t)3 (cv - p - i/cv)
+
+N (Eb)
+
+(44)
+
+xy(p)(1) =
+
+-i|e|2 8
+
+ 0
+
+d~
+
+Eb3
+
+E0S (2~ + t) (~ + (~ + t)2 (cv - p
+
+2t) - i/cv)
+
+(45)
+
+× N (Eb),
+
+yy(p)(1) = xx(p)(1), yx(p)(1) = xy(p)(1).
+
+(46)
+
+Here we have suppressed the explicit k-dependencies for simplicity. In the limit that a  0 (zero bias), we have that Eb  E0, and S  0. Therefore we recover the polarization density due to the low energy bands in UBLG[13].
+Identical to the cancellation of the anomalous intraband current contribution in Eq. (30), when we include both the K and K -point contributions to the interband current density, the anomalous interband current in Eq. (41) goes to zero when the contributions from around both Dirac points are added. This is due to the fact that I(k) has the same sign at each Dirac point but R(k) flips sign, resulting in the zeroth order population difference between K and K -points (Eq. (31)) which is zero. Thus, our full expression for the first order interband polarization should only include the diagonal elements of the susceptibility matrix,  (p)(1), multiplied by two to account for both Dirac points.
+
+8
+
+From the polarization density, it is simple to obtain an expression for the full first order interband current density including both K and K -point contributions. By taking a derivative with respect to time of Eq.(43), we have
+
+Je(1) = -2ip (p)(1)E (p) e-ipt =  (p)(1)E (p) e-ipt,
+
+(47)
+
+where the first order conductivity matrix is given by  (p)(1) = -2ip (p)(1), and only the diagonal elements of the susceptibility matrix contribute, given by Eqs. (44) and (46). The factor of two is due to the contribution from both Dirac points. We can now use Eq. (47) to compare to our computer simulation for low field amplitudes. We present the results of our simulations in the next section.
+
+III. SIMULATION RESULTS
+As was done for the case of UBLG [13], we employ a computer simulation to investigate the nonlinear response of BBLG to THz radiation. One of the major advantages provided by the simulation in the case of BBLG is its ability to examine the dependency of the nonlinear response on the size of the gap between the conduction and valence bands. This band gap is controlled via the external bias. Not only will interband transitions be affected by the gap size (due to the resonance frequency being gap dependent), intraband transitions will also be affected by the distortion of the bands (sombrero feature). The fields transmitted and reflected from the BBLG are calculated as a function of the current densities and the incident field. These fields are then spectrally analyzed to determine their frequency components. A signature of nonlinear behavior is the observation of high harmonic generation in the spectral composition.
+The results of the simulation for low field amplitudes are presented first. We compare these to our first order analytic expressions by showing the agreement between the linear conductivity calculated via both methods. Finally, we present simulation results which examine the higher order response of BBLG in the presence of an external bias, including both doped and undoped systems.
+
+III.1. Linear Results
+To begin, we compare the real part of the conductivity due to the interband current density, calculated by both the computer simulation and the closed form expression, Eq. (47), for bias values of 4 meV and 40 meV. This comparison is shown in Fig. 3 . Since we are comparing an undoped sample, the conductivity associated with intraband transitions is found to be highly suppressed due to the presence of the gap and so we do not include its contribution here. In both cases the scattering time is 50 fs and the temperature is 100 K. As our model for
+
+9
+
+BBLG is an effective two-band model, the features we see in the plot are due solely to transitions between the lower energy conduction and valence bands. One would expect the full four-band model to include features associated with the higher energy transitions - as we see in the case of UBLG [13]. In our case, we find that as the incident frequency goes to zero, the conductivity is zero for both bias values. As we increase the incident frequency (measured in THz), we find that the conductivity rises as we approach the resonance of the gap, and ultimately reaches a final value as we increase the frequency further.
+
+UBLG leads to a peak in the conductivity at that resonant frequency (75 THz) [13]. Finally, at even higher frequencies, the conductivity for a=40 meV reduces to the same value as found for a=4 meV. This value is given by 0.50, where 0 is the universal conductivity of UBLG, given by e2/2 . The reason it does not approach the full universal conductivity at high frequencies is due to the fact our model only considers the transition between the bands v2 and c1. The high-frequency limit of e2/4 is the same as that found for UBLG when we take into account only the low energy transitions[13]. If one were to include all the contributions from the higher energy transitions, the interband conductivity should approach 0 in the limit of large THz frequencies.
+
+III.2. Nonlinear Results
+
+FIG. 3. Comparison of the real part of the interband conductivity calculated by computer simulation and numerical integration of the closed form expression (Eq.(47)). Comparison is made at T =100 K, EF =0, and  =50 fs. Two different gap sizes are shown, resulting from a=4 meV and a=40 meV . Conductivity is measured in units of the universal conductivity of UBLG, 0 = e2/2 .
+The gap size of 8 meV (a=4meV), is approximately equivalent in energy to the photons in a 2 THz pulse. However, at a temperature of 100 K, the thermal energy of the carriers is also approximately 8 meV- equal to the size of the gap. Thus, the interband conductivity at this bias will be affected by thermal populations as well as the THz field driven transitions. We can compare this to the interband conductivity for a gap size of 80 meV (a=40 meV). A gap size of this value has a resonance frequency of approximately 20 THz. Due to this gap size being an order of magnitude greater than that for a=4 meV, the number of carriers injected by the THz field will be greatly reduced for low photon energies. This leads to a large suppression of the conductivity at lower frequencies compared to the 8 meV gap. Additionally, for a=40 meV we see a sharp rise in the conductivity at approximately 20 THz, which is resonant with the size of the gap. This feature is much more sharply peaked than the resonance feature for a=4 meV. This is due to the fact that the conduction and valence bands visibly flatten as the external bias is increased (see Fig. 1). This flattening leads to a larger number of states being available for the interband transition at this resonant frequency, which increases the spectral weight associated with this transition. This is similar to how the nesting of the conduction bands in
+
+We now present the results of our full simulations for the nonlinear THz response of BBLG. We have performed simulations for both doped and undoped samples. For the doped case, the incident field amplitude is held fixed and the external bias is set at a number of different values. As we increase the bias, we must increase the Fermi level in order to maintain a consistent carrier density for each case. This allows for a direct evaluation of how THG is affected by the band distortion. For undoped BBLG, we examine the response for a single bias of a=2 meV. In this case we keep the bias fixed and adjust the incident field amplitude. From these undoped results we can determine at which field amplitude we expect to observe the largest THG.
+In our simulations for both doped and undoped BBLG, we take the temperature to be 10 K and the scattering time to be 50 fs, which is a conservative value for the temperatures being considered. Our incident field is a sinusoidal Gaussian pulse with central frequency of 1 THz and full width at half maximum (FWHM) of 1 ps. This may be represented mathematically as
+
+Ei(t) = E0e-4log(2)
+
+t-t0 TF W HM
+
+2
+sin [2f0(t - t0)] ,
+
+(48)
+
+where t0 is the temporal shift and TF W HM is the full width at half maximum of the Gaussian pulse. The central frequency of the pulse is given by f0.
+For our undoped BBLG simulation, the external bias of a=2 meV corresponds to a band gap of 4 meV. The resonant frequency of a band gap this size is approximately 1 THz. Since the incident frequency of our field is on resonance with the band gap, we expect a significant interband current density. However, in the doped case we expect the interband current density to be diminished due to the large Fermi level of the system; the intraband current density will instead be dominant. These two distinct systems allow us to examine both the interband and intraband contributions to the nonlinear response of BBLG. We shall begin by looking at the undoped case.
+
+10
+
+III.2.1. Undoped BBLG: a=2 meV
+We begin by looking at the response of BBLG to incident THz fields with amplitudes ranging from 1.0-2.5 kV/cm, in the presence of an external bias, a=2 meV. In order to do so, we examine the interband and intraband current densities at these field amplitudes, followed by the reflected field and the spectral composition of this field (which is dependent on the current densities). In Fig. 4 we plot the interband and intraband current densities for four different incident field amplitudes (1.0, 1.5, 2.0, and 2.5 kV/cm). All current densities are normalized to the incident field such that, if the response were linear, these relative currents would be unchanged by an increase in incident field. This procedure allows for a comparison between the current densities at each field amplitude, as well as for the clear identification of any nonlinear behavior. In what follows, we refer to these as relative current densities. The relative intraband and interband current densities at these field amplitudes are shown in Figs. 4a and 4b, respectively.
+
+imately Je/Ji 0.5 for an incident field of 1.0 kV/cm [13], i.e. the interband current density is half that of the intraband. However, for BBLG we find that Je/Ji 4.0 for the 1.0 kV/cm field, i.e. the interband current density is approximately four times larger than the intraband. Thus, because it opens up a band gap, the application of an external bias allows us to control which current is dominant. Because the interband current contains most of the nonlinearity, we might expect that the application of this bias will increase the overall nonlinear response.
+We can see the effect that the interband and intraband currents have on the nonlinear response of BBLG by looking at the reflected field, as well as its spectral composition. The normalized time-dependent reflected fields for the different field amplitudes (1.0, 1.5, 2.0, and 2.5 kV/cm) are shown in Fig. 5a, and the spectral responses normalized to the peak amplitude of the reflected field at the fundamental frequency (1 THz) are presented in Fig. 5b.
+
+FIG. 4. Response of BBLG to a incident field of 1 THz at a number of field amplitudes and a bias a=2 meV. a) Intraband current density normalized to incident field amplitude. b) Interband current density normalized to incident field amplitude.
+Let us first examine the intraband current density. We see that as the field amplitude is increased, the intraband current density also increases. This is similar to the behavior of the intraband current density in MLG[11]. This increase arises due to the increase in carrier density from the interband injection of carriers. Since the photons in our 1 THz pulse are essentially resonant on the band gap of 4 meV, this injection of carriers is expected. We present the interband current density for BBLG in Fig. 4b. We clearly see large distortions in the interband current for all of the field amplitudes. Similar to what we observed in our earlier work for the UBLG case[13], we find that as the incident field increases, there is a decrease in the relative interband current density.
+We can also see the effect the external bias has on the ratio of the interband and intraband current densities. For UBLG we found that the ratio of interband to intraband current densities at peak amplitude was approx-
+
+FIG. 5. Response of BBLG to a incident field of 1 THz at a number of field amplitudes and a bias of a=2 meV. a) The reflected field in the temporal domain, normalized to the amplitude of the incident field. Value of Er/E0 is multiplied by 100 for clarity. b) The amplitude spectra of the reflected signal normalized to the peak at the fundamental frequency of 1 THz.
+In Fig. 5a we can see large distortion in the reflected fields for all of the field amplitudes. Furthermore, from the ratio of the current densities given above, it appears that the reflected field for BBLG is dominated by the interband current density, while for UBLG it is dominated by the intraband current density.
+We can see how the differences in the current ratios in biased and unbiased BLG might affect the nonlinear response by looking at the spectral composition of the reflected field for BBLG, in Fig. 5b. We find that at the lowest field amplitude of 1.0 kV/cm, we have a third harmonic signal of approximately 38% of the reflected spectral peak at the fundamental, which corresponds to an amplitude of 0.06% with respect to the fundamental in the incident field. The incident field of 2.0 kV/cm induces the largest third harmonic generation. At this amplitude, we find a maximum in the third harmonic of approximately 45% the spectral peak at the fundamental (0.07% of the fundamental in the incident field). For
+
+11
+
+larger field amplitudes the third harmonic is found to decrease again. This value of 45% of the reflected fundamental is significantly larger than the maximum of 30% we found in the UBLG case for a 1 THz pulse[13]. It is also larger than the value of 32% found for the third harmonic in MLG under the same conditions[11]. At these higher field amplitudes we also see the presence of a 5th harmonic, which reaches a maximum amplitude of approximately 27% of the fundamental in the reflected field (0.03% of the fundamental in the incident field) for the incident amplitude of 2.5 kV/cm.
+The fact that the interband current density plays a dominant role in determining the reflected field in BBLG, may explain the difference between THG in the BBLG and UBLG cases. The nonlinearity is greater in the interband current density, so that when the reflected field is dominated by the interband response, its spectral composition will have a greater percentage of high frequency components. This would explain why we see such a large third harmonic amplitude in the reflected field of BBLG. It also underscores the importance of the interplay between the intraband and interband current densities in producing THG.
+We shall next look at the results of simulations for doped BBLG. In this case the response will be due primarily to the intraband current.
+
+FIG. 6. Comparison of conduction band, c1, of BBLG for bias values of a = 0, 50, 150, and 200 meV. The dotted black line shows the band structure of MLG for comparison. At higher bias we see the presence of the 'sombrero' feature.
+
+III.2.2. Doped BBLG: E0 = 50 kV/cm
+In this section, we examine the case of doped BBLG. We take the incident field to be the 1 THz pulse given by Eq. (48), with an amplitude of 50 kV/cm. Instead of adjusting the field amplitude as we did for the undoped BBLG simulations, we will adjust the external bias value. We choose four different values of the bias at which to run simulations. These values provide us with a wide range of band structures, allowing us to determine what effect - if any - the curvature of the band has on the nonlinear behavior of doped BBLG. The structure of the conduction band is shown in Fig. 6 for the four different biases for which we ran simulations. Also shown in the same figure is the band structure of MLG (dotted black line), which has the characteristic linear dependence on the crystal momentum. As can been seen, the four bias values result in four distinct band structures. For a=0 meV, we recover the band structure of UBLG. At a=50 meV we see that a gap has been introduced, and there has been some flattening of the band structure. At a=150 meV we can clearly start to see the onset of the sombrero feature. For the largest bias of a=200 meV, the sombrero feature is well defined and the band gap is now very apparent. For each of these bias values the charge carrier density is held fixed at a value of 2.0 × 1012/cm2. Of course, for these simulations the size of the gap will not be as important since we are interested in mainly the intraband dynamics. However, the sombrero feature should be of great interest in this analysis.
+Since the interband current density in essentially neg-
+
+FIG. 7. Normalized intraband current density of BBLG in response to the 1 THz pulse with amplitude of 50 kV/cm for a number of different bias values, a = 0, 50, 150 and 200 meV. Intraband current density normalized to incident field amplitude is shown.The dotted black line shows intraband current density of MLG under identical conditions.
+ligible for the doping level considered, in Fig. 7 we only plot the relative intraband current densities for the four bias values. We also include the relative intraband current density of MLG for the same carrier concentration for comparison. One thing we notice is that as the bias is increased, the relative intraband current density decreases. From a maximum amplitude of approximately 350 µS at zero external bias, to a maximum of approximately 250 µS at a bias of 200 meV. The maximum relative current density in MLG at this carrier density is approximately 400 µS. It is also quite easy to see the presence of distortion in the intraband current density, for each of the bias values. The shape of this distortion appears to be similar for all biases considered. One might expect the distortions at the higher bias values (150 & 200 meV) to be of a different nature than those at lower biases. This expectation is based on the sombrero feature being present for large bias values. Certainly the motion of the electrons in the conduction band - which is the basis for our intraband current density - should be affected by this feature.
+We can visualize the effect the sombrero feature has on the intraband motion via a plot of the electron density in the conduction band, as shown in Fig. 8. For this simu-
+
+12
+
+FIG. 8. Normalized conduction electron density distribution in k-space for a bias of a=150 meV at (a) the initial thermal conditions, (b) at time t=1.55 ps , (c) at t=1.75 ps, (d) and at t=2.00 ps for a 50 kV/cm incident field. White lines indicate the position of the Dirac point.
+lation we used the bias value of a=150 meV, with which we are clearly able to see the sombrero feature present when the carriers are in equilibrium in Fig. 8a. Here we see that the density of carriers in the conduction band appears as a 'Fermi ring' in k-space. We are interested in what happens to the Fermi ring during the interaction with the incident THz field. In Fig. 8b we see the density at approx t=1.55 ps, after half of the incident pulse has passed. In this instant the distribution of carriers in the conduction band is driven to the left of the Dirac point by the incident field. What is interesting, is that the population has been 'split' in two by the sombrero feature; with half the carriers going above the feature, and half below. Fig. 8c shows the distribution at t=1.75 ps , at what is essentially its farthest position to the left of the Dirac point. We can see that as the carriers are driven passed the sombrero feature, they begin to merge again on the far side of it. Finally, in Fig. 8d we see the distribution at t=2.00 ps, when the carriers are moving back towards the Dirac point, and are in the process of forming the ring structure once again. The distribution then settles back into thermal equilibrium (Fig. 8a) once the pulse leaves the system. Once again, we can determine the effect this 'splitting' of the carrier density has on the nonlinear behavior by looking at the the normalized time-dependent reflected fields for the different bias values, shown in Fig. 9a, along with the spectral responses normalized to the peak amplitude at the fundamental frequency (1 THz), shown in Fig. 9b.
+Looking at first the reflected field, we see that it is almost 180 degrees out of phase with the intraband current density; which is expected since the interband current is negligible in this case. The maximum amplitude occurs at a bias of a=0 meV, i.e when no external bias is present. The value obtained is approximately 3.5 kV/cm for an incident field of 50 kV/cm. We can compare this with the maximum value of 4.0 kV/cm found in MLG at the same incident field amplitude. In terms of the
+
+FIG. 9. Response of BBLG to a incident field of 1 THz at a field amplitude of 50 kV/cm and bias values a = 0, 50, 150 and 200 meV. a) The reflected field in the temporal domain, normalized to the amplitude of the incident field. Value of Er/E0 is multiplied by 100 for clarity. b) The amplitude spectra of the reflected signal normalized to the peak at the fundamental frequency of 1 THz. In both plots, dotted black line shows response of MLG under identical conditions
+visual distortions in the reflected field, the sombrero feature surprisingly had little effect, other than to decrease the overall maximum amplitude. The shape of the distortions is relatively the same for all bias values (and even MLG).
+We can determine the nonlinear behavior by examining the spectral composition of the reflected fields for these bias values. This is shown in Fig. 9b. It is immediately clear from this plot that the maximum third harmonic, normalized to the peak amplitude at the fundamental frequency (1 THz), is given by the response of MLG; the maximum value is approximately 10% of the fundamental in the reflected field. This may not be too surprising, as the linear band structure of MLG has been shown to produce highly nonlinear effects [11][37][12]. More surprising, is the fact that the second largest third harmonic amplitude ( 8% of the reflected fundamental) arises from the case of zero external bias - or the UBLG system. This is surprising in the sense that one would think the sombrero feature - and the splitting effect it has on the intraband motion - would lead to THG that is greater than would be seen in the absence of this feature. This does not seem to be the case for the third harmonic at least, as the bias values of 150 and 200 meV correspond to third harmonic amplitudes of approximately 6% and 7% of the fundamental amplitude in the reflected field, respectively.
+However, for all of the bias values considered in the doped case, we find that the ratio of the third harmonic amplitude to the fundamental amplitude in the incident field is larger than that found in the undoped case. This is due to the fact that the ratio of the reflected field to the incident field is almost two orders of magnitude larger in the doped case ( Fig. 9a). Specifically, we find that for the four different bias values - a = 0, 50, 150 and 200 meV - the third harmonic amplitudes are approximately 0.56%, 0.40%, 0.25%, and 0.30% of the funda-
+
+13
+
+mental amplitude in the incident field, respectively.
+IV. SUMMARY
+We have presented the dynamic equations and results of simulations of the nonlinear response of undoped and doped BBLG at THz frequencies. The central goal of this work was to determine the role that the external bias plays in the nonlinear response. To model the response, a theoretical model was developed based on the dynamic equations of density matrix elements within the basis of an effective Hamiltonian. This allowed for the calculation of the eigenvalues and eigenvectors of BBLG, as well as the interband connection elements, Berry connections and Berry curvatures of the band structure. Expressions for interband and intraband current densities were also derived.
+Solutions to the density matrix dynamic equations were determined through the use of simulation. These solutions were then applied to the study of high harmonic generation in undoped and doped BBLG for a number of external bias values. The undoped system allowed us to investigate the interplay between interband and intraband dynamics, and what effect it has on THG. The doped system allowed us to determine whether or not the unique band structure of BBLG - specifically the
+
+sombrero feature - has any influence on the nonlinear behavior.
+Our results show that for undoped BBLG, the largest third harmonic amplitude for a 1 THz single-cycle pulse was found to be 45% of the peak fundamental amplitude in the reflected field (0.07% of the fundamental in the incident field) for an external bias of 2 meV. We also found that the ratio of the interband and intraband current densities is affected by the value of the external bias, and that this ratio may play an important role in THG. Finally, we showed that for a doped system, the amplitude of the third harmonic reaches a maximum of 8% of the fundamental in the reflected field (0.56% of the fundamental in the incident field) for zero bias, and decreases as we increase the external bias.
+To experimentally observe the high harmonics we predict for BBLG, one must consider the dynamic range of the THz spectrometers - defined as the ratio of the frequency dependent signal strength to the detected noise floor[38]. For a 1 THz incident field of 1.0 kV/cm, we find the peak amplitude of the reflected field from undoped BBLG to be approximately 1.7 V/cm (55 dB less than the incident field). Thus, a detection technique that allows for a dynamic range larger than 55 dB is required for the measurement of the reflected signal. This can be achieved, as a very high dynamic range of 90 dB has recently been reported[39].
+
+[1] K. S. Novoselov, A. K. Geim, S. V. Morozov, D. Jiang, M. Katsnelson, I. V. Grigorieva, S. V. Dubonos, and A. A. Firsov, Nature 438, 197 (2005).
+[2] S. V. Morozov, K. S. Novoselov, M. I. Katsnelson, F. Schedin, D. C. Elias, J. A. Jaszczak, and A. K. Geim, Physical Review Letters 100, 016602 (2008).
+[3] A. K. Geim and K. S. Novoselov, Nature Materials 6, 183 (2007).
+[4] A. K. Geim, science 324, 1530 (2009). [5] M. J. Allen, V. C. Tung, and R. B. Kaner, Chemical
+reviews 110, 132 (2009). [6] K. Novoselov, Reviews of Modern Physics 83, 837 (2011). [7] K. S. Novoselov, V. Fal, L. Colombo, P. Gellert,
+M. Schwab, K. Kim, et al., Nature 490, 192 (2012). [8] J. J. Yoo, K. Balakrishnan, J. Huang, V. Meunier,
+B. G. Sumpter, A. Srivastava, M. Conway, A. L. Mohana Reddy, J. Yu, R. Vajtai, et al., Nano letters 11, 1423 (2011). [9] H. Wang, T. Maiyalagan, and X. Wang, Acs Catalysis 2, 781 (2012). [10] G. Kucinskis, G. Bajars, and J. Kleperis, Journal of Power Sources 240, 66 (2013). [11] I. Al-Naib, J. E. Sipe, and M. M. Dignam, Physical Review B 90, 245423 (2014). [12] I. Al-Naib, M. Poschmann, and M. M. Dignam, Physical Review B 91, 205407 (2015). [13] R. McGouran, I. Al-Naib, and M. M. Dignam, Physical Review B 94, 235402 (2016). [14] E. McCann, Physical Review B 74, 161403 (2006). [15] E. V. Castro, K. Novoselov, S. Morozov, N. Peres, J. L.
+
+Dos Santos, J. Nilsson, F. Guinea, A. Geim, and A. C. Neto, Physical Review Letters 99, 216802 (2007). [16] A. C. Neto, F. Guinea, N. M. Peres, K. S. Novoselov, and A. K. Geim, Reviews of modern physics 81, 109 (2009). [17] E. McCann and M. Koshino, Reports on Progress in Physics 76, 056503 (2013). [18] M.-C. Chang and Q. Niu, Physical Review B 53, 7010 (1996). [19] D. Xiao, M.-C. Chang, and Q. Niu, Reviews of Modern Physics 82, 1959 (2010). [20] E. J. Nicol and J. P. Carbotte, Physical Review B 77, 155409 (2008). [21] S. A. Mikhailov, EPL (Europhysics Letters) 79, 27002 (2007). [22] S. A. Mikhailov, Microelectronics Journal 40, 712 (2009). [23] E. Hendry, P. J. Hale, J. Moger, A. K. Savchenko, and S. A. Mikhailov, Physical Review Letters 105, 097401 (2010). [24] K. L. Ishikawa, Physical Review B 82, 201402 (2010). [25] A. R. Wright, X. G. Xu, J. C. Cao, and C. Zhang, Applied Physics Letters 95, 072101 (2009). [26] Y. S. Ang, S. Sultan, and C. Zhang, Applied Physics Letters 97, 243110 (2010). [27] P. Bowlan, E. Martinez-Moreno, K. Reimann, T. Elsaesser, and M. Woerner, Physical Review B 89, 041408 (2014). [28] M. J. Paul, Y. C. Chang, Z. J. Thompson, A. Stickel, J. Wardini, H. Choi, E. D. Minot, B. Hou, J. A. Nees, T. B. Norris, et al., New Journal of Physics 15, 085019 (2013).
+
+14
+
+[29] S. D. Sarma, S. Adam, E. H. Hwang, and E. Rossi, Reviews of Modern Physics 83, 407 (2011).
+[30] L. Malard, J. Nilsson, D. Elias, J. Brant, F. Plentz, E. Alves, A. C. Neto, and M. Pimenta, Physical Review B 76, 201401 (2007).
+[31] L. Zhang, Z. Li, D. N. Basov, M. Fogler, Z. Hao, and M. C. Martin, Physical Review B 78, 235408 (2008).
+[32] K. S. Virk and J. E. Sipe, Physical Review B 76, 035213 (2007).
+[33] D. J. Moss, E. Ghahramani, J. E. Sipe, and H. M. Van Driel, Physical Review B 41, 1542 (1990).
+[34] C. Aversa and J. E. Sipe, Physical Review B 52, 14636
+
+(1995). [35] F. Zhang, A. H. MacDonald, and E. J. Mele, Proceedings
+of the National Academy of Sciences 110, 10546 (2013). [36] K. Tielrooij, J. Song, S. A. Jensen, A. Centeno, A. Pes-
+quera, A. Z. Elorza, M. Bonn, L. Levitov, and F. H. Koppens, Nature Physics 9, 248 (2013). [37] I. Al-Naib, J. E. Sipe, and M. M. Dignam, New Journal of Physics 17, 113018 (2015). [38] P. U. Jepsen and B. M. Fischer, Optics letters 30, 29 (2005). [39] N. Vieweg, F. Rettich, A. Deninger, H. Roehle, R. Dietz, T. Go¨bel, and M. Schell, Journal of Infrared, Millimeter, and Terahertz Waves 35, 823 (2014).
+
+

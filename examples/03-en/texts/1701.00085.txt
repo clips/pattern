@@ -1,0 +1,1134 @@
+arXiv:1701.00085v2 [hep-th] 16 Jan 2017
+
+Anomalous transport and massive gravity theories
+Eugenio Meg´ias1,2
+1Max-Planck-Institut fu¨r Physik (Werner-Heisenberg-Institut), F¨ohringer Ring 6, D-80805, Munich, Germany 2Departamento de F´isica Te´orica, Universidad del Pa´is Vasco UPV/EHU, Apartado 644, 48080 Bilbao, Spain
+E-mail: emegias@mppmu.mpg.de
+Abstract. We review the Kubo formulae relevant to study anomalous transport properties of relativistic fluids. We apply this formalism to perform a computation of the transport coefficients in a holographic massive gravity model including vorticity and external electromagnetic fields. We find an interesting phase in which the electric DC conductivity is negligible, while the anomalous conductivities turn out to be nonvanishing.
+1. Introduction Quantum anomalies are one of the most intriguing properties of relativistic field theories [1]. In the past few years it has been extensively studied the role played by quantum anomalies in the hydrodynamics of relativistic fluids. The hydrodynamical systems should obey the conservation laws of the energy-momentum tensor and spin one currents. In presence of anomalies the currents are no longer conserved, and this has important consequences in the constitutive relations for hydrodynamics. Two relevant phenomena induced by anomalies appear at first order in the hydrodynamical expansion: the chiral magnetic effect, which is the responsible for the generation of an electric current parallel to a magnetic field [2], and the chiral vortical effect, in which the electric current is induced by a vortex [3]. It is believed that these phenomena can produce observable effects in heavy ion physics [4], as well as in condensed matter systems [5]. It has been proposed in the literature several methods to compute the transport coefficients from a microscopic theory, either dissipative or non-dissipative, including kinetic theory [6], Kubo formulae [7, 8, 9], diagrammatic methods [10], fluid/gravity correspondence [11, 12, 13], and the partition function formalism [14, 15, 16, 17].
+In addition to anomalies, there are other sources of non-conservation of the currents. In this context it is worth mentioning disorder as a very interesting property of some condensed matter systems [18]. Physical systems affected by disorder include real-world crystals with impurities, and the disorder phenomena can be manifested in the form of metal-insulator transitions [19]. From a quantum field theory perspective, disorder has to do with explicit breaking of translation invariance, so that it leads to momentum dissipation and the conservation of the energymomentum tensor is modified. The study of disorder is particularly interesting in holography, as the AdS/CFT correspondence is a powerful tool that might help to establish some universal properties of these systems. Several holographic massive gravity models in AdS spacetimes have been recently proposed as a new and interesting approach to tackle this problem [20, 21]. It
+
+has been studied in these models some dissipative transport coefficients, like the DC electric conductivity, which turns out to be decreasing when disorder increases.
+In this work we will review the Kubo formalism to study anomalous transport in hydrodynamics. In a second step, this formalism will be applied to study anomalous transport phenomena in a massive gravity model. We will contrast the result for the DC electric conductivity, with the one obtained for anomalous conductivities.
+
+2. Hydrodynamics of relativistic fluids Hydrodynamics is a useful approach to study many phenomena for physical systems out of equilibrium. It can be applied when the mean free path of particles is much shorter than the characteristic size of the system. The basic ingredients are the constitutive relations, which are expressions of the energy-momentum tensor and the charge currents in terms of fluid quantities [22],
+
+T µ = ( + P )uµu + P gµ + T µ diss & anom , J µ = nuµ + J µ diss & anom .
+Here  is the energy density, P the pressure, n the charge density and uµ the local fluid velocity. The equilibrium contributions are well known in the literature for many physical systems; however there are extra terms in the constitutive relations which lead to dissipative and anomalous effects. These extra contributions are in general difficult to compute, and the standard approach in hydrodynamics is to organize them in a derivative expansion, also called hydrodynamic expansion [12, 13, 23, 24]. In the Landau frame, defined as the one in which the energy flux vanishes at rest, the hydrodynamic expansion at first order in derivatives reads
+
+T µ diss & anom
+
+=
+
+-P µP 
+
+D
+
+u
+
++
+
+D
+
+u
+
+-
+
+2 3
+
+g
+
+Du
+
+- P µDu + · · · ,
+
+(1)
+
+J µ diss & anom = -T P µ D
+
+µ T
+
++ Eµ + BBµ + Vµ + · · · ,
+
+(2)
+
+where P µ = gµ +uµu is the projector in the space orthogonal to the fluid velocity, Eµ = F µ u
+
+and
+
+Bµ
+
+=
+
+1 2
+
+µ
+
+u
+
+F
+
+are
+
+the
+
+electric
+
+and
+
+magnetic
+
+fields
+
+respectively,
+
+with
+
+the
+
+field
+
+strength
+
+of the gauge field defined as Fµ = DµA - D Aµ, and µ = µuDu is the vorticity.
+
+The shear  and bulk  viscosities play a prominent role in heavy ion experiments, as they are
+
+dissipative coefficients that are responsible for most of the entropy production of the quark gluon
+
+plasma during the collision, see e.g. [25]. The electric conductivity  is also dissipative, and its
+
+effects is to generate an electric current in the medium induced by an external electric field.
+
+Finally, the coefficients B and V are the so-called chiral magnetic [2] and chiral vortical [3]
+
+conductivities respectively, and they lead also to an electric current induced, either by an external
+
+magnetic field, or by a vortex in the fluid. As we will explain in Sec. 3, the coefficients B and
+
+V receive contributions from quantum anomalies, so that we will refer to them as anomalous
+
+conductivities.
+
+In order to understand the (non)dissipative character of these transport coefficients, let us
+
+study their time reversal T properties. The second law of thermodynamics states that the
+
+entropy should increase with time, i.e.
+
+ t
+
+s
+
+>
+
+0
+
+.
+
+(3)
+
+One can see from Eq. (3) that only T -odd transport coefficients can contribute to the entropy
+
+production, while T -even coefficients cannot. On the one hand the electric current J is T -odd, while the electric field E is T -even, and both the magnetic field B and vorticity  are T -odd.
+
+Then, from a quick inspection of Eq. (2) one concludes that the electric conductivity  is T -odd, while the chiral magnetic and vortical conductivities, B and V , are T -even. This explains the dissipative properties of , and the non-dissipative characters of B and V . From a similar
+analysis of the parity P properties one finds that the chiral conductivities are related to P-odd
+transport, see e.g. [23].
+It is possible to observe non-dissipative effects also in the energy-momentum tensor under an appropriate choice of the frame (see Sec. 3.2), in particular the generation of an energy-flux
+induced by a magnetic field or by a vortex, i.e.
+
+T µ anom = B(Bµu + Buµ) + V (µu +  uµ) .
+
+(4)
+
+We will refer to B (V ) as chiral magnetic (vortical) conductivity of energy current. In the rest of this work we will study the transport coefficients , B, V , B and V . We will be especially focused on the chiral conductivities.
+
+3. Kubo Formulae On the basis of linear response theory, hydrodynamic transport coefficients can be extracted from the long-wavelength and low-frequency limits of some retarded Green functions, leading to the so called Kubo formulae. The Kubo formula for the chiral magnetic conductivity was derived in [26], while the one for the chiral vortical conductivity was studied in [7]. They read, respectively,
+
+B
+
+=
+
+lim
+pc0
+
+i 2pc
+
+a,b
+
+abc
+
+JaJb
+
+|=0 ,
+
+V
+
+=
+
+lim
+pc0
+
+i 2pc
+
+a,b
+
+abc
+
+J aT 0b
+
+|=0 .
+
+(5)
+
+Similar Kubo formulae have been derived for the transport coefficients related to the generation of energy flux, in particular B  abc T 0aJ b and V  abc T 0aT 0b , see [7, 27, 8, 9]. We will
+study in this section the result of the computation of Eq. (5) at weak and strong coupling.
+
+3.1. Weak coupling results
+Let us consider a theory of N free chiral fermions transforming under a global symmetry group G generated by matrices (TA)f g. The chemical potential for the fermion f is given by µf = A qAf µA, while the Cartan generator is HA = qAf f g where qAf are the charges. It has been performed in the literature the 1-loop computation of the chiral magnetic [26] and
+the chiral vortical [28] conductivities by using the Kubo formulae of Eq. (5). The results read,
+respectively,
+
+(B )AB
+
+=
+
+1 42
+
+dABC
+
+µC
+
+,
+
+(V )A
+
+=
+
+1 82
+
+dABC
+
+µB
+
+µC
+
++
+
+T2 24
+
+bA
+
+,
+
+(6)
+
+B,C
+
+where the coefficients
+
+dABC
+
+=
+
+1 2
+
+[tr(TA{TB , TC })R
+
+-
+
+tr(TA{TB , TC })L]
+
+,
+
+bA = tr (TA)R - tr (TA)L , (7)
+
+are related to the trace of the generators of the symmetry group. The subscripts R, L stand for the contributions of right-handed and left-handed fermions. One can easily identify dABC with the group theoretic factor related to the axial anomaly, which typically appears in the computation of the anomalous triangle diagram corresponding to three non-abelian gauge fields coupled to a chiral fermion. On the other hand, the coefficient bA corresponds to the mixed
+
+gauge-gravitational anomaly [29], appearing in the anomalous triangle diagram with one nonabelian gauge field and two insertions of the energy-momentum tensor coupled to a chiral fermion. This means that the chiral magnetic and chiral vortical conductivities are induced by chiral anomalies, either the axial anomaly or the mixed gauge-gravitational anomaly.
+Anomalies are also responsible for a non-vanishing value of the divergence of the currents, which in this case reads [30] 1
+
+DµJAµ = µ
+
+dABC 322
+
+FµB FC
+
++
+
+bA 7682
+
+R
+
+µ R
+
+
+
+.
+
+(8)
+
+A clear consequence of Eq. (8) is that anomalies modify the hydrodynamic equations, due to
+the non-conservation of the currents. So it is obvious that they should affect the hydrodynamic
+expansion with new contributions not appearing in absence of anomalies. We have identified above these new contributions at first order in derivatives as B and V in Eq. (2). 2
+
+3.2. Strong coupling results The Kubo formulae Eq. (5) have been computed in [27, 24, 32] at strong coupling within a Einstein-Maxwell model in 5 dim. In order to mimic the anomalous effects, the model is supplemented with pure gauge and mixed gauge-gravitational Chern-Simons terms. The action reads
+
+S
+
+=
+
+1 16G
+
+d5x-g
+
+R
+
++
+
+12
+
+-
+
+1 4
+
+FM
+
+N
+
+F
+
+MN
+
++MNP QRAM
+
+ 3
+
+FN P
+
+FQR
+
++
+
+RA
+
+BNP
+
+RB
+
+AQR
+
++ SGH + SCSK ,
+
+(9)
+
+where SGH is the usual Gibbons-Hawking boundary term, and SCSK is an extra boundary
+
+contribution needed to reproduce the mixed gauge-gravitational anomaly at a general
+
+hypersurface. A computation of the current with this model leads to
+
+J~µ = S = - - Aµ 16G
+
+F rµ
+
++
+
+4 3
+
+µ
+
+A
+
+F
+
+ Jµ + Kµ .
+
+
+(10)
+
+Note that J~µ is not gauge covariant, and we refer to it as consistent current. The covariant version of the current, denoted by Jµ, is the usual one appearing in the constitutive relations.
+
+From Eq. (10), an on-shell computation of the divergence of the covariant current leads to the
+
+anomaly 3
+
+DµJ µ
+
+=
+
+-
+
+1 16G
+
+µ
+
+F^µ F^ + R^ µ R^ 
+
+.
+
+(11)
+
+Finally, from a comparison with Eq. (8) one can identify the parameters  and  as the axial
+
+anomaly and mixed gauge-gravitational anomaly coefficients, respectively.
+
+The holographic computation of the transport coefficients with the Kubo formulae follows
+
+from the study of retarded propagators by using the AdS/CFT dictionary [33, 34]. In general
+
+lines, we split the metric and gauge field into a background and a linear perturbation
+
+gMN = gM(0)N +  hMN ,
+
+AM = A(M0) +  aM .
+
+(12)
+
+1 The gauge-gravitational anomaly is the statement that it is not possible to preserve at the same time the
+vanishing of the divergence of the energy-momentum tensor and of the chiral U (1) currents. 2 B and V in Eq. (4) are induced also by chiral anomalies. A computation of these conductivities at weak
+coupling in line with this section can be found in e.g. [8, 31]. 3 Quantities with hat (F^, R^, · · ·) refer to their induced four dimensional objects at a cut-off surface.
+
+Inserting these fields in the action and expanding up to second order in  one can obtain the second order action, and from there the desired propagators [35]. The equations of motion of the fluctuations should obey appropriate boundary conditions, in particular: i) regularity at the horizon; and ii) vanishing at the boundary, as the fluctuations cannot modify the boundary values, which are given by the background. There is some freedom in one of the boundary conditions which is related to the choice of frame. This corresponds to the particular definition of the local fluid velocity.
+We show in Table 1 the values of the anomalous conductivities computed with the holographic model of Eq. (9), corresponding to a system which realizes a single UA(1) symmetry. We display the results in three different frames. uµ can be taken to be proportional to: i) the energy flux T 0i = ( + P )ui (Landau frame), and ii) the charge current Ji = nui (Eckart frame). In addition, the laboratory rest frame is the natural frame in the field theory computation, see Sec. 3.1, and it seems to be related to the entropy current JSi anom = 0, see e.g. [36].
+
+Conductivities ( B )F
+(V )F (B )F (V )F
+
+Laboratory rest frame
+
+B
+
+=
+
+µ 42
+
+V
+
+=
+
+µ2 82
+
++
+
+T2 24
+
+B = V
+
+V
+
+=
+
+µ3 122
+
++
+
+µT 2 12
+
+Landau frame
+
+B
+
+-
+
+n +P
+
+B
+
+V
+
+-
+
+n +P
+
+V
+
+0
+
+0
+
+Eckart frame 0
+
+0
+
+B
+
+-
+
++P n
+
+B
+
+V
+
+-
+
++P n
+
+V
+
+Table 1. Anomalous conductivities contributing to the constitutive relations, Eqs. (2) and (4), for a theory with a single chiral UA(1) symmetry. The result at weak and strong coupling agree.
+
+Let us finally stress that the values of the anomalous conductivities at strong coupling
+coincide precisely with the ones obtained at weak coupling, and this a strong hint towards a non-renormalization theorem for the anomalous conductivities, see e.g. [28, 27, 32]. 4
+
+4. Transport properties in massive gravity
+It has been recently studied in [20, 21] some minimal models for massive gravity in 4 dim. The momentum relaxation is described through the Stueckelberg mechanism with Goldstone modes corresponding to scalars XI , which are related to spatial translations. In this section we will consider the model presented in [21]. We have explicitly checked that our conclusions are the same when considering the model of [20].
+
+4.1. The model In order to study anomalous transport in holographic massive gravity theories, one should consider the theory in odd dimensions, as only in these cases there is contribution from the chiral anomaly and we can introduce the corresponding Chern-Simons terms, see Eq. (9). We will consider the model of [21], and extend it to 5 dim. The action reads
+
+S
+
+=
+
+1 16G
+
+d5x-g
+
+R
+
++
+
+12
+
+-
+
+1 2
+
+
+
+M
+
+X
+
+I
+
+M
+
+X
+
+I
+
+-
+
+1 4
+
+F
+
+2
+
+-
+
+J 4
+
+M XI N XI F N
+
+LF LM
+
+,
+
+(13)
+
+with scalar fields XI = kiI xi, where i denotes spatial directions. Momentum relaxation is implemented by giving the scalar fields a vacuum expectation value. The term  J is a higher derivative coupling between the charge and the scalar field. The parameter k controls the degree
+4 Note, however, that in presence of dynamical gluons some renormalization effects have been observed in V , see [37, 38, 39, 40].
+
+of breaking of translational invariance, in particular when k = 0 one recovers the massless gravity theory. The equations of motion for the fields (gMN , AM , XI ) read
+
+0
+
+=
+
+GM N
+
+-
+
+6gM N
+
++
+
+1 2
+
+FM
+
+LFLN
+
+-
+
+1 8
+
+gM
+
+N
+
+F
+
+2
+
+-
+
+1 2
+
+M
+
+X
+
+I
+
+N
+
+X
+
+I
+
++
+
+1 4
+
+gM
+
+N
+
+(L
+
+X
+
+I
+
+)(LX
+
+I
+
+)
+
+-
+
+J 4
+
+X~ .F.F + F.X~ .F + F.F X~
+
+MN
+
++
+
+J 8
+
+gMN tr(X~ .F.F ) ,
+
+(14)
+
+0
+
+=
+
+N F NM
+
++
+
+J 2
+
+L(X~ .F )ML
+
+-
+
+J 2
+
+L(X~ .F )LM
+
+,
+
+(15)
+
+0=
+
+XI
+
++
+
+J 2
+
+M (N XI F N
+
+LF LM ) ,
+
+(16)
+
+where X~MN  M XI N XI , and the products are X~ .F.F = M XI N XI F N LF LM , etc. These equations can be solved with the black-brane ansatz:
+
+ds2
+
+=
+
+-f dt2
+
++
+
+dr2 f
+
++
+
+r2dx2
+
+,
+
+A = At dt .
+
+(17)
+
+We find the following solution:
+
+f
+
+=
+
+r2
+
+-
+
+M r2
+
++
+
+2 3r4
+
++
+
+k2 2
+
+,
+
+At
+
+=
+
+µ
+
+-
+
+ r2
+
+,
+
+(18)
+
+and the temperature and chemical potential can be related to the mass M and charge  of the
+
+black hole as
+
+T
+
+=
+
+1 2rh
+
+2M rh2
+
+- µ2 -
+
+k2 2
+
+,
+
+µrh2 =  ,
+
+(19)
+
+where rh is the black hole horizon corresponding to the largest solution of f = 0.
+
+4.2. Electric DC conductivity As shown in Eq. (2), the electric conductivity measures the electric current Jµ induced by an electric field Eµ. There are several methods to compute the DC conductivity in holography, but
+one of the most straightforward is the one proposed in [41]. We consider the following ansatz
+for the fluctuations in the gauge field and the metric:
+
+Ax = (Et + ax(r)) ,
+
+gtx = r2(1 + htx(r)) ,
+
+grx = r2(1 + hrx(r)) ,
+
+(20)
+
+and work to first order in . The fluctuation equations can be written now as
+
+0=
+
+r8f (htx
+
++
+
+5 r
+
+htx
+
+)
+
+0=
+
+k2 2
+
+1
+
+-
+
+2J 2 r6
+
+hrx -
+
+1
+
+-
+
+J k2 2r2
+
+E f r3
+
+,
+
+= k2(r6 + 2J 2) - (2r2 - k2J 2)(rf ax) ,
+
+1
+
+-
+
+J k2 2r2
+
+rf ax +
+
+2
+
+-
+
+J k2 r2
+
+
+htx .
+
+(21) (22) (23)
+
+The DC conductivity can be obtained from a solution of these equations with appropriate boundary conditions at the horizon and the boundary, as explained in Sec. 3.2. At this point we will skip the technical details, that will be presented in [42]. The final result for the DC conductivity reads
+
+DC
+
+=
+
+Jx E
+
+=
+
+rh
+
+1
+
+-
+
+J k2 2rh2
+
+1+
+
+1
+
+-
+
+J k2 2rh2
+
+4µ2 k2M (rh)
+
+,
+
+(24)
+
+with
+
+M (rh)
+
+=
+
+1
+
++
+
+2J 2 rh6
+
+.
+
+This formula is the equivalent to the result presented in Eq. (3.15)
+
+of [21], but in 5 dim. We plot in Fig. 1 the value of the DC conductivity from Eq. (24) as
+
+a function of the parameter k (left) and the temperature T (right) for different values of the
+
+parameter J . On the one hand, we observe that in the case J = 0, the conductivity is bounded
+
+from below, so that there is no insulating behavior without J . More important is the fact that
+
+when J = 0, there is a particular value k = k(J ) at which the DC conductivity vanishes, so
+
+that the theory behaves as an insulator. This property is one of the main results of [20, 21] in
+
+4 dim, and here we have reproduced it as well in 5 dim. Finally, we show in Fig. 2 the regime
+
+of parameters where the DC conductivity vanishes.
+
+2.0
+
+1.0
+
+1.5
+
+T0
+
+0
+
+0.01
+
+0.8
+
+0 k  3.67 0.01 0.05
+
+0.05 0.6
+
+1.0
+
+0.4
+
+0.5 0.2
+
+DC DC
+
+0.0
+
+0.0
+
+0
+
+2
+
+4
+
+6
+
+8
+
+10
+
+0.0
+
+0.1
+
+0.2
+
+0.3
+
+0.4
+
+0.5
+
+k
+
+T
+
+
+(A)
+
+
+(B)
+
+Figure 1. (A) DC conductivity at zero temperature as a function of k (normalized to the chemical potential µ). (B) DC conductivity (at fixed k/µ = 3.67) as a function of temperature (normalized to µ). These results are obtained with Eq. (24) for different values of the parameter J .
+
+Figure 2. Region in the plane (J , T /µ, k/µ) where the DC conductivity of Eq. (24) vanishes.
+
+4.3. Anomalous Transport
+In Sec. 4.2 we have studied some dissipative properties of the 5 dim massive gravity model. In order to study non-dissipative transport coefficients, we should introduce anomalous effects in the theory. As we explained in Sec. 3, anomalies are mimicked in the gravity side through ChernSimons terms. When extending the model of Eq. (13) with the Chern-Simons terms of Eq. (9), extra contributions appear in the equations of motion of the theory, in particular the term -2LP QR(M B F P LRB N) QR in the rhs of Eq. (14), and the terms MNP QR(FNP FQR + RA BNP RB AQR) in the rhs of Eq. (15). By using the following conventions
+
+ds2
+
+=
+
+du2 4u2f (u)
+
++
+
+1 u
+
+f (u)dt2 + 2hti(u)eipzdtdxi + dx2
+
+,
+
+(25)
+
+where i = x, y, the fluctuation equations are
+
+0
+
+=
+
+(aif ) - hti - ipij
+
+4aj + 
+
+12u22
+
++
+
+24 u
+
+(1
+
+-
+
+f)
+
++
+
+5k2
+
+htj
+
+,
+
+(26)
+
+0
+
+=
+
+hti
+
+-
+
+1 u
+
+hti
+
+-
+
+k2 4uf
+
+hti
+
+-
+
+uai
+
++
+
+ipij
+
+24(1 - f ) - 12u32 - 5uk2 aj+
+
++
+
+24 u
+
+(1
+
+-
+
+f
+
+)
+
+-
+
+32u22
+
+-
+
+6k2
+
+aj - 8u(uhti)
+
+.
+
+(27)
+
+Finally, from the procedure of Sec. 3 we get the result for the anomalous conductivities: 5
+
+B
+
+=
+
+lim
+p0
+
+i p
+
+JxJy
+
+= 4µ ,
+
+(28)
+
+V
+
+=
+
+lim
+p0
+
+i p
+
+J xT 0y
+
+= 2µ2 + 162T 2 ,
+
+(29)
+
+B
+
+=
+
+lim
+p0
+
+i p
+
+T 0xJ y
+
+= 2µ2 + 162T 2 + 2k2 ,
+
+(30)
+
+V
+
+=
+
+lim
+p0
+
+i p
+
+T 0xT 0y
+
+=
+
+
+
+4 3
+
+µ3
+
++
+
+322T
+
+2µ
+
+.
+
+(31)
+
+Some remarks deserve to be mentioned at this point. On the one hand the chiral magnetic and vortical conductivities of charge currents, B and V , and the chiral vortical conductivity of energy current, V , are the same as in the massless gravity theory, see Table 1. This means that these anomalous conductivities are not affected by translational breaking effects, and this constitutes one of the most important results of this work. From this property, together with the result of Sec. 4.2, we conclude that there is a regime in the theory in which the DC conductivity vanishes, but the anomalous conductivities do not vanish. A consequence is that one can study the anomalous effects of these systems in this regime in a clean way. Let us finally mention that, contrary to the other coefficients, the chiral magnetic effect of energy current, B, has some dependence on k. The interpretation of this result is currently in progress. 6
+5 We show in these expressions the explicit dependence on the parameters  and  for an easier identification of the axial and gauge-gravitational anomaly contributions. One can compare with the results of Table 1 by considering  = 1/(162) and  = 1/(3842) in Eqs. (28)-(31). 6 Several hypotheses might be proposed for the dependence of B on the parameter k, including renormalization or gauge artefacts, as well as lack of unitarity of the theory. In addition, one cannot exclude the possibility that this might be due to a pathology of the model. In fact, it has been studied in the literature the thermodynamics of some massive gravity theories, and an intriguing result has been found related to the non-vanishing value of the entropy in the ground state (T = 0, µ = 0), see [43].
+
+5. Discussion and conclusions In this work we have reviewed the role played by the chiral anomalies in the hydrodynamics of relativistic fluids. In particular, we have focused on the effects of external magnetic fields and vortices in the fluid, and characterized how the chiral anomalies contribute to the corresponding conductivities through the anomaly coefficients, Eq. (7). The anomalous conductivities turn out to be non-dissipative at first order in the hydrodynamic expansion.
+Massive gravity models have been introduced in the literature as holographic duals of disorder in condensed matter systems. By using the Kubo formalism, we have computed the transport properties in a massive gravity model with higher derivative corrections. We found an interesting regime in which the electric DC conductivity vanishes, but the anomalous conductivities turn out to be nonvanishing. Moreover, the anomalous transport seem to be unaffected by translational breaking effects. These and other issues will be addressed in more detail in a forthcoming publication [42].
+Acknowledgments I would like to thank M. Baggioli, S.D. Chowdhury, J.R. David, K. Jensen, O. Pujola´s and especially K. Landsteiner for valuable discussions. I thank the Instituto de F´isica Te´orica UAM/CSIC, Madrid, Spain, for their hospitality during the completion of the final stages of this work. Research supported by the European Union under a Marie Curie Intra-European fellowship (FP7-PEOPLE-2013-IEF) with project number PIEF-GA-2013-623006.
+References
+[1] Bertlmann R A Oxford, UK: Clarendon (1996) 566 p. (International series of monographs on physics: 91) [2] Fukushima K, Kharzeev D E and Warringa H J 2008 Phys. Rev. D78 074033 (Preprint 0808.3382) [3] Son D T and Surowka P 2009 Phys. Rev. Lett. 103 191601 (Preprint 0906.5044) [4] Keren-Zur B and Oz Y 2010 JHEP 06 006 (Preprint 1002.0804) [5] Basar G, Kharzeev D E and Yee H U 2014 Phys. Rev. B89 035142 (Preprint 1305.6338) [6] Arnold P B, Moore G D and Yaffe L G 2000 JHEP 11 001 (Preprint hep-ph/0010177) [7] Amado I, Landsteiner K and Pena-Benitez F 2011 JHEP 1105 081 (Preprint 1102.4577) [8] Landsteiner K, Megias E and Pena-Benitez F 2013 Lect. Notes Phys. 871 433­468 (Preprint 1207.5808) [9] Chowdhury S D and David J R 2015 JHEP 11 048 (Preprint 1508.01608) [10] Manes J L and Valle M 2013 JHEP 01 008 (Preprint 1211.0876) [11] Bhattacharyya S, Hubeny V E, Minwalla S and Rangamani M 2008 JHEP 0802 045 (Preprint 0712.2456) [12] Erdmenger J, Haack M, Kaminski M and Yarom A 2009 JHEP 01 055 (Preprint 0809.2488) [13] Banerjee N et al. 2011 JHEP 01 094 (Preprint 0809.2596) [14] Banerjee N, Bhattacharya J, Bhattacharyya S, Jain S, Minwalla S and Sharma T 2012 JHEP 09 046 (Preprint
+1203.3544) [15] Jensen K 2012 Phys. Rev. D85 125017 (Preprint 1203.3599) [16] Jensen K, Kaminski M, Kovtun P, Meyer R, Ritz A and Yarom A 2012 Phys. Rev. Lett. 109 101601 (Preprint
+1203.3556) [17] Megias E and Valle M 2014 JHEP 11 005 (Preprint 1408.0165) [18] Lee P A and Ramakrishnan T V 1985 Rev. Mod. Phys. 57 287­337 [19] Imada M, Fujimori A and Tokura Y 1998 Rev. Mod. Phys. 70 1039­1263 [20] Baggioli M and Pujolas O 2016 (Preprint 1601.07897) [21] Goutraux B, Kiritsis E and Li W J 2016 JHEP 04 122 (Preprint 1602.01067) [22] Kovtun P 2012 J. Phys. A45 473001 (Preprint 1205.5040) [23] Kharzeev D E and Yee H U 2011 Phys. Rev. D84 045025 (Preprint 1105.6360) [24] Megias E and Pena-Benitez F 2013 JHEP 05 115 (Preprint 1304.5529) [25] Bozek P 2010 Phys. Rev. C81 034909 (Preprint 0911.2397) [26] Kharzeev D E and Warringa H J 2009 Phys. Rev. D80 034028 (Preprint 0907.5007) [27] Landsteiner K, Megias E, Melgar L and Pena-Benitez F 2011 JHEP 09 121 (Preprint 1107.0368) [28] Landsteiner K, Megias E and Pena-Benitez F 2011 Phys. Rev. Lett. 107 021601 (Preprint 1103.5006) [29] Kumura T 1969 Prog. Theor. Phys. 42 1191­1205 [30] Alvarez-Gaume L and Witten E 1984 Nucl.Phys. B234 269 [31] Landsteiner K, Megias E and Pena-Benitez F 2014 Phys. Rev. D90 065026 (Preprint 1312.1204)
+
+[32] Landsteiner K, Megias E, Melgar L and Pena-Benitez F 2012 J. Phys. Conf. Ser. 343 012073 (Preprint 1111.2823)
+[33] Son D T and Starinets A O 2002 JHEP 09 042 (Preprint hep-th/0205051) [34] Herzog C P and Son D T 2003 JHEP 03 046 (Preprint hep-th/0212072) [35] Kaminski M, Landsteiner K, Mas J, Shock J P and Tarrio J 2010 JHEP 02 021 (Preprint 0911.3610) [36] Megias E, Landsteiner K and Pena-Benitez F 2013 Acta Phys. Polon. Supp. 6 45­51 [37] Hou D F, Liu H and Ren H c 2012 Phys. Rev. D86 121703 (Preprint 1210.0969) [38] Jensen K, Loganayagam R and Yarom A 2013 JHEP 02 088 (Preprint 1207.5824) [39] Jensen K, Kovtun P and Ritz A 2013 JHEP 10 186 (Preprint 1307.3234) [40] Golkar S and Son D T 2015 JHEP 02 169 (Preprint 1207.5806) [41] Donos A and Gauntlett J P 2014 JHEP 11 081 (Preprint 1406.4742) [42] Megias E , work in progress (2016). [43] Vegh D 2013 (Preprint 1301.0537)
+
+

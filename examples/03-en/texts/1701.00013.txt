@@ -1,0 +1,2001 @@
+arXiv:1701.00013v3 [cond-mat.str-el] 27 Dec 2017
+
+Magnetization jump in one dimensional J - Q2 model with anisotropic exchange
+Bin-Bin Mao,1 Chen Cheng,2 Fu-Zhou Chen,1 and Hong-Gang Luo1, 2,  1Center of Interdisciplinary Studies & Key Laboratory for Magnetism and Magnetic Materials of the Ministry of Education, Lanzhou University, Lanzhou 730000, China
+2Beijing Computational Science Research Center, Beijing 100193, China
+We investigate the adiabatic magnetization process of the one-dimensional J -Q2 model with XXZ anisotropy g in an external magnetic field h by using density matrix renormalization group (DMRG) method. According to the characteristic of the magnetization curves, we draw a magnetization phase diagram consisting of four phases. For a fixed nonzero pair coupling Q, i) when g < -1, the ground state is always ferromagnetic in spite of h; ii) when g > -1 but still small, the whole magnetization curve is continuous and smooth; iii) if further increasing g, there is a macroscopic magnetization jump from partially- to fully-polarized state; iv) for a sufficiently large g, the magnetization jump is from non- to fully-polarized state. By examining the energy per magnon and the correlation function, we find that the origin of the magnetization jump is the condensation of magnons and the formation of magnetic domains. We also demonstrate that while the experienced states are Heisenberg-like without long-range order, all the jumped-over states have antiferromagnetic or N´eel long-range orders, or their mixing.
+I. INTRODUCTION
+Quantum spin systems play a very important role in condensed matter physics, because of their underlying rich physics, such as the spin liquid state [1] and the valence-bond solid (VBS) state [2]. Typically, subjected to external magnetic field, the magnetization process of the spin systems can exhibit anomalous phenomena. Among them two kinds of nonanalytic magnetization behaviors have attracted many interests. One is the magnetization plateau, which usually accompanies with the spin excitation gap and has been found in many systems, such as the frustrated spin systems [3, 4], and quasi-periodic systems with nontrivial topological property [5, 6]. The other is the magnetization jump, which exhibits discontinuity in the magnetization density.
+The magnetization jump was first proposed by N´eel [7] in the system with the Ising-like anisotropic exchange interaction, and then also investigated in various of lattice spin systems in different dimensions [8­19]. Most of these model systems involve anisotropy or frustration. Experimentally, the magnetization jump was first confirmed in hydrated copper compound [20], and then was found in many kinds of magnetic materials [21­27]. However, understanding the mechanism of the magnetization jump in an intuitive way is still in exploration. Many explanations have been presented for this issue, such as the magnetic domain reorientation [21, 22, 27], the spin-flop transition [9, 18, 28], the formation of bound magnon pairs [12], and the macroscopically large degeneracy at the critical value of the external magnetic field [11, 29].
+Recently, field driven phase transition has been proposed in one-dimensional (1D) J -Q2 model [30, 31]. This model was first introduced by Sandvik [32] to construct a spin valence-bond-solid (VBS) state without frustration. In the presence of external magnetic field, the numerical results by employing the exact diagonalization and the stochastic series expansion quantum Monte Carlo (QMC) method [33] show that the magnetization curve of the model displays a sharp jump from a finite value to the saturated magnetization density at certain critical magnetic field. In their work, the origin of the magnetization jump is explained as the onset of attractive interactions between magnons, according to the analytical results for two magnons on a ferromagnetic background. However, one notes that the anisotropic exchange effect, which is usually closely related to the magnetization jump, has not been considered in Ref. [31]. In the present work, we numerically investigate the one-dimensional J - Q2 model with XXZ anisotropy using DMRG method. We obtain a novel anisotropy dependent magnetization phase diagram with considerable physics. It shows that the magnetization jump behavior can be evidently influenced (either depressed or enhanced) by anisotropy. Interestingly, if the anisotropy strength g is large enough, e.g. g > 4 in units of J, a direct jump from a non-polarized to a fully-polarized state occurs. We emphasize that this direct magnetization jump observed in the strongly anisotropic case is found for the first time, which is absent in the isotropic one. We systemically explore the mechanism of the magnetization jump in the whole parameter regime by analysing the properties of N -magnon state, i.e. its ground state energy, correlation function and long-range order. Focusing on the excitation energy
+Electronic address: luohg@lzu.edu.cn
+
+2
+per magnon for N -magnon state and the corresponding excitation energy difference between (N +1)- and N -magnon states, we determine the critical magnetization density and external magnetic field at which the magnetization jump appears. Analysis of system's energy in the whole magnetization process indicates that magnetic domain forms in the jumped-over states. This reveals that the magnetization jump shown in this work is due to the formation of the magnetic domain, in which region all spins are in a uniform direction. This understanding is also supported by analytical calculations in some limit cases, e.g., g   and few magnon limit. In addition to energetic consideration, we further analyse the correlation function for each magnetization sector and different parameters. We find that while the experienced states in the magnetization process are Heisenberg-like without long-range order, all the jumped-over states have antiferromagnetic or N´eel long-range orders, or their mixing.
+The paper is organized as follows. In the following section we introduce the anisotropic J - Q2 model and the numerical method we used. In the section "Results", the magnetization jump behavior in different parameter regimes is illustrated and a novel anisotropy induced phase diagram is presented. In the section "Discussion", we analyse the mechanism of the magnetization jump both in the few magnon limit and the whole magnetization process.
+
+II. MODEL HAMILTONIAN AND NUMERICAL METHOD
+
+The anisotropic J - Q2 model in the presence of an external magnetic field is described by the Hamiltonian
+
+H = -J
+
+Pi,i+1 - Q
+
+Pi,i+1Pi+2,i+3 - h
+
+Siz ,
+
+(1)
+
+i
+
+i
+
+i
+
+where
+
+Pi,j
+
+
+
+1 4
+
+-
+
+SixSjx + SiySjy + gSizSjz
+
+and g is the XXZ anisotropy. J is the Heisenberg exchange constant,
+
+Q is the coupling strength of the nearest pairs, and h is the external magnetic field. g = 1 recovers the isotropic
+
+limit. In the isotropic limit without magnetic field, the competition between J and Q terms leads to a ground state
+
+phase transition from Heisenberg ground state to the doubly degenerate VBS phase [34]. In this paper, we are more
+
+interested in the adiabatic magnetization process of the system subjected to the external magnetic field. To describe
+
+the magnetization process, we define the magnetization density as
+
+m
+
+=
+
+2 L
+
+Siz ,
+
+(2)
+
+i
+
+where L is the system size. It can be readily obtained that it is always fully magnetized (m = 1) if g < -1. On the other hand, g > -1 is a non-trivial case, in which we can analytically stress the behavior of m in some limit cases: m = 0 for h = 0 and m = 1 if h is large enough. In this work, we explore how the magnetization density m extrapolates from zero to saturation between these two limits. Of course, calculating m in a general value of h should resort numerical ways.
+In practice, we numerically employ the density matrix renormalization group (DMRG) method [35, 36], which is extremely powerful for the one-dimensional systems. We perform the calculation for systems with different lattice sizes up to 240, to obtain the physics in the thermodynamic limit. The periodic boundary condition (PBC) is adopted and the DMRG many-body states M are kept dynamically [37] in order to control the truncation error. In DMRG calculations, the computational cost is in the order of M 3. There are two ways to choose M , one is to fix M , in this case the truncation error is different for different steps. The other is to fix truncation error, and in this case the number of the kept many-body states changes. In this work, in order to reduce the computational cost, we choose the latter, and dynamically control M up to 2000, to guarantee the truncation error  < 10-8 in the whole calculations we performed. In the rest of the paper, we use J = 1 as the energy scale and restrict Q and h to positive values.
+
+III. RESULTS
+We first revisit the magnetization property in the isotropic case using DMRG calculation. The magnetization process in different strength of nearest pair coupling Q is shown in Fig. 1 (a) and (b). When Q = 0, the system is the spin-1/2 Heisenberg chain, and its zero temperature magnetization curve is continuous and smooth. Here the small jumps and plateaus come from the finite size effect and will disappear in the thermodynamic limit. For a small Q = 0.2, comparing to Q = 0, m changes rapidly near the saturated magnetization, but still, goes smoothly to m = 1 at the same saturated field hsat without a macroscopic magnetization jump. Further increasing Q to 0.4, the magnetization density m changes suddenly from a partially-polarized value mc to m = 1, and the saturated field hsat is also larger than that for the smooth magnetization curves. This sharp jump of the magnetization curve indicates a
+
+3
+
+g m m
+mc
+
+m
+
+1.0 (a)
+0.8 0.6 0.4
+
+Q=0 Q = 0.2 Q = 0.4 Q = 0.6 Q = 0.8 Q = 1.0 Q = 1.2
+
+(b)
+Q=1 Q = 10 Q = 100 Q = 1,000
+
+1.0 1.0 (c)
+0.8 0.8 0.6 0.6 0.4 0.4
+
+g = -0.5 g = 0.5 g = 2.0 g = 4.0
+
+0.2
+
+0.2 0.2
+
+0 0 0.5 1.0 1.5 2.0 2.5 3.0 100 102
+
+h
+
+h
+
+0
+
+0
+
+0.2
+
+0.4
+
+0.6
+
+0.8
+
+1.0
+
+h/hsat
+
+FIG. 1: DMRG calculation of the magnetization density m as a function of external field h. The system size L = 120. (a-b) The isotropic case with g = 1 and different coupling Q. (c) The anisotropic case exampled by Q = 1.5 in different g. Here hsat is the critical field when the magnetization density m goes to its saturated value.
+
+g
+
+5 (a)
+4
+
+NF - MJ
+
+3 2 1
+0 N - MJ
+
+PF - MJ
+
+L = 80 L = 120 L = 160 L = 200 L = 240
+
+-1
+FM
+
+10-2
+
+10-1
+
+100
+
+101
+
+102
+
+103
+
+Q
+
+5 (b)
+4
+
+NF - MJ
+0.8
+
+3
+
+2
+1
+0 N - MJ
+
+PF - MJ
+
+-1
+FM
+
+10-2 10-1
+
+100
+
+101
+
+102
+
+Q
+
+0.6
+0.4
+0.2
+0 103
+
+FIG. 2: Magnetization phase diagram consisting of four phases according to the behaviors of the magnetization jump processes: i) the ferromagnetic (FM) phase; ii) the no magnetization jump (N-MJ) phase; iii) the partially- to fully-polarized magnetization jump (PF-MJ) phase; iv) the non- to fully-polarized magnetization jump (NF-MJ) phase. (a) Magnetization phase boundaries with different system size. (b) Magnetization phase diagram shown by the critical magnetization mc in {Q, g} space with system size L = 80. The white dashed-lines are phase boundaries for L = 80 for comparison.
+
+ground state phase transition induced by the external field. The above results obtained by DMRG calculation agree with that in Ref.[31] well. The difference is that in our DMRG calculation, the zero temperature case can be directly addressed, while the QMC method needs an extrapolation from finite small temperature to zero.
+In the presence of a magnetization jump, the critical field hsat increases as the coupling strength Q increases, and the critical magnetization mc is smaller for a larger Q. However, as shown in Fig. 1(b), even if Q is sufficiently large, a finite value of mc does not decrease anymore and converges to a nonzero value. It implies no direct magnetization jump from m = 0 to m = 1 even when Q  .
+Then we extend our investigation to the general case with a tunable anisotropy g. Since g < -1 is a trivial case as mentioned above, we need just discuss the case of g > -1. In Fig. 1(c), we show the magnetization curves with a fixed typical value of Q (i.e. Q = 1.5) in several different values of anisotropy g. When g = -0.5, the magnetization density m increases gradually from 0 to 1 without macroscopic magnetization jump. For larger values of anisotropy g = 0.5 and 2.0, we can observe the shape jumps from a finite mc to the saturated magnetization density. Furthermore, when g is sufficiently large (g = 4.0), a direct jump from m = 0 to the fully-polarized state occurs. We again point out that this novel phenomenon can not be observed in the isotropic system.
+
+4
+
+~E(2) - 2 ~E(1)
+
+1.0
+
+×10-3
+(a)
+
+0.5
+
+L = 128, Q = 0.05
+
+0.0
+
+-0.5
+
+Q = 0.5
+
+10-1
+
+4
+
+×10-3
+(b)
+
+2
+
+100 g L = 128, g = 0.2
+
+0
+
+-2
+
+g=1
+
+10-1
+
+100 Q
+
+Q=0 101
+g = -0.6
+101
+
+g
+
+5
+(c)
+4
+3
+PF - MJ
+2
+1
+N - MJ
+0
+
+Few magnon limit DMRG, L = 80 DMRG, L = 120 DMRG, L = 160 DMRG, L = 200 DMRG, L =240 gc = (-4 + 7)/3
+
+-1
+
+10-2
+
+10-1
+
+100
+
+101
+
+102
+
+103
+
+Q
+
+~E(2) - 2 ~E(1)
+
+FIG. 3: E~(2) - 2E~(1) as a function of (a) g for different Q , (b) Q for different g. The results are obtained by exact diagonalization in the few-magnon basis for system size L = 128. (c) Phase boundary between the N-MJ and PF-MJ phase. The blue solid-line is obtained in the few magnon limit. The symbols are obtained using DMRG with different system sizes. The black dashed line describes the asymptotic value at which the magnetization jump appears in the large Q limit.
+
+According to the different behaviors of the magnetization process, we can summarize our main results in a phase diagram consisting of four regions, as shown in Fig. 2(a). When g < -1, the system is in the ferromagnetic (FM) phase, and the magnetization property is trivial. When g > -1, the magnetization curve of the system has three different shapes: there is i) no magnetization jump (N-MJ), ii) a partially- to fully-polarized magnetization jump (PFMJ), iii) a non-polarized to fully-polarized magnetization jump (NF-MJ). The phase boundaries obtained by DMRG show a good convergence as the system size increases, indicating that these phases are stable in the thermodynamic limit. From these boundaries, we see that both the pair coupling Q and the anisotropy g > -1 can enhance the magnetization jump. Furthermore, the critical anisotropy g for both boundaries seems to converge in the large Q limit. We show a visual variation of critical magnetization density mc in {Q, g} space in Fig. 2(b), one can see that mc decreases with the increase of pair coupling Q or anisotropy g which means that the magnetization jump is enhanced.
+
+IV. DISCUSSION
+
+A. The magnetization jump in the few magnon limit
+
+Macroscopic magnetization jumps have been extensively discussed for various systems in the literature[31, 38­ 40]. Among others, the attractive interaction between magnons plays an important role in leading to magnetization jump. For example, in the isotropic J - Q2 model [31], Iaizzi et al. found from QMC simulation a macroscopic magnetization jump. At the same time, their theoretical analysis for two-magnon case demonstrates that in this case these two magnons form a bound state due to an effectively attractive interaction between them. However, Iaizzi et al. also pointed out that the formation of a bound state between two magnons is not sufficient condition for the macroscopic magnetization jump, and furthermore, an effectively attractive interaction between the magnon pairs or a cluster including macroscopic number of magnons is needed [31, 38­40]. In order to demonstrate this, in the following we consider the few magnon limit up to four magnons.
+From Fig.1 we can see that with the increase of coupling strength Q or anisotropy g, the magnetization jump first appears near m = 1. Thus we can analyse the origin of the magnetization jump in the ferromagnetism background. In the system with up to two magnons, we can easily get the ground state energy of the system (details in supplementary material). For convenience, the N -magnon excitation energy is defined as
+
+E~(N ) = E(N ) - E(0),
+
+(3)
+
+where E(N ) is the ground state energy of the system with N magnons and without external magnetic field. The information from the value of E~(2) - 2E~(1) helps us to understand the mechanism of the magnetization jump in
+
+5
+
+0.4
+
+g = -0.40 (a)
+
+g = -0.80
+
+(b)
+
+0.2
+
+g = -0.20 g = -0.156
+
+0.3
+
+g = -0.20 g = -0.107
+
+g = -0.10
+
+g=0
+
+P (V )
+
+g=0 g = 0.10
+
+0.2
+
+g = 0.20 g = 0.80
+
+0.1
+
+0.1
+
+P (V )
+
+0 0
+0.4
+0.3
+0.2
+0.1
+0 0
+
+10
+
+20
+
+30
+
+V
+
+g = -0.80 (c)
+g = -0.20 g = -0.084 g=0 g = 0.20 g = 0.80
+
+10
+
+20
+
+30
+
+40
+
+V
+
+Vp
+
+0
+
+0
+
+10
+
+20
+
+30
+
+40
+
+V
+
+40
+
+(d)
+
+30
+
+2 magnons
+
+3 magnons
+
+4 magnons 20
+
+10
+
+0
+
+-0.4
+
+-0.2
+
+0
+
+0.2
+
+g
+
+P (V )
+
+FIG. 4: Probability P (V ) of the magnon occupied volume V for the system with (a) two magnons, (b)three magnons, (c)four magnons. (d) Vp as a function of anisotropy g. In the calculation we take the system size L = 64 and Q = 1.5.
+
+the few magnon limit. The negative value of E~(2) - 2E~(1) indicates that the effective interaction between the
+two magnons is attractive, and thus the magnetization curve exhibits a macroscopic magnetization jump near the saturated magnetization. In contrast, if E~(2) - 2E~(1) > 0, the effective interaction is repulsive and there is no signal of magnetization jump for the few magnon limit. E~(2) - 2E~(1) = 0 is the critical case, in which the two-magnon
+system is in an effectively noninteracting magnon ground state. In Fig. 3(a), (b), we show the results of the quantity E~(2) - 2E~(1) for the system with L = 128, which is an
+example size with negligible size effect. The magnetization density curve is smooth and continuous if the pair coupling Q = 0 because the system has no magnetization jump according to Fig. 2. Correspondingly, E~(2) - 2E~(1) is almost independent of g and always positive as shown in Fig.3(a). However, for a very small Q = 0.05, E~(2)-2E~(1) is positive
+for small values of g, but negative when g is large enough. As the anisotropy g increases, the effective interaction
+between magnons changes from repulsive to attractive. This means the magnetization jump can be induced by the
+anisotropy. The boundary between the N-MJ phase and the PF-MJ phase in Fig. 2 can be determined by a critical g when E~(2) - 2E~(1) = 0. From the curves in different Q, we can also conclude that a needed g for a magnetization
+jump is smaller when Q is larger, in agreement with the results by DMRG (see Fig. 2). Similar to Fig. 3(a), we show E~(2) - 2E~(1) as a function of Q for different g in Fig. 3(b). In the isotropic case
+with g = 1, E~(2) - 2E~(1) > 0 for small Q, but becomes negative for large Q. A magnetization phase transition
+from the N-MJ phase to the PF-MJ phase occurs at the critical Qc(g = 1) = 2/9, in agreement with the result in Ref. [31]. Notably, our large-scale DMRG calculation gives exactly the same critical Qc. Different curves for decreasing g show that the magnetization jump exists in the anisotropic case, and the critical value of Q is larger for smaller g. However, when g is too small (g = -0.6), the curve of E~(2) - 2E~(1) goes up as Q increases, and there is no cross with E~(2) - 2E~(1) = 0. In this case, the effective interactions between two magnons are always repulsive,
+and there is no signal for the magnetization jump from the two-magnon state to the saturated state. From Figs. 3(a) and (b), we can get the critical g and Q corresponding to E~2 - 2E~1 = 0. Thus we can obtain the phase boundary between N-MJ and NF-MJ phase as shown in Fig. 3(c). We can see that the phase boundary obtained in the few
+magnon limit perfectly agrees with the numerical results by DMRG calculation. We also notice that the asymptotic behavior of this curve can be analytically evaluated, namely, gc approaches to -4 + 7 /3 in large Q limit (details in supplementary material).
+In order to further unveil the origin of macroscopic magnetization jump, the analysis of a system with many
+
+6
+
+e(N)
+
+-0.7
+(a)
+-0.9
+
+g = -0.5
+
+-2.1 (c)
+-2.3
+
+g = 0.5
+
+e(N)
+
+-1.1
+(b)
+0.01
+
+g = -0.5
+
+0.005
+
+0 0
+
+0.2 0.4 0.6 0.8 1.0 2N/L
+
+e(N)
+
+-2.5
+
+(d)
+0 -0.1
+0
+
+g = 0.5
+
+-0.2
+
+-0.002
+-0.004 0.2 0.4 0.6 0.8
+
+0 0.2 0.4 0.6 0.8 1.0 2N/L
+
+e(N)
+
+e(N)
+
+4 (e)
+0
+
+g = 4.0
+
+-4
+
+-8
+(f)
+0
+
+-2
+
+0
+
+-0.04
+
+-4
+
+-0.08
+
+g = 4.0
+
+0.2 0.4 0.6 0.8 1.0
+0 0.2 0.4 0.6 0.8 1.0 2N/L
+
+e(N)
+
+FIG. 5: The energy per magnon e(N ) in (a) the N-MJ phase (g = -0.5), (c) the PF-MJ phase (g = 0.5), and (e) the NF-MJ phase (g = 4.0). (b), (d) and (f) are the corresponding energy difference e(N ) for (a), (c), and (e), respectively. For all the curves Q = 1.5 and L = 120.
+
+(macroscopic number) magnons is necessary. We use N intervals d1, d2 · · · dN , which describe the distance between the nearest neighbor magnons for an N -magnon state, to mark the different configurations of the N -magnon state. Due
+
+to the periodic boundary condition, only N - 1 intervals are independent. Thus, to describe the distribution feature
+
+of the magnons, we define the magnon occupied volume as V =
+
+ i
+
+di[39],
+
+where
+
+the
+
+prime
+
+means
+
+that
+
+the
+
+summation
+
+discards the largest interval. Obviously, a small value of V indicates the preference of magnon condensation, while
+
+the large one corresponds to magnon separated case.
+
+Using the exact diagonalization method, we can get the probability P (V ) of the system with up to four magnons.
+
+The probability of the magnon occupied volume V for a state | is defined as:
+
+P (V ) =
+
+|Cd1,d2,··· ,dN |2 ,
+
+(4)
+
+ i
+
+di =V
+
+where Cd1,d2,··· ,dN =  d1, d2, · · · , dN . We plot the probability P (V ) for the ground state as a function of the magnon occupied volume V (see Fig. 4). From Fig. 4(a), (b) and (c) it is noted that all the lines have a maximum
+value, and we define the corresponding value of V as Vp. For the two-magnon system shown in Fig. 4(a), we can see that Vp = 31 when g < -0.156, in this case the two magnons tend to be separated and the effective interaction between magnons is repulsive. For g > -0.156, as g increases, Vp decreases to 2, which means the two magnons tend to condense and the effective interaction between magnons becomes attractive. For the threshold value of g = -0.156,
+P (V ) is almost flat, indicating that the magnons are effectively free. In Fig.4(b), (c) we show the distribution of
+magnons with three and four magnons. When g = -0.8, Vp = 34 for three-magnon case and Vp = 40 for four-magnon case. The large value of Vp means that the magnons prefer to disperse. With increase of g, Vp shifts toward small value. Up to g = 0.8, for three magnons case Vp = 5 and for four magnons case Vp = 7. This result indicates that the magnons tend to form a many magnon bound state.
+In Fig. 4(d) we plot Vp as a function of the anisotropy g. It is shown that the Vp shifts toward small value with the increase of g, which means the magnons have a trend to form a bound state with a strong anisotropy. Moreover, for
+all different magnons cases, the Vp has a dramatic drop for certain g, which indicates that the formation of the bound state is quite rapid. This result has a profound insight on the magnetization jump observed in the magnetization
+process.
+
+B. The magnetization jump in the whole magnetization process
+The analysis of the effective interaction between magnons in the few magnon limit already gives a clue to the origin of the magnetization jump. Furthermore, in this subsection, we explicitly investigate the magnetization process in the presence of the external field. In this case, the arbitrary N -magnon state has to be considered. The energy of the
+
+1.0 (a)
+
+(b)
+
+0.8
+0.30 0.6
+0.25
+
+0.4
+
+2.45
+
+2.50
+
+0.2
+
+7
+1.0 0.8 0.6 0.4 0.2
+
+m m = 1 - 2N/L
+
+0
+0 0.5 1.0 1.5 2.0 2.5 h
+
+-0.005
+
+0 e(N)
+
+0 0.005
+
+FIG. 6: Comparison between (a) the magnetization curve and (b) the rotated plot for e(N ) as a function of m = 1 - 2N/L. The N -magnon states with positive (negative) e(N ) correspond to the continuous part (sharp jump) of the magnetization curve. Here g = 0.5, Q = 1.5, and L = 120.
+
+N -magnon state subjected to the external field h is
+
+E(N, h) = E(N ) - h Stzot ,
+
+(5)
+
+where the magnon number N is equal to the number of the down spins, and Stzot = i Siz is equal to L/2 - N . For simplicity, we use E(N ) instead of E(N, 0) here and hereafter.
+Consider one N -magnon state as the ground state of the system at some external magnetic field h during the magnetization process, then the ground state energy E(N, h) should satisfy E(N, h) < E(M, h) for any M = N . Note the fact that for the model we investigate, the magnetization density m increases monotonically as h increases, and there is only one jump from some critical magnetization mc to the saturated magnetization. Therefore, the condition E(N, h) < E(M, h) can be rewritten as
+
+E(N, h) < E(0, h)
+
+(6)
+
+for M < N , and
+
+E(N, h) < E(N + 1, h)
+
+(7)
+
+for M > N . Inserting Eq. (5) into the conditions Eqs. (6) and (7), one can easily obtain the necessary requirement of the external field h:
+
+h < -E~(N )/N,
+
+(8)
+
+h > E(N ) - E(N + 1).
+
+(9)
+
+where E~(N ) is defined in Eq.(3). Combining Eqs. (8) and (9), one further obtains
+
+e(N ) < e(N + 1),
+
+(10)
+
+where e(N ) = E~(N )/N is the excitation energy per magnon for the N -magnon state in the absence of h. If the relationship in Eq. (10) can not be satisfied, the N -magnon state can never be the ground state during the magnetization process. This is the origin of the macroscopic magnetization jump, from the perspective of the energy. More specifically, we can define the difference of the excitation energy per magnon as e(N ) = e(N + 1) - e(N ) as the determination condition of the N -magnon state during the magnetization process. When e(N ) > 0, the N -magnon state can be the ground state, and corresponds to the continuous part of the magnetization curve. Oppositely, the N -magnon state with e(N ) < 0 cannot be the ground state, and corresponds to the macroscopic magnetization
+
+8
+jump. By taking N = 2, one can also understand the reason why the phase boundary between the N-MJ and PF-MJ phases can be determined by comparing the excitation energies in the few magnon limit.
+In Fig. 5, we show the excitation energy per magnon e(N ) and the energy difference e(N ) for Q = 1.5 and several different g as examples. Here e(N ) and e(N ) are numerically obtained by DMRG for each N -magnon states. In the N-MJ phase (e.g. g = -0.5), where the magnetization curve of the system is smooth and continuous (see Fig. 1(c)), the excitation energy per magnon e(N ) increases monotonically as the number N increases, as shown in Fig. 5(a). In this case, the energy difference e(N ) shown in Fig. 5(b) is always positive, i.e., Eq. (10) is always satisfied. We also notice that e(N ) > e(1) holds for all these states. It means that the energy of the N -magnon state is larger than N free magnons. In this sense the effective interactions between magnons is always repulsive.
+In the PF-MJ phase (g = 0.5), as shown in Fig. 5(c), as N increases, the excitation energy per magnon e(N ) decreases for smaller N but increases for larger N . As shown in Fig. 5(d), there exists a region where the energy difference e(N ) < 0 , and adding a magnon to the N -magnon state will decreases the average energy of the magnons. This indicates the condensation of magnons, and the formation of the magnetic domain in these N -magnon states. These states can not be the ground state of the system in the magnetization process, and correspondingly the magnetization curve has a macroscopic jump.
+Figs. 5(e) and (f) show the results for the NF-MJ phase (g = 4.0) with the magnetization jump from m = 0 to 1. In this phase, the excitation energy per magnon e(N ) decreases monotonically as the number N increases, and the energy difference e(N ) is negative for arbitrary magnetization density.
+We can further understand e(N ) in a more explicit way, by directly comparing the magnetization curve and the energy difference e(N ) as a function of N . Notice that magnetization m = 1-2N/L, so Fig. 6 (a) and (b) indeed have the same y-axis. As shown in Fig. 6(a), for a magnetization curve in the PF-MJ phase, there is a macroscopic jump from a critical mc to m = 1. Correspondingly, the value of e(N ) shown in Fig. 6(b) has a transition from positive to negative at exactly same critical magnetization density mc. The accordance of mc is marked by the horizontal dashed line. Moreover, by considering the critical case of Eq. (8), we can also get the critical field hsat = -e(N ), where the critical magnon number N satisfies e(N - 1) < 0 < e(N ).
+We can retrieve the magnetization phase diagram by plotting the critical magnetization mc in the parameter space {Q, g}, as shown in Fig. 2(b). When the magnetization curve is smooth and continuous, mc should be 1 in the thermodynamic limit, indicating there is no magnetization jump. However, for the finite size system, we have mc = 1 - 2/L because of a microscopic quantized jump. Nevertheless, the N-MJ phase denoted by the darkest blue is distinct in Fig. 2(b). For a fixed g > (-4 + 7)/3, the magnetization jump appears as Q increases to the critical value, and mc decreases with the increasing of Q. Finally, when g and Q are both sufficiently large, the system is in the NF-MJ phase with mc = 0. All these phases and the corresponding phase boundaries are explicit and clear.
+
+C. Understanding the direct magnetization jump in large anisotropy limit
+
+In the macroscopic viewpoint, the direct magnetization jump can be understood in an analytical and intuitive way
+in the large g limit. When the anisotropy is large enough, the system enters into an NF-MJ phase, as shown in Fig. 2. In this limit, being divided by g2 on both sides, the Hamiltonian described by Eq. (1) reads(details in supplementary
+material)
+
+H/g2 = -Q SizSiz+1Siz+2Siz+3 + O (1/g) + O 1/g2 - h Siz,
+
+i
+
+i
+
+(11)
+
+where h = h/g2. By neglecting the O(1/g) and O(1/g2) terms, we have an effective Hamiltonian in the large g limit
+
+Hg = -Q
+
+SizSiz+1Siz+2Siz+3 - h
+
+Siz .
+
+i
+
+i
+
+(12)
+
+Equation (12) describes a classical Hamiltonian without quantum fluctuation, then we can easily get the ground state
+energy and the spin configuration of the system. The unit element of this Hamiltonian is a bond with 4 sites, and
+the total energy of the system is the summation of all the bonds. A bond contributes negative energy -Eb when the numbers of both up and down spins are even, where Eb = Q/16 as the bond energy. Oppositely, when the numbers of both up and down spins are odd, a bond has positive energy +Eb. We have listed all possible spin arrangements of a single bond in Table I.
+Without loss of generality, we consider the system with even sites L with external magnetic field h = 0. The ground
+state of the system has magnetization m = 0 or m = ±1, with ground state energy Eg = -LEb, since there are L bonds under PBCs. For m = 0, the spin configuration can be a 2-fold degenerated spin pattern |· · ·  · · · ,
+
+9
+
+Bond energy Possible spin configurations
+
+-Eb
+
+
+
+
+
+, 
+
+, , , 
+
++Eb
+
+, , , 
+
+, , , 
+
+TABLE I: The energy and possible spin configurations for a single bond of the effective Hamiltonian described by Eq. (12).
+
+or a 4-fold degenerated spin pattern |· · ·  · · · . For m = 1(-1), the spin configuration can be |· · ·  · · · (|· · ·  · · · ). Introducing infinitely small quantum fluctuations, the ground state has m = 0 when h = 0, and will be fully-polarized under a small magnetic field. Thus, the direct jump is the only choice for the magnetization process.
+Furthermore, we consider the jumped-over spin states with magnetization 0 < m < 1. To minimize the energy, the spin pattern has to be separated into two regions: i) a magnon-full region with m = 0 and ii) a fully-polarized domain region with m = 1. Therefore in this case, all the bonds within the same region have negative energy, and only the bonds across the two regions can contribute positive energy. For example, the spin structure can be |· · ·  +  · · · , and only the bond |· · ·  +  · · · that connects the two separated parts of the system contributes positive energy +Eb. Therefore, in the large g limit, for all the jumped-over states with magnetization 0 < m < 1, its ground state has magnetic domains. For this special model, we can also conclude that all the states with magnetic domain can not be the ground state of the system. In other words, considering the magnetization process, all the states with magnetic domain will be jumped over during the magnetization process. We expect this point is not only valid for the large g limit, but also be crucial for a general value of g.
+
+D. Correlation functions
+
+According to the previous subsections, we found that the states with magnetization domain structure are jumped over during the magnetization process. In this subsection, we are interested in the difference between the structures of the jumped-over states and experienced states. To unveil the physics of the magnetization jump beyond the energy perspective, we investigate the spin-spin correlation function:
+
+CS (r) = S0zSrz - S0z Srz ,
+
+(13)
+
+where r is real space coordinate.
+We plot the long-range correlation function CS() as a function of magnetization density m = 1-2N/L in Fig. 7(a). Here we define CS() = [CS(L/2) + CS (L/2 - 1)]/2 to remove the strong oscillations when g is very large. For the N-MJ phase without magnetization jump, CS() is very small for all the magnetization densities, and its amplitude decreases as L increases (see inset). Therefore, in the thermodynamic limit CS() is zero, and there is no LRO in this phase.
+In the PF-MJ phase (g = 0.5), CS() approaches 0 for small magnetization densities, where the magnetization curve is continuous. For these jumped-over states at larger m, CS() is nonzero and show convergence for different system sizes. Therefore in the thermodynamic limit, the jumped-over state has AFM-LRO because of the formation
+of magnetic domain.
+In the NF-MJ phase (g = 4.0), CS() is nonzero for larger magnetization density. Specially, for m between 0.7 and 1, CS() is the same as in the PF-MJ phase independent of the system size, as these N -magnon states share the same domain structure. However, different with the PF-MJ phase, the spin-spin correlation function has large
+oscillations in the long-range limit for those states with magnetization densities from m = 0.1 to 0.3. The states
+near m = 0 have nearly zero CS(), there is no AFM-LRO or domain, but the spin-spin correlation function has long-range N´eel oscillations (details in supplementary material), as large g drives the system to the classical limit.
+
+10
+
+CS() CS()
+g
+
+0
+(a)
+-0.01
+
+-0.02
+
+-0.03 -0.04 -0.05 -0.06
+
+L = 40, g = -0.5 L = 40, g = 0.5 L = 40, g = 4 L = 80, g = -0.5 L = 80, g = 0.5 L = 80, g = 4 L = 120, g = -0.5 L = 120, g = 0.5 L = 120, g = 4
+
+×10-4
+0 -2 -4 -6
+0 0.5 1.0
+m
+
+0
+
+0.2
+
+0.4
+
+0.6
+
+0.8
+
+1.0
+
+m
+
+Ne´el
+
+(b)
+
+Domain
+
+Ne´el + AFM
+
+AFM
+
+Without LRO
+
+-1 0
+
+FM
+1 m
+
+FIG. 7: (a) Spin-spin correlation function in the long-range limit as a function of m = 1 - 2N/L for Q = 1.5, different anisotropy g, and different system sizes. The inset is a zoom-in for g = -0.5. (b) The schematic phase diagram for a fixed nonzero Q in the absence of external field h. In each inset, the black solid-line represents the schematic spin-spin correlation function CS (r) (details in supplementary material), and the magenta dashed-line denotes CS(r) = 0.
+
+V. CONCLUSION
+In this work, we systematically investigate the adiabatic magnetization properties of the 1D anisotropic J - Q2 model at zero temperature by numerically using the DMRG method. We have found that the anisotropy g plays a crucial role in the magnetization process. The characteristics of the magnetization behavior can be summarized by a magnetization phase diagram consisting of four phases: the FM phase, the N-MJ phase without magnetization jump, the PF-MJ phase with a partially- to fully-polarized magnetization jump, and specially the NF-MJ phase with a direct magnetization jump from non- to fully-polarized state, which does not exist in the isotropic J - Q2 model.
+We further study the origin of the magnetization jump. In the few magnon limit, we analyse the system with up to four magnons and get the clue that the attractive interaction between magnons may effects the formation of magnetization jump. For the N -magnon state, we point out that the origin of the magnetization jump is the condensation of magnons from the energy consideration. For the direct magnetization jump which is absent in the isotropic system, the analysis in the limit of infinite large anisotropy shows that the magnetization domain plays an important role in the magnetization jump. By explicitly investigating the spin-spin correlation function, we confirm that the spins condense and form the magnetic domain in those jumped-over states. A schematic phase diagram is shown in Fig. 7(b) for a fixed non-zero pair coupling: i) If the magnetization curve is continuous, the corresponding ground states of the system cannot have any long-range order; ii) The state with long-range orders (e.g. antiferromagnetic or N´eel long-range orders, or their mixing) cannot be the ground state of the system during the magnetization process, and therefore the magnetization jump arises. This reminds us the fact that the 1D spin-1/2 chain cannot have a stable long-range ordered ground state [41] with continuous symmetry breaking due to the strong quantum fluctuations. Therefore, the conclusion obtained here is not only valid to the J - Q2 model we study, but also should be a general conjecture for a wide range of 1D spin models and materials.
+
+[1] P. W. Anderson, "The resonating valence bond state in La2CuO4 and superconductivity," Science 235, 1196­1198 (1987). [2] N. Read and S. Sachdev, "Valence-bond and spin-peierls ground states of low-dimensional quantum antiferromagnets,"
+Phys. Rev. Lett. 62, 1694­1697 (1989). [3] T. Ono, H. Tanaka, H. Aruga Katori, F. Ishikawa, H. Mitamura, and T. Goto, "Magnetization plateau in the frustrated
+quantum spin system Cs2CuBr4," Phys. Rev. B 67, 104431 (2003). [4] A. Honecker, J. Schulenburg, and J. Richter, "Magnetization plateaus in frustrated antiferromagnetic quantum spin
+models," J. Phys.: Condens. Matter 16, S749 (2004). [5] K. Hida, "Magnetic properties of the spin-1/2 ferromagnetic-ferromagnetic-antiferromagnetic trimerized heisenberg chain,"
+J. Phys. Soc. Jpn. 63, 2359­2364 (1994). [6] H. P. Hu, C. Cheng, Z. H. Xu, H. G. Luo, and S. Chen, "Topological nature of magnetization plateaus in periodically
+modulated quantum spin chains," Phys. Rev. B 90, 035150 (2014).
+
+11
+
+[7] N´eel., "Propri´et´es magn´etiques de l'´etat m´etallique et ´energie d'interaction entre atomes magn´etiques," Ann. Phys. (Paris)
+
+5, 232 (1936).
+
+[8] M. Kohno and M. Takahashi, "Magnetization process of the spin-1/2 XXZ models on square and cubic lattices," Phys.
+
+Rev. B 56, 3212­3217 (1997).
+
+[9] T. Sakai and M. Takahashi, "Metamagnetism of antiferromagnetic XXZ quantum spin chains," Phys. Rev. B 60, 7295­7298
+
+(1999).
+
+[10] A. A. Aligia, "Magnetization jump in the XXZ chain with next-nearest-neighbor exchange," Phys. Rev. B 63, 014402
+
+(2000).
+
+[11] J. Schulenburg, A. Honecker, J. Schnack, J. Richter, and H.J. Schmidt, "Macroscopic magnetization jumps due to inde-
+
+pendent magnons in frustrated quantum spin lattices," Phys. Rev. Lett. 88, 167207 (2002).
+
+[12] D. V. Dmitriev and V. Y. Krivnov, "Frustrated ferromagnetic spin-1/2 chain in a magnetic field," Phys. Rev. B 73, 024402
+
+(2006).
+
+[13] A.V. Kalinov, L.M. Fisher, I.F. Voloshin, N.A. Babushkina, D.I. Khomskii, and T.T.M. Palstra, "Possible spin-glass state
+
+in SmSr-manganites as the origin of the magnetization jumps," J. Magn. Magn. Mater. 300, e399 ­ e402 (2006).
+
+[14] F. Heidrich-Meisner, I. P. McCulloch, and A. K. Kolezhuk, "Phase diagram of an anisotropic frustrated ferromagnetic
+
+spin-1/2 chain in a magnetic field: A density matrix renormalization group study," Phys. Rev. B 80, 144417 (2009).
+
+[15] A. K. Kolezhuk, F. Heidrich-Meisner, S. Greschner, and T. Vekua, "Frustrated spin chains in strong magnetic field: Dilute
+
+two-component bose gas regime," Phys. Rev. B 85, 064420 (2012).
+
+[16] F. A. G´omez Albarrac´in, M. Arlego, and H. D. Rosales, "Magnetization plateaus and jumps in a frustrated four-leg spin
+
+tube under a magnetic field," Phys. Rev. B 90, 174403 (2014).
+
+[17] Jun-ichiro Kishine, I. G. Bostrem, A. S. Ovchinnikov, and Vl. E. Sinitsyn, "Topological magnetization jumps in a confined
+
+chiral soliton lattice," Phys. Rev. B 89, 014419 (2014).
+
+[18] H. Nakano, Y. Hasegawa, and T. Sakai, "Magnetization jump in the magnetization process of the spin-1/2 heisenberg
+
+antiferromagnet on a distorted square-kagome lattice," J. Phys. Soc. Jpn. 84, 114703 (2015).
+
+[19] K. Morita and N. Shibata, "Multiple magnetization plateaus and magnetic structures in the s=1/2 heisenberg model on
+
+the checkerboard lattice," Phys. Rev. B 94, 140404 (2016).
+
+[20] N. J. Poulis, J. van den Handel, J. Ubbink, J. A. Poulis, and C. J. Gorter, "On antiferromagnetism in a single crystal,"
+
+Phys. Rev. 82, 552­552 (1951).
+
+[21] H. B. Møller, S. M. Shapiro, and R. J. Birgeneau, "Field-dependent magnetic phase transitions in mixed-valent tmse,"
+
+Phys. Rev. Lett. 39, 1021­1025 (1977).
+
+[22] V. Hardy, A. Maignan, S. H´ebert, C. Yaicle, C. Martin, M. Hervieu, M. R. Lees, G. Rowlands, D. M. Paul, and B. Raveau,
+
+"Observation of spontaneous magnetization jumps in manganites," Phys. Rev. B 68, 220402 (2003).
+
+[23] L. Ghivelder, R. S. Freitas, M. G. das Virgens, M. A. Continentino, H. Martinho, L. Granja, M. Quintero, G. Leyva, P. Levy,
+
+and F. Parisi, "Abrupt field-induced transition triggered by magnetocaloric effect in phase-separated manganites," Phys.
+
+Rev. B 69, 214414 (2004).
+
+[24] S. Yoshii, T. Yamamoto, M. Hagiwara, T. Takeuchi, A. Shigekawa, S. Michimura, F. Iga, T. Takabatake, and K. Kindo,
+
+"High-field magnetization of TbB4," J. Magn. Magn. Mater. 310, 1282 ­ 1284 (2007).
+
+[25] L. V. B. Diop, O. Isnard, and J. Rodr´iguez-Carvajal, "Ultrasharp magnetization steps in the antiferromagnetic itinerant-
+
+electron system LaFe12B6," Phys. Rev. B 93, 014440 (2016). [26] M. Manago, K. Ishida, Z.Q. Mao, and Y. Maeno, "Absence of the 17O knight-shift changes across the first-order phase
+
+transition line in Sr2RuO4," Phys. Rev. B 94, 180507 (2016).
+
+[27] B. Maji, K. G. Suresh, and A. K. Nigam, "Observation of spontaneous magnetization jump and field-induced irreversibility
+
+in Nd5Ge3," EPL(Europhysics Letters) 91, 37007 (2010).
+
+[28] C. Gerhardt, K. H. Mu¨tter, and H. Kr¨oger, "Metamagnetism in the XXZ model with next-to-nearest-neighbor coupling,"
+
+Phys. Rev. B 57, 11504­11509 (1998).
+
+[29] J. Richter, J. Schulenburg, A. Honecker, J. Schnack, and H-J. Schmidt, "Exact eigenstates and macroscopic magnetization
+
+jumps in strongly frustrated spin lattices," J. Phys.: Condens. Matter 16, S779 (2004).
+
+[30] Adam Iaizzi and Anders W Sandvik, "1d valence bond solids in a magnetic field," Journal of Physics: Conference Series
+
+640, 012043 (2015).
+
+[31]
+
+Adam Iaizzi, Kedar Damle,
+
+and Anders W. Sandvik, "Field-driven quantum phase transitions in s =
+
+1 2
+
+spin chains," Phys.
+
+Rev. B 95, 174436 (2017).
+
+[32] A. W. Sandvik, "Evidence for deconfined quantum criticality in a two-dimensional heisenberg model with four-spin inter-
+
+actions," Phys. Rev. Lett. 98, 227202 (2007).
+
+[33] O. F. Sylju°asen and A. W. Sandvik, "Quantum monte carlo with directed loops," Phys. Rev. E 66, 046701 (2002).
+
+[34] Y. Tang and A. W. Sandvik, "Method to characterize spinons as emergent elementary particles," Phys. Rev. Lett. 107,
+
+157201 (2011).
+
+[35] S. R. White, "Density matrix formulation for quantum renormalization groups," Phys. Rev. Lett. 69, 2863­2866 (1992).
+
+[36] S. R. White, "Density-matrix algorithms for quantum renormalization groups," Phys. Rev. B 48, 10345­10356 (1993).
+
+[37] O¨ . Legeza, J. Ro¨der, and B. A. Hess, "Controlling the accuracy of the density-matrix renormalization-group method: The
+
+dynamical block state selection approach," Phys. Rev. B 67, 125114 (2003).
+
+[38] F. Heidrich-Meisner, A. Honecker,
+
+and
+
+T.
+
+Vekua,
+
+"Frustrated
+
+ferromagnetic
+
+spin-
+
+1 2
+
+chain
+
+in
+
+a
+
+magnetic
+
+field:
+
+The
+
+phase
+
+diagram and thermodynamic properties," Phys. Rev. B 74, 020403 (2006).
+
+[39] Lars Kecke, Tsutomu Momoi, and Akira Furusaki, "Multimagnon bound states in the frustrated ferromagnetic one-
+
+12
+
+dimensional chain," Phys. Rev. B 76, 060407 (2007).
+
+[40] F. Heidrich-Meisner, I. P. McCulloch, and A. K. Kolezhuk, "Phase diagram of an anisotropic frustrated ferromagnetic
+
+spin-
+
+1 2
+
+chain
+
+in
+
+a
+
+magnetic
+
+field:
+
+A
+
+density
+
+matrix
+
+renormalization
+
+group
+
+study,"
+
+Phys.
+
+Rev.
+
+B
+
+80,
+
+144417
+
+(2009).
+
+[41] L. D. Landau and E. M. Lifshitz, Statistica Physics (Pergamon Press, 1958) p. 482.
+
+Acknowledgments
+The authors acknowledge useful discussions with D-X. Yao, H. Shao, W-A. Guo, L. Wang and M. Liu. H-G. Luo acknowledges the support from NSFC (Grants No. 11325417, 11674139) and PCSIRT (Grant No. IRT-16R35). C. Cheng acknowledges support from NSAF U1530401 and computational resource from the Beijing Computational Science Research Center.
+Author contributions statement
+B.M. designed the work under the guide of H.L. and carried out the calculations. H.L., B.M. and C.C. analysed the data and wrote the manuscript. F.C. wrote part of DMRG code. H.L. supervised the work. All authors reviewed the manuscript.
+Additional information
+Supplementary information
+accompanies this paper at http://www.nature.com/srep
+
+Competing financial interests: The authors declare no competing financial interests.
+Data availability statement: The datasets generated during and/or analysed during the current study are available from the corresponding author on reasonable request.
+
+13
+
+VI. SUPPLEMENTARY MATERIAL
+
+A. Hamiltonian in the few magnon limit
+
+Note that in this study the macroscopic magnetization jump always happens from a finite magnetization to the saturated magnetization state, which is the ferromagnetic state. Therefore, to understand the magnetization jump in the simplest way, it is natural to consider the one- and two-magnon states on a ferromagnetic background. The ferromagnetic state, which is a zero-magnon state, is denoted as |0 = |  · · · . In the Following, we examine the ground state for the system in N -magnon sectors in the few magnon limit (up to N = 2), neglecting the contribution of the external field. For simplicity, we denote the Hamiltonian as
+
+H = HJ + HQ,
+
+(14)
+
+where HJ = -J i Pi,i+1 and HQ = -Q i Pi,i+1Pi+2,i+3. For the system described by the Hamiltonian in Eq. (14), with size L and periodic boundary conditions (PBC), the energy of this zero-magnon state is
+
+E(0)
+
+=
+
+-J
+
+(1
+
+- 4
+
+g)
+
+L
+
+-
+
+Q
+
+(1
+
+- g)2 16
+
+L.
+
+(15)
+
+The one-magnon excited state with momentum k can be defined as
+
+|k
+
+=
+
+1 L
+
+L
+eiklSl- |0
+l=1
+
+.
+
+(16)
+
+By acting the Hamiltonian on the state, we get
+
+HJ |k
+
+= J cos k |k
+
+-
+
+J
+
+(1
+
+- 4
+
+g)
+
+L
+
+|k
+
+- Jg |k
+
+(17)
+
+for J term, and
+
+HQ |k =
+
+Q
+
+(1 - 2
+
+g)
+
+cos
+
+k
+
+-
+
+Q
+
+(1
+
+- g)2 16
+
+L
+
++
+
+Q
+
+g2 - g 2
+
+|k
+
+(18)
+
+for Q term. Notice that H is diagonal in |k basis, we can easily obtain the energy dispersion of the system with one-magnon
+
+Ek(1) =
+
+J
+
++
+
+Q 2
+
+(1
+
+-
+
+g)
+
+Q g2 - g
+
+cos (k) - Jg +
+
+2
+
+-
+
+J
+
+(1
+
+- 4
+
+g)
+
+L
+
+-
+
+Q
+
+(1
+
+- g)2 16
+
+L.
+
+(19)
+
+As in the main text, define N magnon excitation energy as E~(N ) = E(N ) - E(0). The one-magnon excitation energy is
+
+E~
+
+(1)
+
+=
+
+ -J
+
+(1
+
++
+
+g)-
+
+Q(1-g2
+2
+
+J
+
+(1
+
+-
+
+g)
+
++
+
+Q(1-g)2 2
+
+)
+
+if
+
+g
+
+<
+
+2J Q
+
++
+
+1,k
+
+=
+
+
+
+if
+
+g
+
+>
+
+2J Q
+
++
+
+1,k
+
+=
+
+0.
+
+(20)
+
+Here E~(1) can also be considered as the energy of a free magnon. For two-magnon state, we choose the basis with a total momentum k and a relative distance d defined as
+
+|d, k = 1 L
+
+l
+
+eik(2l+d)/2Sl-Sl-+d |0 .
+
+(21)
+
+Acting the Hamiltonian on the basis set, for the J term, we obtain:
+
+HJ |1, k =
+
+g
+
+- 4
+
+1
+
+J
+
+L
+
+-
+
+J
+
+g
+
+|1, k
+
++
+
+J
+
+cos
+
+k 2
+
+|2,
+
+k
+
+,
+
+(22)
+
+14
+
+Ek(2) - E(0) Ek(2) - E(0)
+
+-2 (a) L = 128, g = 1, Q = 0.5
+Q=0 -4
+-6
+-8 Q=5
+-10
+-1.0 -0.5 0 0.5 1.0 k/
+
+(b) L = 128, Q = 0.5, g = 0.5
+
+0
+
+g = -0.5
+
+-2
+
+-4
+
+-6
+-1.0 -0.5 0 k/
+
+g = 4.5 0.5 1.0
+
+FIG. 8: (Color online) The dispersion of the two-magnon exited states of (a) g = 1 for different Q, and (b) Q = 0.5 for different g. Here system size L = 128.
+
+HJ |d > 1, k
+
+=
+
+J
+
+cos
+
+k 2
+
+(|d
+
++
+
+1,
+
+k
+
++ |d - 1, k ) +
+
+g
+
+- 4
+
+1
+
+J
+
+L
+
+-
+
+2J
+
+g
+
+|d, k .
+
+(23)
+
+For the Q term, there are
+
+HQ |1, k
+
+=
+
+- (1
+
+-
+
+g)2 16
+
+QL
+
++
+
+g2 - 2g Q 4
+
+|1, k
+
++
+
+Q 2
+
+cos
+
+k 2
+
+|2,
+
+k
+
+-
+
+Q 4
+
+|3, k
+
+,
+
+(24)
+
+HQ |2, k
+
+=
+
+Q 2
+
+cos
+
+k 2
+
+(|3, k
+
++ |1, k ) +
+
+- (1
+
+- g)2 16
+
+QL
+
++
+
+g2 - 2g - cos k Q 2
+
+|2, k ,
+
+(25)
+
+HQ |3, k
+
+=
+
+-
+
+Q 4
+
+|1,
+
+k
+
++
+
+Q 2
+
+cos
+
+k 2
+
+|2,
+
+k
+
++
+
+- (1
+
+-
+
+g)2 16
+
+QL
+
++
+
+Q
+
+3 4
+
+g2
+
+-
+
+g
+
+|3, k
+
++
+
+Q (1 - 2
+
+g)
+
+cos
+
+k 2
+
+|4, k
+
+,
+
+(26)
+
+HQ |d > 3, k
+
+=
+
+Q (1 - 2
+
+g)
+
+cos
+
+k 2
+
+(|d
+
++
+
+1, k
+
++ |d - 1, k ) +
+
+- (1
+
+-
+
+g)2 16
+
+QL
+
++
+
+Q
+
+g2 - g
+
+|d, k .
+
+(27)
+
+Then the ground state energy E2(k) of the two-magnon state with momentum k can be obtained by numerically diagonalizing the (L - 1) × (L - 1) Hamiltonian matrix in the basis set |d, k . In Fig. 8 we show the dispersion
+Ek(2) - E(0) of the two-magnon exited states for several different parameters. As one can see, for these examples the two-magnon ground state always has k = 0. Actually, we have carefully checked the dispersion for all the parameters
+we concern in this work, and the minimum Ek(2) - E(0) for each point in the parameter space always has zero momentum. Therefore, the Hamiltonian matrix H~ (2) = HJ + HQ - E(0) in the two-magnon basis can be simplified as
+
+Q
+
+g2
+
+-2g 4
+
+-
+
+Jg
+
+Q 2
+
++
+
+J
+
+-
+
+Q 4
+
+
+
+ 
+
+Q 2
+
++
+
+J
+
+Q
+
+g2-2g-1 2
+
+-
+
+2J g
+
+Q 2
+
++
+
+J
+
+ 
+
+H~
+
+(2)
+
+=
+
+ 
+
+-
+
+Q 4
+
+Q 2
+
++
+
+J
+
+Q
+
+3g2-4g 4
+
+-
+
+2J g
+
+Q(1-g) 2
+
++
+
+J
+
+ 
+
+.
+
+  
+
+Q(1-g) 2
+
++
+
+J
+
+Q g2 - g - 2Jg
+
+ 
+
+.
+
+.
+
+ .
+
+(28)
+
+15
+
+~E2 - 2 ~E1
+
+0.02
+
+0
+
+0.002
+
+-0.02
+
+0.001 0
+
+-0.04
+
+-0.001
+Qc = 0.386145
+
+-0.002
+
+0.37 0.38 0.39 0.40
+
+0
+
+0.1 0.2 0.3 0.4
+
+Q
+
+L=8 L = 16 L = 32 L = 64 L = 128
+0.5 0.6
+
+FIG. 9: (Color online) E~(2) - 2E~(1) as a function of Q for g = 0.5 and different L. The black dashed line in inset is for E~(2) - 2E~(1) = 0.
+
+In order to see the finite size effect in the few magnon limit, we plot E~(2) - 2E~(1) for g = 0.5 as a function of Q for different system sizes, as shown in Fig. 9. All these curves have a precise cross at E~(2) - 2E~(1) = 0 and a
+critical Qc(g = 0.5) = 0.386145 even for L = 8, which is the minimum system size to include all the information of the effective Hamiltonian described by Eq. (28). Therefore, the finite size effect in the few magnon limit is negligible.
+
+B. The asymptotic behavior
+
+From Fig.3(c) in the main text we can see that the phase boundary between the N-MJ and PF-MJ phases can be exactly determined by comparing the energy of one- and two-magnon excitations. The phase boundary obtained in the few magnon limit perfectly agrees with the numerical results by DMRG.
+We also notice the asymptotic behavior of this curve when the pair coupling Q is extremely large. In the limit of Q  , the one-magnon excitation energy is
+
+E~(1)/Q =
+
+-
+
+1-g2 2
+
+(1-g)2
+
+2
+
+if g < 1, if g > 1.
+
+(29)
+
+here we have ignored the infinite small terms proportional to 1/Q. Similarly, ignoring the O(1/Q) terms, the twomagnon excitation is described by the matrix
+
+H~ (2)/Q =
+
+ g2-2g
+
+4
+
+1
+
+2
+
+ 
+
+-
+
+1 4
+
+
+
+
+
+
+
+1 2 g2 -2g-1
+2 1 2
+
+-
+
+1 4
+
+1
+
+2 3g2 -4g
+
+4 1-g
+
+2
+
+1-g 2
+g2 - g
+
+
+
+
+
+
+
+ 
+
+.
+
+
+
+
+
+... 
+
+(30)
+
+We can numerically obtain the critical anisotropy gc satisfying E~(2) - E~(1) = 0. For the ground state wave function
+
+(|G 2 =
+
+L-1 d=1
+
+d
+
+|d
+
+)
+
+at
+
+the
+
+critical
+
+point,
+
+we
+
+find
+
+that
+
+i)2d
+
+is
+
+a
+
+constant
+
+number,
+
+ii)
+
+d+1
+
+=
+
+-d,
+
+for
+
+d
+
+and
+
+d+1
+
+in
+
+range [3, L - 3]. Thus, the critical wave function can be assumed as
+
+|G
+
+2
+
+=
+
+1 
+
+L-4
+a |1 + b |2 + c |3 + (-1)d |d + c |L - 3 + b |L - 2 + a |L - 1
+
+,
+
+(31)
+
+d=4
+
+where |d  |d, k = 0 ,  is the normalization coefficient. Applying the Hamiltonian in Eq. (30) to the wavefunction |G 2,we can get a set of equations. By solving them, the
+critical g in the Q   limit can be obtained as gc(Q  ) = -4 + 7 /3. For any anisotropy g below this value,
+
+16 the magnetization curve of the system is always smooth and continuous.
+
+C. The effective Hamiltonian in large anisotropy limit
+
+Divided by g2 on both sides, the Hamiltonian in this study can be written as
+
+where
+
+H g2
+
+=
+
+-Q
+
+SizSiz+1Siz+2Siz+3 + O
+
+1 g
+
++O
+
+1 g2
+
+- h
+
+Siz ,
+
+i
+
+i
+
+h
+
+=
+
+h g2
+
+,
+
+(32) (33)
+
+O
+
+1 g
+
+=
+
+1 g
+
+J
+
+Siz Siz+1
+
+i
+
++Q
+
+Siz Siz+1
+
+1 4
+
+-
+
+1 2
+
+Si++2Si-+3 + Si-+2Si++3
+
+i
+
++Q
+i
+
+1 4
+
+-
+
+1 2
+
+Si+Si-+1 + Si-Si++1
+
+Siz+2Siz+3 ,
+
+(34)
+
+O
+
+1 g2
+
+=
+
+1 g2
+
+-J
+
+i
+
+1 4
+
+-
+
+1 2
+
+Si+Si-+1 + Si-Si++1
+
+-Q
+
+1 4
+
+-
+
+1 2
+
+Si+Si-+1 + Si-Si++1
+
+1 4
+
+-
+
+1 2
+
+Si++2Si-+3 + Si-+2Si++3
+
+.
+
+i
+
+(35)
+
+In the limit of g  , Q is finite, the O(1/g) and O(1/g2) terms can be neglected . Thus the effective Hamiltonian in the large anisotropy limit is
+
+Hg = -Q
+
+SizSiz+1Siz+2Siz+3 - h
+
+Siz .
+
+i
+
+i
+
+(36)
+
+D. The correlation function
+
+In this section we discuss the different behaviors of the spin-spin correlation function in the experienced sectors and the jumped-over sectors. Fig. 10 displays the correlation function CS(r) with different parameters as examples. In the N-MJ phase (g = -0.5), independent of the magnon number N , the spin-spin correlation CS(r) is negative for all the distance r > 0, and rapidly decays to 0 as r increases. In this case, a spin has anti-ferromagnetic correlation with
+its environment, and is screened due to the strong quantum fluctuation. The states in the experienced sector have no long-range order (LRO).
+In the PF-MJ phase (g = 0.5), the magnetization curve is continuous at some magnetization density, and then has a sharp jump. The blue triangle-line shown in Fig. 10(a) for N = 4 is the correlation function of an jumped-over
+state. In this state, CS(r) is positive when the distance r is small but negative when the spins are far apart from each other, which is the typical behavior of the system having two ferromagnetic domains. We also notice CS(r) has a finite value even when r = L/2, which is the largest distance possible for the finite system with system size L. In
+fact, CS(r) seems to converge when r is large enough. This indicates the anti-ferromagnetic (AFM) long-range order of the jumped-over states. The AFM-LRO still can be observed when N = 35, as this state is also jumped over in the
+magnetization process, as the blue triangle-line shown in Fig. 10(b). Further increasing the magnon number N , the
+
+17
+
+CS(r) CS(r) CS(r)
+
+(a)
+
+N=4
+
+0.16
+
+(b)
+
+N = 35
+
+0.1
+
+(c) N = 56
+
+0.016
+
+0.08
+
+g = -0.5
+
+g = 0.5
+
+0.008
+
+g=4
+
+0
+
+0
+0 10 20 30 40 50 60 r
+
+-0.08 0
+
+g = -0.5 g = 0.5 g=4
+10 20 30 40 50 60 r
+
+0
+
+g = -0.5
+
+-0.1
+
+g = 0.5
+
+g=4
+
+0 10 20 30 40 50 60 r
+
+FIG. 10: Spin-spin correlation function CS(r) for different g and N . Here Q = 1.5 and L = 120.
+
+correlation function CS(r) of the 56-magnon state decays rapidly to zero, similar to the situation in the N-MJ phase. The AFM-LRO disappears, and the magnetization curve in this region is continuous.
+The correlation functions are more complicated in the NF-MJ phase (g = 4.0). Since the anisotropy g is sufficient large, the diagonal term of the Hamiltonian dominates and the quantum effect has been partially depressed. We can observe the strong fluctuation of CS(r) at very large distance, especially when the magnon number N is large. Nevertheless, when N is small (N = 4 and 35), besides the fluctuations, the long-range nature of domain wall is still true at large distance. For a large N = 56, which is near the zero magnetization, the correlation function shown in Fig. 10(c) exhibits a classical N´eel order.
+
+

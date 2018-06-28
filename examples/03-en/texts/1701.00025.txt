@@ -1,0 +1,2981 @@
+arXiv:1701.00025v2 [physics.flu-dyn] 21 Sep 2017
+
+1
+Nonmodal stability analysis of the boundary layer under solitary waves
+Joris C. G. Verschaeve1 A N D Geir K. Pedersen1 A N D Cameron Tropea2
+1University of Oslo, Po.Box 1072 Blindern, 0316 Oslo, Norway 2Technische Universita¨t Darmstadt, 64347 Griesheim, Germany
+(Received 25 September 2017)
+In the present treatise, a stability analysis of the bottom boundary layer under solitary waves based on energy bounds and nonmodal theory is performed. The instability mechanism of this flow consists of a competition between streamwise streaks and twodimensional perturbations. For lower Reynolds numbers and early times, streamwise streaks display larger amplification due to their quadratic dependence on the Reynolds number, whereas two-dimensional perturbations become dominant for larger Reynolds numbers and later times in the deceleration region of this flow, as the maximum amplification of two-dimensional perturbations grows exponentially with the Reynolds number. By means of the present findings, we can give some indications on the physical mechanism and on the interpretation of the results by direct numerical simulation in (Vittori & Blondeaux 2008; Ozdemir et al. 2013) and by experiments in (Sumer et al. 2010). In addition, three critical Reynolds numbers can be defined for which the stability properties of the flow change. In particular, it is shown that this boundary layer changes from a monotonically stable to a non-monotonically stable flow at a Reynolds number of Re = 18.
+1. Introduction In recent years, stability and transition processes in the boundary layer under solitary
+water waves have received increased attention in the coastal engineering community, cf. (Liu et al. 2007; Vittori & Blondeaux 2008; Sumer et al. 2010; Ozdemir et al. 2013; Verschaeve & Pedersen 2014). Motivated by the design of harbors and other coastal installations, this boundary layer is of importance for understanding sediment transport phenomena under water waves and scaling effects in experiments.
+In the present treatise, the mechanisms leading to instability and finally to turbulent transition shall be investigated by means of a nonmodal stability analysis. The present boundary layer is not only of interest for the coastal engineering community, but can also serve as a useful generic flow for the investigation of stability and transition mechanisms of boundary layers displaying favorable and adverse pressure gradients, such as the ones developing in front and behind of the location of maximum thickness of an airplane wing or turbine blade profile. In addition, the present flow can be considered a model for the single stroke of a pulsating flow, such as Stokes' second problem, which is of importance for biomedical applications.
+Solitary waves, which are either found as surface or internal waves, are of great interest
+ Email address for correspondence: joris.verschaeve@gmail.com
+
+2
+
+J. C. G. Verschaeve et al.
+
+in the ocean engineering community for several reasons. They are nonlinear and dispersive. When frictional effects due to the boundary layer at the bottom and the top are negligible, the shape of solitary waves is preserved during propagation. Relatively simple approximate analytic solutions exist, see for instance Benjamin (1966), Grimshaw (1971) or Fenton (1972). In addition, these waves are relatively easy to reproduce experimentally. As such, they are often used in order to investigate the effect of a single crest of a train of waves.
+
+The first works on the boundary layer under solitary waves aimed at estimating the dissipative effect on the overall wave (Shuto 1976; Miles 1980). The bottom boundary layer has been considered more relevant than the surface boundary layer for viscous dissipation (Liu & Orfila 2004) and the stability of this boundary layer is also the subject of the present treatise.
+
+The earliest experiments on the bottom boundary layer under solitary waves have been performed for internal waves by (Carr & Davies 2006, 2010) and for surface waves by Liu et al. (2007). The latter showed that an inflection point develops in the deceleration region behind the crest of the wave. However, instabilities have not been observed in the experiments performed by them (Liu et al. 2007). In 2010, Sumer et al. used a water tunnel to perform experiments on the boundary layer under solitary waves. They observed three flow regimes. By means of a Reynolds number Re, defined by the Stokes length of the boundary layer and the characteristic particle velocity, as used in Ozdemir et al. (2013) and in the present treatise, these regimes can be characterized as follows. For small Reynolds numbers Re < 630( ReSumer = 2 · 105, i.e. the Reynolds number defined in Sumer et al. (2010)), the flow does not display any instabilities and is close to the laminar solution given in Liu et al. (2007). For a Reynolds number in the range 630 Re < 1000 (2 · 105 ReSumer < 5 · 105), they observed the appearance of regularly spaced vortex rollers in the deceleration region of the flow. Increasing the Reynolds number further leads to a transitional flow displaying the emergence of turbulent spots growing together and causing transition to turbulence in the boundary layer. This happens at first in the deceleration region. However, the first instance of spot nucleation moves forward into the acceleration region of the flow for increasing Reynolds number. Sumer et al. did not control the level of external disturbances in their experiments nor did they report any information on its characteristics, such as length scale or intensity.
+
+Almost parallel to the experiments by Sumer et al., Vittori and Blondeaux performed direct numerical simulations of this flow (Vittori & Blondeaux 2008, 2011). Their results correspond roughly to the findings by Sumer et al. in that the flow in their simulations is first observed to display a laminar regime before displaying regularly spaced vortex rollers and finally becoming turbulent. However, the Reynolds numbers at which these regime shifts occur are larger than those in the experiments by Sumer et al.. In particular, Vittori and Blondeaux observed the flow to be laminar until a Reynolds number somewhat lower than Re = 1000, after which the flow in their simulations displays regularly spaced vortex rollers. Transition to turbulence has been observed to occur for Reynolds numbers somewhat larger than Re = 1000. They triggered the flow regime changes by introducing a random disturbance of a specific magnitude in the computational domain before the arrival of the wave. Ozdemir et al. (2013) performed direct numerical simulations using the same approach as Vittori and Blondeaux, but varied the magnitude of the initial disturbance. As a result they found different flow regimes than what Sumer et al. and Vittori and Blondeaux had observed. In the simulations by O¨ zdemir et al. the
+
+Nonmodal stability analysis of the boundary layer under solitary waves
+
+3
+
+flow stays laminar until Re = 400, then enters a regime they called 'disturbed laminar' for 400 < Re < 1500, where instabilities can be observed. For Re > 1500 regularly spaced vortex rollers appear in the deceleration region of the flow in their simulations giving rise to a K-type transition before turbulent break down, if the Reynolds number is large enough. A K-type transition is characterized by a spanwise instability giving rise to the development of -vortices arranged in an aligned fashion, cf. Herbert (1988). For very large Reynolds numbers ReSumer > 2400, O¨ zdemir et al. reported that the K-type transition is replaced by a transition which reminded them of a free stream layer type transition.
+
+Next to investigations based on direct numerical simulations and experiments, modal stability theories have been employed in the works by Blondeaux et al. (2012), Verschaeve & Pedersen (2014) and Sadek et al. (2015). Employing a quasi-static approach for the Orr-Sommerfeld equation, cf. (von Kerczek & Davis 1974), Blondeaux et al. found that this unsteady flow displayed unstable regions for all of their Reynolds number considered, even those deemed stable by direct numerical simulation.
+In order to explain the divergences in transitional Reynolds numbers obtained by direct numerical simulation and experiment, Verschaeve & Pedersen (2014) performed a stability analysis in the frame of reference moving with the wave, where the present boundary layer flow is steady. For steady flows, well-established stability methods can be used. By means of the parabolized stability equation, they showed that for all Reynolds numbers considered in their analysis, the boundary layer displays regions of growth of disturbances. As the flow goes to zero towards infinity, there exists a point on the axis of the moving coordinate where the perturbations reach a maximum amplification before decaying again for a given Reynolds number. Depending on the level of initial disturbances in the flow, this maximum amount of amplification is sufficient for triggering secondary instability, such as turbulent spots or -vortices, or not. This explains the diverging critical Reynolds numbers observed in direct numerical simulations and experiments for this boundary layer flow. A particular case in point, mentioned in Verschaeve & Pedersen (2014), is the experiment on the boundary layer under internal solitary waves by Carr & Davies (2006). Although, the amplitudes of the generated internal solitary waves in these experiments are relatively large compared to the thickness of the upper layer, the outer flow on the bottom is relatively well approximated by the first order solution of Benjamin (1966), cf. figure 12 in Carr & Davies (2006). In these experiments, the flow displays instabilities for Reynolds numbers much smaller than in the experiments by Sumer et al. (2010) or in the direct numerical simulations by Vittori & Blondeaux (2008) or Ozdemir et al. (2013). Verschaeve & Pedersen (2014) proposed, that due to the characteristic velocity of internal solitary waves being significantly smaller than that for surface solitary waves, they are expected to display instabilities much earlier for comparable levels of background noise.
+Sadek et al. (2015) performed a similar modal stability analysis as Verschaeve & Pedersen (2014) by marching Orr-Sommerfeld eigenmodes forward in time using the linearized and two-dimensional nonlinear Navier-Stokes equations. They observed that only for Reynolds numbers larger than Re = 90, Orr-Sommerfeld eigenmodes display growth and consequently defined this Reynolds number to be the critical Reynolds number where the flow changes from a stable to an unstable regime.
+
+The modal stability theories employed in Blondeaux et al. (2012), Verschaeve & Pedersen (2014) and Sadek et al. (2015) capture only parts of the picture. In all of these works, only two-dimensional disturbances are considered. In addition, the amplifications
+
+4
+
+J. C. G. Verschaeve et al.
+
+computed in Verschaeve & Pedersen (2014) and Sadek et al. (2015) describe only the so-called exponential growth of the most unstable eigenfunction of the Orr-Sommerfeld equation. As shown in Butler & Farrell (1992); Trefethen et al. (1993); Schmid & Henningson (2001); Schmid (2007), perturbations can undergo significant transient growth even when modal stability theories predict the flow system to be stable. Nonmodal theory formulates the stability problem as an optimization problem for the perturbation energy. In the present treatise, optimal perturbations are computed for the unsteady boundary layer flow under a solitary wave, complementing the modal analysis performed in (Blondeaux et al. 2012; Verschaeve & Pedersen 2014; Sadek et al. 2015). In particular, we shall investigate the following questions.
+
+In Sadek et al. (2015), a critical Reynolds number is found based on a modal analysis. However, as perturbations can display growth even for cases where modal analysis predicts stability, this question needs to be treated in the framework of energy methods (Joseph 1966). Using an energy bound derived in (Davis & von Kerczek 1973), we shall show that a critical Reynolds number ReA > 0 can be found, such that for all Reynolds numbers smaller than ReA, the flow is monotonically stable, meaning that all perturbations are damped for all times.
+
+Ozdemir et al. (2013) supposed that a by-pass transition starts to develop in their simulations for some cases, but could not explain why then suddenly two-dimensional perturbations emerge producing a K-type transition typical for growing Tollmien-Schlichting waves. In the present treatise, we shall show that nonmodal theory is able to describe this competition between streaks and two-dimensional perturbations (i.e. nonmodal TollmienSchlichting waves), which allows us to predict the onset of growth of streaks and twodimensional perturbations, their maximum amplification and the point in time when this maximum is reached. Furthermore, the dependence on the Reynolds number of the maximum amplification shall be investigated. The results obtained in the present treatise indicate why in the direct numerical simulations by Vittori & Blondeaux (2008, 2011) and Ozdemir et al. (2013), in all cases investigated, two dimensional perturbations lead to turbulent break-down, although one would expect, at least for some cases, turbulent break-down via three dimensional structures for a purely random seeding. On the other hand Sumer et al. (2010) observed the growth of two-dimensional structures only for a certain range of Reynolds numbers, before the appearance of turbulent spots. A K-type transition has not been observed in their experiments. Turbulent spots are in general attributed to the secondary instability of streamwise streaks, see for example (Andersson et al. 2001; Brandt et al. 2004). Though, the random break-down of Tollmien-Schlichting waves is also thought to produce turbulent spots, cf. (Shaikh & Gaster 1994; Gaster 2016). The present analysis is limited to the primary instability of streamwise streaks and nonmodal Tollmien-Schlichting waves. It gives, however, indications for a possible secondary instability mechanism of competing streaks and Tollmien-Schlichting waves.
+
+The present treatise is organized as follows. In the following section, section 2, we describe the flow system and present equations for energy bounds and the nonmodal governing equations. The solutions of these equations applied to the present flow are presented and discussed in section 3. In section 4, we shall relate the current findings to results obtained previously in the literature. The present treatise is concluded in section 5.
+
+Nonmodal stability analysis of the boundary layer under solitary waves
+
+5
+
+2. Description of the problem
+2.1. Specification of base flow
+The outer flow of the present boundary layer is given by the celebrated first order solution for the inviscid horizontal velocity for solitary waves (Benjamin 1966; Fenton 1972). For a given point at the bottom, the outer flow can thus be written as in Sumer et al. (2010):
+
+Uouter(t) = U0sech2 (0t) .
+
+(2.1)
+
+In the limit of vanishing amplitude of the solitary wave, not only the nonlinearities in
+
+the inviscid solution become negligible, but they can also be neglected in the boundary
+
+layer equations. Following Liu & Orfila (2004), the horizontal component in the boundary
+
+layer Ubase can be written as
+
+Ubase = Uouter + ubl,
+
+(2.2)
+
+where ubl contains the rotational part of the velocity and ensures that the no-slip boundary condition is satisfied. Neglecting the nonlinearities, we obtain the following boundary
+
+layer equations for ubl (Liu et al. 2007; Park et al. 2014):
+
+ t
+
+ubl
+
+=
+
+1 2
+
+2 z2
+
+ubl
+
+ubl(0, t) = -Uouter(t)
+
+ubl(, t) = 0
+
+ubl(z, -) = 0
+
+(2.3)
+(2.4) (2.5) (2.6)
+
+Equation (2.3) is the linearized momentum equation. Equations (2.4) and (2.5) are the boundary conditions of the problem, with equation (2.4) representing the no-slip boundary condition and equation (2.5) representing the outer flow boundary condition. Equation (2.6) is the initial condition, which is advanced in time from -. The resulting base flow Ubase, equation (2.2), is valid on the entire time axis t  (-, ). The scaling used in equations (2.3-2.6) is given by 0 for the time,
+
+t = 0t,
+
+(2.7)
+
+by U0 for the velocity,
+
+Uouter
+
+=
+
+1 U0
+
+Uouter
+
+,
+
+and by the Stokes boundary layer thickness  for the wall normal variable z:
+
+(2.8)
+
+z
+
+=
+
+z 
+
+,
+
+(2.9)
+
+where
+
+=
+
+2 0
+
+.
+
+(2.10)
+
+For the solution of equations (2.3-2.6), a Shen-Chebyshev discretization in wall normal
+
+direction is chosen, whereas the resulting system is integrated in time by means of a
+
+Runge-Kutta integrator, cf. reference (Shen 1995) and appendix A for details. Summing
+
+up, we consider solitary waves of small amplitudes for which formula (2.1) is a good
+
+approximation of the outer flow, such as the solitary wave experiments in Carr & Davies
+
+(2006, 2010); Liu et al. (2007) or the water channel experiments in Sumer et al. (2010)
+
+and Tanaka et al. (2011). As shown in Verschaeve & Pedersen (2014), for larger amplitude
+
+solitary waves the nonlinear effects are not negligible anymore and significant qualitative
+
+differences arise, making the present nonmodal approach not applicable anymore.
+
+6
+
+J. C. G. Verschaeve et al.
+
+Uouter/U0
+
+1.0
+
+0.8
+
+0.6
+
+0.4
+
+0.2
+
+0.0
+
+10
+
+8
+
+6
+
+4
+
+2
+
+03
+
+2
+
+1
+
+0
+
+1
+
+2
+
+3
+
+t
+
+z
+
+Figure 1: Inviscid outer flow Uouter at the bottom and profiles of the horizontal velocity component in the boundary layer under a solitary wave moving from right to left. The profiles have been multiplied by 40. The value at z = 0 of the profiles shown corresponds to the point in time t, at which the profile has been taken. The horizontal velocity vanishes at z = 0 in order to satisfy the no-slip boundary condition.
+
+2.2. Stability analysis by means of an energy bound
+
+In the present treatise, we use the same definition for the Reynolds number as in Ozdemir et al. (2013). This Reynolds number Re is based on the Stokes length  and the characteristic velocity U0:
+
+Re 
+
+=
+
+U0 
+
+=
+
+U0
+
+2  0
+
+,
+
+(2.11)
+
+where  is the kinematic viscosity of the fluid. The Reynolds number ReSumer used in Sumer et al. (2010) is related to Re by the following formula:
+
+Re = 2ReSumer.
+
+(2.12)
+
+We introduce a perturbation velocity u = (u , v , w ) in the streamwise, spanwise and wall normal direction, defined by:
+
+u = (u , v , w ) = (uns, vns, wns) - (Ubase (z, t) , 0, 0) ,
+
+(2.13)
+
+Nonmodal stability analysis of the boundary layer under solitary waves
+
+7
+
+where (uns, vns, wns) satisfies the Navier-Stokes equations. The energy of the perturbation is given by:
+
+Ep
+
+=
+
+1 2
+
+u 2 + v 2 + w 2 dV,
+
+V
+
+(2.14)
+
+which is integrated over V = {(x, y, z) | z > 0}. For time dependent flows in infinite domains, Davis & von Kerczek (1973) derived a bound for the perturbation energy of the nonlinear Navier-Stokes equations:
+
+Ep(t) Ep,0
+
+t
+
+exp
+
+Re  2
+
+µ(t ) dt ,
+
+t0
+
+where µ is the largest eigenvalue of the following linear system:
+
+1 u Re 
+
+- Sbase(t) · u
+
+- p =
+
+1 2
+
+µu
+
+ · u = 0,
+
+(2.15)
+(2.16) (2.17)
+
+where the tensor Sbase is the rate of strain tensor given by the base flow, equation (2.2). We remark that Davis & von Kerczek (1973) appear to have overlooked a sign and a factor two in their equations. As the rate of strain tensor depends on time, the eigenvalue µ is a function of t. If µ < 0 for all times, then the flow is monotonically stable for this Reynolds number, meaning that all perturbations will decay for all times. This allows us to investigate, if there exists a Reynolds number ReA, at which µ switches sign from negative to positive at some point in time. As the base flow is independent of x and y, we consider a single Fourier component of u :
+
+(u , v , w )(x, y, z, t) = (u, v, w)(z, t) exp i (x + y) .
+
+(2.18)
+
+This allows us to eliminate p from the equations (2.16-2.17), resulting into
+
+1 Re 
+
+L2w
+
++
+
+i 2
+
+2 z2
+
+Ubasew
+
++
+
+2
+
+ z
+
+Ubase
+
+ z
+
+w
+
++
+
+i 2
+
+ z
+
+Ubase
+
+=
+
+1 2
+
+µLw,
+
+-1 Re 
+
+L
+
+-
+
+i 2
+
+ z
+
+Ubase
+
+w
+
+=
+
+1 2
+
+µ(-
+
+)
+
+where L is the Laplacian defined by:
+
+(2.19) (2.20)
+
+L
+
+=
+
+-k2
+
++
+
+2 z2
+
+,
+
+(2.21)
+
+where k2 = 2 + 2. The system of four equations (2.16-2.17), has been reduced to two, by means of the normal vorticity component :
+
+ = i (v - u) .
+
+(2.22)
+
+A Galerkin formulation for the system (2.19-2.20) is chosen based on Shen-Legendre polynomials for the biharmonic equation for the normal component w and Shen-Legendre polynomials for the Poisson equation for the normal vorticity , cf. reference (Shen 1994). Thereby, the Hermitian property of the system (2.19-2.20) is conserved in the discrete setting, guaranteeing purely real eigenvalues. Details of the implementation are given in appendix A.
+
+8
+
+J. C. G. Verschaeve et al.
+
+2.3. The nonmodal stability equations
+
+The nonmodal stability analysis is based on the linearized Navier-Stokes equations, which can be written in the present setting as follows,
+
+2 Re 
+
+ t
+
++
+
+iUbase
+
+-
+
+1 Re
+
+L
+
+Lw
+
+-
+
+iw
+
+2 z2
+
+Ubase
+
+=
+
+0,
+
+2 Re 
+
+ t
+
++
+
+iUbase
+
+-
+
+1 Re
+
+L
+
+
+
+-
+
+iw
+
+ z
+
+Ubase
+
+=
+
+0.
+
+(2.23) (2.24)
+
+We refer to Schmid & Henningson (2001); Schmid (2007) for a thorough derivation of
+equations (2.23) and (2.24). Given an initial perturbation (w0, 0) at time t0, equations (2.23) and (2.24) can be integrated to obtain the temporal evolution of (w, ) for t > t0. Nonmodal theory formulates the stability problem as finding the initial condition (w0, 0) maximizing the perturbation energy E(t) of (w, ) at time t > t0. This perturbation energy E is the sum of two contributions, one from the wall normal component w and
+one from the normal vorticity component :
+
+E(t)
+
+=
+
+Ew (t)
+
++
+
+E (t)
+
+=
+
+1 2
+
+
+1 k2
+
+ w 2 + |w|2 dz + 1
+
+z
+
+2
+
+
+
+1 k2
+
+| |2
+
+dz.
+
+0
+
+0
+
+(2.25)
+
+The optimization problem can then be formulated by maximizing E for a perturbation (w, ) satisfying (2.23) and (2.24) and having an initial energy E0. One way of solving this optimization problem is by means of the adjoint equation as in Luchini & Bottaro (2014). Another approach for finding the optimal perturbation, which is employed in the present treatise, consists in formulating the discrete problem first and computing the evolution matrix X(t, t0) of the system of ODEs, cf. references Trefethen et al. (1993); Schmid & Henningson (2001); Schmid (2007) for details. The energy E is then given in terms of X and the initial condition. Details of the implementation are given in appendix A. By computing E(t) one way or the other, we can compute the amplification G from time t0 to t of the optimal perturbation for wave numbers  and :
+
+G(,
+
+,
+
+t0,
+
+t,
+
+Re  )
+
+=
+
+max
+(w0 ,0 )
+
+E(t) E(t0)
+
+.
+
+(2.26)
+
+We remark that the initial condition (w0, 0) from which the optimal perturbation starts, might be different for each point in time t, when tracing G as a function of t, cf. section
+3. The maximum amplification Gmax(Re), which can be reached for a given Reynolds number Re, is obtained by maximizing G over time, initial time and wavenumbers:
+
+Gmax = max G.
+, ,t0 ,t
+
+(2.27)
+
+In the following, we shall distinguish between three types of perturbations:
+
+· streamwise streaks. These are perturbations independent of the streamwise coordinate x. They can be computed by setting  = 0.
+· Two-dimensional perturbations. These perturbations are independent of the spanwise coordinate y and can be computed by setting  = 0. In this case, equations (2.23) and (2.24) are decoupled. These two-dimensional perturbations can be considered nonmodal Tollmien-Schlichting waves resulting from an optimization of the initial conditions of (2.23) and (2.24). Therefore, they display larger growth than modal Tollmien-Schlichting waves resulting from the Orr-Sommerfeld equation. This shall be presented more in detail in section 4.
+
+Nonmodal stability analysis of the boundary layer under solitary waves
+
+9
+
+· Oblique perturbations. These are all remaining perturbations with  = 0 and  = 0.
+
+3. Results and discussion
+3.1. Monotonic stability
+In this section, we shall determine the critical Reynolds number ReA behind which perturbations display growth. To this aim, the energy criterion in Davis & von Kerczek (1973) shall be used. We solve equations (2.19) and (2.20) for a given pair of wave numbers (, ) and note the Reynolds number Re for which the largest eigenvalue µ changes from minus to plus. At first, we compute the curves of critical Reynolds numbers Re() and Re() by setting  = 0 and  = 0, respectively. These curves are plotted in figure 2. As it turns out, all other cases, i.e.  = 0 and  = 0, have their critical Reynolds number lying in the region between these two curves. From figure 2, we can infer that the flow is monotonically stable for all Reynolds numbers Re smaller than ReA = 18. The physical significance of this critical Reynolds number is, however, limited. For example, the water depth of a surface solitary wave with amplitude ratio = 0.1 would be approximately 1 cm for this case. For these small water depths, other physical effects, such as capillary effects and not least the dissipative effect of the boundary layers on the solitary wave, are not negligible anymore. The solitary wave solution would thus not be valid in the first place. From figure 2, we observe that streamwise streaks will grow first. Two-dimensional perturbations, on the other hand, can only grow for flows with a Reynolds number larger than ReB = 38.
+
+3.2. Optimal perturbation
+3.2.1. Theoretical considerations
+Before turning to the computation of the amplification G, equation (2.26), we shall first consider a scaling argument, as in Gustavsson (1991); Schmid & Henningson (2001). For streamwise streaks ( = 0), equations (2.23) and (2.24) can be written as:
+
+ t
+
+-
+
+1 2
+
+L
+
+ t
+
+-
+
+1 2
+
+L
+
+Lw = 0,
+
+~
+
+-
+
+iw
+
+ z
+
+Ubase
+
+=
+
+0,
+
+(3.1) (3.2)
+
+where ~ is scaled by Re/2:
+
+~ = 2 (z, t). Re 
+
+(3.3)
+
+Equation (3.1) corresponds to slow viscous damping of w, as also the homogeneous part of equation (3.2) for ~. On the other hand the second term in (3.2) represents a forcing term which varies on the temporal scale of the outer flow. Therefore, streamwise streaks display
+
+temporal variations on the time scale of the outer flow. As for steady flows (Gustavsson
+
+1991; Schmid & Henningson 2001), the energy E is proportional to the square of the Reynolds number for the present unsteady flow:
+
+E  Re2.
+
+(3.4)
+
+10
+500 400
+
+J. C. G. Verschaeve et al.
+ =0  =0
+
+300
+
+Re
+
+200
+
+B =0.49
+
+100
+
+A =0.42
+
+ReB =38
+
+ReA =18 00.0
+
+0.2
+
+0.4
+
+0.6
+
+0.8
+
+1.0
+
+1.2
+
+k
+
+Figure 2: Isolines of µ = 0 for the energy bound of Davis & von Kerczek (1973), equations (2.19) and (2.20), as a function of the wave number k2 = 2+2 and the Reynolds number
+Re. The blue and green lines correspond to the cases  = 0 and  = 0, respectively. All other cases have their critical Reynolds number in the space between these lines.
+
+For large Reynolds numbers E will dominate. Therefore, the maximum amplification G for streamwise streaks is expected to behave as
+
+max
+ ,t0 ,t
+
+G(
+
+=
+
+0,
+
+,
+
+t0,
+
+t,
+
+Re  )
+
+
+
+Re
+
+2 
+
+Re >> 1.
+
+(3.5)
+
+This quadratic growth of streamwise streaks can be contrasted to the exponential growth of Ew for perturbations with  > 0, as we shall see in the following. To this aim, we use a decomposition (or integrating factor) as in the parabolized stabiltiy equation (Bertolotti et al. 1992) for the normal velocity component w:
+
+t
+w = w~(z, t) exp (t ) dt ,
+t0
+
+(3.6)
+
+where the imaginary part of  accounts for the oscillatory character of w and the real part of  is the growth rate of the perturbation. In order to define the shape function w~ univocally, all growth is restricted to . Somewhat different to (Bertolotti et al. 1992), we define the normalization condition on the entire kinetic energy E~ of the shape function
+
+Nonmodal stability analysis of the boundary layer under solitary waves
+
+11
+
+w~ :
+
+
+
+E~
+
+=
+
+1 2
+
+1 k2
+
+|Dw~|2
+
++
+
+|w~|2
+
+dz,
+
+0
+
+(3.7)
+
+where we have write D = /z. Thus, the normalization constraint on w~ is given by the
+
+following two conditions:
+
+
+
+
+
+w~ t
+
+Lw~
+
+dz
+
+=
+
+w~
+
+L
+
+w~ t
+
+dz
+
+=
+
+0
+
+0
+
+0
+
+(3.8)
+
+From this, it follows, that we can define the energy of the shape function to be unity for
+
+all times:
+
+
+
+
+
+ t
+
+w~Lw~ dz = 0
+
+or
+
+E~
+
+=
+
+-
+
+1 2k2
+
+w~Lw~ dz = 1.
+
+0
+
+0
+
+(3.9)
+
+Equation (2.23) becomes then:
+
+tLw~
+
++
+
+Lw~
+
+=
+
+1 2
+
+L2w~
+
++
+
+i
+
+1 2
+
+Re
+
+
+
+D2U0 - U0L
+
+w~
+
+(3.10)
+
+Multiplying by w~ and integrating in z, leads to a formula for :
+
+
+
+
+
+
+
+=
+
+-
+
+1 4k2
+
+w~L2w~
+
+dz
+
+-
+
+i 4k2
+
+Re 
+
+w~D2Ubasew~ - w~UbaseLw~ dz
+
+0
+
+0
+
+(3.11)
+
+The growth rate, ie. the real part of , is given by:
+
+
+
+
+
+r
+
+=
+
+-
+
+1 4k2
+
+Lw~Lw~
+
+dz
+
++
+
+Re 
+
+ 4k2
+
+DUbase {w~rDw~i - w~iDw~r} dz
+
+0
+
+0
+
+(3.12)
+
+The first term on the right hand side represents viscous dissipation and is always negative.
+The second term, however, can, depending on Ubase and w~, be positive or negative. Only when this term is positive and in magnitude larger than the viscous dissipation, growth of Ew can be observed. We observe that this term is multiplied by /(2 + 2), which for a given  is maximal for  = 0. This indicates that the possible growth rate for two-
+dimensional perturbations is larger than that for oblique perturbations when considering
+exponential growth in Ew and neglecting quadratic growth in E. We shall return to this point, when discussing the numerical results. For the decomposition in equation (3.6),
+the continuity equation can be written as:
+
+iu~ + iv~ = -Dw~,
+
+(3.13)
+
+where we have normalized the horizontal velocities:
+
+t
+
+t
+
+u~ = u exp -  dt , v~ = v exp -  dt .
+
+t0
+
+t0
+
+Then the growth rate r, equation (3.12), can be written as:
+
+
+
+
+
+r
+
+=
+
+-
+
+1 4k2
+
+|Lw~|2
+
+dz
+
+-
+
+Re  4
+
+u~k, w~ Sk
+
+u~k w~
+
+,
+
+0
+
+0
+
+(3.14) (3.15)
+
+12
+
+J. C. G. Verschaeve et al.
+
+where u~k is the projection of the horizontal velocity vector onto the wavenumber vector k = (, ),
+
+u~k
+
+=
+
+1 k
+
+(u~
+
++ v~) ,
+
+(3.16)
+
+and Sk, the two dimensional rate of strain tensor of the projection of the base flow on the wavenumber vector k:
+
+Sk
+
+=
+
+1 2
+
+0 DUk DUk 0
+
+,
+
+Uk
+
+=
+
+1 k
+
+Ubase.
+
+(3.17)
+
+When considering two-dimensional perturbations ( = 0), the growth rate r simplifies to
+
+
+
+
+
+r
+
+=
+
+-
+
+1 42
+
+|Lw~|2
+
+dz
+
+-
+
+Re  4
+
+u~, w~ S2D
+
+u~ w~
+
+,
+
+0
+
+0
+
+(3.18)
+
+where the S2D is the two-dimensional rate of strain tensor of the base flow:
+
+S2D
+
+=
+
+1 2
+
+0
+
+DUbase
+
+DUbase
+
+0
+
+.
+
+(3.19)
+
+In this case (ie.  = 0), equations (2.23) and (2.24) are decoupled. As can be seen from equation (2.24), the normal vorticity  experiences only dampening. Growth can, therefore, only arise in the energy Ew associated to the normal velocity component w, equation (2.25). As mentioned above, the first term on the right hand side in equation (3.18) is always negative and represents the viscous dissipation stabilizing the flow. As the eigenvalues of S2D are given by DUbase/2 and -DUbase/2, the second term on the right hand side in equation (3.18) can, depending on w~, be positive or negative. All possible growth of two-dimensional perturbations is thus due to the second term where the velocity vector (u~, w~)T is being tilted by the rate of strain tensor S2D. Equation (3.18) is an illustrative formula for the Orr-mechanism. The growth mechanism itself is thus always inviscid. This holds for any two-dimensional perturbation, also those being the eigenfunctions of the Orr-Sommerfeld equation, the modal Tollmien-Schlichting waves, which are commonly thought of as slow viscous instabilities, cf. for example (Jimenez 2013) and (Brandt et al. 2004). Whether growth of two-dimensional perturbations is fast or slow is, as formula (3.18) suggests, primarily a property of the base flow profile Ubase. As we shall see below, velocity profiles having an inflection point allow for larger growth rates than profiles without.
+
+As the Reynolds number multiplies the second term in equation (3.18), we can conclude
+
+that for large Re, the maximum amplification of two-dimensional perturbations roughly behaves like:
+
+max
+,t0 ,t
+
+G(,
+
+
+
+=
+
+0,
+
+t0,
+
+t,
+
+Re  )
+
+
+
+ecRe ,
+
+Re >> 1
+
+(3.20)
+
+where c is some constant. This exponential growth of the maximum amplification with
+
+the Reynolds number has also been observed for other flows displaying an adverse pres-
+
+sure gradient. For example, Biau (2016) observed that the maximum amplification of
+
+two-dimensional perturbations for Stokes' second problem grows exponentially with the
+
+Reynolds number.
+
+In the following, we shall see that the competition of the maximum amplification
+
+between the quadratic growth in Re of streamwise streaks, equation (3.5), and the exponential growth in Re of two-dimensional structures, equation (3.20), composes the
+
+Nonmodal stability analysis of the boundary layer under solitary waves
+
+13
+
+essential primary instability mechanism of this flow.
+
+3.2.2. Numerical results
+The amplification G, equation (2.26), for the present flow problem depends on five
+parameters, the wavenumbers  and , the initial time t0, the time t and the Reynolds number Re. We start our numerical analysis by tracing the evolution of max, G for a given Reynolds number Re and a given initial time t0. In figure 3, we plot the temporal evolution of max, G for the Reynolds numbers Re = 141, 316, 447 and 1000 (ReSumer = 104, 5 · 104, 105, 5 · 105) and initial times t0 = -8, -6, . . . , 6. For the case Re = 141, cf. figure 3a, we observe that growth of perturbations is mainly restricted to the deceleration region of the flow, i.e. where t > 0. Only the optimal perturbation starting at t0 = -2 displays some growth before the arrival of the crest of the solitary wave. Among the
+initial conditions t0 chosen, the optimal perturbation with t0 = 0 displays the maximum amplification at tmax = 1.5 with G  20. This is due to the acceleration region of the flow (t < 0) having a damping effect on the perturbations starting before t = 0. On the
+other hand the perturbations starting at later times t0 2 already miss out a great deal of the destabilizing effect of the adverse pressure gradient. All curves display a maximum
+at some time. For some cases, this maximum lies outside of the plotting domain. For a
+slightly larger Reynolds number, cf. figure 3b with Re = 316, we observe a qualitatively similar behavior for the perturbations starting at t0 < 0 with the difference that growth of these perturbations sets in somewhat earlier in time than in the Re = 141 case and leads also to higher amplifications. However, the optimal perturbation starting at t0 = 0 behaves differently than the corresponding one for the Re = 141 case. At early times, i.e. for t 2, the evolution of this perturbation is similar to the Re = 141 case. The perturbation grows to a maximum G  100 at t  1.5, before decaying again, but, at time t  2, the amplification curve displays a kink and a sudden growth to G  2000 at
+time tmax = 8.2. A similar, however, less expressive kink is also visible in the curve for t0 = 2. Increasing the Reynolds number to Re = 447, cf. figure 3c, does not change the picture qualitatively. However, the maximum amplification of the optimal perturbation
+starting at t0 = 0 has increased by a factor of approximately thousand compared to the Re = 316 case. In comparison, the maximum of the optimal perturbation starting at t0 = -2 has only increase by a factor of approximately 1.25 when going from Re = 316 to Re = 447. This violent growth for the optimal perturbation starting at t0 is also visible for the Re = 1000 case, cf. figure 3d. However, for this case, even the curves of the perturbations starting at earlier times display a similar kink and sudden growth in
+the deceleration region.
+In figure 4, we show contour plots of the amplification G(, , t0 = 0, tmax, Re) at tmax = 1.5, 8.2, 9.9, 16.5 for the cases Re = 141, 316, 447, 1000, respectively. For the case Re = 141, cf. figure 4a, we find a single maximum lying on the -axis. On the other hand, the Re = 316 case is different, cf. figure 4b. Whereas all two-dimensional perturbations display decay at tmax = 1.5 for the Re = 141 case, the amplification of two-dimensional perturbations displays a peak at around  = 0.35 for the Re = 316 case. A second peak, lying on the  axis, is significantly smaller than the peak of two-
+dimensional perturbations on the -axis. Increasing the Reynolds number, cf. figures 4c
+and 4d, increases the magnitude of the peaks, with the peak on the -axis growing faster
+with Re than the peak on the -axis. This competition between streamwise streaks and two-dimensional structures is characteristic for flows with adverse pressure gradients and
+has also been observed for steady flows. The Falkner-Skan boundary layer with adverse
+pressure gradient displays contour levels similar to the present ones, cf. for example
+
+14
+
+J. C. G. Verschaeve et al.
+
+Levin & Henningson (2003, figure 10d) or Corbett & Bottaro (2000). Another example is the flow of three dimensional swept boundary layers investigated in Corbett & Bottaro (2001).
+
+The competition between streamwise streaks and two-dimensional perturbations can also be observed in the temporal evolution of the amplification of the optimal perturbation. In figure 5, we compare the temporal evolution of max G( = 0, , t0 = 0, t, Re = 316), max G(,  = 0, t0 = 0, t, Re = 316) and max, G(, , t0 = 0, t, Re = 316). For early times (0 < t 2) the streamwise streaks display a larger amplification than the two-dimensional perturbations, but at time t  2, the two-dimensional perturbations overtake the streaks. Maximizing over  and , chooses either perturbation displaying maximum amplification. The amplification of oblique perturbations seems to be most often smaller than that of streamwise streaks or two-dimensional perturbations. This allows us to trace the maximum amplification Gmax, equation (2.27), by considering only the amplification of the cases ( = 0, ) and (,  = 0) instead of maximizing over all possible wave numbers (, ). Growth of streamwise streaks is associated to the lift-up effect (Ellingsen & Palm 1975), whereas the growth of two-dimensional perturbations is associated to the Orr-mechanism (Jimenez 2013). We remark that other growth mechanisms exists, such as the Reynolds stress mechanism, cf. Butler & Farrell (1992), which can lead to the maximum amplification of streaks not being exactly on the  axis, but having a non-zero -component. However, as also shown for other flows (Butler & Farrell 1992), this -component is negligibly small and, therefore, not considered in the present treatise. In figure 6, the amplification of streamwise streaks and two-dimensional perturbations maximized over the initial time t0 and time t is plotted against the Reynolds number. As predicted in section 3.1 by the energy bound of Davis & von Kerczek (1973), streamwise streaks start to grow for Reynolds numbers larger than ReA = 18, whereas two-dimensional perturbations start growing for ReB > 38. We can define a third critical Reynolds number ReC = 170 for this flow, which stands for the value when the maximum amplification of two-dimensional perturbations overtakes the maximum amplification of streamwise streaks. This happens for rather low levels of amplification, the maximum amplification being Gmax = 28 for Re = 170. As in Biau (2016) for Stokes second problem, the amplification of two-dimensional perturbations is observed to be exponential. For flows with a Reynolds number larger than ReC, which are most relevant cases, the dominant perturbations are therefore likely to be two-dimensional (up to secondary instability). This supports the observation by Vittori & Blondeaux (2008) and Ozdemir et al. (2013) of a transition process via the development of two-dimensional vortex rollers. However, when starting early, i.e. for initial times t0 < -1, streamwise streaks start growing before two-dimensional structures, as can be seen in figure 3d. The competition between streamwise streaks and two-dimensional structures to first reach secondary instability, might therefore not only be determined by the maximum amplification reached, but also by the point in time, when the amplification of the perturbation is sufficient to trigger secondary instability, be it streaks or two-dimensional perturbations. We shall discuss this point further in section 4.
+
+When plotting the maximum amplification of streamwise streaks in a log-log plot, cf. figure 7, we find the expected quadratic behavior of the maximum amplification. In line with this quadratic growth in Re, a straightforward calculation, cf. appendix B, shows that when normalizing the energy E = Ew + E, equation (2.25) of the initial condition of the optimal streamwise streak to one, the amplitude of the initial normal vorticity scales inversely with the Reynolds number, whereas the amplitude of the normal velocity
+
+Nonmodal stability analysis of the boundary layer under solitary waves
+
+15
+
+converges to a constant in the asymptotic limit:
+
+max
+z
+
+
+
+(z,
+
+t0)
+
+
+
+1, Re 
+
+max
+z
+
+w(z,
+
+t0)
+
+
+
+const
+
+for
+
+Re  .
+
+(3.21)
+
+This can also be observed in figure 8, where we show that for larger Reynolds numbers, the graphs of || · Re and |w| collapse. In order to visualize the spatial structure of the optimal streamwise streak, we consider the case Re = 500 with a maximum amplification of:
+
+max G( = 0, , t0, t, Re = 500) = 238.6,
+ ,t0 ,t
+where the parameters at maximum are given by:
+
+(3.22)
+
+ = 0.64, t0 = 0.11, t = 1.53.
+
+(3.23)
+
+In figure 9, contour plots of the real part of the initial condition at t0 = 0.11 of the optimal perturbation in the (y, z)-plane is shown. When advancing this initial condition to t = 1.53, where the energy of the streamwise streak is maximum, cf. figure 10, we observe that the amplitude of the normal velocity component w has decreased by approximately a factor of two, whereas the amplitude of the normal vorticity  increased by approximately a factor of five hundred.
+
+For two-dimensional perturbations, on the other hand, the energy is distributed between the normal component w and the horizontal component u = iDw/. As can be observed from figure 11, for increasing Reynolds number the amplitude of w decreases. Following, its share of the initial energy goes down as well. Since the initial energy is normalized to one, this implies that the energy contribution associated to u must increase. Corresponding to this energy increase, we observe that the amplitude of u increases for increasing Reynolds number, cf. figure 12. We choose the case Re = 1000 in order to visualize the spatial structure of the optimal two-dimensional perturbation. For this case the maximum amplification is given by:
+
+max
+,t0 ,t
+
+G(,
+
+
+
+=
+
+0, t0,
+
+t,
+
+Re 
+
+=
+
+1000)
+
+=
+
+1.34
+
+·
+
+1018,
+
+(3.24)
+
+where the parameters at maximum are given by:
+
+ = 0.33, t0 = 0.26, t = 14.2.
+
+(3.25)
+
+In figure 13, contour plots in the (x, z)-plane of the real part of w · exp ix at initial time t0 and at time t when it reaches maximal amplification are plotted. Initially, the perturbation is confined to a thin layer inside the boundary layer. While reaching its maximum amplification its spatial structure grows in wall normal direction.
+
+4. Relation to previous results in the literature
+A question which suggests itself immediately, is the relation between the present nonmodal stability analysis and the modal stability analyses performed previously in Blondeaux et al. (2012), Verschaeve & Pedersen (2014) and Sadek et al. (2015). Naturally, the amplifications of the optimal perturbations are expected to be larger than the corresponding ones of the modal Tollmien-Schlichting waves. This can be seen in figure 14, where we have solved the Orr-Sommerfeld equation for the present problem in a quasistatic fashion for the wave number  = 0.35 and Reynolds numbers Re = 141 and Re = 447. The amplification of the optimal perturbation can be several orders of magnitude larger than that of the corresponding modal Tollmien-Schlichting wave. On the
+
+(a) Re = 141
+
+101
+
+tmax = 1.5
+
+(b) Re = 316
+
+103
+
+tmax = 8.2
+
+102
+
+max, G
+
+J. C. G. Verschaeve et al.
+
+101
+
+100
+
+100
+
+-5
+
+0
+
+5
+
+(c) Re = 447
+
+10 1018
+
+-5
+
+0
+
+5
+
+10
+
+(d) Re = 1000
+
+105
+
+tmax = 9.9
+
+1014
+
+1010 103
+
+106
+
+101
+
+102
+
+tmax = 16.5
+
+max, G
+
+-5
+
+0
+
+5
+
+10
+
+t
+
+t0 :
+
+-8
+
+-6
+
+-4
+
+-10
+
+0
+
+-2
+
+0
+
+10
+
+20
+
+t
+
+2
+
+4
+
+30 6
+
+Figure 3: Temporal evolution of the amplification G maximized over the wavenumbers  and  for different Reynolds numbers Re and initial times t0.
+
+16
+
+(a) Re = 141, tmax = 1.5
+1.0
+
+(b) Re = 316, tmax = 8.2
+1.0
+
+0.8
+
+0.8
+
+ log10 G
+32
+
+ log10 G
+
+Nonmodal stability analysis of the boundary layer under solitary waves
+
+8 1
+
+0.6
+
+0.6
+
+0.4
+
+0.4
+
+0.2
+
+0.2
+
+0.0
+
+0.0 0.4 0.8 1.2
+
+log10 G
+
+0.00
+
+-0.15
+
+-0.30
+
+-0.45
+
+-0.60
+
+0.0
+
+0.2
+
+0.4
+
+0.6
+
+0.8
+
+1.0
+
+
+
+(c) Re = 447, tmax = 9.9
+
+1.0
+
+0.0
+
+-0.8 0.0 0.8 1.6
+
+log10 G
+
+3.0
+
+1.5
+
+0.0
+
+-1.5
+
+-3.0
+
+0.0
+
+0.2
+
+0.4
+
+0.6
+
+0.8
+
+1.0
+
+
+
+(d) Re = 1000, tmax = 16.5
+
+1.0
+
+10-1
+
+0.8
+
+0.8
+
+0.6
+
+0.6
+
+
+
+102 108
+
+ log10 G
+
+0.4
+
+0.4
+
+2000
+
+0.2
+
+0.2
+
+0.0 -1 0 1
+log10 G
+
+2
+5.0 2.5 0.0 -2.5
+
+0.0
+
+0.2
+
+0.4
+
+0.6
+
+0.8
+
+1.0
+
+
+
+0.0
+
+-1.5 0.0 1.5
+
+log10 G
+
+15
+
+log10 G
+
+10
+
+5
+
+0
+
+-5
+
+0.0
+
+0.2
+
+0.4
+
+0.6
+
+0.8
+
+1.0
+
+
+
+17
+
+Figure 4: Contour plots of the amplification G(, , t0 = 0, tmax, Re) at tmax = 1.5, 8.2, 9.9, 16.5 for the cases Re = 141, 316, 447, 1000, respectively. The plots to the left and below the contour plot show a slice along the - and -axes, respectively.
+
+18
+
+J. C. G. Verschaeve et al.
+
+103
+
+102
+
+G
+
+101
+
+maxG( = 0)
+
+maxG( = 0)
+
+100
+
+max, G
+
+0
+
+2
+
+4
+
+6
+
+8
+
+10
+
+t
+
+Figure 5: Temporal evolution of max G( = 0, , t0 = 0, t, Re = 316), max G(,  = 0, t0 = 0, t, Re = 316) and max, G(, , t0 = 0, t, Re = 316).
+
+other hand the main conclusions by Verschaeve & Pedersen (2014) are still supported by the present analysis. Although attempted by several experimental and direct numerical studies (Vittori & Blondeaux 2008; Sumer et al. 2010; Ozdemir et al. 2013), a well defined transitional Reynolds number cannot be given for this flow. As also pointed out in the present analysis, depending on the characteristics of the external perturbations, such as length scale and intensity, the flow might transition to turbulence for different Reynolds numbers. Without control of the external perturbations, any experiment on the stability properties of this flow will hardly be repeatable. On the other hand, as we have shown above, a critical Reynolds number ReA can be defined for which the present flow switches from a monotonically stable to a non-monotonically stable flow. This critical Reynolds number has, however, little practical bearing.
+Concerning the direct numerical simulations by Vittori & Blondeaux (2008, 2011) and Ozdemir et al. (2013), the present study gives an indication for the transition process happening via two-dimensional vortex rollers observed in their direct numerical simulations. In addition, we are able to answer the question raised by Ozdemir et al. (2013) about the possible mechanism of a by-pass transition. However, quantitative differences between the direct numerical results by Ozdemir et al. (2013) and the present ones exist. Ozdemir et al. (2013) introduced a random disturbance at t0 = - with different amplitudes in their simulations and monitored the evolution of the amplitude of these disturbances, cf. figure 10 in Ozdemir et al. (2013). From this figure, we see the characteristic kink of two-dimensional perturbations overtaking streamwise streaks appearing
+
+Nonmodal stability analysis of the boundary layer under solitary waves
+
+19
+
+107
+
+ =0
+
+106
+
+ =0
+
+105
+
+104
+
+G
+
+103
+
+102
+
+101
+
+ReA =18 ReB =38
+
+ReC =170
+
+100 0
+
+50 100 150 200 250 300 350 400
+
+Re
+
+Figure 6: Maximum amplification of streamwise streaks max,t0,t G( = 0, , t0, t, Re) and two-dimensional perturbations max,t0,t G(,  = 0, t0, t, Re).
+
+in their simulations only for Re = 2000 and higher. If we compare this to the optimal perturbations with initial times t0 = -4 and t0 = -2 in figure 3, we see this kink developing already for a much lower Reynolds number, namely Re = 1000, cf. figure 3d. The reasons for this discrepancy are unclear. Although Ozdemir et al. (2013) employed perturbation amplitudes with values up to 20 % of the base flow, which might trigger nonlinear effects, the acceleration region of the flow has a strong damping effect, such that the initial perturbation growth starting in the deceleration region is most likely governed by linear effects. We might, however, point out that, in order for a Navier-Stokes solver to capture the growth of two-dimensional perturbations correctly an extremely fine resolution in space and time is needed, as can be seen in Verschaeve & Pedersen (2014, Appendix A) for modal Tollmien-Schlichting waves. In particular, when the resolution requirements are not met, these perturbations tend to be damped instead of amplified. In this respect, it is interesting to note, that Vittori & Blondeaux (2008, 2011) found that regular vortex tubes appeared in their simulation for a Reynolds number around Re = 1000 (ReSumer = 5 · 105), which corresponds relatively well with the present findings. However, it cannot be excluded that this is for the wrong reason, as a larger level of background noise resulting from, for example the numerical approximation error by their low order solver, might be present in their simulations.
+The Reynolds number in the experiments by Liu et al. (2007) lies in the range Re = 72 - 143 which is larger than ReA = 18. However, as can be seen from figure 3, the maximum amplification for these cases is around a factor of 30. Therefore, without any induced disturbance, growth of streamwise streaks from background noise is probably not
+
+20
+104 103
+
+J. C. G. Verschaeve et al.
+ms,ltoa0,xptGe(2 =0)
+
+102
+
+|w|
+G
+|| · Re
+
+101
+
+100
+
+10-11 01
+
+102
+
+103
+
+104
+
+Re
+
+Figure 7: Maximum amplification of streamwise streaks, max,t0,t G( = 0, , t0, t, Re), versus Reynolds number.
+
+0.7 0.6 0.5 0.4 0.3 0.2 0.1 0.0
+0
+
+Re = 500
+
+10
+
+Re = 300
+
+Re = 40
+
+8
+
+Re = 30
+
+Re = 20
+
+6
+
+4
+
+2
+
+0
+
+5
+
+10
+
+15
+
+20
+
+0
+
+z
+
+Re = 500 Re = 300 Re = 40 Re = 30 Re = 20
+
+5
+
+10
+
+15
+
+20
+
+z
+
+(a) w
+
+(b) 
+
+Figure 8: Initial condition for the streamwise streak with maximum amplification, max,t0,t G( = 0, , t0, t, Re), for different Reynolds numbers.
+
+observable and has not been observed in Liu et al. (2007). On the other hand, in the experiments by Sumer et al. (2010) vortex rollers appeared in the range 630 Re < 1000. Assuming that the initial level of external perturbations in the experiments is higher than in the direct numerical simulations, the observation by Sumer et al. fits the present picture. However, for Re > 1000, they observed the development of turbulent spots in
+
+Nonmodal stability analysis of the boundary layer under solitary waves
+
+21
+
+z
+
+20.0 17.5 15.0 12.5 10.0 7.5 5.0 2.5 0.0
+0
+
+0.100
+
+2
+
+4
+
+6
+
+8
+
+y
+
+(a) w(z, t0) · exp iy
+
+z
+0.010
+
+20.0 17.5 15.0 12.5 10.0 7.5 5.0 2.5 0.0
+0
+
+2.000 8.000
+
+-2.000
+
+0.100 0.500
+
+2
+
+4
+
+6
+
+y
+
+-0.010
+8
+
+(b) (z, t0) · exp iy · Re
+
+-1.000 -0.200
+
+Figure 9: Contour plots of the real part of w(z, t0) · exp iy and the real part of (z, t0) · exp iy · Re, which are the initial condition at t0 for the optimal perturbation for the case Re = 500, max = 0.64, t0 = 0.11, t = 1.53.
+
+z
+-0.100
+
+z
+
+20.0 17.5 15.0 12.5 10.0 7.5 5.0 2.5 0.0
+0
+
+0.100
+
+2
+
+4
+
+6
+
+8
+
+y
+
+(a) w(z, t) · exp iy
+
+20.0
+
+17.5
+
+15.0
+
+12.5
+
+10.0
+
+7.5
+
+5.0 2.5 0.0
+0
+
+-0.010 0.010
+
+2.000 4.000
+
+-0.500
+
+1.000 0.100 0.500
+
+2
+
+4
+
+6
+
+8
+
+y
+
+(b) (z, t) · exp iy · Re · 10-3
+
+Figure 10: Contour plots of the real part of w(z, t) · exp iy and the real part of (z, t) · exp iy · Re · 10-3, which are obtained by advancing the initial condition in figure 9 to
+time t = 1.53 for the optimal perturbation for the case Re = 500, max = 0.64, t0 = 0.11.
+
+the deceleration region of the flow. This is in contrast to the results by Ozdemir et al. (2013) of a K-type transition. The present analysis supports the finding of a transition process via the growth of two-dimensional perturbations. However, whether these nonmodal Tollmien-Schlichting waves break down via a K-type transition as in Ozdemir et al. (2013) or whether they break up randomly producing turbulent spots (Shaikh & Gaster 1994; Gaster 2016) is difficult to say from this primary instability analysis. In addition, more information on the initial disturbances in the experiments is needed to make any conclusions. Whereas random noise is applied in Vittori & Blondeaux (2008, 2011) and Ozdemir et al. (2013), the initial disturbance in Sumer et al. (2010) might stem from residual motion in their facility, exhibiting probably certain characteristics. Depending on these characteristics, other perturbations than the one showing optimal amplification, might induce secondary instability. In addition, it cannot be excluded that a completely different instability mechanism is at work in the experiments of Sumer
+
+22
+
+J. C. G. Verschaeve et al.
+
+0.30 Re = 200
+
+0.25
+
+Re = 300
+
+Re = 500
+
+0.20
+
+Re = 800
+
+Re = 1000
+
+0.15
+
+Re = 1500
+
+Re = 2000
+
+0.10
+
+|w|
+
+0.05
+
+0.00
+
+0
+
+2
+
+4
+
+6
+
+8
+
+10
+
+z
+
+Figure 11: Initial condition w for the two-dimensional perturbations with maximum amplification, max,t0,t G(,  = 0, t0, t, Re), for different Reynolds numbers.
+
+2.0
+
+Re = 200
+
+Re = 300
+
+1.5
+
+Re = 500
+
+Re = 800
+
+Re = 1000
+
+1.0
+
+Re = 1500
+
+Re = 2000
+
+0.5
+
+|u|
+
+0.0
+
+0
+
+2
+
+4
+
+6
+
+8
+
+10
+
+z
+
+Figure 12: The horizontal component u = iDw/ of the initial condition for two-
+dimensional perturbations with maximum amplification, max,t0,t G(,  = 0, t0, t, Re), for different Reynolds numbers.
+
+et al. (2010). The focus in the present analysis is on the response to initial conditions and does not take into account any response to external forcing, which would be modeled by adding a source term to the equations (2.23) and (2.24). It is possible that the present flow system displays some sensitivity to certain frequencies of vibrations present in the experimental set-up altering the behavior of the system for larger Reynolds numbers. In particular, different perturbations, such as streamwise streaks, might be favored, leaving
+
+z
+G
+z
+
+Nonmodal stability analysis of the boundary layer under solitary waves
+
+23
+
+0.000
+0.000 0.000
+
+10
+
+8
+
+6
+
+4
+
+2
+
+0
+
+0
+
+5
+
+10
+
+15
+
+x
+
+20.0 17.5 15.0 12.5 10.0 7.5 5.0 2.5 0.0
+0
+
+5
+
+10
+
+x
+
+0.000
+15
+
+(a) t0 = 0.26
+
+(b) t = 14.2
+
+Figure 13: Contour plots of the real part of w · exp ix, at initial time t0 = 0.26 and at t = 14.2 (w multiplied by 10-8), when it reaches its maximum amplification, for the optimal perturbation for the case Re = 1000 with max = 0.33.
+
+108 107 106
+
+mnoondmaloRdael mnoondmaloRdael
+
+=141
+Re = =447
+Re =
+
+141 447
+
+105
+
+104
+
+103
+
+102
+
+101
+
+1000.0 0.5 1.0 1.5 2.0 2.5 3.0 3.5 4.0 t
+
+Figure 14: Amplification G( = 0.35,  = 0, t0, t, Re) of the nonmodal two-dimensional perturbation versus corresponding amplification of the modal Tollmien-Schlichting wave
+with  = 0.35 computed by means of the Orr-Sommerfeld equation, for Re = 141, 447. The initial time t0 is taken from the minimum of the modal Tollmien-Schlichting waves.
+
+the possibility open that the turbulent spots, nevertheless, result from the break-down of streamwise streaks (Andersson et al. 2001; Brandt et al. 2004).
+
+5. Conclusions
+In the present treatise, a nonmodal stability analysis of the bottom boundary layer flow under solitary waves is performed. Two competing mechanism can be identified: Growing streamwise streaks and growing two-dimensional perturbations (nonmodal TollmienSchlichting waves). By means of an energy bound, it is shown that the present flow is
+
+24
+
+J. C. G. Verschaeve et al.
+
+monotonically stable for Reynolds numbers below Re = 18 after which it turns nonmonotonically stable, with streamwise streaks growing first. Two-dimensional perturbations display growth only for Reynolds numbers larger than Re = 38. However, their maximum amplification overtakes that of streamwise streaks at Re = 170. As for steady flows, the maximum amplification of streamwise streaks displays quadratic growth with Re for the present unsteady flow. On the other hand, the maximum amplification of twodimensional perturbations shows a near exponential growth with the Reynolds number in the deceleration region of the flow. Therefore, during primary instability, the dominant perturbations in the deceleration region of this flow are to be expected two-dimensional. This corresponds to the findings in the direct numerical simulations by Vittori & Blondeaux (2008) and Ozdemir et al. (2013) and in the experiments by Sumer et al. (2010) of growing two-dimensional vortex rollers in the deceleration region of the flow. However, further investigation of the secondary instability mechanism and of receptivity to external (statistical) forcing is needed in order to explain the subsequent break-down to turbulence in the boundary layer.
+The boundary layer under solitary waves is a relatively simple model for a boundary layer flow with a favorable and an adverse pressure gradient. But just for this reason it allows to analyze stability mechanisms being otherwise shrouded in more complicated flows.
+The implementation of the numerical method has been done using the open source libraries Armadillo (Sanderson & Curtin 2016), FFTW (Frigo & Johnson 2005) and GSL (Galassi et al. 2009). At this occasion, the first author would like to thank Caroline Lie for pointing out a mistake in Verschaeve & Pedersen (2014). In figures 20,22,24 and 26 in Verschaeve & Pedersen (2014), the frequency  is incorrectly scaled. However, this does not affect any of the conclusions of the article. The first author apologizes for any inconvenience this might represent.
+
+Appendix A. Numerical implementation
+A.1. Numerical implementation for the energy bound
+We expand  and w in equations (2.19-2.20) on the Shen-Legendre polynomials j and j for the Poisson and biharmonic operator, respectively, cf. (Shen 1994):
+
+N -2
+
+N -4
+
+ = jj(z) w = wjj(z),
+
+j=0
+
+j=0
+
+(A 1)
+
+where N is the number of Legendre polynomials. The semi infinite domain [0, ) is trun-
+cated at h, where h is chosen large enough by numerical inspection. The basis functions
+j and j are linear combinations of Legendre polynomials, such that a total number of N Legendre polynomials is used for each expansion in (A 1). The basis functions j satisfy the homogeneous Dirichlet conditions, whereas j honors the clamped boundary conditions. A Galerkin formulation is then chosen for the discrete system:
+
+AB BT D
+
+w 
+
+=µ
+
+E0 0H
+
+w 
+
+.
+
+(A 2)
+
+Nonmodal stability analysis of the boundary layer under solitary waves
+
+25
+
+The elements of the matrices are given by:
+
+h
+
+h
+
+h
+
+
+
+Aij
+
+=
+
+1 Re
+
+ 
+
+D2iD2j dz + 2 2 + 2
+
+DiDj dz + 2 + 2 2
+
+ ij dz
+
+
+
+0
+
+0
+
+0
+
+h
+
+h
+
+
+
++
+
+i 2
+
+ 
+
+iz2Ubasej dz + 2
+
+ izUbasezj dz
+
+
+0
+
+0
+
+(A 3)
+
+h
+
+Bij
+
+=
+
+i 2
+
+izUbasej dz
+
+0
+
+(A 4)
+
+h
+
+h
+
+
+
+Dij
+
+=
+
+1 Re
+
+ 
+
+DiDj dz + 2 + 2
+
+ ij dz
+
+
+0
+
+0
+
+(A 5)
+
+h
+
+h
+
+2Eij = - DiDj dz - 2 + 2 ij dz
+
+0
+
+0
+
+(A 6)
+
+h
+2Hij = - ij dz
+0
+
+(A 7)
+
+For the verification and validation of the method, manufactured solutions have been used.
+In addition, the Reynolds numbers ReA and ReB for Stokes' second problem have been computed, resulting into ReA = 18.986 and ReB = 38.951, corresponding well with the numbers 19.0 and 38.9 obtained by Davis & von Kerczek (1973, table 1).
+
+A.2. Numerical implementation for the nonmodal analysis
+The basis functions j and j for w and  are in this case given by the Shen-Chebyshev polynomials, cf. Shen (1995), instead of the Shen-Legendre polynomials as before. This allows us to use the fast Fourier transform for computing derivatives. The equations (2.23-2.24) are written in discrete form as:
+
+2 Re 
+
+L 0 0 M
+
+d dt
+
+w 
+
+=
+
+LOSE 0 LC LSC
+
+w 
+
+,
+
+(A 8)
+
+26
+
+J. C. G. Verschaeve et al.
+
+where the elements of the matrices are given by:
+
+h
+Mij = ij dz
+
+0
+
+h
+
+Gij =
+
+d dz
+
+i
+
+d dz
+
+j
+
+dz
+
+0
+
+h
+
+Aij =
+
+d2 dz2
+
+i
+
+d2 dz2
+
+j
+
+dz
+
+0
+
+h
+
+Mij = ij dz
+
+0
+
+h
+
+Gij =
+
+d dz
+
+i
+
+d dz
+
+j
+
+dz
+
+0
+
+h
+
+Pi1j = z2Ubaseij dz
+
+0 h
+
+Pi2j = Ubasei D2 - (2 + 2) j dz
+
+0 h
+
+Pi3j = Ubaseij dz
+
+0
+
+Lij = -Gij - (2 + 2)Mij
+
+LOijSE
+
+=
+
+iPi1j
+
+- iPi2j
+
++
+
+1 Re
+
+Aij + 2 2 + 2 Gij + 2 + 2 2 Mij
+
+h
+
+LCik = i zU0ik dz
+
+0
+
+LSijC
+
+=
+
+-iPi3j
+
++
+
+1 Re
+
+-Gij - (2 + 2)Mij
+
+(A 9) (A 10) (A 11) (A 12) (A 13) (A 14) (A 15) (A 16) (A 17) (A 18) (A 19) (A 20)
+
+For the Shen-Chebyshev polynomials, L and M are sparse banded matrices. Therefore, the system (A 8) can be efficiently advanced in time, allowing us to compute the evolution matrix X(t, t0) for a wide range of parameters. The amplification G, equation (2.26), for the discrete case can then be computed as suggested in Trefethen et al. (1993); Schmid & Henningson (2001); Schmid (2007). We write
+
+q=
+
+w 
+
+,
+
+(A 21)
+
+and note that the energy E, equation (2.25), in the discrete case is given by: E = qWq,
+
+(A 22)
+
+Nonmodal stability analysis of the boundary layer under solitary waves
+
+27
+
+where
+
+W
+
+=
+
+1 2
+
+1 k2
+
+G
+
++
+
+M
+
+0
+
+0
+
+1 k2
+
+M
+
+.
+
+(A 23)
+
+Matrices G, M and M are defined in equations (A 10), (A 9) and (A 12), respectively.
+
+The Cholesky factorization of W is given by:
+
+FT F = W.
+
+(A 24)
+
+The coefficients q(t) at time t can be obtained by means of the evolution matrix X:
+
+q(t) = X(t, t0)q0,
+
+(A 25)
+
+where q0 is the initial condition at t0. From this it follows that X(t0, t0) reduces to the identity matrix. The amplification G can then be computed by
+
+G(,
+
+,
+
+t0,
+
+t,
+
+Re  )
+
+=
+
+max
+q0
+
+q(t)Wq(t) q0Wq0
+
+=
+
+max
+q0
+
+q0XWXq0 q0Wq0
+
+=
+
+max
+b
+
+bF-T
+
+XWXF-1b bb
+
+= FXF-1 2 ,
+
+(A 26) (A 27) (A 28) (A 29)
+
+where the matrix norm FXF-1 is given by the maximum singular value of FXF-1, cf. Trefethen et al. (1993); Schmid & Henningson (2001); Schmid (2007).
+
+The present method consists of two steps. First, the evolution matrix X needs to be computed by solving equation (A 8) with the identity matrix as initial condition at time t0. Then the amplification G can be computed using X. In order to verify the well functioning of the present time integration, the following manufactured solution has been used:
+w = cos(1t) sin2(5z)  = cos(2t) sin(3z) Ubase = cos(3t) (1 - exp (-2z)) . (A 30)
+A forcing term is defined by the resulting term, when injecting the above solution into equations (2.23) and (2.24). Equations (A 8) are advanced by means of the adaptive Runge-Kutta-Cash-Karp-54 time integrator included in the boost library. The absolute and relative error of the time integration are set to 10-10. For verification, we use the above manufactured solution with the following parameter values:
+Re = 123  = 0.3  = 0.234 h = 1 1 = 1.234 2 = 1.123 3 = 0.4567 t0 = 0, (A 31)
+and compare reference and numerical solution by computing a mean error on the Chebyshev knots. The behavior of the error for increasing N is displayed in figure 15. We observe that the error displays exponential convergence until approximately 10-9, when the error contribution due to the time integration becomes dominant. In addition, the analytic solution of the energy of this problem can be used to verify parts of the amplification computation (results not shown).
+
+For validation purposes, the case of transient growth for Poiseuille flow with a Reynolds number Re = 1000 and  = 1 in Schmid (2007) has been computed by means of the present method for N = 65. As can be seen from figure 16, the results by the present
+
+28
+
+J. C. G. Verschaeve et al.
+
+method correspond well to the data digitized from figure 3 in Schmid (2007).
+
+Furthermore, the validation with an unsteady base flow is performed by means of Stokes second problem whose base flow is given by
+
+Ubase = exp(-z) cos
+
+2 t-z Re 
+
+.
+
+(A 32)
+
+The results in Luo & Wu (2010) define a test case for the present method. In Luo & Wu (2010), the temporal evolution of eigenmodes of the Orr-Sommerfeld equation for t0 = 0 is investigated. They consider three cases defined by Re = 1560, 1562.8 and 1566 and  = 0.3 and  = 0. As initial condition, the eigenmodes corresponding to the following eigenvalues OSE for each Re are used:
+
+Re 
+
+OSE
+
+1560
+
+-0.004847 - 0.196045i
+
+1562.8 -0.00482994 - 0.196076i
+
+1566 -0.00481052 - 0.196111i
+
+As a main result from the investigation in Luo & Wu (2010), the maximum amplitude of
+
+the perturbation for Re = 1560 decreases from cycle to cycle, whereas for Re = 1562.8 the maximum amplitude displays almost no growth from cycle to cycle. However, for
+
+Re = 1566, the maximum amplitude increases from cycle to cycle. This can also be observed when using the present method, cf. figure 17, where we have used N = 97. The
+
+amplitude is in our case defined by the ratio between the perturbation energy at time
+
+t and at time t0 = 0. Luo & Wu (2010) defined the amplitude differently, namely by the first coefficient of the expansion of the perturbation on all Orr-Sommerfeld modes.
+
+Therefore, the exact numerical values in figure 17 and in figure 7 in Luo & Wu (2010) are
+
+not comparable. When comparing the growth rate  of the present perturbation, given
+
+by:
+
+
+
+=
+
+1 E
+
+dE dt
+
+(A 33)
+
+with the growth rate given by the real part of the eigenvalue resulting from the Orr-
+
+Sommerfeld equation for the case Re = 1566, we confirm the observation by (Luo & Wu 2010, figure 10) that during one cycle the growth rate is relatively well approximated by
+
+the Orr-Sommerfeld solution. In addition, the growth rate taken from figure 10 in Luo
+
+& Wu (2010) by digitization follows closely the present one, even if the definition of the
+
+amplitude is a different one, cf. figure 18.
+
+Returning to the present flow, we shall consider the case
+
+Re = 1000  = 0.6  = 0.14 h = 30 t0 = 0 t = 6,
+
+(A 34)
+
+for determining the discretization parameters. Before solving the nonmodal equations (A 8), the base flow solution needs to be generated. This is done by numerically solving the boundary layer equations (2.3-2.6), applying the same discretization techniques as for the nonmodal equations (2.23-2.24). The present boundary layer solver has been verified by comparison to the solution obtained by means of the integral formula in Liu et al. (2007). An important ingredient in the numerical solution of the boundary layer equations (2.3-2.6) is the choice of a finite value t- for imposing the boundary condition (2.5). As the outer flow dies off exponentially towards t  ±, we choose t- = -8 and t- = -12 as starting point. For these values the magnitude of the outer flow amounts to
+
+Nonmodal stability analysis of the boundary layer under solitary waves
+
+29
+
+101
+
+10-1
+
+10-3
+
+Error
+
+10-5
+
+10-7
+
+10-9
+
+10
+
+20
+
+30
+
+40
+
+50
+
+60
+
+N
+
+Figure 15: Error convergence of the manufactured problem given by equation A 30.
+
+Uouter(t- = -8) = 4.50141 · 10-7 and Uouter(t- = -12) = 1.51005·-10, respectively. Choosing N = 129, we solve the above nonmodal example problem, equation (A 34), for Ubase computed with t- = -8 and t- = -12. The resulting amplification G is given by:
+
+G(0.6, 0.14, 0, 6, 1000) = 1.11855 · 109 for t- = -8 G(0.6, 0.14, 0, 6, 1000) = 1.11869 · 109 for t- = -12.
+
+(A 35) (A 36)
+
+Choosing t- = -12 and varying the number of Chebyshev polynomials N , we observe the following values for G:
+
+N G(0.6, 0.14, 0, 6, 1000)
+
+33 2.22803 · 1013 49 3.51768 · 108 65 1.13902 · 109 97 1.11865 · 109 129 1.11869 · 109
+For the simulations in section 3, computations with N = 97 and N = 129 have been performed to ensure that the results are accurate.
+
+Appendix B. Scaling of the initial condition for streamwise streaks
+
+For streamwise streaks ( = 0), we have the governing equations given by equations (3.1) and (3.2). We shall first find the general solution of ~.
+The sine transform of ~ is defined as:
+
+
+(, t) = ~sin(z) dz
+
+(B 1)
+
+0
+
+30
+
+J. C. G. Verschaeve et al.
+
+101
+present Schmid (2007)
+
+G
+
+100
+
+0
+
+5
+
+10
+
+15
+
+20
+
+25
+
+30
+
+t
+
+Figure 16: Amplification G( = 1.,  = 0, t0 = 0., t, Re = 1000.) of the nonmodal perturbation for Poiseuille flow. The present results collapse onto the data from figure 3 in Schmid (2007).
+
+×109 8 7 6
+
+Re = 1560 Re = 1562.8 Re = 1566
+
+5
+
+E/E0
+
+4
+
+3
+
+2
+
+1
+
+0 0
+
+5
+
+10
+
+15
+
+20
+
+25
+
+2t/Re
+
+Figure 17: Temporal evolution of the amplitude E/E0 when advancing the OrrSommerfeld eigenmode at time t0 = 0 forward in time with the present method.
+
+Taking the sine transform of equation (3.2), gives us:
+
+where
+
+ t
+
+
+
++
+
+1 2
+
+2 + 2
+
+ - F = 0,
+
+
+
+F (, t) = i wDUbase sin(z) dz.
+
+0
+
+(B 2) (B 3)
+
+Nonmodal stability analysis of the boundary layer under solitary waves
+
+31
+
+0.020 0.015
+
+present Luo & Wu OSE
+
+0.010
+
+
+
+0.005
+
+0.000
+
+-0.005
+
+0
+
+1
+
+2
+
+3
+
+4
+
+5
+
+6
+
+2t/Re
+
+Figure 18: Growth rate of the perturbation when advancing the Orr-Sommerfeld eigenmode at time t0 = 0 forward in time with the present method.
+
+Solving equation (B 2) gives us for :
+
+
+
+t
+
+
+
+(, t) = (, 0) +
+
+F (,  )
+
+e-
+
+1 2
+
+(
+
+2
+
++2
+
+)
+
+d
+
+
+
+e-
+
+1 2
+
+(2
+
++
+
+2
+
+)t
+
+.
+
+0
+
+The general solution of ~ can thus be written as:
+
+(B 4)
+
+
+
+~ =
+
+2 
+
+(,
+
+0)e-
+
+1 2
+
+(2+2)t
+
+sin(z)
+
+d
+
+0
+
+
+
+t
+
++
+
+2 
+
+e-
+
+1 2
+
+(
+
+2
+
++2
+
+)t
+
+F (,  )
+
+e-
+
+1 2
+
+(
+
+2
+
++2
+
+)
+
+d
+
+sin(z) d.
+
+0
+
+t0
+
+(B 5)
+
+Motivated by the findings in section (3.2.2), we shall assume that in the asymptotic limit Re  , the initial condition of w and ~ can approximately be written as:
+
+w = wm(Re)w^(z, t0) ~ = m(Re)^(z, t0),
+
+(B 6)
+
+where only the coefficients wm and m depend on Re. Subsequently, using equation (B 5), we can write w and ~ as:
+
+~ = ma(z, t) + wmb(z, t), w = wmc(z, t),
+
+(B 7) (B 8)
+
+where a, b and c are some functions of z and t, with b(z, t0) = 0. The energy E = Ew +E,
+
+32
+
+J. C. G. Verschaeve et al.
+
+equation (2.25), is then given by:
+
+
+
+Ew (t)
+
+=
+
+wm2
+
+1 2
+
+1 2
+
+|Dc|2
+
++
+
+|c|2
+
+dz,
+
+0
+
+E (t)
+
+=
+
+1 2
+
+Re
+
+2 
+
+4
+
+
+1 2
+
+m2 a2 + 2mwmab + wm2 b2
+
+dz.
+
+0
+
+We can thus write:
+
+(B 9) (B 10)
+
+Ew(t0) = wm2 A0,
+
+Ew(t) = wm2 A1,
+
+E (t0) = Re2m2 B0,
+
+E (t)
+
+=
+
+Re
+
+2 
+
+m2 B1 + 2mwmB2 + wm2 B3
+
+,
+
+(B 11) (B 12) (B 13) (B 14)
+
+where A0, A1, B0, B1, B2 and B3 are independent of Re. The normalization constraint for the initial condition reads:
+
+Ew (t0 )
+
++
+
+E (t0)
+
+=
+
+wm2 A0
+
++
+
+Re
+
+2 
+
+m2 B0
+
+=
+
+1,
+
+(B 15)
+
+From which we find:
+
+wm2
+
+=
+
+1 A0
+
+1 - Re2B0m2
+
+(B 16)
+
+As the right hand side needs to be positive for all Re, this motivates the following ansatz
+
+for m in the limit of Re  :
+
+m
+
+=
+
+d Re
+
+ 
+
+,
+
+(B 17)
+
+where  1 and d some constant. For the energy at time t, we can write:
+
+E(t)
+
+=
+
+wm2 A1
+
++
+
+Re
+
+2 
+
+m2 B1 + 2mwmB2 + wm2 B3
+
+(B 18)
+
+=
+
+1 A0
+
+2d Re-+2
+
+A0 B2
+
+Re2  - B0 Re2d2 Re-2 
+
+(B 19)
+
++d2 (A0 B1 - A1 B0) Re2-2  - Re-2 +4B0 B3 d2 + B3 Re2 + A1 .
+
+As the energy is maximum for the optimal perturbation, we must have
+
+E 
+
+=
+
+0.
+
+Solving this equation for  gives us four solutions
+
+(B 20)
+
+1,2,3,4
+
+=
+
+1/2
+
+1 ln (Re)
+
+- ln (2) + 2 ln
+
+±
+
+d B2
+
+F± A0
+
+,
+
+(B 21)
+
+where
+
+ F± = ± D +
+
+B32Re4 + 2 A1 B3 Re2 + A12
+
+B02
+
++ -2 B1 B3 + 4 B22 Re2 - 2 A1 B1 A0 B0 + A02B12
+
+(B 22)
+
+D = -B3 Re2 - A1 B0 + A0 B1 2
+
+(B 23)
+
+B3 Re2 + A1 2 B02 - 2 A0 B1 B3 - 2 B22 Re2 + A1 B1 B0 + A02B12
+
+Nonmodal stability analysis of the boundary layer under solitary waves
+
+33
+
+Taking the limit Re  , we obtain:
+
+lim i = 2 for i = 1, 2, 3, 4. Re  
+
+From this it follows, that for Re >> 1, we have approximately
+
+~(z, t0)
+
+
+
+1 Re
+
+2 
+
+,
+
+from which relation (3.21) can directly be obtained.
+
+(B 24) (B 25)
+
+REFERENCES
+Andersson, P. , Brandt, L. , Bottaro, A. & Henningson, D. S. 2001 On the breakdown of boundary layer streaks. Journal of Fluid Mechanics 428, 29­60.
+Benjamin, T. B. 1966 Internal waves of finite amplitude and permanent form. Journal of Fluid Mechanics 25, 241­270.
+Bertolotti, F. , Herbert, T. & Spalart, P. 1992 Linear and nonlinear stability of the Blasius boundary layer. Journal of Fluid Mechanics 242, 441­474.
+Biau, D. 2016 Transient growth of perturbations in stokes oscillatory flows. Journal of Fluid Mechanics 794, 10.
+Blondeaux, P. , Pralits, J. & Vittori, G. 2012 Transition to turbulence at the bottom of a solitary wave. Journal of Fluid Mechanics 709, 396­407.
+Brandt, L. , Schlatter, P. & Henningson, D. S. 2004 Transition in boundary layers subject to free-stream turbulence. Journal of Fluid Mechanics 517, 167­198.
+Butler, K. M. & Farrell, B. F. 1992 Three-dimensional optimal perturbations in viscous shear flow. Physics of Fluids A 4, 1637­1650.
+Carr, M. & Davies, P. A. 2006 The motion of an internal solitary wave of depression over a fixed bottom boundary in a shallow, two-layer fluid. Physics of Fluids 18, 016601­10.
+Carr, M. & Davies, P. A. 2010 Boundary layer flow beneath an internal solitary wave of elevation. Physics of Fluids 22, 026601­1­8.
+Corbett, P. & Bottaro, A. 2000 Optimal perturbations for boundary layers subject to stream-wise pressure gradient. Physics of Fluids 12 (1), 120­130.
+Corbett, P. & Bottaro, A. 2001 Optimal linear growth in swept boudary layers. Journal of Fluid Mechanics 435, 1­23.
+Davis, S. H. & von Kerczek, C. 1973 A reformulation of energy stability theory. Archive for Rational Mechanics and Analysis pp. 112­117.
+Ellingsen, T. & Palm, E. 1975 Hydrodynamic stability. Physics of Fluids 18, 487. Fenton, J. 1972 A ninth-order solution for the solitary wave. Journal of Fluid Mechanics 53,
+257­271. Frigo, M. & Johnson, S. G. 2005 The design and implementation of FFTW3. In Proceedings
+of the IEEE , , vol. 93, pp. 216­231.
+Galassi, M. , Davies, J. , Theiler, B. , Gough, B. , Jungman, G. , Alken, P. , Booth, M. & Rossi, F. 2009 GNU Scientific Library Reference Manual . Network Theory Ltd.
+Gaster, M. 2016 Boundary layer transition initiated by a random excitation. In Book of Abstracts 24th International Congress of Theoretical and Applied Mechanics.
+Grimshaw, R. 1971 The solitary wave in water of variable depth. part 2. Journal of Fluid Mechanics 46, 611­622.
+Gustavsson, L. H. 1991 Energy growth of three-dimensional disturbances in plane Poiseuille flow. Journal of Fluid Mechanics 224, 241­260.
+Herbert, T. 1988 Secondary instability of boundary layers. Annual Review of Fluid Mechanics 20, 487­526.
+Jimenez, J. 2013 How linear is wall-bounded turbulence? Physics of Fluids 25, 110814­1­19. Joseph, D. D. 1966 Nonlinear stability of the boussinesq equations by the method of energy.
+Archive for Rational Mechanics and Analysis 22, 163. von Kerczek, C. & Davis, S. H. 1974 Linear stability theory of oscillatory stokes layers.
+Journal of Fluid Mechanics 62, 753­773.
+
+34
+
+J. C. G. Verschaeve et al.
+
+Levin, O. & Henningson, D. S. 2003 Exponential vs algebra growth and transition prediction in boundary layer flow. Flow, Turbulence and Combustion 70, 183­210.
+Liu, P. L.-F. & Orfila, A. 2004 Viscous effects on transient long-wave propagation. Journal of Fluid Mechanics 520, 83­92.
+Liu, P. L.-F. , Park, Y. S. & Cowen, E. A. 2007 Boundary layer flow and bed shear stress under a solitary wave. Journal of Fluid Mechanics 574, 449­463.
+Luchini, P. & Bottaro, A. 2014 Adjoint equations in stability analysis. Annual Review of Fluid Mechanics 46, 493­517.
+Luo, J. & Wu, X. 2010 On the linear instability of a finite stokes layer: Instantaneous versus floquet modes. Physics of Fluids 22, 1­13.
+Miles, J. W. 1980 Solitary waves. Annual Review of Fluid Mechanics 12, 11­43.
+Ozdemir, C. E. , Hsu, T.-J. & Balachandar, S. 2013 Direct numerical simulations of instability and boundary layer turbulence under a solitay wave. Journal of Fluid Mechanics 731, 545­578.
+Park, Y. S. , Verschaeve, J. C. G. , Pedersen, G. K. & Liu, P. L.-F. 2014 Corrigendum and addendum for boundary layer flow and bed shear stress under a solitary wave. Journal of Fluid Mechanics 753, 554­559.
+Sadek, M. M. , Parras, L. , Diamessis, P. J. & Liu, P. L.-F. 2015 Two-dimensional instability of the bottom boundary layer under a solitary wave. Physics of Fluids 27, 044101­1­25.
+Sanderson, C. & Curtin, R. 2016 Armadillo: a template-based C++ library for linear algebra. Journal of Open Source Software 1, 26.
+Schmid, P. J. 2007 Nonmodal stability theory. Annual Review of Fluid Mechanics 39, 129­162.
+Schmid, P. J. & Henningson, D. S. 2001 Stability and Transition in Shear Flows. New York: Springer-Verlag.
+Shaikh, F. N. & Gaster, M. 1994 The non-linear evolution of modulated waves in a boundary layer. Journal of Engineering Mathematics 28, 55­71.
+Shen, J. 1994 Efficient spectral-galerkin method i. direct solvers for the second and fourth order equations using legendre polynomials. Siam Journal of Scientific Coputing 15, 1489­1505.
+Shen, J. 1995 Efficient spectral-galerkin method ii. direct solvers of second fourth order equations by using chebyshev polynomials. SIAM Journal of Scientific Computing 16 (1), 74­87.
+Shuto, N. 1976 Transformation of nonlinear long waves. In Proceedings of 15th Conference on Coastal Enginearing.
+Sumer, B. M. , Jensen, P. M. , Sørensen, L. B. , Fredsøe, J. , Liu, P. L.-F. & Carstensen, S. 2010 Coherent structures in wave boundary layers. part 2. solitary motion. Journal of Fluid Mechanics 646, 207­231.
+Tanaka, H. , Winarta, B. , Suntoyo & Yamaji, H. 2011 Validation of a new generation system for bottom boundary layer beneath solitary wave. Coastal Engineering 59, 46­56.
+Trefethen, L. N. , Trefethen, A. E. , Reddy, S. C. & Driscoll, T. A. 1993 Hydrodynamic stability witwith eigenvalues. Science 261, 578­584.
+Verschaeve, J. C. G. & Pedersen, G. K. 2014 Linear stability of boundary layers under solitary waves. Journal of Fluid Mechanics 761, 62­104.
+Vittori, G. & Blondeaux, P. 2008 Turbulent boundary layer under a solitary wave. Journal of Fluid Mechanics 615, 433­443.
+Vittori, G. & Blondeaux, P. 2011 Characteristics of the boundary layer at the bottom of a solitary wave. Coastal Engineering 58, 206­213.
+
+

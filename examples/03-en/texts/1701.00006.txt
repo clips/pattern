@@ -1,0 +1,4271 @@
+arXiv:1701.00006v1 [hep-th] 30 Dec 2016
+
+Time Machines and AdS Solitons with Negative Mass
+Xing-Hui Feng, Wei-Jian Geng  and H. Lu¨ Center for Advanced Quantum Studies, Department of Physics,
+Beijing Normal University, Beijing 100875, China
+ABSTRACT We show that in D = 2n+1 dimensions, when mass is negative and all angular momenta are non-vanishing, Kerr and Kerr-AdS metrics describe smooth time machines, with no curvature singularity. Turning off the angular momenta appropriately can lead to static AdS solitons with negative mass. Setting zero the cosmological constant yields a class of Ricci-flat Ka¨hler metrics in D = 2n dimensions. We also show that Euclidean-signatured AdS solitons with negative mass can also arise in odd dimensions. We then construct time machines in D = 5 minimal gauged supergravity that carry only magnetic dipole charges. Turning off the cosmological constant, the time machine becomes massless and asymptotically flat. It can be described as a constant time bundle over the Eguchi-Hanson instanton.
+xhfengp@mail.bnu.edu.cn gengwj@mail.bnu.edu.cn mrhonglu@gmail.com
+
+Contents
+
+1 Introduction
+
+2
+
+2 Time machines with negative mass
+
+4
+
+2.1 D = 5 time machines with equal angular momenta . . . . . . . . . . . . . . 4
+
+2.2 D = 2n + 1 time machines with equal angular momenta . . . . . . . . . . . 8
+
+2.3 Time machines with unequal angular momenta . . . . . . . . . . . . . . . . 10
+
+2.4 Further time machines . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 12
+
+3 AdS Solitons with negative mass
+
+13
+
+3.1 Cohomogeneity-one metrics . . . . . . . . . . . . . . . . . . . . . . . . . . . 13
+
+3.2 First-order equations without superpotential . . . . . . . . . . . . . . . . . . 14
+
+3.3 Higher-cohomogeneity solitons . . . . . . . . . . . . . . . . . . . . . . . . . 16
+
+4 Ricci-flat instantons in D = 2n dimensions
+
+19
+
+4.1 D = 4 . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 20
+
+4.2 D = 2n . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 21
+
+5 Euclidean AdS solitons with negative mass
+
+22
+
+6 Time machine with a dipole charge
+
+24
+
+6.1 Asymptotic to AdS5 . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 24
+
+6.2 Asymptotic to flat spacetime . . . . . . . . . . . . . . . . . . . . . . . . . . 26
+
+7 Conclusions
+
+26
+
+1 Introduction
+This paper studies the properties of the general Kerr metrics with or without a cosmological constant, when they do not describe rotating black holes. The Kerr metric [1] of a rotating black hole that is asymptotic to four-dimensional Minkowski spacetime is far more subtle to construct than the static Schwarzschild metric [2] with spherical symmetry. The solution was generalized by Carter [3] to include a cosmological constant and the metric describes a rotating back hole in de Sitter (dS) or anti-de Sitter (AdS) spacetimes for positive or negative cosmological constants respectively. Inspired by string theory, Kerr metrics in higher dimensions were constructed in [4]. Kerr-(A)dS metric in five dimensions were constructed
+
+2
+
+in [5], motivated by the AdS/CFT correspondence [6]. The Kerr-(A)dS metrics in general dimensions were later constructed in [7, 8].
+One fascinating feature of Riemannian geometry is that a local metric may extend onto very different manifolds in different coordinate patches. For example, a five-dimensional Kerr-AdS "over-rotating" metric is equivalent, after performing a coordinate transformation, to an under-rotating Kerr-AdS metric [9]. Kerr and particularly Kerr-AdS metrics are very complicated in general dimensions and it is quite possible that these local metrics can describe spacetimes other than rotating black holes. Indeed, we find that when the mass is negative, the local metrics in D = 2n + 1 can describe a smooth time machine, provided that all independent orthogonal angular momenta are turned on. In this paper we adopt the definition of time machine in [10]. In such a time machine, the spacetime closes off at some Euclidean pseudo horizon at the price that the real time coordinate becomes periodic. The curvature power-law singularity is outside the spacetime. The conclusion holds for both asymptotically-flat or AdS solutions.
+Turning off the angular momenta appropriately, we obtain AdS solitons with negative mass. These solutions with general parameters are of multi-cohomogeneity. If the starting Kerr-AdS metrics have equal angular momenta and hence are cohomogeneity one, the corresponding AdS solitons are also cohomogeneity one, with level surfaces as S2n-1/Zk. Such a five-dimensional AdS soliton was previously constructed in [11, 12]. Ours generalize to arbitrary 2n + 1 dimensions and multi-comohogeneity.
+We can set the cosmological constants of the AdS solitons to zero, and the resulting solutions are direct products of time and a class of D = 2n Ricci-flat metrics. The special case of cohomogeneity-one solutions are the Eguchi-Hanson (EH) instanton and its higherdimensional generalizations.
+The paper is organized as follows. In section 2, we begin with the D = 5 example, and then demonstrate that all Kerr or Kerr-AdS metrics in odd dimensions with negative mass can have the smooth time-machine configuration when all the angular momenta are turned on. In section 3, we concentrate on Kerr-AdS metrics in odd dimensions and obtain the static limit that describes soliton configruations with negative mass. In section 4, we turn off the cosmological constant of the soliton configurations and obtain a class of Ricciflat metrics in D = 2n dimensions. In section 5, we perform Wick rotation on the Kerr metrics and find that in odd dimensions, the Euclidean-signatured solitons can also have negative mass. In section 6, we consider charged Kerr-AdS solution in five-dimensional minimal gauged supergravity and obtain the analogous limit of time machines that carry
+3
+
+magnetic dipole charges. Turning off the gauging, we obtain a massless asymptotically-flat time machine that is a constant time bundle over the EH instanton. We conclude the paper in section 7.
+
+2 Time machines with negative mass
+In this section, we consider Kerr and Kerr-AdS metrics in odd D = 2n + 1 dimensions. We show that when mass is negative, the metrics can describe smooth time machines where geodesic complete on some Euclidean Killing horizons, provided that all angular momenta are turned on. The conclusion is true for both asymptotically flat or AdS metrics. For this reason, we focus on the discussion on Kerr-AdS metrics to avoid the repetition of discussing the Kerr and Kerr-AdS metrics separately. However, since our results are applicable for both types of metrics, we shall not emphasise the word AdS.
+
+2.1 D = 5 time machines with equal angular momenta
+
+2.1.1 Local metrics in D = 5
+
+We start with a class of rotating metrics in five dimensions with the level surfaces as
+
+squashed S3 written as a U (1) bundle over S2:
+
+ds25 f
+
+= =
+
+dr2 f
+
+-
+
+f W
+
+dt2
+
++
+
+(1 + g2r2)W -
+
+1 4
+
+r2
+
+W
+
+(3
+
++
+
+)2
+
++
+
+1 4
+
+r2d22
+
+,
+
+µ r2
+
+,
+
+,
+
+W
+
+=
+
+1
+
++
+
+ r4
+
+,
+
+
+
+=
+
+2µ r4W
+
+dt .
+
+(2.1)
+
+Here the metric d22 and 1-form 3 are given by
+
+d22 = d2 + sin2  d2 ,
+
+3 = d + cos d .
+
+(2.2)
+
+The metric for the unit round S3 is given by
+
+d23
+
+=
+
+1 4
+
+32 + d22
+
+.
+
+(2.3)
+
+Thus the metric (2.1) for constant t and r describes squashed S3 with W as the squashing
+
+parameter. Metrics (2.1) are all Einstein with Rµ = -4g2gµ , where constant 1/g is the AdS
+radius. The solutions are specified by two integration constants (µ, ). (There should be
+
+no confusion between (µ, ) as the spacetime indices and as integration constants of the
+
+solutions.) The invariant Riemann tensor squared is
+
+Riem2
+
+=
+
+40g4
+
++
+
+72(µ
+
+- g2)2 r8
+
+-
+
+384(µ - r10
+
+g2)
+
++
+
+384 2 r12
+
+.
+
+(2.4)
+
+4
+
+Thus there is only one power-law curvature singularity at r = 0. Depending on the values of the constants (µ, ), the metrics can extend smoothly onto very different manifolds. When µ = 0 = , the metrics become the AdS5 vacuum in global coordinates. Thus the metrics all approach AdS asymptotically at the r   region. In particular, when µ > 0 and  = 0, the metric is the well-known Schwarzschild-AdS solution. We now give the list of (µ, ) values for which the power-law curvature singularity at r = 0 can be either unreachable geodesically or hidden inside an event horizon
+· µ > 0 and  > 0: Rotating black hole with equal angular momenta and positive mass, which we shall give a quick review in the next subsection 2.1.2.
+· µ < 0 and  < 0: Time machine with equal angular momenta and negative mass, which we shall discuss in 2.1.3.
+· µ = 0 and  < 0: AdS static soliton with negative mass, which we shall discuss in section 3.
+· µ < 0, the metric becomes real if we make a Wick rotation t = i  , giving rise to Einstein-Riemannian geometry. We shall discuss this in section 5.
+
+2.1.2 Rotating black hole
+
+We first consider the case with µ > 0 and  > 0. The metric describes a rotating black
+
+hole that is non-rotating asymptotically. The event horizon is located at r = r0 > 0 that is the largest real root of f (r). A necessary condition for the existence of such a root is 1 - g2/µ > 0. We can express µ in terms of r0 and :
+
+µ
+
+=
+
+(r04
+
++
+
+)(1 r02
+
++
+
+g2r02)
+
+.
+
+(2.5)
+
+Following the standard technique, we obtain the thermodynamical quantities including the
+
+mass M , angular momentum J, angular velocity +, temperature T and entropy S.
+
+M
+
+=
+
+1 8
+
+(3µ
+
++
+
+g2
+
+)
+
+,
+
+T = 2g2r06 + r04 -  . , 2r03 r04 + 
+
+J
+
+=
+
+1 4
+
+µ
+
+,
+
+S
+
+=
+
+1 2
+
+2r0
+
++
+
+=
+
+2
+
+(1 + g2r02) r0 r04 + 
+
+,
+
+r04 +  .
+
+(2.6)
+
+These quantities satisfy the first law of black hole thermodynamics
+
+dM = T dS + +dJ .
+
+(2.7)
+
+5
+
+Note that in five dimensions, there are in general two independent angular momenta and
+
+the corresponding Kerr-AdS metric was constructed in [5]. The above solution describes
+
+the one with equal angular momenta. An important difference between the black hole and the time machine to be studied in
+
+the next subsection is the characteristics of the Killing horizon at r = r0. The null Killing vector on the horizon, which is a degenerate surface, is given by
+
+
+
+=
+
+ t
+
++
+
++
+
+ 
+
+.
+
+(2.8)
+
+The surface gravity  on the horizon can be obtained from the null Killing vector as
+
+2
+
+=
+
+-
+
+gµ
+
+µ2 42
+
+2
+
+= (2T )2 .
+
+(2.9)
+
+The surface gravity defined above with a minus sign implies that the imaginary time is periodic leading to black hole temperature. It also implies that geodesics do not complete
+
+on the event horizon and there is an interior region.
+
+2.1.3 Time machine
+The thermodynamical quantities (2.6) imply that for the metric (2.1) to describe a black hole, we must have that µ and  are both non-negative. However, the local solution (2.1) is real as long as we have µ  0. It is thus of interest to study the global structure of (2.1) when µ and  are both negative instead. Let
+
+- µ =   0 , - =   0 .
+
+(2.10)
+
+The solution (2.1) becomes
+
+ds25
+
+=
+
+dr2 f
+
+-
+
+f W
+
+dt2
+
++
+
+1 4
+
+r2W
+
+(3
+
++
+
+)2
+
++
+
+1 4
+
+r2d22
+
+,
+
+
+
+f
+
+=
+
+(1 + g2r2)W
+
++
+
+ r2
+
+,
+
+,
+
+W
+
+=
+
+1-
+
+ r4
+
+,
+
+
+
+=
+
+2  r4W
+
+dt
+
+.
+
+(2.11)
+
+The metric is still asymptotic to AdS5, but with mass and angular momentum given by
+
+M
+
+=
+
+-
+
+1 8
+
+(3
+
++
+
+g2) ,
+
+J
+
+=
+
+1 4
+
+
+
+ .
+
+(2.12)
+
+Thus the solution has negative mass, with no lower bound. Naively, one would expect that the metric would then have naked curvature singularity. This is indeed the case when  = 0, corresponding to the Schwarzschild-AdS solution with negative mass. However, if  is non-vanishing, the manifold described by this metric is smooth, with the local r = 0 power-law singularity outside the manifold.
+
+6
+
+As the radial coordinate r decreases from the asymptotic infinity, we come across a
+
+special
+
+point
+
+r
+
+=
+
+
+
+1 4
+
+for
+
+which
+
+W
+
+=
+
+0.
+
+This
+
+is
+
+neither
+
+coordinate
+
+nor
+
+curvature
+
+singularity,
+
+but a velocity of light surface (VLS). Inside the VLS, we have g < 0. In other words,
+
+the periodic coordinate  becomes time like, giving rise to naked CTCs. Thus the metric
+
+describes a time machine, with the VLS as its boundary.
+
+As r decreases further, at r = r0 > 0, we have f (r0) = 0. This corresponds to a Killing
+
+horizon. The null Killing vector (of zero length) is given by
+
+
+
+=
+
+r02 (1 + g2r02)  + 2r02(1 + g2r02)2
+
+,
+
+1 = 
+
+ t
+
++
+
+
+
+ 
+
+
+
+
+
+=
+
+2  r04W (r0)
+
+=
+
+2
+
+, (1 + g2r02)(+ r02(1 + g2r02)) .
+r0 
+
+(2.13)
+
+It is easy to verify that the surface gravity  defined in (2.9) is negative, giving rise to
+
+imaginary temperature
+
+T
+
+=
+
+i 2
+
+.
+
+(2.14)
+
+It is thus more natural to define a "Euclidean surface gravity" E as
+
+2E
+
+=
+
++
+
+gµ
+
+µ2 42
+
+2
+
+.
+
+(2.15)
+
+The Killing horizon with a real Euclidean surface gravity is called Euclidean pseudo horizon,
+
+on which conical singularity can arise potentially.
+
+A simplest example of Euclidean pseudo horizon occurs in two-dimensional flat space
+
+written in polar coordinates ds2 = d2 + 2d2. The Killing vector  =  is null, i.e. having zero length, in the middle  = 0, with E = 1. The metric describes Euclidean R2 if  = 2, in which case  = 0 is just an ordinary point in R2. If  = 2, the metric is
+
+of a cone with the tip at  = 0.
+
+It is easy to verify that for the Killing vector 1, we have 2E = 1. Thus, for the time machine to avoid conic singularity, 1 must likewise generate 2 period. In other words, it is the real time coordinate rather than the imaginary time coordinate that must be periodic.
+
+Once this is imposed, the geodesic completes and spacetime closes off at the Killing horizon.
+
+The local r = 0 singularity is then outside the manifold. It should be emphasized that the
+
+existence of the Killing horizon r = r0 is independent of whether the cosmological constant  = -4g2 vanishes or not. It follows that the above result is applicable also for the
+
+asymptotically-flat cases.
+
+In the standard embedding of AdS5 in the (4 + 2) flat spacetime, time t in global
+
+coordinates
+
+is
+
+periodic.
+
+The
+
+Killing
+
+vectors
+
+0
+
+=
+
+1 g
+
+ t
+
+and
+
+2
+
+=
+
+2
+
+ 
+
+both
+
+generate
+
+2
+
+period.
+
+7
+
+It follows from (2.13) that (0, 1, 2) are linearly dependent. The consistency requires that coefficients are co-prime integers, namely
+
+n00 = n11 + n22 .
+
+(2.16)
+
+Comparing this to (2.13), we conclude that the dimensionless parameters (gr0, g2) or the original (g4, g2) of the asymptotically-AdS time machines can be expressed in terms of
+
+two rational numbers. Note that the period of 1 has to be strictly 2 to avoid conic singularity. The period of  can be further divided by integer k without introducing singularity,
+
+corresponding to AdS5/Zk. We can also divide or multiply the period t by an integer, corresponding to the quotient or multi-covering of the AdS.
+
+When g = 0, we have an asymptotically-flat time machine with equal angular momenta.
+
+In
+
+this
+
+case,
+
+the
+
+Killing
+
+vector
+
+ t
+
+is
+
+not
+
+periodic
+
+a
+
+priori,
+
+and
+
+hence
+
+there
+
+is
+
+no
+
+extra
+
+constraint such as (2.16).
+
+It is worth commenting that in the case of the rotating black hole discussed in subsection
+
+2.1.2, the event-horizon topology is 3-sphere. To be specific, the horizon geometry is a squashed 3-sphere, written as a U (1) bundle over S2. For the time machine discussed in
+
+this section, the Euclidean pseudo horizon is Minkowski signatured, and it is a constant
+
+time bundle over S2. It is also rather counterintuitive that not only the time-machine mass
+
+is negative, it has no lower bound.
+
+Finally it is also worth commenting that if the function f (r) had a double zero, there
+
+would be no need for periodic identification of the real time coordinate. The resulting
+
+spacetime is called a repulson [14]. None of the examples studied in detail in this paper
+
+exhibits repulson-like behavior.
+
+2.2 D = 2n + 1 time machines with equal angular momenta
+
+The five-dimensional time machine discussed in the previous subsection can be easily gen-
+
+eralized to all D = 2n + 1 dimensions. We start with the Kerr-AdS black holes with all
+
+equal angular momenta. The Kerr-Schild form was given in [7]. The Boyer-Lindquist form
+
+was presented in [16], given by
+
+ds22n+1
+
+=
+
+-1
+
++ g2r2 
+
+dt2
+
++
+
+U dr2 V - 2m
+
++
+
+r2
+
++ 
+
+a2 (2
+
++
+
+d2n-1)
+
++
+
+2m U 2
+
+(dt
+
++
+
+a)2
+
+,
+
+ = d + A ,
+
+U = (r2 + a2)n-1 ,
+
+V
+
+=
+
+1 r2
+
+(1
+
++
+
+g2r2)(r2
+
++
+
+a2)n
+
+,
+
+(2.17)
+
+where  = 1-a2g2, and d2n-1 is the standard Fubini-Study metric on CPn-1, and the fibre 1-form is  = d + A, with dA = J being the Ka¨hler form. The coordinate  has period 2
+
+8
+
+and the terms (2 + d2n-1) in the metric are nothing but the metric on the round sphere S2n-1. The mass and angular momentum are given by
+
+M
+
+=
+
+m(2n - )A2n-1 8n+1
+
+,
+
+J
+
+=
+
+maA2n-1 4n+1
+
+,
+
+(2.18)
+
+where Ak is the volume of a unit round Sk, given by
+
+Ak
+
+=
+
+2
+
+1 2
+
+(k+1)
+
+[
+
+1 2
+
+(k
+
++
+
+1)]
+
+.
+
+(2.19)
+
+It is instructive to define a new coordinate r^ that measures the radius of the S2n-1 sphere.
+
+Thus we make a coordinate transformation
+
+r2
+
++ a2 
+
+=
+
+r^2 .
+
+(2.20)
+
+The metric (2.17) can be written, after dropping the hat, as
+
+ds22n+1
+
+=
+
+dr2 f
+
+-
+
+f W
+
+dt2
+
++
+
+r2W
+
+(
+
++
+
+)2
+
++
+
+r2d2n-1
+
+,
+
+f
+
+=
+
+(1 + g2r2)W
+
+-
+
+µ r2(n-1)
+
+,
+
+W
+
+=
+
+1+
+
+ r2n
+
+,
+
+µ  = r2n +  dt . (2.21)
+
+where the constants µ and  are related to original (m, a) parameters as
+
+a=
+
+ µ
+
+,
+
+m
+
+=
+
+1 2
+
+µ
+
+1
+
+-
+
+ µ
+
+g2
+
+n+1
+.
+
+(2.22)
+
+The solutions describe rotating black holes in D = 2n + 1 dimensions when both (µ, ) are
+
+positive. When n = 1, the metric reduces to the BTZ black hole [15] after making a trivial
+
+coordinate transformation r2 + 2  r2, and hence all our statements apply also to three
+
+dimensions. When n = 2, the solution reduces to (2.1).
+
+As in the previous D = 5 example, when (µ, ) both take negative values, as in (2.10),
+
+the corresponding metric becomes
+
+ds22n+1
+
+=
+
+dr2 f
+
+-
+
+f W
+
+dt2
+
++
+
+r2W
+
+(
+
++
+
+)2
+
++
+
+r2
+
+d2n-1
+
+,
+
+f
+
+=
+
+(1 + g2r2)W
+
++
+
+ r2(n-1)
+
+,
+
+W
+
+=
+
+1
+
+-
+
+ r2n
+
+,
+
+
+
+
+
+=
+
+ r2nW
+
+dt .
+
+(2.23)
+
+The mass and angular momentum are given by
+
+M
+
+=
+
+-
+
+A2n-1 16
+
+((2n
+
+-
+
+1)
+
++
+
+g2) ,
+
+J
+
+=
+
+A2n-1 8
+
+ .
+
+(2.24)
+
+Since  and  are positive, the solutions all have negative mass, with no lower bound. When  = 0, the solution becomes the Schwarzschild-AdS metric with negative mass,
+and hence the power-law curvature singularity at r = 0 is naked. If on the other hand
+
+9
+
+ > 0, no matter how small or big, there is a Killing horizon at r = r0 > 0 where f (r0) = 0.
+
+The corresponding null Killing vector takes the form
+
+
+
+=
+
+r0n(1 + g2r02) nr02n(1 + g2r02)2 +
+
+r02
+
+r02 1 + g2r02
+
+ t
+
++
+
+r02n(1
+
++
+
+g2r02)
+
++
+
+r02
+
+ 
+
+.
+
+(2.25)
+
+The overall scaling of the Killing vector is chosen such that the Euclidean surface gravity
+
+is unit, as in (2.15). Consequently, r = r0 is a pseudo horizon where geodesic completes
+
+provided that  generates 2 period. It is easy to see that on the Killing horizon, g =
+
+r0W (r0)
+
+<
+
+0.
+
+In
+
+fact,
+
+naked
+
+CTCs
+
+arise
+
+inside
+
+the
+
+VLS
+
+located
+
+r
+
+=
+
+1 2n
+
+>
+
+r0.
+
+The
+
+metrics
+
+describe smooth time machines with negative mass, provided that  > 0. The geometry of
+
+the Euclidean pseudo horizon is a constant time bundle over CPn. The conclusion is valid
+
+for both asymptotically-flat (g2 = 0) or AdS solutions.
+
+2.3 Time machines with unequal angular momenta
+
+In D = 2n + 1 dimensions, there can be n independent rotations. We again start with the
+
+Kerr-AdS metrics, but with now arbitrary non-zero rotations. The metrics were constructed in [7, 8]. In analogous notations, they are given by
+
+ds22n+1
+
+=
+
+-W (1
+
++
+
+g2r2)dt2
+
++
+
+U dr2 V - 2m
+
++
+
+2m U
+
+dt
+
+-
+
+n i=1
+
+aiµ2i di i
+
+2
+
++
+
+n i=1
+
+r2
+
++ a2i i
+
+dµ2i + µ2i (di + aig2dt)2
+
+-
+
+(1
+
++
+
+g2 g2r2)W
+
+n i=1
+
+r2
+
++ i
+
+a2i
+
+µi
+
+dµi
+
+2
+,
+
+(2.26)
+
+where
+
+i µ2i = 1 and
+
+i = 1 - a2i g2 ,
+
+W
+
+=
+
+n i=1
+
+µ2i i
+
+,
+
+U
+
+=
+
+n i=1
+
+µ2i r2 + a2i
+
+n
+(r2 + a2j ) ,
+j=1
+
+V
+
+=
+
+1 r2
+
+(1
+
++
+
+g2
+
+r2)
+
+n
+
+(r2 + a2i ) =
+
+U F
+
+,
+
+i=1
+
+F
+
+=
+
+1
+
+r2 + g2r2
+
+n i=1
+
+µ2i r2 + a2i
+
+.
+
+(2.27)
+
+For positive m and i's, the metrics describe general rotating black holes with mass and angular momenta [16]
+
+D = 2n + 1 :
+
+M
+
+=
+
+m AD-2 4( j j)
+
+n i=1
+
+1 i
+
+-
+
+1 2
+
+,
+
+Ji
+
+=
+
+mai AD-2 4i( j j)
+
+.
+
+(2.28)
+
+The event horizon is located at V - 2m = 0. Indeed the determinant of the sub-manifold
+
+of constant r slice has a factor of (V - 2m), but Riemann tensor invariants are regular at
+
+10
+
+V - 2m = 0. These show that V - 2m = 0 gives a degenerate surface, with only coordinate
+
+singularity.
+
+We now consider the case with m < 0. Naively, one might expect that the solutions
+
+have a naked power-law curvature singularity, since it is clear that V - 2m = 0 cannot
+
+be satisfied for any real r. However, the fact is that as long as rotating parameters ai's
+
+are all non-vanishing, the geodesic does complete at some Euclidean Killing horizon before
+
+reaching the singularity. To see this, it is important to note that r = 0 is not a curvature
+
+singularity when all ai = 0. Instead curvature singularities are located at r2 + a2i = 0, together with appropriate µj's for each i. In other words, there is nothing special at r = 0 and the geodesic can extend further into the r2 < 0 region. Then it is easy to see that
+
+when all ai = 0 and m is negative, no matter how small or big |m| is, there exists a pure
+
+imaginary r0 with
+
+- a2i < r02 < 0 , for all i = 1, 2, . . . n,
+
+(2.29)
+
+such that V - 2m = 0. The r = r0 surface gives rise to a Killing horizon. It is also straightforward to verify that on the Killing horizon there are CTCs. For example,
+
+gii
+
+µi =1
+
+=
+
+(r02 + a2)2 2i r02
+
+<
+
+0,
+
+for all i = 1, 2, . . . n.
+
+(2.30)
+
+This implies that the Killing horizon is a pseudo horizon where geodesic completes provided
+
+that the appropriate null Killing vector generates 2 period, as was discussed in the case of
+
+equal angular momenta. It is also important to note that from the definition of V in (2.27)
+
+we conclude that the existence of the Euclidean Killing horizon is independent of whether
+
+the cosmological constant parameter g2 vanishes or not. Hence the conclusion is applicable
+
+for both asymptotically-flat or AdS solutions.
+
+It is perhaps convenient to introduce n + 1 new parameters, (µ, 1, . . . , n), and express m and ai in terms of these parameters
+
+ai =
+
+i µ
+
+,
+
+n
+
+n+1
+
+m=µ
+
+i n ,
+
+i=1
+
+i
+
+=
+
+1
+
+-
+
+i µ
+
+g2
+
+.
+
+(2.31)
+
+The mass and angular momenta become
+
+M =µ
+
+1
+j n
+j
+
+n i=1
+
+1 i
+
+-
+
+1 2
+
+,
+
+Ji
+
+=
+
+µi i
+
+1
+j n .
+j
+
+(2.32)
+
+For the metric to describe a rotating black hole, the parameters (µ, i) must be non-negative. However, the reality condition of the metric only requires that µi  0 for all i. Thus we can take all the parameters (µ, i) to be negative. The solutions then describe a general
+
+11
+
+class of time machines with negative mass. When i =  for all i, they reduce to the cohomogeneity-one metrics discussed earlier.
+The situation is very different in D = 2n even dimensions, for which there are only (n - 1) independent orthogonal rotations. The Kerr-AdS metrics are [7, 8]
+
+ds22n
+
+=
+
+-W (1
+
++
+
+g2r2)dt2
+
++
+
+U dr2 V - 2m
+
++
+
+2m U
+
+dt
+
+-
+
+n-1 i=1
+
+aiµ2i di i
+
+2
+
++
+
+n i=1
+
+r2
+
++ i
+
+a2i
+
+dµ2i
+
++
+
+n-1 i=1
+
+r2
+
++ i
+
+a2i
+
+µ2i (di
+
++
+
+aig2dt)2
+
+-
+
+(1
+
++
+
+g2 g2r2)W
+
+n i=1
+
+r2
+
++ i
+
+a2i
+
+µidµi
+
+2
+,
+
+(2.33)
+
+where i, W and U take the same for as those in D = 2n + 1 dimensions, except that an = 0 since in D = 2n dimensions, there is no azimuthal coordinate n and hence there is no associated rotation parameter an. For positive m and 0 < i  1, the metrics describe rotating AdS black holes with mass and angular momenta [16]
+
+D = 2n :
+
+M
+
+=
+
+m AD-2 4( j j)
+
+n-1 i=1
+
+1 i
+
+,
+
+Ji
+
+=
+
+mai AD-2 4i( j j)
+
+.
+
+(2.34)
+
+As in the case of odd dimensions, the determinant of the submanifold of constant r slice
+
+also has a factor of (V - 2m). However, there is a crucial difference in even dimensions.
+
+The function V is now given by
+
+V
+
+=
+
+1 r
+
+(1
+
++
+
+g2r2)
+
+n-1
+(r2
+
++
+
+a2i )
+
+i=1
+
+(2.35)
+
+Thus in even dimensions, the coordinate r cannot be purely imaginary. The r = 0 is a
+
+spacetime power-law curvature singularity. It follows that for m < 0, the quantity (V - 2m)
+
+cannot vanish for any r > 0 and hence there is no degenerate surface. The singularity at
+
+r = 0 is thus naked.
+
+2.4 Further time machines
+For the time machine metric (2.23) to be Einstein, the CPn-1 metric d2n-1 can be replaced by any Einstein-Ka¨lher metrics, at the expense that the asymptotic regions are no longer AdS. When the base is a direct product of multiple Einstein-Ka¨hler spaces, there is a subtlety that the period associated with the fibre 1-form  must be consistent with all these factors of the base [17]. Here we present an example in seven dimensions where d22 is
+
+12
+
+replaced by the metric of S2 × S2:
+
+ds2
+
+=
+
+dr2 f
+
+-
+
+f dt2 + W
+
+1 9
+
+r2
+
+W
+
+( + )2 +
+
+1 6
+
+r2(d12 
+
++
+
+sin2
+
+1d21
+
++
+
+d22
+
++
+
+sin2
+
+2d22)
+
+,
+
+ = d + cos 1 d1 + cos 2d2 ,
+
+
+
+=
+
+ r6W
+
+dt .
+
+(2.36)
+
+The metric is Einstein with Rµ = -6g2gµ , provided that functions W and f are
+
+W
+
+=
+
+1
+
+-
+
+ r6
+
+,
+
+f
+
+=
+
+(1
+
++
+
+g2r2)W
+
++
+
+ 9r4
+
+.
+
+(2.37)
+
+For this solution, the level surfaces are not of S5 but the T 1,1 space. The asymptotic region is no longer AdS7, and boundary is T × T 1,1, instead of T × S5. The Killing horizon and the period of associated null Killing vector can be easily determined.
+
+3 AdS Solitons with negative mass
+In the previous sections, we find that in odd dimensions, when mass is negative, Kerr or Kerr-AdS metrics with all angular momenta turned on describe smooth time machines. We now consider the possibility of turning off all the angular momenta. There are two ways of doing this. The trivial way leads simply to the Schwarzschild metrics with negative mass. An alternative limit can lead to static solitons. Negative mass solitons emerge only when there is a cosmological constant. When the cosmological constant is zero, the mass vanishes, and we shall study this in section 4.
+
+3.1 Cohomogeneity-one metrics
+
+In the typical way of writing Kerr-AdS black holes, the mass M and angular momentum J are expressed in terms of m and a. Turning off the angular momentum parameter a has the effect of reducing the metric to the Schwarzschild black hole. In our parametrization (2.6), we can have two manifest ways of turning off the angular momentum. The first is to set  = 0, corresponding to setting a = 0, giving rise to the usual Schwarzschild black hole. The alternative is to set µ = 0, corresponding to setting a  , and we have a new non-trivial static configuration. It follows from (2.1) that when µ = 0 and  = - is negative, we obtain a static soliton in five dimensions. For general dimensions, we start with the time-machine solution (2.23) and set  = 0, we have
+
+ds2
+
+=
+
+dr2 (1 + g2r2)W
+
+- (1 + g2r2)dt2
+
++ r2W 2 + r2d2n-1 ,
+
+W
+
+=
+
+1
+
+-
+
+ r2n
+
+,
+
+(3.1)
+
+13
+
+where the 1-form  and the metric d2n-1 are defined under (2.17). For positive , the
+
+metric
+
+becomes
+
+singular
+
+at
+
+r
+
+=
+
+r0
+
+=
+
+
+
+1 2n
+
+.
+
+The
+
+absence
+
+of
+
+the
+
+conical
+
+singularity
+
+requires
+
+a
+
+specific period for coordinate  associated with , namely
+
+ = n
+
+2 g2r02
+
++
+
+1
+
+.
+
+(3.2)
+
+On the other hand, for the metric (2 + d2n-1) to describe a round S2n-1, the period for  is 2. If we consider instead more general S2n-1/Zk, then we have
+
+
+
+=
+
+2 k
+
+.
+
+(3.3)
+
+This implies that
+
+g2r02
+
+=
+
+k2 n2
+
+-1,
+
+
+
+
+
+=
+
+1 g2n
+
+k2 n2
+
+-
+
+1
+
+n
+.
+
+(3.4)
+
+Thus we have k > n and the mass of the soliton is discretized and negative, given by
+
+M
+
+=
+
+-
+
+A2n-1 16g2(n-1)
+
+k
+
+k2 n2
+
+-
+
+1
+
+2
+.
+
+(3.5)
+
+Note that when n = k, the solution becomes simply the AdS vacuum and  = 2. As k  , the mass reaches a negative lower bound.
+In five dimensions, the metric can be written as
+
+ds2
+
+= -(g2r2 + 1)dt2 +
+
+dr2 (g2r2 + 1)W
+
++
+
+1 4
+
+W
+
+r232
+
++
+
+1 4
+
+r2d22
+
+,
+
+W
+
+=
+
+1
+
+-
+
+ r4
+
+.
+
+(3.6)
+
+This solution was first obtained in [11, 12]. (The local metric with a positive cosmological constant in Euclidean signature was constructed earlier in [18], which can describe smooth compact manifolds.) When the cosmological constant vanish, i.e. g = 0, the metric is a direct product of time and the EH instanton [13]. The global analysis for (3.6) was performed and descretized negative mass was obtained. The negativeness of the soliton mass was demonstrated also using holographic stress energy in [11, 12] and the Noether procedure [19]. In our approach, the solutions were obtained in some special limit of KerrAdS metrics, and hence the mass formula is a direct consequence of that of Kerr-AdS black holes.
+
+3.2 First-order equations without superpotential
+It is well-known that EH instanton can be obtained from a set of first-order equations associated with some superpotential. It turns out that the solitons (3.1) in general odd dimensions can also arise from a set of first-order equations. For simplicity, we demonstrate
+14
+
+this explicitly in five dimensions and show that the static soliton (3.6) can arise as solutions
+
+of some first-order differential equations, instead of Einstein's second-order equations of
+
+motion. However, we also demonstrate that there is no superpotential associated with this
+
+first-order system.
+
+The most general ansatz for static metrics with the SU (2) × U (1) isometry of squashed
+
+S3 is
+
+ds2 = d2 - a2dt2 + b232 + c2d22 ,
+
+(3.7)
+
+where the metric d2 and 1-form 3 are given in (2.2) and (a, b, c) are functions of the radial
+
+coordinate . A dot denotes a derivative with respect to . For the metric to be Einstein
+
+with Rµ + 4g2gµ = 0, the (a, b, c) functions satisfy
+
+-
+
+a¨ a
+
+-
+
+¨b b
+
+-
+
+2c¨ c
+
+=
+
+4g2
+
+,
+
+a¨ a
+
++
+
+2a c ac
+
++
+
+a b ab
+
+=
+
+4g2 ,
+
+¨b b
+
++
+
+2b c bc
+
++
+
+a b ab
+
+-
+
+b2 2c4
+
+=
+
+4g2 ,
+
+c¨ c
+
++
+
+c2 c2
+
++
+
+b c bc
+
++
+
+a c ac
+
+-
+
+1 c2
+
++
+
+b2 2c4
+
+=
+
+4g2 ,
+
+(3.8)
+
+We find that there exists a set of first-order equations that can solve the above second-order
+
+equations of motion, namely
+
+a = 2g2ab , 1 + 4g2c2
+
+b
+
+=
+
+(2c2
+
+-
+
+b2) 1 2c2
+
++
+
+4g2 c2
+
+,
+
+c = b
+
+1
+
++ 4g2c2 2c
+
+.
+
+(3.9)
+
+It is easy to verify that these first-order equations yield precisely the soliton solution (3.6).
+
+We now demonstrate that this first-order system is not associated with any superpo-
+
+tential. To see this, it is convenient to define a new radial coordinate , related to  by
+
+d = abc2d. In this system, the effective Lagrangian is given by L = T - V where
+
+T
+
+=
+
+2ab 2ab
+
++
+
+4ac ac
+
++
+
+4bc bc
+
++
+
+2c2 c2
+
+,
+
+V
+
+=
+
+1 2
+
+a2b2
+
+(b2
+
+-
+
+4c2
+
+-
+
+24g2c4)
+
+.
+
+(3.10)
+
+Here a prime denotes a derivative with respect to . Thus we have abc2f = f  for any
+
+function f . Following the prescription of [20], we may define Xi = (a, b, c) and write the
+
+kinetic
+
+energy
+
+as
+
+T
+
+=
+
+1 2
+
+gij
+
+X
+
+i
+
+X
+
+j
+
+.
+
+If
+
+there
+
+would
+
+exist
+
+a
+
+superpotential
+
+U
+
+=
+
+U (a, b, c)
+
+such
+
+that
+
+V
+
+=
+
+1 2
+
+gij
+
+U U Xi Xj
+
+,
+
+(3.11)
+
+then there would be a first-order system
+
+abc2
+
+X i
+
+=
+
+gij
+
+U Xj
+
+.
+
+(3.12)
+
+15
+
+Substituting the first-order equations (3.9) into the above, and we find
+
+U = (b2 + 2c2) 1 + 4c2g2 , a
+
+U b
+
+=
+
+2ab(1 + 6c2g2) , 1 + 4c2g2
+
+U c
+
+=
+
+4ac
+
+1 + 2(b2 + 2c2)g2 1 + 4c2g2
+
+.
+
+(3.13)
+
+It is easy to verify that the above equations do not satisfy the integrability condition unless g = 0, in which case we have U = a(b2 + 2c2). This is precisely the superpotential for generating the EH instanton. For non-vanishing g, on the other hand, although we have the first-order equation (3.9), there is no superpotential associated with the system.
+
+3.3 Higher-cohomogeneity solitons
+
+3.3.1 D = 5
+
+The local solutions of the static solitons were obtained by taking a limit from Kerr-AdS metrics such that the two equal angular momenta vanish whilst the mass is non-vanishing. Such a limit typically leads to the Schwarzschild-AdS black holes. However, as we have shown in the previous subsection, there can be an alternative limit. This new limit can be performed also for the Kerr-AdS metrics with two general angular momenta. We start with the five-dimensional Kerr-AdS black hole constructed in [5], which involves three parameters, (m, a, b). Since we shall use the exact convention for the metric presented in [5], we shall not give it here. The mass and angular momenta are given by [16]
+
+M
+
+=
+
+m(2a
+
++ 2b - 42a2b
+
+ab)
+
+,
+
+Ja
+
+=
+
+ma 22ab
+
+,
+
+Jb
+
+=
+
+mb 22b a
+
+,
+
+(3.14)
+
+where a = 1 - a2g2 and b = 1 - b2g2. Setting a = b = 0 turns off the angular momenta
+
+and
+
+gives
+
+rise
+
+to
+
+the
+
+Schwarzschild-AdS
+
+black
+
+hole
+
+of
+
+mass
+
+M
+
+=
+
+3 4
+
+m.
+
+We would like
+
+instead to send a, b, m to infinity such that we have Ja, Jb  0 while keeping M finite and
+
+non-vanishing. To be specific, we scale the parameters
+
+a = a~ ,
+
+b = ~b
+
+m
+
+=
+
+1 2
+
+4
+
+g6
+
+a~2~b2
+
+
+
+,
+
+(3.15)
+
+and then send   . The mass and angular momenta become
+
+M
+
+=
+
+-
+
+1 8
+
+g2
+
+,
+
+Ja = Jb = 0 .
+
+(3.16)
+
+16
+
+Thus we arrive at a static solution with negative mass. Making a coordinate transformation
+
+r = ir~, (with   ,), the Kerr-AdS metric of [5] becomes
+
+ds25
+
+=
+
+-
+
+r2  dt2 a2b2
+
++
+
+2d2 g2
+
++
+
+2dr2 r
+
++
+
+r g22
+
+sin2
+
+
+
+d1 ag
+
++
+
+cos2
+
+
+
+d2 bg
+
+2
+
++
+
+sin2
+
+ cos2 2
+
+
+
+(r2
+
+-
+
+a2)
+
+d1 ag
+
+-
+
+(r2
+
+-
+
+b2
+
+)
+
+d2 bg
+
+2
+,
+
+r = g2 (r2 - a2)(r2 - b2) - a2b2g4 ,  = a2 cos2  + b2 sin2  ,
+
+2 = r2 -  .
+
+(3.17)
+
+Here we have dropped all the tildes. If we set the parameter  = 0, the metric is exact AdS.
+
+At large r, the -term in the metric can be neglected. Thus the metric with non-vanishing
+
+ is asymptotic to the AdS spacetime. The Riemann tensor squared is given by
+
+Riem2
+
+=
+
+40g4
+
++
+
+242 a4 b4 g12 12
+
+(r2
+
++
+
+3a2
+
+cos2
+
+
+
++
+
+3b2
+
+sin2
+
+)(3r2
+
++
+
+a2
+
+cos2
+
+
+
++
+
+b2
+
+sin2
+
+)
+
+,
+
+(3.18)
+
+indicating the metric has a curvature singularity at  = 0. We shall see presently that
+
+this curvature singularity is outside the soliton manifold. When b = a, we make a further
+
+coordinate transformation
+
+1
+
+=
+
+1 2
+
+(
+
+-
+
+) ,
+
+2
+
+=
+
+1 2
+
+(
+
++
+
+) ,
+
+r2 - a2 a2g2
+
+
+
+r2 ,
+
+
+
+
+
+1 2
+
+
+
+.
+
+(3.19)
+
+the metric (3.17) reduces precisely to (3.6).
+
+The power-law curvature singularity  = 0 can be avoided for  > 0 because there is a
+
+Euclidean Killing horizon at r = r0 > max{a, b} for which r(r0) = 0. The condition for
+
+existing such r0 is that
+
+
+
+>
+
+-
+
+(a2 - b2)2 4a2b2g4
+
+,
+
+
+
+M
+
+<
+
+(a2 - b2)2 32a2b2g2
+
+.
+
+(3.20)
+
+If the inequality is saturated, (r) has a double zero and the metric has a power-law
+
+curvature singularity at r = (a2 + b2)/2 and  = /4. It is of interest to note that not
+
+only the mass can be negative, but also there is no lower bound.
+
+The metric (3.17) is degenerated at three places with three null Killing vectors
+
+
+
+=
+
+1 2
+
+
+
+:
+
+=0:
+
+r = r0 :
+
+1
+
+=
+
+ 1
+
+,
+
+2
+
+=
+
+ 2
+
+,
+
+3
+
+=
+
+r0(2r02
+
+1 - a2
+
+- b2)
+
+a(r02
+
+-
+
+b2
+
+)
+
+ 1
+
++
+
+b(r02
+
+-
+
+a2)
+
+ 2
+
+.
+
+(3.21)
+
+All three Killing vectors must generate 2 period in order to avoid conical singularity. On
+
+the other hand, 3, 1, 2 are linearly dependent. Therefore they must satisfy
+
+n33 = n11 + n22 , where n1, n2, n3 are co-prime integers
+
+(3.22)
+
+17
+
+Thus
+
+ r0 n2x - n1 = b x(n2 - n1x) ,
+
+n3
+
+=
+
+n1
+
++ n2x bx
+
+r0
+
+,
+
+(3.23)
+
+where
+
+x
+
+
+
+a b
+
+.
+
+With
+
+this
+
+parametrization,
+
+the
+
+mass
+
+parameter
+
+m
+
+becomes
+
+
+
+=
+
+n1n2(x2 - 1)2 g4x(n2x - n1)2
+
+.
+
+(3.24)
+
+We shall not classify all possible (n1, n2, n3) that could arise. Instead, we present an exam-
+
+ple: (n1, n2, n3) = (1, 2, 5), which implies that a = 0.713b and m = 3.77/g4 and r0 = 1.47b.
+
+In fact there is a further subtle conic singularity. As was noted in [21], the Killing vectors
+
+(1, 3)
+
+and
+
+(2, 3)
+
+can
+
+be
+
+simultaneously
+
+null
+
+at
+
+(r,
+
+)
+
+=
+
+(r0,
+
+1 2
+
+)
+
+or
+
+(r0, 0)
+
+respectively.
+
+In
+
+Euclidean signature, any linear combination of two null Killing vectors is also null, and
+
+hence (n33 - n11) or (n33 - n22) must generate also 2 period. The consistency then
+
+requires that n1 = n2 = 1. This corresponds to the cohomogeneity-one solutions with
+
+a = b, discussed earlier. The example of (n1, n2, n3) = (1, 2, 5) still have a conic singularity
+
+of
+
+ADE
+
+type
+
+at
+
+(r, )
+
+=
+
+(r0, 
+
+=
+
+1 2
+
+).
+
+The
+
+cone
+
+is
+
+not
+
+2-dimensional
+
+like
+
+d2 + 2d2,
+
+but
+
+four dimensional with d2 + 2d~ 2, where d~ 2 is not a round S3, but a lens space. For the
+
+specific (n1, n2, n3) = (1, 2, 5) example, the lens space is S3/Z2, giving rise to the R4/Z2
+
+orbifold singularity. Such singularity can be resolved by an EH instanton whose asymptotic
+
+region is precisely R4/Z2 [22].
+
+3.3.2 D = 2n + 1
+
+We obtain some non-trivial static soliton solutions from Kerr-AdS5 metrics by taking some
+
+appropriate limit (3.15). Under this limit, all angular momenta vanish, whilst the mass
+
+becomes a finite negative number. The resulting metric is specified by three integration
+
+constants. This procedure can be generalized to general odd dimensions. Kerr-AdS metrics
+
+in general dimensions were constructed in [7, 8], involving a mass parameter m and n =
+
+[(D - 1)/2] parameters ai for angular momenta. The mass and angular momenta are given
+
+in (2.28) and (2.34) for odd and even dimensions.
+
+We can turn off the angular momenta by setting ai = 0, leading to the Schwarzschild-
+
+AdS black hole. We now would like to turn off the angular momenta while keeping mass
+
+constant by sending ai   and hence i  -. This is not possible in even dimensions
+
+because of the relation
+
+n i=1
+
+Ji ai
+
+=M,
+
+(3.25)
+
+which can be derived from (2.34). In odd dimensions, this can be achieved indeed, because
+
+there
+
+is
+
+the
+
+less
+
+convergent
+
+"
+
+1 2
+
+"
+
+term
+
+in
+
+(2.28)
+
+in
+
+this
+
+limit.
+
+Thus, following the D = 5
+
+18
+
+example, we make the constant scaling of the parameters
+
+ai = a~i ,
+
+n
+
+m
+
+=
+
+1 2
+
+(-2)ng2
+
+
+
+(a~ig)2 ,
+
+i
+
+(3.26)
+
+and then take the    limit. Dropping the tildes, we find that the Kerr-AdS metric (2.26) becomes
+
+where
+
+ds22n+1 = -r2
+
+n µ2i i=1 a2i
+
+dt2
+
++
+
+X Y
+
+dr2
+
++
+
+n i=1
+
+r2 - a2i a2i g2
+
+(dµ2i
+
++
+
+µ2i d2i )
+
+-
+
+1 r2Z
+
+n i=1
+
+r2 - a2i a2i g2
+
+µi
+
+dµi
+
+2
+
+-
+
+g2 X
+
+(
+
+n
+
+(aig)2)
+
+i=1
+
+n µ2i di i=1 aig2
+
+2
+,
+
+n i
+
+u2i
+
+=
+
+1
+
+and
+
+X=
+
+n
+(r2 - a2i )
+i=1
+
+n i=1
+
+µ2i r2 - a2i
+
+,
+
+n
+
+n
+
+Y = g2 (r2 - a2i ) - g2 (aig)2 ,
+
+i=1
+
+i=1
+
+Z
+
+=
+
+n i=1
+
+µ2i a2i g2
+
+.
+
+(3.27) (3.28)
+
+The metrics are static and hence there is no angular momentum. The mass of the soliton
+
+is negative, given by
+
+M
+
+=
+
+-
+
+AD-2 16
+
+g2
+
+
+
+.
+
+(3.29)
+
+We shall not discuss the global structure of this general class of AdS solitons in this paper.
+
+4 Ricci-flat instantons in D = 2n dimensions
+In the previous section, we obtained large classes of static AdS solitons in D = 2n + 1 dimensions. For the cohomogeneity-one metrics (3.1), it can be easily seen that in the g = 0 limit, the resulting spacetime is a direct product of time and the D = 2n gravitational instanton that is a higher-dimensional generalization of the EH instanton. The metric (3.1) was generalized to multi-cohomogeneity metrics (3.17) in D = 5 and (3.27) in D = 2n + 1. In this section, we perform a further g = 0 limit on (3.17) and (3.27) and obtain Ricci-flat gravitational instantons in D = 2n dimensions.
+
+19
+
+4.1 D = 4
+
+We start with the five-dimensional Einstein metric (3.17) and reparameterize the (a, b, ) constants as
+
+a2 = a20(1 - g22) ,
+
+b2 = a20(1 + g22) ,
+
+   - 4 .
+
+(4.1)
+
+Making first the coordinate transformation,
+
+1
+
+=
+
+1 2
+
+(
+
+-
+
+) ,
+
+2
+
+=
+
+1 2
+
+(
+
++
+
+) ,
+
+r2 - a20 a20g2
+
+
+
+r2 ,
+
+
+
+
+
+1 2
+
+
+
+.
+
+(4.2)
+
+and then sending g  0, we obtain a smooth limit of (3.17), whose D = 4 spatial section is
+
+ds24
+
+=
+
+U dr2 W
+
++
+
+W 4U
+
+r2
+
+(d
+
++
+
+cos
+
+d)2
+
++
+
+1 4
+
+r2
+
+U d2
+
++
+
+1 U
+
+sin2
+
+
+
+d -
+
+2 r2
+
+d
+
+2
+
+,
+
+W
+
+=
+
+1-
+
+ r4
+
+,
+
+U
+
+=
+
+1
+
++
+
+2 cos  r2
+
+.
+
+(4.3)
+
+Note that the constant a0 is trivial and drops out. The metric is Ricci-flat and Ka¨hler. The Ka¨hler structure can be easily seen by constructing the covariant Ka¨hler 2-form
+
+J = e0  e3 + e1  e2 ,
+
+(4.4)
+
+where the vielbein are
+
+e0 =
+
+U W
+
+dr ,
+
+e1
+
+=
+
+
+
+1 2
+
+r
+
+U d ,
+
+e3 =
+
+W 4U
+
+r
+
+(d
+
++
+
+cos
+
+d)
+
+,
+
+e2 = - r sin  2U
+
+d
+
+-
+
+2 r2
+
+d
+
+.
+
+(4.5)
+
+Thus the metric is the Ricci-flat and BPS limit of the general Plebanski solutions [23].
+
+When  = 0, the metric is the EH instanton. For  = 0, the curvature singularity is located
+
+at
+
+U
+
+=
+
+0,
+
+which
+
+can
+
+be
+
+avoided
+
+if
+
+
+
+<
+
+
+
+1 4
+
+.
+
+There
+
+are
+
+three
+
+degenerate
+
+surfaces
+
+whose
+
+null
+
+Killing vectors are
+
+=0:
+
+=:
+
+r
+
+=
+
+
+
+1 4
+
+:
+
+1
+
+=
+
+ 
+
+-
+
+ 
+
+,
+
+2
+
+=
+
+ 
+
++
+
+ 
+
+,
+
+3
+
+=
+
+ 
+
++
+
+2 
+
+ 
+
+,
+
+(4.6)
+
+all of which have unit Euclidean surface gravity E . When 2/ = p/q < 1 is a rational
+
+number, then we have
+
+2q3 = (q - p)1 + (q + p)2 .
+
+(4.7)
+
+20
+
+It follows from (3.22) that n1 = (q - p), n2 = q + p and n3 = 2q. Further regularity conditions follow the same procedure described in subsection 3.3.1. The existence of the ADE-type conical codimension-3 singularity, albeit may be resolved, suggests that these metrics are outside the classes of Gibbons-Hawking instantons [24, 25]. Furthermore, the relation (4.7) implies that the asymptotic regions are cones of more general lens spaces, rather than the S3/Zk+1 for k number of EH instantons.
+
+4.2 D = 2n
+
+For general even dimensions, we start with the Einstein metric (3.27) and reparameterize the integration constants
+
+a2i = a20(1 + g2b2i ) ,
+
+n
+b2i = 0 .
+i=1
+
+(4.8)
+
+(Note that the resulting metric is real as long as bi's are either real or purely imaginary numbers.) Making a coordinate transformation
+
+r2 - a20 a20g2
+
+
+
+r2 ,
+
+(4.9)
+
+and then sending the cosmological constant parameter g to zero, we find that the metric
+
+(3.27) has a smooth limit and it is a direct product of time and a D = 2n Ricci-flat metric
+
+ds22n
+
+=
+
+U W
+
+r2
+
+dr2
+
++
+
+n
+(r2 - b2i )(dµ2i + µ2i d2i ) -
+i=1
+
+ U
+
+(
+
+n i=1
+
+µ2i di)2
+
+,
+
+n
+W = (r2 - b2i ) -  ,
+i=1
+
+U
+
+=
+
+n
+(r2
+i=1
+
+-
+
+b2i )
+
+n j=1
+
+µ2j r2 - b2j
+
+.
+
+(4.10)
+
+The curvature power-law singularity is at U = 0, which can be avoided if the geodesics complete in the r region r  [r0, ) where W (r0) = 0. There are n + 1 degenerate surfaces and the corresponding null Killing vectors are
+
+r = r0 : µi = 0 :
+
+0
+
+=
+
+n i=1
+
+j(r02 - b2j ) P (r0)(r02 - b2i )
+
+ i
+
+,
+
+i
+
+=
+
+ i
+
+,
+
+i = 1, 2, . . . , n .
+
+(4.11)
+
+Here P (r0) is an 2(n - 1)-order polynomial of r0 with the leading term as nr02(n-1). For
+
+example, we have P
+
+= 2r02
+
+for n = 2 and P
+
+=
+
+3r04
+
++
+
+1 2
+
+(b41
+
++
+
+b42
+
++
+
+b43)
+
+for
+
+n
+
+=
+
+3.
+
+All these
+
+Killing vectors are scaled such that they have unit Euclidean surface gravity. Therefore
+
+they must all generate 2 period to avoid conical singularities. We shall study the global
+
+21
+
+structure of these metrics in a future publication since these massless solutions are outside the scope of this paper. We expect all these metrics are Ricci-flat Ka¨her, locally the same as those BPS limits of Kerr-AdS-NUT solutions obtained in [26]. In particular when all bi's vanish, the metric reduces to the spatial section of (3.1) with g = 0, which is on a smooth manifold of Ricci-flat Ka¨hler. In general, the metrics are cones of Einstein-Sasaki spaces in the asymptotic regions and isolated examples smooth metrics with higher cohomogeneity were found in [27, 28].
+
+5 Euclidean AdS solitons with negative mass
+
+For a Schwarzschild black hole, we can Wick rotate the time coordinate t so that the solution becomes a Euclidean-signatured soliton that is asymptotic to RD-1 ×S. For Kerr metrics or Kerr-(A)dS metrics, the reality condition requires that the rotation parameters ai become pure imaginary after the Wick rotation. In other words, we must have
+
+t = i  , ai  i ai .
+
+(5.1)
+
+For positive cosmological constant, the resulting metric becomes compact and the absence of conical singularities on the Euclidean Killing horizons put strong constraints on the parameter spaces. Consequently the complete manifolds are classified by a set of integer values. This was done in general for Kerr-dS metrics in [7]. Einstein-Sasaki metrics Y pq [29] and more general Lpqr [30, 31] can also be constructed in this procedure.
+In this section, we consider a negative or zero cosmological constant, and hence the manifolds are non-compact. An interesting phenomenon occurs in odd dimensions. Before the Wick rotation, we have 0 < i  1 for i, it follows from (2.34) and (2.28) that the mass are positive definite, provided that m > 0. Under ai  iai, we have
+
+i = 1 + a2i g2  1 .
+
+(5.2)
+
+It follows from (2.28) that the mass for even dimensions remain positive definite. However,
+
+in odd dimensions, the mass for Euclidean solitons can become negative provided that none
+
+of the ai vanishes and they are all sufficiently large so that
+
+n i=1
+
+1 i
+
+<
+
+1 2
+
+.
+
+(5.3)
+
+When the above bound is saturated, we obtain a massless soliton. Of course, when the
+
+above bound is violated, we get solitons with positive mass. It is clear that the cosmological
+
+22
+
+constant g2 plays a crucial role in the above discussion and hence the solitons can only have negative mass for asymptotic AdS spacetimes.
+To demonstrate this explicitly, we start with the cohomogeneity-one Kerr-AdS metric with all equal angular momenta. In five dimensions, the metric can be written as (2.1). We can perform Wick rotation and choose the parameters
+
+t = i , µ = b > 0 ,  = -a < 0 .
+
+(5.4)
+
+In general D = 2n + 1 dimensions, we can start with (2.23) and perform Wick rotation and
+
+set  = -b and  = a, we find that the Euclidean soliton is
+
+ds2
+
+=
+
+dr2 f
+
++
+
+f W
+
+d 2
+
++
+
+r2W
+
+
+
+
+
++
+
+ab r2nW
+
+d
+
+2 + r2d2n-1 ,
+
+f
+
+=
+
+(1 + g2r2)W
+
+-
+
+b r2(n-1)
+
+,
+
+W
+
+=
+
+1-
+
+a r2n
+
+,
+
+(5.5)
+
+where a > 0 and b > 0. If follows from (2.24) that we can define the "Euclidean mass",
+
+given by
+
+M
+
+=
+
+A2n-1 16
+
+(2n - 1)b - g2a
+
+.
+
+(5.6)
+
+The metric has a Killing horizon at r = r0 which is the largest real root of f . We can express b in terms of (r0, a), given by
+
+b
+
+=
+
+1 r02
+
+(1
+
++
+
+g2r02)(r02n
+
+-
+
+a) .
+
+(5.7)
+
+The coordinate  then must have period
+
+
+
+=
+
+4 W (r0) f (r0)
+
+,
+
+(5.8)
+
+ provided that we let    - ab/(r0W (r0)) d . Note that the condition b  0 implies
+
+a  r02(n-1). It follows that there is a lower bound of the mass
+
+M
+
+
+
+-
+
+A2n-1 16
+
+g2r02n
+
+.
+
+(5.9)
+
+(This should be compared to the Minkowski-signatured AdS soliton, whose mass has an
+
+upper bound (3.20).) Thus mass can be also negative for Euclidean AdS solitons in odd
+
+dimensions. In particular, the parameter region
+
+(2n - 1)(1 + g2r02) 2n(1 + g2r02) - 1
+
+
+
+a r02n
+
+
+
+1
+
+(5.10)
+
+corresponds to 0  M  -g2r02n. Thus when the lower bound is saturated we have a massless soliton. When a is sufficiently small so that the above lower bound is violated,
+
+23
+
+then the mass becomes positive. It is worth commenting that in the extremal case where f has a double root, the mass is positive.
+The existence of negative mass in Euclidean-signatured space is not uncommon. The Atiyah-Hitchin metric is a solution of the Euclidean Taub-NUT with negative mass [32,33], where the asymptotic region is R3 × S. Analogous solutions exist also in higher dimensions [34].
+
+6 Time machine with a dipole charge
+In the previous sections, we have focused on the Einstein metrics with Rµ = -2ng2 gµ in D = 2n + 1 dimensions. We now consider charged rotating solutions. Exact solutions of charged Kerr-AdS black holes in higher dimensions are known only in supergravities. In five dimensions, notable examples include ones in supergravities [35] and gauged supergravities [36, 37]. BPS solutions are somewhat simpler and global analysis indicates that both black holes or time machines can arise, see e.g. [10,38­42]. In this section we consider the charged Kerr-AdS black hole in minimal gauged supergravity in five dimensions [36]. Soliton limits of this solution were studied in [43]. We consider a very different limit such that the resulting solution carries no electric charge, but only the magnetic dipole charge.
+
+6.1 Asymptotic to AdS5
+
+We follow the same parametrization of [36], and make redefinitions on the parameters as well as the coordinate r
+
+a = a~ ,
+
+b = ~b ,
+
+m
+
+=
+
+1 2
+
+4a~2~b2g6
+
+,
+
+q = -3gq~,
+
+r = ir~ .
+
+(6.1)
+
+We then send the scaling parameter    and find that the charged Kerr-AdS metric
+
+of [36] has a smooth limit. Dropping all the tildes, the solution can be written as
+
+ds2
+
+=
+
+2 r
+
+dr2
+
++
+
+2 g2
+
+d2
+
+-
+
+(abq - gr22dt)2 a2b2g2r24
+
++
+
+r g22
+
+2
+
+A
+
+=
+
++ sin2 
+
+ cos2 2
+
+3q 2
+
+
+
+,
+
+ 
+
+(r2
+
+-
+
+a2)
+
+d1 ag
+
+-
+
+(r2
+
+-
+
+b2)
+
+d2 bg
+
+=
+
+sin2 ag
+
+
+
+d1
+
++
+
+cos2 bg
+
+
+
+d2
+
+,
+
+2
+,
+
+(6.2)
+
+where
+
+r = g2
+
+(r2
+
+-
+
+a2)(r2
+
+-
+
+b2)
+
+-
+
+a2b2g4
+
+-
+
+q2 r2
+
+,
+
+ = a2 cos2  + b2 sin2  , 2 = r2 -  .
+
+(6.3)
+
+24
+
+Under the limit (6.1) with   , the electric charge vanishes, but mass, angular momenta
+
+are given by
+
+M
+
+=
+
+-
+
+1 8
+
+g2
+
+,
+
+Ja
+
+=
+
+q 4ab2g3
+
+,
+
+Jb
+
+=
+
+q 4a2bg3
+
+.
+
+(6.4)
+
+The rotating is generated by the magnetic flux whose strength is characterized by the
+
+parameter q. When q = 0, the solution becomes static and reduces to (3.17). There is a
+
+Euclidean Killing horizon at r = r0 for which r(r0) = 0 and the corresponding null vector
+
+
+
+=
+
+q2
+
++
+
+abqr0 r04(2r02 - a2
+
+-
+
+b2)
+
+1 g
+
+ t
+
++
+
+r02(r02 - bq
+
+b2)
+
+ 1
+
++
+
+r02(r02 - aq
+
+a2)
+
+ 2
+
+,
+
+(6.5)
+
+must generate 2 period to avoid conical singularity. The existence of naked CTCs can
+
+be seen, for example,
+
+from g11
+
+which is obviously negative at r = r0
+
+and  =
+
+1 2
+
+.
+
+For
+
+non-vanshing q, the existence of the Killing horizon is independent of the value and sign of
+
+the constant . It follows (6.4) that the mass can be either positive or negative, without
+
+upper or lower bounds. On the Killing horizon, there is a magnetic dipole charge, given by
+
+D
+
+=
+
+1 8
+
+
+
+F
+
+=
+
+1 8
+
+3q
+
+r0
+
+1 ag(r02 -
+
+b2)
+
++
+
+2 bg(r02 -
+
+a2)
+
+.
+
+(6.6)
+
+The reason why dipole charge is consistent with a time machine is that the topology of the
+
+Killing horizon is a time bundle over S2.
+
+The solution becomes much simpler when b = a. Making coordinate transformations
+
+1
+
+=
+
+1 2
+
+(
+
+- ) ,
+
+2
+
+=
+
+1 2
+
+(
+
++
+
+) ,
+
+r2 - a2 a2g2
+
+=
+
+r~2 ,
+
+
+
+=
+
+1 2
+
+~
+
+,
+
+q = a3g3q~, (6.7)
+
+and then dropping the tildes, we have
+
+ds2 = -g2r2dt2 -
+
+dt
+
++
+
+q 2r2
+
+3
+
+2
+
++
+
+dr2 f
+
++
+
+1 4
+
+W
+
+r2
+
+32
+
++
+
+1 4
+
+r2d22
+
+,
+
+W
+
+=
+
+1-
+
+ r4
+
+,
+
+f
+
+=
+
+(1
+
++
+
+g2r2)W
+
+-
+
+g2q2 r4
+
+.
+
+
+
+A=
+
+3q 2r2
+
+3
+
+,
+
+(6.8)
+
+Mass and angular momentum are
+
+M
+
+=
+
+-
+
+1 8
+
+g2
+
+,
+
+J
+
+=
+
+1 4
+
+q
+
+.
+
+(6.9)
+
+The solution reduces to the static soliton (3.6) when q = 0. In order for the spacetime to avoid curvature singularity at r = 0, there should be a Killing horizon at some r0 > 0 such that f (r0) = 0. Such a Killing horizon is guaranteed to exist if we have  > -g2q2). It follows that for given q, the mass of the solution has an upper bound, but no lower bound
+
+M
+
+<
+
+1 8
+
+g4
+
+q2
+
+.
+
+(6.10)
+
+25
+
+This upper bound is analogous to (3.20).
+
+It is clear that at the Killing horizon at f = 0, we must have W > 0. It follows that
+
+there must be naked CTCs since
+
+g
+
+=
+
+1 4g2
+
+(f
+
+-
+
+W)
+
+=
+
+1 4
+
+r2W
+
+-
+
+q2 r4
+
+.
+
+(6.11)
+
+The manifold closes off at the Killing horizon provided that the null Killing vector on the
+
+horizon
+
+
+
+=
+
+2r02(1
+
+1 + g2r02 + g2r02)2 +
+
+g4q2
+
+q
+
+ t
+
++
+
+2r02(1
+
++
+
+g2r02)
+
+ 
+
+,
+
+(6.12)
+
+generates 2 period. Note that in this time machine, then mass can be both positive and
+
+negative. The electric charge vanishes, but there is a magnetic dipole charge on the Killing
+
+horizon
+
+
+
+1
+
+3q
+
+D=
+
+F=
+
+8 r0
+
+4r02
+
+.
+
+(6.13)
+
+6.2 Asymptotic to flat spacetime
+
+We can turn off the cosmological constant and the solution becomes
+
+ds2 = -
+
+dt
+
+-
+
+q 2r2
+
+3
+
+2
+
++
+
+dr2 W
+
++
+
+1 4
+
+W
+
+r232
+
++
+
+1 4
+
+r2d22
+
+,
+
+
+
+A
+
+=
+
+-
+
+3q 2r2
+
+3
+
+.
+
+(6.14)
+
+This is a solution to field equations of five-dimensional minimal supergravity. The solution has zero mass but non-vanishing angular momentum
+
+M = 0,
+
+J
+
+=
+
+1 4
+
+q
+
+.
+
+(6.15)
+
+The dipole charge takes the same form as (6.13). The metric describes a constant time
+
+bundle
+
+over
+
+the
+
+EH
+
+instanton,
+
+where
+
+the
+
+null
+
+Killing
+
+vector
+
+at
+
+r
+
+=
+
+r0
+
+=
+
+
+
+1 4
+
+,
+
+namely
+
+
+
+=
+
+q 2r02
+
+ t
+
++
+
+ 
+
+,
+
+(6.16)
+
+must generate 2 period. Thus the spatial section is not asymptotic R4, but R4/Z2.
+
+7 Conclusions
+In this paper, we studied the properties of Kerr and Kerr-AdS metrics in D = 2n + 1 dimensions when they do not describe rotating black holes. We found that when the mass was negative and all angular momenta turned on, the metrics could describe smooth time machines where spacetime closes off on some Euclidean pseudo horizon, which is Minkowski signatured, a time bundle over some base space. The absence of conical singularity of
+26
+
+the degenerate surface of the horizon requires the periodic identification of the real time coordinate. Such negative-mass time machines can arise for both asymptotically-flat or AdS spacetimes. We also constructed analogous time machines in gauged and ungauged minimal supergravity in five dimensions, where the time machines carry no electric but dipole charges.
+Turning off the angular momenta appropriately, the aforementioned AdS time machines reduce to static solitons with negative mass. Furthermore, Euclideanization of Kerr-AdS metrics in odd dimensions can also lead to solitons with negative mass. For those that are solutions to Einstein's vacuum field equations with or without a cosmological constant, the absence of any singularity implies that the origin of the spacetime curvature is purely gravitational without any matter energy-momentum tensor. This is very different from Schwarzschild or Kerr black holes where singular matter source is located at the singularity. Thus our solutions are the manifestations of pure-gravity states. Such states are not unusual in Euclidean signatured gravity; they are described by gravitational instantons. Our work demonstrates that pure gravitational states can arise in Minkowski signatured gravity in D = 2n + 1. In addition, we find that taking the cosmological constant to zero, the AdS solitons solutions reduce to a class of Ricci-flat Ka¨hler metrics in D = 2n dimensions.
+Time machines are not unusual in supergravities where BPS time machines have been constructed. What is unusual is perhaps that all these solutions carry negative energies. It is thus of interest to examine the positive-mass conjecture. Having naked CTCs can be perfectly consistent with the energy conditions. In fact the naked CTCs in Go¨del-type metrics [44] emerge precisely because of the null-energy condition [45].
+Positive-mass conjecture states that mass of asymptotically Minkowski spacetime is nonnegative. In our time-machine solutions, the time is required to be periodic. Although the asymptotic spacetime is flat for the  = 0 solutions, it is not quite Minkowski, where time is isomorphic to a real line. For the AdS solitons with negative mass, the EH instaton-like requirement of the period of  coordinate implies that the asymptotic spacetime is AdS/Zk rather than AdS.
+Concrete examples of violating the positive-mass conjecture are perhaps those negativemass AdS time machines. This is because in the flat-spacetime embedding of AdS, time in global coordinates are already periodic. The further periodic identification of the null Killing vector on the Euclidean pseudo horizon can be perfectly consistent with the time period of global AdS provided that the constraint (2.16) is satisfied. This implies that the mass and angular momenta are discretized and are functions of rational numbers. This
+27
+
+phenomenon is analogous to the discretization of compact manifolds. It can be argued that in the "real world setting," spacetime configurations with discretized mass and angular momentum are so fine tuned and hence it is unlikely for the time machine to be created. Of course, one can hardly call the AdS2n+1 spacetime as the real world. On the other hand, the discrete nature of the time-machine configurations suggests topological structures that imply that these solutions, although having negative mass, are stable.1 It is of great interest to investigate the corresponding states in the boundary conformal field theory.
+Acknowledgement
+We are grateful to Jianxin Lu, Chris Pope, Yi Wang, Zhao-Long Wang and Yu-Liang Wu for useful discussions. The work is supported in part by NSFC grants NO. 11475024, NO. 11175269 and NO. 11235003.
+References
+[1] R.P. Kerr, Gravitational field of a spinning mass as an example of algebraically special metrics, Phys. Rev. Lett. 11, 237 (1963). doi:10.1103/PhysRevLett.11.237
+[2] K. Schwarzschild, On the gravitational field of a mass point according to Einstein's theory, Sitzungsber. Preuss. Akad. Wiss. Berlin (Math. Phys. ) 1916, 189 (1916) [physics/9905030].
+[3] B. Carter, Hamilton-Jacobi and Schro¨dinger separable solutions of Einstein's equations, Commun. Math. Phys. 10, 280 (1968).
+[4] R.C. Myers and M.J. Perry, Black holes in higher dimensional space-times, Annals Phys. 172, 304 (1986). doi:10.1016/0003-4916(86)90186-7
+[5] S.W. Hawking, C.J. Hunter and M. Taylor, Rotation and the AdS/CFT correspondence, Phys. Rev. D 59, 064005 (1999) doi:10.1103/PhysRevD.59.064005 [hep-th/9811056].
+[6] J.M. Maldacena, The Large N limit of superconformal field theories and supergravity, Int. J. Theor. Phys. 38, 1113 (1999) [Adv. Theor. Math. Phys. 2, 231 (1998)] doi:10. 1023/A:1026654312961 [hep-th/9711200].
+1We are grateful to Yi Wang for pointing this out.
+28
+
+[7] G.W. Gibbons, H. Lu¨, D.N. Page and C.N. Pope, The General Kerr-de Sitter metrics in all dimensions, J. Geom. Phys. 53, 49 (2005) doi:10.1016/j.geomphys.2004.05.001 [hep-th/0404008].
+[8] G.W. Gibbons, H. Lu¨, D.N. Page and C.N. Pope, Rotating black holes in higher dimensions with a cosmological constant, Phys. Rev. Lett. 93, 171102 (2004) doi:10.1103/PhysRevLett.93.171102 [hep-th/0409155].
+[9] W. Chen, H. Lu¨ and C.N. Pope, Kerr-de Sitter black holes with NUT charges, Nucl. Phys. B 762, 38 (2007) doi:10.1016/j.nuclphysb.2006.07.022 [hep-th/0601002].
+[10] M. Cvetic, G.W. Gibbons, H. Lu¨ and C.N. Pope, Rotating black holes in gauged supergravities: Thermodynamics, supersymmetric limits, topological solitons and time machines," hep-th/0504080.
+[11] R. Clarkson and R.B. Mann, Eguchi-Hanson solitons in odd dimensions, Class. Quant. Grav. 23, 1507 (2006) doi:10.1088/0264-9381/23/5/005 [hep-th/0508200].
+[12] R. Clarkson and R.B. Mann, Soliton solutions to the Einstein equations in five dimensions, Phys. Rev. Lett. 96, 051104 (2006) doi:10.1103/PhysRevLett.96.051104 [hep-th/0508109].
+[13] T. Eguchi and A.J. Hanson, Asymptotically flat selfdual solutions to Euclidean gravity, Phys. Lett. 74B, 249 (1978). doi:10.1016/0370-2693(78)90566-X
+[14] G.W. Gibbons and C.A.R. Herdeiro, Supersymmetric rotating black holes and causality violation, Class. Quant. Grav. 16, 3619 (1999) doi:10.1088/0264-9381/16/11/311 [hep-th/9906098].
+[15] M. Banados, C. Teitelboim and J. Zanelli, The black hole in three-dimensional space-time, Phys. Rev. Lett. 69, 1849 (1992) doi:10.1103/PhysRevLett.69.1849 [hep-th/9204099].
+[16] G.W. Gibbons, M.J. Perry and C.N. Pope, The First law of thermodynamics for Kerr-anti-de Sitter black holes, Class. Quant. Grav. 22, 1503 (2005) doi:10.1088/02649381/22/9/002 [hep-th/0408217].
+[17] M. Cvetic, G.W. Gibbons, H. Lu¨ and C.N. Pope, Supersymmetric nonsingular fractional D2-branes and NS-NS 2-branes, Nucl. Phys. B 606, 18 (2001) doi:10.1016/S05503213(01)00236-X [hep-th/0101096].
+29
+
+[18] H. Lu¨, D.N. Page and C.N. Pope, New inhomogeneous Einstein metrics on sphere bundles over Einstein-Kahler manifolds, Phys. Lett. B 593, 218 (2004) doi:10.1016/ j.physletb.2004.04.068 [hep-th/0403079].
+[19] H. Cebeci, O. Sarioglu and B. Tekin, Negative mass solitons in gravity, Phys. Rev. D 73, 064020 (2006) doi:10.1103/PhysRevD.73.064020 [hep-th/0602117].
+[20] M. Cvetic, G.W. Gibbons, H. Lu¨ and C.N. Pope, Ricci flat metrics, harmonic forms and brane resolutions, Commun. Math. Phys. 232, 457 (2003) doi:10.1007/s00220-0020730-3 [hep-th/0012011].
+[21] D. Martelli and J. Sparks, Toric Sasaki-Einstein metrics on S2 × S3, Phys. Lett. B 621, 208 (2005) doi:10.1016/j.physletb.2005.06.059 [hep-th/0505027].
+[22] D.N. Page, A physical picture of the K3 gravitational instanton, Phys. Lett. 80B, 55 (1978). doi:10.1016/0370-2693(78)90305-2
+[23] J.F. Plebanski, A class of solutions of Einstein-Maxwell equations, Ann. Phys. 90, 196 (1975).
+[24] G.W. Gibbons and S.W. Hawking, Gravitational multi-instantons, Phys. Lett. 78B, 430 (1978). doi:10.1016/0370-2693(78)90478-1
+[25] G.W. Gibbons and S.W. Hawking, Classification of gravitational instanton symmetries, Commun. Math. Phys. 66, 291 (1979). doi:10.1007/BF01197189
+[26] W. Chen, H. Lu¨ and C.N. Pope, General Kerr-NUT-AdS metrics in all dimensions, Class. Quant. Grav. 23, 5323 (2006), hep-th/0604125 doi:10.1088/0264-9381/23/17/ 013.
+[27] T. Oota and Y. Yasui, Explicit toric metric on resolved Calabi-Yau cone, Phys. Lett. B 639, 54 (2006) doi:10.1016/j.physletb.2006.06.021 [hep-th/0605129].
+[28] H. Lu¨ and C.N. Pope, Resolutions of cones over Einstein-Sasaki spaces, Nucl. Phys. B 782, 171 (2007) doi:10.1016/j.nuclphysb.2007.04.017 [hep-th/0605222].
+[29] J.P. Gauntlett, D. Martelli, J. Sparks and D. Waldram, Sasaki-Einstein metrics on S2×S3, Adv. Theor. Math. Phys. 8, no. 4, 711 (2004) doi:10.4310/ATMP.2004.v8.n4.a3 [hep-th/0403002].
+30
+
+[30] M. Cvetic, H. Lu¨, D.N. Page and C.N. Pope, New Einstein-Sasaki spaces in five and higher dimensions, Phys. Rev. Lett. 95, 071101 (2005) doi:10.1103/PhysRevLett. 95.071101 [hep-th/0504225].
+[31] M. Cvetic, H. Lu¨, D.N. Page and C.N. Pope, New Einstein-Sasaki and Einstein spaces from Kerr-de Sitter, JHEP 0907, 082 (2009) doi:10.1088/1126-6708/2009/07/082 [hep-th/0505223].
+[32] M.F. Atiyah and N.J. Hitchin, Low-energy scattering of nonabelian monopoles, Phys. Lett. A 107, 21 (1985). doi:10.1016/0375-9601(85)90238-5
+[33] G.W. Gibbons and N.S. Manton, Classical and quantum dynamics of BPS monopoles, Nucl. Phys. B 274, 183 (1986). doi:10.1016/0550-3213(86)90624-3
+[34] M. Cvetic, G.W. Gibbons, H. Lu¨ and C. N. Pope, Orientifolds and slumps in G2 and spin(7) metrics, Annals Phys. 310, 265 (2004) doi:10.1016/j.aop.2003.10.004 [hep-th/0111096].
+[35] M. Cvetic and D. Youm, General rotating five-dimensional black holes of toroidally compactified heterotic string, Nucl. Phys. B 476, 118 (1996) doi:10.1016/0550-3213(96) 00355-0 [hep-th/9603100].
+[36] Z.-W. Chong, M. Cvetic, H. Lu¨ and C. N. Pope, General non-extremal rotating black holes in minimal five-dimensional gauged supergravity, Phys. Rev. Lett. 95, 161301 (2005) doi:10.1103/PhysRevLett.95.161301 [hep-th/0506029].
+[37] S.Q. Wu, General nonextremal rotating charged AdS black holes in five-dimensional U (1)3 gauged supergravity: a simple construction method, Phys. Lett. B 707, 286 (2012) doi:10.1016/j.physletb.2011.12.031 [arXiv:1108.4159 [hep-th]].
+[38] J.C. Breckenridge, R.C. Myers, A.W. Peet and C. Vafa, D-branes and spinning black holes, Phys. Lett. B 391, 93 (1997) doi:10.1016/S0370-2693(96)01460-8 [hep-th/9602065].
+[39] D. Klemm and W.A. Sabra, Charged rotating black holes in 5-D Einstein-Maxwell (A)dS gravity, Phys. Lett. B 503, 147 (2001) doi:10.1016/S0370-2693(01)00181-2 [hep-th/0010200].
+[40] D. Klemm and W.A. Sabra, General (anti-)de Sitter black holes in five-dimensions, JHEP 0102, 031 (2001) doi:10.1088/1126-6708/2001/02/031 [hep-th/0011016].
+31
+
+[41] J.P. Gauntlett, J.B. Gutowski, C.M. Hull, S. Pakis and H.S. Reall, All supersymmetric solutions of minimal supergravity in five-dimensions, Class. Quant. Grav. 20, 4587 (2003) doi:10.1088/0264-9381/20/21/005 [hep-th/0209114].
+[42] J.B. Gutowski and H.S. Reall, Supersymmetric AdS5 black holes, JHEP 0402, 006 (2004) doi:10.1088/1126-6708/2004/02/006 [hep-th/0401042].
+[43] G. Compere, K. Copsey, S. de Buyl and R.B. Mann, Solitons in five-dimensional minimal supergravity: local charge, exotic ergoregions, and violations of the BPS bound, JHEP 0912, 047 (2009) doi:10.1088/1126-6708/2009/12/047 [arXiv:0909.3289 [hepth]].
+[44] K. Go¨del, An example of a new type of cosmological solutions of Einstein's field equations of graviation, Rev. Mod. Phys. 21, 447 (1949). doi:10.1103/RevModPhys.21.447
+[45] S.L. Li, X.H. Feng, H. Wei and H. Lu¨, Godel universe from string theory, arXiv:1612. 02069 [hep-th].
+32
+
+

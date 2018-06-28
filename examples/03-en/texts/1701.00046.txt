@@ -1,0 +1,6208 @@
+arXiv:1701.00046v1 [hep-th] 31 Dec 2016
+
+Preprint number: YITP-16-128, MPP-2016-335, OU-HET-917
+Flow equation for the scalar model in the large N
+expansion and its applications
+Sinya Aoki1, Janos Balog2, Tetsuya Onogi3, and Peter Weisz4
+1Center for Gravitational Physics, Yukawa Institute for Theoretical Physics, Kyoto University, Kitashirakawa Oiwakechou, Sakyo-ku, Kyoto 606-8502, Japan E-mail: saoki@yukawa.kyoto-u.ac.jp 2Institute for Particle and Nuclear Physics, Wigner Research Centre for Physics, MTA Lendu¨let Holographic QFT Group, 1525 Budapest 114, P.O.B. 49, Hungary E-mail: balog.janos@wigner.mta.hu 3Department of Physics, Osaka University, Toyonaka, Osaka 560-0043, Japan E-mail: onogi@phys.sci.osaka-u.ac.jp 4Max-Planck-Institut fu¨r Physik, 80805 Munich, Germany E-mail: pew@mpp.mpg.de
+................................................................................
+We study the flow equation of the O(N ) 4 model in d dimensions at the next-to-leading order (NLO) in the 1/N expansion. Using the Schwinger-Dyson equation, we derive 2-pt and 4-pt functions of flowed fields. As the first application of the NLO calculations, we study the running coupling defined from the connected 4-pt function of flowed fields in the d + 1 dimensional theory. We show in particular that this running coupling has not only the UV fixed point but also an IR fixed point (Wilson-Fisher fixed point) in the 3 dimensional massless scalar theory. As the second application, we calculate the NLO correction to the induced metric in d + 1 dimensions with d = 3 in the massless limit. While the induced metric describes a 4dimensional Euclidean Anti-de-Sitter (AdS) space at the leading order as shown in the previous paper, the NLO corrections make the space asymptotically AdS only in UV and IR limits. Remarkably, while the AdS radius does not receive a NLO correction in the UV limit, the AdS radius decreases at the NLO in the IR limit, which corresponds to the Wilson-Fisher fixed point in the original scalar model in 3 dimensions. ..................................................................................................... Subject Index B30, B32,B35,B37
+
+1
+
+typeset using PTPTEX.cls
+
+1 Introduction
+In the previous paper[1], the present authors studied the proposal[2] that a d + 1 dimensional induced metric can be constructed from a d dimensional field theory using gradient flow[3­6], applying the method to the O(N) 4 model. We have shown that in the large N limit the induced metric becomes classical and describes Euclidean Anti-de-Sitter (AdS) space in both ultra-violet (UV) and infra-red (IR) limits of the flow direction. The method proposed in Ref. [2] may provide an alternative way to understand the AdS/CFT (or more generally Gravity/Gauge theory) correspondence[7], and the result in Ref. [1] might be related to the correspondence between O(N) vector models in d-dimensions and (generalized) gravity theories in d + 1 dimensions[8].
+To further investigate a possible connection between Ref. [1] and Ref. [8] at the quantum level, one must calculate, for example, the anomalous dimension of the O(N) invariant operator 2(x), which requires the next-to-leading order (NLO) of the 1/N expansion for the flow equation to evaluate necessary quantum corrections. Since the method employed in Refs. [1, 2] is a specific one adopted for the large N limit, some systematic way to solve the flow equation in the 1/N expansion is needed.
+In this paper, we employ the Schwinger-Dyson equation (SDE) to solve the flow equation in the 1/N expansion for the O(N) invariant 4 model in d dimensions. Using this method we explicitly calculate the 2-pt and 4-pt functions at the NLO.
+As the first application of the NLO calculations, we define a running coupling from the connected 4-pt function of flowed fields, which runs with the flow time t such that t = 0 corresponds to the UV limit while t =  is the IR limit. This property establishes that the flow equation can be interpreted as a renormalization group transformation. In particular at d = 3, we show that the running coupling so defined has not only the asymptotic free UV fixed point but also a Wilson-Fisher IR fixed point for the massless case.
+As the second application, we investigate the NLO correction to the induced metric in 3 + 1 dimensions from the massless scalar model in 3 dimensions. In the massless limit, the whole 4-dimensional space becomes AdS at the leading order, as shown in Ref. [1]. The NLO corrections give a small perturbation to the metric, which makes the space asymptotically AdS in UV (t = 0) and IR (t = ) limits only. A remarkable thing is that, while the NLO corrections do not change the AdS radius in the UV limit, the AdS radius is reduced by the NLO correction in the IR limit, which corresponds to the Wilson-Fisher IR fixed point of the original theory. In other words, a nontrivial fixed point in the field theory leads to a change of the AdS radius in the geometry at the NLO. The induced metric at NLO
+2
+
+describes a 4-dimensional space connecting one asymptotically AdS space at UV to an other asymptotically AdS space at IR, which have different radii.
+This paper is organized as follows. In Sec. 2, we first introduce the O(N) invariant 4 model in d dimensions. We then formulate the Schwinger-Dyson equation (SDE) for the flowed fields, and solve it to derive 2-pt and 4-pt functions of flowed fields at the NLO. In Sec. 3, we define a running coupling from the connected 4-pt function of flowed fields and investigate its behavior as a function of the flow time t. In Sec. 4, we study the induced metric from the 3 dimensional massless scalar model at the NLO. We finally give a summary of this paper in Sec. 5. We collect all technical details in appendices. In appendix A, using the SDE, we present results at the NLO in the 1/N expansion of the d dimensional theory necessary for the main text. We also perform the renormalization of the d dimensional theory at the NLO, and explicitly calculate renormalization constants for various d. In appendix B, we give detailed derivations of solutions to the SDE for the flow fields at the NLO. We explicitly evaluate 2-pt and 4-pt functions of the flowed field in appendix C while we derive the induced metric in appendix D, for the massless scalar theory in 3 dimensions.
+
+2 1/N expansion of the flow equation in d + 1 dimensions
+
+2.1 Model in d dimensions
+
+In this paper, we consider the N component scalar 4 model in d dimensions, defined by the action
+
+S(µ2, u) = N
+
+ddx
+
+1 2
+
+ k (x)
+
+·
+
+k (x)
+
++
+
+µ2 2
+
+2(x)
+
++
+
+u 4!
+
+2(x) 2
+
+,
+
+(1)
+
+where a(x) is an N component scalar field, ( · ) indicates an inner product of N compo-
+
+nent vectors such that 2(x)  (x) · (x) =
+
+N a=1
+
+a(x)a(x),
+
+µ2
+
+is
+
+the
+
+bare
+
+scalar
+
+mass
+
+parameter, and u is the coupling constant of the 4 interaction, whose canonical dimension
+
+is 4 - d. While it is consistent to take u as N independent, as will be seen later, the mass
+
+parameter µ2 is expanded as
+
+µ2
+
+=
+
+µ20
+
++
+
+1 N
+
+µ21
+
++
+
+·
+
+·
+
+·
+
+,
+
+(2)
+
+where µ2i is cut-off dependent in order to make the physical mass finite order by order in the 1/N expansion.
+
+3
+
+This model describes the free massive scalar at u = 0, while it is equivalent to the nonlinear  model (NLSM) in the u   limit, whose action is obtained from eq. (1) as
+
+S()
+
+=
+
+N 2
+
+ddx k(x) · k(x),
+
+2(x) = 1,
+
+(3)
+
+with the replacement
+
+a(x) = a(x),
+
+
+
+=
+
+lim
+u
+
+-
+
+u 6µ2
+
+.
+
+(4)
+
+Some regularization which preserves O(N) symmetry is assumed in this paper, so that we can always make formal manipulations without worrying about divergences.1 Calculations of 2-pt and 4-pt functions at the next-to-leading order (NLO) of the 1/N expansion in d dimensions will be given in appendix A.
+
+2.2 Flow equation in the 1/N expansion
+
+In this paper, we consider the flow equation, given by
+
+ t
+
+a(t,
+
+x)
+
+=
+
+-
+
+1 N
+
+S(µ2f , uf a(x)
+
+)
+
+=
+
+- µ2f
+
+a(t,
+
+x)
+
+-
+
+uf 6
+
+a(t,
+
+x)2(t,
+
+x),
+
+(5)
+
+
+
+a(0, x) = a(x),
+
+where µ2f and uf can be different from µ2 and u in the original d dimensional theory. As in the case of d dimensions, uf is kept fixed and N independent, whereas µ2f is adjusted as
+
+µ2f
+
+=
+
+m2f
+
+-
+
+uf 6
+
+Z(mf ),
+
+Z(mf ) 
+
+Dq
+
+q2
+
+1 +
+
+m2f
+
+,
+
+Dq
+
+
+
+ddq (2)d
+
+,
+
+(6)
+
+where mf is a renormalized mass. The flow with µf = µ and uf = u is called gradient flow, as it is given by the gradient of the original action.
+In the case of the free flow (uf = 0), the solution is easily given by
+
+a(t, x) = et( -µ2f )a(x).
+
+(7)
+
+We therefore consider the interacting flow (uf = 0) hereafter unless otherwise stated.
+
+1 We will call the infinite cutoff (  ) limit the 'continuum limit'.
+4
+
+The above flow equation leads to the Schwinger-Dyson equation (SDE)[9] as
+
+Dzf a(z)O
+
+=
+
+-
+
+uf 6
+
+a(z)2(z)O
+
+,
+
+Dzf
+
+
+
+ t
+
+-
+
+(
+
+- µ2f ),
+
+(8)
+
+where z = (t, x), O is an arbitrary operator and the expectation value O should be
+
+calculated in d dimensions as
+
+O()  1 [D] O()e-S(µ2,u), Z = [D] e-S(µ2,u).
+
+(9)
+
+Z
+
+2n-1
+If we take O = ai(zi) the SDE becomes
+
+i=1
+
+Dzf 2ana1···a2n-1(z, z1, · · · , z2n-1)
+
+=
+
+-
+
+uf 6N
+
+2
+
+b
+
+a2nbb+a21···a2n-1 (z, z, z, z1, · · · , z2n-1),
+
+(10)
+
+where n is the n-point function, defined by
+
+n
+
+na1···an(z1, · · · , zn) = N n-1 ai(zi)  n[12 · · · n],
+
+(11)
+
+i=1
+
+which is analogous to the d dimensional counterpart in eq. (A3). We consider only the
+
+symmetric phase in this paper, where 2n-1 = 0 for all positive integers n. We consider the next-to-leading order of the 1/N expansion, so that the following two
+
+SDE's need to be considered.
+
+D1f 2[12]
+
+=
+
+-
+
+uf 6N
+
+2
+
+4[1bb2],
+
+(12)
+
+b
+
+D1f 4[1234]
+
+=
+
+-
+
+uf 6N
+
+2
+
+6[1bb234],
+
+(13)
+
+b
+
+where zb = z1, so that the sum over b runs over the O(N ) index only. The connected part of 4- and 6- pt functions are introduced as
+
+4[1234] = K4[1234] + N {2[12]2[34] + 2[13]2[24] + 2[14]2[23]} , (14)
+
+6[123456] = K6[123456] + N {2[12]K4[3456] + 14 perms.}
+
++ N 2 {2[12]2[34]2]56] + 14 perms.} .
+
+(15)
+
+Furthermore decompositions in O(N) indices are given by
+
+2[12] = a1a2(z1, z2),
+
+(16)
+
+K4[1234] = a1a2a3a4K(z1, z2; z3, z4) + 2 perms.,
+
+(17)
+
+K6[123456] = a1a2a3a4a5a6H(z1, z2; z3, z4; z5, z6) + 14 perms.,
+
+(18)
+
+where (z1, z2), K(z1, z2; z3, z4) and H(z1, z2; z3, z4; z5, z6) are invariant under the exchange of arguments such that z2i-1  z2i or (z2i-1, z2i)  (z2j-1, z2j).
+
+5
+
+By expanding , K and H as
+
+=
+
+
+
+i Ni
+
+,
+
+i=0
+
+K=
+
+
+
+Ki Ni
+
+,
+
+i=0
+
+H=
+
+
+
+Hi Ni
+
+,
+
+i=0
+
+(19)
+
+the above two SDE are reduced to
+
+D1f 0(12)
+
+=
+
+-
+
+uf 6
+
+0(12)0(11)
+
+(20)
+
+at the LO of the 1/N expansion, and
+
+D1f 1(12)
+
+=
+
+-
+
+uf 6
+
+[K0(12; 11)
+
++
+
+0(12)1(11) +
+
+1(12)0(11)
+
++
+
+20(12)0(11)] ,
+
+(21)
+
+D1f K0(12; 34)
+
+=
+
+-
+
+uf 6
+
+[0(12)K0(11; 34) +
+
+0(11)K0(12; 34) + 20(12)0(13)0(14)]
+
+(22)
+
+at the NLO.
+
+2.3 Solutions to the flowed SDE at NLO
+
+The solutions to the SDE at NLO are summarized below. Details of calculations can be
+
+found in appendix B.
+
+At the NLO, the 2-pt function is given by
+
+a1 (z1 )a2 (z2 )
+
+=
+
+a1a2 N
+
+Z(mf )  (t1) (t2)
+
+Dp
+
+e-p2(t1+t2)eip(x1-x2) p2 + m2
+
+1
+
++
+
+1 N
+
+G1(t1,
+
+t2|p)
+
+, (23)
+
+where (t) is defined in eq. (B7), and the NLO contribution G1(t1, t2|p) is given in appendix B.3.2. In the continuum limit, (t) approaches to 0(t) and is finite as long as t > 0, where
+
+0(t) 
+
+Dp
+
+e-2p2t p2 + m2
+
+=
+
+e2tm2 md-2 (4)d/2 (1
+
+-
+
+d/2, 2tm2)
+
+(24)
+
+with the incomplete gamma function (a, x), while Z(mf ) diverges at d > 1. The leading contribution of the connected 4-pt function appearing at the NLO of the
+
+1/N expansion can be obtained as
+
+a1(z1)a2(z2)a3(z3)a4(z4) c
+
+=
+
+1 N3
+
+[a1a2 a3a4 K0 (12;
+
+34)
+
++
+
+2 permutations] ,
+
+(25)
+
+where
+
+K0(12; 34) =
+
+dP4 g(12; 34|12; 34),
+
+4
+dP4  Dpj
+j=1
+
+Z (mf  (tj )
+
+)
+
+eipj xj e-p2j p2j + m2
+
+tj
+
+,
+
+(26)
+
+g(12; 34|12; 34) = X(23|12; 34) + X(13|21; 34) + X(24|12; 43) + X(14|21; 43)
+
++ Y (2|12; 34) + Y (1|21; 34) + Y (3|43; 12) + Y (4|34; 12)
+
++ Z(|12; 34).
+
+(27)
+
+6
+
+Here the variables to the left of the vertical line refer to flow times and those to the right refer to momenta. Explicitly we have in the continuum or NLSM limits
+
+t1
+X(t1, t2|12; 34) = ^(p22 + m2)(p23 + m2) ds1
+
+t2 ds2 es1(p22-p21)es2(p3-p24)(s1, s2|p34), (28)
+
+0
+
+0
+
+t
+
+Y (t|21; 34) = ^(p21 + m2) ds es(p21-p22)(s|34),
+
+(29)
+
+0
+
+Z(|12; 34) = -^
+
+2
+
+,
+
+(30)
+
+6/u + B(0|p34)
+
+where ^  (2)d(p1 + p2 + p3 + p4), p34 = p3 + p4,
+
+B(t|Q) =
+
+Dq1Dq2
+
+(q12
+
+e-t(q12+q22) + m2)(q22 +
+
+m2) (2)d(q12
+
+-
+
+Q),
+
+q12 = q1 + q2,
+
+(31)
+
+and thus B(0|Q) = B(Q2), defined in appendix A. Here  and  satisfy
+
+t
+
+(t|34) + ds K(t, s|p34)(s|34) = 0, (32)
+0
+
+t1
+
+t2
+
+(t1, t2|Q) - 2 ds1 K(t1, s1|Q) ds2 K(t2, s2|Q) (s1, s2|Q) = 0,
+
+(33)
+
+0
+
+0
+
+where
+
+K(t, s|Q) =
+
+Dq1Dq2
+
+(2)d(q12
+
+-
+
+Q)
+
+e-(t+s)q12-(t-s)q22 q12 + m2
+
+,
+
+(34)
+
+(t|34)
+
+=
+
+e-t(p23+p24)
+
+-
+
+B(t|p34) 6/u + B(0|p34)
+
+,
+
+(35)
+
+(t1, t2|Q)
+
+=
+
+B(t1
+
++
+
+t2|Q)
+
+-
+
+B(t1|Q)B(t2|Q) 6/u + B(0|Q)
+
+.
+
+(36)
+
+The derivation of these results is given in appendix B.
+
+3 Running coupling from flowed fields
+
+3.1 Definitions Using the connected 4-pt functions g  ^g^ for the flow fields given in eq. (25), we define
+the t-dependent dimensionless coupling as
+
+g(t) = -3g^(t, t; t, t|{p}sym)t2-d/2,
+
+(37)
+
+where {p}sym is given by p2i t = 3/4 (i = 1  4) and p212t = p234t =  (pij = pi + pj), which is the symmetric point for d > 2, and t2-d/2 is introduced to make the coupling dimension-
+less. Here  is an arbitrary dimensionless constant but we can take  = 1 without loss of
+
+7
+
+generality by the rescaling t  t. Explicitly we have
+
+g^(t, t; t, t|{p}sym) = 4X^ (t, t|{p}sym) + 4Y^ (t|{p}sym) + Z^(|{p}sym),
+
+(38)
+
+where we remove ^ by defining O = ^O^ for O = g, X, Y, Z, and
+
+X^ (t1, t2|12; 34) = (p22 + m2)(p23 + m2)
+
+t1
+ds1
+
+t2 ds2 es1(p22-p21)es2(p23-p24)(s1, s2|p34), (39)
+
+0
+
+0
+
+t
+
+Y^ (t|12; 34) = (p22 + m2) ds es(p22-p21)(s|34),
+
+(40)
+
+0
+
+Z^(|12; 34)
+
+=
+
+-
+
+1 3
+
+1
+
++
+
+u 6
+
+u B(0|p34)
+
+.
+
+(41)
+
+3.2 Free flow
+For simplicity, we first consider the free flow, where g^(t, t; t, t|{p}sym) = Z^(|{p}sym). Taking  = 1, the running coupling is given by
+
+g(t)
+
+=
+
+1
+
+ut2-d/2
+
++
+
+u 6
+
+B
+
+(1/t)
+
+,
+
+(42)
+
+where B(p2) = B(0|p).
+
+3.2.1 d = 2
+
+In 2-dimensions, we obtain
+
+g(t) = 1+
+
+ ut
+
+ut tanh-1  1
+
+,
+
+(43)
+
+6 1 + 4m2t
+
+1 + 4m2t
+
+which behaves in the UV limit (t  0) and IR limit (t  ) as
+
+ 
+
+ut 1 - ut log(m2t)/(12)
+
+ 0,
+
+t=0
+
+g(t)  
+
+ut 1 + u/(24m2)
+
+.  , t = 
+
+(44)
+
+In the massless limit m2  0, we have
+
+g(t)
+
+
+
+-
+
+12 log(m2
+
+t)
+
+
+
+0.
+
+(45)
+
+8
+
+3.2.2 d = 3
+
+At d = 3, the running coupling is given by
+
+
+
+g(t) =
+
+ ut
+
+,
+
+(46)
+
+1
+
++
+
+ut 24
+
+arctan
+
+1 4m2t
+
+which behaves as
+
+
+
+
+
+
+
+u t 1 + u t/48
+
+ 0, t = 0
+
+g(t)
+
+
+
+
+
+ ut 1 + u/(48m)
+
+ ,
+
+. t=
+
+(47)
+
+In the massless limit, we have
+
+
+
+g(t) =
+
+u t =  0, t  0 ,
+
+(48)
+
+1 + u t/48
+
+ 48, t  
+
+which correspond to the asymptotic free UV fixed point and the Wilson-Fisher IR fixed point, respectively.
+
+3.2.3 d  4 Since B(Q2) diverges as d-4 (log  at d = 4) at d  4, the running coupling vanishes as
+the cut-off is removed (  ). Thus the theory is trivial in the continuum limit at d  4.
+
+3.3 Interacting flow in the massless limit at d = 3
+
+3.3.1 Massless limit
+We next consider the interacting flow case, where we need to evaluate X^ and Y^ , which are difficult to calculate in general. We therefore consider the massless limit.2 In this limit, the kernel function is reduced to
+
+K(t, s|{p}sym.) = Dd/2-1k0(Dt, Ds),
+
+(49)
+
+where
+
+k0(w, v)
+
+=
+
+ev-w w 1-d/2 2d-1(2)d/2
+
+1
+dz zd/2-2 exp
+0
+
+(w - v)2z 2w
+
+,
+
+(50)
+
+and we regard D  Q2 = /t as an independent variable. Here the z integral is convergent
+
+for d > 2 while the bubble integral B(0|Q) is finite for d < 4. We thus concentrate on the
+
+d = 3 case hereafter.
+
+2 We will indicate the massless limit by a subscript 0.
+
+9
+
+In this limit, we obtain (see appendix C for details)
+
+Z^(|{p}sym.)
+
+=
+
+ -16 D
+
+1
+
+u¯(D) + u¯(D)
+
+,
+
+u¯(D)  u , 48 D
+
+(51)
+
+Y^ (t|{p}sym.)
+
+=
+
+3 4
+
+ D
+
+0(1)
+
+()
+
+-
+
+80(2)()
+
+1
+
+u¯(D) + u¯(D)
+
+,
+
+(52)
+
+X^ (t, t|{p}sym.)
+
+=
+
+9 16
+
+ D
+
+0()
+
+-
+
+4{0(2)()}2
+
+1
+
+u¯(D) + u¯(D)
+
+,
+
+(53)
+
+where
+
+
+
+0(i)() =
+
+dw (0i)(w), i = 1, 2,
+
+(54)
+
+0
+
+
+
+
+
+0() =
+
+dw dv 0(w, v),
+
+(55)
+
+0
+
+0
+
+and (0i) and 0 are solutions to the integral equations
+
+w
+
+e-3w/2 +
+
+dv k0(w, v) (01)(v) = 0,
+
+(56)
+
+0
+
+w
+
+b0(w) + dv k0(w, v) (02)(v) = 0,
+
+(57)
+
+0
+
+w
+
+v
+
+b0(w + v) - 2 dx k0(w, x) dy k0(v, y) 0(x, y) = 0,
+
+(58)
+
+0
+
+0
+
+where b0(w) is the massless bubble integral given by eq. (C3). These equations can be solved numerically, and at  = 1, for example, we have 0(1)(1) = -14.8440(1), 0(2)(1) =
+-1.60557(1) and 0(1) = 16.6753(1).
+
+3.3.2 Running coupling and  function
+
+Using the above results, the running coupling at d = 3 is given by
+
+
+
+g0(µ)
+
+=
+
+G1
+
++
+
+G2
+
+1
+
+u¯() t + u¯() t
+
+,
+
+u¯() = u , 48 
+
+(59)
+
+ where µ = 1/ t and
+
+G1
+
+=
+
+ -9 
+
+0(1)()
+
++
+
+3 4
+
+0()
+
+,
+
+ G2 = 48 
+
+1
+
++
+
+3 4
+
+0(2)()
+
+2
+
+
+0.
+
+(60)
+
+With the numerical values given above we obtain G1 = 21.0378(1) and G2 = 2.00105(1) at  = 1. 3
+
+3 It turns out that G2() has only one zero at  = 0.36228(1).
+
+10
+
+We then calculate the  function for g0(µ) as
+
+(g0)
+
+
+
+µ
+
+ µ
+
+g0(µ)
+
+=
+
+(g0(µ)
+
+-
+
+G1
+
+- G2)(g0(µ) G2
+
+-
+
+G1) ,
+
+(61)
+
+which becomes zero at g0(µ) = G1 and g0(µ) = G1 + G2. The coupling g0(µ) near G1 behaves as
+
+g0(µ)
+
+-
+
+G1
+
+
+
+CU V
+
+u µ
+
+
+
+0,
+
+µ  ,
+
+CUV =
+
+1
+
++
+
+3 4
+
+0(2)()
+
+2
+,
+
+(62)
+
+approaching to the UV fixed point from above, while near G1 + G2 we have the IR fixed point as
+
+g0(µ)
+
+-
+
+G1
+
+-
+
+G2
+
+
+
+-CI
+
+R
+
+µ u
+
+
+
+0,
+
+µ  0,
+
+CIR =
+
+ 48 
+
+1
+
++
+
+3 4
+
+0(2)()
+
+2
+, (63)
+
+where the coupling approaches from below to the Wilson-Fisher fixed point in the 3 dimensional scalar theory. Note that the derivative of the  function with respect to g0 at the fixed point becomes
+
+(g0)
+
+
+
+d(g0) dg0
+
+=
+
+-1, g0 = G1
+
+,
+
+1, g0 = G1 + G2
+
+(64)
+
+which should be compared with the same quantities calculated for the standard running coupling in the 3 dimensional massless theory in Ref. [10], where (0) = -1 (UV) and (48) = 1 (IR). The derivative of the  function at the fixed point gives the anomalous dimension of the operator conjugate to the coupling in the conformal theory at the fixed point, and thus is universal. Our flow coupling indeed satisfies this condition and the derivatives at the two fixed points agree with those for the conventional definition of the coupling. This establishes that our flow coupling gives a good definition of the running coupling of the theory. The scaling dimension  of the operator conjugate to the running coupling g0 is given by  = d + (g0), so that UV = 2 and IR = 4 in this model. Interestingly UV = 2 corresponds to the canonical dimension of the 4 operator in 3 dimensions, which is the interaction term in our theory.
+By the redefinition of the coupling as g(µ)  (g0(µ) - G1)/G2, the corresponding  function is simplified as
+
+(g)
+
+
+
+µ
+
+ µ
+
+g(µ)
+
+=
+
+g(µ)(g(µ)
+
+-
+
+1).
+
+(65)
+
+11
+
+4 NLO corrections to the induced metric
+
+In Ref. [1], the induced metric has been calculated from the flowed scalar field in the
+
+large N limit. It has been shown that the metric from the massive scalar field describes a
+
+space which becomes the Euclidean AdS space asymptotically both in UV and IR limits,
+
+where the radius RIR in the IR is larger than the radius RUV in UV as
+
+RU2 V
+
+=
+
+d
+
+- 2
+
+2 RI2R
+
+<
+
+RI2R,
+
+(66)
+
+while the metric describes the whole AdS space in the massless limit with the radius RUV. In this section, we consider the NLO correction to the induced metric in the 1/N expansion
+
+as another application of the NLO calculation, in particular, in the massless case at d = 3,
+
+in order to see whether the space remains AdS or not and how the radius changes at the
+
+NLO.
+
+4.1 Induced metric at NLO
+
+The VEV of the induced metric is defined from the normalized flowed field as[1]
+
+gµ (z) = R02 µa(z) a(z)
+
+(67)
+
+with
+
+some
+
+length
+
+scale
+
+R0,
+
+where
+
+z
+
+=
+
+(
+
+=
+
+ 2 t,
+
+x)
+
+and
+
+µ,
+
+
+
+=
+
+0, 1, · · ·
+
+,
+
+d.
+
+Here
+
+a(z)
+
+is
+
+the
+
+normalized flowed field such that 2(z) = 1, and the corresponding 2-point function is
+
+explicitly given at NLO as
+
+a1 (z1 )a2 (z2)
+
+= a1a2 N
+
+1 0(t1)0(t2)
+
+1
+
+-
+
+1(t1) + 1(t2) 2N
+
+×
+
+Dp
+
+e-p2(t1+t2)eip(x1-x2) p2 + m2
+
+1
+
++
+
+G1(t1, N
+
+t2|p)
+
+,
+
+(68)
+
+where
+
+1(t)
+
+=
+
+1 0(t)
+
+H
+
+[G1
+
+(t,
+
+t|p)]
+
+,
+
+H [f (t|p)] 
+
+Dp
+
+e-2p2t p2 + m2
+
+f
+
+(t|p).
+
+(69)
+
+After some algebra (see appendix D), we obtain
+
+gij( )
+
+=
+
+ij
+
+R02 d
+
+A(t),
+
+(i, j = 1, 2, · · · , d),
+
+g00(
+
+)
+
+=
+
+-
+
+R02 2
+
+t
+
+tA(t),
+
+(70)
+
+where
+
+A(t)
+
+=
+
+-
+
+1 2
+
+t0(t) 0(t)
+
++
+
+1 N
+
+A1(t),
+
+(71)
+
+and A1(t) in general is a very complicated function given in appendix D.
+
+12
+
+4.2 Induced metric in the massless limit at d = 3 In the massless limit at d = 3, the metric at the LO is given by
+
+gij( )
+
+=
+
+ij
+
+R02 3 2
+
+,
+
+g00( )
+
+=
+
+R02 2 2
+
+,
+
+(72)
+
+which describes the AdS space for all  . At the NLO, A1(t) is given by
+
+A1(t)
+
+=
+
+1 2t
+
+DQ
+
+htotal(Q2)
+
+(1
+
++
+
+u¯(Q2) u¯(Q2) t)2
+
+,
+
+u¯(Q2) = u , 48 Q2
+
+(73)
+
+tA1(t)
+
+=
+
+- 1 4 t3
+
+DQ htotal(Q2) u¯(Q(12)+(1u¯+(Q32u¯)(Qt2))3t),
+
+(74)
+
+which leads to
+
+gij( )
+
+=
+
+ij
+
+R02 3 2
+
+1
+
++
+
+ N
+
+DQ
+
+htotal(Q2
+
+)
+
+(1
+
++
+
+u¯(Q2) u¯(Q2)
+
+/2)2
+
+,
+
+(75)
+
+g00( )
+
+=
+
+R02 2 2
+
+1
+
++
+
+ 2N
+
+DQ
+
+htotal(Q2)
+
+u¯(Q2)(1 + 3u¯(Q2) /2) (1 + u¯(Q2) /2)3
+
+,
+
+(76)
+
+where htotal(Q2) is a function given in appendix D.
+
+4.3 UV and IR limits The above expression in the UV limit (  0) leads to
+
+gij( )
+
+
+
+ij
+
+R02 3 2
+
+1
+
++
+
+ N
+
+DQ htotal(Q2)u¯(Q2) ,   0,
+
+(77)
+
+g00( )
+
+
+
+R02 2 2
+
+1
+
++
+
+ 2N
+
+DQ htotal(Q2)u¯(Q2) ,   0,
+
+(78)
+
+which shows that the NLO correction is less singular than the LO contribution. Therefore the space becomes asymptotically AdS in the UV limit at the NLO whose AdS radius is equal to that at the LO.
+We cannot naively take the    limit in eqs. (75) and (76), on the other hand, due to the enhancement of the UV contribution of the Q integrals. Careful evaluations of these
+
+13
+
+Q integrals in appendix D give
+
+gij( )
+
+
+
+ij
+
+R02 3 2
+
+1
+
++
+
+r N
+
+,
+
+g00( )
+
+
+
+R02 2 2
+
+1
+
++
+
+r N
+
+,
+
+  ,
+
+(79)
+
+where r = -0.41869(1).4 Therefore, the space becomes asymptotically AdS again in the IR limit, whose radius, however, is smaller than that in the UV limit.5 The induced metric at the NLO describes a 4 dimensional space which is asymptotically AdS in both UV and IR regions with different radii but non-AdS in-between.
+It is clear that the NLO correction to the AdS radius in the IR limit is related to the Wilson-Fisher fixed point in the original 3 dimensional scalar theory, since the eqs. (75) and (76) can be written as
+
+gij( )
+
+=
+
+ij
+
+R02 3 2
+
+1
+
+-
+
+1 24N
+
+DQ htotal(Q2)(g(48µ Q2)) ,
+
+(80)
+
+g00( )
+
+=
+
+R02 2 2
+
+1
+
+-
+
+1 24N
+
+DQ htotal(Q2)
+
+1
+
++
+
+µ 2
+
+ µ
+
+(g(48µ
+
+Q2)) ,
+
+(81)
+
+ where µ = 1/ t = 2/ , and (g(x)) is the  function for the running coupling g(x) from the
+
+free flowed field defined in the previous section with  = 1 as
+
+(g)
+
+=
+
+g(g
+
+- 48
+
+48)
+
+,
+
+g(x)
+
+=
+
+48
+
+x
+
+u +
+
+u
+
+.
+
+(82)
+
+5 Summary
+In this paper, we studied the flow equation of the O(N) 4 model in d dimensions at the NLO in the 1/N expansion, employing the Schwinger-Dyson equation. We calculated the 2-pt and 4-pt functions at the NLO.
+As an application of the NLO calculation, we investigated the running coupling defined from the connected 4-pt function of flowed fields. In particular at d = 3 in the massless limit, we showed that the running coupling has two fixed points, the asymptotic free one in the UV region and the Wilson-Fisher one in the IR region. We also derived the corresponding 
+
+4 This
+
+is
+
+independent
+
+of
+
+uf
+
+=
+
+0
+
+(the
+
+interacting
+
+flow).
+
+In
+
+the
+
+case
+
+of
+
+free
+
+flow
+
+(uf
+
+=
+
+0),
+
+however,
+
+r
+
+=
+
+8 32
+
+
+
+0.27019.
+
+5 It is interesting and also suggestive to see that the F-coefficient of the 3 dimensional O(N ) scalar model
+
+is given by FIR = FUV - (3)/(82) + O(1/N ), where FUV = N FS with FS  0.0638 as an example of a
+
+conjecture, the so-called "the F-theorem", which claims that the F-coefficient monotonically decreases along
+
+a RG trajectory connecting two 3 dimensional CFTs. Furthermore, in the holographic dual picture, the
+
+F-coefficient is proportional to the AdS radius squared. (See Ref. [11] and references therein.)
+
+14
+
+function. Our study suggests that the flow equation can be interpreted as a renormalization group transformation.
+We also calculated the NLO correction to the d + 1 dimensional metric induced from the massless scalar field theory at d = 3. In the massless limit, the whole 4-dimensional space becomes AdS at the LO of the 1/N expansion[1]. We found that the NLO corrections give small perturbations to the metric, which make the space only asymptotically AdS in both UV (t = 0) and IR (t = ) limits. In addition, while the NLO corrections do not change the AdS radius at the LO in the UV limit, the AdS radius is reduced by the NLO correction in the IR limit, which corresponds to the Wilson-Fisher IR fixed point of the original theory. The nontrivial fixed point in the field theory appears as a change of the AdS radius at the NLO. The induced metric at NLO describes a 4-dimensional space which connects one asymptotically AdS space at UV to the other asymptotically AdS space at IR.
+This paper contains two important messages. One is that the flow equation can provide an alternative method to define a renormalization group transformation. The other is that the massless scalar field in d dimensions plus the extra dimension from the RG scale not only generates a d + 1 dimensional AdS space at LO[1] but also gives a NLO correction, which makes the d + 1 dimensional space asymptotically AdS only in UV and IR limits at d = 3. In particular, the AdS radius in the IR limit, which corresponds to the Wilson-Fisher fixed point, becomes smaller than that in the UV limit, which is equal to the radius at the LO. Although the relation found in this paper between the massless scalar field theory and the induced geometry is very suggestive, further studies will be needed to establish an alternative interpretation of AdS/CFT correspondences proposed in Ref. [2] in terms of field theories.
+Acknowledgement
+The authors would like to thank Satoshi Yamaguchi for very useful comments and discussions. S. A. is supported in part by the Grant-in-Aid of the Japanese Ministry of Education, Sciences and Technology, Sports and Culture (MEXT) for Scientific Research (No. JP16H03978), by a priority issue (Elucidation of the fundamental laws and evolution of the universe) to be tackled by using Post "K" Computer, and by Joint Institute for Computational Fundamental Science (JICFuS). This investigation has also been supported in part by the Hungarian National Science Fund OTKA (under K116505). S. A. and J. B. would like to thank the Max-Planck-Institut fu¨r Physik for its kind hospitality during their stay for this research project. T.O. is supported in part by the Grant-in-Aid of the Japanese Ministry of Education, Sciences and Technology, Sports and Culture (MEXT) for Scientific Research (No. 26400248).
+15
+
+References
+[1] S. Aoki, J. Balog, T. Onogi and P. Weisz, PTEP 2016 (2016) no.8, 083B04 doi:10.1093/ptep/ptw106 arXiv:1605.02413 [hep-th].
+[2] S. Aoki, K. Kikuchi and T. Onogi, PTEP 2015 (2015) no.10, 101B01 doi:10.1093/ptep/ptv131 [arXiv:1505.00131 [hep-th]].
+[3] R. Narayanan and H. Neuberger, JHEP 0603, 064 (2006) [hep-th/0601210]. [4] M. Lu¨scher, JHEP 1008, 071 (2010) [JHEP 1403, 092 (2014)] [arXiv:1006.4518 [hep-lat]]. [5] M. Lu¨scher, Commun. Math. Phys. 293, 899 (2010) [arXiv:0907.5491 [hep-lat]]. [6] M. Lu¨scher, PoS LATTICE 2013, 016 (2014) [arXiv:1308.5598 [hep-lat]]. [7] J. M. Maldacena, Int. J. Theor. Phys. 38, 1113 (1999) [Adv. Theor. Math. Phys. 2, 231 (1998) ]
+[hep-th/9711200]. [8] I. R. Klebanov and A. M. Polyakov, Phys. Lett. B 550 (2002) 213 doi:10.1016/S0370-2693(02)02980-5
+[hep-th/0210114]. [9] S. Aoki, K. Kikuchi and T. Onogi, JHEP 1504, 156 (2015) [arXiv:1412.8249 [hep-th]]. [10] S. Aoki, J. Balog and P. Weisz, JHEP 1409 (2014) 167 Erratum: [JHEP 1507 (2015) 037]
+doi:10.1007/JHEP07(2015)037, 10.1007/JHEP09(2014)167 [arXiv:1407.7079 [hep-lat]]. [11] S. S. Pufu, arXiv:1608.02960 [hep-th].
+
+A The 1/N expansion in the d dimensional theory
+In this appendix, we consider the 1/N expansion in the d dimensional theory.
+
+A.1 Schwinger-Dyson equation(SDE)
+
+In order to perform the 1/N expansion, we consider the SDE of this model, which can be written compactly as
+
+xaX[] = X[]xaS(µ2, u) ,
+
+where xab(y) = ab(d)(x - y) with a small parameter , so that
+
+xaS(µ2, u)
+
+=
+
+N (-
+
++
+
+µ2)a(x)
+
++
+
+u 3!
+
+a(x)2(x)
+
+.
+
+Here the vacuum expectation value of an operator O is defined in eq. (9).
+
+We define 2n-point functions 2n6 as
+
+a1a2···a2n(x1, x2, · · · , x2n) = N 2n-1
+
+2n
+ai (xi )
+i=1
+
+ 2n[12 · · · (2n)]
+
+which can be written in terms of their connected parts K2n as
+
+(A1) (A2) (A3)
+
+4[1234] = K4[1234] + N {2[12]2[34] + 2[13]2[24] + 2[14]2[23]} , (A4)
+
+6[123456] = K6[123456] + N {2[12]K4[3456] + 14 perms. } + N 2 {2[12]2[34]2[56] + 14 perms. }
+
+(A5)
+
+6 Note that we use the same notation 2n for the 2n-point functions in both d and d + 1 dimensions, since no confusion may occur.
+
+16
+
+and so on. As mentioned in the main text, we assume we are working in a phase where O(N) symmetry is not broken. We therefore do not add the external source term h(x) to the action, so that the action has the symmetry under   -, which implies 2n-1 = 0 for all positive integers n.
+In terms of these, the SDE for X() = a2(x2) becomes
+
+12
+
+=
+
+(-
+
++
+
+µ2)x1 2[12]
+
++
+
+u 3!N 2
+
+(K4[bb12] + N {2[bb]2[12] + 22[b1]2[b2]})(A6)
+
+b
+
+where 12  a1a2(d)(x1 - x2) and xb = x1, so that b in the summation runs over the O(N ) indices only.
+For X() = a2(x2)a3(x3)a4(x4), on the other hand, we have
+
+122[34] + 2 perms.
+
+=
+
+(-
+
++
+
+µ2)x1
+
+1 N
+
+(K4[1234] + N {2[12]2[34] +
+
+2 perms.})
+
++
+
+u 3!N 3
+
+(K6[bb1234] + N {2[bb]K4[1234] + 14 perms.}
+
+b
+
++ N 2 {2[bb]2[12]2[34] + 14 perms.} ,
+
+(A7)
+
+which can be simplified by using eq. (A6) as
+
+0
+
+=
+
+(-
+
++
+
+µ2)x1 K4[1234]
+
++
+
+u 3!N 2
+
+K6[bb1234] + N 2[bb]K4[1234]
+
+b
+
++ 2N {2[b1]K4[b234] + 2[b2]K4[1b34] + 2[b3]K4[12b4] + 2[b4]K4[123b]}
+
++ N {2[12]K4[bb34] + 2[13]K4[b2b4] + 2[14]K4[b23b]} + 2N 2 {2[b2][2[b3]2[14] + 2[b2][2[b4]2[13] + 2[b3][2[b4]2[12]} .
+
+(A8)
+
+Using the O(N) symmetry and assuming translational invariance (e.g. infinite volume or periodic boundary condition), we can write
+
+2[12]  a1a2(x12),
+
+x12  x1 - x2
+
+K4[1234]  a1a2a3a4K(x1, x2; x3, x4) + 2 perms.,
+
+K6[123456]  a1a2a3a4a5a6H(x1, x2; x3, x4; x5, x6) + 14 perms.,
+
+(A9) (A10) (A11)
+
+where K(x1, x2; x3, x4) is invariant under 1  2 or 3  4 as well as (12)  (34), and similar invariances hold for H(x1, x2; x3, x4; x5, x6).
+17
+
+We finally obtain
+
+(d)(x1 - x2) =
+
+(-
+
++
+
+µ2)x1
+
++
+
+u 3!
+
+(0)
+
+(x12)
+
++
+
+u 3!N
+
+1
+
++
+
+2 N
+
+K(x1, x1; x1, x2) + 2(0)(x12) ,
+
+(A12)
+
+and 0=
+
+(-
+
++
+
+µ2)x1
+
++
+
+u 3!
+
+1
+
++
+
+2 N
+
+(0) K(x1, x2; x3, x4)
+
++
+
+u 3!
+
+(x12
+
+)
+
+2(x13)(x14) +
+
+1
+
++
+
+2 N
+
+K (x1 ,
+
+x1;
+
+x3,
+
+x4)
+
++
+
+2 N
+
+K (x1 ,
+
+x3;
+
+x1, x4)
+
++
+
+u 3!N
+
+1
+
++
+
+2 N
+
+H (x1 ,
+
+x1;
+
+x1,
+
+x2;
+
+x3,
+
+x4)
+
++
+
+2 N
+
+H (x1,
+
+x2;
+
+x1,
+
+x3;
+
+x1,
+
+x4)
+
++
+
+2u 3!N
+
+[(x13)K(x1, x2; x1, x4)
+
++
+
+(x14)K(x1, x2;
+
+x3,
+
+x1)] .
+
+(A13)
+
+A.2 The leading order in the 1/N expansion
+
+We introduce the 1/N expansion as
+
+
+
+(x12) =
+
+N -ii(x12),
+
+
+K(x1, x2; x3, x4) = N -iKi(x1, x2; x3, x4), (A14)
+
+i=0
+
+i=0
+
+
+and so on, together with µ2 = N -iµ2i .
+i=0
+At the leading order (LO) of the 1/N expansion, the eq. (A12) in momentum space
+
+becomes 1=
+
+p2
+
++
+
+µ20
+
++
+
+u 6
+
+Dq 0(q) 0(p),
+
+0(x) = Dp 0(p) eipx,
+
+(A15)
+
+which can easily be solved as
+
+0(p)
+
+=
+
+p2
+
+1 +
+
+m2
+
+,
+
+m2
+
+=
+
+µ20
+
++
+
+u 6
+
+Z (m),
+
+(A16)
+
+where m  0 is the renormalized mass and Z(m) is given in eq. (6). Thus the 2-pt function
+
+at the LO becomes
+
+a(x)b(y)
+
+=
+
+ab N
+
+Dp
+
+eip(x-y) p2 + m2
+
+.
+
+(A17)
+
+Eq. (A13) at the LO leads to
+
+(-
+
++ m2)x1K0(x1, x2; x3, x4)
+
++
+
+u 3!
+
+0(x12)K0(x1,
+
+x1;
+
+x3,
+
+x4)
+
+=
+
+-
+
+2u 3!
+
+0(x12)0(x13)0(x14
+
+).
+
+(A18)
+
+18
+
+Introducing a function G0(p1, p2, p3, p4) to rewrite K0(x1, x2, x3, x4) as
+
+K0(x1, x2; x3, x4) =
+
+4 i=1
+
+eipixi Dpi p2i + m2
+
+G0(p1, p2, p3, p4)(2)d(p1 + p2 + p3 + p4), (A19)
+
+we obtain
+
+G0(p1, p2, p3, p4)
+
+=
+
+G0(p1
+
++
+
+p2)
+
+=
+
+-6
+
++
+
+2u uB(p212)
+
+,
+
+(A20)
+
+where p12 = p1 + p2, and
+
+B(Q2) =
+
+Dq1Dq2
+
+(2)d(q1 + q2 - Q) (q12 + m2)(q22 + m2)
+
+=
+
+1
+dx
+0
+
+Dq1
+
+(q12
+
++
+
+(2 - q12) m2 + x(1 -
+
+x)Q2)2
+
+.(A21)
+
+This agrees with the previous result obtained by a different method[10]. We here specify the way we introduce the cut-off  for the case where B(Q2) diverges.
+
+A.3 NLO correction to the 2-pt functions
+
+Let us consider the next-to-leading order (NLO) correction to the 2-pt function 2. At the NLO, eq. (A12) leads to
+
+0
+
+=
+
+(-
+
++ m2)1(x12) +
+
+u 6
+
+(2Z
+
+(m)
+
++
+
+1)
+
++
+
+µ21
+
+0(x12)
+
++
+
+u 6
+
+K0(x1,
+
+x1;
+
+x1,
+
+x2), (A22)
+
+1 = Dq 1(q),
+
+(A23)
+
+which can be solved in momentum space as
+
+1(p)
+
+=
+
+-
+
+(p2
+
+1 + m2)2
+
+µ21
+
++
+
+u 6
+
+1
+
++
+
+u 3
+
+S
+
+(p2)
+
+,
+
+where
+
+S(p2) =
+
+(p
+
+-
+
+DQ Q)2 +
+
+m2
+
+6
+
++
+
+6 uB(Q2)
+
+,
+
+and the condition for 1 is solved as
+
+1
+
+=
+
+-
+
+µ21B(0) + C2
+
+1
+
++
+
+u 6
+
+B
+
+(0)
+
+,
+
+C2  -
+
+6 u
+
+DQ + B(Q2)
+
+d dm2
+
+B(Q2).
+
+Substituting eq. (A26) into eq. (A24), we finally obtain
+
+1(p)
+
+=
+
+-
+
+(p2
+
+1 + m2)2
+
+g(p2) + C~
+
+,
+
+(A24) (A25) (A26) (A27)
+
+19
+
+where
+
+g(p2) =
+
+DQ
+
+6 u
+
++
+
+B(Q2)
+
+(Q
+
++
+
+1 p)2
+
++
+
+m2
+
++
+
+(Q
+
+-
+
+1 p)2
+
++
+
+m2
+
+-
+
+Q2
+
+2 +
+
+m2
+
+,
+
+C~
+
+=
+
+C1
+
++
+
+µ21
+
+1
+
++
+
+u 6
+
+B(0)
+
+-
+
+6 u
+
+C2 , + B(0)
+
+C1 =
+
+6 u
+
+DQ + B(Q2)
+
+(Q2
+
+2 +
+
+m2) ,
+
+and g(p2) can be expanded as
+
+(A28) (A29)
+
+g(p2) = Z1p2 + g~(p2), g~(p2) = O(p4),
+
+(A30)
+
+where
+
+Z1
+
+=
+
+2 d
+
+DQ 6/u + B(Q2)
+
+4-d (Q2 + m2)2
+
+-
+
+4m2 (Q2 + m2)3
+
+.
+
+(A31)
+
+A.4 Renormalization
+Let us now consider the renormalization of the theory. Our renormalization condition for the renormalized 2-pt function R is given in momentum space as
+
+-R1(p)  p2 + m2,
+
+p2  0,
+
+(A32)
+
+where m is interpreted as the renormalized mass, which is independent of both N and the
+cut-off. Relating the bare field to the renormalized field by the renormalization constant ZR as ZR1/2R = , we explicitly obtain
+
+ZRR(p)
+
+=
+
+(p)
+
+=
+
+p2
+
++
+
+m2
+
+1 +
+
+1 N
+
+1(p2)
+
++
+
+O
+
+1 N2
+
+,
+
+(A33)
+
+where
+
+1(p2) = Z1p2 + C~ + g~(p2).
+
+(A34)
+
+At the LO of the 1/N expansion, the above condition implies
+
+µ20
+
+=
+
+m2
+
+-
+
+u 6
+
+Z (m),
+
+ZR = 1,
+
+(A35)
+
+where Z(m) is potentially divergent at d > 1. We therefore introduce the momentum cutoff  to regulate the integral, and µ20 is tuned to cancel the effect of Z(m) including such divergences, in order to keep the renormalized mass m finite and constant. The lattice regu-
+larization or dimensional regularization is more consistent than the momentum cut-off, but
+
+20
+
+calculations become much more complicated in the lattice regularization or power divergences are difficult to deal with in the dimensional regularization. Since the momentum cut-off is enough to see the leading divergences, we adopt it in this paper.
+At the NLO, the renormalization condition implies
+
+ZR
+
+=
+
+1
+
+-
+
+Z1 N
+
+,
+
+µ21 =
+
+1
+
++
+
+u 6
+
+B(0)
+
+Z1m2
+
++
+
+u 6
+
+C,
+
+(A36)
+
+where
+
+C =-
+
+DQ
+
+6 u
+
++
+
+B(Q2)
+
+dB(Q2) dm2
+
++
+
+2
+
+6 u
+
++
+
+B(0)
+
+Q2 + m2
+
+.
+
+(A37)
+
+The renormalization condition for the coupling, which first appears at the NLO of the 1/N expansion, is given by G0(Q2 = s) = -ur(s)/3, so that ur(s) is regarded as the renormalized coupling at the scale s. Eq. (A20) thus leads to
+
+ur(s)
+
+=
+
+1
+
++
+
+u
+
+u 6
+
+B
+
+(s)
+
+,
+
+(A38)
+
+where B(Q2) is divergent at d  4. Therefore the renormalized coupling goes to zero as
+
+ur(s)
+
+
+
+6 B(s)
+
+
+
+0,
+
+
+
+(A39)
+
+at d  4. This indicates the triviality of the 4 theory at d  4.
+
+A.5 Renormalization constants We here explicitly evaluate the renormalization constants.
+
+A.5.1 d = 1 At d = 1, µ20 is finite as
+
+Z (m)
+
+=
+
+1 m
+
+arctan
+
+ m
+
+is finite, and the coupling is also finite and nonzero since
+
+B(Q2)
+
+=
+
+m(Q2
+
+1 +
+
+4m2)
+
+
+
+1 mQ2
+
++
+
+·
+
+·
+
+·
+
+,
+
+has a finite limit as   .
+
+Q2  ,
+
+(A40) (A41)
+
+21
+
+The
+
+most
+
+divergent
+
+part
+
+of
+
+Z1 
+
+is
+
+given by
+
+DQ (Q2
+
+u + m2)2
+
+,
+
+u=
+
+Z1  
+
+,
+
+DQ B(Q2)
+
+(Q2
+
+6 +
+
+m2)2
+
+,
+
+u=
+
+(A42)
+
+which shows that Z1 is finite for all u including u = . Eqs. (A36) and (A37) thus tell us that µ21 is also finite for all u including u = , and therefore, there is no divergence at d = 1 up to the NLO.
+
+A.5.2 d = 2
+
+At d = 2, µ20 is logarithmically divergent as
+
+µ20
+
+=
+
+m2
+
+-
+
+u 6
+
+Z (m),
+
+Z (m)
+
+
+
+1 4
+
+log
+
+2 + m2 m2
+
+.
+
+On the other hand, B(Q2) is finite as
+
+(A43)
+
+B(Q2) =
+
+tanh-1
+
+Q2 Q2+4m2
+
+ Q2(Q2 + 4m2)
+
+
+
+1 2Q2
+
+log
+
+Q2 m2
+
+-
+
+m2 (Q2)2
+
+log
+
+Q2 m2
+
+-
+
+1
+
++ · · · ,(A44)
+
+dB(Q2) dm2
+
+
+
+-
+
+2B(0) Q2 + 4m2
+
+1
+
++
+
+2m2 Q2
+
+log
+
+Q2 m2
+
++
+
+·
+
+·
+
+·
+
+,
+
+B(0)
+
+=
+
+1 4m2
+
+,
+
+(A45)
+
+so that the renormalized coupling becomes
+
+ur(s) =
+
+6u tanh-1
+
+6+u
+
+s s+4m2
+
+ s(s + 4m2)
+
+
+
+12s
+
+12us + u log(s/m2)
+
+,
+
+s  . (A46)
+
+The most singular term of Z1 for u =  becomes
+
+Z1
+
+
+
+u 6
+
+DQ
+
+(Q2
+
+2 +
+
+m2)2
+
+,
+
+(A47)
+
+which is manifestly finite, while at u = , we have
+
+Z1 =
+
+DQ B(Q2)
+
+(Q2
+
+2 + m2)2
+
+-
+
+4m2 (Q2 + m2)3
+
+,
+
+(A48)
+
+which diverges as Z1  log log 2 .
+
+The most divergent part of µ21 is given by
+
+ 
+
+-
+
+u 3
+
+Z
+
+(m)1,
+
+(1 = 1), u = 
+
+µ21
+
+
+
+
+
+u 12
+
+log
+
+2 + 4m2 4m2
+
+,
+
+. u
+
+(A49)
+
+22
+
+A.5.3 d = 3 At d = 3, µ20 is linearly divergent as
+
+µ20
+
+=
+
+m2
+
+-
+
+u 6
+
+Z (m),
+
+Z (m)
+
+
+
+1 22
+
+ - m arctan
+
+ m
+
+,
+
+while B(Q2) is finite as
+
+(A50)
+
+B(Q2) =
+
+1 arctan
+
+4 Q2
+
+Q2 4m2
+
+
+
+1 8|Q|
+
+-
+
+m 2Q2
+
++
+
+2m3 3(Q2)2
+
++
+
+·
+
+·
+
+·
+
+,
+
+dB(Q2) dm2
+
+=
+
+-
+
+2B(0) Q2 + 4m2
+
+,
+
+B(0)
+
+=
+
+1 8m
+
+,
+
+(A51) (A52)
+
+and the renormalized coupling becomes
+
+ur(s)
+
+=
+
+6u
+
+6
+
++
+
+u 4 s
+
+arctan
+
+s
+
+ 1 + u u ,
+
+4m2
+
+48 s
+
+s  .
+
+(A53)
+
+The most singular term of Z1 for u =  becomes
+
+Z1
+
+
+
+u 9
+
+DQ
+
+(Q2
+
+1 +
+
+m2)2
+
+,
+
+which is manifestly finite at d = 3. On the other hand, at u = , we have
+
+Z1
+
+=
+
+2 3
+
+DQ B(Q2)
+
+(Q2
+
+1 + m2)2
+
+-
+
+4m2 (Q2 + m2)3
+
+,
+
+(A54) (A55)
+
+whose divergent part becomes
+
+Z1
+
+
+
+4 32
+
+log
+
+2.
+
+The most divergent part of µ21 becomes
+
+ 
+
+-
+
+u 3
+
+Z
+
+(m)1
+
+,
+
+(1 = 1), u = 
+
+µ21
+
+
+
+
+
+-m
+
+2u 93
+
+log 2,
+
+. u
+
+(A56) (A57)
+
+23
+
+A.5.4 d = 4
+
+At d = 4, µ20 is quadratically divergent as
+
+µ20
+
+=
+
+m2
+
+-
+
+u 6
+
+Z
+
+(m),
+
+Z (m)
+
+
+
+1 162
+
+2 - m2 log
+
+2 + m2 m2
+
+.
+
+On the other hand, at d = 4, we have
+
+B(Q2) =
+
+1 (4)2
+
+log
+
+2m m2
+
++ 2 Q2 + 42m - 22 tanh-1 Q2(Q2 + 42m)
+
+-2
+
+Q2
+
++ 4m2 Q2
+
+tanh-1
+
+Q2
+
+Q2 + 4m2
+
+
+
+,
+
+Q2 Q2 + 42m
+
+(A58) (A59)
+
+B(0)
+
+=
+
+1 (4)2
+
+log
+
+2m m2
+
+-
+
+2 2m
+
+,
+
+2m  2 + m2,
+
+which diverge logarithmically, so that ur(s) = 0 as   .
+
+Since
+
+tanh-1(x)
+
+x1
+
+-
+
+1 2
+
+log
+
+1-x 2
+
+, we have
+
+B(Q2)
+
++
+
+6 u
+
+=
+
+B^ q2, 2 ,
+
+q2
+
+=
+
+Q2 2
+
+,
+
+
+
+=
+
+m 
+
+,
+
+B^(q2, 0)
+
+=
+
+-c0
+
+log
+
+q2
+
++
+
+6 u
+
++
+
+c0F (q2),
+
+c0
+
+=
+
+1 (4)2
+
+,
+
+(A60)
+(A61) (A62)
+
+where
+
+F (q2) =
+
+2(q2 + 2) tanh-1 q2(q2 + 4)
+
+q2 q2 +
+
+4
+
+.
+
+(A63)
+
+Let us now consider the continuum limit of Z1. By rescaling the momentum, we have
+
+Z1
+
+=
+
+-
+
+2 82
+
+1 0
+
+B^(t,
+
+tdt 2)(t
+
++
+
+. 2)3
+
+(A64)
+
+As 2  0 in the    limit, we have
+
+1
+
+tdt
+
+0 B^(t, 2)(t + 2)3
+
+
+
+1
+
+tdt
+
+0 B^(t, 0)(t + 2)3
+
+=
+
+1
+
+2
+0
+
+tdt B^(t, 0)(t +
+
+2)3
+
++
+
+1
+1 2
+
+B^ (t,
+
+tdt 0)(t +
+
+2)3
+
+,
+
+(A65)
+
+where the second term is finite in this limit, while the first term is bounded from above
+
+1
+
+1
+
+2
+
+tdt
+
+0 B^(t, 0)(t + 2)3
+
+
+
+-
+
+1 c0
+
+2
+
+tdt
+
+0 (t + 2)3 log(t + 2)
+
+=
+
+1 c0
+
+log
+
+|
+
+log
+
+2|
+
++
+
+ r=1
+
+(- log 2)r r r!
+
++
+
+(finite
+
+terms)
+
+, (A66)
+
+24
+
+so that Z1 in eq. (A64) vanishes as 2  0. The most divergent part of µ21 becomes
+
+µ21
+
+
+
+-
+
+u 3
+
+2 162
+
+1,
+
+1
+1 = dq2
+0
+
+c0T (q2) - 6/u c0{log q2 - F (q2)} - 6/u
+
+,
+
+T (q2)
+
+
+
+log
+
+q2
+
++
+
+1
+
+-
+
+q2 q2 +
+
+4
+
+1
+
++
+
+q2 q2
+
++ +
+
+6 2
+
+F
+
+(q2)
+
+,
+
+(A67)
+
+where 1 is finite, but is not universal as it depends on how we regulate the integral.
+
+A.5.5 d > 4
+
+At d > 4, µ20 is O(d-2) as
+
+µ20
+
+=
+
+m2
+
+-
+
+u 6
+
+Z (m),
+
+Z (m)
+
+
+
+(4)d/2(d
+
+d - 2)(1
+
++
+
+d-2. d/2)
+
+(A68)
+
+We also write
+
+B(Q2)
+
+=
+
+d (4)d/2(1 + d/2)
+
+1
+dx
+0
+
+ 0
+
+[p2
+
++
+
+pd-1dp m2 + Q2x(1
+
+-
+
+x)]2 ,
+
+(A69)
+
+from which we obtain
+
+B(Q2) = d-4B^
+
+Q2 2
+
+,
+
+m2 2
+
+,
+
+dB(Q2) dm2
+
+= -2d-6B^m
+
+Q2 2
+
+,
+
+m2 2
+
+B^ (0,
+
+0)
+
+=
+
+(d
+
+d -
+
+4)
+
+1 (4)d/2(1
+
++
+
+, d/2)
+
+,
+
+(A70) (A71)
+
+where
+
+B^(q2, 2)
+
+=
+
+d (4)d/2(1 + d/2)
+
+1
+dx
+0
+
+1 0
+
+[y2
+
++
+
+yd-1dy 2 + q2x(1
+
+-
+
+x)]2
+
+,
+
+B^m(q2, 2)
+
+=
+
+d (4)d/2(1 + d/2)
+
+1
+dx
+0
+
+1
+
+yd-1dy
+
+0 [y2 + 2 + q2x(1 - x)]3
+
+(A72) (A73)
+
+so that B(Q2) = O(d-4). As in the case at d = 4, ur(s) = 0 in the limit that   . By the change of variable Q = q in eq. (A31) and then taking the limit   , we
+obtain
+
+Z1
+
+=
+
+2(4 - d) d
+
+q2<1
+
+Dq B^ (q 2 ,
+
+0)
+
+1 (q2)2
+
+.
+
+(A74)
+
+The fact that B^(0, 0) = 0 establishes that Z1 is finite at d > 4.
+
+25
+
+The most divergent part of µ21 is given by
+
+µ21
+
+
+
+-
+
+u 3
+
+Z
+
+(m)1,
+
+where
+
+1
+
+=
+
+(d - 2)
+
+1 qd-1dq 0 B^(q2, 0)
+
+B^ (0, q2
+
+0)
+
+-
+
+B^m(q2,
+
+0)
+
+with the change of variables as q2 = Q2/2. It is easy to show that 1 is finite.
+
+(A75) (A76)
+
+B Solving the SED for the flow equation
+In this appendix we explicitly solve the SDE in d + 1 dimensions, in order to obtain the 2-pt and 4-pt functions for the flow fields at the NLO.
+
+B.1 Solution for 0
+
+We first solve the equation at the LO for 0. If we introduce one unknown function F (t, p) as
+
+0(12) =
+
+Dp
+
+F
+
+(t1, p)F (t2 p2 + m2
+
+,
+
+p)
+
+e-(p2+µ2f
+
+)(t1+t2)
+
+eip(x1-x2)
+
+(B1)
+
+with the initial condition F (0, p) = 1, we have
+
+D1f 0(12) =
+
+Dp
+
+F
+
+(t1, p)F (t2 p2 + m2
+
+,
+
+p)
+
+e-(p2
+
++µ2f
+
+)(t1+t2)
+
+eip(x1-x2)
+
+(B2)
+
+-
+
+uf 6
+
+0(12)0(11)
+
+=
+
+-
+
+uf 6
+
+Dp
+
+F
+
+(t1, p)F (t2, p2 + m2
+
+p)
+
+e-(p2+µ2f
+
+)(t1+t2
+
+)eip(x1
+
+-x2)0(t1),
+
+(B3)
+
+0(t1) = 0(11) =
+
+Dp
+
+F 2(t1, p) p2 + m2
+
+e-2(p2+µ2f
+
+)t1
+
+,
+
+(B4)
+
+where F means a t-derivative of F . Then, the SDE (20) becomes
+
+F (t, p) F (t, p)
+
+=
+
+-
+
+uf 6
+
+0(t),
+
+(B5)
+
+which tells us that F (t, p) is independent of p, so we put F (t, p) = F (t). The above equation is thus reduced to
+
+F (t)
+
+=
+
+-
+
+uf 6
+
+F
+
+3
+
+(t)e-2µ2f
+
+t0(t),
+
+(B6)
+
+26
+
+where 0(t) is defined in eq. (24), whose solution is given by
+
+F
+
+-2(t)
+
+=
+
+1
+
++
+
+uf 3
+
+t 0
+
+ds0(s)e-2µ2f s
+
+
+
+e-2µ2f
+
+t
+
+ (t) Z (mf
+
+)
+
+,
+
+(t) = 0(t) + (t)
+
+(B7)
+
+where mf is defined in eq. (6) and
+
+(t) = e2tµ2f Z(mf ) - Z(m) +
+
+Dp
+
+p2 + m2f p2 + m2
+
+e2tµ2f p2
+
+- +
+
+e-2tp2 µ2f
+
+.
+
+(B8)
+
+In the case of the interacting flow with uf > 0, µ2f negatively diverges as Z(mf )  + in the continuum limit at d > 1 or as uf  + in the NLSM limit. In these limits, (t) vanishes as
+
+lim
+µ2f -
+
+(t)
+
+
+
+-
+
+m2f
+
+0(t) - µ2f
+
+0(t)/2
+
++
+
+O
+
+1/µ4f
+
+(B9)
+
+for t > 0. In the case of free flow (uf = 0), we simply have F (t) = 1.
+
+We then obtain  
+0(12) = 
+
+Z(mf )  (t1) (t2)
+
+Dp
+
+e-p2(t1+t2)eip(x1 p2 + m2
+
+-x2)
+
+,
+
+uf = 0
+
+.
+
+Dp
+
+e-(p2+µ2f )(t1+t2)eip(x1-x2) p2 + m2
+
+,
+
+uf = 0
+
+(B10)
+
+B.2 Solution for K0
+
+We consider K0, which appears at the NLO. The equation for K0 in eq. (22) is closed, once 0 is obtained. Using eq. (26), we have
+
+D1f K0(12; 34) = =
+
+dP4
+
+F (t1) F (t1)
+
++
+
+t1
+
+g(12; 34|12; 34)
+
+dP4
+
+-
+
+uf 6
+
+F
+
+2(t1)e-2µ2f
+
+t1
+
+0(t1)
+
++
+
+t1
+
+g(12; 34|12; 34), (B11)
+
+0(12)0(13)0(14) =
+
+dP4^ (p21 + m2)F 2(t1)e-2µ2f t1 e(p21-p22-p23-p24)t1 ,
+
+(B12)
+
+0(11)K0(12; 34) = F 2(t1)e-2µ2f t10(t1) dP4 g(12; 34|12; 34),
+
+(B13)
+
+0(12)K0(11; 34) = F 2(t1)e-2µ2f t1 dP4^ (p21 + m2)et1(p21-p22)
+
+×
+
+Dq1Dq2
+
+(q12
+
+e-t1(q12+q22) + m2)(q22 +
+
+m2)
+
+g(11;
+
+34|q1q2;
+
+34),
+
+(B14)
+
+27
+
+so that the SDE leads to
+
+t1g(12; 34|12; 34)
+
+=
+
+-
+
+uf 6
+
+F
+
+(t1)2e-2µ2f
+
+t1
+
+(p21
+
++ m2)et1(p21-p22)^
+
+2e-t1(p23+p24)
+
++
+
+Dq1Dq2
+
+(q12
+
+e-t1(q12+q22) + m2)(q22 +
+
+m2)
+
+g(11;
+
+34|q1q2;
+
+34)
+
+.
+
+From eq. (B15), one can easily see t2t1g(12; 34|12; 34) = 0, which implies
+
+(B15)
+
+g(12; 34|12; 34) = X(23|12; 34) + X(13|21; 34) + X(24|12; 43) + X(14|21; 43)
+
++ Y (2|12; 34) + Y (1|21; 34) + Y (3|43; 12) + Y (4|34; 12)
+
++ Z(|12; 34),
+
+(B16)
+
+where we require that X and Y satisfy X(,  |12; 34) = X( ,  |43; 21), X(, 0|12; 34) = 0, Y ( |12; 34) = Y ( |12; 43), Y (0|12; 34) = 0.
+
+(B17) (B18)
+
+Since g(12; 34|12; 34) agrees with the amputated connected 4-pt function in the d dimensional theory at i = 0 (i = 1, 2, 3, 4), we obtain
+
+Z(|p1, p2, p3, p4)
+
+=
+
+-^6/u
+
++
+
+2 B(0|p34)
+
+,
+
+(B19)
+
+where B(t|Q) is defined in eq. (31). Then one can easily check that g satisfies the required symmetries
+
+g(12; 34|12; 34) = g(21; 34|21; 34) = g(12; 43|12; 43) = g(34; 12|34; 12). (B20)
+
+B.2.1 Solution for Y
+
+Terms which depend only on t1 in eq. (B15) can be written as
+
+tY (t|21; 34)
+
+=
+
+-
+
+uf 3
+
+F
+
+2(t)e-2tµ2f
+
+(p21
+
++
+
+m2)et(p21-p22)^
+
+×
+
+(t|34) +
+
+Dq1
+
+Dq2
+
+e-t(q12+q22)Y (t|q1, q2; 34) (q12 + m2)(q22 + m2)
+
+,
+
+where (t|34) is defined in eq. (35). To solve this equation, we set
+
+Y (t|21; 34) = ^(p21 + m2) t ds es(p21-p22)(s|34),
+0
+
+(B21) (B22)
+
+28
+
+satisfying eq. (B18). Eq. (B21) is reduced to
+
+(t|34)
+
+=
+
+-
+
+uf 3
+
+F
+
+2(t)e-2tµ2f
+
+(t|34) +
+
+t
+ds K(t, s|p34)(s|34)
+0
+
+,
+
+(B23)
+
+which shows  does not depend on p1, p2, where K is defined in eq. (34). Since uf F 2(t)e-2tµ2f = uf Z(mf )/(t) goes to infinity in the continuum limit at t > 0 and d > 1 or
+in the NLSM limit uf  , eq. (32) must hold in either of the two limits.
+
+B.2.2 Solution for X
+
+We next consider the solution for X. Terms depending on both t1 and t3 in eq. (B15), and thereafter replacing t3 by t2 and interchanging p1  p2, gives
+
+t1X(t1, t2|12; 34)
+
+=
+
+-
+
+uf 6
+
+F
+
+2(t1)e-2t1µ2f
+
+(p22
+
++
+
+m2)et1(p22-p21)^
+
+Dq1Dq2
+
+×
+
+(q12
+
+e-t1(q12+q22) + m2)(q22 +
+
+m2)
+
+{2X
+
+(t1,
+
+t2|q1,
+
+q2;
+
+34)
+
++
+
+Y
+
+(t2|43;
+
+q1,
+
+q2)}
+
+,(B24)
+
+where
+
+t
+Y (t|43; q1, q2) = (2)d(p34 + q12)(p23 + m2) ds es(p23-p34)(s|q1, q2).
+0
+
+(B25)
+
+We define
+
+t2t1 X(t1, t2|12; 34) = ^(p22 + m2)(p23 + m2)et1(p22-p21)et2(p23-p24)(t1, t2|12; 34), (B26)
+
+where properties of X imply (t1, t2|12; 34) = (t2, t1|43; 21) and (t, 0|12; 34) = (0, t|12; 34) = 0. Then the above equation becomes
+
+(t1, t2|12; 34)
+
+=
+
+-
+
+uf 6
+
+F
+
+2(t1)e-2t1µ2f
+
+g(t1, t2|p34) + 2
+
+t1
+ds1
+0
+
+×
+
+e-(t1+s1)q12-(t1-s1)q22 q12 + m2
+
+
+
+(s1,
+
+t2|q1,
+
+q2
+
+;
+
+34)
+
+,
+
+where
+
+Dq1Dq2(2)d(q12 + p34) (B27)
+
+g(t1, t2|Q) =
+
+Dq1Dq2(2)d(q12
+
++
+
+Q)
+
+(q12
+
+e-t1 (q12 +q22 ) + m2)(q22 +
+
+m2)
+
+(t2|q1,
+
+q2).
+
+Since the above expression tells us that  depends only on p34, we can write
+
+(B28)
+
+(t1, t2|12; 34) = (t1, t2|p34) = (t1, t2| - p34),
+
+(B29)
+
+29
+
+so that we have
+
+(t1, t2|p34)
+
+=
+
+-
+
+uf 6
+
+F
+
+2(t1)e-2t1µ2f
+
+g(t1, t2|p34) + 2
+
+t1
+ds1K(t1, s1|p34)(s1, t2|p34) , (B30)
+0
+
+which is reduced to
+
+t1
+g(t1, t2|Q) + 2 ds1K(t1, s1|Q)(s1, t2|Q) = 0
+0
+
+(B31)
+
+in the continuum limit or NLSM limit. Eq. (B31) leads to eq. (33) in the main text, since
+
+t2
+ds2 K(t2, s2|Q)g(t1, s2|Q) = -(t1, t2|Q).
+0
+
+(B32)
+
+B.3 Solution for 1
+
+B.3.1 SDE at NLO
+
+The SDE for 1 is a little modified as
+
+D1f 1(12) + µ21,f 0(12)
+
+=
+
+-
+
+uf 6
+
+K0(12; 11) + 0(12)1(11) + 1(12)0(11) + 20(12)0(11) ,
+
+(B33)
+
+where
+
+we
+
+replace
+
+µ2f
+
+by
+
+µ2f
+
++
+
+µ21,f N
+
+,
+
+so
+
+that
+
+D1f
+
+
+
+D1f
+
++
+
+1 N
+
+µ21,f .
+
+Here
+
+u21,f
+
+is
+
+given
+
+by
+
+eq.
+
+(A36)
+
+with the replacement u, m  uf , mf .
+
+We parametrize 1 as
+
+1(12) = F (t1)F (t2)
+
+Dp
+
+e-(p2+µ2f )(t1+t2)eip(x1 p2 + m2
+
+-x2)
+
+G1(t1
+
+,
+
+t2
+
+|p)
+
+(B34)
+
+with the boundary condition
+
+G1(0, 0|p)
+
+
+
+b(p)
+
+=
+
+-
+
+1(p) p2 + m2
+
+,
+
+where 1(p) is the self-energy at the NLO in the d dimensional theory.
+
+The NLO SDE becomes
+
+t1G1(t1, t2|p1) + µ21,f
+
+=
+
+-
+
+uf 6
+
+F
+
+2(t1
+
+)e-2t1
+
+µ2f
+
+H
+
+[G1(t1,
+
+t1|p)]
+
++
+
+(t1,
+
+t2|p1)
+
+,
+
+where H is defined in eq. (69) and
+
+(t1, t2|p1)
+
+
+
+-
+
+uf 6
+
+F
+
+2(t1
+
+)e-2t1
+
+µ2f
+
+(t1
+
+,
+
+t2
+
+|p1
+
+),
+
+(t1, t2|p1) = 20(t1) + et1p21
+
+4 Dpie-t1p2i i=2 p2i + m2
+
+Z(|21; 34) + 2Y (1|34; 21)
+
+(B35) (B36) (B37)
+
++ 2X(11|12; 34) + Y (1|12; 34) + 2X(21|21; 34) + Y (2|21; 34) . (B38)
+
+30
+
+Using solutions X and Y , we have in the continuum limit
+
+(t1, t2|p1) =
+
+dp2
+
+et1(p21-p22) p22 + m2
+
+(t1|12) + (p22 + m2)
+
+t1 ds es(p22-p21)(t1, s|p12)
+0
+
++ (p21 + m2) t2 ds es(p21-p22)(t1, s|p12) .
+0
+
+(B39)
+
+Since the right-hand side of eq. (B39) is finite, (t1, t2|p)  0 in the continuum limit.
+
+B.3.2 Solution to the SDE Let us define
+
+G1(t1, t2|p)  b(p) + (t1, t2|p) + H(t1) + H(t2)
+
+(B40)
+
+with (t1, t2|p) = (t2, t1|p) and (0, 0|p) = H(0) = 0, where
+
+t1(t1, t2|p) = (t1, t2|p),
+
+dH (t) dt
+
+=
+
+-
+
+uf 6
+
+F
+
+2(t)e-2tµ2f
+
+[H
+
+[G1(t,
+
+t|p)]
+
+-
+
+2 (t)1]
+
+.
+
+The second equation (B42) can be rewritten as
+
+dH (t) dt
+
+=
+
+-
+
+uf 6
+
+F
+
+2(t)e-2tµ2f
+
+[20(t)H (t)
+
++
+
+b0(t)
+
++
+
+0(t)
+
+-
+
+2 (t)1]
+
+,
+
+so that we have in the continuum limit
+
+H (t)
+
+=
+
+-
+
+b0
+
+(t) + 0(t) 20(t)
+
++
+
+1,
+
+where we define b0(t) = H[b(p)] and 0(t) = H[(t, t|p)]. The first equation (B41) can be solved as
+
+(B41) (B42)
+(B43)
+(B44)
+
+(t1, t2|p) = k2(t1, t2|p) + k1(t1|p) + k1(t2|p),
+
+(B45)
+
+where
+
+k1(t|p) =
+
+1(t|p) =
+
+k2(t1, t2|p) = with Q = p + q.
+
+t
+
+ds 1(s|p),
+0
+
+Dq
+
+e(p2-q2)t q2 + m2
+
+(t|p,
+
+q
+
+)
+
++
+
+t
+ds
+0
+
+Dqe(p2-q2)(t-s)(t, s|Q),
+
+t1
+
+t2
+
+ds1 ds2
+
+0
+
+0
+
+Dq
+
+p2 q2
+
++ +
+
+m2 m2
+
+e(p2-q2)(s1+s2)(s1,
+
+s2|Q)
+
+(B46) (B47) (B48)
+
+31
+
+C Calculations in the massless limit at d = 3
+
+It can be shown that the flow bubble integral can be represented as
+
+t
+B(t|{p}sym.) = -2 ds K(s, 0|{p}sym.) + B(0|{p}sym.),
+0
+
+B(0|{p}sym.)
+
+=
+
+1 , 8D
+
+which can be rescaled as
+
+B(t|{p}sym.)
+
+=
+
+1 D
+
+b0(Dt),
+
+where
+
+b0(w)
+
+=
+
+1 8
+
+-
+
+w 2(2)3/2
+
+1 0
+
+dx x
+
+e-wx
+
+1 0
+
+dz z
+
+ewzx/2.
+
+Rescaling 
+(t|{p}sym.) = R0(Dt, D), (t|{p}sym.) = D0(Dt, D),
+
+(C1) (C2) (C3) (C4)
+
+the integral equation for  in the massless limit is written as
+
+w
+R0(w, D) + dv k0(w, v)0(v, D) = 0,
+0
+
+where
+
+R0(w, D)
+
+=
+
+e-3w/2
+
+-
+
+8b0(w)
+
+1
+
+u¯(D) + u¯(D)
+
+,
+
+u¯(D) = u . 48 D
+
+(C5) (C6)
+
+Since the problem is linear, we can write
+
+0(w, D)
+
+=
+
+(01)(w)
+
+-
+
+8(02)(w)
+
+1
+
+u¯(D) + u¯(D)
+
+,
+
+(C7)
+
+where (0i), i = 1, 2 solve the momentum-independent equations (56) and (57). We thus finally obtain eq. (52).
+
+As the source term can be rescaled as
+
+(t, s|{p}sym.)
+
+=
+
+1 D
+
+b0(D(t
+
++
+
+s))
+
+-
+
+8b0(Dt)b0
+
+(Ds)
+
+1
+
+u¯(D) + u¯(D)
+
+,
+
+(C8)
+
+
+
+the equation for  in the massless limit is written for (t, s|{p}sym.) = DW0(Dt, Ds, D) as
+
+b0
+
+(D(t
+
++
+
+s))
+
+-
+
+8b0(Dt)b0
+
+(Ds)
+
+1
+
+u¯(D) + u¯(D)
+
+Dt
+
+Ds
+
+= 2 du k0(Dt, u) dv k0(Ds, v)W0(u, v, D),
+
+0
+
+0
+
+which can be solved as
+
+W0(w, v, D)
+
+=
+
+0(w,
+
+v)
+
+-
+
+4(02)(w)(02)(v)
+
+1
+
+u¯(D) + u¯(D)
+
+,
+
+(C9) (C10)
+
+where 0 solves the momentum (D) independent equation (58). We thus obtain eq. (53).
+
+32
+
+D Induced metric in the massless limit at d = 3
+
+D.1 Induced metric
+
+The space component of the induced metric is given by
+
+gij (z)
+
+=
+
+ij
+
+R02 d0(t)
+
+1
+
+-
+
+1(t) N
+
+H p2
+
+1
+
++
+
+G1(t, t|p) N
+
+.
+
+(D1)
+
+We then evaluate
+
+1(t)
+
+=
+
+1 0(t)
+
+H[G1(t,
+
+t|p)]
+
+=
+
+21,
+
+H[1] = 0(t),
+
+H[p2]
+
+=
+
+-
+
+t0(t) 2
+
+,
+
+(D2)
+
+H[p2G1(t, t|p)] = H[(t, t|p)] + 0(t)tH(t) - t0(t)1 = 0(t)tH(t) - t0(t)1, (D3)
+
+where in the last equation we use H[(t, t|p)] = 0. Altogether we obtain
+
+gij (z)
+
+=
+
+ij R02
+
+g(0)(t)
+
++
+
+1 N
+
+g(1)(t)
+
+,
+
+g(0)(t) =
+
+-
+
+t0(t) 2d0(t)
+
+,
+
+g(1)(t)
+
+=
+
+tH d
+
+(t)
+
+.
+
+(D4)
+
+The time component is evaluated as
+
+g00(t) = tt1 t2
+
+R02 0(t1)0(t2)
+
+=
+
+R02
+
+g0(00)(t)
+
++
+
+1 N
+
+g0(10)(t)
+
+Dp
+
+e-p2(t1+t2) p2 + m2
+
+,
+
+1
+
++
+
+G1(t1, t2|p) N
+
+(D5)
+t1=t2=t
+(D6)
+
+where
+
+G1(t1, t2|p) = -21 + G1(t1, t2|p).
+
+The leading term is and for the NLO term we have
+
+g0(00)(t)
+
+=
+
+t 4
+
+t2
+
+[log 0(t)]
+
+(D7) (D8)
+
+1 t
+
+g0(10)(t)
+
+=
+
+t1 t2
+
+I(t1, t2)
+
+,
+
+0(t1)0(t2) t1=t2=t
+
+where With this notation
+
+I(t1, t2) =
+
+Dp
+
+e-p2(t1+t2) p2 + m2
+
+G1(t1,
+
+t2|p).
+
+1 t
+
+g0(10)(t)
+
+=
+
+1 4
+
+(t0(t))2 03(t)
+
+I(t, t)
+
+-
+
+1 2
+
+t0(t) 02(t)
+
+tI(t, t)
+
++
+
+1 0(t)
+
+t1
+
+t2
+
+I
+
+(t1,
+
+t2)
+
+t1=t2=t.
+
+(D9) (D10) (D11)
+
+33
+
+Since
+
+I(t, t) = H[G1(t, t|p)] = 0,
+
+the first two terms vanish. Further,
+
+(D12)
+
+t1t2I(t1, t2) t1=t2=t = H (p2)2G1(t, t|p) - 2p2(t, t|p) + t2(t, t2|p) t2=t + tH(t)t0(t). (D13)
+Using the identities
+
+H[(t, t|p)] = 0; H[p2G1(t, t|p)] = 0(t) tH(t)
+
+(D14)
+
+and their derivatives this can be further simplified:
+
+t1 t2I(t1, t2)
+
+t1=t2=t
+
+=
+
+-
+
+1 2
+
+0(t)t2H(t) + H
+
+t2(t, t2|p)
+
+t2=t
+
+-
+
+t(t, t|p)/2].
+
+(D15)
+
+Here the second term vanishes and we finally obtain
+
+g0(10)(t)
+
+=
+
+-
+
+t 2
+
+t2 H (t).
+
+(D16)
+
+D.2 Calculation of H(t) in the massless limit We recall the definition of H(t) as
+
+where
+
+H (t)
+
+=
+
+-
+
+b0
+
+(t) + 0(t) 20(t)
+
++
+
+1
+
+(D17)
+
+b0(t) = H[b(p)], 0(t) = H[(t, t|p)],
+
+(D18)
+
+with
+
+b(p)
+
+=
+
+-
+
+1(p) p2 + m2
+
+,
+
+(t, t|p) = k2(t, t|p) + 2k1(t|p).
+
+(D19)
+
+Here k1 and k2 are given Hereafter we consider
+
+in eqs. (B46), (B47) and (B48). the massless limit at d = 3, where
+
+we
+
+have
+
+0(t)-1
+
+=
+
+2(2)3/2t.
+
+34
+
+D.2.1 Calculation of b0(t)
+
+We first calculate b0(t). In the massless limit, we have
+
+Hb(t)
+
+
+
+-
+
+b0(t) 20(t)
+
+=
+
+1 20(t)
+
+Dp
+
+e-2p2t (p2)2
+
+g(p2)
+
+since C~ = Z1m2 = 0 and
+
+g(p2)
+
+=
+
+u 3
+
+DQ 1 + u¯(Q2)
+
+(Q
+
+1 +
+
+p)2
+
+-
+
+1 Q2
+
+.
+
+(D20) (D21)
+
+After rescaling, we obtain Hb(t) =
+
+DQ hb(Q2) 1 +u¯(u¯Q(2Q)2)tt ,
+
+(D22)
+
+where
+
+hb(Q2)
+
+=
+
+ 32 2 3
+
+Q2
+
+Dp
+
+e-2p2 (p2)2
+
+(Q
+
+1 +
+
+p)2
+
+-
+
+1 Q2
+
+.
+
+(D23)
+
+D.2.2 Calculation of 0(t)
+
+For this we need  and  in the massless limit, which can be obtained as
+
+0(t|p, q) = 0(t, s|Q) =
+
+Q2
+
+0(Q2t,
+
+z)
+
+-
+
+8(02)(Q2t)
+
+1
+
+u¯(Q2) + u¯(Q2)
+
+,
+
+Q2
+
+0(Q2
+
+t,
+
+Q2s)
+
+-
+
+4(02)(Q2t)(02)(Q2s)
+
+1
+
+u¯(Q2) + u¯(Q2)
+
+(D24) (D25)
+
+with z = (p2 + q2)/Q2, where (02) and 0 are already obtained in section 3, while 0 satisfies
+
+w
+e-zw + dx k0(w, x)0(x, z) = 0,
+0
+
+(D26)
+
+instead of eq. (56) and thus 0(x, 3/2) = (01)(x). Using these, we first calculate
+
+H(1)(t)
+
+ =
+
+-
+
+1 0(t)
+
+H(1)(0)
+
++
+
+Dp
+
+e-2p2t p2
+
+DQ
+0
+
+1
+
+0dtxds(02)(QD2qxe)(hp21q-12(qx2),sQ20)(s1|+pu¯,(qu¯Q)(2Q)2)tt
+
+,
+
+(D27)
+
+where H(1)(0) is some constant and
+
+h11(x, Q2)
+
+=
+
+ 32 2 3
+
+Q2
+
+Dp
+
+Dq
+
+(2)3(q
+
++
+
+p
+
+-
+
+Q)
+
+e-(2-x)p2-xq2 p2q2
+
+.
+
+(D28)
+
+35
+
+Similarly we have
+
+H(2)(t)
+
+
+
+-
+
+1 0(t)
+
+Dp
+
+e-2p2t p2
+
+t
+ds
+0
+
+s
+Dq e(p2-q2)s dr e(q2-p2)r0(s, r|Q)
+0
+
+1
+
+x
+
+= H(2)(0) + 2 DQ dx (02)(Q2x) dy (02)(Q2y) h10(x - y, Q2)
+
+×
+
+1
+
+u¯(Q2
+
+ ) t
+
++ u¯(Q2) t
+
+,
+
+0
+
+0
+
+(D29)
+
+where
+
+h10(z, Q2)
+
+=
+
+ 8 2 3
+
+Q2
+
+Dp
+
+Dq
+
+(2)3(q
+
++
+
+p
+
+-
+
+Q)
+
+e-(2-z)p2-zq2 p2
+
+.
+
+(D30)
+
+The last contribution becomes
+
+H(3)(t)
+
+
+
+-1 20(t)
+
+t
+Dp e-2p2t ds
+0
+
+Dq
+
+e(p2-q2)s q2
+
+t
+dr e(p2-q2)r0(s, r|Q)
+0
+
+1
+
+1
+
+= H(3)(0) + DQ dx (02)(Q2x) dy (02)(Q2y) h10(2 - x - y, Q2)
+
+×
+
+1
+
+u¯(Q2)t + u¯(Q2) t
+
+.
+
+0
+
+0
+
+(D31)
+
+D.3 Total contributions We thus obtain the H(t) as7
+H(t) = H(0) +
+
+DQ htotal(Q2) 1 +u¯(u¯Q(2Q)2)tt ,
+
+(D32)
+
+where
+
+H(0) = H(1)(0) + H(2)(0) + H(3)(0) + 1
+
+(D33)
+
+1
+
+x
+
+htotal(Q2) = hb(Q2) + dx (02)(Q2x) h11(x, Q2) + 2 dy (02)(Q2y)h10(x - y, Q2)
+
+0
+
+0
+
+1
+
++
+
+dy (02)(Q2y)h10(2 - x - y, Q2) ,
+
+0
+
+(D34)
+
+which leads to eqs. (73) and (74) by A1(t)  tH(t) and tA1(t)  t2H(t).
+
+7 Here H(0) is potentially divergent but it does not contribute to the metric.
+36
+
+D.4 IR behaviors
+
+D.4.1 Some definitions
+
+We write the NLO induced metric as
+
+gij( ) = ij
+
+R02 12t
+
+1
+
++
+
+R(t) N
+
+,
+
+g00( ) = -tt
+
+R02 8t
+
+1
+
++
+
+R(t) N
+
+,
+
+(D35)
+
+where the relative correction is a sum of four contributions,
+
+3
+R(t) = Rb(t) + R(i)(t), Rb(t)  4ttHb(t), R(i)(t)  4ttH(i)(t).
+i=1
+
+(D36)
+
+We also introduce G(v) by
+
+(02)(v)
+
+=
+
+-
+
+(2)3/2 v
+
+G(v),
+
+G(0) = 1/8, G(v)  exp(-v/2), v  
+
+(D37)
+
+ and use the time variable T = u t/48.
+
+In the following we will use the fact that a double 3-dimensional integral of any function
+
+depending only on the absolute values p, q and |Q|, where Q = p + q, can be written
+
+Dp
+
+Dq
+
+f (p, q, Q2)
+
+=
+
+1 (2)4
+
+
+pdp
+0
+
+
+qdq
+0
+
+(q+p)2
+dQ2 f (p, q, Q2).
+(q-p)2
+
+(D38)
+
+D.4.2 The Rb contribution Here we can do the angular part of the Q2 integral analytically and find
+
+Rb(t)
+
+=
+
+32T 25
+
+ 0
+
+(q
+
+qdq +T
+
+)2
+
+b(q),
+
+(D39)
+
+where
+
+b(q) = q2
+
+ 0
+
+dp p3
+
+e-2p2
+
+ln
+
+(p (p
+
++ -
+
+q)2 q)2
+
+-
+
+4p q
+
+,
+
+which behaves as b(q) = O(q) for small q, while
+
+
+
+b(q) 
+
+2 3q
+
+,
+
+(D40) (D41)
+
+for large q. Thus we can establish that Rb(t) = O(T ) for small t, while for large t
+
+rb
+
+
+
+Rb()
+
+=
+
+8 32
+
+=
+
+0.27019.
+
+(D42)
+
+37
+
+D.4.3 The R(1) contribution We have
+
+R(1)(t) = -32(2)3
+
+Dp
+
+Dq
+
+1 0
+
+dx x
+
+e-p2(2-x)-q2x p2q2
+
+(T
+
+|Q|T + |Q|)2
+
+G(Q2x).
+
+Doing the q2 integral first and introducing x = y2 we can rewrite it as
+
+(D43)
+
+-
+
+32 
+
+ 0
+
+dp p
+
+e-2p2
+
+ 0
+
+Q2T (T + Q)2
+
+dQ
+
+1
+dy G(Q2y2)
+0
+
+(Q+p)2 (Q-p)2
+
+e(p2-q2)y2 q2
+
+dq2.
+
+(D44)
+
+After some further rescaling we get
+
+R(1)(t) = - 64
+
+ 0
+
+dQ
+
+(T
+
+QT + Q)2
+
+(1)(Q),
+
+where
+
+(1)(Q) =
+
+ 0
+
+dp p
+
+e-2p2
+
+0
+
+Q
+
+dz
+
+G(z2)Y
+
+(
+
+p Q
+
+,
+
+z),
+
+Y (, z) =
+
+1+ |1-|
+
+d 
+
+e(2-2)z2
+
+=
+
+2e-z2
+
++
+
+O(2).
+
+From this we see that (1)(Q) = O(Q) for small Q, while
+
+(D45) (D46) (D47)
+
+(1)(Q)
+
+
+
+2 Q
+
+
+dp e-2p2
+0
+
+
+dz G(z2)e-z2
+0
+
+=
+
+1 Q
+
+ 2
+
+
+dz G(z2)e-z2
+0
+
+for large Q, so that we numerically obtain
+
+r(1)
+
+
+
+R(1)()
+
+=
+
+- 64 2
+
+
+dz G(z2)e-z2 = -1.14734.
+0
+
+(D48) (D49)
+
+D.4.4 The R(2) contribution Similarly
+
+R(2)(t) = 1629
+
+Dp
+
+Dq
+
+1 dx 0x
+
+x 0
+
+dy y
+
+(T
+
+T + |Q|)2
+
+G(Q2x)G(Q2y)
+
+e-2p2 p2
+
+e(p2-q2)(x-y).
+
+(D50)
+
+Doing the q2 integrations first, we have
+
+R(2)(t)
+
+=
+
+ 64 2
+
+0
+
+
+
+dQ
+
+(T
+
+QT + Q)2
+
+ dp e-2p2 0p
+
+1
+
+x
+
+× dx dy G(Q2x2) G(Q2y2)
+
+0
+
+0
+
+(Q+p)2
+e(p2-q2)(x2-y2)dq2.
+(Q-p)2
+
+(D51)
+
+38
+
+The q2 integral can be done analytically and we find
+
+R(2)(t)
+
+=
+
+ 128 2
+
+0
+
+
+
+dQ
+
+(T
+
+QT + Q)2
+
+(2)(Q),
+
+(D52)
+
+where
+
+(2)(Q) =
+
+ 0
+
+dp p
+
+e-2p2
+
+Q
+dz
+0
+
+z 0
+
+dw
+
+G(z2)
+
+G(w
+
+2)
+
+ew2-z2 z2 - w2
+
+sinh
+
+2p Q
+
+(z2
+
+-
+
+w2).
+
+(D53)
+
+Thus (2) = O(Q) for small Q, while
+
+(2)(Q)
+
+
+
+1 Q
+
+ dp e-2p2
+-
+
+
+dz
+0
+
+z dw G(z2) G(w2)ew2-z2
+0
+
+(D54)
+
+for large Q, and
+
+
+
+z
+
+r(2)  R(2)() = 128
+
+dz dw G(z2) G(w2)ew2-z2 = 0.45846.
+
+0
+
+0
+
+(D55)
+
+D.4.5 The R(3) contribution
+
+For R(3) we find with
+
+R(3)(t)
+
+=
+
+ 32 2
+
+0
+
+
+
+dQ
+
+(T
+
+QT + Q)2
+
+(3)
+
+(Q)
+
+(D56)
+
+(3)(Q) =
+
+1
+dx
+0
+
+1
+dy
+0
+
+
+pdp e-2p2+p2(x2+y2)G(Q2x2)G(Q2y2)
+0
+
+(Q+p)2 (Q-p)2
+
+e-q2(x2+y2 q2
+
+)
+
+dq
+
+2.
+
+(D57)
+
+After rescaling
+
+(3)(Q)
+
+=
+
+1 Q2
+
+Q
+
+Q
+
+
+
+dz
+
+dw G(z2) G(w2)
+
+pdp e-2p2Z
+
+0
+
+0
+
+0
+
+p Q
+
+,
+
+z2
+
++
+
+w2
+
+,
+
+where
+
+Z(, A) = 2eA2 1+ e-A2 d  4e-A,   0. |1-| 
+
+Thus (3)(Q) = O(Q) for small Q, while
+
+(3)(Q)
+
+
+
+4 Q3
+
+
+dz
+0
+
+
+dw G(z2) G(w2)
+0
+
+ p2dp e-2p2-z2-w2
+0
+
+=
+
+ 8
+
+ dz G(z2)e-z2
+0
+
+2
+
+1 Q3
+
+,
+
+for large Q, which leads to
+
+r(3)  R(3)() = 0.
+
+(D58) (D59)
+(D60) (D61)
+
+Thus the total relative correction is negative:
+
+r = rb + r(1) + r(2) + r(3) = -0.41869.
+
+(D62)
+
+39
+
+

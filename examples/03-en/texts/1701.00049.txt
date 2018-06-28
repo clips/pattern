@@ -1,0 +1,1081 @@
+arXiv:1701.00049v1 [hep-th] 31 Dec 2016
+
+Flat Space Amplitudes and Conformal Symmetry of the Celestial Sphere
+Sabrina Pasterski,1 Shu-Heng Shao,2 and Andrew Strominger1
+1Center for the Fundamental Laws of Nature, Harvard University, Cambridge, MA 02138, USA
+2School of Natural Sciences, Institute for Advanced Study, Princeton, NJ 08540, USA
+Abstract The four-dimensional (4D) Lorentz group SL(2, C) acts as the two-dimensional (2D) global conformal group on the celestial sphere at infinity where asymptotic 4D scattering states are specified. Consequent similarities of 4D flat space amplitudes and 2D correlators on the conformal sphere are obscured by the fact that the former are usually expressed in terms of asymptotic wavefunctions which transform simply under spacetime translations rather than the Lorentz SL(2, C). In this paper we construct on-shell massive scalar wavefunctions in 4D Minkowski space that transform as SL(2, C) conformal primaries. Scattering amplitudes of these wavefunctions are SL(2, C) covariant by construction. For certain mass relations, we show explicitly that their three-point amplitude reduces to the known unique form of a 2D CFT primary three-point function and compute the coefficient. The computation proceeds naturally via Witten-like diagrams on a hyperbolic slicing of Minkowski space and has a holographic flavor.
+
+Contents
+
+1 Introduction
+
+1
+
+2 Conformal Primary Wavefunctions
+
+3
+
+2.1 Integral Representation . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 4
+
+2.2 Analytic Continuation and the Massless Wavefunction . . . . . . . . . . . . . 6
+
+3 Massive Three-Point Amplitude
+
+7
+
+A Klein-Gordon Inner Product
+
+10
+
+1 Introduction
+Quantum field theory (QFT) scattering amplitudes in four-dimensional (4D) Minkowski space are typically expressed in terms of asymptotic plane wave solutions to the free wave equation. Translation invariance is manifest because the plane waves simply acquire phases which cancel due to momentum conservation. The SL(2, C) Lorentz invariance is more subtle as plane waves transform non-trivially into one another. In this paper we find a basis of SL(2, C) primary solutions to the massive scalar wave equation and recast certain 4D scattering amplitudes in a manifestly SL(2, C) covariant form. This form is very familiar from the the study of two-dimensional (2D) conformal field theory (CFT), in which SL(2, C) acts as the global conformal group. The appearance of the 2D conformal group is no coincidence, since the Lorentz group acts as the global conformal group on the celestial sphere, denoted by CS2, at null infinity where the asymptotic states are specified.
+Studies of the SL(2, C) properties of scattering amplitudes date back to Dirac [1], but a new reason has arisen for interest in the topic. When gravity is coupled, it was conjectured in [2­5] that the SL(2, C) is enhanced to the full infinite-dimensional local conformal (or Virasoro) group. This conjecture was recently proven [6­8] to follow at tree level1 from the new subleading soft graviton theorem of [15].2 While the full Virasoro appears only when gravity is coupled, the scattering amplitudes of any QFT that can be coupled to gravity are
+1The subleading soft theorem has a one-loop exact anomaly [9­12] whose effects remain to be understood but are recently discussed in [13, 14].
+2One may hope that ultimately 4D quantum gravity scattering amplitudes are found to have a dual holographic representation as some exotic 2D CFT on CS2, but at present there are no proposals for such a construction.
+
+1
+
+constrained to be `Virasoro-ready'.3 This suggests that they should resemble a subset of 2D CFT correlators, likely involving complex and continuous conformal dimensions. Indeed it has already been observed [16,17] that soft photon amplitudes take the form of a 2D current algebra. Here we seek to understand the 2D description of 4D scattering amplitudes away from the soft limit.
+
+This paper considers massive scalar three-point functions, and recasts them in the standard form of 2D CFT correlators on the celestial sphere CS2. To summarize the result, let Xµ (µ = 0, 1, 2, 3) be the flat coordinates on Minkowski space. A natural coordinate on CS2
+
+where XµXµ = 0 is
+
+X1 + iX2
+
+w=
+
+.
+
+X0 + X3
+
+(1.1)
+
+Lorentz transformations act as the global conformal group on CS2
+
+aw + b
+
+w
+
+.
+
+cw + d
+
+(1.2)
+
+Here the complex parameters a, b, c, d obey ad - bc = 1. We will construct a three-parameter family of solutions labelled by a point w on CS2 and an SL(2, C) weight  (rather than the three components of spatial momenta p which label plane waves) which transform as conformal primaries. We will find below they are naturally displayed in a hyperbolic slicing of Minkowski space, in harmony with the form of flat space holography advocated in [2]. SL(2, C) then implies that the 4D tree amplitude takes the form
+
+A~(wi, w¯i)
+
+=
+
+|w1
+
+- w2|1+2-3 |w2
+
+C - w3|2+3-1 |w3
+
+-
+
+w1|3+1-2
+
+,
+
+(1.3)
+
+where the `OPE coefficients' C depends on the masses, conformal weights, and cubic coupling of the three asymptotic scalars. An integral formula for C involving Witten-like diagrams on the hyperbolic slices is derived. In general this integral may not be computable in closed form, but it simplifies in the near-extremal case when the incoming particle is only slightly heavier than the sum of the outgoing particles and is explicitly given below.
+Other tractable examples would be of great interest. In particular, the beautiful structure of N = 4 amplitudes suggest they may take a particularly nice 2D form rewritten as correlators on CS2. In [8] one contribution to such amplitudes (from the interior of the forward lightcone) was expressed as a Witten diagram, but to obtain the full amplitude additional harder-to-compute contributions (from outside the lightcone) must be added in. This remains an outstanding open problem.
+3This generalizes the well known constraint that any QFT that can be coupled to gravity must have a local conserved stress tensor.
+
+2
+
+The utility of hyperbolic slicing was already noticed in a context with some similarity to the present one by Ashtekar and Romano in [18]. de Boer and Solodukhin initiated a program to understand flat space holography in terms of AdS holography via hyperbolic slicing in [2]. Soft theorems and aspects of scattering were hyberbolically studied in [8, 19­21]. In the context of the recent revival of the conformal bootstrap program, the linear realization of the conformal symmetry in the embedding Minkowski space has been used to simplify computations of, for example, conformal blocks and propagators in AdS [22­26].
+The outline of the paper is as follows. In Section 2 we define and construct the massive and massless scalar wavefunctions that are conformal primaries of the Lorentz group SL(2, C). Our construction, equation (2.10) below, is a convolution of plane waves with the bulk-toboundary propagator on the hyperbolic slice H3, and is evaluated in terms of Bessel functions. We also present an integral transform that takes a massive scalar scattering amplitude into an SL(2, C) covariant correlation function. In Section 3 we compute the three-point amplitude of massive conformal primary wavefunctions in the near-extremal limit. The main result is equation (3.13). In Appendix A we compute the Klein-Gordon inner product of these primary wavefunctions for a fixed mass.
+
+2 Conformal Primary Wavefunctions
+
+In this section we construct scalar wavefunctions that are conformal primaries of the Lorentz group SL(2, C). A scalar conformal primary wavefunction ,m(Xµ; w, w¯) of mass m and conformal dimension  is defined by the following two properties:
+
+1. It is a solution to the Klein-Gordon equation of mass m,4
+
+  - m2 X X
+
+,m(Xµ; w, w¯) = 0 .
+
+(2.1)
+
+2. It transforms covariantly as a conformal (quasi-)primary operator in two dimensions
+
+under an SL(2, C) Lorentz transformation,
+
+,m
+
+µ X
+
+
+
+;
+
+aw cw
+
++ +
+
+b d
+
+,
+
+a¯w¯ c¯w¯
+
++ +
+
+¯b d¯
+
+= |cw + d|2,m (Xµ; w, w¯) ,
+
+(2.2)
+
+where a, b, c, d  C with ad - bc = 1 and µ is its associated SL(2, C) group element in the four-dimensional representation.5
+
+Note that, in contrast to the situation in AdS/CFT, the mass m and the conformal dimension  are not related.
+4We will use the (-, +, +, +) convention for the signature in R1,3. 5There is no canonical way to embed the celestial sphere into the lightcone in Minkowski space. It follows
+
+3
+
+2.1 Integral Representation
+
+Conformal primary wavefunctions for a massive scalar field can be constructed from the Fourier transform of the bulk-to-boundary propagator in three-dimensional hyperbolic space H3. Let (y, z, z¯) be the Poincar´e coordinates of the H3 with metric,
+
+ds2H3
+
+=
+
+dy2
+
++ dzdz¯ y2
+
+.
+
+(2.3)
+
+Here 0 < y <  and y = 0 is the boundary of the H3. This geometry has an SL(2, C) isometry that acts as
+
+(az + b)(c¯z¯ + d¯) + ac¯y2 z  z = |cz + d|2 + |c|2y2 ,
+
+(a¯z¯ + ¯b)(cz + d) + a¯cy2
+
+z¯  z¯ =
+
+,
+
+|cz + d|2 + |c|2y2
+
+y
+
+yy =
+
+,
+
+|cz + d|2 + |c|2y2
+
+(2.4)
+
+with a, b, c, d  C and ad - bc = 1. The H3 can be embedded into R1,3 as either one of the two branches (p^0 > 0 or p^0 < 0) of the unit hyperboloid
+
+-(p^0)2 + (p^1)2 + (p^2)2 + (p^3)2 = -1 .
+
+(2.5)
+
+More explicitly, we can choose this embedding map p^µ : H3 R1,3 for the upper hyperboloid, corresponding to an outgoing particle, to be
+
+p^µ(y, z, z¯) =
+
+1 + y2 + |z|2 Re(z) Im(z) 1 - y2 - |z|2
+
+,
+
+,
+
+,
+
+.
+
+2y
+
+yy
+
+2y
+
+(2.6)
+
+This implies the useful relation
+
+p^1 + ip^2
+
+z=
+
+.
+
+p^0 + p^3
+
+(2.7)
+
+Let G(y, z, z¯; w, w¯) be the scalar bulk-to-boundary propagator of conformal dimension  in H3 [27],
+
+y
+
+
+
+G(y, z, z¯; w, w¯) = y2 + |z - w|2 .
+
+(2.8)
+
+that there is also no canonical way to associate a M¨obius action on w with an SL(2, C) element µ in the four-dimensional representation. In fact, any two µ's that differ by an SL(2, C) conjugation are equally good for our definition. Below we will make a choice of the map µ(a, b, c, d) by fixing a reference frame for p^µ in (2.6). More explicitly, µ is the SL(2, C) transformation matrix acting on p^µ given by plugging (2.4)
+into (2.6).
+
+4
+
+This transforms covariantly under the SL(2, C) transformation (2.4),
+
+G(y , z , z¯ ; w , w¯ ) = |cw + d|2G(y, z, z¯; w, w¯) , where w = (aw + b)/(cw + d) and w¯ = (a¯w¯ + ¯b)/(c¯w¯ + d¯).
+
+(2.9)
+
+The conformal primary wavefunction for a massive scalar is
+
+±,m(Xµ; w, w¯) =
+
+ dy 0 y3
+
+dzdz¯ G(y, z, z¯; w, w¯) exp ±im p^µ(y, z, z¯) Xµ ,
+
+(2.10)
+
+where we pick the minus (plus) sign for an incoming (outgoing) particle. In the next subsection we will see that potentially divergent integrals can be regulated in an SL(2, C) covariant manner by complexifying the mass m and (2.10) is expressed in terms of Bessel functions.
+
+It is trivial to check that (2.10) is indeed a conformal primary wavefunction. First, it satisfies the massive Klein-Gordon equation because each plane wave factor eimp^·X does. Second, it is a conformal quasi-primary (in the sense of (2.2)) because of the SL(2, C) covariance (2.9) of the bulk-to-boundary propagator in H3. Our definition and formula for the conformal primary wavefunction (2.10) can be readily generalized to Minkowski space of any dimension R1,d+1 and it would transform covariantly under the Euclidean d-dimensional conformal group SO(1, d + 1).
+
+The H3 is embedded, via the map (2.6), into the hyperboloid in the momentum space, rather than position space and the boundary point w, w¯ might seem to live at the boundary of momentum space rather than Minkowski space. However, these spaces are canonically identified. The trajectory of a free massive particle is
+
+Xµ(s) = p^µs + X0µ .
+
+(2.11)
+
+At late times, s  , - X2   and
+
+Xµ 
+
+ p^µ .
+
+-X 2
+
+(2.12)
+
+That is, massive particles asymptote to a fixed position on the hyperbolic slices of Minkowski determined by their four-momenta. Hence (w, w¯) can be interpreted as a boundary coordinate of the late-time asymptotic H3 slice.
+Although we are far from constructing any example of such, the authors of [2] speculate on a boundary 2D CFT (of some exotic variety) on CS2 a subset of whose correlation functions are the 4D bulk Minkowski scattering amplitudes. Every bulk field would be dual to a continuum of operators labelled by their conformal weights. In this putative 2D CFT, the scalar bulk field mode (2.10) would be holographically dual to a local scalar boundary operator O(w, w¯) of dimension .
+
+5
+
+The SL(2, C) covariance of the conformal primary wavefunction implies the SL(2, C)
+
+covariance of any scattering amplitudes constructed from them. Let pµj be the on-shell
+
+momenta of n massive scalars of masses mj (j = 1, · · · , n). Given any Lorentz invariant
+
+n-point momentum-space scattering amplitude A(pµj ) of these massive scalars (including the
+
+momentum conservation delta function (4)(
+
+n j=1
+
+pµj
+
+)),
+
+the
+
+conformal
+
+primary
+
+amplitudes
+
+A~1,··· ,n (wi, w¯i) are
+
+n
+A~1,··· ,n (wi, w¯i) 
+i=1
+
+ dyi 0 yi3
+
+dzidz¯i Gi(yi, zi, z¯i; wi, w¯i) A(mjp^µj ) ,
+
+(2.13)
+
+where p^µj  p^µ(yj, zj, z¯j) is given by (2.6) satisfying p^2i = -1. By construction A~1,··· ,n(wi, w¯i) transforms covariantly under SL(2, C),
+
+A~1,··· ,n
+
+awi cwi
+
++ +
+
+b d
+
+,
+
+a¯w¯i c¯w¯i
+
++ +
+
+¯b d¯
+
+=
+
+n
+|cwi + d|2i
+i=1
+
+A~1,··· ,n (wi, w¯i) .
+
+(2.14)
+
+2.2 Analytic Continuation and the Massless Wavefunction
+
+The integral expression (2.10) is only a formal definition for the conformal primary wave-
+
+function since the integral is divergent for real mass m. More rigorously, we should define our
+
+conformal primary wavefunction by analytic continuation of the integral expression (2.10)
+
+from an unphysical region. When the mass is purely imaginary m  -iR+ and Xµ lies inside
+
+the future lightcone, the outgoing wavefunction (2.10) is convergent and can be evaluated as
+
+
+
++,m(Xµ; w, w¯)
+
+=
+
+4 ( -X2)-1 |m| (-Xµqµ) K-1
+
+ |m| -X2
+
+,
+
+if X0 > 0 , XµXµ < 0 , m  -iR+ ,
+
+(2.15)
+
+where qµ is a null vector in R1,3 defined as
+
+qµ = 1 + |w|2, w + w¯, -i(w - w¯), 1 - |w|2 .
+
+(2.16)
+
+After landing on the Bessel function expression (2.15), we can then analytically continue it
+
+to real mass m and other regions in R1,3,
+
+
+
+±,m(Xµ; w, w¯)
+
+=
+
+4 im
+
+( -X2)-1 (-Xµqµ  i ) K-1
+
+ im -X2
+
+.
+
+(2.17)
+
+We have introduced an i prescription to regularize the integral (2.10) in the case of real mass m. In practice, the integral representation (2.10) will however prove to be more convenient to compute the scattering amplitudes of these conformal primary wavefunctions.
+
+6
+
+We note that at late times inside the future lightcone, the wave equation takes the asymptotic form
+
+(µµ
+
+-
+
+m2)
+
+=
+
+(-2
+
+-
+
+3  
+
+-
+
+m2
+
++
+
+·
+
+·
+
+·
+
+)
+
+,
+
+This is solved to leading nontrivial order at large  by
+
+ 2 = -XµXµ   .
+
+(2.18)
+
+ = e±im (0)(y, z, z¯) + · · · ,  3/2
+
+(2.19)
+
+where (0) is any function on H3. One may check that (2.17) with X2 < 0 takes this form. On the other hand, outside the lightcone near spatial infinity we have
+
+(µµ
+
+-
+
+m2)
+
+=
+
+(2
+
++
+
+3 
+
+
+
+-
+
+m2
+
++
+
+·
+
+·
+
+·
+
+)
+
+,
+
+This is solved to leading nontrivial order at large  by
+
+2 = XµXµ   .
+
+(2.20)
+
+ = e±m ~(0)(y, z, z¯) + · · · , 3/2
+
+(2.21)
+
+with ~(0) any function on dS3. One may verify that (2.17) with X2 > 0 takes this form.6
+
+From the Bessel function expression (2.17) we can take the m  0 limit to obtain the massless conformal primary wavefunction (assuming Re() > 1),7
+
+±,m=0(Xµ; w, w¯)
+
+=
+
+1 (-Xµqµ 
+
+i
+
+)
+
+.
+
+(2.22)
+
+The massless conformal primary wavefunction has been considered in [2, 8, 19­21].
+
+3 Massive Three-Point Amplitude
+
+In this section we will consider the tree-level three-point amplitude A~(wi, w¯i) of the conformal
+primary wavefunction (2.10) ±i,mi(Xµ; wi, w¯i), interacting through a local cubic vertex in R1,3,
+
+L  123 + · · · .
+
+(3.1)
+
+The three point scattering amplitude for plane waves is then simply
+
+A(pi) = i(2)4 (4)(-p1 + p2 + p3) .
+
+(3.2)
+
+6One should take the square root in (2.17) corresponding to the decaying exponent when Xµ is outside
+the lightcone. 7Here we have dropped an overall constant factor compared to the massless limit of (2.17).
+
+7
+
+For conformal primary wavefunctions we have
+
+A~(wi, w¯i) = i
+
+3
+d4X -1,m1 (Xµ; w1, w¯1) +i,mi (Xµ; wi, w¯i) ,
+i=2
+
+(3.3)
+
+where we take the first particle to be incoming and the other two be outgoing. The threepoint amplitude is fixed by the SL(2, C) covariance (2.2) to be proportional to the standard three-point function in a two-dimensional CFT:
+
+A~(wi, w¯i)
+
+
+
+|w1
+
+-
+
+w2|1+2-3 |w2
+
+-
+
+ w3|2+3-1 |w3
+
+-
+
+w1|3+1-2
+
+,
+
+(3.4)
+
+but it is nevertheless satisfying to see this formula explicitly appear in a 4D scattering amplitude. We wish to determine the finite proportionality constant which is a function of the masses mi and the conformal dimensions i. In general these are given by the integral expression (3.3) which may not be possible to analytically evaluate. We will compute this
+
+constant explicitly in the near-extremal case when the mass of the first particle is slightly heavier than the sum of those of the other two. In this case the integral simplifies considerably and the three-point amplitude reduces to the tree-level three-point Witten diagram in H3.
+
+Let the mass of the first particle be 2(1 + )m with   0 and the masses of the other two particles be m. Evaluating the Xµ-integral, we arrive at the following expression for the scalar three-point amplitude,8
+
+A~(wi, w¯i) = i(2)4m-4
+
+3  dyi i=1 0 yi3
+
+dzidz¯i
+
+3
+Gi(yi, zi, z¯i; wi, w¯i) (4)(-2(1 + )p^1 + p^2 + p^3) ,
+i=1
+(3.5)
+
+where p^µi  p^µ(yi, zi, z¯i) as defined in (2.6). Note the integral does not take the form of a tree-level three-point Witten diagram in H3 for general   0.
+
+We now perform the y3, z3, z¯3-integrals to get rid of three delta functions. As a result, we have
+
+A~(wi, w¯i) = i2(2)4m-4
+
+ dy1 0 y13
+
+dz1dz¯1
+
+ dy2 0 y23
+
+3
+
+dz2dz¯2
+
+Gi(yi, zi, z¯i; wi, w¯i)
+
+i=1
+
+1 × 2(1 + )y1-1 - y2-1 
+
+2(1 + ) y1 - 2(1 + )y2
+
+-2y1y2 + (y2 - y1)2 + |z2 - z1|2
+
+,
+
+(3.6)
+
+8We will use the integral representation (2.10) of the conformal primary wavefunction to simplify the calculation of the amplitude and eventually make contact with the Witten diagram in H3 in the near extremal limit. However, as discussed at the end of Section 2, the integral representation of our the conformal primary wavefunction is divergent for real mass m and the proper definition requires an analytic continuation from the Bessel function expression (2.15). Nonetheless, we will see that the three-point amplitude computed using the integral representation turns out to be finite.
+
+8
+
+where we have replaced
+
+1 y3 = 2(1 + )y1-1 - y2-1 ,
+
+z3
+
+=
+
+2(1 + )y1-1z1 2(1 + )y1-1
+
+- -
+
+y2-1z2 y2-1
+
+.
+
+(3.7)
+
+The overall factor 2 is due to the Jacobian coming from rearranging the arguments of the delta functions. Now let us perform a change of variables from (y2, z2, z¯2) to (R, , ),
+
+y2 = y1 + R cos  , z2 = z1 + R sin  ei ,
+
+0    (y1, R) .
+
+(3.8)
+
+The upper bound of  is given by
+
+,
+
+(y1, R) =
+
+cos-1
+
+-
+
+y1 R
+
+,
+
+if R < y1 , if R  y1 .
+
+(3.9)
+
+which
+
+comes
+
+from
+
+the
+
+constraint
+
+cos 
+
+=
+
+y2-y1 R
+
+
+
+-
+
+y1 R
+
+.
+
+We
+
+can
+
+then
+
+rewrite
+
+the
+
+three-point
+
+amplitude as
+
+A~(wi, w¯i) = i2(2)4m-4
+
+ dy1 0 y13
+
+
+
+(y1,R)
+
+2
+
+dz1dz¯1 dRR2
+
+d sin  d
+
+0
+
+0
+
+0
+
+×
+
+3
+i=1 Gi(yi, zi, z¯i; wi, w¯i) ((2 + 1)y1
+
+y1 + 2(1 + )R cos ) (y1 + R cos )2
+
+×
+
+2(1 + ) (2 + 1)y1 + 2(1 + )R cos 
+
+R2 - 2y1(y1 + R cos )
+
+,
+
+(3.10)
+
+with y2, z2, z¯2 and y3, z3, z¯3 replaced by (3.8) and (3.7). The delta function has support on
+
+ R =  2 +  cos2  y1 + y1 cos  .
+
+(3.11)
+
+So far we have not taken any limit on the masses 2(1 + )m, m, m of the three particles.
+
+Now let us consider the near extremal limit   0. In this limit the three momenta mip^i become collinear and the corresponding points (yi, zi, z¯i) in H3 become coincident. To leading order in , the solution of R can be approximated by
+
+ R = 2y1 + O() .
+
+(3.12)
+
+In the near extremal limit we have R  0, hence the three bulk points yi, zi, z¯i in H3 become coincident as commented above. We can then bring the three bulk-to-boundary propagators outside the R, , -integral. Next, by a simple power counting of R, we find that the threepoint amplitude of the conformal primary wavefunction is zero when  = 0, which is related to the fact that the the phase space vanishes for marginal decay process. We should proceed
+
+9
+
+to the subleading order in the near extremal expansion to obtain a nonzero answer, which is9
+
+A~(wi, w¯i)
+
+=
+
+i(2)5 m4
+
+ dy1 0 y13
+
+3
+dz1dz¯1 Gi(y1, z1, z¯1; wi, w¯i)
+i=1
+
+1 ×
+y1
+
+
+dRR2
+0
+
+
+d sin   R2 - 2y12
+0
+
++ O()
+
+(3.13)
+
+i2
+
+11 2
+
+
+
+5
+
+
+
+
+
+=
+
+
+
+m4
+
+ dy1 0 y13
+
+3
+dz1dz¯1 Gi(y1, z1, z¯1; wi, w¯i) + O()
+i=1
+
+=
+
+i2
+
+9 2
+
+
+
+6
+
+(
+
+1
+
++2+3 2
+
+-2
+
+)(
+
+1+2 2
+
+-3
+
+)(
+
+1
+
+-2+3 2
+
+)(
+
+-1+2 2
+
++3
+
+ )
+
++ O() ,
+
+m4(1)(2)(3)|w1 - w2|1+2-3 |w2 - w3|2+3-1 |w3 - w1|3+1-2
+
+where the term in the parentheses in the second to last line is precisely the tree-level threepoint Witten diagram in H3, which was evaluated in [28]. Hence the near extremal massive three-point amplitude takes the form of the three-point function of scalar primaries with conformal dimensions i in a two-dimensional CFT.
+
+Acknowledgements
+We are grateful to T. Dumitrescu, P. Mitra, M. Pate, B. Schwab, D. Simmons-Duffin, and A. Zhiboedov for useful conversations. This work was supported in part by NSF grant 1205550. S.P. is supported by the NSF and by the Hertz Foundation through a Harold and Ruth Newman Fellowship. S.H.S. is supported by the National Science Foundation grant PHY-1606531.
+
+A Klein-Gordon Inner Product
+In this section we evaluate the Klein-Gordon inner product between two conformal primary solutions with the same mass m and generic complex weights 1,2. SL(2, C) implies this must vanish for 1 = 2, while some kind of delta function is expected at 1 = 2.
+The Klein-Gordon inner product between two outgoing wavefunctions +1,m(Xµ; w1, w¯1)
+9Note that in the near extremal limit   0, the upper bound (y1, R) of the angular coordinate becomes  on the support of the delta function.
+
+10
+
+and +2,m(Xµ; w2, w¯2) evaluated on the slice X0 = 0 is
+
+(+1 , +2 ) = -i d3X +1,m(Xµ; w1, w¯1)X0+2,m(Xµ; w2, w¯2)
+
+- X0 +1,m(Xµ; w1, w¯1)+2,m(Xµ; w2, w¯2)
+
+=(2)3m-2
+
+2  dyi i=1 0 yi3
+
+dzidz¯i G1(y1, z1, z¯1; w1, w¯1)G2(y2, z2, z¯2; w2, w¯2)
+
+× 1 + y12 + |z1|2 + 1 + y22 + |z2|2 (2) z1 - z2  1 - y12 - |z1|2 - 1 - y22 - |z2|2
+
+2y1
+
+2y2
+
+y1 y2
+
+2y1
+
+2y2
+
+=2(2)3m-2  dy 0 y3
+
+dzdz¯G1(y, z, z¯; w1, w¯1)G2(y, z, z¯; w2, w¯2) .
+
+(A.1)
+
+Using the Feynman trick,
+
+1
+
+(a + b) 1
+
+a-1(1 - )b-1
+
+AaBb = (a)(b)
+
+0
+
+d (A
+
++
+
+(1
+
+-
+
+)B)a+b
+
+,
+
+(A.2)
+
+we can perform the integrals in y, z, z¯ to obtain
+
+(+1 ,
+
++2 )
+
+=
+
+2(2)3m-2
+
+
+
+(
+
+1
+
++2 2
+
+-2
+
+)(
+
+1
+
++2 2
+
+)
+
+2(1)(2)|w1 - w2|1+2
+
+1
+
+d
+
+1 -2 2
+
+-1(1
+
+-
+
+)
+
+-1 +2 2
+
+-1
+
+.
+
+(A.3)
+
+0
+
+Here
+
+2
+
+is
+
+the
+
+complex
+
+conjugate
+
+of
+
+2.
+
+If
+
+we
+
+let
+
+
+
+=
+
+, 1-2 2
+
+
+
+=
+
+eu eu +e-u
+
+1
+
+
+
+d-1(1 - )--1 = 2
+
+due2u .
+
+0
+
+-
+
+(A.4)
+
+This is divergent if  is real, and equals to 2() if  = i is pure imaginary. Therefore, in order to have a delta function normalizable inner product, we require i's to be complex numbers with the same real part, 1 = a + i1, 2 = a + i2 (a, i  R). The KleinGordon inner product for complex conformal dimensions, equal mass conformal primary wavefunction is,
+
+(+1 ,
+
++2 )
+
+=
+
+645m-2 (1
+
++
+
+2
+
+-
+
+1 2) |w1
+
+-
+
+w2|1+2
+
+(1
+
++
+
+2)
+
+.
+
+(A.5)
+
+References
+
+[1] P. A. M. Dirac, "Wave equations in conformal space," Annals Math. 37 (1936) 429­442.
+
+11
+
+[2] J. de Boer and S. N. Solodukhin, "A Holographic reduction of Minkowski space-time," Nucl. Phys. B665 (2003) 545­593, hep-th/0303006.
+[3] T. Banks, "A Critique of pure string theory: Heterodox opinions of diverse dimensions," hep-th/0306074.
+[4] G. Barnich and C. Troessaert, "Symmetries of asymptotically flat 4 dimensional spacetimes at null infinity revisited," Phys. Rev. Lett. 105 (2010) 111103, 0909.2617.
+[5] G. Barnich and C. Troessaert, "Supertranslations call for superrotations," PoS (2010) 010, 1102.4632. [Ann. U. Craiova Phys.21,S11(2011)].
+[6] D. Kapec, V. Lysov, S. Pasterski, and A. Strominger, "Semiclassical Virasoro symmetry of the quantum gravity S-matrix," JHEP 08 (2014) 058, 1406.3312.
+[7] D. Kapec, P. Mitra, A.-M. Raclariu, and A. Strominger, "A 2D Stress Tensor for 4D Gravity," 1609.00282.
+[8] C. Cheung, A. de la Fuente, and R. Sundrum, "4D Scattering Amplitudes and Asymptotic Symmetries from 2D CFT," 1609.00732.
+[9] S. He, Y.-t. Huang, and C. Wen, "Loop Corrections to Soft Theorems in Gauge Theories and Gravity," JHEP 12 (2014) 115, 1405.1410.
+[10] M. Bianchi, S. He, Y.-t. Huang, and C. Wen, "More on Soft Theorems: Trees, Loops and Strings," Phys. Rev. D92 (2015), no. 6, 065022, 1406.5155.
+[11] Z. Bern, S. Davies, and J. Nohle, "On Loop Corrections to Subleading Soft Behavior of Gluons and Gravitons," Phys. Rev. D90 (2014), no. 8, 085015, 1405.1015.
+[12] Z. Bern, S. Davies, P. Di Vecchia, and J. Nohle, "Low-Energy Behavior of Gluons and Gravitons from Gauge Invariance," Phys. Rev. D90 (2014), no. 8, 084035, 1406.6987.
+[13] S. W. Hawking, M. J. Perry, and A. Strominger, "Superrotation Charge and Supertranslation Hair on Black Holes," 1611.09175.
+[14] T. He, D. Kapec, A.-M. Raclariu, and A. Strominger, "Loop-Corrected Virasoro Symmetry of 4D Quantum Gravity," to appear.
+[15] F. Cachazo and A. Strominger, "Evidence for a New Soft Graviton Theorem," 1404.4091.
+[16] A. Strominger, "Asymptotic Symmetries of Yang-Mills Theory," JHEP 07 (2014) 151, 1308.0589.
+12
+
+[17] T. He, P. Mitra, and A. Strominger, "2D Kac-Moody Symmetry of 4D Yang-Mills Theory," JHEP 10 (2016) 137, 1503.02663.
+[18] A. Ashtekar and J. D. Romano, "Spatial infinity as a boundary of space-time," Class. Quant. Grav. 9 (1992) 1069­1100.
+[19] M. Campiglia and A. Laddha, "Asymptotic symmetries of QED and Weinberg's soft photon theorem," JHEP 07 (2015) 115, 1505.05346.
+[20] M. Campiglia and A. Laddha, "Asymptotic symmetries of gravity and soft theorems for massive particles," JHEP 12 (2015) 094, 1509.01406.
+[21] M. Campiglia, "Null to time-like infinity Green's functions for asymptotic symmetries in Minkowski spacetime," JHEP 11 (2015) 160, 1509.01408.
+[22] L. Cornalba, M. S. Costa, and J. Penedones, "Deep Inelastic Scattering in Conformal QCD," JHEP 03 (2010) 133, 0911.0043.
+[23] S. Weinberg, "Six-dimensional Methods for Four-dimensional Conformal Field Theories," Phys. Rev. D82 (2010) 045031, 1006.3480.
+[24] M. S. Costa, J. Penedones, D. Poland, and S. Rychkov, "Spinning Conformal Correlators," JHEP 11 (2011) 071, 1107.3554.
+[25] M. S. Costa, J. Penedones, D. Poland, and S. Rychkov, "Spinning Conformal Blocks," JHEP 11 (2011) 154, 1109.6321.
+[26] D. Simmons-Duffin, "Projectors, Shadows, and Conformal Blocks," JHEP 04 (2014) 146, 1204.3894.
+[27] E. Witten, "Anti-de Sitter space and holography," Adv. Theor. Math. Phys. 2 (1998) 253­291, hep-th/9802150.
+[28] D. Z. Freedman, S. D. Mathur, A. Matusis, and L. Rastelli, "Correlation functions in the CFT(d) / AdS(d+1) correspondence," Nucl. Phys. B546 (1999) 96­118, hep-th/9804058.
+13
+
+

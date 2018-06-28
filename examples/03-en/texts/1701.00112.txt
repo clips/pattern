@@ -1,0 +1,1774 @@
+arXiv:1701.00112v3 [q-fin.PR] 5 Mar 2017
+
+Multinomial method for option pricing under Variance Gamma
+Nicola Cantarutti , Jo~ao Guerra
+CEMAPRE - Centre for Applied Mathematics and Economics ISEG - University of Lisbon
+March 7, 2017
+Abstract This paper presents a multinomial method for option pricing when the underlying asset follows an exponential Variance Gamma process. The continuous time Variance Gamma process is approximated by a discrete time Markov chain with the same first four cumulants. This approach is particularly convenient for pricing American and Bermudan options, which can be exercised at any time up to expiration date. Numerical computations of European and American options are presented, and compared with results obtained with finite differences methods and with the Black Scholes model.
+Keywords: American option, L´evy processes, Moment Matching, Multinomial tree, Variance Gamma.
+1 Introduction
+Since the early nineties, a lot of research has been done on the topic of pure jump L´evy processes to describe the dynamics of the asset returns. The main contributions are due to Madan and Seneta (1990), Eberlein and Keller (1995), Geman et al. (1998), Barndorff-Nielsen (1998).
+L´evy processes are stochastic processes with independent and stationary increments that have nice analytical properties and reproduce quite well the statistical features of the financial data. For example, in Figure 1 we show four histograms of the daily log-returns of four indices: the S&P 500 Stock Index, the KOSPI (Korea Composite Stock Price Index), XAO (All Ordinaries Australian Index) and TAIEX (Taiwan Capitalization weighted Stock Index). The histograms are plotted together with the fitted Normal and Variance Gamma (VG) densities. It is straightforward to check that the VG density reproduces much better the high peaks near the origin, and the heavy tails of the empirical data.
+Corresponding author. Email: nicolacantarutti@gmail.com
+1
+
+Figure 1: Histogram of daily log-returns for S&P500, KOSPI, XAO and TAIEX. The dashed line corresponds to the VG density (10). The continuous line is the normal density. The parameters for both densities are obtained by the method of moments. See for example (Seneta (2004)).
+The Variance Gamma process is a pure jump L´evy process with infinite activity. This means that when the magnitude of the jumps becomes infinitesimally small, the arrival rate of jumps tends to infinity. The first complete presentation of the symmetric VG model is due to Madan and Seneta (1990) where, with respect to the Normal case, only an additional parameter is introduced to control the kurtosis, while the skewness is still not considered. The authors model the log-returns as a driftless Brownian motion with a random Gamma distributed variance. This is the origin of the name "Variance Gamma".
+There are two representations of the VG process. In the first, the VG process is obtained by time changing a Brownian motion with drift: the Brownian motion is evaluated at random times that are Gamma distributed. A possible interpretation is that the economical relevant times are random. The nonsymmetric VG process is described by Madan et al. (1998), where the authors also presented an explicit form of the return density function and closed form formula for the price of a vanilla European option. The authors consider a Brownian motion with drift, and this gives the possibility to control the skewness as well.
+The path of the VG process looks like the path of the Brownian motion, because the VG has an infinite number of jumps in any time interval, but it does not have a continuous martingale component. Another difference with the Brownian motion is that the VG process has finite variation, therefore the sum of the absolute value of the jumps in any time interval converges. This property
+2
+
+can be derived easily by the second representation of the VG process as the difference of two (finite variation) Gamma processes. The proof can be found in Madan et al. (1998), where the authors show that the two representations are equivalent, and also derive the VG characteristic function as the product of two Gamma characteristic functions. This representation has another interesting economical interpretation as the difference of gains and losses. The Gamma processes are always increasing, therefore this representation is coherent with independent gains and losses.
+The VG process was first presented in the context of option pricing in Madan and Milne (1991), where it was used in the pricing of European options. The problem for European options can be easily solved by the analytical formula of Madan et al. (1998) or numerically by different techniques. Monte Carlo methods for VG are presented in Fu (2000). A finite difference scheme for the VG Partial Integro-Differential Equation (PIDE) is described in Cont and Voltchkova (2005). In Carr and Madan (1998), the authors show how to solve the option pricing problem using the Fourier transform method. The problem for American options is considered in Hirsa and Madan (2001) and Almendral and Oosterlee (2007), where finite difference schemes are applied to solve the American options PIDE for VG.
+The tree method was first introduced by Cox et al. (1979) for a market where the log-price can change only in two different ways: an upward jump, or a downward jump. For this reason this discrete model is called binomial model. The authors prove that when the number of time steps increases, the discrete random walk of the log-price converges to the Brownian motion and the option price converges to that of Black and Scholes (1973). Multinomial models are a generalization of the binomial model and at each time step it considers more than just two possible future states. In this work we consider multinomial methods as developed by Yamada and Primbs (2001), Yamada and Primbs (2003) and Yamada and Primbs (2004). The multinomial method has been applied to option pricing under Variance Gamma as an example in Ssebugenyi and Konlack (2013). We want to give a full description of the features of the multinomial method for the VG process.
+In Section 2 we present the basic features of L´evy processes, in particular finite variation processes. The VG process and exponential VG are introduced in the successive subsections. A short summary of some useful concepts such as Poisson integration, and the relation between the L´evy symbol with the cumulants are collected in the Appendices A and B. In Section 3 we review the construction of the multinomial tree that approximates the VG process following the method of moment matching proposed by Yamada and Primbs (2001). We prove that the multinomial tree converges to the continuous time jump process that we introduce to approximate the VG process. In Section 4, which is the most important of the paper, we describe the algorithm for pricing options with the multinomial method and show the numerical results for European and American options. In Section 5 we present a topic that deserves further research. We show how to obtain the parameters of the discrete time Markov chain that approximates the VG process, by discretizing its infinitesimal generator. However, using this method, the transition probabilities are not always positive. These coincide with the probabilities obtained with the moment matching condition only for a particular choice of the parameters. This topic can be further investigated. In Section 6 there are the conclusions.
+3
+
+2 L´evy processes
+
+Let Xt be a stochastic process defined on a probability space (, F , (Ft0), P), Xt is said to be a L´evy process if it satisfies the three properties:
+
+1. X0 = 0.
+
+2. Xt has independent and stationary increments.
+
+3. Xt is stochastically continuous:  , t > 0 limh0 P |Xt+h - Xt| > = 0.
+The characteristic function of every L´evy process Xt has the L´evy-Khintchine representation:
+
+Xt (u) = E[eiuXt ]
+
+(1)
+
+= et(u)
+
+= exp
+
+t
+
+ibu - 1 ~2u2 + 2
+
+eiux - 1 - iux1(|x|<1)(x) (dx)
+R
+
+,
+
+where (u) is called L´evy symbol, b  R and ~  0 are constants1 and (dx) is the L´evy measure which satisfies:
+
+({0}) = 0,
+
+(1  x2)(dx) < .
+
+(2)
+
+R
+
+The L´evy triplet (b, ~, ) completely characterizes a L´evy process. Every L´evy process can be written as the superposition of a drift, a Brownian motion and two pure jump processes. This is the so called L´evy-It¯o decomposition:
+
+dXt = bdt + ~dWt +
+
+xN (dt, dx) +
+
+xN~ (dt, dx),
+
+(3)
+
+|x|1
+
+|x|<1
+
+where Wt is a standard Brownian motion, N (dt, dx) and N~ (dt, dx) are the Poisson random measure and the compensated Poisson random measure (see Appendix A).
+We are interested in particular in processes with finite variation and finite moments. We see that the L´evy measure contains all the information we need:
+
+· A L´evy process with triplet (b, ~, ) is of finite variation if and only if
+
+~ = 0 and
+
+|x|(dx) < .
+
+(4)
+
+|x|<1
+
+· A L´evy process has finite moment of order n, E[Xtn] < , if and only if
+
+|x|n(dx) < .
+
+(5)
+
+|x|1
+
+For a proof see Applebaum (2009), Theorem 2.4.25 and Theorem 2.5.2. As a
+conseguence of these two properties, the truncator term 1(|x|<1) can be absorbed
+1The diffusion coefficients is usually referred as . Here we call it ~ because we will call  a parameter of the VG process.
+
+4
+
+in the parameter b. It is easy to verify that every finite variation L´evy process can be represented as an integral of a Poisson random measure:
+
+Xt = b t +
+
+xN (t, dx),
+
+(6)
+
+R\{0}
+
+with b = b - |x|<1 x(dx). The L´evy symbol is:
+
+(u) = ib u + (eiux - 1)(dx).
+
+(7)
+
+R
+
+2.1 The Variance Gamma process
+
+The VG process is obtained by time changing a Brownian motion with drift.
+The new time variable is a stochastic process Tt whose increments are Gamma distributed and Tt  (µt, ) with density2:
+
+fTt (x)
+
+=
+
+(
+
+µ 
+
+(
+
+µ2
+)
+µ2 t 
+
+t
+)
+
+x
+
+µ2 
+
+t
+
+-1
+
+e-
+
+µx 
+
+x  0.
+
+(8)
+
+The Gamma process Tt is a subordinator. A subordinator is a one dimensional L´evy process that is non-decreasing almost surely. Therefore it is consistent to represent a time variable. It is possible to prove that every subordinator is a finite variation process (see Applebaum (2009)).
+Consider a Brownian motion with drift Xt = t + Wt, with Wt  N (0, t), and replace the time variable by the Gamma subordinator Tt  (t, ) (with µ = 1). We obtain the Variance Gamma process:
+
+Xt = Tt + WTt .
+
+(9)
+
+It depends on three parameters:
+
+· , the drift of the Brownian motion,
+
+· , the volatility of the Brownian motion,
+
+· , the variance of the Gamma process.
+The probability density function of Xt can be computed conditioning on the realization of Tt:
+
+fXt (x) = fXt,Tt (x, y)dy = fXt|Tt (x|y)fTt (y)dy
+
+(10)
+
+=
+
+ 0
+
+1 
+
+e-
+
+(x-y)2 22 y
+
+ 2y
+
+y t
+
+
+t 
+
+-1
+
+(
+
+t 
+
+)
+
+e-
+
+y 
+
+dy
+
+=  t2ex2p(x2()t )
+
+x2
+
+2
+
+2 
+
++ 2
+
+t 2
+
+-
+
+1 4
+
+Kt 
+
+-
+
+1 2
+
+1 2
+
+x2 22 + 2 
+
+,
+
+2Usually the Gamma distribution is paramentrized by a shape and scale positive parameters
+
+X  (, ).
+
+The Gamma process Xt  (t, ) has pdf fXt (x) =
+
+-t (t)
+
+xt-1
+
+e-
+
+x 
+
+and has
+
+moments E[Xt] = t and Var[Xt] = 2t. Here we use a parametrization as in Madan et al.
+
+(1998)
+
+such
+
+that
+
+E[Xt]
+
+=
+
+µt
+
+and
+
+Var[Xt]
+
+=
+
+t,
+
+so
+
+
+
+=
+
+ µ
+
+,
+
+
+
+=
+
+µ2 
+
+.
+
+5
+
+where the function K is a modified Bessel function of the second kind (see Madan et al. (1998) for the computations). The characteristic function can be obtained conditioning as well:
+
+Xt (u) =
+
+1 - i u + i 2u2 2
+
+-
+
+t 
+
+(11)
+
+=
+
+1 - iu + 1 2u2
+
+-
+
+t 
+
+,
+
+(12)
+
+2
+
+(Proposition 1.3.27 of Applebaum (2009)). And the L´evy symbol
+
+(u) = - 1 log(1 - iu + 1 2u2).
+
+(13)
+
+
+
+2
+
+Using the formula (68) in Appendix B for the cumulants we derive:
+
+c1 = t
+
+(14)
+
+c2 = t(2 + 2)
+
+c3 = t(232 + 32)
+
+c4 = t(34 + 12222 + 643).
+
+The VG L´evy measure is3:
+
+
+x
+e 2 (dx) = exp -
+|x|
+
+2 
+
++
+
+2 2
+
+ |x|
+
+dx.
+
+
+
+(15)
+
+It satisfies conditions (4) and (5). The finite variation process can be represented as a pure jump process as in (6) and (7), with no additional drift b = 0.
+
+Xt =
+
+xN (t, dx).
+
+(16)
+
+R\{0}
+
+All the informations are contained in the L´evy measure (15), which completely describes the process. Even if the process has been created by Brownian subordination, it has no diffusion component. The L´evy triplet is (0, 0, ). Using the formalism of Poisson integrals in Appendix A, the L´evy symbol (13) has the representation4:
+
+(u) = (eiux - 1)(dx).
+
+(17)
+
+R
+
+2.2 Exponential VG model
+Under the risk neutral measure Q, the dynamics of the stock price is described by an exponential L´evy model :
+
+St = S0ert+Xt ,
+
+(18)
+
+3In Madan et al. (1998) the authors derive the expression for the L´evy measure using the
+VG representation as the difference of two Gamma processes and then change the parameters. 4See Example 8.10 in Sato (1999).
+
+6
+
+where r is the risk free interest rate, and Xt is a general L´evy process. Under Q, the discounted price is a Q-martingale:
+
+EQ Ste-rt S0 = EQ S0eXt S0 = S0,
+
+(19)
+
+and so EQ[eXt |X0 = 0] = 1. The condition for the existence of the exponential moment E[eXt ] <  is equivalent to
+
+ex(dx) < ,
+
+(20)
+
+|x|>1
+
+as proved in Lemma 25.7 in Sato (1999). For the VG process it is easy to
+verify that it is satisfied. We need to add a correction term to Xt to satisfy the martingale condition5. The following process is a martingale:
+
+St = S0e(r+)t+Xt .
+
+(21)
+
+where
+
+w
+
+=
+
+1 
+
+log(1 -  -
+
+1 2
+
+2).
+
+Passing
+
+to
+
+the
+
+log-prices
+
+Yt
+
+=
+
+log(St),
+
+we
+
+get
+
+a process as in Eq. (6) with b = r + 
+
+Yt = Y0 + (r + )t +
+
+xN (t, dx).
+
+(22)
+
+R\{0}
+
+Let V (t, Yt) be the value of an option at time t. We assume that V (t, y)  C1,1([t0, T ], R) and has a polinomial growth. By the martingale pricing theory, the discounted price of the option is a martin-
+gale. From this it is possible to derive the partial integro-differential equation
+(PIDE) for the price of the option
+
+EQ d e-rtV (t, Yt)
+
+= V (t, y) + LYt V (t, y) - rV (t, y) = 0, t
+
+(23)
+
+where LYt V (t, Yt) is the infinitesimal generator of the log-price process (22). The resulting PIDE is
+
+V (t, y)
+
+V (t, y)
+
++ (r + )
+
++ V (t, y + x) - V (t, y) (dx) = rV (t, y). (24)
+
+t
+
+y
+
+R
+
+3 The multinomial method
+
+In this section we introduce the multinomial method proposed in Yamada and Primbs (2004). The stock price is considered as a Markov chain with L possible future states at each time. In this setting, the time t  [t0, T ] is discretized as tn = t0 + nt for n = 0, ..., N and t = (T - t0)/N . We denote the stock price at time tn as S(tn) = Sn.
+Consider the up/down factors u > d > 0 and write the discrete evolution of the stock price Sn as:
+
+Sn+1 = uL-ldl-1Sn
+
+l = 1, ..., L
+
+(25)
+
+5 To find the correction  we have to find the exponential moment of Xt using its characteristic function:
+E[eXt ] = Xt (-i) = e-t
+.
+
+7
+
+where each future state has transition probability pl, satisfying
+
+L l=1
+
+pl
+
+=
+
+1.
+
+The value of the stock at time tn can assume j  [1, n(L - 1) + 1] possible
+
+values:
+
+Sn(j) = un(L-l)+1-j dj-1S0.
+
+(26)
+
+The multinomial tree is recombining if for a constant c > 1, u/d = c. Regarding our work, we only consider five branches, L = 5. As explained in Yamada and Primbs (2004), this number of branches is enough to model the features of a stochastic process up to its fourth moment.
+
+3.1 Moment matching
+To determine the parameters of the Markov chain we ask for the local moments to be equal to that of the continuous process. First, rewrite the continuous process (22) as the sum of a drift term and a martingale term:
+
+Yt+t - Yt = (r + )t +
+
+xN (t, dx)
+
+(27)
+
+R\{0}
+
+= (r +  + )t +
+
+xN~ (t, dx)
+
+R\{0}
+
+where  = x(dx) is the mean of the Poisson process (for t = 1), and the
+R
+compensated Poisson integral term is a martingale (see Appendix A). We can pass to log-prices Yn = log(Sn) in the discrete Eq. (25), and write
+it as the sum of a drift component and a random variable with L possible outcomes:
+
+Y = Yn+1 - Yn = (L - l) log(u) + (l - 1) log(d)
+
+(28)
+
+= b t + (L - 2l + 1)(t).
+
+The term b t is the drift term, while (L - 2l + 1)(t) is a random variable that satisfies the martingale condition
+
+L
+E (L - 2l + 1)(t) = (t) pl(L - 2l + 1) = 0,
+l=1
+with (t) a function of t. The corresponding up/down factors have the following representation:
+
+b
+
+b
+
+u = exp
+
++ (t)
+
+d = exp
+
+- (t) ,
+
+(29)
+
+L-1
+
+L-1
+
+and we can readily see that if u/d is constant, the tree recombines. Given the mean c1 = E[Y ] = bt, the k-central moment is
+
+E (Y - c1)k = (t)k E (L - 2l + 1)k .
+
+(30)
+
+The moment matching condition requires that the central moments of the dis-
+
+crete process (28) are equal to the central moments of the continuous process
+
+(27):
+
+(t)k E (L - 2l + 1)k = µk.
+
+(31)
+
+8
+
+Using the relation between central moments and cumulants (Eq. (69) in Appendix B) we can solve the linear system of equations for the transition probabilities:
+
+1 p1 = 196(t)4
+
+3 2
+
+c22
+
+-
+
+2c2(t)2
+
++
+
+2c3(t)
+
++
+
+1 2 c4
+
+(32)
+
+1 p2 = 196(t)4
+
+-6c2 + 32c2(t)2 - 4c3(t) - 2c4
+
+1 p3 = 1 + 196(t)4
+
+3c4 + 9c22 - 60c2(t)2
+
+1 p4 = 196(t)4
+
+-6c2 + 32c2(t)2 + 4c3(t) - 2c4
+
+1 p5 = 196(t)4
+
+3 2
+
+c22
+
+-
+
+2c2(t)2
+
+-
+
+2c3(t)
+
++
+
+1 2 c4
+
+.
+
+The drift parameter (for t = 1) can be easily computed as b = r +  + .
+
+The only missing parameter to determine is (t). This is a function of the
+
+time increment t and can be determined using the higher order in the moment
+
+matching condition together with the condition of positive probabilities.
+
+Recall that in the well known binomial model for a diffusion process, it takes the value (t) = ~ t, and represents the volatility of the increments
+
+in t, see Cox et al. (1979). In the trinomial model, it takes the well known
+
+value
+
+(t)
+
+=
+
+3 4
+
+~
+
+t, see for instance Yamada and Primbs (2001). For the
+
+multinomial method a good representation for the parameter is
+
+ 3 + ¯
+
+(t) = c2
+
+, 12
+
+(33)
+
+where ¯ = c4/c22 is the excess of kurtosis6. We refer to the paper of Yamada and Primbs (2004) for the derivation. This choice guarantees that the probabilities
+pi for i = 1...5 are always positive and sum to one. We can use the formula (33), together with (32), to obtain the simpler form:
+
+
+
+
+
+3 + ¯ + s 9 + 3¯ 3 + ¯ - s 9 + 3¯
+
+[p1, p2, p3, p4, p5] =
+
+4(3 + ¯)2 , 2(3 + ¯)2 ,
+
+(34)
+
+
+
+
+
+3 + 2¯ 3 + ¯ + s 9 + 3¯ 3 + ¯ - s 9 + 3¯
+
+, 2(3 + ¯)
+
+2(3 + ¯)2
+
+,
+
+4(3 + ¯)2
+
+,
+
+where s = c3/ c32 is the skewness.
+Remark 1. The standard deviation of a L´evy process with finite moments follows the square root rule. This means that the term (t) has to be proportional to the square root of t. In the binomial and trinomial models, the proportionality constant is explicit, while for the pentanomial method it is implicit in the formula (33). Expanding the formula using the expression (14) for the cumulants, it is possible to check that the square root rule is satisfied at first order in
+t.
+6We use the bar over , to distinguish the kurtosis from the variance of the gamma process .
+
+9
+
+3.2 Convergence
+
+In this section we show that the multinomial method converges to a compound Poisson process when the time step goes to zero.
+We call a generic jump process (6), with the same first four cumulants (14) of the original VG process (22), the approximated VG process XA. The cumulant generating function of the increment XA has the following series representation (see Appendix (B)):
+
+HXA (u)
+
+=
+
+ic1u
+
+-
+
+c2u2 2
+
+-
+
+ic3u3 3!
+
++
+
+c4u4 4!
+
++
+
+O(u5).
+
+(35)
+
+We can check that this expression holds for the VG increments as well, simply by using a Taylor expansion up to the fourth order on the VG L´evy exponent (13), and adding the addidional drift term c1 = bt = (r +  + )t.
+
+Theorem 3.1. The increments of the discrete Markov chain (28) and the increments of the approximated VG process XA have the same distribution.
+
+Proof. The idea of the proof is to show that the cumulant generating function of the discrete process (28) coincides with that of the approximated VG process (35). We prove it using the moment matching condition (31).
+
+HY (u) = log Y (u) = log E eiuY = log E eiu bt+(L-2l+1)(t) = iubt + log E eiu (L-2l+1)(t) .
+
+(36)
+
+We can expand in Taylor series up to the fourth order in u, and use the moment matching condition (31) to obtain:
+
+HY (u) = log
+
+4
+
+(iu)k k!
+
+(t)
+
+k
+E
+
+L - 2l + 1 k + O(u5)
+
+(37)
+
+k=0
+
+= log
+
+4
+
+(iu)k k!
+
+µk
+
++
+
+O(u5)
+
+k=0
+
+=
+
+4
+
+(iu)k k!
+
+ck
+
++
+
+O(u5)
+
+k=0
+
+= HXA (u),
+
+where c0 = 0.
+Remark 2. The proof can be easly generalized for a Taylor expansion of order n. For n  , the approximated VG process converges to the original VG process. However the number of branches of the discrete tree goes to infinity as well. The five branches we consider are enough to describe the features of the underlying process and, at the same time, keep the numerical problem quite simple.
+
+10
+
+Theorem 3.2. The distribution of the multinomial tree at time N converges to the distribution of the approximated VG process at time N , when t  0.
+For the proof of this theorem we refer to the proof in Section 4.2 of Yamada and Primbs (2004). They prove that when the t  0 the characteristic funcion of the multinomial tree converges to the characteristic function of a Poisson process.
+
+4 Numerical results
+In this section we present the steps to implement the algorithm to price European and American options by the multinomial method. Then we compare the results with the ones obtained by the PIDE method and Black-Scholes model.
+
+4.1 Algorithm
+In order to implement the multinomial method, we suggest the following algorithm:
+1. Compute the transition probabilities vector (34).
+2. Compute the up/down factors u and d (29) and then the vector of prices SN at terminal time N as in Eq. (26).
+3. Evaluate the payoff of the option V N (SN ) at terminal time N .
+4. Compute the values of the option at the previous time level. The value is the conditional expectation given the current value of the price of the five future option values:
+
+V n = e-rtEQ V n+1(Sn+1) Sn(k) = s(nk) .
+
+(38)
+
+5. In computing the price of an American option, the value at the previous time level is the maximum between the conditional expectation and the intrinsic value of the option. For an American put we have:
+
+V n = max e-rtEQ V n+1(Sn+1) Sn(k) = s(nk) , K - Sn(k) .
+
+(39)
+
+6. Iterate the algorithm until the initial time t0.
+Fo the the parameters calibration with market data, sometimes it is common to estimate the historical values of the parameters and use them as initial guess for the least squares minimization. In the paper Seneta (2004), there are explained methods for historical parameters estimation for the VG process. We used the simple method of moments to estimate the parameters for the data in Fig. 1. In our calculation we assume the following values for the risk neutral VG parameters:
+
+11
+
+r
+
+
+
+
+
+
+
+0.06 -0.1 0.2 0.2
+
+Table 1: r is the risk free interest rate. , ,  are the VG parameters.
+
+4.2 European options
+We compare the numerical results obtained for European call and put options with the values obtained solving the VG PIDE, Eq. (24).
+· VG PIDE : We solve the partial integro-differential equation following the method proposed by Cont and Voltchkova (2005). The L´evy measure is singular in the origin and this is a problem for the computation of the integral term. The authors propose to approximate the small jumps with infinite activity, with a Brownian motion. Therefore the original VG process becomes an approximated jump diffusion process. The associated PIDE is then solved with the implicit-explicit scheme proposed in the same paper.
+· Multinomial : We follow the algorithm proposed in the previous section. The number of time steps for all the computations is N = 2000.
+
+Figure 2: European call option with strike K = 40 and time to maturity 1 year.
+Figures (2) and (3) show that the prices obtained by the multinomial method agree with the prices obtained by solving the VG PIDE. In table 2 there are collected some values for the call/put options.
+There are many other methods to compute the price of an European call and put option, such as the closed formula developed by Madan et al. (1998), the FFT method of Carr and Madan (1998) and the Monte Carlo algorithms explained in Cont and Tankov (2003). The big advantage of the multinomial
+12
+
+Figure 3: European put option with strike K = 40 and time to maturity 1 year.
+
+S0 PIDE Call Multi Call PIDE Put Multi Put
+
+36 2.1036
+
+2.1131
+
+3.7842
+
+3.7837
+
+38 3.1163
+
+3.1051
+
+2.7893
+
+2.7756
+
+40 4.4162
+
+4.4203
+
+2.0852
+
+2.0908
+
+42 5.8335
+
+5.8309
+
+1.5050
+
+1.5014
+
+44 7.4417
+
+7.4524
+
+1.1132
+
+1.1229
+
+Table 2: European Options, with strike K = 40 and T = 1.
+
+method is in the computation of the price of American options, where the other algorithms (in particular PIDEs and Least Squares Monte Carlo) are difficult to implement and are much slower.
+4.3 American options
+In this section we present the numerical results for American put options and compare them with the prices obtained with the Black-Scholes model.
+In Table (3), we present some results for European and American put options using the Black Scholes and the Variance Gamma models. We choose the parameters and the values of strike and spot price in order to compare with other computations in the literature. The reader may compare our results with those obtained in Longstaff and Schwartz (2001).
+Even if we compare results obtained with two different processes, the comparison makes sense as long as the processes have the same mean and variance. At first order approximation, we can ignore the term in 2 appearing in the formula for c2. Therefore c2 = t(2 + 2)  t2.
+The Black-Scholes prices are computed using a binomial algorithm. Of course the same values can be obtained with the multinomial algorithm in the
+
+13
+
+S0 T BS Eu. Put VG Eu. Put BS Am. Put VG Am. Put
+
+36 1
+
+3.8443
+
+3.7837
+
+4.4867
+
+4.3173
+
+36 2
+
+3.7632
+
+3.7695
+
+4.8483
+
+4.8817
+
+38 1
+
+2.8521
+
+2.7756
+
+3.2573
+
+3.2034
+
+38 2
+
+2.9901
+
+3.0232
+
+3.7512
+
+3.8401
+
+40 1
+
+2.0660
+
+2.0908
+
+2.3194
+
+2.3767
+
+40 2
+
+2.3553
+
+2.4046
+
+2.8897
+
+2.9997
+
+42 1
+
+1.8413
+
+1.5014
+
+1.6214
+
+1.6947
+
+42 2
+
+1.4648
+
+1.9252
+
+2.2167
+
+2.3366
+
+44 1
+
+1.4296
+
+1.1229
+
+1.1132
+
+1.2267
+
+44 2
+
+1.0171
+
+1.5205
+
+1.6936
+
+1.8449
+
+Table 3: Values for European and American put options using Black-Scholes and Variance Gamma model. Strike K = 40. BS values have  = 0.2.
+
+limit of ,   0. Recall that under the Black-Scholes model, the log-returns follow a Brownian motion. Looking at the definition of the VG process (9), it is easy to see that when the drift  and the variance of the Gamma subordinator  are zero, the process turns out to be a Brownian motion:
+
+XtV
+
+G
+
+
+,0
+
+Wt
+
+As a conseguence, the price process (21) converges to the Geometric Brownian
+
+Motion:
+
+St = S0e(r+)t+Xt
+
+
+
+S0
+
+e(r-
+
+1 2
+
+2
+
+)t+Wt
+
+,0
+
+where:
+
+lim w = lim 1 log(1 -  - 1 2)
+
+,0
+
+,0 
+
+2
+
+= -12 2
+
+5 Finite difference approximation
+
+Consider the VG PIDE (24):
+
+V (t, x)
+
+V (t, x)
+
++ (r + )
+
++ V (t, x + y) - V (t, x) (dy) = rV (t, x). (40)
+
+t
+
+x
+
+R
+
+We can expand V (t, x + y) using the Taylor formula up to the fourth order:
+
+V
+
+(t, x
+
++
+
+y)
+
+=
+
+V
+
+(t,
+
+x)
+
++
+
+V (t, x
+
+x) y
+
++
+
+1 2
+
+2V (t, x2
+
+x) y2
+
+(41)
+
++
+
+1 6
+
+3V (t, x3
+
+x) y3
+
++
+
+1 24
+
+4V (t, x4
+
+x) y4
+
+and use the expression for the cumulants (see Appendix A). We call c~n the cumulant evaluated at t = 1 :
+
+c~n = yn(dy).
+
+(42)
+
+R
+
+14
+
+The approximated equation is a fourth order PDE:
+
+V (t, x)
+
+V (t, x) 1 2V (t, x)
+
+t + (r +  + c~1) x + 2 c~2 x2
+
+(43)
+
+1 3V (t, x) 1 4V (t, x) + 6 c~3 x3 + 24 c~4 x4 = rV (t, x)
+
+Consider the variable x in the interval [xmin, xmax] and discretize time and
+
+space,
+
+such
+
+that
+
+h=
+
+x =
+
+xmax -xmin N
+
+and
+
+t =
+
+T -t0 M
+
+for
+
+N, M
+
+ N.
+
+Using
+
+the
+
+variables xi = xmin + ih for i = 0, ..., N and tn = t0 + nt for n = 0, ..., M , we
+
+use the short notation
+
+V (tn, xi) = Vin.
+
+We can use the following discretization for the time derivative, corresponding
+
+to an explicit method:
+
+V (t, x) = Vin+1 - Vin ,
+
+(44)
+
+t
+
+t
+
+and the central difference for the spatial derivative:
+
+V (t, x) = Vin++h1 - Vin-+h1 ,
+
+x
+
+2h
+
+2V (t, x) x2
+
+=
+
+Vin++h1
+
++ Vin-+h1 h2
+
+- 2Vin+1 ,
+
+3V (t, x) x3
+
+=
+
+Vin++2h1
+
+- Vin-+2h1
+
++ 2Vin-+h1 2h3
+
+- 2Vin++h1 ,
+
+4V (t, x) x4
+
+=
+
+Vin-+2h1
+
++ Vin++2h1
+
+- 4Vin-+h1 h4
+
+- 4Vin++h1
+
++ 6Vin+1 .
+
+(45)
+
+The discretized equation is:
+
+Vin+1 - Vin t
+
++ (r +  + c~1)
+
+Vin++h1 - Vin-+h1 2h
+
+(46)
+
+1 + 2 c~2
+
+Vin++h1 + Vin-+h1 - 2Vin+1 h2
+
+1 + 6 c~3
+
+Vin++2h1 - Vin-+2h1 + 2Vin-+h1 - 2Vin++h1 2h3
+
+1 + 24 c~4
+
+Vin-+2h1 + Vin++2h1 - 4Vin-+h1 - 4Vin++h1 + 6Vin+1 h4
+
+= rVin
+
+Rearranging the terms we obtain:
+
+(1 + rt)Vin =Vin++h1
+
+(r
+
++
+
++ 2h
+
+c~1)t
+
++
+
+c~2t 2h2
+
+-
+
+c~3t 6h3
+
+-
+
+c~4t 6h4
+
+(47)
+
++Vin-+h1
+
+-(r
+
++
+
++ 2h
+
+c~1)t
+
++
+
+c~2t 2h2
+
++
+
+c~3t 6h3
+
+-
+
+c~4t 6h4
+
++Vin++2h1
+
+c~3t 12h3
+
++
+
+c~4t 24h4
+
++Vin-+2h1
+
+-
+
+c~3t 12h3
+
++
+
+c~4t 24h4
+
++Vin+1
+
+1
+
+-
+
+c~2t h2
+
++
+
+c~4t 4h4
+
+.
+
+15
+
+If we rename the coefficients, the equation is:
+
+(1 + rt)Vin = Vin++h1p+h + Vin-+h1p-h + Vin++2h1 p+2h + Vin-+2h1 p-2h + Vin+1p0. (48)
+
+The coefficients can be interpreted as the (risk neutral) transition probabilities for the Markov chain:
+
+X 
+
+(tn)
+
++
+
+2h
+
+
+
+X 
+
+(tn)
+
++
+
+h
+
+
+
+X(tn+1) = X(tn)
+
+X 
+
+(tn)
+
+-
+
+h
+
+
+
+X(tn) + 2h
+
+with P(xi  xi + 2h) = p+2h with P(xi  xi + h) = p+h with P(xi  xi) = p0 with P(xi  xi - h) = p-h with P(xi  xi - 2h) = p-2h
+
+It is straightforward to verify that the probabilities sum to 1. The value of the option in the previous time step is thus the discounted expectation under the risk neutral probability measure Q:
+
+Vin
+
+=
+
+1
+
+1 + rt
+
+EQ
+
+V n+1(X(tn+1)) X(tn) = xi
+
+.
+
+(49)
+
+Define the increments X = X(tn+1) - X(tn). We check that the local properties for the moments of the Markov chain are satisfied:
+
+µ = E[X] = r +  + c~1 t
+
+(50)
+
+µ2 = E[X2] = c~2t
+
+(51)
+
+µ3 = E[X3] = (r +  + c~1)h2 + c~3 t
+
+(52)
+
+µ4 = E[X4] = c~2h2 + c~4 t.
+
+(53)
+
+At first order in t we can calculate the variance, skewness and kurtosis7 :
+
+Var[X]  c~2t
+
+(54)
+
+Skew[X]  (r +  + c~1) h + c~3 1
+
+(55)
+
+(c~2)3/2
+
+t (c~2)3/2 t
+
+Kurt[X ]
+
+
+
+h2 c~2
+
+1 t
+
++
+
+c~4 (c~2)2
+
+1 .
+t
+
+(56)
+
+So, with a step size h proportional to the square root of t as in (33), we confirm that the local variance, skewness and kurtosis are consistent with their definition in terms of cumulants, up to a constant factor.
+Using the a step size h = 2(t), these probabilities can be approximated by the probabilities in (34). However, the probabilities obtained by the discretization of the PDE are not always positive. The two sets of probabilities are close only for a well determined set of parameters. This can be a topic of further research. We can plot, for example, the two probabilities obtained respectively by Moment Matching and PDE discretization:
+
+pM 3 M
+
+=
+
+3 + 2¯ 2(3 + ¯)
+
+and
+
+pP3 DE
+
+=
+
+1
+
+-
+
+c~2t h2
+
++
+
+c~4t 4h4
+
+7Remind that Skew[X]
+
+=
+
+µ3 µ32/2
+
+and Kurt[X]
+
+=
+
+µ4 µ22
+
+,
+
+with µi
+
+the central i-th moment.
+
+Remind also that µ3 = µ3 - 3µ µ2 + 2µ 3 and µ4 = µ4 - 4µ µ3 + 6µ 2µ2 - 3µ 4
+
+16
+
+Figure 4: Probabilities pM 3 M and pP3 DE as functions of the kurtosis.
+6 Conclusions
+In this paper we show how to price options using a multinomial method when the underlying price is modelled as a Variance Gamma process. The multinomial method is well known in the literature, see for example Cont and Tankov (2003), Yamada and Primbs (2001), Yamada and Primbs (2003) and Yamada and Primbs (2003), but in this work we focus the analysis only on the VG process and compare the numerical results with other methods.
+The VG process is approximated by a general jump process that has the same first four cumulants of the original VG process. We proved that the multinomial method converges to this approximated process. We obtained numerical results for European and American options, and compared them with PIDE methods and with results computed within the Black Scholes framework. It turns out that the multinomial method is faster than Finite Differences methods and easier to implement.
+We proposed a topic of further research in Section 5. The probabilities obtained by discretizing the approximated PDE are not always positive. They are related with the probabilities obtained by moment matching for some particular choice of the parameters. This relation can be further investigated. Another possible topic of further research is the comparison of our results for the American options with other numerical methods such as the Least Square Monte Carlo (Longstaff and Schwartz (2001)) and finite differences (Almendral and Oosterlee (2007)).
+17
+
+Acknowledgements
+Our sincere thanks are for the Department of Mathematics of ISEG and CEMAPRE, University of Lisbon, http://cemapre.iseg.ulisboa.pt/. This research was supported by the European Union in the FP7-PEOPLE-2012-ITN project STRIKE - Novel Methods in Computational Finance (304617), and by CEMAPRE MULTI/00491, financed by FCT/MEC through Portuguese national funds. We wish also to acknowledge all the members of the STRIKE network, http://www.itn-strike. eu/.
+
+A Poisson integration
+
+A convenient tool to analyse the jumps of a L´evy process is the random measure of jumps. Within this formalism it is possible to describe jump processes with infinite activity, as the VG process. The jump process associated to the L´evy process Xt is defined, for each 0  t  T , by:
+
+Xt = Xt - Xt-
+
+(57)
+
+where Xt- = limst Xs. Consider the set A  B(R\{0}) , the random measure of the jumps of Xt is defined by:
+
+N (t, A)() = #{Xs()  A : 0  s  t}
+
+(58)
+
+= 1A(Xs()).
+st
+
+This measure counts the number of jumps of size in A, up to time t. We say that A  B(R\{0}) is bounded below if 0  A¯ (zero does not belong to the closure
+
+of A). If A is bounded below, then N (t, A) <  and is a Poisson process with
+
+intensity
+
+(A) = E[N (1, A)],
+
+(59)
+
+(see Applebaum (2009) theorem 2.3.4 and 2.3.5). If A is not bounded below,
+
+it is possible to have (A) =  and N (t, A) is not a Poisson process because
+
+of the accumulation of infinite numbers of small jumps. The process N (t, A) is
+
+called Poisson random measure. The L´evy measure corresponds to the intensity
+
+of the Poisson measure. The Compensated Poisson random measure is defined
+
+by
+
+N~ (t, A) = N (t, A) - t(A),
+
+(60)
+
+which is a martingale. The next step is to define the integration with respect to a random measure.
+Following Applebaum (2009), let f : R  R be a Borel-measurable function. For any A bounded below, we define the Poisson integral of f as:
+
+f (x)N (t, dx)() = f (x)N (t, {x})().
+
+(61)
+
+A
+
+xA
+
+For the case of integration of the identity funcion, we see that every compound Poisson process can be represented by:
+
+t
+
+Xt =
+
+Xs =
+
+xN (dt, dx) = xN (t, dx).
+
+(62)
+
+s[0,t]
+
+0R
+
+R
+
+18
+
+We can also define in the same way the compensated Poisson integral with respect the compensated Poisson measure. Consider now the discontinuous part of a L´evy process whose jumps bigger than one are removed. Define
+
+xN~ (t, dx) = lim
+
+xN~ (t, dx),
+
+|x|<1
+
+0 <|x|<1
+
+(63)
+
+that represent the compensated sum of small jumps.
+We present a last formula for computing the moments of a general com-
+pound Poisson process. Let f : R  R be a measurable function such that A |f (x)|(dx) < , and Xt = A f (x)N (t, dx), the characteristic function of Xt is:
+
+E[eiuXt ] = E exp iu f (x)N (t, dx))
+
+(64)
+
+A
+
+= exp t eiuf(x) - 1  A  f -1(dx) .
+R
+
+Assuming that E[Xtn] < , all the moments can be computed from (64) by differenciation using eq:
+
+E[Xtn] =
+
+1 nXt (u) in un
+
+,
+u=0
+
+n  N.
+
+(65)
+
+For the case of f identity function, A = R, and  satisfying the integrability conditions, we find the expression for the cumulants using (68).
+
+cn = t xn(dx).
+
+(66)
+
+R
+
+The cumulants of Xt are thus the moments of its L´evy measure.
+
+B Cumulants
+
+The cumulant generating function HXt (u) of Xt is defined as the natural logarithm of its characteristic function (see Cont and Tankov (2003)). Using the L´evy-Khintchine representation for the characteristic function (1), it is easy to find its relation with the L´evy simbol:
+
+HXt (u) = log(Xt (u))
+
+(67)
+
+= t(u)
+
+ (iu)n = cn n!
+n=1
+
+The cumulants of a L´evy process are thus defined by:
+
+t n(u)
+
+cn = in un
+
+.
+u=0
+
+(68)
+
+19
+
+The cumulants are closely related to the central moments µn:
+
+n n-1
+
+µ0 = 1, µ1 = 0, µn =
+
+k - 1 ckµn-k for n > 1.
+
+(69)
+
+k=1
+
+For a Poisson process with finite firsts n moments, all the information about the cumulants is contained inside the L´evy measure. Expand in Taylor series the exponential
+
+eiux  1 + iux - u2x2 - iu3x3 + u4x4 + . . .
+
+2
+
+3!
+
+4!
+
+The L´evy symbol from the representation (7) becomes:
+
+t(u) = ib ut + t (eiux - 1)(dx)
+
+(70)
+
+R
+
+=i b-
+
+x(dx) ut + iut
+
+u2 x(dx) - t
+
+x2(dx)
+
+|x|<1
+
+R
+
+2R
+
+iu3 -t
+
+x3(dx) + u4 t
+
+x4(dx) + . . .
+
+3! R
+
+4! R
+
+=
+
+ic1u
+
+-
+
+c2u2 2
+
+-
+
+ic3u3 3!
+
++
+
+c4u4 4!
+
++
+
+...
+
+with c1 = t b + |x|1 x(dx) .
+
+References
+Almendral, A. and Oosterlee, C. W. (2007). On American options under the Variance Gamma process. Applied Mathematical Finance, 14(2):131­152.
+Applebaum, D. (2009). L´evy Processes and Stochastic Calculus. Cambridge University Press; 2nd edition.
+Barndorff-Nielsen (1998). Processes of Normal inverse Gaussian type. Finance and Stochastics, 2:41­68.
+Black, F. and Scholes, M. (1973). The pricing of options and corporate liabilities. The Journal of Political Economy, 81(3):637­654.
+Carr, P. and Madan, D. (1998). Option valuation using the Fast Fourier transform. Journal of Computational Finance, 2:61­73.
+Cont, R. and Tankov, P. (2003). Financial Modelling with Jump Processes. Chapman and Hall/CRC; 1 edition.
+Cont, R. and Voltchkova, E. (2005). A finite difference scheme for option pricing in jump diffusion and exponential L´evy models. SIAM Journal of numerical analysis, 43(4):1596­1626.
+Cox, J., Ross, S., and Rubinstein, M. (1979). Option pricing: A simplified approach. Journal of financial economics, 7:229­263.
+
+20
+
+Eberlein, E. and Keller, U. (1995). Hyperbolic distributions in finance. Bernoulli, 1(3):281­299.
+Fu, M. C. (2000). Variance-Gamma and Monte Carlo. Advances in Mathematical Finance., pages 21­34.
+Geman, H., Madan, D., and Yor, M. (1998). Asset prices are Brownian motion: only in business time. Quantitative Analysis in Financial Markets: Collected Papers of the New York University Mathematical Finance Seminar, 2(1):103­ 146.
+Hirsa, A. and Madan, D. (2001). Pricing American options under Variance Gamma. Journal of Computational Finance, 7.
+Longstaff, F. A. and Schwartz, E. S. (2001). Valuing American options by simulation: A simple Least-Squares approach. Review of Financial Studies, pages 113­147.
+Madan, D., Carr, P., and Chang, E. (1998). The Variance Gamma process and option pricing. European Finance Review, 2:79­105.
+Madan, D. and Milne, F. (1991). Option pricing with V.G. martingale components. Mathematical Finance, 1:39­55.
+Madan, D. and Seneta, E. (1990). The Variance Gamma (V.G.) model for share market returns. The journal of Business, 63(4):511­524.
+Sato, K. I. (1999). L´evy processes and infinitely divisible distributions. Cambridge University Press.
+Seneta, E. (2004). Fitting the Variance-Gamma model to financial data. Journal of Applied Probability, 41:177­187.
+Ssebugenyi, C.S. Mwaniki, I. and Konlack, V. (2013). On the minimal entropy martingale measure and multinomial lattices with cumulants. Applied Mathematical Finance, 20(4):359­379.
+Yamada, Y. and Primbs, J. (2001). Construction of multinomial lattice random walks for optimal hedges. Proc. of the 2001 international conference of Computational Science, pages 579­588.
+Yamada, Y. and Primbs, J. (2003). Mean square optimal hedges using higher order moments. Proc of the 2003 international conference on Computational Intelligence for Financial Engineering.
+Yamada, Y. and Primbs, J. (2004). Properties of multinomial lattices with cumulants for option pricing and hedging. Asia-Pacific Financial Markets, 11:335­365.
+21
+
+

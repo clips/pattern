@@ -1,0 +1,1236 @@
+arXiv:1701.00094v1 [physics.ins-det] 31 Dec 2016
+
+Phase Noise and Jitter in Digital Electronics
+Claudio E. Calossoand Enrico Rubiola
+January 3, 2017
+Abstract This article explains phase noise, jitter, and some slower phenomena in digital integrated circuits, focusing on high-demanding, noise-critical applications. We introduce the concept of phase type and time type (for short, -type and x-type) phase noise. The rules for scaling the noise with frequency are chiefly determined by the spectral properties of these two basic types, by the aliasing phenomenon, and by the input and output circuits. Then, we discuss the parameter extraction from experimental data and we report on the measured phase noise in some selected devices of different node size and complexity. We observed flicker noise between -80 and -130 dBrad2/Hz at 1 Hz offset, and white noise down to -165 dBrad2/Hz in some fortunate cases and using the appropriate tricks. It turns out that flicker noise is proportional to the reciprocal of the volume of the transistor. This unpleasant conclusion is supported by a gedanken experiment. Further experiments provide understanding on: (i) the interplay between noise sources in the internal PLL, often present in FPGAs; (ii) the chattering phenomenon, which consists in multiple bouncing at transitions; and (iii) thermal time constants, and their effect on phase wander and on the Allan variance.
+Keywords: Phase Noise, Jitter, Aliasing, FPGA, Bouncing, Allan Variance, Thermal Stability.
+1 Introduction
+Timing analysis is generally driven by the design of logic functions. That is why specs like "the input must be stable 600 ps before the clock edge" are just countless. From this standpoint, it is sufficient to describe the fluctuations in terms of jitter. Broadly speaking, jitter is the time fluctuation, evaluated in
+CEC is with INRIM, Division of Physics Metrology, Torino, Italy. E-mail c.calosso@inrim.it
+ER is with FEMTO-ST Institute, Univ. Bourgogne - Franche Comt´e, and CNRS. Address: ENSMM, 26 Chemin de l'Epitaphe, 25030 Besan¸con, France. Home page http://rubiola.org. E-mail rubiola@femto-st.fr
+1
+
+reference conditions. Because of the wide bandwidth, jitter is chiefly determined by the white noise. Notice that proper operation requires an analog bandwidth 3­4 times the switching frequency, and in turn up to a few GHz with nowadays components.
+When the design comes to spectral analysis and to highly stable oscillators, language and requirements change radically. Fluctuations are generally described in terms of phase noise, expressed either as S(f ) or L (f ), and the low-frequency phenomena are no longer negligible. Low phase noise is crucial in radars [1, 2, 3], modern telecomm [4], atomic frequency standards [5] and particle accelerators [6, 7], just to mention some.
+In the rapidly changing world of digital electronics, the literature on phase noise is rather old and focuses on frequency dividers, either in TTL and ECL components [8, 9], or in transistor-level modeling. Other references found are more about data transfer in telecom networks than about components [10, 11, 12].
+At the time of [8, 9], CMOS technology was used only in microprocessors and complex functions. Gate arrays and FPGAs came later, with a new rapid progress [13, 14, 15]. Interestingly for us, gate arrays and FPGAs bridge the gap between logical/computational functions and circuit-level design. The precise control on electrical signals that follows opens a new challenge in understanding noise. However, VLSI engineers are mostly concerned with noise margin, crosstalk, and power distribution [16]. Conversely, amplitude and phase noise are not studied.
+The purpose of this article is to set the basic knowledge about phase noise, and to provide examples. We focus on the clock distribution because clock edges are the most critical ones for timing. This does not sounds a limitation, first because critical signals can be synchronized to a clock line, and second because a chip in charge of a highly critical operation should not perform multiple tasks `cross-talking' at random with one another.
+Designing the experiments was initially difficult. However, after a noise model and the first results were available, reproducing similar experiments is surprisingly simple. We hope that the reader will be able to port our ideas to other technologies and logic families. The reader may also learn about reverse engineering the noise.
+
+2 Definitions, and Phase Noise Models
+
+Phase noise is often expressed as the one-sided PSD S(f ) of the random phase
+
+(t).
+
+In
+
+technical
+
+literature
+
+we
+
+often
+
+find
+
+L (f ),
+
+defined
+
+as
+
+L (f )
+
+=
+
+1 2
+
+S(f
+
+)
+
+and
+
+given in dBc/Hz [17]. Alternatively, phase noise is represented as the phase time
+
+fluctuation x(t), and its PSD Sx(f ). Since x(t) is equivalent to (t) converted
+
+2
+
+3
+
+Noise Type
+Pure phase type (pure -type)
+Aliased phase type (aliased -type) Pure time type (pure x-type) Aliased time type (aliased x-type)
+
+Table 1: Phase Noise Types and Their Parameters
+
+Dependence on 0 Main Equation
+
+Derived Equation
+
+Parameters
+
+S(f ) Sx(f )
+
+
+
+C
+
+1/02
+
+b-1
+
+=
+
+h-1 V02
+
+(12)
+
+k-1
+
+=
+
+h-1 4202V02
+
+(13)
+
+h-1 V0
+
+[V] [V]
+
+
+
+1/0
+
+1/03
+
+b0
+
+=
+
+B h0 0V02
+
+(10)
+
+k0
+
+=
+
+h0 B 4203V02
+
+(11)
+
+h0B V0
+
+[V] [V]
+
+02
+
+C
+
+k-1 = C
+
+(15)
+
+b-1 = 4202 k-1
+
+(16)
+
+ k-1
+
+[s]
+
+0
+
+1/0
+
+J2 k0 = 0
+
+(17) b0 = 42J20
+
+(18)
+
+J
+
+[s]
+
+into time, it holds that
+
+x(t)
+
+=
+
+1 20
+
+(t)
+
+Sx(f )
+
+=
+
+1 4202
+
+S(f
+
+)
+
+[s]
+
+(1)
+
+[s2/Hz] ,
+
+(2)
+
+where 0 is the carrier frequency. Our notation is consistent with general literature [17, 18], yet for the choice of fonts for some specific quantities as a minor detail.
+A model which is useful to describe phase noise is the polynomial law
+
+0
+
+S(f ) =
+
+bj f j
+
+j=m
+
+0
+
+Sx(f ) =
+
+kj f j ,
+
+(3)
+
+j=m
+
+where the integer m < 0 depends on the device. After (2), it holds that kj = bj/4202. The sum (3) describes the usual noise types: white phase noise b0, flicker phase noise b-1/f , white frequency noise b-2/f 2, etc. Common sense suggests that in two-port components, noise processes higher than 1/f (i.e., f j, j< - 1) cannot extend over unlimitedly low frequencies, otherwise the inputoutput delay diverges in the long run.
+The polynomial law is also used for the PSD of the voltage noise n(t)
+
+0
+
+Sn(f ) =
+
+hjf j [V2/Hz]
+
+(4)
+
+j=m
+
+(notice the font in hj, because hj reserved for Sy(f ) = j hjf j). The reader familiar with analog electronics finds an obvious analogy with the parameter en [nV/ Hz], specified separately for white and flicker noise.
+The rms time fluctuation J can be calculated integrating Sx(f ) over the system bandwidth (Parseval theorem)
+
+fH
+
+J2 =
+
+Sx(f ) df .
+
+(5)
+
+fL
+
+The lower limit fL is set by maximum differential delay in the system. The upper limit is fH = 0. The reason is that the fluctuations are sampled at the clock edges, thus at 20. The quantity J2 can be identified with the variance x2(t) , yet after filtering out the f < fL part.
+For our purposes, J is approximately equivalent to the rms jitter. By contrast, the general term `jitter' has wider scope, mostly oriented to SDH telecomm systems. It includes different types of noise and interferences starting at 10 Hz, with different weight for each (the term `wander' is preferred below 10 Hz). See for example [19, 20, 10] for standards and useful digressions. In a FPGA, there may be a factor 1000 between the rms jitter and the overall jitter, also including interferences.
+
+4
+
+in
+
+comparator
+
+vi(t)
+
+
+complex distribution
+
+out
+vo(t)
+
+threshold noise n(t)
+
+random delay x(t)
+
+full swing, SR and BW
+
+buffers
+
+Figure 1: Block diagram describing the noise in the clock distribution.
+
+We introduce two basic types of process discussed below, which take their names from the frequency-scaling properties.
+The phase-type (or pure phase-type) process is, by definition, a process in which the statistical properties of (t) are unaffected after changing the carrier frequency 0 in a suitable wide range. Hence, x(t) scales with 0 according to (1).
+The roles of (t) and x(t) are interchanged in the time-type process. So, the time-type (or pure time-type) process is, by definition, a process in which the statistical properties of x(t) are unaffected after changing the carrier frequency 0 in a suitable wide range. Of course, x(t) scales according to (1).
+The concepts of phase-type and time-type process apply to phase noise, wavelet variances (Allan and Allan-like), environmental effects, etc. Most readers are familiar with the `personality' of the -type noise from the phase noise of RF/microwave amplifiers [21]. Thermal noise, flicker, and some environmental effects in amplifiers behave in this way. Conversely, the thermal drift of the delay in a coaxial cable or optical fiber are time-type processes. The x-type noise also describes the ideal noise-free synthesizer, which transfers x(t) from the input to the output, independently of 0.
+3 Noise in the Clock Distribution
+A lot about phase and time fluctuations can be learned from the simple model sketched in Fig. 1. The input signal of frequency 0 is first converted into a square wave with full voltage swing, full slew rate and full bandwidth, and then distributed. Restricting our attention to white and flicker, we get the four behaviors listed in Table 1 and discussed below.
+3.1 Spectrum of the Phase-Type (-type) Phase Noise
+In digital circuits we often encounter the aliased -type noise. Let us start with -type noise at the input of a digital circuit, where the input signal v(t) crosses a threshold affected by a fluctuation n(t). Under the assumption that the input Slew Rate (SR) is high enough to avoid multiple bouncing (Sec. 6),
+
+5
+
+we get x(t) = n(t)/SR and, after (1),
+
+(t)
+
+=
+
+20 SR
+
+n(t) .
+
+(6)
+
+Notice that the direct measurement of n(t) is possible only in simple circuits which allow the simultaneous access to input and output of the gate.
+The sinusoid is the preferred clock waveform because it propagates through circuit boards with best impedance matching and lowest crosstalk and radiation, and because high purity reference oscillators work in sinusoidal regime. Discarding the dc component and setting the threshold at 0, the clock signal
+
+v(t) = V0 cos(20t)
+
+(7)
+
+has slew rate SRv = 20V0. In this conditions, the phase fluctuation is
+
+(t)
+
+=
+
+n(t) V0
+
+(-type) .
+
+(8)
+
+Generally, the analog bandwidth B of a digital circuit is greater than the max 0 by a factor of 3­4. This is necessary for the device to switch correctly. In turn, the bandwidth of n(t) is equal to B. Squaring the input signal samples n(t) at the zero crossings introduces aliasing. The spectrum of the sampled signal is
+
+Sn,s(f )
+
+=
+
+B 0
+
+h0
+
++
+
+...
+
+(sampled noise) ,
+
+(9)
+
+where the 1/f and higher terms are neglected because of the comparatively noise power. A trivial way to prove (9) is to calculate the variance n2(t) = h0B
+(Parseval theorem) before sampling, and to state that it is equal to the variance 2 = Sn,s(f )0 of the sampled signal. Accordingly, the phase noise is
+
+b0
+
+=
+
+h0 B 0V02
+
+(white, aliased -type)
+
+(10)
+
+k0
+
+=
+
+h0 B 4203V02
+
+(same, after (2)) .
+
+(11)
+
+Oppositely, aliasing has negligible effect on flicker h-1/f and on higher terms (1/f 2, 1/f 3 etc.). It follows from (8) that
+
+b-1
+
+=
+
+h-1 V02
+
+,
+
+C vs. 0
+
+(flicker, pure -type)
+
+(12)
+
+k-1
+
+=
+
+h-1 4202V02
+
+(same, after (2)) .
+
+(13)
+
+Figure 2 shows the spectral properties of the -type noise. Aliasing scales the white noise as 1/0, but it has no effect on flicker. The corner frequency fc which separates white from flicker regions is obtained equating (10) to (12)
+
+fc =
+
+0 B
+
+h-1 h0
+
+(corner, -type noise) .
+
+(14)
+
+6
+
+A: -type, phase noise
+S'(f )
+b0
+
+aliased '-type h0
+
+S'(f )
+
+=
+
+B 0V02
+
+Sn(f
+
+)
+
+ 1/0
+
+pure '-type h 1/f
+
+S'(f )
+
+=
+
+Sn(f ) V02
+
+etc.
+
+f
+
+corner
+
+fc
+
+=
+
+0 B
+
+h1 h0
+
+B:
+Sx(f )
+
+-type, phase-time noise
+
+ 1/02 1/f 3 line
+
+aliased '-type h0
+
+Sx(f )
+
+=
+
+B 0
+
+Sn(f ) (20V0)2
+
+k0
+
+ 1/03
+
+pure '-type h 1/f
+
+Sx(f )
+
+=
+
+Sn(f ) (20V0)2
+
+f
+
+Figure 2: Spectra originated by the phase type (-type) phase noise.
+
+3.2 Spectrum of the Time Type (x-type) Phase Noise
+The x-type noise originates after the input comparator, where the clock signal has full SR and bandwidth. Though threshold fluctuations are always present, the voltage-to-time conversion has little effect, and the gate is characterized by its delay fluctuations. So, each gate of the clock distribution contributes to the delay, and the fluctuations add up statistically. At a closer sight, the device may be organized hierarchically, for example in gates and cells, likely with a longer propagation time between cells. Nonetheless, the fluctuation is proportional to the length and to the complexity of the distribution chain.
+The pure x-type noise is found in the 1/f region and below, not affected by aliasing. The noise spectrum is described by
+
+k-1 = C vs. 0 b-1 = 4202 k-1
+
+(flicker, pure x-type)
+
+(15)
+
+(same, after (2)) ,
+
+(16)
+
+where k-1 is the technical parameter which results from the clock distribution. The aliased x-type results from sampling the fluctuation at the frequency
+20, which affects the white noise region. The spectral parameter k0 is found in
+
+7
+
+Sx(f )
+
+A: x-type, phase-time noise
+
+aliased x-type
+
+k0
+
+Sx(f )
+
+=
+
+1 0
+
+J2
+
+ 1/0
+
+S'(f )
+
+etc.
+
+f
+
+corner
+
+fc
+
+=
+
+0 k J2
+
+1
+
+B: x-type, phase noise
+
+ 02
+
+f line
+
+S'(f ) = 420J2
+
+b0
+
+ 0
+
+f
+
+Figure 3: Spectra originated by the time type (x-type) phase noise.
+
+the same way as with (9), neglecting the 1/f and higher terms
+
+k0 = J2/0 b0 = 42J20
+
+(white, aliased x-type)
+
+(17)
+
+(same, after (2)) .
+
+(18)
+
+The spectral properties of the x-type noise -- i.e., (15)­(18) -- are summarized in Fig. 3. The corner frequency which divides the flicker from the white region is calculated by equating (15) to (17)
+
+fc
+
+=
+
+0 k-1 J2
+
+(corner, x-type noise) .
+
+(19)
+
+3.3 Interpretation of Phase Noise Spectra
+A series of spectra S(f ) taken with several values of 0 helps to understand the interplay of noise types. Scaling 0 in powers of two seems appropriate.
+Let us start with flicker, S(f ) = b-1/f . Comparing (12) to (16), we expect that the noise is of the -type at low 0, and of the x-type at high 0, with a corner frequency
+
+c
+
+=
+
+1 2V0
+
+h-1 k-1
+
+(flicker) .
+
+(20)
+
+8
+
+A: Flicker (not aliased)
+b 1 S'(f ) = b 1/f
+C vs 0 '-type
+0
+k 1 Sx(f ) = k 1/f
+
+B: White (aliased)
+b0 S'(f ) = b0
+
+0
+
+k0
+
+Sx(f ) = k0
+
+1 2V0
+
+C vs 0 x-type
+0 r
+h1 k1
+
+0 p
+B h0 2V0J
+
+Figure 4: Comparison between -type and x-type noise.
+
+This is shown in Fig. 4 A. Far from c, we can evaluate
+
+h-1 = V02 b-1
+
+(0 c)
+
+(21)
+
+k-1
+
+=
+
+b-1 4202
+
+(0 c) .
+
+(22)
+
+The white phase noise S(f ) = b0 is described by (10) at low 0, and by (18) at high 0, separated by the cutoff
+
+
+
+c
+
+=
+
+B h0 2V0J
+
+.
+
+(white) .
+
+(23)
+
+This is shown on Fig. 4 B. At low 0, (10) enables to calculate the noise power n2(t) = h0 B of the input threshold
+
+h0 B = V02 b00
+
+(0 c) .
+
+(24)
+
+Assuming that B isequal to 3­4 times the maximum 0, we can infer h0 and the noise voltage en = h0. Conversely, at high 0 we can extract the fluctuation
+
+J
+
+=
+
+1 2
+
+b0 0
+
+(0 c) .
+
+(25)
+
+This can be compared to the rms jitter, if available in the specs.
+
+9
+
+digital phase meter
+digital phase meter
+
+A) Clock distribution
+DUT in
+ref
+
+B) Output buffer
+in DUT
+ref
+
+Figure 5: The digital phase meter is either a Symmetricom (now Microsemi) 5125 or 5120. The two outputs may have different frequency.
+4 Selected Noise Measurements
+We measured the phase noise of several devices routinely used in our labs. This is a necessary step, before considering an unbound search for the best. Accordingly, the measurement method (Fig. 5) is more about flexibility than about sensitivity. Anyway, the phase noise of digital components is generally higher than that of common low noise components (i.e., amplifiers and mixers). On the other hand, we need simple operation in a wide range of frequency, with signals that may not be at the same frequency as the reference. For us, this is the relevant feature of the Microsemi 5125 (1­400 MHz) and 5120 (1­30 MHz) instruments. These instruments make use of correlation and average on the spectra of two nominally equal channels which measure the same quantity, which rejects the single channel noise [22, 23]. Notice that the oscillator is common mode, with very small differential delay, hence its noise is highly rejected. The Fourier frequency spans from 1 mHz to 1 MHz.
+4.1 Cyclone III (65 nm)
+In a first experiment, we measure a Cyclone III [24] in a clock buffer configuration. The input sinusoidal clock V0 = 1 Vpeak (+10 dBm on 50 ) is squared and distributed as in Fig. 1 A. The spectrum is shown in Fig. 6.
+We first look at the white noise region. Our model suggests aliased -type noise (10) at low 0, and aliased x-type noise (18) beyond the cutoff given by (23), as shown on Fig. 4 B. Starting from 0 = 3.125 MHz, b0 scales down as -3.5 dB per factor-of-two, in fairly good agreement with the 3 dB predicted by the model. This results from the data fit shown on Fig. 6 top-right. Taking V0 = 1 V, (10) gives a threshold fluctuation h0B = 550 ± 65 µV. The `± 65 µV' results from b0  1/01.16' instead of the 1/0 law. Assuming B = 2.5 GHz (analog bandwidth, four times the maximum toggling frequency), we get
+h0 = 11 ± 1.3 nV/ Hz. This is in agreement with general experience, which suggests that general high-speed electronics has a typical noise level of 10­15 nV/ Hz.
+At 0  100 MHz, the white noise falls outside the 1 MHz span. Since this occultation occurs before the aliased x-type noise shows up, we have no direct
+
+10
+
+­85 b­1, dB
+­90
+
+Cyclone III clock buffer (out vs in)
+
+Cyclone III Flicker PM noise
+
+­125 b0, dB
+­130
+
+Cyclone III White PM noise
+
+­95 ­100 ­105
+
+­135 ­140
+
+­110 ­115
+3.1 6.2 12.5 25
+
+frequency, MHz 50 100 200 400
+
+­145
+­150 3.1
+
+6.2 12.5
+
+frequency, MHz
+
+25
+
+50 100
+
+S, dBrad2/Hz
+
+File: CYCIII-Clock-Buffer-W-fit C.Calosso & E.Rubiola
+
+­129 dB
+­133 dB ­135.5 dB ­139.5 dB
+­143.5 dB ­146.5 dB
+
+Figure 6: Phase noise of the Cyclone III clock distribution.
+access to k0. On Fig. 6, at the maximum f (1 MHz) and at 400 MHz carrier, the white noise is below -138 dBrad2/Hz (upper bound). This value, integrated over B = 400 MHz and converted into time, gives 1 ps, which is an upper bound for J.
+Flicker noise is in good agreement with pattern of Fig. 4 B only at 0  100 MHz. From this part of the plot, we calculate k-1 = 21 fs. By contrast, at 0  50 MHz b-1 scales as  1.5 dB per factor-of-two instead of being constant. This discrepancy is not understood. However, the 1/f region is rather irregular, and corrupted by bumps, even more pronounced at low 0.
+The lowest flicker found on Fig. 6 (-115 dBrad2/Hz at 3.125 MHz carrier), converted into voltage using (12), gives h-1 = 2.6 µV (upper bound for the input voltage flicker). Interestingly, this value is similar to the flicker of some CMOS high-speed operational amplifiers (for instance, 1.9 µV for the Texas Instruments OPA354A).
+Figure 7 shows the phase noise of the output buffer. The white noise is too
+11
+
+Cyclone III double buffer out-2 vs out-1
+
+­80
+
+b­1, dB
+
+Cyclone III
+
+­90
+
+Flicker PM noise
+
+Least-square fit
+
+­100
+
+­110
+
+­120
+Cyclone III
+­130 3.1 6.2 12.5 25
+
+frequency, MHz 50 100 200 400
+
+S, dBrad2/Hz
+
+File: CYCIII-Dbl-Buffer-commented C.Calosso, E.Rubiola, Dec 2014
+Figure 7: Phase noise of the Cyclone III, measured by comparing two outputs. Take away 3 dB for the noise of one buffer.
+low to be visible with the 1 MHz span, masked by flicker and by some bumps at 104 . . . 106 Hz. By contrast, the flicker noise is in perfect agreement with the 6 dB per factor-of-two model (pure x-type noise). Comparing Fig. 7 to Fig 6, at 0 = 400 MHz the flicker of the complete clock distribution is close to that of the output buffer. So, the contribution of the output buffer is not negligible. Conversely, at lower 0 a significantly larger flicker rises in the clock distribution chain.
+4.2 Measuring the Time Type (x-Type) Noise with the  Divider
+After some tests, we realized that the  frequency divider [25] is a good tool to measure the x-type noise of the clock distribution. First, a frequency divider is useful in that the input time fluctuation (-type noise, (13)) is kept low by using a high input frequency, while the measurement at the lower output frequency is
+12
+
+S, dBrad2/Hz
+
+÷10 dividers, 100 MHz ck,  config
+File: Lambda-dividers C.Calosso, E.Rubiola, Dec 2016
+Figure 8: Phase noise of some components used as a ÷10 frequency divider in the  configuration.
+simpler (both instruments are suitable, and the background is lower). Second, the  divider circumvents the aliasing phenomenon. In fact, a  divider ÷D provides a triangle-like output waveform by combining D phases of a square wave, which is equivalent to sampling at the input frequency.
+Figure 8 shows the phase noise of some devices used as ÷10 dividers in  configuration, with 100 MHz input and 10 MHz output frequency. The flicker coefficient is clearly identified, not corrupted by artifacts. The bump at 20 kHz (Zynq and Cyclone III) is due to the insufficiently filtered power supply. Finally, the  divider implemented with the Max 3000 deserves mentioning for its low noise (b-1 = -130.5 dBrad and b0 = -165 dBrad2/Hz). This is lower than regular dividers (general experience), and just 10 dB above the NIST regenerative dividers [26] at the same output frequency.
+5 The Volume Law
+The idea that the phase noise coefficient b-1 is proportional to 1/V, where V is the active volume, has been around for a while. In quartz resonators, this appears either directly or as a side effect of the larger size at lower frequency [27, 28, 29, 30, 31, 32]. In ultrastable Fabry-Perot cavities, flicker is powered by thermal noise and proportional to the reciprocal of the length [33, 34] which is approximately equivalent to 1/V after mechanical design rules.
+13
+
+1/ phase time coefficient k­1, dBs2
+k­1, fs
+
+­251 ­256 ­261 ­266 ­271 ­276 ­281
+
+Zynq 28 nm
+
+282
+
+Exact 1/V law ­30 dB/dec
+
+(Residuals 3.2 dB rms)
+
+158
+
+Cyclone II
+
+90 nm
+
+Max V Bad experim.
+
+180 nm
+
+conditions, discarded
+
+Cyclone III
+
+Cyclone 130 nm
+
+65 nm
+
+­26.2 dB/dec (Residuals 3 dB rms)
+
+89 50 28.2 15.8
+8.9
+
+­286 ­291
+
+Max 3000
+
+5.0
+
+300 nm
+
+2.8
+Technology, nm
+
+Figure 9: Flicker coefficient b-1 of digital devices, related to the cell size S.
+
+The 1/V law results from a gedankenexperiment in which we combine m equal and independent devices, giving b-1|total = b-1|dev/m. This has been confirmed experimentally with amplifiers [35, Chapter 2], [21]. Flicker is of microscopic origin because the probability density function is Gaussian, which originates from a large statistically-independent population through the central limit theorem. So, the m devices can be combined in a factor-of-m larger device exhibiting a factor-of-1/m lower flicker. Similarly, we expect higher flicker if the size of the device is scaled down, until space correlation appears. The limit for small volume is not known.
+In digital electronics, the volume V of the active region is proportional to the node size S. For reference, S is of 10 µm in Intel 4004 (1971), and of 16 nm in the Apple A10 Fusion chip of the iPhone 7. While the footprint surface is proportional to S2, the two scaling rules are common in the literature on VLSI systems, known as constant-voltage and Dennard [16, P. 253], [36], agree inthe depth proportional to S. Thus, V  S3. The wire delay may contain S, however, the flicker associated to wires is too small to deserve attention [37].
+We measured a few components using the ÷10  divider configuration. This gives access to the 1/f noise of the clock distribution, which is of the x-type. We used 100  10 MHz, or 30  3 MHz with the Cyclone and the Cyclone II for practical reasons, sharing a 5125A and a 5120A. The results are shown in Fig. 9, which compares the 1/f PM noise to S.
+The MAX V is not accounted for in the analysis because the spectrum was taken in unfavorable conditions, yet kept for completeness. A linear regression gives k-1 = -26.2 log10(S) - 219.5 dBs2, with S in nm. Fitting the same data with the exact volume law gives k-1 = -30 log10(S) - 212.1 dBrad2/Hz. The
+
+14
+
+0.2 B = 1024.0 Hz, Noise = 10.0 mVrms
+E. Rubiola, 26 Dec 2016
+0.1
+threshold
+0.0
+
+-0.1
+
+-0.2
+
+time
+
+0.47 0.48 0.49 0.50 0.51 0.52 0.53
+
+Figure 10: Simulation of carrier crossing a fluctuating threshold (normalized 1 Hz carrier, 1 Vpeak). Multiple crossing occurs in the center of the plot.
+
+-26.2 dB/dec slope is reasonably close to the 1/V law (-30 dB/dec), with a number of measurement and accuracy insufficient to assess a discrepancy.
+
+6 Input Chatter
+
+Chatter is a fast random switching of a comparator, which occurs in the presence
+of wideband noise when the mean square slew rate of noise exceeds that of the signal at the threshold, i.e., SR2n > SR2v. The phenomenon is shown in Fig. 10 and 11.
+Following the Rice's approach [38, 39], noise in the small interval [f, f + f ]
+can be represented as the sinusoidal signal nf (t) = Vf cos(2f t + f ), which has random amplitude Vf , random phase f , and slew rate
+
+SRn,f = 2f Vf sin(f ) .
+
+(26)
+
+The Parseval theorem requires that n2f (t) = Sn(f ) f , thus
+
+Vf2 = 2Sn(f ) f
+
+(27)
+
+because cos2(. . . ) = 1/2 in nf (t). The mean square slew rate is calculated combining (26) and (27), integrating on frequency, and averaging on f . Since sin2(f ) = 1/2,
+
+
+
+SR2n = 42
+
+f 2Sn(f ) df .
+
+(28)
+
+0
+
+In turn, SR2n is determined by white noise Sn(f ) = h0, f = [0, B]. Other noise types are negligible because they occur al low frequency, compared to B,
+
+15
+
+in out
+200 mV in
+4.7 MHz
+out
+
+100 mV 4.7 MHz
+50 ns/div
+
+Cyclone III
+
+Figure 11: Example of chatter (multiple bouncing) when the input SR is insufficient as compared to the SR associated to noise.
+
+and because of the f 2 term in (28). Thus
+
+SR2n
+
+=
+
+42 3
+
+h0B
+
+3
+
+.
+
+(29)
+
+Since the clock signal (7) has slew rate SRv = 20V0, the chatter threshold is
+
+0V0 =
+
+1 3
+
+h0B3
+
+(chatter threshold) .
+
+(30)
+
+Taking the nV/ Hz, thus
+
+Cyclone III parameters (Sec. 4.1, B h0 = 1.21×10-16 V2/Hz), and 0 =
+
+= 2.5 GHz and en = 11 4.7 MHz, (30) suggests a
+
+threshold V0 = 169 mV. On Fig. 11, we see that chattering occurs at V0 =
+
+100 mV, and at V0 = 50 mV the transitions are broken. Given the difficulty
+
+of identifying the parameters, the agreement between model and observation is
+
+satisfactory.
+
+After (30), chattering is more likely at low carrier frequency. However,
+
+Fig. 11 shows that this can occur at 5 MHz, a standard frequency of great
+
+interest for high stability signals.
+
+7 Internal PLL
+The internal PLL is intended to provide high frequency internal clock stabilized to an external reference, often 5-10-100 MHz. We show simple experiments which give insight in the Cyclone III.
+
+16
+
+i
+
+÷D
+
+phase detect
+
+mux
+
+÷N ÷C
+
+o
+
+optional ÷ 2
+
+vco
+
+File: CYCIII-PLL-Scheme
+
+VCO
+
+lock
+
+Figure 12: Cyclone III internal PLL frequency multiplier.
+
+The PLLs is shown in Fig. 12. The VCO operates in the 0.6­1.3 GHz range,
+
+extended to 300­650 MHz by the optional ÷2 divider, always present in our
+
+tests. A classical phase-frequency detector (PFD) is present, with charge pump
+
+output driving the analog feedback to the VCO. The PLL output frequency is
+
+o
+
+=
+
+N CD
+
+i
+
+.
+
+This
+
+leaves
+
+three
+
+degrees
+
+of
+
+freedom
+
+(N ,
+
+C
+
+and
+
+D),
+
+two
+
+of
+
+which
+
+are
+
+available to the designer. The programming tool (Quartus) uses one to ensure
+
+that internal design rules are satisfied.
+
+The VCO relies on a LC resonator on chip. General literature suggests a
+
+quality factor Q of 5­10, limited by the technology [40]. Therefore, we expect a
+
+Leeson frequency fL = vco/2Q of the order of 50 MHz.
+
+In a first experiment (Fig. 13), we use the PLL as a `cleanup' (o = i), yet with a high purity input. This gives the noise of the PLL, at different values
+
+of i. For lowest noise, we use the phase comparator at the highest possible
+
+frequency (i) by setting D = 1. The VCO frequency ends up to be 400, 600 or
+
+640 MHz, depending on o. On Fig. 13, the white noise floor is not seen. This is sound because noise can be white only beyond fL, which is beyond the 1 MHz span. Flicker is of the -type at 5 and 10 MHz, with b-1 = 2.5×10-10 rad2/Hz (-96 dB). Since this type of noise is not scaled down by the ÷N divider in the
+
+loop, we ascribe it to the phase detector. This is because (i) with the tight lock
+
+implemented we do not expect to see the VCO; and (ii) the input comparator
+
+and the output stage of the ÷N divider have some 10 dB lower noise in similar
+
+conditions (-115 dBrad2/Hz, Section 4.1).
+
+In the second experiment, we use the PLL as a frequency multiplier in powers
+
+of two (o = 2mi) from 10 MHz to 640 MHz, with i = 10 MHz. Again, we
+
+use D = 1 for lowest noise. The VCO delivers 320, 400 or 640 MHz, depending
+
+on o. The phase noise spectrum (Fig. 14) indicates that flicker is of the x-type, scaling up as o2. This indicates that the phase detector is the dominant source of noise, with negligible contribution of the dividers. So, the time fluctuation
+
+x(t) is transferred from the phase detector to the VCO, and then from the VCO
+
+to the output. The phase (t) scales accordingly, that is, ×N/C.
+
+17
+
+PLL used as clock buffer
+out = in
+30 MHz 20 MHz
+b­1
+
+b1
+
+'-type
+
+0
+
+20 MHz
+
+File: CYCIII-PLL-Buffer E.Rubiola, C.Calosso
+
+10 MHz
+
+5 MHz
+
+Figure 13: The internal PLL is used as a buffer, that is, o = i.
+
+8 Thermal Effects
+
+8.1 Thermal Transients
+
+Common sense suggests that delay is affected by the junction temperature TJ , while other parameters like TC and TA (case and ambient temperature) are comparatively smaller importance.
+Our method consists in using the electrical power P to heat the chip, and calculate TJ from the thermal resistance JA and the transients. In turn, P is chiefly set by the charge/discharge cycle of the gate capacitance, whose energy is E = CV 2. Thus, N gates switching at 0 dissipate P = N CV 20. Of course, P can be changed instantaneously. The delay is measured with a Symmetricom 5125A test set used as a phase meter and also as a time-interval counter.
+We measured a Cyclone III used as a clock buffer (actually, 10 buffers connected in parallel through 330  resistors). The temperature had to be low-pass filtered by covering the card with a small piece of tissue. The results are shown in Fig. 15.
+In the main body, all the curves show an exponential behavior plus a linear drift
+
+x(t) = k T 1 - e-t/~ + k t ,
+
+(31)
+
+where T = TJ - TA results from setting 0 in powers of two, and ~ is the time constant. For reference, we observed P = 1 W at 400 MHz, which means
+
+18
+
+b­1
+
+b1
+'-type
+0
+<<10 MHz
+
+File: CYCIII-PLL-Multiplier E.Rubiola, C.Calosso
+Figure 14: The internal PLL is used as a frequency multiplier in powers-of-two of multiples of the 10 MHz frequency reference.
+T  10 K with JA  10 K/W (including the thermal pad on the pcb), and neglecting the dissipation at 0 = 0.
+The linear drift (1 fs/s, or 10-15 fractional frequency) does not scale with power. This behavior is typical of the environment temperature, slowly drifting during the measurement (a fraction of a Kelvin over 1 hour). Extrapolating the drift to t = 0, we get the asymptotic effect of the P transient alone.
+The time constant ~ is found as the intercept of the tangent at t = 0 and the linear drift (dashed lines). This graphical process removes the drift. The value ~ = 400 s is the same for all the transients.
+The inset of Fig. 15 shows the delay versus the carrier frequency (dissipated power). As expected, the delay is proportional to TJ , set through 0. Accounting for P and JA, the thermal coefficient of the delay is 10 ps/K.
+8.2 Allan Deviation
+Generally, y( ) should follow the 1/ law (white and 1/f phase noise). Other types of instability, as frequency noise would reveal a phase noise steeper than 1/f , and the delay of the device would diverge in the long run. However, bumps may be present. Notice that 1/f phase noise in practice never yields large integrated delay.
+Figure 16 shows the Cyclone III Allan deviation y( ), measured with a Symmetricom 5125A test set.
+19
+
+Cyclone III clock buffer
+64
+
+400 s
+
+32
+
+10­15 drift 400 --> 200
+MHz
+
+16
+
+environment drift
+
+8
+
+time constant
+
+4
+
+effect of P 2
+10­15 drift
+
+10­15 drift 10­15 drift
+
+10­15 drift
+
+x, ps
+
+400 ­> 200
+
+50 ­> 25
+
+200 ­> 100 100 ­> 50
+
+1 2 4 8 16
+
+25 ­> 12.5
+
+ 0, AU
+
+File: Cyclone-III-Thermal-effect-log
+
+File: Cyclone-III-Thermal-effect C.Calosso, E.Rubiola
+
+Figure 15: Thermal effects measured on a Cyclone III FPGA. Each curve represents the thermal transient when the clock frequency is divided by two.
+We first discuss the 1/ region of Fig. 16 A. At low 0, y( ) decreases proportionally to 1/0. For  = 1 s, we read y = 10-12 at 3.125 MHz, 5×10-13 at 6.25 MHz, etc. At higher 0 the curves get closer to one another, and overlap at 0  100 MHz.
+Taking the classical conversion formulae for Allan variance and spectra (for example, [41, P. 77­80], or [17]), the 1/0 behavior is equivalent to h1  1/02 (frequency fluctuation spectrum Sy(f ) = h1f ), thus to b-1 = C vs. 0. This is the signature of the pure -type noise, as expected at low 0 and at low f , thus at long  . We recall that the fluctuation of the input threshold is dominant at low 0, and that the low f region is dominated by the 1/f phase noise, virtually unaffected by aliasing.
+By contrast, the y( ) = C vs. 0 behavior is equivalent to h1 = C vs. 02, thus b-1  02. This is the typical of the pure x-type noise, as expected at high 0 and at low f , thus at long  . The fluctuation of the input threshold is no longer relevant, and the low f region is still dominated by the 1/f phase noise, virtually unaffected by aliasing.
+In summary, the 1/ region of the y( ) plot is consistent with the predictions of Section 2.
+On the right hand of Fig. 16 A, y( ) seems to leave the 1/ law. This can only be a local phenomenon, i.e. a bump. Carrying on the experiment,
+20
+
+ADEV ADEV
+
+Cyclone III clock buffer
+File: Cyclone-III-adev-VS-Idle-time-H C.Calosso, E.Rubiola, Aug 2014
+
+A: contiguous runs
+
+B: 1H idle time between runs
+
+Measurement time, s
+
+Measurement time, s
+
+Bump due to the residual temperature of the previous run
+No significant bump if the measurement is delayed by 1 H after switching 0
+
+Figure 16: Allan deviation y( ) derived from the FPGA delay.
+in Fig. 16 A the measurement of y( ) restarts immediately after switching 0, while in Fig. 16 B the measurement of y( ) is delayed by 1 hour after switching 0. The relevant difference is that in A each curve suffers from the cooling-down transient of the previous measurement, while in B each measurement starts in steady state. Bumps show up in A at   30 s, and they get stronger at higher 0, where the thermal dissipation is stronger, and almost disappear in B. This is a qualitative confirmation of the presence of two separate time constants (end of Sec. 8.1).
+8.3 Side Effects of the Thermal Dissipation
+We have shown that the electrical activity inside the FPGA heats the chip, and in turn affects the delay. Variations exceeding 50 ps have been observed in the presence of a light burden. The analysis gives a warning, thermal crosstalk is around the corner when the same FPGA is in charge of more than one task, made worse by the heat latency. Attempts to fit low noise and high-stability functions (frequency dividers, etc.) in a chip processing at high rate may be difficult or give unpredictable results.
+
+21
+
+Acknowlegments
+This work is a part of the "Programme d'Investissement d'Avenir" projects in progress in Besancon, i.e., Oscillator IMP, First-TF, and Refimeve+. Funds come from the ANR, the Region Franche Comt´e, INRIM, and EMRP Project IND 55 Mclocks.
+We thank the Go Digital Working Group for general help and fruitful discussion, and among them chiefly Jean-Michel Friedt, Pierre-Yves "PYB" Bourgeois, and Gwenhael "Gwen" Goavec-M´erou.
+References
+[1] M. I. Skolnik, Introduction to Radar Systems, 3rd ed. New York, NY, USA: McGraw Hill, 2001.
+[2] M. I. Skolnik, Ed., Radar Handbook, 3rd ed. New York, NY, USA: McGraw Hill, 2008.
+[3] G. Krieger and M. Younis, "Impact of oscillator noise in bistatic and multistatic SAR," Geosci. Remote Sens. Lett., vol. 3, no. 3, pp. 424­428, Jul. 2006.
+[4] D. Esman, V. Ataie, B. P.-P. Kuo, N. Alic, and S. Radic, "Subnoise signal detection and communication," J. Ligtwave Technol., vol. 34, no. 22, pp. 5214­5219, Nov. 15, 2016.
+[5] F. Riehle, Ed., Proc. 8th Frequency Standards and Metrology Symp. Potsdam, Germany: IOP, Oct. 12­16, 2015, published as vol. 723, 2016 of Journal of Physics: Conference Series.
+[6] J. Serrano, P. Alvarez, M. Lipinski, and T. Wlostowski, "Accelerator timing system overview," in Proc. Particle Accelerator Conf. (PAC'11), New York, NY, USA, Mar. 28 ­ Apr. 1, 2011.
+[7] S. Jablonski, H. Schlarb, and C. Sydlo, "CW laser based phase reference distribution for particle accelerators," in Proc. Int'l Beam Instrumentation Conf. (IBIC2015), Melbourne, Australia, Sep. 13­17, 2015.
+[8] D. Phillips, "Random noise in digital gates and dividers," in Proc. Int'l Freq. Control Symp., Philadelphia, PA, USA, 1987, pp. 507­511.
+[9] W. F. Egan, "Modeling phase noise in frequency dividers," IEEE Trans. Ultras. Ferroelec. Freq. Contr., vol. 37, no. 4, pp. 307­315, Jul. 1990.
+[10] V. S. Reinhardt, "A review of time jitter and digital systems," in Proc. Int'l Freq. Control Symp., 2005, pp. 38­45.
+[11] S. Bregni, Synchronization of Digital Telecommunications Networks. Chichester, UK: Wiley, 2002.
+22
+
+[12] M. Kihara, "Performance aspects of reference clock distribution for evolving digital networks," IEEE Communications Mag., vol. 27, no. 4, pp. 24­34, Apr. 1989.
+[13] C. Mack, "The multiple lives of Moore's law," IEEE Spectrum, pp. 29­35, Apr. 2015.
+[14] A. B. Huang, "Moore's law is dying (and that could be good)," IEEE Spectrum, pp. 41­44, Apr. 2015.
+[15] "Moore's law 50 years," a series of articles and editorials on IEEE Spectrum, Apr. 2015 pp. 27­44.
+[16] N. H. E. Weste and D. M. Harris, CMOS VLSI Design, A Circuits and Systems Perspective, 4th ed. Boston, MA, USA: Addison Wesley, 2011.
+[17] E. S. Ferre-Pikal, IEEE Standard Definitions of Physical Quantities for Fundamental Frequency and Time Metrology­Random Instabilities (IEEE Standard 1139-2008), IEEE, New York, Feb. 2009.
+[18] CCIR Study Group VII, "Characterization of frequency and phase noise, Report no. 580-3," in Standard Frequencies and Time Signals, ser. Recommendations and Reports of the CCIR. Geneva, Switzerland: International Telecommunication Union (ITU), 1990, vol. VII (annex), pp. 160­171.
+[19] The control of Jitter and Wander Within the Optical Transport Network (OTDN), ITU, Sep. 2010, recommendation ITU-T G.8251.
+[20] M. P. Li, Jitter, Noise, and Signal Integrity at High-Speed. Boston, MA, USA: Prentice Hall, 2008.
+[21] R. Boudot and E. Rubiola, "Phase noise in RF and microwave amplifiers," IEEE Trans. Ultras. Ferroelec. Freq. Contr., vol. 59, no. 12, pp. 2613­2624, Dec. 2012.
+[22] E. Rubiola and F. Vernotte, "The cross-spectrum experimental method," arXiv:1004.5539 [physics.ins-det], Apr. 2010.
+[23] S. R. Stein, "The allan variance--challenges and opportunities," IEEE Trans. Ultras. Ferroelec. Freq. Contr., vol. 57, no. 3, pp. 540­547, Mar. 2010.
+[24] Cyclone III, Altera, type EP3C25E144C8N, speed grade 8, 24624 logic elements, 144-pin Enhanced Quad Flat Package, commercial temperature range.
+[25] C. E. Calosso and E. Rubiola, "The sampling theorem in  and  digital frequency dividers," in Proc. Europ. Freq. Time Forum and Freq. Control Symp. Joint Meeting, Prague, Czech Republic, Jul. 21­25, 2013, pp. 960­ 962.
+23
+
+[26] A. Hati, C. W. Nelson, C. Barnes, D. Lirette, T. Fortier, F. Quinlan, J. A. DeSalvo, A. Ludlow, S. A. Diddams, and D. A. Howe, "State-of-the-art RF signal generation from optical frequency division," IEEE Trans. Ultras. Ferroelec. Freq. Contr., vol. 60, no. 9, pp. 1796­1803, Sep. 2013.
+[27] V. F. Kroupa, "The state of the art of flicker frequency noise in BAW and SAW quartz resonators," IEEE Trans. Ultras. Ferroelec. Freq. Contr., vol. 35, no. 3, pp. 406­420, May 1998.
+[28] ----, "Theory of 1/f noise--a new approach," Phys. Lett. A, no. 336, pp. 126­132, Jan. 2005.
+[29] A. van der Ziel, "Semiclassical derivation of handel's expression for the hooge parameter," J. Appl. Phys., vol. 63, no. 7, pp. 2456­2457, 1988.
+[30] F. L. Walls, P. H. Handel, R. Besson, and J.-J. Gagnepain, "A new model of 1/f noise in baw quartz resonators," in Proc. Int'l Freq. Control Symp., May 27-29 1992, pp. 327­333.
+[31] M. M. Driscoll and W. P. Hanson, "Measured vs. volume model-predcted flicker-of-frequency instability in VHF quartz crystal resonators," in Proc. Int'l Freq. Control Symp., Jun. 2-4 1993, pp. 186­192.
+[32] F. Sthal, M. Devel, S. Ghosh, J. Imbaud, G. Cibiel, and R. Bourquin, "Volume dependence in handel's model of quartz crystal resonator noise," IEEE Trans. Ultras. Ferroelec. Freq. Contr., vol. 60, no. 9, pp. 1971­1977, Sep. 2013.
+[33] P. R. Saulson, "Thermal noise in mechanical experiments," Phys. Rev. D, vol. 42, no. 8, Oct. 15 th, 1990.
+[34] K. Numata, A. Kemery, and J. Camp, "Thermal-noise limit in the frequency stabilization of lasers with rigid cavities," Phys. Rev. Lett., pp. 250 602 1­4, Dec. 17, 2004.
+[35] E. Rubiola, Phase Noise and Frequency Stability in Oscillators. Cambridge, UK: Cambridge University Press, Nov. 2008.
+[36] R. H. Dennard, F. H. Gaensslen, V. L. Rideout, E. Bassous, and A. R. LeBlanc, "Design of ion-implanted mosfet's with very small physical dimensions," IEEE J. Solid-State Circuits, vol. 9, no. 5, pp. 256­268, Oct. 1974, also Proc. IEEE 87(4), Apr 1999.
+[37] A. H. Verbruggen, H. Stoll, K. Heeck, and R. H. Koch, "A novel technique for measuring resistance fluctuations independently of background noise," Acta Phys. Polonica A, vol. 48, pp. 233­236, Mar. 1989.
+[38] S. O. Rice, "Mathematical analysis of random noise (Part I and II)," Bell System Technical Journal, vol. 23, no. 3, pp. 282­332, Jul. 1944.
+24
+
+[39] ----, "Mathematical analysis of random noise (Part III and IV)," Bell System Technical Journal, vol. 24, no. 1, pp. 46­156, Jan. 1945.
+[40] A. Hajimiri and T. H. Lee, "Design issues in CMOS differential LC oscillators," IEEE J. Solid-State Circuits, vol. 34, no. 5, pp. 717­724, May 1999.
+[41] V. F. Kroupa, Ed., Frequency Stability: Fundamentals and Measurement. New York: IEEE Press, 1983.
+25
+
+

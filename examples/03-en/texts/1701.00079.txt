@@ -1,0 +1,591 @@
+arXiv:1701.00079v2 [gr-qc] 15 Mar 2017
+
+Shadows of Einstein-dilaton-Gauss-Bonnet black holes
+Pedro V. P. Cunha1,2, Carlos A. R. Herdeiro1, Burkhard Kleihaus3, Jutta Kunz3 and Eugen Radu1
+1Departamento de F´isica da Universidade de Aveiro and Centre for Research and Development in Mathematics and Applications (CIDMA),
+Campus de Santiago, 3810-183 Aveiro, Portugal pintodacunha@tecnico.ulisboa.pt; herdeiro@ua.pt; eugen.radu@ua.pt
+2CENTRA, Departamento de F´isica, Instituto Superior T´ecnico Universidade de Lisboa, Avenida Rovisco Pais 1, 1049, Lisboa, Portugal
+3Institute of Physics, University of Oldenburg, Oldenburg, 26111, Germany b.kleihaus@uni-oldenburg.de; jutta.kunz@uni-oldenburg.de
+March 17, 2017
+Abstract
+We study the shadows of the fully non-linear, asymptotically flat Einstein-dilatonGauss-Bonnet (EdGB) black holes (BHs), for both static and rotating solutions. We find that, in all cases, these shadows are smaller than for comparable Kerr BHs, i.e. with the same total mass and angular momentum under similar observation conditions. In order to compare both cases we provide quantitative shadow parameters, observing in particular that the differences in the shadows mean radii are never larger than the percent level. Therefore, generically, EdGB BHs cannot be excluded by (near future) shadow observations alone. On the theoretical side, we find no clear signature of some exotic features of EdGB BHs on the corresponding shadows, such as the regions of negative (Komar, say) energy density outside the horizon. We speculate that this is due to the fact that the Komar energy interior to the light rings (or more precisely, the surfaces of constant radial coordinate that intersect the light rings in the equatorial plane) is always smaller than the ADM mass, and consequently the corresponding shadows are smaller than those of comparable Kerr BHs. The analysis herein provides a clear example that it is the light ring impact parameter, rather than its "size", that determines a BH shadow.
+1
+
+1 Introduction
+Ultraviolet theoretical inconsistencies of Einstein's General Relativity, such as its nonrenormalizability [1, 2, 3] and the existence of singularities, have since long motivated the suggestion that higher curvature corrections should be taken into account, in an improved theory of gravity (see e.g. [4]). Inclusion of a finite set of such higher curvature corrections, however, generically leads to runaway modes (Ostrogradsky instabilities [5]) in the classical theory and a breakdown of unitarity due to ghosts, in the quantum theory. These undesirable properties can be simply diagnosed, at the level of the classic field equations, by the presence of third order time (and consequently also space, by covariance) derivatives. A natural way around this problem is to require a self-consistent model, obtained as a truncation of the higher curvature expansion, to yield a set of field equations without such higher order derivatives.
+Lovelock [6] first established, for vacuum gravity, what are the allowed curvature combinations so that the field equations have no higher than second order time derivatives. It turns out that, in a Lagrangian, these combinations are simply the Euler densities, particular scalar polynomial combinations of the curvature tensors of order n. Since the nth Euler density is a topological invariant in spacetime dimension D = 2n and yields a non-dynamical contribution to the action in dimensions D 2n, an immediate corollary is that, in D = 4 vacuum gravity, the most general Lovelock theory is a combination of the 0th and 1st Euler density, or in other words, General Relativity with a cosmological constant. The 2nd Euler density, known as the Gauss-Bonnet (GB) combination, is a topological invariant in D = 4 and does not contribute to the dynamical equations of motion if included in the action.
+There is, however, a simple and natural way to make the GB combination dynamical in a D = 4 theory: couple it to a dynamical scalar field. This is actually a model that emerges naturally in string theory [7] (see also [8] for a discussion on this point), where the scalar field is the dilaton, and can be considered as a simple effective model to investigate the consequences of higher curvature corrections in D = 4 gravity. The corresponding model takes the name of Einstein-dilaton-Gauss-Bonnet (EdGB) theory and is described by the action (1) in section 2 below.
+Black holes (BHs) in EdGB theory were first shown to exist, in spherical symmetry, by Kanti et al. [8], wherein they were obtained numerically. These solutions, which moreover are perturbatively stable along their main branch [9], are asymptotically flat, regular on and outside an event horizon, and describe a horizon surrounded by a non-trivial dilaton profile. They circumvent some well-known no (real) scalar hair theorems, namely those by Bekenstein [10, 11] (see [12] for a recent review), due to the non minimal coupling of the dilaton to the geometry and the fact that if one associates some effective matter with the GB term, then this represents exotic matter, violating the typical energy conditions. One manifestation of this effective exotic matter is that the BH solutions have regions of negative energy density outside the horizon. Another manifestation is that there is a minimal mass for BHs, determined by the GB coupling. We remark that the scalar hair of this BHs
+2
+
+has no-independent conserved charge, thus being called secondary. See, e.g. [13, 14, 15, 16, 17] for further discussions of these spherically symmetric solutions and some charged generalizations.1
+Rotating BHs in EdGB theory were found, fully non-linearly in [20, 21] (see also [22, 23, 24, 25] for perturbative studies). A minimal mass depending on the GB coupling still exists for these rotating solutions and, as a novel physical feature, some (small) violations of the Kerr bound in terms of ADM quantities are observed. Again, regions with negative energy density exist outside the horizon.
+In this paper, we shall investigate how the dGB term impacts on one particular observable feature of a BH: its shadow [26]. BH shadows can be roughly described as the silhouette produced by the BH when placed in front of a bright background. They are determined by the BH absorption cross section for light at high frequencies. Over the last few years there has been a renewed theoretical interest in this old concept, first discussed for the Kerr BH by Bardeen [27], due to observational attempts to measure the BH shadow of the supermassive BHs in our galactic center as well as that in the centre of M87 [28]. In particular, in [29, 30, 31], the shadows of a type of hairy BHs that connect continuously to Kerr, within General Relativity and with matter obeying all energy conditions, called Kerr BHs with scalar hair [32, 33, 34], have been studied. It has been pointed out that, generically, these shadows are smaller than those of a comparable Kerr BH, i.e. a vacuum rotating BH with the same total mass and angular momentum. A possible interpretation of this qualitative behaviour is the following: the total mass (and angular momentum) of the hairy BHs is now partly stored in the scalar field outside the horizon; in particular the existence of some energy outside the region of unstable spherical photon orbits, also referred to as photon region (see section 3.1) [35], implies that less energy exists inside this region and hence the light rings should be smaller (within an appropriate measure) as compared to their vacuum counterparts and consequently so should be the shadows.
+The above interpretation raises an interesting question in relation to the BHs in EdGB theory. Since these have negative energy densities outside the horizon, how do these regions of effective exotic matter impact on their shadows? In particular could there be a negative energy contribution outside the photon region that is sufficiently large to increase the shadow size with respect to a vacuum counterpart? We remark that for other non-vacuum solutions with physical matter, i.e. obeying all energy conditions, the size of the shadow typically decreases with respect to the size of a comparable vacuum Kerr BH ­ see e.g. [36] for electrically charged BHs. However, larger shadows have also been observed, e.g., in extended Chern-Simons gravity [37] or brane world BHs [38] which possess effective exotic matter, similarly to EdGB. Nevertheless, we shall see that for EdGB the shadows are always smaller with respect to the vacuum case, with the maximal deviation being of the order of only a few percent. For some work on BH shadows in different models see [29, 35, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46], and in particular [47] for perturbative EdGB BHs.
+1BH solutions of a closely related Horndeski model can be found in [18, 19].
+3
+
+This paper is organized as follows. In Section 2 we describe the EdGB model and present its field equations. An overview of the known BH solutions in this model, both static and stationary, is also provided there, together with the corresponding domain of existence and limiting cases. Then, in Section 3 we present the shadows for a representative sample of solutions and interpret the patterns obtained. We close with a discussion in Section 4.
+
+2 The model and solutions
+
+2.1 The field equations and general results
+
+We consider the Einstein-dilaton-Gauss-Bonnet (EdGB) model, described by the following action2
+
+S
+
+=
+
+1 16
+
+d4x-g
+
+R
+
+-
+
+1 2
+
+(µ
+
+)2
+
++
+
+e-RG2 B
+
+,
+
+(1)
+
+where  is the dilaton field,  is a parameter with units (length)2 and RG2 B = RµRµ - 4RµRµ + R2 is the GB combination. Also,  is an input parameter of the theory3, with most of the studies assuming  = 1. Both  and  are dimensionless.
+Varying the action (1) with respect to gµ, we obtain4 the Einstein equations:
+
+Gµ = Tµ(eff) ,
+
+(2)
+
+where Gµ is the standard Einstein tensor and the effective energy-momentum tensor reads
+
+Tµ(eff)
+
+
+
+1 2
+
+µ 
+
+-
+
+1 2
+
+gµ
+
+()2
+
+- e-Tµ(G Bd) ,
+
+(3)
+
+where the full expression for Tµ(G Bd) can be found in [21]. Varying the action (1) with respect to the dilaton field, on the other hand, yields the scalar equation of motion, which reads:
+
+ = e-RG2 B .
+
+(4)
+
+The EdGB model possesses BH and wormhole [49] solutions, but no particle-like solitonic configurations are known (for a review, see the recent work [50]), although the coupling to matter leads, e.g., to neutron stars [51, 52]. Note that in contrast to the GR case, all EdGB solutions (with  = 0) have been obtained numerically.
+In terms of the spherical-type coordinates r,  and , all known EdGB solutions possess at least two Killing vectors  = /t and  = / (where t is the time coordinate). Then a generic metric ansatz can be written as
+
+ds2 = grrdr2 + gd2 + gd2 + 2gtddt + gttdt2 ,
+
+(5)
+
+2In this work we shall use geometric units c = G = 1. 3Since the system possesses the symmetry   -,   -, it is enough to consider strictly positive
+values of . Furthermore, in order to have a non-trivial coupling to the dilaton field,  = 0. 4We follow the conventions in Ref. [48].
+
+4
+
+where gµ and the scalar  are functions of (r, ). Moreover, we can set () = 0 without any loss of generality (any other choice would correspond to a rescaling of the radial coordinate in (5) [21]). The ADM (Arnowitt-Deser-Misner) mass M and angular momentum J are read off, as usual, from the asymptotic expansion
+
+gtt
+
+=
+
+-1
+
++
+
+2M r
+
++
+
+...,
+
+gt
+
+=
+
+-
+
+2J r
+
+sin2  + . . .
+
+.
+
+(6)
+
+One can also define a global dilaton measure D from the asymptotic expansion of the scalar field,  = -D/r + . . . which however is not an independent quantity, since the dilaton field does not qualify as primary hair [8], [21].
+
+2.2 The static EdGB black holes
+
+Consider for the moment the static, spherically symmetric solutions (J = 0). Close to the event horizon, these solutions possess an approximate expression as a power series in r - rH , where rH is the radial coordinate of the horizon. In particular, in Schwarzschild coordinates one finds (r) = H + 1(r - rH) + . . . , where 1 satisfies a quadratic equation (see e.g. [8], [13], [14], [21]). Since the scalar field is real, the discriminant of the quadratic equation is required to be positive, yielding the condition:
+
+1
+
+-
+
+962
+
+2
+
+e-2H A2H /(16
+
+2)
+
+
+
+0,
+
+(7)
+
+where AH is the event horizon area. Eventually, this condition will be violated after some limiting solution is reached, beyond which solutions cease to exist in the parameter space. For a given , all solutions can be obtained continuously in the parameter space. When appropriately scaled they form a line, starting from the smooth GR limit (  0 as   0), and ending at the limiting solution. The existence of the latter places a lower bound on the BH horizon radius. It actually also implies the existence of a lower bound on the BH mass. In particular, as discussed in [8, 22], the static EdGB solutions with  = 1 are limited to the parameter range 0  /M2 0.1728. A rather similar behaviour holds5 for  = 1.
+Solutions no longer exist if the ratio /M2 is larger than a critical value, which decreases with increasing . The configuration at this maximal value is dubbed the critical solution, which needs not to coincide with the limiting solution. In particular, for large enough , the solution line can be extended backwards in /M2, into a "secondary branch", after the critical configuration is reached [48]; this secondary branch eventually terminates at the limiting solution. Some of these features can be seen in an (, D)-diagram of solutions with different , as shown in Figure 1 (left). In particular, notice how for sufficiently large  values it is possible to have two different values of D/M for the same /M2, which indicates the presence of two branches. According to arguments from catastrophy theory, the stability should change at the critical solution, so that the solutions along the secondary branch will be unstable [13].
+
+5Note that solutions seem to exist for any nonzero value of .
+
+5
+
+D/M
+
+0.6
+
+=0.5
+
+=1
+
+=2 0.4
+
+=5
+a
+0.2 =10
+b
+
+00.0001
+
+0.001
+
+0.01
+
+0.1
+
+1
+
+/M2
+
+Figure 1: (Left) Domain of existence of static EdGB BHs in a D/M vs. /M2 diagram with several values of . The points a and b depict the limiting and critical solutions respectively for  = 10. (Right) Domain of existence of spinning solutions with  = 1. The set of considered (spinning) solutions in Fig. 3 and Fig. 4 are shown here as highlighted points.
+
+2.3 The spinning EdGB black holes
+Spherically symmetric BHs typically possess spinning generalizations. However, so far only the  = 1 case has been explored in the literature. These BHs were first obtained at the fully non-linear level in [20] (see also [22, 23, 24, 25] for perturbative results). Similar to the GR case, these BHs possess a Z2 symmetry along the equatorial plane ( = /2) and are obtained by solving the field equations (2) and (4) subject to appropriate boundary conditions that are detailed in [21].
+The domain of existence of EdGB BHs is bounded by four sets of solutions: i) the set of static (i.e. spherically symmetric) EdGB BHs with J = 0; ii) the set of extremal (i.e., zero temperature) EdGB BHs; iii) the set of critical solutions; and iv) the set of GR solutions ­ the Kerr/Schwarzschild BHs with  = 0. In Fig. 3 and Fig. 4 the boundary line displayed includes the sets ii) and iii).
+The general critical solutions are the rotating generalization of the static case, while the extremal set does not appear to be regular on the horizon.6 Moreover, the mass of the EdGB rotating BHs is always bounded from below, whereas the angular momentum can (slightly) exceed the Kerr bound, which is given by J M2. Further details on these aspects together with various plots of the domain of existence are found in [21]. Here we give the domain of existence in (, D)-variables [Figure 1 (right)] and in (, J)-variables (Figure 3).
+6Perturbing the extremal vacuum solution in , the scalar field/metric develops singularities at the poles in first/second order in .
+
+6
+
+3 Shadows
+
+3.1 Light rings
+As it is well described in the literature, the Kerr spacetime supports unstable photon orbits with a fixed Boyer-Lindquist radial coordinate, i.e., the photon region [27]. A subset of the latter is restricted to the equatorial plane ( = /2), and comprises two independent circular photon orbits with opposite rotation senses, dubbed here as light rings. Such orbits are not unique to the Kerr spacetime and have an intrinsic relation to the BH shadow. In particular, unstable light rings embody a threshold of stability between equatorial null geodesics that scatter to infinity and ones that plunge into the BH. Consequently, light rings account for the shadow edge in observations restricted to the equatorial plane's line of sight (provided both exist). Following [31], the light ring positions can be obtained by analysing the following condition in the equatorial plane:
+
+-gt ± gt2 - gttg
+
+rh± = 0, with h± =
+
+. gtt
+
+(8)
+
+Recalling the Kerr case, each sign ± leads to one of the two light rings. Curiously, although the EdGB BHs discussed in this paper are fully non-linear solutions (rather than perturbations of Kerr), the light ring qualitative structure still appears to be the same as in Kerr. However, notice that for other families of solutions this is not always the case. For instance, multiple light rings can appear for BHs with scalar hair, some of which are stable [31].
+
+3.2 Characterizing the shadow
+Assuming that a suitable light source is present to provide contrast, a BH casts a black region in an observer's sky, commonly called the BH shadow. Although some characteristics are observer dependent [30], the size and shape of the shadow are essentially a manifestation of the spacetime properties close to the BH, depending for instance on the light ring characteristics. Consequently, instructive physics can be inferred from such observations.
+Consider the dummy shadow in Fig. 2, represented in the image plane of the observer. A Cartesian parametrization (x, y) is used, where the x-axis is defined to be parallel to the azimuthal Killing vector  = / at the observer's position. The origin (0, 0) of this coordinate system, defined as point O in Fig. 2, corresponds to the direction pointing towards the center of the BH -/r (from the reader into the paper).
+The point C in the figure, taken to be the center of the shadow, is such that its abscissa is given by xC = (xmax + xmin)/2, where xmax and xmin are respectively the maximum and minimum abscissae of the shadow's edge. If the observer is in the equatorial plane ( = /2), which will be assumed throughout the paper, then the shadow inherits along the x-axis the spacetime reflection symmetry, giving yC = 0. Since the points C and O need not to coincide,
+7
+
+y
+
+P r
+
+x1
+
+O C
+
+x2 x
+
+Figure 2: Representation of a BH shadow in the (x, y) image plane of the observer.
+
+a specific feature of a shadow is the displacement xC between the shadow and the center of the image plane O.
+A generic point P on the shadow's edge is at a distance r from C, which is defined as
+r  yP 2 + (xP - xC )2. Given the line element ds2 = dx2 + dy2, the perimeter P of the shadow, its average radius r¯ and the deviation from sphericity r are defined by:
+
+ds  P,
+
+r¯
+
+
+
+1 P
+
+r ds,
+
+r =
+
+1 P
+
+1
+
+-
+
+r r¯
+
+2
+ds.
+
+(9)
+
+All these parameters are expressed in units of the ADM mass M.
+In some cases, it is possible to compare the shadow parameters of a given EdGB solution with the ones from a Kerr BH with the same ADM mass M and angular momentum J. Hence, let us also define the relative deviations to the Kerr case7:
+
+r
+
+=
+
+r¯
+
+- r¯kerr r¯kerr
+
+,
+
+
+
+=
+
+r
+
+- kerr kerr
+
+,
+
+xC
+
+=
+
+xC
+
+- xC
+
+xC kerr
+kerr
+
+.
+
+(10)
+
+3.3 Rotating EdGB BHs
+Due to the existence of a hidden constant of motion - the Carter constant - the edge of the Kerr shadow can be obtained in a closed analytical form [27, 35, 53]. However, EdGB BHs are not expected to have such a property, since they all appear to be of Petrov type I [21]. This is consistent with the perturbative results in [24]. As a consequence, in general the shadow of the latter has to be obtained numerically through the standard backwards ray-tracing framework [45, 54]. In order to generate a virtual image of the shadow, this
+7An analytical expression for the Kerr shadow, as seen by an observer with zero angular momentum (ZAMO), can be found in [53].
+
+8
+
+method requires propagating null geodesics "backwards in time", where a high frequency approximation is assumed, starting from the observer's position and determining the source of each light ray. Different points in the image plane correspond to different directions in the observer's sky, and hence to different initial conditions of the geodesic equations. The shadow is precisely the set of all those initial conditions which induce geodesics with endpoints on the event horizon, when propagated backwards in time. Since the event horizon is not a source of any light (classically), the shadow actually embodies a lack of radiation8.
+
+The geodesic propagation method described above is necessary to compute most of the
+
+shadow edge. However, the points x1 and x2 in Fig. 2, where the edge intersects the x-axis, can be computed using a highly precise local method. In particular, for an observer in the
+
+equatorial plane, light rings are the orbits responsible for these intersection points. The
+
+impact parameter  = L/E will play here a crucial role, where E and L are respectively the
+
+photon's energy and axial angular momentum with respect to a static observer at infinity.
+
+Moreover, these quantities are constants of geodesic motion, connected to the Killing vectors
+
+of the spacetime  = /t and  = /. The function h± will now be helpful again, as
+
+the value of  in a given light ring orbit is provided simply by  = h±, computed at that
+
+position [31].
+
+The precise relation between the image coordinate x and the impact parameter  depends
+
+on the choice for the observer's frame, but also on how x is constructed in terms of observation
+
+angles. Following [31, 53], the observation angle  along that
+
+x coordinate is defined axis: x = -R~ , where
+
+to be directly proportional the perimetral radius R~ 
+
+togan
+
+is computed at the observer's position. By computing the projection of the photon's 4-
+
+momentum onto a ZAMO frame [31, 53], the relation sin  = /(A0 +  B0) can be derived
+(if y = 0),where the following quantities are computed at the position of the observer: A0 = g/ D, B0 = gt/ D, with D  gt2 - gttg. This leads to the relation (with y = 0):
+
+x = -R~ arcsin
+
+ A0 + B0
+
+.
+
+(11)
+
+For the sake of the argument, consider also a very far away observer (r  ). In these conditions we obtain the very simple relation x = -. By computing 1 and 2 for each of the two light rings, we can obtain the shadow radius r¯x on the x-axis simply with r¯x = |x1 - x2|/2, where each x is evaluated from the respective . Notice that this is a local method, in the sense that it does not require the evolution of a geodesic throughout the spacetime. Hence, obtaining a very precise r¯x value only depends on knowing  at the light rings with sufficiently high accuracy. Furthermore, by comparing this r¯x value with the one obtained with ray-tracing, we can estimate that the precision of the latter is around  0.08%.
+
+The data of the EdGB shadows, computed with ray-tracing, is represented in Fig. 3 and
+
+Fig. 4, where a equatorial plane,
+
+daitlaatornadcioaul pcloinorgdina=te1suischastshuamt eR~d.=Thgeob=se1rv5eMr
+
+is .
+
+always
+
+placed
+
+in
+
+the
+
+8We are implicitly assuming that there is no glowing matter in front of the BH.
+
+9
+
+J/M2 J/M2
+
+1
+ 0.1
+0.8
+
+r¯ - 4.68M
+boundary
+
+0.6
+
+0.4
+
+0.2
+ 0.24
+0
+
+0
+
+0.04
+
+0.08
+
+0.12
+
+0.16
+
+/M2
+
+r
+boundary 1
+ -0.08
+0.8
+ -0.9
+0.6
+
+0.4
+
+0.2
+
+0
+ -1.5
+
+0
+
+0.04
+
+0.08
+
+0.12
+
+0.16
+
+/M2
+
+Figure 3: Representation of (r¯ - 4.68M ) (left) and r (right) for EdGB solutions with  = 1, in a
+/M 2 vs. J/M 2 diagram. Each circle radius is proportional to the quantity represented, with some values also included for reference. All the values of r are negative, with the maximum deviation to Kerr being around  -1.5%.
+In the left of Fig. 3, the size of each circle represents the value of the shadow radius r¯ for several EdGB solutions. In order to make the differences across the solution space more apparent, the circle radius is proportional to r¯ - 4.68M. In other words, a vanishing circle (in this plot only) represents r¯ = 4.68M. With this depiction, it is clear that - as a rule of thumb - increasing either J or  decreases the shadow size. However, from an observational9 point of view, it is much more relevant to compare the shadow prediction of an EdGB model with the one of a comparable10 Kerr BH with the same M and J. In particular, on the right of Fig. 3 the relative differences of the shadow size r with respect to Kerr is represented in a circle plot. All deviations are negative, with the largest ones (in absolute) around  -1.5%. As (another) rule of thumb, increasing /M2 appears to lead to larger radial deviations from Kerr. In particular, the spherically symmetric EdGB line (J = 0) includes some of the largest |r| values. As a side note, the data represented by the smallest circles in the right of Fig. 3 correspond to deviations around  0.08%, which is about the estimated numerical
+9For a given BH under observation, the quantities M , J and R~ are all assumed to be known. 10The shadows are comparable if M , J and the observation distance R~ = g are the same.
+10
+
+J/M2 y (M)
+
+1 0.8 0.6 0.4 0.2
+0 0
+
+| |
+boundary
+7
+1
+
+0.04
+
+0.08
+
+0.12
+
+0.16
+
+/M2
+
+Illustrative shadow example
+
+4
+
+2
+
+0
+
+EdGB shadow Kerr shadow
+
+-2
+
+-4
+
+-4
+
+-2
+
+0
+
+2
+
+4
+
+6
+
+x (M)
+
+Figure 4: (Left) Representation of || for EdGB solutions with  = 1, in a /M 2 vs. J/M 2
+diagram. Each circle radius is proportional to the quantity represented, with some values also included for reference. All the values of  are negative. (Right) Depiction of the shadow edge of a EdGB BH with  = 1 and (/M 2, J/M 2)  (0.172, 0.41), yielding r¯  4.85,  = 0.3, xC = 0.84; the radial deviation r with respect to the comparable Kerr case is  -1.35%. The observer is at a perimetral radius 15M .
+accuracy.
+For completeness, the deviations11 of r with respect to Kerr are represented in the left of Fig. 4. Curiously, all values of  are negative, which means that EdGB shadows are more "circular" than the corresponding Kerr case. Hence, the GB term appears to soften the spin deformations that exist on the Kerr shadows. Moreover, notice how the largest || values can be found close to the critical boundary in solution space. Additionally, the deviations xC can be both positive and negative, although a plot for this quantity is not shown.
+In order to display an illustrative shadow case, in the right of Fig. 4 we have the representation of a EdGB shadow edge in the image plane, together with the comparable Kerr one. Although the difference between the curves is barely visible, amounting to a variation of only  -1.35% in the shadow size, the case here depicted has one of the largest values of |r| for  = 1. Such an example reinforces the idea that shadow observations are very
+11Additional measures of EdGB shadow shapes are possible, but they resemble closely Kerr ones.
+
+11
+
+Shadow deviation to Schw (%)
+
+0  = 10 =5
+-0.5
+
+-1
+
+-1.5
+
+ = 10
+
+=5
+
+=2
+
+=1
+
+-2
+
+ = 0.5
+
+0.001
+
+=2
+
+0.01 /M2
+
+=1
+ = 0.5 0.1
+
+Figure 5: Representation of r for static EdGB BHs, computed with respect to the Schwarzschild
+case. Data for different  values is displayed as a function of /M 2. All deviations are negative. The displayed lines only interpolate the numerical data, with colors red, green, blue, pink and light blue respectively for  = {0.5, 1, 2, 5, 10}. The observer's perimetral radius was set at 15M .
+unlikely to constrain EdGB BH models in the near future.
+3.4 Static EdGB BHs
+Until this point we discussed only the shadows of EdGB solutions for dilatonic coupling  = 1. Repeating the above analysis for other values of  would be rather cumbersome. Nevertheless, as discussed in the previous subsection, some of the largest r¯ deviations occur within the static case. Therefore this can be considered as an incentive to explore other values of , while restricting ourselves to J = 0. This will provide some insight on the effect of the  parameter without much more effort.
+For the static case (J = 0) the shadow is a circle due to the spherical symmetry of the spacetime. Using this property, we have r¯ = r¯x, which allows us to use the high precision method described before, thus obtaining the shadow edge without having to resort to any ray-tracing. Notice that in this case r and xC are both zero due to the spherical symmetry.
+The radial deviations r of static EdGB shadows with respect to those of a comparable Schwarzschild BH are represented in Fig. 5, for different  values. The data suggests a scenario where for a fixed value of /M2 the deviations on the stable branches are larger if
+12
+
+we increase ; however, after entering the domain of the secondary (unstable) branches,  has to decrease in order to yield larger deviations. Furthermore, for a given , the maximum deviation always appears to occur at the limiting solution, with this maximal deviation being larger for smaller  values. For instance,  = 0.5 can lead to shadows  2% smaller than for Schwarzschild, whereas for  = 1 all deviations are below 1.5%.
+4 Discussion
+The shadow of a EdGB BH is always smaller than the comparable Kerr one. However, the deviations observed are always smaller (in modulus) than a few percent ( 1%). Since such differences are below the expected resolution of planned observations ( 6% as anticipated in [55]), it is unlikely that in the near future any shadow measurement can exclude or restrict EdGB models. Nevertheless, the present study was not exhaustive; it leaves, for instance, studies for different inclinations and distances as future work. Since EdGB theory possesses unusual features such as effective exotic matter, it might come as a surprise that there are no significant effects at the level of the shadow. However, this effective exotic matter is concentrated close to the horizon, such that there is no negative energy contribution outside the photon region that could significantly affect the shadow's size. At the same time any near-horizon odd effects are concealed from a remote observer by the shadow. It may come as another surprise, that the light ring size12 of EdGB BHs can, for instance, change by as much as  4%, when considering the static case with  = 0.5, and this effect will increase with further decreasing . The natural question is then: why are the deviations in the shadow size not larger? For the sake of the argument consider the static case, where it becomes clear that the critical ingredient for the shadow radius is the impact parameter , and not the light ring size. Naturally, there is a strong correlation between both concepts, but at the end of the day what matters is the value of the impact parameter. We would like to point out that this observation is often not clear enough in the literature: a large variation of the light ring size does not have to lead to equally large variations of the shadow radius.
+Acknowledgments
+P.C. is supported by Grant No. PD/BD/114071/2015 under the FCT-IDPASC Portugal Ph.D. program and by the Calouste Gulbenkian Foundation under the Stimulus for Research Program 2015. C.H. and E. R. acknowledge funding from the FCT-IF programme. This project has received funding from the European Union's Horizon 2020 research and innovation programme under the Marie Sklodowska-Curie grant agreement No 690904 and by the CIDMA project UID/MAT/04106/2013. B.K. and J.K. gratefully acknowledge discussions with Arne Grenzebach, Claus La¨mmerzahl and Volker Perlick, as well as support by
+12The perimetral radius g in M units can be used as an invariant measure for the light ring size.
+13
+
+the DFG Research Training Group 1620 "Models of Gravity" and by the grant FP7, Marie Curie Actions, People, International Research Staff Exchange Scheme (IRSES-606096).
+References
+[1] G. 't Hooft and M. J. G. Veltman, Ann. Inst. H. Poincare Phys. Theor. A 20 (1974) 69. [2] S. Deser and P. van Nieuwenhuizen, Phys. Rev. D 10 (1974) 401. [3] S. Deser, H. S. Tsao and P. van Nieuwenhuizen, Phys. Rev. D 10 (1974) 3337. [4] K. S. Stelle, Phys. Rev. D 16 (1977) 953. [5] M. Ostrogradsky, Mem. Acad. St. Petersbourg 6 (1850) 385. [6] D. Lovelock, J. Math. Phys. 12 (1971) 498. [7] B. Zwiebach, Phys. Lett. B 156 (1985) 315. [8] P. Kanti, N. E. Mavromatos, J. Rizos, K. Tamvakis and E. Winstanley, Phys. Rev. D 54
+(1996) 5049 [arXiv:hep-th/9511071]. [9] P. Kanti, N. E. Mavromatos, J. Rizos, K. Tamvakis and E. Winstanley, Phys. Rev. D 57
+(1998) 6255 [hep-th/9703192]. [10] J. D. Bekenstein, Phys. Rev. Lett. 28 (1972) 452. [11] J. D. Bekenstein, Phys. Rev. D 51 (1995) R6608. [12] C. A. R. Herdeiro and E. Radu, Int. J. Mod. Phys. D 24 (2015) 1542014 [arXiv:1504.08209
+[gr-qc]]. [13] T. Torii, H. Yajima and K. i. Maeda, Phys. Rev. D 55 (1997) 739 [arXiv:gr-qc/9606034]. [14] S. O. Alexeev and M. V. Pomazanov, Phys. Rev. D 55 (1997) 2110 [hep-th/9605106]. [15] M. Melis and S. Mignemi, Phys. Rev. D 73 (2006) 083010 [arXiv:gr-qc/0512132]. [16] C. M. Chen, D. V. Gal'tsov and D. G. Orlov, Phys. Rev. D 75 (2007) 084030
+[arXiv:hep-th/0701004]. [17] C. M. Chen, D. V. Gal'tsov and D. G. Orlov, Phys. Rev. D 78 (2008) 104013 [arXiv:0809.1720
+[hep-th]]. [18] T. P. Sotiriou and S. Y. Zhou, Phys. Rev. Lett. 112 (2014) 251102 [arXiv:1312.3622 [gr-qc]]. [19] T. P. Sotiriou and S. Y. Zhou, Phys. Rev. D 90 (2014) 124063 [arXiv:1408.1698 [gr-qc]]. [20] B. Kleihaus, J. Kunz and E. Radu, Phys. Rev. Lett. 106 (2011) 151104 [arXiv:1101.2868
+[gr-qc]]. [21] B. Kleihaus, J. Kunz, S. Mojica and E. Radu, Phys. Rev. D 93 (2016) 044047 [arXiv:1511.05513
+[gr-qc]].
+14
+
+[22] P. Pani and V. Cardoso, Phys. Rev. D 79 (2009) 084031 [arXiv:0902.1569 [gr-qc]].
+[23] P. Pani, C. F. B. Macedo, L. C. B. Crispino and V. Cardoso, Phys. Rev. D 84 (2011) 087501 [arXiv:1109.3996 [gr-qc]].
+[24] D. Ayzenberg and N. Yunes, Phys. Rev. D 90 (2014) 044066 [Phys. Rev. D 91 (2015) 6, 069905] [arXiv:1405.2133 [gr-qc]].
+[25] A. Maselli, P. Pani, L. Gualtieri and V. Ferrari, Phys. Rev. D 92 (2015) 8, 083014 [arXiv:1507.00680 [gr-qc]].
+[26] H. Falcke, F. Melia and E. Agol, Astrophys. J. 528 (2000) L13 [astro-ph/9912263].
+[27] J. M. Bardeen, "Timelike and null geodesics in the Kerr metric," in Black Holes (Les Astres Occlus), editors Dewitt, C. and Dewitt, B. S., pp. 215-239, Gordon and Breach, New York (1973).
+[28] R. S. Lu et al. [Perimeter Institute for Theoretical Physics, Waterloo, Canada Collaboration], Astrophys. J. 788 (2014) 120 [arXiv:1404.7095 [astro-ph.IM]].
+[29] P. V. P. Cunha, C. A. R. Herdeiro, E. Radu and H. F. Runarsson, Phys. Rev. Lett. 115 (2015) 211102 [arXiv:1509.00021 [gr-qc]].
+[30] F. H. Vincent, E. Gourgoulhon, C. Herdeiro and E. Radu, Phys. Rev. D 94 (2016) no.8, 084045 [arXiv:1606.04246 [gr-qc]].
+[31] P. V. P. Cunha, J. Grover, C. Herdeiro, E. Radu, H. Runarsson and A. Wittig, Phys. Rev. D 94 (2016) no.10, 104023, arXiv:1609.01340 [gr-qc].
+[32] C. A. R. Herdeiro and E. Radu, Phys. Rev. Lett. 112 (2014) 221101 [arXiv:1403.2757 [gr-qc]].
+[33] C. A. R. Herdeiro and E. Radu, Int. J. Mod. Phys. D 23 (2014) 1442014 [arXiv:1405.3696 [gr-qc]].
+[34] C. Herdeiro and E. Radu, Class. Quant. Grav. 32 (2015) 144001 [arXiv:1501.04319 [gr-qc]].
+[35] A. Grenzebach, V. Perlick and C. La¨mmerzahl, Phys. Rev. D 89 (2014) 124004 [arXiv:1403.5234 [gr-qc]].
+[36] R. Takahashi, Publ. Astron. Soc. Jap. 57 (2005) 273 [astro-ph/0505316].
+[37] L. Amarilla, E. F. Eiroa and G. Giribet, Phys. Rev. D 81 (2010) 124045 [arXiv:1005.0607 [gr-qc]].
+[38] L. Amarilla and E. F. Eiroa, Phys. Rev. D 85 (2012) 064019 [arXiv:1112.6349 [gr-qc]].
+[39] D. A. Tretyakova and T. M. Adyev, arXiv:1610.07300 [gr-qc].
+[40] S. Abdolrahimi, R. B. Mann and C. Tzounis, Phys. Rev. D 91 (2015) 084052 [arXiv:1502.00073 [gr-qc]].
+[41] S. Abdolrahimi, R. B. Mann and C. Tzounis, Phys. Rev. D 92 (2015) 124011 [arXiv:1510.03530 [gr-qc]].
+15
+
+[42] J. Shipley and S. R. Dolan, Class. Quant. Grav. 33 (2016) 175001 [arXiv:1603.04469 [gr-qc]]. [43] A. Abdujabbarov, M. Amir, B. Ahmedov and S. G. Ghosh, Phys. Rev. D 93 (2016) 104004
+[arXiv:1604.03809 [gr-qc]]. [44] M. Amir and S. G. Ghosh, Phys. Rev. D 94 (2016) 024054 [arXiv:1603.06382 [gr-qc]]. [45] T. Johannsen, Astrophys. J. 777 (2013) 170 [arXiv:1501.02814 [astro-ph.HE]]. [46] L. Amarilla and E. F. Eiroa, Phys. Rev. D 87 (2013) no.4, 044057
+doi:10.1103/PhysRevD.87.044057 [arXiv:1301.0532 [gr-qc]]. [47] Z. Younsi, A. Zhidenko, L. Rezzolla, R. Konoplya and Y. Mizuno, Phys. Rev. D 94 (2016)
+084025 [arXiv:1607.05767 [gr-qc]]. [48] Z. K. Guo, N. Ohta and T. Torii, Prog. Theor. Phys. 120 (2008) 581 [arXiv:0806.2481 [gr-qc]]. [49] P. Kanti, B. Kleihaus and J. Kunz, Phys. Rev. Lett. 107 (2011) 271101 [arXiv:1108.3003
+[gr-qc]]. [50] J. L. Blazquez-Salcedo et al., "Black holes in Einstein-Gauss-Bonnet-dilaton theory,"
+arXiv:1610.09214 [gr-qc]. [51] P. Pani, E. Berti, V. Cardoso and J. Read, Phys. Rev. D 84, 104035 (2011) [arXiv:1109.0928
+[gr-qc]]. [52] B. Kleihaus, J. Kunz, S. Mojica and M. Zagermann, Phys. Rev. D 93, 064077 (2016)
+[arXiv:1601.05583 [gr-qc]]. [53] P. V. P. Cunha, C. A. R. Herdeiro, E. Radu and H. F. Runarsson, Int. J. Mod. Phys. D 25
+(2016) 1641021 [arXiv:1605.08293 [gr-qc]]. [54] D. Psaltis and T. Johannsen, Astrophys. J. 745 (2012) 1 [arXiv:1011.4078 [astro-ph.HE]]. [55] T. Johannsen, C. Wang, A. E. Broderick, S. S. Doeleman, V. L. Fish, A. Loeb and D. Psaltis,
+Phys. Rev. Lett. 117 (2016) 091101 [arXiv:1608.03593 [astro-ph.HE]].
+16
+
+

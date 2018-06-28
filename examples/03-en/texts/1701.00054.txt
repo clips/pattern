@@ -1,0 +1,204 @@
+arXiv:1701.00054v3 [cond-mat.str-el] 8 Dec 2017
+
+Stripe order in the underdoped region of the two-dimensional Hubbard model
+Bo-Xiao Zheng1,2, Chia-Min Chung3, Philippe Corboz4, Georg Ehlers5, Ming-Pu Qin6, Reinhard M. Noack5, Hao Shi6, Steven R. White3, Shiwei Zhang6, Garnet Kin-Lic Chan1
+1Division of Chemistry and Chemical Engineering, California Institute of Technology, Pasadena, CA 91125, USA
+2Department of Chemistry, Princeton University, Princeton, NJ 08544, USA 3Department of Physics and Astronomy, University of California, Irvine, CA 4Institute for Theoretical Physics and Delta Institute for Theoretical Physics, University
+of Amsterdam, Science Park 904, 1098 XH Amsterdam, The Netherlands 5Fachbereich Physik, Philipps-Universita¨t Marburg, 35032 Marburg, Germany 6Department of Physics, The College of William and Mary, Williamsburg, VA 23187, USA
+To whom correspondence should be addressed; E-mail: boxiao.zheng@gmail.com To whom correspondence should be addressed; E-mail: gkc1000@gmail.com These authors contributed equally to the calculations in this work.
+Competing inhomogeneous orders are a central feature of correlated electron materials including the high-temperature superconductors. The twodimensional Hubbard model serves as the canonical microscopic physical model for such systems. Multiple orders have been proposed in the underdoped part of the phase diagram, which corresponds to a regime of maximum numerical difficulty. By combining the latest numerical methods in exhaustive simulations, we uncover the ordering in the underdoped ground state. We find
+1
+
+a stripe order that has a highly compressible wavelength on an energy scale of a few Kelvin, with wavelength fluctuations coupled to pairing order. The favored filled stripe order is different from that seen in real materials. Our results demonstrate the power of modern numerical methods to solve microscopic models even in challenging settings.
+
+Competing inhomogeneous orders are a common feature in many strongly correlated materials (1). A famous example is found in the underdoped region of the phase diagram of the hightemperature cuprate superconductors (HTSC). Here, multiple probes, including neutron scattering, scanning tunneling microscopy, resonant X-ray scattering, and nuclear magnetic resonance spectroscopy all lend support to various proposed inhomogeneous orders, such as charge, spin, and pair density waves, with suggested patterns ranging from unidirectional stripes to checkerboards (2, 3). Recent experiments on cuprates indicate that the observed inhomogeneous orders are distinct from, and compete with, pseudogap physics (4, 5).
+Much theoretical effort has been directed to explaining the origin of the inhomogeneities (6). Numerical calculations on microscopic lattice models have provided illuminating examples of the possible orders. The prototypical lattice model to understand HTSC is the 2D Hubbard model on a square lattice, with the Hamiltonian
+
+H =-
+
+taiaj + U nini
+
+(1)
+
+ij ,{,}
+
+i
+
+where a (a) denote the usual fermion creation (annihilation) operators, n is the number oper-
+
+ator, and t and U are the kinetic and repulsion energies. A large number of numerical tech-
+
+niques have been applied to compute the low-temperature and ground-state phase diagram of
+
+this model. Early evidence for unidirectional stripe ordering in the Hubbard model came from
+
+Hartree-Fock calculations (7­10), whereas non-convex energy versus filling curves in exact di-
+
+agonalization of small clusters of the t-J model (derived from the Hubbard model at large U
+
+2
+
+where double occupancy is eliminated) were interpreted as signs of macroscopic phase separation (11, 12). Since then, inhomogeneous orders have been obtained both in the Hubbard and t-J models from calculations using the density matrix renormalization group (DMRG) (13­15), variational quantum Monte Carlo (16) and constrained path auxiliary field quantum Monte Carlo (AFQMC) (17), infinite projected entangled pair states (iPEPS) (18), density matrix embedding theory (DMET) (19), and functional renormalization group (20) among others, although the type of inhomogeneity can vary depending on the model and numerical method. However, there are other sophisticated simulations, for example, with variational and projector quantum Monte Carlo (21,22), and cluster dynamical mean-field theory, which do not see, or are unable to resolve, the inhomogeneous order (23, 24). The most recent studies with iPEPS (18) and DMET (19), as well as some earlier variational calculations (16, 25­27), further show that both homogeneous and inhomogeneous states can be stabilized within the same numerical methodology, with a small energy difference between homogeneous and inhomogeneous states, on the order of  0.01t per site.
+The small energy differences between orders means that very small biases in ground state simulations, such as from an incomplete treatment of fluctuations, using insufficiently accurate constraints to control the sign problem, or from finite size effects, can easily stabilize one order over the other. Similarly, the low temperatures needed to resolve between orders is a challenge for finite temperature methods (28, 29). Settling the resulting debate between candidate states has thus so far been beyond reach. In this work we demonstrate that, with the latest numerical techniques, obtaining a definitive characterization of the ground state order in the underdoped region of the 2D Hubbard model is now an achievable goal. As a representative point in the phase diagram, we choose the well-known 1/8 doping point at strong coupling (U/t = 8). Experimentally, this doping corresponds to a region of maximal inhomogeneity in many HTSC's, and in the strong coupling regime it is recognized as a point of maximum numerical difficulty
+3
+
+and uncertainty in simulations (24). Using state-of-the-art computations with detailed crosschecks and validation, including newer methodologies such as infinite projected-entangled pair states (iPEPS) and density matrix embedding theory (DMET) as well as recent developments in established methodologies such as constrained-path auxiliary field quantum Monte Carlo (AFQMC) and density matrix renormalization group (DMRG), and with exhaustive accounting for finite size effects combined with calculations directly in the thermodynamic limit, we are able to finally answer the question: what is the order and physics found in the underdoped ground state of the 2D Hubbard model?
+Computational strategy
+An important strategy we bring to bear on this part of the Hubbard model phase diagram is to combine the insights of multiple numerical tools with complementary strengths and weaknesses. This approach, pioneered in (24), greatly increases the confidence of the numerical characterization. To understand what each method contributes, we briefly summarize the theoretical background and corresponding sources of error. Further details are provided in (30). Auxiliary field quantum Monte Carlo. AFQMC expresses the ground state of a finite system through imaginary time evolution, lim e-H|0 , where |0 is an initial state. The projection is Trotterized, and the evolution reduces to a stochastic single-particle evolution in the presence of auxiliary fields generated by the Hubbard-Stratonovich decoupling of the Hubbard repulsion. Away from half-filling, this decoupling has a sign problem. We use the constrained path (CP) approximation to eliminate the sign problem at the cost of a bias dependent on the quality of the trial state (31, 32). In this work, the Trotter error is well converged and we report the statistical error bar. To minimize the constrained path bias, we use several different trial states, including self-consistent optimization of the trial state (33). The calculations are carried out on finite cylinders with open, periodic, and twist-averaged boundary conditions, with widths
+4
+
+of up to 12 sites, and lengths of up to 72 sites. This method can reach large sizes and finite size effects are minimized. The uncontrolled error is from the CP approximation. Density matrix renormalization group. DMRG is a variational wavefunction approximation using matrix product states (MPS), which are low-entanglement states with a 1D entanglement structure. The quality of the approximation is determined by the bond dimension (matrix dimension) of the MPS. The calculations are carried out on finite cylinders with widths of up to 7 sites, and lengths of up to 64 sites, with periodic boundary conditions in the short direction and open boundaries in the long direction. Two different DMRG algorithms were used: one working in a pure (real-space) lattice basis, and another in a mixed momentum/lattice (hybrid) basis, with the momentum representation used along the short periodic direction (34). We remove the bond dimension error and finite size error in the long direction by well-known extrapolation procedures, and report the associated error bar (35). Consistency between the lattice and hybrid DMRG algorithms provides a strong validation of this error bar. The remaining uncontrolled error is the finite width error in the periodic direction. Density matrix embedding. DMET is a quantum embedding method which works directly at the thermodynamic limit, although interactions are only accurately treated within an impurity cluster (36). To solve the impurity problem, consisting of a supercell of the original lattice coupled to a set of auxiliary bath sites, we use a DMRG solver. We treat supercells with up to 18 sites. The error bar reported in DMET corresponds to the estimated error from incomplete self-consistency of the impurity problem. The remaining uncontrolled error is the finite impurity size error. Infinite projected entangled pair states. iPEPS is a variational approach using a low-entanglement tensor network ansatz natural to 2D systems (37­39). The calculations are carried out directly in the thermodynamic limit where different supercell sizes including up to 16 sites are used to stabilize different low-energy states (with different orders commensurate with the supercell).
+5
+
+As in DMRG, the accuracy of the ansatz is systematically controlled by the bond dimension
+
+D of the tensors. Estimates of quantities in the exact D limit are obtained using an empirical
+
+extrapolation technique which is a potential source of uncontrolled error.
+
+Cross-checks: systematic errors, finite size biases. The use of multiple techniques allows
+
+us to estimate the uncontrolled errors from one technique using information from another. For
+
+example, by carrying out simulations on the same finite clusters in the AFQMC and DMRG
+
+calculations, we can estimate the constrained path bias in AFQMC. Similarly, in the AFQMC
+
+calculations we can treat larger width cylinders than in the DMRG simulations; thus we can
+
+estimate the finite width error in DMRG.
+
+In all of the methods, there is a bias towards orders commensurate with the shape of the sim-
+
+ulation cell, be it the finite lattice and boundary conditions in AFQMC/DMRG, or the impurity
+
+cluster in DMET, or the supercell in iPEPS. Using this bias, together with different boundary
+
+conditions and pinning fields, we can stabilize different meta-stable orders. For example, by
+
+setting up clusters commensurate with multiple inhomogeneous orders and observing the order
+
+that survives, we can determine the relative energetics of the candidate states. We can fit the
+
+orders along the short axis or the long axis of the cluster to obtain two independent estimates
+
+of the energy. We have carried out exhaustive studies of about 100 different combinations of
+
+clusters, cells, and boundary conditions, to fully investigate the low-energy landscape of states.
+
+These detailed results are presented in (30). To characterize the orders, we use the local hole
+
+density 1 - (
+
+n + n
+
+), magnetic moment
+
+1 2
+
+n - n
+
+, and pairing order
+
+1 2
+
+(aiaj
+
++
+
+ajai)
+
+(i
+
+adjacent to j).
+
+Characterizing the ground state at 1/8 doping
+
+Using the above methods, we carried out calculations for the ground state of the 2D Hubbard model at 1/8 doping at U/t = 8. The first check of reliability is the independent convergence of
+6
+
+the methods for the energy per site. Although the quality of the ground-state energy may be a poor proxy for the quality of the corresponding state when the overall accuracy is low (as there are always many degenerate states far above the ground state), calculations with well-converged energies tightly constrain the ground state order, as any degeneracies must be below the energy convergence threshold. Figure 1 shows the best energy estimate for the ground state from the different methods (30). The two different DMRG formulations (real-space and hybrid basis) are in good agreement, providing a strong independent check of the calculations: in subsequent figures we report only the single consistent result. Note that the error bars for AFQMC, DMRG, and DMET do not reflect the uncontrolled systematic errors in the methods. However, as described above, the systematic errors can be estimated by cross-checks between the methods. For example, DMRG and AFQMC calculations on finite clusters with identical boundary conditions provide an estimate of the small constrained path bias (see (30) and Ref. (33)) consistent with the difference in the DMRG and AFQMC energies in Fig. 1; similarly AFQMC extrapolations to the thermodynamic limit indicate that the DMRG energies are essentially converged with respect to cylinder width.
+There is good agreement between all the methods, and all energies lie in the range -0.767± 0.004t. If, for a typical HTSC material, we estimate t  3000K, then this corresponds to a range of about ±10K per site, or ±100K per hole. For a numerical comparison, this is also more than an order of magnitude lower than the temperatures accessible in finite temperature, thermodynamic limit simulations in this part of the phase diagram, indicating that we are potentially accessing different physics (24, 29). Shown in the inset are the corresponding best estimates at half-filling from the same methods, where the spread in energies is less than 0.001t. This illustrates the significantly greater numerical challenge encountered in the underdoped region. Nonetheless, the accuracy and agreement reached here represents a ten-fold improvement over recent comparisons of numerical methods at this point in the phase diagram (24).
+7
+
+Figure 1: Ground state energies. Best estimates of ground state energy for the 1/8-doped 2D Hubbard model at U/t = 8 from DMET, AFQMC, iPEPS and DMRG in units of t. Inset: Best estimates of ground state energy for the half-filled 2D Hubbard model at U/t = 8. Here and elsewhere, error bars indicate only the estimable numerical errors of each method; uncontrolled systematic errors are not included. For details see (30).
+8
+
+Figure 2: Competing states. Shown are the energies of important competing states relative to the striped ground state from DMET and iPEPS and the sketches of the corresponding orders. (A) Relative energy of competing states in units of t compared to the vertical striped state. Charge, spin and pairing orders of the uniform d-wave state from (B) DMET (blue circle) and (C) iPEPS (green squares). (D) Charge and spin orders of the diagonal striped state from iPEPS. Note that the spins are flipped in the neighboring supercells. (For B, C, D, circle radius is proportional to hole density, arrow height is proportional to spin density, bond width is proportional to pairing density). For more details see (30).
+Ground state stripe order. For all the methods employed, the lowest energies shown in Fig. 1 correspond to a vertical striped state. This is a co-directional charge and spin-density wave state, with the region of maximum hole density coinciding with a domain wall in the antiferromagnetism. As mentioned, unidirectional stripes of various kinds are a long-standing candidate order in the doped Hubbard and related models. Hartree-Fock calculations give filled stripes (i.e. one hole per charge unit cell) in both vertical and diagonal orientations, whereas one of the first applications of the DMRG to 2D systems found strong evidence for half-filled stripes in the t-J model (13). Finally, one of the earliest examples of inhomogeneity in doped HTSC's were the static half-filled stripes in LaSrCuO at 1/8 doping (40).
+The convergence to the same inhomogeneous order in the ground state in the current study, from multiple methods with very different approximations, strongly suggests that stripes indeed represent the true ground state order of the Hubbard model in the underdoped regime, and fur-
+9
+
+ther highlights the accuracy we achieve with different techniques. However, the stripe order we find has some unusual characteristics. We return to the details of the stripe order, its associated physics, and its relationship with experimentally observed stripes further below. First, however, we examine the possibility of other competing meta-stable states. Competing states: uniform d-wave state. Recent work using iPEPS and DMET on the t-J and Hubbard models suggested close competition between a uniform d-wave superconducting ground state and a striped order (18, 19). Uniform states did not spontaneously appear in any of our calculations which indicates that they lie higher in energy than the striped order. We found that we could stabilize a uniform d-wave state in the DMET calculations by constraining the
+ impurity cluster to a 2 × 2 or 2 2 × 2 geometry and in the iPEPS calculations by using a 2 × 2 unit cell. DMET calculations on similarly shaped larger clusters (such as a 4 × 4 cluster) spontaneously broke symmetry to create a non-uniform state. From these calculations we estimate that the uniform state lies  0.01t above the lowest energy state, and is not competitive at the energy resolution we can now achieve (30). Competing states: other short-range orders. Although other types of order have been proposed in the underdoped region, such as spiral magnetic phases (20, 41) and checkerboard order (42), we find no evidence for other kinds of short-range orders at this point in the phase diagram. The lack of checkerboard order, which would easily fit within the large clusters in our simulations (e.g. up to 64 × 6 in the DMRG calculations) appears to rule them out as low energy states, in agreement with earlier DMRG simulations on the t-J model (43). Though we cannot rule out incommensurate orders, we have found that the variation of energy with unit cell wavelength (see below) is quite smooth, thus we do not expect a dramatic energy gain from incommensurability. We note that studies that have found incommensurate magnetic orders have focused on smaller values of U (20). Diagonal versus vertical stripes. We find the ground state order to be a vertical stripe type or-
+10
+
+der, but other studies of stripes indicate that different orientations can form (44). On short length scales, the relevant question is whether diagonal stripes (with a (, ) wave vector) are competitive with vertical stripes (with a (0, ) wavevector). With the boundary conditions used in this work, diagonal stripes would be frustrated in the DMRG and AFQMC calculations, and did not spontaneously appear. To stabilize diagonal stripes in the DMET and iPEPS calculations, we
+ used tilted n 2 × 2 impurity clusters (n = 2, 5) for DMET, and a 16 × 16 simulation cell with 16 independent tensors in iPEPS. The 16×16 iPEPS cell gave a diagonal stripe (Fig. 2) that was significantly higher in energy than the vertical stripe, by 0.009t. The DMET cluster gave rise to a frustrated diagonal order that we also estimate to be higher in energy by  0.005t (30). Although it is likely that the orientation of the stripe will depend on doping and coupling, vertical stripes appear to be significantly preferred at this point in the phase diagram. Ground state stripes: detailed analysis. We now return to a more detailed discussion of the vertical stripe order found in the ground-state. Within the family of vertical stripes, we can consider questions of wavelength (charge and spin periodicity), type and strength of charge and spin modulation (e.g. bond- versus site-centered), and coexistence with pairing order.
+We first discuss the wavelength . At 1/8 doping, the filling of the stripe is related to the wavelength by /8. As described, we can access different wavelength meta-stable stripes and their relative energetics by carefully choosing different total cluster dimensions and boundary conditions (in the DMRG and AFQMC calculations) or unit cell/impurity sizes (in the iPEPS and DMET calculations) (30). Figure 3 shows the energy per site of the stripe versus its wavelength  for the multiple methods. Earlier DMRG calculations on the Hubbard model had focused on  = 4 (half-filled stripes) which are seen in HTSC's (13, 14), but we now observe that these are relatively high in energy. A striking feature is that for  = 5 - 8 the energies are nearly degenerate. This is clearly seen in the DMET data where stripes of all wavelengths can be stabilized, as well as from the averaged energy of the methods between  = 5 - 8 (stars in
+11
+
+Figure 3: Wavelength of the vertical stripe order. Energies of stripes with different wavelengths relative to that of the wavelength 8 stripe from DMET, AFQMC, iPEPS and DMRG in units of t. To aid readability, the data points are shifted horizontally. Inset: Relative energies of stripes with different wavelengths from UHF, with an effective coupling U/t = 2.7. For details of calculations, see (30).
+12
+
+Fig. 3). The energy difference between the  = 5 and  = 8 stripe in the different methods is estimated to be between 0.0005t (DMRG)­0.0041t (iPEPS). This suggests that the magnetic domain walls can fluctuate freely, consistent with proposals for fluctuating stripes. In particular, the stripes may be distorted at a small cost over long length scales.
+Although the different wavelengths are nearly degenerate, there appears to be a slight minimum near wavelength  = 8 (a filled stripe) in all the methods. Very recently, similar filled stripes have been reported as the ground state in part of the frustrated t-J model phase diagram (45).  = 9 appears significantly higher in energy in both DMET and DMRG. In the DMRG calculations, the  = 9 state was not even metastable as boundary conditions and initial states were varied, so the high-energy state shown was forced with a static potential. The AFQMC results show a much weaker dependence on wavelength for longer wavelengths, for example the  = 8 and  = 10 stripe energies per site appear to be within 0.0015t. However, when a mixture of the  = 8 and  = 10 stripe states is set up on a length 40 cluster that is commensurate with both, the state that survives is the  = 8 stripe, suggesting a preference for this wavelength. The increase in energy at wavelengths  > 8 coincides with unfavourable double occupancy of the stripe. This simple interpretation is supported by a mean-field (unrestricted Hartree-Fock (UHF)) calculation with an effective interaction U/t = 2.7 chosen within the selfconsistent AFQMC procedure (Fig. 3, inset). The mean-field result shows a clear minimum at a wavelength 8 vertical stripe. (Note that this requires the use of an effective U/t; at the bare U/t = 8, mean-field theory would produce a diagonal stripe (46)). The correspondence between the energies and densities in the effective mean-field and correlated calculations suggests that mean-field theory with a renormalized interaction may be surprisingly good at describing the energetics of stripes. However, mean-field theory appears to somewhat underestimate the degeneracy of the stripes as a function of wavelength, particularly at shorter wavelengths.
+The vertical stripe order for the  = 8 stripe from the different methods is depicted in
+13
+
+Figure 4: Charge and spin orders. Shown are sketches of the charge and spin orders in the wavelength 8 stripes from (A) DMET, (B) AFQMC, (C) iPEPS and (D) DMRG. The local magnetic moments and hole densities are shown above and below the order plots, respectively. (Circle radius is proportional to hole density, arrow height is proportional to spin density). The gray dashed lines represent the positions of maximum hole density and the magnetic domain wall. For more details, see (30).
+14
+
+Fig. 4. We show the full period (16) for the spin modulation. The stripe is a bond-centered stripe in the AFQMC, DMRG, and DMET calculations. In the iPEPS calculation, the stripe is nominally site-centered. In all the calculations, the width of the hole domain wall spans several sites, blurring the distinction between bond- and site-centered stripes, and we conclude that the energy difference between the two is very small. There is substantial agreement in the order observed by the different numerical techniques, with only some differences in the modulation of the hole and spin-densities.
+Note that for even wavelength stripes, the spin wavelength must be twice that of the charge modulation in order to accommodate the stripe as well as the antiferromagnetic order. At odd wavelengths, site-centered stripes appear in all the calculations, and here charge and spin order can have the same wavelength. (This odd-even alternation does not affect the peaks of the structure factor near (, ), see (30)). Pairing order, fluctuations, and superconductivity. A key question is whether pairing order coexists with stripe order. Previous work on the t-J model with iPEPS found co-existing dwave order for partially filled ( < 8) stripes. We did not find d-wave order in the Hubbard  = 8 stripe with any technique. However, d-wave order can be found at other wavelengths. For example, for  = 5,  = 7 stripes, iPEPS produces d-wave order along the bonds (see Fig. 5) with a maximum d-wave expectation value of 0.026 and 0.021, respectively. DMRG calculations with pinning pairing fields on the boundary for a 32 × 4 cylinder also find d-wave order, with a maximum d-wave order of 0.025, consistent with the iPEPS results. In the DMET calculations, the lowest energy  = 5 stripe has no d-wave order, however, at slightly higher energy ( 0.003t) a  = 5 state similar to the iPEPS stripe can be found with co-existing d-wave order, but with a substantially smaller maximum order parameter of 0.01. Overall our results support the coexistence of modulated d-wave order with the striped state, although the strength of pairing is dependent on the stripe wavelength and filling. The pairing modulation
+15
+
+Figure 5: d-wave pairing. Shown are metastable stripe states with d-wave pairing from iPEPS, DMET, and DMRG. (A), (B) iPEPS stripes with  = 5 and  = 7. (C) DMET metastable  = 5 stripe with pairing. (Circle radius is proportional to hole density, arrow height is proportional to spin density, bond width is proportional to pairing density). (D) DMRG pairing order parameters on a 32×4 cylinder. The positive values are from the vertical bonds and the negative values from the horizontal bonds. x axis is site number along the long-axis of the cylinder. For details, see (30).
+16
+
+we find (Fig. 5) is in-phase between cells. Other kinds of pairing inhomogeneities, such as pair density waves, have also been discussed in the literature (6).
+It has long been argued that fluctuating stripes could promote superconductivity (47­49). Our work provides some support for this picture, as there is a low-energy scale associated with the deformation of stripe wavelength, and we also find coupling between the wavelength and the pairing channel. We can imagine fluctuations in wavelength both at low temperatures, as well as in the ground-state. In the latter case, this could lead to a stripe liquid ground-state rather than a stripe crystal. Our calculations are consistent with both possibilities.
+Figure 6: Varying the interaction strength. Relative energies of stripe states (vs. wavelength) and the uniform d-wave state at 1/8 doping for (A) weaker and (B) stronger couplings. For details see (30). Varying the coupling. We may also ask whether the U/t = 8, 1/8 doping point is an anomalous point in the Hubbard phase diagram, and, if, for example, moving away from this point would cause the unusual stripe compressibility (with respect to wavelength at fixed doping) to be lost. In Fig. 6 we show the energies of various striped states and the uniform state at U/t = 6 and U/t = 12, 1/8 doping, computed using AFQMC, DMET and DMRG. At both couplings, the stripes around wavelength 8 are nearly degenerate, with the degeneracy increasing as the coupling increases. At U/t = 6, we find the ground state is a filled stripe state with wavelength
+17
+
+ = 8, with a larger energy stabilization than at U/t = 8. The trend is consistent with the state observed at U/t = 4 with a more sinusoidal spin-density wave, more delocalized holes, and a more pronounced minimum wavelength (17). At U/t = 12, we find a filled stripe with AFQMC and DMRG (width 6), but DMET and DMRG on a narrower cylinder (width 4) find  = 5 - 6. The similarity of the DMET and DMRG (width 4) data suggests that the shorter wavelength is associated with a finite width effect. We note that 2/3 filled stripes consistent with  = 5 - 6 were also seen in earlier DMRG studies on width 6 cylinders (15), but a more detailed analysis shows that the filled stripe becomes favoured when extrapolated to infinite bond dimension (30). Thus, we conclude that the ground state at U/t = 12 is also the  = 8 stripe, although stripes of other wavelengths become even more competitive than at U/t = 8. Overall, the similarity in the physics over a wide range of U/t indicates that striped orders with low energy fluctuations of domain walls remain a robust feature in the moderate to strongly coupled underdoped region. Connection to stripe order in HTSC's. In HTSC's the accepted stripe wavelength at 1/8 doping (e.g. in LaSrCuO) is   4.3 (close to half-filled) (40). However, we find that the  = 4 stripe is not favoured in the 2D Hubbard model for the coupling range (U/t = 6 - 12) normally considered most relevant to cuprate physics. This implies that the detailed charge-ordering of real materials arises from even stronger coupling or, more likely, quantitative corrections beyond the simple Hubbard model. With respect to the latter, one possibility is long-range hopping (such as a next-nearest neighbour hopping) which has been seen to change the preferred stripe wavelength in the frustrated t-J model (45). Another possibility is the long-range Coulomb repulsion. Long-range repulsion can play a dual role, in both driving charge inhomogeneity, as well as smoothing it out. In the Hubbard model, where stripes naturally form, the latter property can help drive the ground state towards shorter stripe wavelengths. We have estimated the effect of the long-range interactions on the stripe energetics by computing the Coulomb energy of the charge distributions in Fig. 4. We use a dielectric constant of 15.5 (in the range proposed for
+18
+
+the cuprate plane (50)). This gives a contribution favouring the shorter wavelength stripes that is  O(0.01t) per site for the  = 4 versus  = 8 stripe (30). Although this is only an order of magnitude estimate, it is on the same energy scale as the stripe energetics in Fig. 2, and thus provides a plausible competing mechanism for detailed stripe physics in real materials.
+Conclusions
+In this work we have employed state-of-the-art numerical methods to determine the ground state of the 1/8 doping point of the 2D Hubbard model at moderate to strong coupling. Through careful convergence of all the methods, and exhaustive cross-checks and validations, we are able to eliminate several of the competing orders that have been proposed for the underdoped region in favour of a vertical striped order with wavelength near   8. The striped order displays a remarkably low energy scale associated with changing its wavelength, which implies strong fluctuations either at low temperature or in the ground-state itself. This low energy scale can roughly be accounted for at the mean-field level with a strongly renormalized U . We find co-existing pairing order with a strength dependent on the stripe wavelength, indicating a coupling of stripe fluctuations to superconductivity. The stripe degeneracy is robust as the coupling strength is varied.
+It has long been a goal of numerical simulations to provide definitive solutions of microscopic models. Our work demonstrates that even in one of the most difficult condensed matter models, such unambiguous simulations are now possible. In so far as the 2D Hubbard model is a realistic model of high-temperature superconductivity, the stripe physics observed here provides a firm basis for understanding the diversity of inhomogeneous orders seen in the materials, as well as a numerical foundation for the theory of fluctuations and its connections to superconductivity. However, our work also enables us to see the limitations of the Hubbard model in understanding real HTSC's. Unlike the stripes at this doping point in real materials, we find
+19
+
+filled stripes rather than near half-filled stripes. Given the very small energy scales involved, terms beyond the Hubbard model, such as long-range Coulomb interactions, will likely play a role in the detailed energetics of stripe fillings. The work we have presented provides an optimistic perspective that achieving a comprehensive numerical characterization of more detailed models of the HTSC's will also be within reach.
+References
+1. E. Dagotto, Science 309, 257 (2005). 2. R. Comin, A. Damascelli, Annual Reviews of Condensed Matter Physics 7, 369 (2016). 3. M.-H. Julien, Science 350, 914 (2015). 4. C. V. Parker, et al., Nature 468, 677 (2010). 5. S. Gerber, et al., Science 350, 949 (2015). 6. E. Fradkin, S. A. Kivelson, J. M. Tranquada, Reviews of Modern Physics 87, 457 (2015). 7. D. Poilblanc, T. M. Rice, Phys. Rev. B 39, 9749 (1989). 8. J. Zaanen, O. Gunnarsson, Physical Review B 40, 7391 (1989). 9. K. Machida, Physica C: Superconductivity 158, 192 (1989). 10. H. Schulz, Journal de Physique 50, 17 (1989). 11. V. Emery, S. Kivelson, H. Lin, Physical review letters 64, 475 (1990). 12. V. J. Emery, S. Kivelson, H. Lin, Physica B: Condensed Matter 163, 306 (1990). 13. S. R. White, D. J. Scalapino, Phys. Rev. Lett. 80, 1272 (1998).
+20
+
+14. S. R. White, D. J. Scalapino, Phys. Rev. Lett. 91, 136403 (2003). 15. G. Hager, G. Wellein, E. Jeckelmann, H. Fehske, Physical Review B 71, 075108 (2005). 16. A. Himeda, T. Kato, M. Ogata, Phys. Rev. Lett. 88, 117001 (2002). 17. C.-C. Chang, S. Zhang, Physical review letters 104, 116402 (2010). 18. P. Corboz, T. Rice, M. Troyer, Physical review letters 113, 046402 (2014). 19. B.-X. Zheng, G. K.-L. Chan, Phys. Rev. B 93, 035126 (2016). 20. H. Yamase, A. Eberlein, W. Metzner, Physical review letters 116, 096402 (2016). 21. S. Sorella, et al., Physical review letters 88, 117002 (2002). 22. W.-J. Hu, F. Becca, S. Sorella, Phys. Rev. B 85, 081110 (2012). 23. A. Macridin, M. Jarrell, T. Maier, Physical Review B 74, 085104 (2006). 24. J. P. F. LeBlanc, et al., Phys. Rev. X 5, 041041 (2015). 25. M. Raczkowski, M. Capello, D. Poilblanc, R. Fre´sard, A. M. Oles, Phys. Rev. B 76, 140505
+(2007). 26. C.-P. Chou, N. Fukushima, T. K. Lee, Phys. Rev. B 78, 134530 (2008). 27. C.-P. Chou, T.-K. Lee, Phys. Rev. B 81, 060503 (2010). 28. S. White, et al., Physical Review B 40, 506 (1989). 29. W. Wu, M. Ferrero, A. Georges, E. Kozik, Physical Review B 96, 041105 (2017). 30. Supplementary information.
+21
+
+31. S. Zhang, J. Carlson, J. E. Gubernatis, Phys. Rev. Lett. 74, 3652 (1995). 32. C.-C. Chang, S. Zhang, Phys. Rev. B 78, 165101 (2008). 33. M. Qin, H. Shi, S. Zhang, Physical Review B 94, 235119 (2016). 34. J. Motruk, M. P. Zaletel, R. S. K. Mong, F. Pollmann, Phys. Rev. B 93, 155139 (2016). 35. E. Stoudenmire, S. R. White, Annual Review of Condensed Matter Physics 3, 111 (2012). 36. G. Knizia, G. K.-L. Chan, Physical review letters 109, 186404 (2012). 37. F. Verstraete, J. I. Cirac, arXiv:cond-mat/0407066 (2004). 38. Y. Nishio, N. Maeshima, A. Gendiar, T. Nishino, arXiv:cond-mat/0401115 (2004). 39. J. Jordan, R. Oru´s, G. Vidal, F. Verstraete, J. I. Cirac, Physical review letters 101, 250602
+(2008). 40. J. Tranquada, B. Sternlieb, J. Axe, Y. Nakamura, S. Uchida, Nature 375, 561 (1995). 41. A. V. Chubukov, K. A. Musaelian, Phys. Rev. B 51, 12605 (1995). 42. M. Vojta, Physical Review B 66, 104505 (2002). 43. S. R. White, D. Scalapino, Physical Review B 70, 220506 (2004). 44. M. Kato, K. Machida, H. Nakanishi, M. Fujita, Journal of the Physical Society of Japan
+59, 1047 (1990). 45. J. F. Dodaro, H.-C. Jiang, S. A. Kivelson, Physical Review B 95, 155116 (2017). 46. J. Xu, S. Chiesa, E. J. Walter, S. Zhang, Journal of Physics: Condensed Matter 25, 415602
+(2013). 22
+
+47. V. Emery, S. Kivelson, O. Zachar, Physical Review B 56, 6120 (1997). 48. S. A. Kivelson, E. Fradkin, V. J. Emery, Nature 393, 550 (1998). 49. J. Zaanen, O. Osman, H. Kruis, Z. Nussinov, J. Tworzydlo, Philosophical Magazine B 81,
+1485 (2001). 50. H.-B. Schu¨ttler, C. Gro¨ber, H. Evertz, W. Hanke, arXiv:cond-mat/0104300 (2001). 51. E. Arrigoni, A. Harju, W. Hanke, B. Brendel, S. Kivelson, Physical Review B 65, 134503
+(2002). 52. We construct the trial wave-function with desired wave-length by solving the non-
+interacting Hamiltonian with pinning fields in the whole system with the same structure. 53. M. Qin, H. Shi, S. Zhang, Phys. Rev. B 94, 085103 (2016). 54. F. Verstraete, V. Murg, J. I. Cirac, Advances in Physics 57, 143 (2008). 55. T. Nishino, et al., Prog. Theor. Phys. 105, 409 (2001). 56. J. Eisert, M. Cramer, M. B. Plenio, Rev. Mod. Phys. 82, 277 (2010). 57. P. Corboz, Phys. Rev. B 93, 045116 (2016). 58. P. Corboz, R. Orus, B. Bauer, G. Vidal, Phys. Rev. B 81, 165104 (2010). 59. H. N. Phien, J. A. Bengua, H. D. Tuan, P. Corboz, R. Orus, Phys. Rev. B 92, 035142 (2015). 60. H. C. Jiang, Z. Y. Weng, D. N. Sheng, Phys. Rev. Lett. 101, 117203 (2008). 61. P. Corboz, S. R. White, G. Vidal, M. Troyer, Phys. Rev. B 84, 041108 (2011). 62. T. Nishino, K. Okunishi, J. Phys. Soc. Jpn. 65, 891 (1996).
+23
+
+63. R. Oru´s, G. Vidal, Phys. Rev. B 80, 094403 (2009).
+64. S. Singh, R. N. C. Pfeifer, G. Vidal, Phys. Rev. B 83, 115125 (2011).
+65. B. Bauer, P. Corboz, R. Oru´s, M. Troyer, Phys. Rev. B 83, 125106 (2011).
+66. P. Corboz, G. Vidal, Phys. Rev. B 80, 165129 (2009).
+67. B.-X. Zheng, J. S. Kretchmer, H. Shi, S. Zhang, G. K.-L. Chan, Physical Review B 95, 045103 (2017).
+Work performed by B.-X. Zheng, C.-M. Chung, M.-P. Qin, H. Shi, S. R. White, S. Zhang, and G. K.-L. Chan was supported by the Simons Foundation through the Simons Collaboration on the Many-Electron Problem. S. R. White acknowledges support from the US NSF (DMR-1505406). S. Zhang and H. Shi acknowledge support from the US NSF (DMR1409510). M. Qin was also supported by the US DOE (de-sc0008627). G. K.-L. Chan acknowledges support from a Simons Investigatorship and the US DOE (de-sc0008624). DMET calculations were carried out at the National Energy Research Scientific Computing Center, a US DOE Office of Science User Facility supported by DE-AC02-05CH11231. AFQMC calculations were carried out at the Extreme Science and Engineering Discovery Environment (XSEDE), supported by the US NSF Grant No. ACI-1053575, at the OLCF at Oak Ridge National Lab, and the computational facilities at the College of William and Mary. P. Corboz was supported by the European Research Council (ERC) under the European Union's Horizon 2020 research and innovation programme (grant No 677061). G. Ehlers and R. M. Noack acknowledge support from the Deutsche Forschungsgemeinschaft (DFG) through grant no. NO 314/5-1 in Research Unit FOR 1807. Data used in this work is in the Supplementary Information and online at github.com/zhengbx/stripe_ data. The DMET code is available online at bitbucket.org/zhengbx/libdmet.
+24
+
+Other computer code is available from authors upon request: for AFQMC code, contact S. Zhang; for real-space DMRG code, contact S. R. White; contact R. M. Noack for hybrid DMRG code; and for iPEPS code, contact P. Corboz. Supplementary information Sections S1-S9. Detailed description of all methods, data, and analysis. Supplementary Tables S1-S10, Figure S1-S41. References 51-69.
+25
+
+

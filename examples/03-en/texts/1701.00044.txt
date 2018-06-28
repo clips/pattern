@@ -1,0 +1,1186 @@
+STIRLING FUNCTIONS AND A GENERALIZATION OF WILSON'S THEOREM
+MATTHEW A WILLIAMS
+
+arXiv:1701.00044v1 [math.NT] 31 Dec 2016
+
+ABSTRACT. For positive integers m and n, denote S(m, n) as the associated Stirling number of the second kind and let z be a complex variable. In this paper, we introduce the Stirling functions S(m, n, z) which satisfy S(m, n, ) = S(m, n) for any  which lies in the zero set of a certain polynomial P(m,n)(z). For all real z, the solutions of S(m, n, z) = S(m, n) are computed and all real roots of the polynomial P(m,n)(z) are shown to be simple. Applying the properties of the Stirling functions, we investigate the divisibility of the numbers S(m, n) and then generalize Wilson's Theorem.
+
+PRELIMINARIES AND NOTATION
+
+For brevity, we will denote Z+ = N \ {0}, E = 2Z+ and O = Z+ \ E. If P is a univariate polynomial with real or complex coefficients, define Z(P ) = {z  C : P (z) = 0} and ZR(P ) = Z(P )  R. Throughout, it will be assumed that m, n  Z+ and d := m - n. In agreement with the notation of Riordan [3], s(m, n) and S(m, n) will denote the Stirling numbers of the first and second kinds, respectively. We will also use the notation B(m, n) = n!S(m, n). Although we are mainly concerned with the numbers S(m, n), one recalls that for z  C
+n
+(z)n = z(z - 1) · · · (z - n + 1) = s(n, k)zk.
+
+k=0
+
+Let p be prime. In connection to the divisibility of the numbers S(m, n), we will use the
+
+abbreviation n p m in place of n  m (mod p). Note that p(n) := max{  N : p | n}
+
+(p(n) is known as the p-adic valuation of n). If n =
+
+m k=0
+
+bk
+
+2k
+
+(bk
+
+
+
+{0, 1}, bm
+
+=
+
+1)
+
+is
+
+the binary expansion of n, let n2 denote the binary representation of n, written bm · · · b0,
+
+where (n2)k := bk and m is called the MSB position of n2. We will call an infinite or n × n
+
+square matrix A = [aij] Pascal if for every i, j,
+
+i+j
+
+i+j
+
+aij = j
+
+or aij = j (mod p).
+
+We note that if A  Nn×n is Pascal, then A is symmetric and det(A) p 1 [5]. Finally, for the sake of concision, we will make use of the map e : Z+  E such that
+
+e(n) =
+
+n if n  E n + 1 otherwise.
+
+Following these definitions, let us introduce the Stirling functions:
+
+(-1)d n S(m, n, z) =
+
+n (-1)k(z - k)m.
+
+n!
+
+k
+
+k=0
+
+It is known [1] that S(m, n, z) = S(m, n) if d  0. The aim of this paper is to show that
+
+d > 0 implies S(m, n, z) = S(m, n) for real z only if z  {0, n} (Corollary 3), to investigate
+
+1
+
+2
+
+MATTHEW A WILLIAMS
+
+the p-adic valuation and parity of the numbers S(m, n), and to formulate and prove a generalization of Wilson's Theorem (Proposition 14).
+
+1. THE REAL SOLUTIONS OF S(m, n, z) = S(m, n).
+
+We first observe a classical formula from combinatorics [1]:
+
+Theorem 1. The number of ways of partitioning a set of m elements into n nonempty subsets is given by
+
+(1)
+
+1n S(m, n) =
+
+n (-1)k(n - k)m.
+
+n!
+
+k
+
+k=0
+
+It was discovered independently by Ruiz [1,2] that
+
+(2)
+
+1n S(n, n) =
+n!
+
+n (-1)k(z - k)n k
+
+(z  R).
+
+k=0
+
+Indeed, (2) is an evident consequence of the Mean Value Theorem. Katsuura [1] noticed that (2) holds even if z is an arbitrary complex value, as did Vladimir Dragovic (independently). The following proposition extends (2) to the case d > 0.
+
+Proposition 1. The equation S(m, n, z) = S(m, n) holds for all z  C if d  0, and for only the roots of the polynomial
+
+d
+P(m,n)(z) =
+
+m S(m - j, n)(-z)j j
+
+j=1
+
+in the case d > 0.
+
+Proof. Let z  C. One easily verifies that
+
+1 n n (-1)k(z - k)m = 1 n n (-1)k m m zj(-k)m-j
+
+n!
+
+k
+
+n!
+
+k
+
+j
+
+k=0
+
+k=0
+
+j=0
+
+m
+= (-1)d
+
+m
+
+j
+
+j=0
+
+1 n n (-1)n-kkm-j (-z)j .
+
+n!
+
+k
+
+k=0
+
+In view of Theorem 1, we have by symmetry
+
+m
+(-1)d
+
+m
+
+j
+
+j=0
+
+(3)
+
+Hence by (3)
+
+1n
+
+n (-1)n-kkm-j (-z)j
+
+=
+
+d
+(-1)d
+
+m S(m - j, n)(-z)j
+
+n!
+
+k
+
+j
+
+k=0
+
+j=0
+
+= (-1)d(S(m, n) + P(m,n)(z)).
+
+(4)
+
+S(m, n) = S(m, n, z) - P(m,n)(z).
+
+Now by the definition of P(m,n)(z) and (4), d  0 implies S(m, n) = S(m, n, z) for every z  C. Conversely, if d > 0, then P(m,n)(z) is of degree d and by (4) S(m, n) = S(m, n, z) holds for z  C if, and only if, z  Z(P(m,n)). This completes the proof.
+
+In contrast to the case d  0, we now have:
+
+STIRLING FUNCTIONS AND A GENERALIZATION OF WILSON'S THEOREM
+
+3
+
+FIGURE 1. Plots of P(m,1)(z) for 2  m  7.
+
+Corollary 1. If d > 0, there are at most d distinct complex numbers z  C such that S(m, n, z) = S(m, n).
+
+Proof. Noting that d > 0 implies deg(P(m,n)) = d, the Corollary follows by the Fundamental Theorem of Algebra.
+
+Remark 1. In view of the definition of P(m,n)(z), z = 0 is a root of this polynomial whenever d > 0. Proposition 1 then implies that S(m, n, 0) = S(m, n) for every m, n  Z+. Now if d  E, we have that
+
+1n S(m, n, n) =
+
+n (n - k)m = S(m, n)
+
+n!
+
+k
+
+k=0
+
+by Theorem 1. Thus, P(m,n)(n) = 0 whenever d  E by equation (4).
+
+The next series of Propositions provides the calculation of ZR(P(m,n)).
+
+Proposition 2. If d > 0, then the following assertions hold:
+
+(A) d  O implies z = 0 is a simple root of P(m,n)(z). (B) d  E implies z = 0 and z = n are simple roots of P(m,n)(z). (C) All real roots of P(m,n)(z) lie in [0, n].
+
+Proof. Note that by a formula due to Gould [3, Eqn. 2.57], we have
+
+n
+
+n (-1)k(z - k)m = d
+
+z-n B(m, n + j).
+
+k
+
+j
+
+k=0
+
+j=0
+
+4
+
+MATTHEW A WILLIAMS
+
+Now by the above and equation (4), we obtain an expansion of P(m,n)(z) at z = n:
+
+(-1)d d z - n
+
+P(m,n)(z) =
+
+n!
+
+B(m, n + j) - S(m, n) j
+
+j=0
+
+d
+= (-1)d
+
+n+j n
+
+S(m, n + j)(z - n)j + ((-1)d - 1)S(m, n)
+
+j=1
+
+(5)
+
+d
+= (-1)d
+
+d n + q S(m, n + q)s(q, j) (z - n)j + ((-1)d - 1)S(m, n).
+
+n
+
+j=1 q=j
+
+Let 1  j  d. We differentiate each side of (4) to get
+
+(6)
+
+P((mj),n)(z)
+
+=
+
+(-1)d(m)j n!
+
+n
+
+n (-1)k(z - k)m-j. k
+
+k=0
+
+We have by (6) and Theorem 1
+
+(7) P((mj),n)(0) = (-1)j(m)jS(m - j, n), P((mj),n)(n) = (-1)d(m)jS(m - j, n)
+
+hence (A) and (B) follow by Remark 1 and (7). Now, notice that applying (7) to (5) yields the convolution identity
+
+d n+q
+
+m
+
+(8)
+
+S(m, n + q)s(q, j) =
+
+S(m - j, n) (1  j  d).
+
+n
+
+j
+
+q=j
+
+Observing that P(m,n)(z) > 0 if z < 0, applying (8) to (5) yields
+
+z  (-, 0)  (n, )  |P(m,n)(z)| > 0.
+
+Assertion (C) is now established, and the proof is complete.
+
+As can be seen above, by (5) and (8) we have that
+
+P(m,n)(z) =
+
+d
+
+m S(m - j, n)(-z)j j
+
+j=1
+
+(9)
+
+= (-1)dP(m,n)(n - z) + ((-1)d - 1)S(m, n).
+
+Therefore, by (4) and (9), one obtains through successive differentiation:
+
+Proposition 3. Let d > 0 and k  Z+. Then, we have that S(k)(m, n, z) = P((mk),n)(z) = (-1)d-kP((mk),n)(n - z) = (-1)d-kS(k)(m, n, n - z).
+Thus, the derivatives of P(m,n)(z) and S(m, n, z) are symmetric about the point z = n/2. Further, the functions S(m, n, z) have the following recursive properties:
+
+Proposition 4. Let m, n  2, d > 0 and 1  k  d + 1. Then, we have: (A) S(m, n, z) = S(m - 1, n - 1, z - 1) - zS(m - 1, n, z) (B) S(k)(m, n, z) = (-1)k(m)kS(m - k, n, z).
+
+STIRLING FUNCTIONS AND A GENERALIZATION OF WILSON'S THEOREM
+
+5
+
+FIGURE 2. Plots of P(m,1)(z) and P(m,1)(1 - z) for m = 3, 5, 9. Note the symmetry about z = 1/2.
+
+Proof. It is easily verified that
+
+(-1)d n
+
+S(m, n, z) =
+
+z
+
+n (-1)k(z - k)m-1 + n n!(-1)k+1(z - k)m-1
+
+n!
+
+k
+
+(k - 1)!(n - k)!
+
+k=0
+
+k=0
+
+=
+
+(-1)d n-1 -zS(m - 1, n, z) +
+
+n - 1 (-1)k(z - 1 - k)m-1
+
+(n - 1)!
+
+k
+
+k=0
+
+= -zS(m - 1, n, z) + S(m - 1, n - 1, z - 1)
+
+which establishes (A). To obtain (B), differentiate the Stirling function S(m, n, z) k times and apply the definition of S(m - k, n, z).
+
+Remark 2. Let d > 0 and k  Z+. By Propositions 3 and 4B, we have that
+
+(10)
+
+(d - k)  O  P((mk),n)(n/2) = 0 = S(m - k, n, n/2).
+
+Now suppose (d - k)  E. In this case, Propositions 3 and 4B do not directly reveal the value of P((mk),n)(n/2). However, combined they imply a result concerning the sign (and more importantly, the absolute value) of P((mk),n)(z) if z  R. Consider that if d = m - 1,
+
+[S(m - k, 1, z) = zm-k - (z - 1)m-k > 0]  [z > z - 1] (z  R)
+
+since (m - k)  O. Proceeding inductively, we obtain:
+
+Proposition 5. Suppose d  E. Then, S(m, n, z) > 0 holds for every z  R.
+
+Proof. The Proposition clearly holds in the case n = 1. If also for n = N , let m be given which satisfies (m - (N + 1))  E. Set N + 1 = N . We expand S(m, N , z) at z = N /2 to obtain
+
+m-N S(j)(m, N , N /2)
+
+Nj
+
+(11)
+
+S(m, N , z) =
+
+z-
+
+.
+
+j!
+
+2
+
+j=0
+
+6
+
+MATTHEW A WILLIAMS
+
+Now, consider that by Propositions 4A and 4B we have that
+
+S (j )
+
+N m, N ,
+
+2
+
+=
+
+(-1)j (m)j S
+
+N m - j, N ,
+2
+
+(12)
+
+=
+
+(-1)j(m)j S
+
+N m - j - 1, N, - 1
+2
+
+N
+
+N
+
+- S m - j - 1, N ,
+
+2
+
+2
+
+for 0  j  m - N . Hence by (10), (12) and the induction hypothesis
+
+S (j )
+
+N m, N ,
+
+2
+
+= (-1)j(m)jS
+
+N m - j - 1, N,
+2
+
+-1
+
+>0
+
+(j  N \ O, j < m - N - 1)
+
+S (j )
+
+N m, N ,
+
+2
+
+=0
+
+(j  O, j < m - N ).
+
+and by Proposition 1
+
+S(m-N )
+
+N m, N ,
+
+2
+
+= (-1)m-N (m)m-N S
+
+N N ,N ,
+2
+
+= (m)m-N > 0.
+
+Thus S(m, N , z) may be written as
+
+m-N
+
+2 S(2j)(m, N , N /2)
+
+N 2j
+
+S(m, N , z) =
+
+z-
+
+(2j)!
+
+2
+
+j=0
+
+where each coefficient of the above expansion at z = N /2 is positive. Since m is arbitrary, the Proposition follows by induction.
+
+FIGURE 3. Plots of S(6, 4, z), S(8, 4, z) and S(10, 4, z). Note that each function achieves its global minimum (a positive value) at z = 2.
+Corollary 2. Let k  Z+. Then, |P((mk),n)(z)| > 0 holds for every z  R if (d - k)  E. Proof. Assume the hypothesis. By Propositions 3 and 4B, one obtains
+|P((mk),n)(z)| = (m)k|S(m - k, n, z)|. Noting S(m - k, n, z) > 0 if z  R by Proposition 5, the Corollary is proven.
+
+STIRLING FUNCTIONS AND A GENERALIZATION OF WILSON'S THEOREM
+
+7
+
+Remark 3. We now calculate ZR(P(m,n)) by Corollary 2 and the use of Rolle's Theorem. Sharpening Corollary 1, Proposition 6 (below) asserts that there are at most two distinct real solutions of the equation S(m, n, z) = S(m, n) if d > 0, dependent upon whether d  E or d  O. This result is in stark contrast to the Theorem of Ruiz, which has now been generalized to a complex variable (Proposition 1).
+Proposition 6. Let d > 0. Then, ZR(P(m,n))  {0, n}.
+Proof. By Proposition 2, we may assume d > 2. If d  E, Corollary 2 implies that |P (2)(m, n)(z)| > 0 (z  R).
+Hence |ZR(P(m,n))|  1. Proposition 2 now gives ZR(P(m,n)) = {0, n} (for otherwise, Rolle's Theorem assures |ZR(P(m,n))| > 1). Now if d  O, Corollary 2 yields
+|P(m,n)(z)| > 0 (z  R)
+and thus |ZR(P(m,n))|  1. We now conclude by Proposition 2 that ZR(P(m,n)) = {0}, which completes the proof.
+Corollary 3. If d > 0, the only possible real solutions of
+S(m, n, z) = S(m, n)
+are z = 0 and z = n. Moreover, for d > 2 there exist z  C \ R which satisfy the above.
+Proof. The first assertion is a consequence of Propositions 1 and 6. Now without loss, assume d > 2. By Propositions 2 and 6, there are at most two real roots of P(m,n)(z). Since we have that deg(P(m,n)) > 2, by the Fundamental Theorem of Algebra we obtain ZR(P(m,n)) Z(P(m,n)) which implies the existence of z  C \ R such that P(m,n)(z) = 0. The Corollary now follows by Proposition 1.
+
+2. SOME DIVISIBILITY PROPERTIES OF THE STIRLING NUMBERS OF THE SECOND KIND
+
+Let d > 0. By (10), we expand the Stirling functions S(m, n, z) at z = n/2 as follows:
+
+d/2 m
+
+n
+
+n 2j
+
+(13) d  E  S(m, n, z) =
+
+S m - 2j, n, z -
+
+2j
+
+2
+
+2
+
+j=0
+
+d-1
+
+2
+
+m
+
+n
+
+n 2j+1
+
+(14) d  O  S(m, n, z) = -
+
+S m - 2j - 1, n, z -
+
+2j + 1
+
+2
+
+2
+
+.
+
+j=0
+
+Now if d  E, (13) and Proposition 5 imply that S(m, n, z)  S(m, n, n/2) > 0 for every z  R. Conversely, if d  O, (14) implies that ZR(S(m, n, z)) = {n/2} (apply similar reasoning as that used in Proposition 6). Thus we introduce the numbers:
+
+v(m, n) := min |S(m, n, z)|.
+zR
+Taking z = 0 in (13) and (14), it follows by Propositions 1 and 2 that
+
+d/2 m
+
+n 2j
+
+(15)
+
+d  E  S(m, n) =
+
+v(m - 2j, n)
+
+2j
+
+2
+
+j=0
+
+d-1
+
+2
+
+m
+
+n 2j+1
+
+(16)
+
+d  O  S(m, n) =
+
+v(m - 2j - 1, n)
+
+.
+
+2j + 1
+
+2
+
+j=0
+
+8
+
+MATTHEW A WILLIAMS
+
+Using the formulas (15) and (16) combined with Proposition 7 (formulated below), we may deduce some divisibility properties of the numbers S(m, n). These include lower bounds for p(S(m, n)) if d  O and p | e(n)/2, and an efficient means of calculating the parity of S(m, n) if d  E.
+
+FIGURE 4. An example of the difference in growth between the numbers v(n + 2, n) (black) and S(n + 2, n) (red) (1  n  50).
+
+Proposition 7. Let n  E. Then, v(m, n)  Z whenever d > 0.
+
+Proof. In view of (10), we may assume without loss that d  E. Set q = n/2. By (15) and Proposition 1 we have that
+
+S(n + 2, n) = v(n + 2, n) + n + 2 v(n, n)q2 2
+
+(17)
+
+= v(n + 2, n) + n + 2 q2.
+
+2
+
+Thus, (17) furnishes the base case: v(n + 2, n) = S(n + 2, n) - n + 2 q2. 2
+
+Now if d = 2k and v(n + 2j, n)  Z for (1  j  k), one readily computes
+
+(18)
+
+k+1
+v(n + d + 2, n) = S(n + d + 2, n) -
+
+n+d+2
+
+v(n + d - 2(j - 1), n)q2j.
+
+2j
+
+j=1
+
+Since the RHS of (18) lies in Z by the induction hypothesis, the Proposition follows.
+
+Proposition 8. Let d  O and p be prime. Then, we have that
+
+p(S(m, n)) 
+
+p(e(n)) - 1 if p = 2 p(e(n)) otherwise.
+
+STIRLING FUNCTIONS AND A GENERALIZATION OF WILSON'S THEOREM
+
+9
+
+Proof. It is sufficient to show that d  O implies e(n)/2 | S(m, n). First assuming that n  E, by (16) we obtain
+
+d-1
+
+S(m, n) 2
+
+m
+
+n 2j
+
+(19)
+
+=
+
+v(m - 2j - 1, n)
+
+.
+
+n/2
+
+2j + 1
+
+2
+
+j=0
+
+Since Proposition 7 assures the RHS of (19) lies in Z, (n/2) | S(m, n) follows. Now if n  O, one observes
+S(m, n) = S(m + 1, e(n)) - e(n)S(m, e(n)).
+
+Thus, Proposition 7 and (19) imply e(n)/2 | S(m, n). This completes the proof.
+
+FIGURE 5. The numbers S(m, n) such that d  O. In the image above, each tile corresponds to an (m, n) coordinate, 1  m, n  50. Dark blue tiles represent those S(m, n) such that d  E  Z0. Note that the remaining tiles, corresponding to the S(m, n) such that d  O, are colored according to their divisibility by e(n)/2.
+Corollary 4. Let d  O. Then S(m, n) is prime only if m = 3 and n = 2.
+Proof. Assume the hypothesis. A combinatorial argument gives S(3, 2) = 3. If we suppose that 3 | S(2k + 1, 2), the identity
+S(2(k + 1) + 1, 2) = 4S(2k + 1, 2) + 3 yields 3 | S(2(k + 1) + 1, 2). Therefore, by induction we have that 3 | S(2N + 1, 2) for every N  Z+. However S(2N + 1, 2) > S(3, 2) if N > 1, and thus S(2N + 1, 2) is prime only if
+
+10
+
+MATTHEW A WILLIAMS
+
+N = 1. Now, assume that n > 2. Then e(n)/2 > 1 and by Proposition 8, e(n)/2 | S(m, n). Noting d > 0 implies
+e(n) S(m, n) = nS(m - 1, n) + S(m - 1, n - 1) > n >
+2 it follows that S(m, n) is composite. This completes the proof.
+Corollary 4 fully describes the primality of the numbers S(m, n) such that d  O. For those which satisfy d  E, infinitely many may be prime (indeed, the Mersenne primes are among these numbers). It is however possible to evaluate these S(m, n) modulo 2, using only a brief extension of the above results (Propositions 9-13). We remark that these numbers produce a striking geometric pattern (known as the Sierpinski Gasket, Figure 6). We now introduce
+n-1 n := min{k  4Z+ : k  n} - 3 = 1 + 4 4 . The n will eliminate redundancy in the work to follow (see Proposition 9, below).
+Proposition 9. Let d  E. Then, we have that
+S(n + d, n) 2 S( n + d, n).
+Proof. Assume without loss that n = n. Then, there exists 1  j  3 such that n = n + j. If j = 1, then n  E so that
+S(n + d, n) 2 S(n - 1 + d, n - 1) 2 S( n + d, n). Now if j  {2, 3}, notice 4 | e(n) and thus Proposition 8 assures 2 | S(n + (d - 1), n). Thus,
+S(n + d, n) 2 S( n + (j - 1) + d, n + (j - 1)). Taking j = 2 then j = 3 above completes the proof.
+With the use of Proposition 9, it follows that for every d  E
+1 2 S(1 + d, 1) 2 · · · 2 S(4 + d, 4). Before continuing in this direction, we first prove a generalization of the recursive identity S(m, n) = nS(m - 1, n) + S(m - 1, n - 1) for the sake of completeness.
+Lemma 1. Let n > 1 and d > 0. Then, for 1  k  d,
+d-k
+S(n + d, n) = nd-k+1S(n + k - 1, n) + njS(n - 1 + (d - j), n - 1)
+j=0
+Proof. We clearly have
+d-d
+S(n + d, n) = nd-d+1S(n + d - 1, n) + njS(n - 1 + (d - j), n - 1).
+j=0
+Now, assume that for 1    d,
+d-
+S(n + d, n) = nd-+1S(n +  - 1, n) + njS(n - 1 + (d - j), n - 1).
+j=0
+
+STIRLING FUNCTIONS AND A GENERALIZATION OF WILSON'S THEOREM
+
+11
+
+Then, by a brief computation
+
+S(n + d, n) = nd-+1(nS(n +  - 2, n) + S(n - 1 + ( - 1), n - 1))
+
+d-
+
++
+
+njS(n - 1 + (d - j), n - 1)
+
+j=0
+
+d-(-1)
+
+= nd-(-1)+1S(n + ( - 1) - 1, n) +
+
+njS(n - 1 + (d - j), n - 1).
+
+j=0
+
+The Lemma now follows by induction.
+
+Proposition 10 (Parity Recurrence). Let d  E and n > 4. Then, we have that
+d/2
+S(n + d, n) 2 S( n-4 + (d - 2j), n-4).
+j=0
+
+Proof. In view of Proposition 9, we may assume n = n. Consequently, n-1 = n-4. Now expanding S(n + d, n) into a degree d polynomial in n-odd via Lemma 1, we obtain by Proposition 9 and the formula (16)
+
+d-1
+S(n + d, n) 2 ndS(n, n) + njS(n - 1 + (d - j), n - 1)
+
+j=0
+
+(20)
+
+d 2
+
+-1
+
+2 1 + S( n-4 + (d - 2j), n-4)
+
+j=0
+
+d 2
+
+-1
+
++
+
+S(n - 1 + (d - 2j - 1), n - 1).
+
+j=0
+
+Noting n > 4, it follows 4 | (n-1). Thus Proposition 8 implies 2 | S(n-1+(d-2j-1), n-1) for each 0  j  d/2 - 1. That is,
+
+d 2
+
+-1
+
+(21)
+
+S(n - 1 + (d - 2j - 1), n - 1) 2 0.
+
+j=0
+
+Finally, since
+
+(22)
+
+1 2 S( n-4, n-4)
+
+the Proposition is established by taking (21) and (22) in (20).
+
+Remark 4. We may now construct an infinite matrix which exhibits the distribution of the even and odd numbers S(n + d, n) if d  N \ O:
+
+ 1 1 1 1 1 ··· 
+
+ 1 0 1 0 1 ··· 
+
+ 
+
+1
+
+1
+
+0
+
+0
+
+1
+
+···
+
+ 
+
+P
+
+=
+
+[pij ]
+
+=
+
+ 
+
+1
+
+0
+
+0
+
+0
+
+1
+
+···
+
+ 
+
+ 
+
+1
+
+1
+
+1
+
+1
+
+0
+
+···
+
+ 
+
+ ... ... ... ... ... . . . 
+
+12
+
+MATTHEW A WILLIAMS
+
+In matrix P , each entry pij (i, j  N) denotes the parity of those numbers S(n + d, n) (d  N \ O) which satisfy n = 1 + 4i (= 1 + 4 (n - 1)/4 ) and d = 2j. The pij are determined by the equations
+
+(23)
+
+p0j = pi0 = 1 (i, j  0)
+
+j
+
+(24)
+
+pij =
+
+pi-1,k (mod 2) = (pi-1,j + pi,j-1) (mod 2) (i, j  1).
+
+k=0
+
+(As an example, below we compute P100 = [pij : 0  i, j  100] (Figure 6). This matrix is profitably represented as a "tapestry" of colored tiles, so that its interesting geometric
+
+properties are accentuated.)
+
+FIGURE 6. P100. Above, yellow tiles correspond to pij = 1. Notice that this image is the Sierpinski Gasket.
+
+Although (24) is nothing more than a reformulation of Proposition 10, the second
+equality in (24) (from left to right) indicates that P is Pascal (to visualize this, rotate P 45o so that p00 is the "top" of Pascal's Triangle modulo 2.) Thus, P is symmetric, and an elementary geometric analysis yields
+
+i+j
+
+i+j
+
+(25)
+
+S( n + d, n) 2 j 2 i
+
+( n = 1 + 4i, d = 2j).
+
+Now, by Kummer's Theorem, we have that
+
+i+j
+
+(26)
+
+j 2 0 iff there exists k  N such that (i2)k = (j2)k = 1.
+
+Hence the following is immediate:
+
+STIRLING FUNCTIONS AND A GENERALIZATION OF WILSON'S THEOREM
+
+13
+
+Proposition 11. Let d  E. Then 2 | S(m, n) if, and only if, there exists k  N such that
+
+n-1 =
+4 2k
+
+d = 1.
+2 2k
+
+Proof. By Proposition 9 and (25),
+
+i+j S(m, n) 2 S( n + d, n) 2 j
+
+(i = (n - 1)/4 , d = 2j).
+
+Hence the Proposition follows by (26).
+
+Remark 5. Although Proposition 11 provides an elegant means to calculate the parity of S(m, n) if d  E, it may be further improved. Notice that Proposition 10 implies the ith
+row sequence
+
+Ri = (Ri(j))jN = (S( n + 2j, n) (mod 2))jN ( n = 1 + 4i) is periodic. Thus, by the symmetry of P , the jth column sequence
+
+Cj = (Cj(i))iN = (S(1 + 4i + d, 1 + 4i) (mod 2))iN (d = 2j)
+is also periodic. Denote the periods of these sequences as T (Ri) and T (Cj), respectively. We remark that since P is Pascal, i = j implies Ri = Cj. Conversely, i = j implies Ri = Rj and Ci = Cj (Proposition 13). We now show that both T (Ri) and T (Ci) are easily computed via (26).
+
+Proposition 12. Let d  E and let  denote the MSB position of i2 = 0. Then, T (Ri) = 2+1.
+
+Proof. Notice that  is the MSB position of i2 implies
+
+{k  N : (i2)k = (j2)k = 1} = {k  N : (i2)k = (j2 + q2+1)k = 1}
+
+Hence, (26) gives
+
+i+j
+
+i + j + q2+1
+
+(27)
+
+j 2 j + q2+1
+
+(q  N).
+
+(q  N).
+
+Now by (27), we obtain T (Ri) | 2+1. Assume T (Ri) = 2 for some 0     . Noting
+
+pi0 = 1, Kummer's Theorem then assures (i2)k = 0 for   k   , for otherwise there
+
+exists t  N such that
+
+i
+
+i + 2 +t
+
+1 2 0 2 2 +t 2 0.
+
+Thus (i2) = 0, contradicting the hypothesis. This result furnishes T (Ri)  2+1, and therefore T (Ri) = 2+1 holds.
+
+Corollary 5. Let d  E and let  denote the MSB position of j2 = 0. Then, T (Cj ) = 2+1.
+Proof. By the hypothesis and Proposition 12, we have that T (Rj) = 2+1. Hence, the symmetry of P yields T (Cj) = 2+1 as desired.
+
+14
+
+MATTHEW A WILLIAMS
+
+Remark 6. We may now improve (26) in the following sense. Given i and j, consider pij. Due to Proposition 12, one obtains an equal entry by replacing j with j = j (mod T (Ri)). Similarly by Corollary 5, a replacement of i with i = i (mod T (Cj )) also yields an equal entry. This process may be alternatively initiated with a replacement of i and ended with a replacement of j (depending upon which approach is most efficient, however observation of order is necessary). We make this reduction in computational work precise below.
+
+Corollary 6. Let d  E such that d = 2j, and n = 1 + 4i. Denote j1 = j (mod T (Ri)), i1 = i (mod T (Cj1 )), i2 = i (mod T (Cj)), j2 = j (mod T (Ri2 )).
+Then, 2(S(m, n))  1 if, and only if, there exists k  N such that
+(A) (i12)k = (j21)k = 1 (B) (i22)k = (j22)k = 1.
+Proof. The assertion follows by applying Proposition 12 and Corollary 5 to (26).
+
+Let i  N be given and  be as in Proposition 12. Call fi = (Ri(0), Ri(1), . . . , Ri(2+1 - 1))
+the parity frequency of Ri. It will now be shown that the parity frequency associated to each Ri is unique.
+Proposition 13 (Uniqueness of Parity Frequencies). Let i, k  N, i = k. Then, fi = fk.
+Proof. Assuming the hypothesis, suppose fi = fk. Setting M = max{i, k}  1, consider the matrix PM = [pij : 0  i, j  M ] (where pij is defined as in Remark 4). Since we have that M < T (RM ) (a consequence of Proposition 12), it follows by our assumption that rows i and k in PM are identical. Hence det(PM ) = 0. However PM is Pascal, so that det(PM ) 2 1 (contradiction). Therefore, we conclude that fi = fk.
+
+3. A GENERALIZATION OF WILSON'S THEOREM
+
+We attribute the technique used in the proof below to Ruiz [2].
+
+Proposition 14 (Generalized Wilson's Theorem). Let p  Z+. Then p is prime if, and only if, for every n  Z+
+-1 p B(n(p - 1), p - 1).
+
+Proof. We first establish necessity. For the case p = 2, one observes that for every n  Z+
+
+B(n(p - 1), p - 1) 2 1!S(n, 1) 2 -1.
+
+Now if p > 2 is prime, we have by Propositions 1 and 2 that
+
+(28)
+
+(p - 1)!S(n(p - 1), p - 1, 0) p B(n(p - 1), p - 1).
+
+Expanding the LHS of (28) (recall the definition of S(m, n, z)), we obtain
+
+p-1
+
+p-1 k
+
+p-1
+(-1)kkn(p-1) p
+
+p-1 k
+
+n
+(-1)k kp-1 p B(n(p - 1), p - 1).
+
+k=0
+
+k=0
+
+j=1
+
+Since p-1 0 p 1,
+
+p-1
+
+p-1
+
+p
+
+p-1
+
+p-1
+
+k + k - 1 p k p 0  k p - k - 1
+
+STIRLING FUNCTIONS AND A GENERALIZATION OF WILSON'S THEOREM
+
+15
+
+it follows that for each 0 < k < p,
+
+p-1 k
+
+p (-1)k.
+
+Hence we have that
+
+p-1
+
+p-1 k
+
+(-1)k
+
+n
+
+p-1
+kp-1 p
+
+n
+
+kp-1.
+
+k=0
+
+j=1
+
+k=0 j=1
+
+Finally, by Fermat's Little Theorem, we conclude
+
+p-1 n
+
+p-1
+
+kp-1 p 1 p p - 1 p -1 p B(n(p - 1), p - 1).
+
+k=0 j=1
+
+k=1
+
+For sufficiency, one observes that -1 p B(p-1, p-1) yields -1 p (p-1)!, which implies that p is prime.
+
+Corollary 7 (Wilson's Theorem). Let p  Z+. Then p is prime if, and only if, -1  (p - 1)! (mod p).
+
+Proof. If p is prime, take n = 1 in Proposition 14 to obtain -1  (p - 1)! (mod p).
+
+Proposition 14 may be applied to investigate the relationship between the Stirling numbers of the second kind and the primes. A result due to De Maio and Touset [4, Thm. 1 and Cor. 1] states that if p > 2 is prime, then
+
+(29)
+
+S(p + n(p - 1), k) p 0
+
+for every n  N and 1 < k < p. As an example of applying the Generalized Wilson's Theorem, we have:
+
+Proposition 15. Let p > 2 be prime. Then, for every n  Z+ and 0 < k < p - 1,
+
+S(n(p - 1), p - k) p (k - 1)!.
+
+Proof. Appealing to Proposition 14, we have that for every n  Z+
+
+-1 p (p - 1)!S(n(p - 1), p - 1) p -S(n(p - 1), p - 1).
+
+Hence S(n(p - 1), p - 1) p 1 p (1 - 1)!. Assume now that for 0 <  < p - 1 we have
+
+(30)
+
+S(n(p - 1), p - ) p ( - 1)! (n  Z+).
+
+Let n0  Z+ and  + 1 < p - 1. By (29) it follows
+
+S(p + (n0 - 1)(p - 1), p - ) p S(n0(p - 1) + 1, p - )
+
+p (p - )S(n0(p - 1), p - ) + S(n0(p - 1), p - ( + 1))
+
+p -S(n0(p - 1), p - ) + S(n0(p - 1), p - ( + 1))
+
+(31)
+
+p 0.
+
+Thus (30) and (31) imply that
+
+S(n0(p - 1), p - ( + 1)) p S(n0(p - 1), p - ) p ( - 1)! p !.
+
+Since n0 is arbitrary, the Proposition follows by induction.
+
+Acknowledgments. This paper presents an undergraduate research project supported and supervised by Dr. Vladimir Dragovic at UT Dallas.
+
+16
+
+MATTHEW A WILLIAMS
+
+REFERENCES
+[1] K. Boyadzhiev, Close Encounters with the Stirling Numbers of the Second Kind, Math.Mag.85(2012)252-266. doi:10.4169/math.mag.85.4.252
+[2] S. Ruiz, An Algebraic Identity Leading to Wilson's Theorem, The Math. Gazette 80 (1996) 579582. http://dx.doi.org/10.2307/3618534
+[3] H.W. Gould, Combinatorial Numbers and Associated Identities, published by West Virginia University, 2010. www.math.wvu.edu/gould/Vol.7.PDF
+[4] Joe De Maio, Stephen Touset, Stirling Numbers of the Second Kind and Primality, published by Kennesaw State University, 2008. http://science.kennesaw.edu/ jdemaio/stirling%20second%20primes.pdf
+[5] Alan Edelman, Gilbert Strang, Pascal Matrices, published by Department of Mathematics, Massachusetts Institute of Technology. http://web.mit.edu/18.06/www/Essays/pascal-work.pdf
+
+

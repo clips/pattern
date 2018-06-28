@@ -1,0 +1,1241 @@
+Einstein static universe from GUP
+K. Atazadeh and F. Darabi Department of Physics, Azarbaijan Shahid Madani University, Tabriz, 53714-161 Iran
+(Dated: May 25, 2017)
+We consider the existence and stability of the Einstein static universe under the Generalized Uncertainty Principle (GUP) effects. We show that this solution in the presence of perfect fluid with a minimal length is cyclically stable around a center equilibrium point. By taking linear homogeneous perturbations, we find that the scale factor of Einstein static universe for closed deformed isotropic and homogeneous FLRW universe depends on the GUP coupling parameter . Thus, in the model by GUP effects, our universe can stay at the Einstein static state past-eternally, which means that the big bang singularity might be resolved successfully by an emergent scenario.
+PACS numbers: 04.90.+e, 04.20.Gz, 98.80.Cq
+
+arXiv:1701.00060v3 [gr-qc] 23 May 2017
+
+I. INTRODUCTION
+
+Existence of a minimal length below which no other length can be observed, is a prediction of quantum theory of gravity [1]-[6]. In the framework of the perturbative string theory [1, 2], such a minimal observable length is due to the fact that strings cannot probe distances smaller than the string size. The quantum effects of gravitation at the scale of this minimal length become as important as the electroweak and strong interactions. Thus, in the framework of high energy physics phenomena such as early universe or strong gravitational fields of a black hole, we must consider the drastic effects of such a minimal length.
+Deformation of standard Heisenberg commutation relation in the ordinary quantum mechanics is a remarkable feature of the existence of a minimal length [7, 8]. Such relations are known as the generalized uncertainty principle (GUP). In one dimension, the simplest form of such relations in the context of the Snyder non-commutative space [9] can be written as
+
+qp
+
+
+
+1 2
+
+|
+
+<
+
+1 - p2 > |,
+
+(1)
+
+which is reduced to the minimal uncertainty relation when  < 0. Also, at the first order in , the string theory result q (1/p + ls2p) [10], in which the string length ls can be determined with (-/2)1/2, is recovered. Furthermore,
+if  > 0 a vanishing uncertainty in the non-commutative coordinate is allowed and appears as soon as p reaches the critical value of (p) = (1 -  < p >)/. Thus, the commutation relation can be written as
+
+[q, p] = i 1 - p2,
+
+(2)
+
+and the only freedom remains on the sign of the deformation parameter . We can then conclude that, a maximum momentum or a minimal length are predicted by the Snyder-deformed relation (2) if  > 0 or  < 0, respectively. Various applications of the low energy effects of the modified Heisenberg uncertainty relations have been extensively studied, see for example [11]-[15]. Also, in [16], the author has considered the implications of a deformed Heisenberg algebra on the Friedmann-Lema^itre-Robertson-Walker cosmological models.
+The idea, which uses the Einstein static state to solve the problem of big bang singularity, was first proposed by Ellis et al., and since then it was named the emergent scenario [17, 18]. It is easy to see that the existence of a stable Einstein static state universe is a prerequisite for the emergent theory. Otherwise our universe is impossible to stay at the static state past-eternally. The emergent mechanism is unsuccessful for the avoidance of big bang singularity in the theory of general relativity because the Einstein static state solution is unstable. In the very early universe, due to the fact that the cosmic energy density is very large, it is reasonable to consider some other effects, such as those from quantum gravity and modified gravity, which might help to stabilize the Einstein static state. Finally, the stability of the Einstein static state has been studied in various cases [19­34], from loop quantum gravity [20­22] to
+
+Electronic address: atazadeh@azaruniv.ac.ir Electronic address: f.darabi@azaruniv.ac.ir
+
+2
+f (R) gravity [30] and f (T ) gravity [35], from Horava-Lifshitz gravity [31, 34] to brane gravity [23, 36] and massive bigravity [37]. Also, recently the stability of the Einstein static state has been considered in [38, 39].
+In this paper, we consider the stability of the Einstein static universe in the Friedmann-Lema^itre-Robertson-Walker (FLRW) space-time in the framework of the GUP effects. Section II is devoted to the study of the modified FLRW cosmological dynamics. In Section III we present an analysis of the equilibrium of Einstein solution in the presence of matter. Next, we study a numerical example, in which the energy contain relativistic matter. In section IV we consider the model under the inhomogeneous perturbations. The paper ends with a brief conclusions in Section V.
+
+II. DEFORMED FLRW DYNAMICS
+Here, we first rewire the Snyder-deformed dynamics of the isotropic and homogeneous cosmological models that it has been presented in [16]. We study the system at classical level searching for the modifications influenced by the deformed Heisenberg algebra. Thus, we consider the ordinary FLRW dynamics and then focus on the deformed one.
+
+A. Standard Friedmann equation
+
+The isotropic and homogeneous FLRW cosmological models are characterized by the line element
+
+ds2 = -N 2dt2 + a2
+
+1
+
+dr2 - Kr2
+
++
+
+r2d2
+
+,
+
+(3)
+
+where a = a(t) and N = N (t) are the scale factor and the lapse function, respectively. The scale factor is the only degree of freedom of the system describing the expansion of the universe while the lapse function does not play a dynamical role. The spatial curvature K can be zero or ±1 depending on the topology of the space. The dynamics of such models is encapsulated in the scalar constraint
+
+H
+
+=
+
+-
+
+2G 3
+
+p2a a
+
+-
+
+3 8G
+
+aK
+
++
+
+a3
+
+=
+
+0,
+
+(4)
+
+where G = lP2 is the gravitational constant,  = (a) denotes for generic energy density of the system and pa is the momentum conjugate to the scale factor a. Because of the isotropy, the phase space of general relativity is reduced to 2-dimensional space in which the only non-vanishing Poisson bracket is {a, pa} = 1. By using the Hamilton equations with respect to the extended Hamiltonian, the Friedmann equation can be obtained
+
+HE
+
+=
+
+2G 3
+
+N
+
+p2a a
+
++
+
+3 8G
+
+N
+
+aK
+
+-
+
+N a3
+
++
+
+,
+
+(5)
+
+where  is a Lagrange multiplier and the last term  is written because the momenta conjugate () to the lapse function vanishes. The equation of motion for N is obtained as N = {N, HE} = , and the Hamiltonian constraint (4) is obtained requiring the constraint  = 0 to be satisfied at all times, i.e. by imposing that the secondary constraint
+ = {, HE} = H = 0 holds. The other equations of motion with respect to HE read as following
+
+a
+
+=
+
+{a, HE}
+
+=
+
+4G 3
+
+N
+
+pa a
+
+,
+
+pa = {pa, HE} = N
+
+2G 3
+
+p2a a2
+
+-
+
+3 8G
+
+K
+
++
+
+3a2
+
++
+
+a3
+
+d da
+
+.
+
+(6)
+
+By using of the above equations and the Hamiltonian constraint (4), we can obtain the equation of motion for the Friedmann equation as
+
+a a
+
+2
+
+=
+
+8G 3
+
+
+
+-
+
+K a2
+
+,
+
+(7)
+
+which is the desired Friedmann equation in a synchronous reference frame, i.e. defined in the 3 + 1 framework by N = 1 and N i = 0, the time coordinate is identified with the proper time at each point of space. We know that
+this equation leads to the big-bang singularity where the (general-relativistic) description of the universe is no longer
+appropriate and quantum modifications are required.
+
+3
+
+B. Deformed Friedmann equation
+
+Now, we are ready to consider the analysis of the deformed dynamics of the FLRW models and specifically we study the one-dimensional case of the scheme considered above. In other words, we check the modifications resulting from the algebra (2) on the classical trajectory of the universe represented in the previous subsection.
+The modified symplectic geometry resulting from the classical limit of (2), is the origin of Snyder-deformed classical dynamics and the parameter  is regarded as an independent constant with respect to . According to Dirac's prescription, it is possible to replace the quantum-mechanical commutator (2) via the Poisson bracket
+
+- i[q~, p]  {q~, p} = 1 - p2.
+
+(8)
+
+This relation corresponds exactly to the unique (up to a sign) possible realization of the Snyder space. To obtain the deformed Poisson bracket, some natural requirements must be considered. So, it must possess the same properties as the quantum mechanical commutator, i.e. it has to be anti-symmetric, bilinear and satisfy the Leibniz rules as well as the Jacobi identity. Thus, the Poisson bracket in the two-dimensional phase space is
+
+{F, G} =
+
+F q~
+
+G p
+
+-
+
+F p
+
+G q~
+
+1 - p2.
+
+(9)
+
+Specially, the canonical equations for coordinate and momentum from the deformed Hamiltonian H(q~, p), are given by
+
+q~
+
+=
+
+{q~,
+
+H}
+
+=
+
+H p
+
+1 - p2,
+
+p
+
+=
+
+{p,
+
+H}
+
+=
+
+-
+
+H q~
+
+1 - p2.
+
+(10)
+
+Now, we apply this scheme to the FLRW model in the presence of the matter energy density, namely to the extended Hamiltonian (5). Thus we assume the minisuperspace as Snyder-deformed and consequently, the commutator between the scale factor a and its conjugate momentum pa is uniquely given by
+
+{a, pa} = 1 - p2a ,
+
+(11)
+
+with respect to which the equations of motion N = {N, HE} =  and  = {, HE} = H = 0 are not changed. Indeed, the Poisson bracket {N, } = 1 is not influenced by the deformations induced by the  parameter. Nevertheless, the
+equations of motion (6) can be modified in such approach via the relation (11), and we have
+
+a
+
+=
+
+{a, HE}
+
+=
+
+4G 3
+
+N
+
+pa a
+
+1 - p2a,
+
+(12)
+
+pa = {pa, HE} =
+
+1 - p2aN
+
+2G 3
+
+p2a a2
+
+-
+
+3 8G
+
+K
+
++
+
+3a2
+
++
+
+a3
+
+d da
+
+.
+
+The equation of motion in the canonical case for the Hubble rate can be obtained by solving the constraint (4) with respect to pa and then studying the first equation of (12). Explicitly, it has the following form (taking N = 1)
+
+a a
+
+2
+=
+
+8G 3
+
+
+
+-
+
+K a2
+
+1
+
+-
+
+3 2G
+
+a2
+
+a2
+
+-
+
+3 8G
+
+K
+
+.
+
+(13)
+
+Also, the conservation equations for the matter component is given by
+
+ + 3H(1 + w) = 0 ,
+
+(14)
+
+where w is the equation of state parameter of the background matter. Equation (13) is deformed Friedmann equation in which it requires the modification originating from the Snyder-deformed Heisenberg algebra (11). If we consider the flat FLRW universe (K = 0), the deformed equation (13) can be written as [16]
+
+a a
+
+2 K =0
+
+=
+
+8G 3
+
+
+
+1
+
+-
+
+sgn
+
+
+
+ c
+
+,
+
+(15)
+
+4
+where P is the Planck energy density and c = (2G/3||)P is the critical energy density. Note that in the last step the existence of a fundamental minimal length is assumed . One of the most important consequences of all quantum gravity theories is the existence of a fundamental cut-off length which is related to the Planck cut-off length (for a review see [40]). Therefore, it is anticipated that the scale factor (the energy density) has a minimum (maximum) at the Planck scale.
+The impact of deformed Heisenberg algebra on the Friedmann equation (15) results in the modifications manifested in the form of a 2-term. If  > 0 and  = c in high energy regime, the Hubble rate vanishes and the Universe experiences a bounce in the scale factor. Also, the standard Friedmann equation (7) for k = 0, is recovered for energy density much smaller than c. When  = 0, the correction term vanishes and the ordinary behavior of the Hubble parameter is obtained. The Randall-Sundrum braneworld scenario is also recovered for  < 0 .
+
+III. THE EINSTEIN STATIC SOLUTION AND STABILITY
+
+By using the equations (13) and (14) for the closed FLRW universe (K = 1), the Raychadhuri equation can be written as1
+
+a¨
+
+=
+
+12w2a5
+
+-
+
+36(w
+
++
+
+1)a3
+
++
+
+48a3
+
+-
+
+36a
+
+-
+
+1 2
+
+(w
+
++
+
+1)a
+
++
+
+a 3
+
+,
+
+(16)
+
+where by solving the equation (13), the matter energy density  as a function of a and a is given by
+
+
+
+
+
+=
+
+72a4
+
++ a2
+
+± a4 - 24a6
+
+144a8H2 .
+
+(17)
+
+The Einstein static solution is described by a¨ = 0 = a . To begin with, we obtain the conditions for the existence of this solution. From equations (16) and (17), the scale factor and energy density in this case are given by
+
+a2 Es
+
+=
+
+(1 - 3w) 36(1 + 3w)
+
+,
+
+Es
+
+=
+
+216(1 + 3w) (1 - 3w)2
+
+=
+
+Es
+
+=
+
+(1
+
+-
+
+6 3w)a2
+
+.
+
+(18)
+
+Es
+
+By considering the solutions (18), the existence condition of an Einstein static universe is reduced to the reality condition for aEs and positivity for Es , which for a positive  results in the allowed domain of w
+
+-1/3 < w < 1/3,
+
+(19)
+
+and for  < 0 we have
+
+w < -1/3.
+
+(20)
+
+Now, we are going to study the stability of the critical point for the case of positive sign equation (17). For convenience, we introduce two variables
+
+x1 = a, x2 = a .
+
+(21)
+
+It is then easy to obtain the following equations
+
+x 1 = x2,
+
+(22)
+
+x 2 =
+
+-
+
+x1 6
+
++
+
+27 4
+
+x1
+
+3
+
+-
+
+3x1 2
+
+w
+
+1 3
+
++
+
+27 2
+
+x12
+
+(x1,
+
+x2)
+
++
+
+12x15w(x1,
+
+x2)2
+
+-
+
+9x1 2
+
+.
+
+(23)
+
+According to these variables, the fixed point, x1 = aEs, x2 = 0 describes the Einstein static solution properly. The
+
+stability
+
+of
+
+the
+
+critical
+
+point
+
+is
+
+determined
+
+through
+
+the
+
+eigenvalue
+
+of
+
+the
+
+coefficient
+
+matrix
+
+(Jij
+
+=
+
+x i xj
+
+)
+
+stemming
+
+1 We have set units 8G = 1.
+
+5
+
+from linearizing the system explained in details by above two equations near the critical point. Using 2 to obtain the eigenvalue we have
+
+2 =
+
+3-63
+
+(w(12w-7)+1)2 (3w+1)4 2
+
+(9w-4)
+
+49
+-
+
+189
+(w(12w-7)+1)2 (3w+1)4 2
+(1-4w)2
+
+.
+
+-
+
+4 -4w
+
+-
+
+18 3w+
+
+(24)
+
+In the case of 2 < 0 the Einstein static solution has a center equilibrium point, so it has circular stability, which
+means that small perturbation from the fixed point results in the oscillations about that point rather than exponential
+deviation from it. In this case, the universe oscillates in the neighborhood of the Einstein static solution indefinitely. Here the allowed ranges for w with the requirement 2 < 0 are obtained in Table 1.
+
+Table 1: Allowed ranges for w. w
+-1/3 < w < 1/4 or w > 1/3 -1/3 < w < 1/4 or 1/4 < w < 1/3 or w > 4/9
+
+ >0 <0
+
+Thus, the stability condition is determined by 2 < 0 (Table 1). For  > 0, this means that -1/3 < w < 1/4. Comparing this inequality with the conditions for existence of the Einstein static solution (19), we find that the
+Einstein universe is stable for -1/3 < w < 1/4. Especially, it is stable in the presence of ordinary matter (w) and the GUP effects. Also, for more clarification about the explicit behavior of 2 as a function of w and  we have plotted
+it in Fig.1.
+
+0.0 0.2 2 0.4
+0.6
+0.2
+
+0.00
+0.05
+0.10 
+
+0.0
+
+0.15
+
+w 0.2
+0.20
+
+0 2 4 2
+6
+0.2
+0.0 w
+
+0.00 0.05 0.10  0.15 0.2 0.20
+
+FIG. 1: The behavior of 2 as a function of w and  for -1/3 < w < 1/4, 0 <  < 0.2 (left) and -0.2 <  < 0 (right).
+
+From Fig. 1, it can be seen that for the given ranges for w and , 2 is negative and Einstein universe is stable.
+
+A. Numerical analysis of the model
+
+In the following, we study numerically the effects of GUP on the dynamics of the universe. As an example, according to the allowed stability ranges for w, namely -1/3 < w < 1/4, we consider a relativistic matter with an equation-of-state parameter w = -0.2. Using these equation of state parameters in the equation (16), we obtain
+
+a¨ + 2.42a5 - 19.2a3 - 36a + 0.06a = 0.
+
+(25)
+
+From
+
+the
+
+above
+
+equation
+
+the
+
+corresponding
+
+scale
+
+factor
+
+of
+
+Einstein
+
+static
+
+solution
+
+is
+
+given
+
+by
+
+a2 Es
+
+=
+
+1 10
+
+.
+
+Obviously,
+
+the phase space trajectories which are beginning precisely on the Einstein static fixed point, remain at this point
+
+indeterminately. From another point of view, trajectories which are creating in the vicinity of this point would
+
+oscillate indefinitely near this solution. An example of such a universe trajectory using initial conditions given by
+
+a(0) = 1 and a (0) = 0, with  = 0.8 has been plotted in Fig. 2. Another example, for  = 2 and w = -0.3 has been
+
+plotted in Fig. 3.
+
+Note that by choosing another Equation-of-State parameter w from the stability range, i.e. -1/3 < w < 1/4, one
+
+can solve numerically the equation (16).
+
+6
+
+a 1.10 1.08 1.06 1.04
+
+a 0.06 0.04 0.02
+a 1.02 1.04 1.06 1.08 1.10 0.02
+
+1.02
+
+0.04
+
+6
+
+4
+
+2
+
+t
+
+2
+
+4
+
+6
+
+0.06
+
+FIG. 2: The evolutionary curve of the scale factor with time (left) and the phase diagram in space (a, a ) (right) for w = -0.2.
+
+a 0.6
+
+a
+
+0.4
+
+2.2 2.0 1.8 1.6 1.4 1.2
+5
+
+t 5
+
+0.2
+
+a
+
+1.2
+
+1.4
+
+1.6
+
+1.8
+
+2.0
+
+2.2
+
+0.2
+
+0.4
+
+0.6
+
+FIG. 3: The evolutionary curve of the scale factor with time (left) and the phase diagram in space (a, a ) (right) for w = -0.3.
+
+IV. INHOMOGENEOUS PERTURBATIONS
+
+A. Density perturbations
+
+First, we study inhomogeneous density perturbations for the simple one-component fluid models under the GUP
+effects. The density perturbations in the context of FLRW universe by using 1 + 3-covariant gauge-invariant approach, are characterized by  = a2D2/, where D2 is the covariant spatial Laplacian. The dynamical equation of  for
+the closed FLRW universe (K = 1), is given by [27, 42]
+
+¨ + (2 - 6w + 3c2s)H +
+
+(26)
+
+12(w - a2
+
+c2s )
+
++
+
+4G(3w2
+
++
+
+6c2s
+
+-
+
+8w
+
+-
+
+1)
+
+ - c2sD2 - w
+
+D2
+
++
+
+3 a2
+
+E = 0,
+
+where c2s = dp/d and E = (a2D2p - c2s)/p are sound speed and the entropy perturbation for a one-component source, respectively. For the Einstein static background model, E = 0 and equation (18) we can rewrite equation (26) as
+
+(27) ¨ k + k = 0,
+
+where k denotes for comoving index (D2  -k2/a2 ) and  is given by Es
+
+9(3w + 1) =-
+
+279w2 - 72w + 8(3w - 1)k2 - 288w + 78 16(1 - 3w)2
+
+c2s + 3
+
+.
+
+(28)
+
+7
+Equation (27) shows that neutral stable against adiabatic density perturbations of the fluid for all allowed inhomogeneous modes is generally available, except for those values of parameters  and w for which the  becomes negative.
+To consider the stability and instability of the Einstein static universe against adiabatic density perturbations, we obtain the following range of w,  and k for the case cs   with the requirement  > 0 and  < 0 in Table 2 and Table 3, respectively.
+
+w
+
+-39+4k2 -144+12k2
+
+<w<
+
+1 93
+
+(12
+
+-
+
+ 51)
+
+w
+
+=
+
+1 93
+
+(12
+
+-
+
+ 51)
+
+-
+
+1 3
+
+<
+
+w
+
+<
+
+1 93
+
+(12
+
+-
+
+ 51)
+
+-39+4k2 -144+12k2
+
+<w<
+
+1 93
+
+(12
+
+-
+
+ 51)
+
+Table 2: Allowed ranges for w, , k and cs (stable case).
+
+cs
+
+k
+
+cs >
+
+-279w2 +72w-3 24wk2 -8k2-288w+78
+
+1 2
+
+1 10
+
+ 309 + 9 51
+
+<k
+
+87 2 2
+
+cs > 0
+
+1 2
+
+1 10
+
+ 309 + 9 51
+
+<k
+
+87 2 2
+
+cs > 0
+
+1 2
+
+1 10
+
+ 309 - 9 51
+
+<
+
+k
+
+<
+
+1 2
+
+1 10
+
+cs >
+
+-279w2 +72w-3 24wk2 -8k2-288w+78
+
+1 2
+
+1 10
+
+ 309 - 9 51
+
+<
+
+k
+
+<
+
+1 2
+
+1 10
+
+ 309 + 9 51
+ 309 + 9 51
+
+ >0 >0 <0 <0
+
+w
+
+-39+4k2 -144+12k2
+
+<w<
+
+1 3
+
+w
+
+=
+
+1 93
+
+(12
+
++
+
+ 51)
+
+-
+
+1 3
+
+<w
+
+<
+
+1 93
+
+(12
+
+-
+
+ 51)
+
+1 93
+
+(12
+
+-
+
+ 51)
+
+<w
+
+<
+
+-39+4k2 -144+12k2
+
+Table 3: Allowed ranges for w, , k and cs (unstable case).
+
+cs
+
+k
+
+cs >
+
+-279w2 +72w-3 24wk2 -8k2-288w+78
+
+-
+
+1 2
+
+1 10
+
+ 309 - 9 51
+
+<k<
+
+1 2
+
+1 10
+
+ 309 - 9 51
+
+cs > 0 cs > 0
+
+87 2 2
+
+ <k<2 3
+
+1 2
+
+1 10
+
+ 309 - 9 51
+
+<
+
+k
+
+<
+
+1 2
+
+1 10
+
+ 309 + 9 51
+
+cs >
+
+-279w2 +72w-3 24wk2 -8k2-288w+78
+
+1 2
+
+1 10
+
+ 309 - 9 51
+
+<
+
+k
+
+<
+
+1 2
+
+1 10
+
+ 309 + 9 51
+
+ <0
+<0 >0 >0
+
+From Table 2, it can be seen that for the given ranges for w, , k and cs,  is positive and Einstein universe is stable against adiabatic density perturbations. Also, from Table 3 it can be seen that for the given ranges for w, , k and cs,  is negative and Einstein universe is unstable against adiabatic density perturbations. It is worth mentioning that there are variety of other ranges for which one can show the stability or instability against adiabatic density perturbations, however we have confined ourselves to some typical ranges in the above tables.
+
+B. Vector and tensor perturbations
+
+In the an isotropic and homogeneous FLRW universe, the vector perturbations of a perfect fluid are given by the comoving dimensionless vorticity defined as a = a, with modes that are satisfying the following propagation equation [27, 42]
+
+ k + H(1 - 3c2s)k = 0,
+
+(29)
+
+where H is the Hubble parameter. By imposing the Einstein static universe condition, i.e. H = 0, equation (29) can be written as
+
+ k = 0.
+
+(30)
+
+From equation (30) it can be seen that in the Einstein static universe regime, the initial vector perturbations are frozen and thus for all equations of state on all scales the neutral stability against vector perturbations exists.
+Next step to consider the inhomogeneous perturbations, is the tensor perturbations, namely gravitational-wave perturbations, of a perfect fluid with density  and pressure p = w that it is defined by the comoving dimensionless transverse-traceless shear ab = aab, with modes that are satisfying the following equation [43]
+
+¨ k + 3H k +
+
+k2 a2
+
++
+
+2 a2
+
+-
+
+(1
+
++ 3w) 3
+
+k = 0.
+
+(31)
+
+In the Einstein static universe regime, equation (31) reads
+
+¨ k + k = 0,
+
+(32)
+
+8
+
+where  is given by
+
+9(3w + 1) 48(3w - 1)k2 + 27w - 7 
+
+=-
+
+8(1 - 3w)2
+
+.
+
+(33)
+
+To obtain the above equation, we have inserted equation (18) in equation (31). This equation specifies that the neutral stability for tensor perturbations is generally available, except for those values of parameters  and w for which the  becomes negative.
+To study the stability and instability of the tensor perturbations in the context of Einstein static universe, we obtain the following range of w and  for the case k   with the requirement  > 0 and  < 0 in Table 4 and Table 5, respectively.
+
+Table 4: Allowed ranges for w and  (stable case).
+
+w
+
+-
+
+1 3
+
+<
+
+w
+
+<
+
+7+48k2 27+144k2
+
+-1/3 > w
+
+or w > 1/3
+
+or
+
+1 3
+
+>w>
+
+7+48k2 27+144k2
+
+ >0 <0
+
+Table 5: Allowed ranges for w and  (unstable case).
+
+w
+
+-
+
+1 3
+
+<
+
+w
+
+<
+
+7+48k2 27+144k2
+
+-1/3 > w
+
+or w > 1/3
+
+or
+
+1 3
+
+>w>
+
+7+48k2 27+144k2
+
+ <0 >0
+
+From Table 4, it can be seen that for the given ranges for w and ,  is positive and Einstein universe is stable against tensor perturbations. Also, from Table 5 it can be seen that for the given ranges for w and ,  is negative and Einstein universe is unstable against tensor perturbations.
+
+V. CONCLUSION
+We have discussed the existence and stability of the Einstein static universe with a minimal length in the context of GUP effects. We have shown that the radius of Einstein universe is inversely proportional to the . Also, we have determined the allowed intervals for the equation of state parameter such that the Einstein universe is stable, while it is dynamically belonging to a center equilibrium point. Also, we have studied the presented model under the inhomogeneous perturbations in which by fixing values of parameters  and w stability for density, vector and tensor perturbations are generally available. The motivation study of such a solution is the result of its essential role in the construction of non-singular emergent oscillatory models which are past eternal, and hence can resolve the singularity problem in the standard cosmological scenario.
+
+Acknowledgments
+When this work was completed and ready for submission to arxiv, we noticed the appearance of a new paper in the arxiv [41], relevant to our paper. After a careful study, we realized that our modified Friedmann equation (15) is different from the one (7) used in [41]. In the paper [41], the modified Friedmann equation was derived using the form of generalized uncertainty principle (4) with a correction term linear in the momentum, whereas our modified Friedmann equation was derived using the different form of generalized uncertainty principle (11), with a correction term quadratic in the momentum, deduced from the Snyder non-commutative space. Therefore, different and independent results have been obtained in these two papers.
+This work has been supported financially by a grant number 217/D/17739 from Azarbaijan Shahid Madani University.
+
+[1] D. J. Gross and P. F. Mende, Nucl. Phys. B 303 (1988) 407. [2] D. Amati, M. Ciafaloni and G. Veneziano, Phys. Lett. B 216 (1989) 41. [3] M. Kato, Phys. Lett. B 245 (1990) 43.
+
+9
+[4] S. Haro, JHEP 10 (1998) 023. [5] L. G. Garay, Int. J. Mod. Phys. A 10 (1995) 145. [6] K. Konishi, G. Paffuti and P. Provero, Phys. Lett. B 234 (1990) 276. [7] A. Kempf, G. Mangano and R. B. Mann, Phys. Rev. D 52 (1995) 1108. [8] A. Kempf and G. Mangano, Phys. Rev. D 55 (1997) 7909. [9] H. S. Snyder, Phys. Rev. 71 (1947) 38. [10] D. J. Gross and P. F. Mendle, Nucl. Phys. B 303 (1988) 407;
+K. Konishi, G. Paffuti and P. Provero, Phys. Lett. B 234 (1990) 276. [11] F. Brau, J. Phys. A 32 (1999) 7691. [12] R. Akhoury and Y. P. Yao, Phys. Lett. B 572 (2003) 37. [13] S. Hossenfelder, M. Bleicher, S. Hofmann, J. Ruppert, S. Scherer and H. St¨ocker, Phys. Lett. B 575 (2003) 85;
+F. Scardigli, Phys. Lett. B 452 (1999) 39; F. Scardigli and R. Casadio, Eur. Phys. J. C 75 (2015) 425; F. Scardigli, G. Lambiase and E. Vagenas, arXiv:1611.01469. [14] K. Nozari and T. Azizi, Gen. Rel. Grav. 38 (2006) 735; M. Faizal and B. Majumder, Annals of Phys. 357 (2015) 49; S. Pramanik, M. Faizal, M. Moussa and A. F. Ali , Annals of Phys. 362 (2015) 24; M. Faizal, M. M. Khalil and S. Das, Eur. Phys. J. C 76 (2016) 30; A. F. Ali, M. Faizal and M. M. Khalil, JCAP 09 (2015) 025; R. Garattini and M. Faizal, Nucl. Phys. B 905 (2016) 313; M. Faizal, Phys. Lett. B 757 (2016) 244. [15] B. Vakili, N. Khosravi and H. R. Sepangi, Class. Quant. Grav. 24 (2007) 931; B. Vakili and H. R. Sepangi, Phys. Lett. B 651 (2007) 79; A. Paliathanasis, S. Pan and S. Pramanik, Class. Quant. Grav. 32 (2015) 245006. [16] M. V. Battisti, Phys. Rev. D 79 (2009) 083506. [17] G. F. R. Ellis and R. Maartens, Class. Quant. Grav. 21 (2004) 223. [18] G. F. R. Ellis, J. Murugan and C. G. Tsagas, Class. Quant. Grav. 21 (2004) 233 . [19] S. Carneiro and R. Tavakol, Phys. Rev. D 80 (2009) 043528, arXiv: 0907.4795; C. G. Boehmer, Class. Quant. Grav. 21 (2004) 1119. [20] D. J. Mulryne, R. Tavakol, J. E. Lidsey and G. F. R. Ellis, Phys. Rev. D 71 (2005) 123512. [21] L. Parisi, M. Bruni, R. Maartens and K. Vandersloot, Class. Quant. Grav. 24 (2007) 6243. [22] P. Wu and H. Yu and J. Cosmol. Astro. Phys. 05 (2009) 007, arXiv:0905.3116. [23] J. E. Lidsey and D. J. Mulryne, Phys. Rev. D 73 (2006) 083508; J. E. Lidsey, D. J. Mulryne, N. J. Nunes and R. Tavakol, Phys. Rev. D 70 (2004) 063521. [24] C. G. Boehmer, L. Hollenstein and F. S. N. Lobo, Phys. Rev. D 76 (2007) 084005; N. Goheer, R. Goswami and P. K. S. Dunsby, Class. Quant. Grav. 26 (2009) 105003, arXiv: 0809.5247; S. del Campo, R. Herrera and P. Labrana, JCAP 0711 (2007) 030; R. Goswami, N. Goheer and P. K. S. Dunsby, Phys. Rev. D 78 (2008) 044011; U. Debnath, Class. Quant. Grav. 25 (2008) 205019; B. C. Paul and S. Ghose, arXiv: 0809.4131. [25] S. S. Seahra and C. G. Bohmer, Phys. Rev. D 79 (2009) 064009. [26] C. G. Boehmer and F. S. N. Lobo, Phys. Rev. D 79 (2009) 067504, arXiv: 0902.2982 [27] J. D. Barrow, G. Ellis, R. Maartens and C. Tsagas, Class. Quant. Grav. 20 (2003) L155 . [28] T. Clifton and J. D. Barrow, Phys. Rev. D 72, 123003 (2005). [29] J. D. Barrow and C. G. Tsagas, Class. Quant. Grav. 26 (2009) 195003, arXiv:0904.1340. [30] C. G. Boehmer, L. Hollenstein, F. S. N. Lobo and S. S. Seahra, arXiv:1001.1266; C. G. Boehmer, F. S. N. Lobo and Nicola Tamanini, Phys. Rev. D 88 (2013) 104019. [31] A. Odrzywolek, Phys. Rev. D 80 (2009) 103515. [32] S. del Campo, R. Herrera and P. Labrana, JCAP 0907 (2009) 006, arXiv:0905.0614; P. Labrana, Phys. Rev. D 91 (2015) no.8, 083534, arXiv:1312.6877. [33] C. G. Boehmer and F. S. N. Lobo, Eur. Phys. J. C 70 (2010) 1111. [34] P. Wu and H. Yu, Phys. Rev. D 81 (2010) 103522, arXiv: 0909.2821. [35] J. -T. Li, C. -C. Lee and C. -Q. Geng, Eur. Phys. J. C 73, 2315 (2013). [36] K. Atazadeh, Y. Heydarzade and F. Darabi, Phys. Lett. B 732 (2014) 223. [37] L. Parisi, N. Radicella and G. Vilasi, Phys. Rev. D 86 (2012) 024035; M. Mousavi and F. Darabi, arXiv:1607.04377. [38] K. Atazadeh, JCAP 06 (2014) 020. [39] K. Atazadeh and F. Darabi, Phys. Lett. B 744 (2015) 363; C. G. Boehmer, N. Tamanini and M. Wright, Phys. Rev. D 92 (2015) 124067; I. S. Kohli and M. C. Haslam, Phys. Rev. D 89 (2014) 043518. Y. Heydarzade, F. Darabi and K. Atazadeh, Astrophys. Space. Sci 361 (2016) 250; M. Khodadi, Y. Heydarzade, F. Darabi and E. N. Saridakis, Phys. Rev. D 93 (2016) 124019. [40] L. J. Garay, Int. J. Mod. Phys. A 10 (1995) 145. [41] M. Khodadi, K. Nozari and E. N. Saridakis, arXiv:1612.09254.
+
+10
+[42] M. Bruni, P. K. S. Dunsby and G. F. R. Ellis, Ap. J. 395 (1992) 34. [43] P. K. S. Dunsby, B. A. Bassett and G. F. R. Ellis, Class. Quant. Grav. 14 (1997) 1215;
+A. D. Challinor, Class. Quant. Grav. 17 (2000) 871; R. Maartens, C. G. Tsagas and C. Ungarelli, Phys. Rev. D 63 (2001) 123507.
+
+

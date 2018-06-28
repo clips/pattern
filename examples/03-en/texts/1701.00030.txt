@@ -1,0 +1,2704 @@
+arXiv:1701.00030v1 [q-fin.CP] 30 Dec 2016
+
+Numerical analysis of an extended structural default model with mutual liabilities and jump risk
+Vadim Kaushansky*, Alexander Lipton, Christoph ReisingerS
+Abstract
+We consider a structural default model in an interconnected banking network as in Lipton (2016), with mutual obligations between each pair of banks. We analyse the model numerically for two banks with jumps in their asset value processes. Specifically, we develop a finite difference method for the resulting two-dimensional partial integro-differential equation, and study its stability and consistency. We then compute joint and marginal survival probabilities, as well as prices of credit default swaps (CDS), first-to-default swaps (FTD), credit and debt value adjustments (CVA and DVA). Finally, we calibrate the model to market data and assess the impact of jump risk.
+Keywords: structural default model; mutual liabilities; jump-diffusion; finite-difference and splitting methods; calibration.
+1 Introduction
+The estimation and mitigation of counterparty credit risk has become a pillar of financial risk management. The impact of such risks on financial derivatives is explicitly acknowledged by a valuation adjustment. For an exposition of the background and mathematical models we refer the reader to Gregory (2012). Although reduced-from models provide for a more direct simulation of default events and are commonly used in financial institutions, we follow here a structural approach which maps the capital structure of a bank into stochastic processes for equity and debt, and models default as the hitting of a lower barrier, as in Black and Cox (1976). An extensive literature review of further developments of this model is given in Lipton and Sepp (2013).
+A particular concern to regulators and central banks is the impact of default of an entity on the financial system ­ credit contagion. Of the various channels of such systemic risk described in Hurd (2016), we focus here on dependencies through asset correlation and interbank liabilities. Specifically, we consider the extended structural default model introduced in Lipton (2016), where asset values are assumed to follow stochastic processes with correlated diffusion and jump components, and where mutual liabilities can lead to default cascades.
+Itkin and Lipton (2016) consider the model without jumps and obtain explicit expressions for several quantities of interest including the joint and marginal survival probabilities as well as CDSs and FTD prices. They demonstrate that mutual liabilities can have a large impact on the
+*The first author gratefully acknowledges support from the Economic and Social Research Council and Bank of America Merrill Lynch
+Mathematical Institute & Oxford-Man Institute, University of Oxford, UK, E-mail: vadim.kaushansky@maths.ox.ac.uk
+Massachusetts Institute of Technology, Connection Science, Cambridge, MA, USA, E-mail: alexlipt@mit.edu SMathematical Institute & Oxford-Man Institute, University of Oxford, UK, E-mail: christoph.reisinger@maths.ox.ac.uk
+1
+
+survival probabilities of banks. Thus, a shock of one bank can cause ripples through the whole banking system.
+We focus here on the numerical computation of survival probabilities and credit products in the extended model with jumps, where closed-from expressions are no longer available. Our work is therefore most similar to Itkin and Lipton (2015), who develop a finite difference method for the resulting partial integro-differential equation (PIDE) where the integral term results from a fairly general correlated Levy process in the jump component. By Strang splitting into the diffusion and jump operators, overall second order consistency in the timestep is obtained. Hereby, the multi-dimensional diffusion operator is itself split dimensionwise using the Hundsdorfer-Verwer (HV) scheme, and the jump operator is treated as a pseudo-differential operator, which allows efficient evaluation of the discretised operator by an iterative procedure. Stability of each of the steps is guaranteed under standard conditions.
+Our approach is more straightforward in that we apply a modification of the HV scheme directly, where we treat the jump term in the same way as the cross-derivative term in the classical HV scheme. For the analysis we consider infinite meshes, i.e. ignoring the boundaries, such that the discrete operators are also infinite-dimensional. In our analysis we build heavily on the results in In't Hout and Welfert (2007) on stability of the PDE with cross-derivatives (but no integral term) and periodic boundary conditions on a finite mesh.
+We show that the (unconditional) von Neumann stability of the scheme is not materially affected by the jump operator, as its contribution to the symbol of the scheme is of a lower order in the mesh size. For concreteness, we restrict ourselves to the model with negative exponential jumps described in Lipton (2016). This allows a simple recursive computation of the discrete jump operator and gives an explicit form of its eigenvalues. However, the analysis can in principle be extended to other jump size distributions.
+A survey of splitting methods in finance is found in Toivanen and In't Hout (2015). These are roughly arranged in two groups: splitting by dimension (for multi-dimensional PDEs; such as in In't Hout and Welfert (2007)), and splitting by operator type (for PIDEs, diffusion and jumps; such as in Andersen and Andreasen (2000)). Itkin and Lipton (2015) perform these two splittings successively as described above. To our knowledge, the present paper is the first to perform and analyse splitting into dimensions and jumps simultaneously.
+The scheme is constructed to be second order consistent with the continuous integro-differential operator applied to smooth functions. However, the discontinuities in the data lead to empirically observed convergence of only first order in both space and time step. To address this, we apply a spatial smoothing technique discussed in Pooley et al. (2003) for discontinuous option payoffs in the one-dimensional setting, and a change of the time variable to square-root time (see Reisinger and Whitley (2013)), equivalent to a quadratically refined time mesh close to maturity, in order to restore second order convergence. We emphasise that the presence of discontinuous initial data is essential to the nature of P(I)DE models of credit risk. Hence this approach improves on previous works in a key aspect of the numerical solution.
+Similar to Itkin and Lipton (2016), we restrict the analysis to the two-dimensional case, but there is no fundamental problem in extending the method to multiple dimensions. However, due to the curse of dimensionality, for more than three-dimensional problems, standard finitedifference methods are computationally too expensive. The two-dimensional case already allows us to investigate various important model characteristics, such as joint and marginal survival probabilities, prices of credit derivatives, Credit and Debt Value Adjustments, and specifically the impact of mutual obligations.
+In this paper, we consider both unilateral and bilateral counterparty risk as discussed in Lipton and Savescu (2014). For the unilateral case, the model with two banks is considered, where one is a reference name and the other is either a protection buyer or a protection seller, while for the bilateral case, reference name, protection seller, and protection buyer are considered together, which leads to a three-dimensional problem. We give the equations in the Appendix,
+2
+
+but do not include computations. Moreover, we provide a calibration of the model with negative exponential jumps to mar-
+ket data, and for this calibrated model assess the impact of mutual obligations on survival probabilities.
+The novel results of this paper are as follows:
+· We analyze a two-dimensional structural default model with interbank liabilities and negative exponential jumps; in particular, we calibrate the model to the market and analyze the impact of jumps on joint and marginal survival probabilities;
+· we develop a new finite-difference method to solve the multidimensional PIDE, which is second order consistent in both time and space variables;
+· we prove the von Neumann and 2 stability of the method;
+· we demonstrate empirically that in the presence of discontinuous terminal and boundary conditions, second order of convergence can be maintained by local averaging of the data and suitable refinement of the timestep close to maturity.
+The rest of the paper is organized as follows. In Section 2, we formulate the model for two banks with jumps, which is a simplified formulation of Lipton (2016) for two banks only. Then, we briefly discuss how to compute various model characteristics. In Section 3 we propose a numerical scheme for a general pricing problem; we further prove its stability and consistency. In Section 4 we provide numerical results for various model characteristics computed with the numerical scheme from Section 3. In Section 5 we calibrate the model to the market, and in Section 6 we conclude.
+
+2 Model
+
+We consider the model in Lipton (2016) for two banks. Assume that the banks have external assets and liabilities,  and  respectively, for  = 1, 2, and interbank mutual liabilities 12 and 21, where  is the amount the -th bank owes to the -th bank. Then, the total assets and liabilities for banks 1 and 2 are
+
+~1 = 1 + 21, ~1 = 1 + 12, ~2 = 2 + 12, ~2 = 2 + 21.
+
+(1)
+
+2.1 Dynamics of assets and liabilities
+As in Lipton (2016), we assume that the firms' asset values before default are governed by
+
+ 
+
+=
+
+( - ())  +  () + (
+
+- 1) (),
+
+ = 1, 2,
+
+(2)
+
+where  is the deterministic growth rate, and, for  = 1, 2,  are the corresponding volatilities,  are correlated standard Brownian motions,
+
+1()2() =  ,
+
+(3)
+
+with correlation ,  are Poisson processes independent of ,  are the intensities of jump
+
+arrivals,  are random negative exponentially distributed jump sizes with probability density
+
+function
+
+{
+
+0,
+
+ > 0,
+
+~() = ,   0,
+
+(4)
+
+3
+
+with parameters  > 0, and  are jump compensators
+
+
+
+=
+
+E[
+
+-
+
+1]
+
+=
+
+- 
+
+1 +
+
+. 1
+
+(5)
+
+The jump processes are correlated in the spirit of Marshall and Olkin (1967). Consider independent Poisson processes {1}(), {2}() and {12}(), with the corresponding intensities {1}, {2} and {12}. Then, we define the processes 1() and 2() as
+
+() = {}() + {12}(),  = 1, 2,
+
+(6)
+
+ = {} + {12},
+
+i.e., there are both systemic and idiosyncratic sources of jumps. We assume that the liabilities are deterministic and have the following dynamics
+
+ =  ,
+
+ =  ,
+
+(7)
+
+
+
+
+
+where  is the same growth rate as defined in (2). For pricing purposes, under the risk-neutral measure, we consider  as a risk-free short rate. In the following, we take for simplicity  = 0, but the analysis would not change significantly for  = 0.
+
+2.2 Default boundaries
+
+Following Lipton (2016), we introduce time-dependent default boundaries (). Bank  is
+
+assumed defaulted if its asset value process crosses its default boundary, such that the default
+
+time for bank  is
+
+ = inf{| ()  },  = 1, 2,
+
+(8)
+
+and we define  = min(1, 2). Before any of the banks  = 1, 2 has defaulted,  <  ,
+
+
+
+=
+
+{
+
+( +  + ¯
+
+¯) - ¯  - ¯  = ,
+
+< ,
+
+ < ,  = ,
+
+(9)
+
+where 0    1 is the recovery rate and ¯ = 3 - . If the -th bank defaults at intermediate time , then for the surviving bank ¯ = 3 -  the
+default boundary changes to ¯(+) = ~ ¯(), where
+
+~ ¯
+
+=
+
+{ ¯(¯ + ¯ - ¯)  ¯ + ¯ - ¯  ~ = ,
+
+~ < ,
+
+ < ,  = .
+
+(10)
+
+It is clear that for ()  (+) - () we have
+
+{
+
+  ~  -  =
+
+(1 - ¯)¯, (1 - )¯,
+
+ < ,  = .
+
+(11)
+
+Thus,  > 0 and the corresponding default boundaries move to the right. This mechanism can therefore trigger cascades of defaults.
+
+4
+
+2.3 Terminal conditions
+
+We need to specify the settlement process at time  =  . We shall do this in the spirit of Eisenberg and Noe (2001). Since at time  full settlement is expected, we assume that bank  will pay the fraction  of its total liabilities to creditors. This implies that if  = 1 the bank pays all liabilities (both external and interbank) and survives. On the other hand, if 0 <  < 1, bank  defaults, and pays only a fraction of its liabilities. Thus, we can describe the terminal condition as a system of equations
+
+min {( ) + ¯¯,  + ¯} =  ( + ¯) .
+
+(12)
+
+There is a unique vector  = (1, 2) such that the condition (12) is satisfied. See Lipton (2016), Itkin and Lipton (2016) for details.
+
+2.4 Formulation of backward Kolmogorov equation
+
+For convenience, we introduce normalized dimensionless variables
+
+¯ = 2,
+
+
+
+=
+
+ 
+
+ln
+
+(
+
+ <
+
+)
+
+,
+
+¯
+
+=
+
+ 2
+
+,
+
+(13)
+
+where
+
+  = 12.
+
+Denote also
+
+
+
+=
+
+-
+
+(  2
+
++
+
+¯)
+
+,
+
+
+
+
+
+=
+
+. 
+
+(14)
+
+Applying Ito^'s formula to , we find its dynamics
+
+ =  ¯ + (¯) +  (¯).
+
+(15)
+
+In the following, we omit bars for simplicity. The default boundaries change to
+
+
+
+=
+
+{< =
+
+= =
+
+0,
+ 
+
+ln
+
+(
+
+= () < ()
+
+)
+
+,
+
+ < ,  = .
+
+(16)
+
+Assume that the terminal payoff for a contract is ( ). Then, the value function is given by
+
+[
+
+ 
+
+ (, ) = E ( ) · 1{ } + (, ) · 1{>}  +
+
+
+
++1,0(1, 2(1)) · 1{1< } + 2,0(2, 1(2)) · 1{2< }| () = ] , (17)
+
+where (, ) is the contract payment at an intermediate time      (for example, coupon payment), and 1,0(, 2()) and 2,0(, 1()) are the payoffs in case of intermediate default of bank 1 or 2, respectively.
+Then, according to the Feynman­Kac formula, the corresponding pricing equation is the Kolmogorov backward equation
+
+ +  = (, ),
+
+(18)
+
+
+
+ (, 0, 2) = 2,0(, 1),  (, 1, 2) - 2,(, 2),
+
+(19)
+
+1+
+
+ (, 1, 0) = 1,0(, 2),
+
+
+
+(,
+
+1,
+
+2)
+
+-
+2+
+
+1,(,
+
+1),
+
+(20)
+
+ (, ) = (),
+
+(21)
+
+5
+
+where Kolmogorov backward operator
+
+1
+
+1
+
+ = 2 11 + 12 + 2 22 + 11 + 22 + 11 + 22 + 1212 - 
+
+=  +  ·  +   - , (22)
+
+where  = 1 + 2 + 12 and
+
+ 1
+
+1 () = 1
+
+ (1 - , 2)-1,
+
+(23)
+
+0
+
+ 2
+
+2 () = 2
+
+ (1, 2 - )-2,
+
+(24)
+
+0
+
+ 1  2
+
+12 () = 12 () = 12
+
+ (1 - , 2 - )-1-2,
+
+(25)
+
+00
+
+ = /, and ,0, , are given. In the following, we formulate the Kolmogorov backward equation for specific quantities.
+
+2.5 Joint and marginal survival probabilities
+
+The joint survival probability is the probability that both banks do not default by the terminal time  and given by
+
+(, ) = 1 E[ { ,1( )=1 ,2( )=2 } |() = ]. Then, applying (18)­(21) with () = 1{1=1 ,2=2 } and (, ) = 0, we get
+
+(26)
+
+
+
++  = 0,
+
+
+
+(, 1, 0) = 0, (, 0, 2) = 0,
+
+(27)
+
+( , ) = 1{1=1 ,2=2 }.
+
+The marginal survival probability for the first bank is the probability that the first bank does not default by the terminal time  ,
+
+1(, ) = 1 E[ {, 112)} + (2, 1(2)) · 1{2< }| () = ],
+
+(28)
+
+where 12 is the set where both banks survive at the terminal time, 1 is the set where only the first bank survives, and (2, 1(2)) is the one-dimensional survival probability with the modified boundaries.
+Then, applying (18)­(21) with () = 1{112)}, (, ) = 0, we get
+
+  1(, ) + 1(, ) = 0,
+
+1(, 0, 2) = 0,
+
+{
+
+1(, 1, 0) = (, 1) =
+
+1,0(, 1), 0,
+
+1  ~<1 , 1 < ~<1 ,
+
+(29)
+
+1(, , 2) = 1, 1(, 1, ) = 1,(, 1),
+1(, ) = 1{112}.
+
+The function 1,0(, 1) is the 1D survival probability, which solves the following boundary value
+
+problem
+
+
+
+ 1,0(, 1) + 11,0(, 1) = 0,
+
+1,0(, ~<1 ) = 0, 1,0(, ) = 1,
+
+(30)
+
+1,0(, 1) = 1{1>~=1 },
+
+6
+
+where
+
+1 2
+
+
+
+1 = 2 21  + 1 1  + 11 - 1.
+
+Accordingly, 1,(, 1) is the 1D survival probability that solves the following boundary
+
+value problem
+
+
+
+ 1,(, 1) + 11,(, 1) = 0,
+
+1,(, 0) = 0, 1,(, ) = 1,
+
+(31)
+
+1,(, 1) = 1{1>=1 }.
+
+We formulate the pricing problems for CDS, FTD, CVA and DVA in Appendix A.
+
+3 Numerical scheme
+
+We shall solve the PIDE (18)­(21) numerically with an Alternating Direction Implicit (ADI) method. The scheme is a modification of Lipton and Sepp (2013) that is unconditionally stable and has second order of convergence in both time and space step.
+In order to deal with a forward equation instead of a backward equation, we change the time variable to  =  - , so that
+
+  =  (, 1, 2) - (, 1, 2),
+
+ (, 1, 0) = 0,1(, 1),  (, 0, 2) = 0,2(, 2),
+
+(32)
+
+ (, 1, 2) - ,1(, 1),  (, 2, 2) - ,2(, 2),
+
+2+
+
+1+
+
+ (0, 1, 2) = (1, 2).
+
+We consider the same grid for integral and differential part of the equation
+
+0 = 01 < 11 < . . . < 11 , 0 = 02 < 12 < . . . < 22 ,
+
+(33)
+
+where 11 and 22 are large positive numbers. The grid is non-uniform, and is chosen such that relatively many points lie near the default
+boundaries for better precision. We use a method similar to Itkin and Carr (2011) to construct
+the grid.
+
+3.1 Discretization of the integral part of the PIDE
+In this section, we shall show how to deal with the integral part of the PIDE, and develop an iterative algorithm for the fast computation of the integral operator on the grid. To this end, we outline the scheme from Lipton and Sepp (2013) and then give a new method.
+The first approach is to deal with the integral operators directly. After the approximation of the integral, we get (Lipton and Sepp (2013))
+
+1 (1 + , 2) = -11 (1, 2) + 0(1, ) (1, 2) + 1(1, ) (1 + , 2) + (3), (34)
+2 (1, 2 + ) = -22 (1, 2) + 0(2, ) (1, 2) + 1(2, ) (1, 2 + ) + (3), (35)
+
+where
+
+1 - (1 + )-
+
+-1 +  + -
+
+0(, ) =
+
+ 
+
+, 1(, ) =
+
+.  
+
+7
+
+We can also approximate 12 = 12 by applying above approximations for 1 and 2 consecutively.
+
+Consider the grid
+
+0 = 01 < 11 < . . . < 11 , 0 = 02 < 12 < . . . < 22 ,
+
+(36)
+
+where 11 and 22 are large positive numbers.
+
+Then, we can write recurrence formulas for computing the integral operator on the grid. Denote 1,, 2,, 1,2 the corresponding approximations of 1 (1 , 2 ) , 2 (1 , 2 ), 12 (1 , 2 )
+on the grid. Applying (34) and (35) we get
+
+1+1, = -11+1 1, + 0(1, 1+1) (1 , 2 ) + 1(1, 1+1) (1+1, 2 ), 2,+1 = -22+1 2, + 0(2, 2+1) (1 , 2 ) + 1(2, 2+1) (1 , 2+1),
+
+(37) (38)
+
+where 1+1 = 1+1 - 1 , 2+1 = 2+1 - 2 . For an alternative method, we rewrite the integral operator as a differential equation
+
+ 1
+
+(1
+
+(1,
+
+2)11 )
+
+=
+
+1
+
+(1,
+
+2)11 ,
+
+ 2
+
+(2
+
+(1,
+
+2)22 )
+
+=
+
+2
+
+(1,
+
+2)22 ,
+
+2 12
+
+(12
+
+(1,
+
+2)11+22 )
+
+=
+
+12
+
+(1,
+
+2)11+22 .
+
+(39) (40) (41)
+
+Then, we apply the Adams-Moulton method of second order which gives us third order of accuracy locally (Butcher (2008))
+
+1+1,
+
+=
+
+-11+1 1,
+
++
+
+1 2
+
+1+1
+
+-1
+
+1+1
+
+1
+
+
+
+(1 , 2 )
+
++
+
+1 2
+
+1+11
+
+(1+1, 2 ),
+
+2,+1
+
+=
+
+-22+1 2,
+
++
+
+1 2
+
+2+1
+
+-2
+
+2+1
+
+2
+
+
+
+(1 ,
+
+2 )
+
++
+
+1 2
+
+2+12
+
+(1 , 2+1),
+
+where 1+1 = 1+1 - 1 , 2+1 = 2+1 - 2 , and is equivalent to the trapezoidal rule. We can rewrite (42)­(43) in the same notation as (37)­(38) by defining
+
+(42) (43)
+
+0(, )
+
+=
+
+1 -, 2
+
+1
+
+1(, )
+
+=
+
+ . 2
+
+So,
+
+1+1, = -11+1 1, + 0(1, 1+1) (1 , 2 ) + 1(1, 1+1) (1+1, 2 ), 2,+1 = -22+1 2, + 0(2, 2+1) (1 , 2 ) + 1(2, 2+1) (1 , 2+1).
+
+As a result we get explicit recursive formulas for approximations of 1 and 2 that can be computed for all grid points via (12) operations. Both methods give the same order of accuracy. As was discussed above, in order to compute the approximation of 12 we can apply consecutively the approximations of 2 and 1(2 ). So, we have the two-step procedure:
+
+1+2 1, = -11+1 1,2 + 0(1, 1+1) (1 , 2 ) + 1(1, 1+1) (1+1, 2 ),
+
+(44)
+
+and
+
+1,2+1 = -22+1 1,2 + 0(2, 2+1)1,2 + 1(2, 2+1)1,2+1.
+
+(45)
+
+8
+
+Using this two-step procedure, we can also compute an approximation of 12 on the grid in complexity (12).
+We shall subsequently analyze the stability of the second method and use it in the numerical tests. The results for the first method would be very similar.
+For the implementation, computing and storing a matrix representation of the jump operator is not necessary, since the operator can be computed iteratively as described above, but we shall use matrix notation for the analysis. We henceforth denote 1, 2, and 12 the matrices of the discretized jump operators. From (37)­(38) we can find that the matrices 1 and 2 are lowertriangular with diagonal elements 1 = 1(1, 1) and 2 = 1(2, 2). Then, 12 = 12 is also a lower-triangular matrix with diagonal elements 12. To illustrate, in Figure 1 we plot the sparsity patterns in 1, 2, and 12.
+
+(a) 1.
+
+(b) 2.
+
+(c) 12.
+
+Figure 1: Sparsity pattern of 1, 2, and 12. Here, 1 = 2 = 20 and  is the number of
+
+non-zero elements of the matrices.
+
+3.2 Discretization of the differential part of the PIDE
+
+Now consider the approximation of derivatives in the differential operator on a non-uniform grid. We use the standard derivative approximation (Kluge (2002), In't Hout and Foulon (2010)). For the first derivative over each variable consider right-sided, central, and left-sided schemes. So, for the derivative over 1 we have:
+
+ 1
+
+(1 ,
+
+2 )
+
+
+
+1,-2
+
+(1-2,
+
+2 )
+
++
+
+1,-1
+
+(1-1,
+
+2 )
+
++
+
+1,0
+
+(1 ,
+
+2 ),
+
+ 1
+
+(1 ,
+
+2 )
+
+
+
+1,-1
+
+(1-1,
+
+2 )
+
++
+
+1,0
+
+(1 ,
+
+2 )
+
++
+
+1,1
+
+(1+1,
+
+2 ),
+
+ 1
+
+(1 ,
+
+2 )
+
+
+
+1,0
+
+(1 ,
+
+2 )
+
++
+
+1,1
+
+(1+1,
+
+2 )
+
++
+
+1,2
+
+(1+2,
+
+2 ),
+
+(46) (47) (48)
+
+while for derivative over 2 we have:
+
+ 2
+
+(1 ,
+
+2 )
+
+
+
+2,-2
+
+(1 ,
+
+2-2)
+
++
+
+2,-1
+
+(1 ,
+
+2-1)
+
++
+
+2,0
+
+(1 ,
+
+2 ),
+
+ 2
+
+(1 ,
+
+2 )
+
+
+
+2,-1
+
+(1 ,
+
+2-1)
+
++
+
+2,0
+
+(1 ,
+
+2 )
+
++
+
+2,1
+
+(1 ,
+
+2+1),
+
+ 2
+
+(1 ,
+
+2 )
+
+
+
+2,0
+
+(1 ,
+
+2 )
+
++
+
+2,1
+
+(1 ,
+
+2+1,
+
+2 )
+
++
+
+2,2
+
+(1 ,
+
+2+2),
+
+(49) (50) (51)
+
+9
+
+with coefficients
+
+,-2
+
+=
+
+ -1(-1
+
+, + )
+
+,-1
+
+=
+
+
+
+-+1 ( + +1
+
+)
+
+,
+
+,0
+
+=
+
+-2+1 - +2 +1(+1 + +2)
+
+,
+
+,-1
+
+=
+
+--1 -1
+
+-  
+
+,
+
+,0
+
+=
+
++1 -   +1
+
+,
+
+,1
+
+=
+
++1 + +2 +1+2
+
+,
+
+,0
+
+=
+
+-1 +  (-1
+
+2 + 
+
+)
+
+,
+
+,1
+
+=
+
+ +1( +
+
++1) ,
+
+,2
+
+=
+
+-+1 +2(+1 +
+
++2) .
+
+For the boundaries at 0 we use the schemes (46) and (49), for the right boundaries at 11 and 22 we use the schemes (48) and (51), and for other points we use the central schemes (47) and (50).
+To approximate the second derivative we use the central scheme:
+
+2 21
+
+(1 ,
+
+2 )
+
+
+
+1,-1
+
+(1-1,
+
+2 )
+
++
+
+1,0
+
+(1 ,
+
+2 )
+
++
+
+1,1
+
+(1+1,
+
+2 ),
+
+2 22
+
+(1 ,
+
+2 )
+
+
+
+2,-1
+
+(1 ,
+
+2-1)
+
++
+
+2,0
+
+(1 ,
+
+2 )
+
++
+
+2,1
+
+(1 ,
+
+2+1),
+
+with coefficients
+
+,-1
+
+=
+
+2 ( + +1) ,
+
+,0
+
+=
+
+-2 +1 ,
+
+,1
+
+=
+
+2 +1(
+
++
+
++1) ,
+
+and to approximate the second mixed derivative we use the scheme:
+
+(52) (53)
+
+2 12
+
+(1 ,
+
+2 )
+
+
+
+1
+
+,=-1
+
+1, 2, 
+
+(1+ ,
+
+2+).
+
+(54)
+
+As a result, we can approximate the differential operator  by a discrete operator
+
+ = 1 + 2 + 12,
+
+(55)
+
+where 1 contains the discretized derivatives over 1 defined in (46)­(48) and (52), 2 contains the discretized derivatives over 2 defined in (49)­(51) and (53), and 12 contains the discretized mixed derivative defined in (54).
+By straightforward but lengthy Taylor expansion of the expression in (46)­(54), the scheme (59) has second order truncation error in variables 1 and 2 for meshes which are either uniform or smooth transformations of such meshes, as we shall consider later.
+
+3.3 Time discretization: ADI scheme
+After discretization over (1, 2) we can rewrite PIDE (32) as a system of ordinary (linear) differential equations. Consider the vector  ()  R12×1 whose elements correspond to  (, 1 , 2 ). Then
+ () = ~ () + (), (56)
+ (0) = 0,
+where ~ = 1 + 2 + 12 + 11 + 22 + 1212 - (1 + 2 + 12), and () is determined from boundary conditions and the right-hand side.
+To solve this system, we apply an ADI scheme for the time discretization. Consider, for simplicity, a uniform time mesh with time step  :  = ,  = 0, . . . ,  - 1.
+
+10
+
+We decompose the matrix ~ into three matrices, ~ = ~0 + ~1 + ~2, where
+
+~0 = 12 + 11 + 22 + 1212,
+
+~1
+
+=
+
+1
+
+-
+
+( 1
+
++
+
+12 2
+
+)
+
+ ,
+
+~2
+
+=
+
+2
+
+-
+
+( 2
+
++
+
+12 2
+
+)
+
+ ,
+
+and () = 0() + 1() + 2(), where 0() corresponds to the right-hand side and the FD discretization of the mixed derivatives on the boundary, 1() and 2() correspond to the FD discretization of the derivatives over 1 and 2 on the boundary.
+Now we can apply a traditional ADI scheme with matrices ~0, ~1, and ~2. We choose the Hundsdorfer­Verwer (HV) scheme (Hundsdorfer and Verwer (2013)) in order to have second
+order accuracy in the time variable, and unconditional stability, as we shall prove below. For
+convenience, denote
+
+(, ) = ~ + (),  = 0, 1, 2,
+
+(57)
+
+ (, ) = (~0 + ~1 + ~2) + (0() + 1() + 2()),
+
+(58)
+
+and apply the Hundsdorfer­Verwer (HV) scheme:
+
+
+
+ 0 = -1 +  (-1, -1),
+
+
+
+
+
+  
+
+
+
+=
+
+-1
+
++
+
+((, )
+
+-
+
+(, -1)),
+
+ = 1, 2,
+
+
+
+ ~0 = 0 + ( (, 2) -  (-1, -1)),
+
+(59)
+
+   
+
+~
+
+=
+
+~-1
+
++
+
+((, ~
+
+-
+
+(, 2)),
+
+ = 1, 2,
+
+
+
+  
+
+
+
+=
+
+~2.
+
+In this scheme, parts that contain 1 and 2 are treated implicitly. The matrix ~1 is tridiagonal and ~2 is block-tridiagonal and can be inverted via (12) operations. As a
+
+result, the overall complexity is (12) for a single time step or ( 12) for the whole
+
+procedure.
+
+Moreover, the scheme has second order of consistency in both (1, 2) and  for any given 
+
+and
+
+
+
+=
+
+1 2
+
+.
+
+3.4 Stability analysis
+
+In this section, we consider the PIDE (32) with zero boundary conditions at 0 in both directions and on a uniform grid, such that (, ) = ~ and
+
+ 
+
+0
+
+=
+
+-1
+
++
+
+~-1,
+
+
+
+
+
+  
+
+
+
+=
+
+-1
+
++
+
+(~ 
+
+-
+
+~ -1),
+
+ = 1, 2,
+
+
+
+
+
+~0 = 0 + (~2 - ~-1),
+
+(60)
+
+    
+
+~
+
+=
+
+~-1
+
++
+
+(~ ~
+
+-
+
+~ 2 ),
+
+ = 1, 2
+
+
+
+ 
+
+
+
+=
+
+~2.
+
+For convenience, we denote by  :  =  -1. We further consider the PDE on R2, i.e., without default boundaries. Hence, we assume that
+diffusion and jump operators are discretized on an infinite, uniform mesh {(11, 22), (1, 2)  Z2}, such that, e.g. 1, 2, 12, 1, 2 are infinite matrices. This is different to In't Hout and Welfert (2007), where finite matrices and periodic boundary conditions (without integral terms)
+are considered.
+
+11
+
+We use von Neumann stability analysis, as first introduced by Charney et al. (1950), by expanding the solution into a Fourier series. Hence, we shall show that the proposed scheme (60) is unconditionally stable, i.e. we will show that all eigenvalues of the operator  have moduli bounded by 1 plus an () term, where the corresponding eigenfunctions are given by exp(11) exp(22), with 1 and 2 the wave numbers and 1 and 2 the grid coordinates.
+In't Hout and Welfert (2007) show that when all matrices commute (as in the PDE case with periodic boundary conditions), the eigenvalues for  are given by
+
+ (~0, ~1, ~2)
+
+=
+
+1
+
++
+
+2 ~0
+
++ 
+
+~
+
+-
+
+~0 + 2
+
+~
+
++
+
+
+
+(~0
+
++ 2
+
+~)2
+
+with
+
+(61)
+
+ = (1 - ~1)(1 - ~2),
+
+where ~ = ~, where ~ is an eigenvalue of ~,  = 0, 1, 2, ~ = ~1 + ~2,   0. The analysis is made slightly more complicated in our case through the presence of the jump
+operators. In the remainder of this section, we show that stability is still given under the same
+conditions on  and  as in the purely diffusive case. For the correspondence of notation with
+In't Hout and Welfert (2007), we denote  = 0 + 1 + 2, where 0 = 12, 1 = 1, 2 = 2 and 0, 1, and 2 are the eigenvalues of the corresponding matrices. Similar to ~0, ~1, and ~2, we define scaled eigenvalues 0 = 0, 1 = 1, 2 = 2.
+We have the eigenvalues ~ of ~ given by
+
+~0 = 0 + 11 + 22 + 1212,
+
+(62)
+
+~1
+
+=
+
+1
+
+-
+
+( 1
+
++
+
+12 2
+
+)
+
+,
+
+(63)
+
+~2
+
+=
+
+2
+
+-
+
+( 2
+
++
+
+12 2
+
+)
+
+,
+
+(64)
+
+where  is an eigenvalue of , and 1, 2, and 12 are eigenvalues of 1, 2, and 12. Denote  = 1 + 2, 1 = 1, 2 = 2, 12 = 12, where 1, 2, 12 are eigenvalues
+of 1, 2, 12 respectively, and 0 = 11 + 22 + 1212. Multiplying (62)­(64) by , we have
+
+~0 = 0 + 0,
+
+(65)
+
+~1
+
+=
+
+1
+
+-
+
+( 1
+
++
+
+12 2
+
+)
+
+,
+
+(66)
+
+~2
+
+=
+
+2
+
+-
+
+( 2
+
++
+
+12 2
+
+)
+
+.
+
+(67)
+
+Theorem 1 (In't Hout and Welfert (2007), Theorem 3.2). Assume (1)  0, (2)  0, |0|  2(1)(2), where 0, 1, and 2 are the eigenvalues of 0, 1, and 2, and
+
+(  )
+
+1
+
+2
+
+   1 +
+
+.
+
+2
+
+2
+
+Then,
+
+| (0, 1, 2)|  1,
+
+and the Hundsdorfer­Verwer scheme (60) is stable in the purely diffusive case.
+
+12
+
+Lemma 1. The scaled eigenvalues of 0, 1, 2, 1, 2, 12 can be expressed as
+
+0 = -[sin 1 sin 2],
+
+(68)
+
+1 = -1(1 - cos 1) + 11 sin 1,
+
+(69)
+
+2 = -2(1 - cos 2) + 22 sin 2,
+
+(70)
+
+1
+
+=
+
+ 11
+
+( 1 2
+
++
+
+1
+
+exp(-11 + 1)
+
+) ,
+
+- exp(-11 + 1)
+
+(71)
+
+2
+
+=
+
+ 22
+
+( 1 2
+
++
+
+1
+
+exp(-22 + 2)
+
+) ,
+
+- exp(-22 + 2)
+
+(72)
+
+12 = 12/,
+
+(73)
+
+where
+
+
+
+
+
+
+
+
+
+
+
+1
+
+=
+
+, 1
+
+2
+
+=
+
+, 2
+
+1 = 21 ,
+
+2 = 22 ,
+
+ = , 12
+
+and   [0, 2] for  = 1, 2.
+
+Moreover,
+
+ |0|  2 (1)(2).
+
+(74)
+
+Proof. All six eigenvalues follow by insertion of the ansatz  = exp(11) exp(22). For
+
+instance,
+
+( 1
+
+
+
+
+)
+
+(1 )(1, 2) = 11 2  (1, 2) + exp(-11) (1 - , 2) ,
+
+=1
+
+and the result follows by using the special form of  and evaluating the geometric series. Alternatively, the first three equations follow immediately from the eigenvalues for finite
+matrices (In't Hout and Welfert (2007), p.29), which are given by (68)­(70) where  = 2/,  = 1, . . . , . In the infinite mesh case, the spectrum is the continuous limit and (74) still holds.
+
+Theorem
+
+2.
+
+Consider
+
+1 2
+
+
+
+
+
+
+
+( 1
+
++
+
+ 2
+
+)
+
+2
+
+.
+
+Then
+
+there
+
+exists
+
+ > 0,
+
+independent
+
+of
+
+  1,
+
+1 and 2, such that
+
+1.
+
+| (~0, ~1, ~2)|  1 + , 1, 2  [0, 2],
+
+(75)
+
+i.e., the scheme is von Neumann stable;
+
+2.
+
+||2  e|0|2,
+
+  0,
+
+(76)
+
+for
+
+||2
+
+=
+
+1
+
+2
+
+(
+1,2
+
+=-
+
+|
+
+(1
+
+,
+
+2
+
+)|2
+
+)1/2
+
+,
+
+i.e.,
+
+the
+
+scheme
+
+is
+
+2
+
+stable.
+
+Proof. First, we have that
+
+|
+
+(0,
+
+~1,
+
+~2)|
+
+=
+
+
+1 
+
++
+
+2 0
+
++ 
+
+~
+
+-
+
+0 + 2
+
+~
+
++
+
+
+
+(0
+
++ 2
+
+~)2
+
+   
+
+
+
+1,
+
+where as before  = (1 - ~1)(1 - ~2) and ~ = ~1 + ~2. This follows from Theorem 1 because 1, 2 and 12 are positive and therefore (74) is still satisfied with 1 and 2 replaced by ~1 and ~2.
+We have
+
+ (~0, ~1, ~2)
+
+=
+
+ (0,
+
+~1,
+
+~2)
+
++
+
+2 0 
+
+-
+
+0 2
+
++
+
+ 20(0
+
++ ~) 2
+
++
+
+20 .
+
+13
+
+A simple calculation shows that |0|  0  for a constant 0 (independent of , 1, 2, 1, 2; indeed, 0 = 21 + 22 + 412 works for small enough 1, 2). Therefore, and because ||  1, |0 + ~|/||  1 for a constant 1,
+
+ 2
+
+0
+
+ 
+
+-
+
+0 2
+
++
+
+ 20(0
+
++ ~) 2
+
++
+
+20
+
+ 
+
+
+
+
+
+
+
+,
+
+for any   (3 + 21 + 0)0. From this the first statement follows. We can now deduce part 2 by a standard argument. For the discrete-continuous Fourier
+transform
+
+2(Z2)  2(-, )2,
+
+  ,
+
+ (1, 2) = 12   (, )e-(1+2),
+,Z
+
+we have Then, by Parseval,
+
++1(1, 2) =  (~0, ~1, ~2) (1, 2),
+
+  0.
+
+||22
+
+=
+
+1 42
+
+||2
+
+=
+
+1 42
+
+1 2122
+
+ 
+-
+
+|(1,
+
+2)|2
+
+d1
+
+d2
+
+
+
+1 42
+
+1 2122
+
+  (1
+-
+
++
+
+)2|0(1,
+
+2)|2
+
+d1
+
+d2
+
+
+
+e2
+
+1 42
+
+1 2122
+
+ 
+-
+
+|0(1,
+
+2)|2
+
+d1
+
+d2
+
+= e2|0|22.
+
+This (2-)stability result together with second order consistency implies (2-)convergence of second order for all solutions which are sufficiently smooth that the truncation error is defined and bounded. In our setting, where the initial condition is discontinuous, this is not given. Since the step function lies in the (2-)closure of smooth functions, convergence is guaranteed, but usually not of second order. We show this empirically in the next section and demonstrate how second order convergence can be restored practically.
+
+3.5 Discontinuous boundary and terminal conditions
+
+It is well documented (see, e.g. Pooley et al. (2003)) that the spatial convergence order of central finite difference schemes is generally reduced to one for discontinuous payoffs. Moreover, the time convergence order of the Crank-Nicolson scheme is reduced to one due to the lack of damping of high-frequency components of the error, and this behaviour is inherited by the HV scheme. We address these two issues in the following way.
+First, we smooth the terminal condition by the method of local averaging from Pooley et al. (2003), i.e., instead of using nodal values of  directly, we use the approximation
+
+(1 , 2 )
+
+
+
+1 12
+
+ 2 +2/2  1 +1/2 (1, 2) 12.
+2 -2/2 1 -1/2
+
+For step functions with values of 0 and 1, this procedure attaches to each node the fraction of the area where the payoff is 1, in a cell of of size 1 × 2 centred at this point.
+
+14
+
+We illustrate the convergence improvement on the example of joint survival probabilities.
+
+Other quantities show a similar behaviour. The model parameters in the following tests are the
+
+same as in the next section, specifically Table 1.
+
+We
+
+choose
+
+
+
+=
+
+1 2
+
+and
+
+
+
+=
+
+3 4
+
+in
+
+the
+
+HV
+
+scheme.
+
+The observed convergence with and without this smoothing procedure is shown in Figure 2.
+
+We choose the 2-norm for its closeness to the stability analysis ­ in the periodic case, Fourier
+
+analysis gives convergence results in 2 ­ and the -norm for its relevance to the problem at
+
+hand, where we are interested in the solution pointwise. The behaviour in the 1-norm is very
+
+similar.
+
+Hereby, for a method of order   1 we estimate the error by extrapolation as
+
+| (1, 2)
+
+-
+
+(1, 2)|
+
+
+
+2
+
+1 -
+
+1 | (1, 2)
+
+-
+
+/2(1, 2)|,
+
+where  is the exact solution,  the solution with  mesh points, and the norms are computed by either taking the maximum over mesh points or numerical quadrature. Here,  = 1000 is fixed.
+
+(a) 2-norm.
+
+(b) -norm.
+
+Figure 2: Convergence analysis for 2- and -norms of the error depending on the mesh size
+
+with fixed time-step.
+
+The convergence is clearly of first order without averaging and of second order with averaging.
+
+the
+
+Stiemcoenvda, rwiaebmleo~d=ifyth.e
+
+scheme using the idea from Reisinger This change of variables leads to the
+
+and new
+
+Whitley PDE
+
+(2013)
+
+by
+
+changing
+
+ ~
+
++ 2~
+
+= 2 (~2, ),
+
+instead of (18), to which we apply the numerical scheme. In Figure 3, we show the convergence with and without time change, estimating the errors
+in a similar way to above, with  = 800 fixed.
+
+15
+
+(a) 2-norm.
+
+(b) -norm.
+
+Figure 3: Convergence analysis for 2- and -norms of the error depending on time-step with
+
+fixed mesh size.
+
+The convergence is clearly of first order without time change and of second order with time change. We took here  = 5 to illustrate the effect more clearly.
+
+4 Numerical experiments
+In this section, we analyze the model characteristics and the impact of jumps. Specifically, we compute joint and marginal survival probabilities, CDS and FTD spreads as well as CVA and DVA depending on initial asset values. We also compute the difference between the solution with and without jumps.
+Consider the parameters in Table 1.
+1,0 2,0 12,0 21,0 1 2  1 2  1 2 60 70 10 15 0.4 0.45 1 1 1 0.5 1 1
+Table 1: Model parameters.
+
+For the model with jumps, we further consider the parameters in Table 2.
+1 2 12 0.5 0.5 0.3
+Table 2: Jump intensities.
+
+We compute all tests using a 100×100 spatial grid with the maximum values 1100 = 2100 =
+
+10
+
+and
+
+constant
+
+time
+
+step
+
+
+
+=
+
+0.01.
+
+As
+
+the
+
+parameters
+
+of
+
+the
+
+HV
+
+scheme,
+
+we
+
+choose
+
+
+
+=
+
+1 2
+
+and
+
+
+
+=
+
+3 4
+
+.
+
+In Figures 4­6 we present various model characteristics and compare the results with and
+
+without jumps. From these figures, we can observe that jumps can have a significant impact,
+
+especially near the default boundaries:
+
+· in Figure 4 for the joint survival probability, the biggest impact of jumps is around the default boundaries for both 1 and 2;
+
+16
+
+(a)
+
+(b)
+
+Figure 4: The joint survival probability: (a) value, (b) difference between model with and
+
+without jumps.
+
+(a)
+
+(b)
+
+Figure 5: The marginal survival probability: (a) value, (b) difference between model with and
+
+without jumps.
+
+· in Figure 5 for the marginal survival probability of the first bank, we can observe that the biggest impact of jumps is near the default boundary of the first bank;
+· for the CDS spread, in Figure 6, (b), the biggest impact of jumps is also seen near the default boundary, but it has the opposite direction, because jumps can only increase the CDS spread;
+· in Figure 6, (d) for FTD the spread, the biggest impact of jumps is near both default boundaries, and it has a positive impact;
+· finally, for CVA, (f), the highest impact of jumps is near the default boundary of the first bank, see Figure 6.
+
+5 Calibration
+In this section we present calibration results of the model. There are eight unknown parameters, see (22)­(25): 1, 2, , 1, 2, 1, 2, 12. We use CDS and equity put option prices (with different
+17
+
+(a)
+
+(b)
+
+(c)
+
+(d)
+
+(e)
+
+(f )
+
+Figure 6: Values of different credit products with left the value and right the difference between
+
+model with and without jumps. Top row: Credit Default Swap spread, written on the first
+
+bank. Middle row: First-to-Default spread. Bottom row: CVA of CDS, where the first bank is
+
+Reference name (RN) and the second bank is Protection Seller (PS).
+
+18
+
+strikes) as market data. If FTD contracts are available, one can use them to estimate  and 12. Otherwise, historical estimation with share prices time series can be used.
+The data for external liabilities can be found in banks' balance sheets, which are publicly available. Usually, mutual liabilities data are not public information, thus we made an assumption that they are a fixed proportion of the total liabilities, which coincides with David and Lehar (2014). In particular, we fix the mutual liabilities as 5% of total liabilities.
+The asset's value is the sum of liabilities and equity price. We choose Unicredit Bank as the first bank and Santander as the second bank. In Table 3 we provide their equity price , assets  and liabilities . As in Lipton and Sepp (2013), the liabilities are computed as a ratio of total liabilities and shares outstanding.
+1(0) 1(0) 1(0) 2(0) 2(0) 2(0) 6.02 137.70 143.72 6.23 86.41 92.64
+Table 3: Assets and liabilities on 30/06/2015 (Bloomberg).
+
+For the calibration we choose 1-year at-the-money, in-the-money, and out-of-the-money equity put options on the banks, and 1-year CDS contracts. Since the spreads of CDS are usually significantly lower than the option prices, we scale them by some weight  in the objective function. As a result, we have the following 6-dimensional minimization problem:
+
+3
+
+min{1
+
+
+(1
+
+
+
+()
+
+-
+
+¯1 )2
+
++
+
+(1(,1,
+
+)
+
+-
+
+¯1(,1))2+
+
+=1
+
+3
++ 2(2 () - ¯2 )2 + (2(,2, ) - ¯2(,2))2},
+
+=1
+
+(77)
+
+where  = (1, 2, 1, 2, 1, 2), () is the model CDS spread on the -th bank and ¯ is the market CDS spread on the -th bank, 1(, ) is the model price of the equity put option on the -th bank with the strike  and ¯() is the market price of the equity put option on the -th bank with strike . Strikes 1,, 2,, and 3, are chosen in such a way to take into account the smile. In particular, we choose 1, = 1.1, 2, = , 3, = 0.9.
+In order to find the global minimum of (77) by a Newton-type method, we need to find a good starting point, otherwise an optmization procedure might finish in local minima which are not global minima. To choose the starting point, we calibrate one-dimensional models for each bank without mutual liabilities
+
+min{
+
+
+( ( )
+
+-
+
+¯ )2
+
++
+
+((1, ,
+
+ )
+
+-
+
+¯(1, ))2+
+
++ ((2, ,  ) - ¯(2, ))2 + ((3, ,  ) - ¯(3, ))2},
+
+(78)
+
+where  = (, , ) for  = 1, 2. The global minima of (78) can be found via the chebfun toolbox (Driscoll et al. (2014))
+that uses Chebyshev polynomials to approximate the function, and then the global minima can be easily found. The calibration results of the one-dimensional model for the first and the second banks are presented in Table 4. We note that the global minima of (77) cannot be found via the chebfun toolbox, since it works with functions up to three variables. There are also more fundamental complexity issues for higher-dimensional tensor product interpolation.
+
+19
+
+1
+
+1
+
+1
+
+2
+
+2
+
+2
+
+0.0117 0.1001 0.3661 0.0154 0.0160 0.0545
+
+Table 4: Calibrated parameters of one-dimensional models on 30/06/2015 for  = 1.
+
+Similar to Lipton and Sepp (2013), for simplicity, we further assume that
+
+{12} =  · min(1, 2).
+
+(79)
+
+Then, we estimate  from historical data. We take one year daily equity prices () by time
+
+series
+
+(from
+
+Bloomberg)
+
+and
+
+estimate
+
+the
+
+covariance
+
+of
+
+asset
+
+returns
+
+
+
+=
+
+() ()
+
+
+
+
+
+cov(1, 2) = (,1 - ¯1) (,2 - ¯2) ,
+
+(80)
+
+=1
+
+where ¯1 and ¯2 are the sample mean of asset returns. Using (2), we can see that (80) converges to
+
+cov(1,
+
+2)
+
+-
++
+
+12
+
+(
+
++
+
+{12}/(12))
+
+.
+
+(81)
+
+Using the last equation and (79), we can extract the estimated values of  and {12}. The estimation results are in Table 5.
+
+
+
+{12}
+
+Estimated value
+
+0.510
+
+0.0188
+
+Confidence interval 1 (0.500, 0.526) (0.0182, 0.0194)
+
+Table 5: Historically estimated correlation coefficients on 30/06/2015 with 1 year window.
+
+Finally, we perform a six-dimensional (constrained) optimization of (77) with the starting point from Table 4 and correlation parameters from Table 5. We choose different alternatives of mutual liabilities to have a clear picture how mutual liabilities influence on model parameters. We use the lsqnonlin method in Matlab that uses a Trust Region Reflective algorithm Conn et al. (2000) (with the gradient computed numerically). The model CDS spreads are computed using the method in Section A.1, while equity option prices are computed in the usual finitedifference manner (see Lipton and Sepp (2013) for details). Results are presented in Table 6.
+
+Model
+
+1
+
+1
+
+1
+
+2
+
+2
+
+2
+
+With jumps 0.0122 0.0950 0.3958 0.0160 0.0148 0.0505
+
+Without jumps 0.0206 ­
+
+­ 0.0317 ­
+
+­
+
+Table 6: Calibrated parameters of two-dimensional model with mutual liabilities on 30/06/2015 for  = 1.
+
+In Table 7 we present joint and marginal survival probabilities computed using the equations from Section 2.5. From these results, we can conclude that jumps play an important role in the model.
+1We use a 3 confidence interval.
+20
+
+Model
+
+Joint s/p Marginal s/p
+
+With jumps 0.9328
+
+0.9666
+
+Without jumps 0.9717
+
+0.9801
+
+Table 7: Joint and marginal survival probabilities for the calibrated models.
+
+6 Conclusion
+In this paper we considered a structural default model of interlinkage in the banking system. In particular, we studied a simplified setting of two banks numerically. This paper contains several new results. First, we developed a finite-difference method, an extension of the HundsdorferVerwer scheme, for the resulting partial integro-differential equation (PIDE), studied its stability and consistency. To deal with the integral component, we used the idea of its iterative computation from Lipton and Sepp (2013). The method gives second order convergence in both time and space variables and is unconditionally stable.
+Second, by applying the finite-difference method, we computed various model characteristics, such as joint and marginal survival probabilities, CDS and FTD spreads, as well as CVA and DVA, and estimated the impact of jumps on the results. For a more sophisticated analysis, we calibrated the model to the market, and demonstrated a sizeable impact of jumps on joint and marginal survival probabilities in the case of two banks. The development of numerical methods which are feasible for larger systems of banks appears to be an important future research direction.
+From a numerical analysis perspective, we have extended the stability analysis of In't Hout and Welfert (2007) to include an integral term arising from a jump-diffusion process with onesided exponential jump size distribution. By Fourier analysis, we were able to show that the scheme is stable in the 2-sense when considering probability densities on an infinite domain. An interesting open question is the stability analysis in the presence of absorbing boundary conditions, such that the individual matrices involved in the splitting do not commute and the eigenvectors and eigenvalues of the combined operator cannot directly be computed. We are planning to address this in future research.
+
+21
+
+A Pricing equations
+
+A.1 Credit default swap
+A credit default swap (CDS) is a contract designed to exchange credit risk of a Reference Name (RN) between a Protection Buyer (PB) and a Protection Seller (PS). PB makes periodic coupon payments to PS conditional on no default of RN, up to the nearest payment date, in the exchange for receiving from PS the loss given RN's default.
+Consider a CDS contract written on the first bank (RN), denote its price 1(, ).2 We assume that the coupon is paid continuously and equals to . Then, the value of a standard CDS contract can be given (Bielecki and Rutkowski (2013)) by the solution of (18)­(21) with (, ) =  and terminal condition
+
+()
+
+=
+
+{ 1
+1
+
+- -
+
+min(1, min(1,
+
+~1(1)), ~1(2)),
+
+(1, 2)  2, (1, 2)  12,
+
+where 2 = 2() is defined in (12) and
+
+~1(2)
+
+=
+
+min
+
+[ 1,
+
+1( 1(
+
+) )
+
++ +
+
+221( ) 212( )
+
+]
+
+.
+
+Thus, the pricing problem for CDS contract on the first bank is
+
+  1(, ) + 1(, ) = ,
+
+1(, 0, 2) = 1 - 1, 1(, , 2) = -( - ),
+
+{
+
+1(, 1, 0) = (, 1) =
+
+1,0(, 1), 1  ~1, 1 - 1, 1 < ~,
+
+1(, 1, ) = 1,(, 1),
+
+(82)
+
+1(
+
+,
+
+)
+
+=
+
+()
+
+=
+
+{ 1
+1
+
+- -
+
+min(1, min(1,
+
+~1(1)), ~1(2)),
+
+(1, 2)  2, (1, 2)  12,
+
+where 1,0(, 1) is the solution of the following boundary value problem:
+
+
+
+ 1,0(, 1) + 11,0(, 1) = ,
+
+1,0(, ~<1 ) = 1 - 1, 1,0(, ) = -( - ),
+
+(83)
+
+1,0(, 1) = (1 - 1 1) {~<1 1~=1 },
+
+and 1,(, 1) is the solution of the following boundary value problem
+
+
+
+ 1,(, 1) + 11,(, 1) = ,
+
+1,(, 0) = 1 - 1, 1,(, ) = -( - ),
+
+(84)
+
+1,(, 1) = (1 - 1 1) {1=1 }.
+
+A.2 First-to-default swap
+An FTD contract refers to a basket of reference names (RN). Similar to a regular CDS, the Protection Buyer (PB) pays a regular coupon payment  to the Protection Seller (PS) up to the first default of any of the RN in the basket or maturity time  . In return, PS compensates PB the loss caused by the first default.
+2For the CDS contracts written on the second bank, the similar expression could be provided by analogy.
+
+22
+
+Consider the FTD contract referenced on 2 banks, and denote its price  (, ). We assume
+
+that the coupon is paid continuously and equals to . Then, the value of FTD contract can
+
+be given (Itkin and Lipton (2016)) by the solution of (18)­(21) with (, ) =  and terminal
+
+condition
+
+() = 1 0 {12} + 1 1 {1} + 21{2},
+
+where
+
+0 = 1 - min[min(1, ~1(2), min(2, ~2(1)],
+
+1 = 1 - min(2, ~2(1)), 2 = 1 - min(1, ~1(1)),
+
+and
+
+~1(2)
+
+=
+
+min
+
+[ 1,
+
+1( 1(
+
+) )
+
++ +
+
+221( 212(
+
+) )
+
+]
+
+,
+
+~2(1)
+
+=
+
+min
+
+[ 1,
+
+2( 2(
+
+) )
+
++ +
+
+112( 121(
+
+) )
+
+]
+
+.
+
+with 1 = 1() and 2 = 2() defined in (12). Thus, the pricing problem for a FTD contract is
+
+  (, ) +  (, ) = ,
+
+
+ (, 1, 0) = 1 - 2,  (, 0, 2) = 1 - 1,
+
+(85)
+
+ (, 1, ) = 2,(, 1),  (, , 2) = 1,(, 2),
+
+ (, ) = 1 0 {12} + 1 1 {1} + 21{2},
+
+where 1,(, 1) and 2,(, 2) are the solutions of the following boundary value problems
+
+
+
+ ,(, ) + ,(, ) = ,
+
+,(, 0) = 1 - , ,(, ) = -( - ),
+
+(86)
+
+1,(, ) = (1 - 1 ) {= }.
+
+A.3 Credit and Debt Value Adjustments for CDS
+Credit Value Adjustment and Debt Value Adjustment can be considered either unilateral or bilateral. For unilateral counterparty risk, we need to consider only two banks (RN, and PS for CVA and PB for DVA), and a two-dimensional problem can be formulated, while bilateral counterparty risk requires a three-dimensional problem, where Reference Name, Protection Buyer, and Protection Seller are all taken into account. We follow Lipton and Savescu (2014) for the pricing problem formulation but include jumps and mutual liabilities, which affects the boundary conditions.
+
+Unilateral CVA and DVA The Credit Value Adjustment represents the additional price associated with the possibility of a counterparty's default. Then, CVA can be defined as
+
+1    = (1 -   )E[ {  <min(,  )}(  )+ |],
+
+(87)
+
+where   is the recovery rate of PS,    and   are the default times of PS and RN, and  is the price of a CDS without counterparty credit risk.
+We associate 1 with the Protection Seller and 2 with the Reference Name, then CVA can
+be given by the solution of (18)­(21) with (, ) = 0 and () = 0. Thus,
+
+    +    = 0,    (, 0, 2) = (1 -  ) (, 2)+,
+
+  (, 1, 0) = 0,
+
+(88)
+
+  (, 1, 2) = 0.
+
+23
+
+Similar, Debt Value Adjustment represents the additional price associated with the default
+
+and defined as
+
+1    = (1 -   )E[ {  <min(,  )}( )- |],
+
+(89)
+
+where   and    are the recovery rate and default time of the protection buyer. Here, we associate 1 with the Protection Buyer and 2 with the Reference Name, then,
+similar to CVA, DVA can be given by the solution of (18)­(21),
+
+    +    = 0,    (, 0, 2) = (1 -  ) (, 2)-,
+
+  (, 1, 0) = 0,
+
+(90)
+
+  (, 1, 2) = 0.
+
+Bilateral CVA and DVA When we defined unilateral CVA and DVA, we assumed that either protection buyer, or protection seller are risk-free. Here we assume that they are both risky. Then, The Credit Value Adjustment represents the additional price associated with the possibility of counterparty's default and defined as
+
+1    = (1 -   )E[ {  <min(  ,  , )}(  )+ |],
+Similar, for DVA
+
+(91)
+
+1    = (1 -   )E[ {  <min(  ,  , )}( )- |],
+
+(92)
+
+We associate 1 with protection seller, 2 with protection buyer, and 3 with reference name. Here, we have a three-dimensional process. Applying three-dimensional version of (18)­(21) with () = 0, (, ) = 0, we get
+
+ 
+
+
+ 
+
++
+
+3
+
+ 
+
+=
+
+0,
+
+  (, 0, 2, 3) = (1 -  ) (, 3)+,
+
+(93)
+
+  (, 1, 0, 3) = 0,   (, 1, 2, 0) = 0,
+
+  (, 1, 2, 3) = 0,
+
+and
+
+ 
+
+
+ 
+
++
+
+3
+
+
+
+
+
+=
+
+0,
+
+  (, 0, 2, 3) = (1 -  ) (, 3)-,
+
+(94)
+
+  (, 1, 0, 3) = 0,   (, 1, 2, 0) = 0,
+
+  (, 1, 2, 3) = 0,
+
+where 3 is the three-dimensional infinitesimal generator.
+
+References
+Andersen, L. and Andreasen, J. (2000). Jump-diffusion processes: Volatility smile fitting and numerical methods for option pricing. Review of Derivatives Research, 4(3):231­262.
+Bielecki, T. R. and Rutkowski, M. (2013). Credit risk: modeling, valuation and hedging. Springer Science & Business Media.
+Black, F. and Cox, J. C. (1976). Valuing corporate securities: Some effects of bond indenture provisions. The Journal of Finance, 31(2):351­367.
+
+24
+
+Butcher, J. C. (2008). Numerical methods for ordinary differential equations. John Wiley & Sons.
+Charney, J. G., Fj¨ortoft, R., and Neumann, J. v. (1950). Numerical integration of the barotropic vorticity equation. Tellus, 2(4):237­254.
+Conn, A. R., Gould, N. I., and Toint, P. L. (2000). Trust region methods, volume 1 of MOS-SIAM Series on Optimization. SIAM.
+David, A. and Lehar, A. (2014). Why are banks highly interconnected? Available at SSRN 1108870.
+Driscoll, T. A., Hale, N., and Trefethen, L. N. (2014). Chebfun guide. Pafnuty Publ.
+Eisenberg, L. and Noe, T. H. (2001). Systemic risk in financial systems. Management Science, 47(2):236­249.
+Gregory, J. (2012). Counterparty credit risk and credit value adjustment: A continuing challenge for global financial markets. John Wiley & Sons.
+Hundsdorfer, W. and Verwer, J. G. (2013). Numerical solution of time-dependent advectiondiffusion-reaction equations, volume 33. Springer Science & Business Media.
+Hurd, T. R. (2016). Contagion! Systemic Risk in Financial Networks. Springer.
+In't Hout, K. and Foulon, S. (2010). ADI finite difference schemes for option pricing in the Heston model with correlation. International Journal of Numerical Analysis and Modeling, 7(2):303­320.
+In't Hout, K. and Welfert, B. (2007). Stability of ADI schemes applied to convection­diffusion equations with mixed derivative terms. Applied Numerical Mathematics, 57(1):19­35.
+Itkin, A. and Carr, P. (2011). Jumps without tears: A new splitting technology for barrier options. International Journal of Numerical Analysis and Modeling, 8(4):667­704.
+Itkin, A. and Lipton, A. (2015). Efficient solution of structural default models with correlated jumps and mutual obligations. International Journal of Computer Mathematics, 92(12):2380­ 2405.
+Itkin, A. and Lipton, A. (2016). Structural default model with mutual obligations. Review of Derivatives Research. doi: 10.1007/s11147-016-9123-1.
+Kluge, T. (2002). Pricing derivatives in stochastic volatility models using the finite difference method. Dipl. thesis, TU Chemnitz.
+Lipton, A. (2016). Modern monetary circuit theory, stability of interconnected banking network, and balance sheet optimization for individual banks. International Journal of Theoretical and Applied Finance, 19(06). doi: 10.1142/S0219024916500345.
+Lipton, A. and Savescu, I. (2014). Pricing credit default swaps with bilateral value adjustments. Quantitative Finance, 14(1):171­188.
+Lipton, A. and Sepp, A. (2013). Credit value adjustment in the extended structural default model. In Lipton, A. and Rennie, A., editors, The Oxford Handbook of Credit Derivatives, chapter 12, pages 406­463. Oxford University Press.
+Marshall, A. W. and Olkin, I. (1967). A multivariate exponential distribution. Journal of the American Statistical Association, 62(317):30­44.
+25
+
+Pooley, D. M., Vetzal, K. R., and Forsyth, P. A. (2003). Convergence remedies for non-smooth payoffs in option pricing. Journal of Computational Finance, 6(4):25­40.
+Reisinger, C. and Whitley, A. (2013). The impact of a natural time change on the convergence of the Crank­Nicolson scheme. IMA Journal of Numerical Analysis. doi: 10.1093/imanum/drt029.
+Toivanen, J. and In't Hout, K. J. (2015). Application of operator splitting methods in finance. arXiv preprint arXiv:1504.01022.
+26
+
+

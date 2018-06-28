@@ -1,0 +1,758 @@
+arXiv:1701.00077v1 [q-bio.QM] 31 Dec 2016
+
+Learning Weighted Association Rules in Human
+Phenotype Ontology.
+Pietro Hiram Guzzi, Giuseppe Agapito, Marianna Milano, Mario Cannataro
+January 3, 2017
+Abstract The Human Phenotype Ontology (HPO) is a structured repository of concepts (HPO Terms) that are associated to one or more diseases. The process of association is referred to as annotation. The relevance and the specificity of both HPO terms and annotations are evaluated by a measure defined as Information Content (IC). The analysis of annotated data is thus an important challenge for bioinformatics. There exist different approaches of analysis. From those, the use of Association Rules (AR) may provide useful knowledge, and it has been used in some applications, e.g. improving the quality of annotations. Nevertheless classical association rules algorithms do not take into account the source of annotation nor the importance yielding to the generation of candidate rules with low IC. This paper presents HPO-Miner (Human Phenotype Ontology-based Weighted Association Rules) a methodology for extracting Weighted Association Rules. HPO-Miner can extract relevant rules from a biological point of view. A case study on using of HPO-Miner on publicly available HPO annotation datasets is used to demonstrate the effectiveness of our methodology.
+1
+
+1 Introduction
+In computer science, the term ontology defines a set of representational primitives with which to model a domain of knowledge or discourse [1]. In particular, ontologies are mainly used in bioinformatics and computational biology.
+For instance, the Gene Ontology aims to provide a common language to describe genes product [2]. More recently, the annotation efforts have also focused on the description of relation among molecular biology and disease, leading to the introduction of novel ontologies such as Human Phenotype Ontology (HPO) [] and Disease Ontology (DO) [].
+HPO aims to provide a standardized vocabulary of phenotypic abnormalities encountered in human diseases. A generic HPO annotation contains a link between a disease and phenotypic abnormality. A disease is indexed by using a unified identifier known as Online Mendelian Inheritance in Man (OMIM). OMIM is a comprehensive, authoritative compendium of human genes and genetic phenotypes that are freely available and updated daily [3]. The Disease Ontology (DO) has been developed as a standardized ontology for human disease with the purpose of providing strong and sustainable descriptions of human disease terms and phenotype characteristics [4].
+The amount of annotations available is steadily growing, raising new challenges to face, related to ambiguous or incomplete annotations and ontology terms [5]. The annotation task is becoming an even harder challenge in the genomic era, which is characterized by an unprecedented growth in the production of genes, gene products, and even other information. To speed-up the updating and maintenance processes of ontologies and annotations, it is required the development of computational approaches that guarantee a remarkable speed, on the current approaches of annotation carried out manually by the curators. The literature contains several computational methods developed to aid GO
+2
+
+curators to improve GO annotations consistency [6], [7], [8]. As opposed to GO, in literature, there are only a few automatic methodologies able to aid the HPO curators to improve annotation consistency and retrieve link between terms not explicitly related.
+As demonstrated in some recent works by Faria et al. [9], by Manda et al. [10], and by Agapito et al. [11, 12], association rules may be used to improve annotations consistency and highlight relationships among terms did not seem explicitly related. In this work, we present HPO-Miner an improvement of our previous works in which we introduced GO-WAR [12]. HPO-Miner is a tool for learning weighted association rules (WAR) to check annotation consistency and to identify hidden relationships between two phenotype abnormalities from HPO. Traditional association rule approaches are not able to distinguish between items; they are unaware of the relevance of terms yielding to the generation of rules with low specificity. The specificity of each term may be measured by the information content (IC) of a term [13]. The use of IC computed for each HPO term, is a measure of the specificity of a term, yielding to the IC-weighted annotation as conveyed in the following: OMIM100100: (HP:0000126, 11.18), (HP:0000144, 9.57). HPO-Miner is able to extract weighted association rules starting from an annotated dataset of diseases. The proposed approach is based on the following steps: (i) initially we rearrange the information for each OMIM term to get transactional data; (ii) then, we extract weighted association rules using a modified FP-Tree like algorithm able to deal with the dimension of classical biological datasets. We use publicly available HPO annotation data to demonstrate our method.
+The rest of the paper is structured as follows: Section 2 discusses HPO-Miner methodology and implementation, Section 4 presents results of the application of HPO-Miner on a biological dataset. Finally Section 5 concludes the paper.
+3
+
+2 Materials and Methods
+2.1 The Human Phenotype Ontology
+HPO is a structured and controlled vocabulary with more than 10,000 terms able to describe the phenotypic abnormalities in human diseases. HPO provides annotations of more than 7,000 human hereditary syndromes and other phenotypic abnormalities that characterize the diseases, are also available at the website 1. HPO consists of three independent sub-ontologies: the mode of inheritance i.e. the way in which a specific hereditary attribute is transmitted from a generation to another, onset and clinical course i.e. in medicine refers to the first symptoms of a sickness and the medical treatments involved to cure them and finally, the phenotypic abnormalities i.e. the abnormal traits of a living organism that are possible to observe. As other ontologies, terms in HPO are organized in a directed acyclic graph (DAG). The relations among DAG's terms are modelled by means of is a and part of edges "relations", in order to distinguish between general or specific terms. Moreover, terms in HPO are arranged in a hierarchical way, where each path respects the true-path-rule. To each HPO class is assigned a stable and unique identifier (e.g. HP:0001629 ), a label and a list of synonyms, describing a well definite phenotypic abnormality i.e. "Ventricular Septal Defect " see Figure 1.
+Diseases are annotated with terms of the HPO, meaning that HPO terms are used to describe all the signs, symptoms, and other phenotypic manifestations that characterize the disease in question.
+The annotations of OMIM entries are a mixture of manual annotations performed by the HPO curators team and automated matching of the OMIM Clinical Synopsis to HPO term labels. In particular HPO is an ontology designed to provide qualitative information and not to capture quantitative information
+1http://www.human-phenotype-ontology.org
+4
+
+Figure 1: HPO graph Example
+such as body weight or height. Each diseases may be annotated to multiple HPO terms. Consequently the need of the introduction of methodologies and tools to support HPO curators to improve annotation consistency and the structure of the ontology arises.
+2.2 Association Rules
+Association Rule (AR) extraction is very popular in data mining, it is used for discovering associations in market basket analysis and unknown relations among features in databases. Historically, was proposed by Agrawal [14] to discovery associations to support marketing decision.
+Formally, the association rules extraction problem may be stated as follows: let I = {i1, i2, . . . , in} be a set of items and D = {t1, . . . , tm} a transactional database that contains a set of transactions, where a transaction tj is a subset of items belonging to I. An association rule is an implication of the form
+5
+
+A  B, where A and B are two disjoint sets. AR are based on two fundamental properties to define the relevance of the mined rules, Support and Confidence. The formal Support definition is:
+
+Definition
+
+2.1.
+
+S(A  B) =
+
+(AB) N
+
+Where N is the total number of transactions contained in D and  is called support count, namely, the number of transaction that contain a particular item. The Confidence is defined as:
+
+Definition
+
+2.2.
+
+C(A  B) =
+
+(AB) (A)
+
+.
+
+Where (A) is the number of transactions in D containing A and (A  B) is the number of transactions in D that contains both items A and B.
+
+A drawback with the use of classical AR approach is that it precludes the derivation of certain rules in which the items have a very different levels of support. In several areas do not make sense to assign equal importance to all items involved in the dataset. For example in the supermarket context, some items like computer, smartphone have much value than trivial items like ice-cream or butter. Rules involving smartphone or computer have less support than those involving butter or ice-cream but are much more significant in term of profit by the store. In the ontology context, the term HP:0000924 (An abnormality of the skeletal system) has a relevance value (IC value) lower than HP:0011803 (Bifid nose) although it is much more frequent. Rules involving the term HP:0000924 are less interesting (as it is a more general term) then rules involving the term HP:0011803 (as it is a more specific term) in terms of actionable knowledge.
+This limitation of classical AR approach can be overcome by introducing the weighted association rules (WAR). WAR models the significance of a term by means of a weight (). A weight () is a positive real number that reflect the
+6
+
+relevance of a HPO terms, for which high values represent very significant items as reported in [15, 16]. In our case, the relevance can be represented by using the information content (IC ).
+A generic HPO dataset is a list of OMIM identifiers annotated with multiple HPO terms, as conveyed in Figure 2.
+OMIM100050 HP 0000431 OMIM100050 HP 0000484 OMIM100050 HP 0000494 OMIM100100 HP 0000126 OMIM100100 HP 0000144
+Figure 2: An example of HPO dataset.
+In order to extract rules from the HPO dataset, it is necessary to convert it in a format more suitable to represent transaction data. The conversion consists in put together the same OMIM identifiers that became the transaction identifier while the HPO terms associated with the current OMIM identifier are the items of the transaction, as depicted in Figure 3.
+OMIM100050 {HP:0000431, 10.95}, {HP:0000484, 11.36}, {HP:0000494, 11.27} OMIM100100 {HP:0000126, 11.18}, {HP:0000144, 9.57} OMIM302801 {HP:0002167, 7.78}, {HP:0002311, 9.72} OMIM600175 {HP:0000006, 8.34}, {HP:0001252, 8.47}, {HP:0001265, 9.28}, {HP:0001284, 9.57}
+Figure 3: An example of weighted transaction HPO dataset.
+2.3 Weighting HPO term with Information Content
+Each HP term is associated to IC value. There exist different IC formulations that fall into two classes, intrinsic and extrinsic methods. Intrinsic method rely on the topology of the GO graph analyzing the positions of terms in a taxonomy. In this way the approaches define information content for each term. Different topological characteristics as ancestors, number of children, depth (see[13] for a
+7
+
+complete review) can used in order to estimate the Intrinsic IC calculus. Instead the extrinsic approaches involve annotation data for an considered corpus. In this work we used the intrinsic method proposed by Sanchez et al. [17], Harispe et al.[13], Resnick et al. [18], Seco et al. [19], Zhou et al. [20].
+The measure of Sanchez exploits only the number of leaves and the set of ancestors of a including itself, subsumers(a) and introduce the root node as the number of leaves max leaves in IC assessment. Leaves are more informative than concepts with many leaves, roots, so the leaves are suited to describe and to distinguish any concept.
+
+I CSanchez
+
+et
+
+al.(a)
+
+=
+
+-log
+
+ 
+
+|leaves(a)| |subsumers(a)|
+
++
+
+ 1
+
+max leaves + 1 
+
+(1)
+
+Harispe et al., in oder to highlights the specificity of leaves according to their number of ancestors, consider leaves(a) = a concept when a is a root and evaluating max leaves as the number of inclusive ancestors of a node revising the IC assessment suggested by Sanchez et al.
+
+ |leaves(a)| 
+
+I CHarispe
+
+et al.(a)
+
+=
+
+-log
+
+
+
+|subsumers(a)|
+max leaves
+
+
+
+(2)
+
+The formulation provided from Resnick et al. computes the IC of a concept evaluating all the top-downs path from a concept a to the reachable leaves, p(a), and then calculates the log yielding to the formula:
+
+ICResnik (a) = -log(p(a)).
+
+(3)
+
+Seco et al. calculate the IC of a concept by considering the ratio between the number of hyponyms in ontology, for example, the number of descendant
+
+8
+
+with respect to the whole number of ontological concepts.
+
+log ICSeco et al(a) = log
+
+hypo(a)+1 max nodes
+1 max nodes
+
+(4)
+
+Thus Zhou et al. considers the depth of a concept in a taxonomy, depth(a), and the maximum depth of the taxonomy max depth.
+
+I CZhou et al.(a) = k -
+
+1
+
+-
+
+log(hypo(a) + 1) log(max nodes)
+
++ (1 - k)
+
+log(depth(a)) log(depth nodes)
+
+(5)
+
+In this formulation K is a factor which enables to weight the contribution of the two evaluated features.
+
+3 The HPO-Miner Algorithm
+In this section we briefly describe the HPO-Miner algorithm, developed to extract weighted association rules form HPO dataset.
+First of all we define the Weighted Item x, i.e. a weighted HPO item is obtained by multiplying the number of occurrences of item x by the value of its related value of IC (the weight ). We define as W eightedSupport, (S), obtained by integrating the classical formulation of the support of an item by its weight. The weighted Support S of a generic item xi is defined as: S(xi) = wi  (xi) where i is the information content of the i-th term and (xi) is the number of transaction containing xi. Let I = {i1 . . . im} be a set of weighted items (HPO terms) and let W D be a set of weighted transactions database, where each transaction tj is a sub-set of weighted items such that tj belongs to I. We defined the weighted minimum support (mS) as:
+
+Definition 3.1. mS =
+
+|W D| i=1
+
+(xi )i
+
+|W D|
+
+ p.
+
+9
+
+Where, |W D| is the cardinality of the weighted database nominally, the number of transactions into the dataset, p is a threshold value given in input by the user in order to define which items are significant in percentage. Thus only the items for which the following constraint S(I)  mS is verified, are significant and can be used as candidates to generate frequent item-sets and rules.
+Algorithm 1 is a summary of the main phases of theHPO-Miner algorithm. The first step of HPO-Miner algorithm is the loading of the input HPO dataset (D) and its transformation in weightedTable W T a data structure suitable to represent weighted transaction data (as reported in Algorithm 1 row 2). Concurrently to the loading and conversion phase, are evaluated the occurrences of each HPO term in D. Subsequently is possible to obtain a list of frequent weighted items (as stated in Algorithm 1 at row 3). We remove from the F W ItemsList the weighted items for which is not verified the following condition: S(I)  mS. Frequent weighted items are hence used to build a data structure based on F P - T ree. Finally, HPO-Miner iteratively analyzes the F P - T ree in order to mine and save significant rules. Algorithm 1 HPO Weighted Association Rules Miner (HPO-Miner) Require: A table of HPO annotation as input dataset D
+1: Data Structure initialization: W T , F W ItemsList, FPTree 2: W T getTransactionalData(D) 3: F W ItemsList  retrieveF W ItemsList(W T ) 4: F P T ree.create(F W ItemsList) 5: mineW eightedRules() 6: end.
+10
+
+4 Results
+HPO database is freely available online 2, the size of the dataset is about 4.4 MB on disk. After collecting data, by using all the methods introduced in Section 2, we produced 5 different datasets. We tested HPO-Miner using several combinations of values for weightedSupport and confidence. Then we selected the values for the parameters able to ensure the best results in terms of reduced number of mined rules and in the same time with relevant values of weightedSupport and confidence. The best combination of values was weightedSupport equal to 50% and confidence greater than 80%. We chose the first top 10 rules from each dataset, and we manually analyzed the literature to find claims that can prove the validity of the mined rules.
+4.1 HPO-Miner rules extraction comparison
+The effectiveness of HPO-Miner is proved comparing our tool with respect to other well known tools such as: Knime [21] and Weka [22]. We chose these tools because both provides an implementation of the FP-Growth algorithm a necessary condition in order to fairly compare HPO-Miner with both tools. The FP-Growth algorithm implementation in Weka and Knime, is able to handle only binary attributes, making both tools unable to analyze weighted HPO datasets enriched with IC values. A possible way to make weighted HPO enriched dataset compatible with Weka and Knime is to leave for each OMIM entry only two HPO terms, making this solution infeasible because leads to lose a lot of useful information. Differently, HPO-Miner is the only tool that comes with a version of FP-Growth able to handle a generic number of attribute for each OMIM entry, making it suitable to analyze HPO dataset enriched with IC values.
+2 http://www.human- phenotype- ontology.org/downloads.html
+11
+
+4.2 Analysis of Mined Rules
+
+Table 1: The ten first rules found by HPO-Miner using the Dataset obtained by
+
+applying the Resnik measure and ranked by weightedSupport. (IDs are inserted
+
+for a better discussion in the following.)
+
+Term 1
+
+Term 2
+
+WS C Function Function
+
+1R HP:0200084 HP:0000007 1.00 1.00 Giant cell Autosomal
+
+hepatitis
+
+recessive
+
+inheritance
+
+2R HP:0200084 HP:0002910 1.00 1.00 Giant cell Elevated
+
+hepatitis
+
+hepatic
+
+transami-
+
+nases
+
+3R HP:0200067 HP:0000006 1.00 1.00 Recurrent Autosomal
+
+spontaneous dominant
+
+abortion
+
+inheritance
+
+4R HP:0100818 HP:0000774 1.00 1.00 Long thorax Narrow chest
+
+5R HP:0100775 HP:0001537 1.00 1.00 Dural ectasia Umbilical
+
+hernia
+
+6R HP:0100775 HP:0000006 1.00 1.00 Dural ectasia Autosomal
+
+dominant
+
+inheritance
+
+7R HP:0100775 HP:0000494 1.00 1.00 Dural ectasia Downslanted
+
+palpebral
+
+fissures
+
+8R HP:0100775 HP:0000316 1.00 1.00 Dural ectasia Hypertelorism
+
+9R HP:0100626 HP:0001394 1.00 1.00 Chronic hep- Cirrhosis
+
+atic failur
+
+10R HP:0100626 HP:0000007 1.00 1.00 Chronic hep- Autosomal
+
+atic failure recessive
+
+inheritance
+
+Let us consider rule (1R): (HP:0200084, HP:0000007) - Giant cell hepatitis, Autosomal recessive inheritance. Searching the literature we found some evidences that describe the relationship between this two terms. As stated in [23] both terms could be related with defects in the biological mechanisms of the liver. In particular, Autosomal recessive inheritance suggests a biochemical defect that might cause a metabolic disorder in the liver while, Giant cell hepatitis is responsible of "thick bile syndrome" in neonatal. Consequently, HPO-Miner
+
+12
+
+Table 2: The ten first rules found by HPO-Miner using the Dataset obtained
+
+by applying the Sanchez measure and ranked by weightedSupport. (IDs are
+
+inserted for a better discussion in the following.)
+
+Term 1
+
+Term 2
+
+WS C Function
+
+Function
+
+1S HP:0100818 HP:0000774 0.88 1.00 Long thorax Narrow chest
+
+2S HP:0030034 HP:0003774 0.88 1.00 Diffuse
+
+Stage
+
+5
+
+glomerular
+
+chronic kid-
+
+basement
+
+ney disease
+
+membrane
+
+lamellation
+
+3S HP:0012743 HP:0001773 0.88 1.00 Abdominal
+
+Short foot
+
+obesity
+
+4S HP:0012263 HP:0000007 0.88 1.00 Immotile cilia Autosomal re-
+
+cessive inheri-
+
+tance
+
+5S HP:0012023 HP:0000007 0.88 1.00 Galactosuria Autosomal re-
+
+cessive inheri-
+
+tance
+
+6S HP:0011727 HP:0009049 0.88 1.00 Peroneal mus- Peroneal mus-
+
+cle weakness cle atrophy
+
+7S HP:0010636 HP:0000316 0.88 1.00 Schizencephaly Hypertelorism
+
+8S HP:0009793 HP:0000316 0.88 1.00 Presacral ter- Hypertelorism
+
+atoma
+
+9S HP:0009760 HP:0006443 0.88 1.00 Antecubital Patellar apla-
+
+pterygium
+
+sia
+
+10S HP:0008845 HP:0003067 0.88 1.00 Mesomelic
+
+Madelung de-
+
+short stature formity
+
+was able to found a relation between two apparently unrelated terms into the graph of HPO classes.
+Rule (2R) (HP:0200084, HP:0002910) i.e., (Giant cell hepatitis, Elevated hepatic transaminases) consists of two terms involved in the hepatitis process. Analyzing in depth the literature it revealed the following links between the two terms. In [24] is presented a study on three siblings with neonatal jaundice who died before the age of three months. They were shown on autopsy to be suffering from Niemann-Pick disease together with a giant cell transformation of the liver. Clayton et. al. in [25] including the infant studied in [26] were able to inferrer, that due to the elevated transaminases most patients develop hepatic
+
+13
+
+fibrosis or cirrhosis due to the presence of Giant cell hepatitis. Thus, manually analyzing this rule has been possible to infer that both terms are responsible of the liver disorder in infants and adults.
+Rule (3R) involves the following two HPO terms (HP:0200067, HP:0000006) i.e.,Recurrent spontaneous abortion and Autosomal dominant inheritance. There is a growing literature on the importance of Autosomal dominant inheritance in pregnancy complications as reported in [27]. As stated in [28] Thrombophilia is a cause of maternal mortality due to certain inherited thrombophilic factors that activated protein C resistance. In [29] the authors point out the rare familial disorders that are usually inherited as Autosomal dominant inheritance.
+Rule (4R) (HP:0100818, HP:0000774) composed by the following phenotypic abnormalities Long thorax, Narrow chest involved in the syndrome of Jeune and Ellis-Van Creveld syndrome as reported in literature in [30, 31]. Browsing HPO Ontology with its on line browser did not reveal any information that allows the user to associate both abnormalities with the syndrome of Juene and Ellis-Van Creveld. This may suggest to the curator to restructure ontology in order to make easily available this knowledge in order to clarify these associations.
+Rule (5R) (HP:0100775, HP:0001537) whose translation is Dural ectasia, Umbilical hernia at first glance seems that there not exists a connection among the two terms. Analyzing the literature we found the work of Mizuguchi et.al. [32] and Chen et. al., [33]. In Mizuguchi et.al. have been found both abnormalities in a patient affected by the Marfan syndrome in infancy, instead Chen et. al. have found these abnormalities in patients affected by Lateral meningocele syndrome. These knowledge it is not readily available for the users by using HPO, consequently this may suggest to the curator to add this further knowledge into the HPO.
+Rule (6R) (HP:0012023, HP:0000007) define an association between the
+14
+
+Galactosuria and Autosomal recessive inheritance. Analyzing the literature looking for evidence on the validity of the association we found the works of Pickering et. al., [34] and Monteleone et. al. [35], in which in both works, the authors stated that hereditary galactokinase deficiency is characterized by galactosuria. In particular, in this study support the autosomal recessive inheritance of this disorder. This evidence support the validity of the current association found it by using HPO-Miner.
+To verify the reliability of Rule (7R) (HP:0100775,HP:0000494) i.e. (Dural ectasia, Downslanted palpebral fissures) and Rule (8R) (HP:0100775, HP:0000316) i.e., Dural ectasia, Hypertelorism, we analyzed the literature founding that the terms of both rules are symptoms involved in the Marfan syndrome as stated in [36, 37]. Consequently these association rules may suggest to the curator to add new informative links among HPO terms, making easier for the users to obtain further knowledge.
+Rule (9R) (HP:0100626, HP:0001394) refers to Chronic hepatic failure and Cirrhosis. Analyzing the literature showed that both terms are involved in fat elimination as stated in the work of Druml et. al. [38]. This evidence may be suggest to the curator to make this explicit knowledge in implicit, by adding new links among the HPO terms.
+(10R) (HP:0100626, HP:0000007) Chronic hepatic failure, Autosomal recessive inheritance
+Here we discuss the rules contained in Table 2 that refer to the rules mined by HPO-Miner from the Sanchez dataset.
+Rule (1S) (HP:010081, HP:0000774) i.e., (Long thorax, Narrow chest ) consists in two terms involved in the Asphyxiating Thoracic Dysplasia (Jeune Syndrome).Jeune syndrome is a congenital disorder with abnormalities of which thoracic hypoplasia is the most prominent. The literature confirms that both
+15
+
+phenotype, long thorax and narrow chest are manifestations of Jeune syndrome. In [39] is reported this evidence.
+Rule (2S) (HP:0030034, HP:0003774) associates withDiffuse glomerular basement membrane lamellation, Stage 5 chronic kidney disease. Searching in the current literature the glomerular basement membrane lamellation is a manifestation in patients after transplantation of kidneys from pediatric cadaveric donors, as [40] reported. There is not evidence that this phenotype is related to the Stage 5 chronic kidney disease.
+About the Rule (3S) (HP:0012743, HP:0001773), Abdominal obesity, Short foot we didn't find a correlation among Abdominal obesity(term 1) and Short foot (term 2) despite a depth research in literature was conducted .
+Rule (4S) (HP:0012263, HP:0000007) and Rule (5S) (HP:0012023, HP:0000007), associate two pathologic phenotypes, Immotile cilia and (Galactosuria to Autosomal recessive inheritance). In fact, in [41] is reported that the immotile cilia syndrome seems to be that of an autosomal recessive disease; as well as galactosuria due to galactokinase deficiency in a newborn is inherited in an autosomal recessive manner [34].
+HPO-MINER finds the Rule (6S) (HP:0011727, HP:0009049) that associates(Peroneal muscle weakness with Peroneal muscle atrophy).In fact the peroneal muscle atrophy is characterized by wasting and flaccid weakness of the intrinsic muscles of the feet and of the muscles innervated by the peroneal nerve [42].
+Rule (7S) (HP:0010636, HP:0000316) relates (Schizencephaly, Hypertelorism) involved in the same disease, the LEOPARD syndrome. A case study [43] reported patient affect by this disease with open-lip schizencephaly and Ocular hypertelorism pathologic phenotype.
+Instead Rule (8S) (HP:0009793, HP:0000316), highlights a link among Hy-
+16
+
+pertelorism) with (Presacral teratoma in the SchinzelGiedion syndrome as reported in [44].
+In [45] is discussed a Hereditary Congenital Posterior Dislocation of Radial Heads which disorder is characterized by The association of nailpatella syndrome with typical antecubital pterygium as HPO-MINER found in Rule (9S) (HP:0009760, HP:0006443),
+Rule (10S) (HP:0008845, HP:0003067), composed by (Mesomelic short stature, Madelung deformity). Both phenotype are involved in Madelung deformity of childhood [46]
+Here we analyze the rules contained in Table 4. Rule (1Se) (HP:0200084, HP:0000007) associates Giant cell hepatitisand Autosomal recessive inheritance. This evidence is highlighted in a case study reported a patient suffered from a unique form of giant cell hepatitis which condition appears to be an autosomal recessive one[47] Rule (2Se) (HP:0100818, HP:0000774) Long thorax, Narrow chest is discussed above. About the Rule (3Se) (HP:0100775, HP:0001537) i.e. Dural ectasia, humbilical hernia HPO-MINER find a association that is not confirmed in literature. The Rule (4Se) (HP:0100775, HP:0000494) and the Rule (5Se) (HP:0100775, HP:0000316) associate the phenotypeDural ectasia withDownslanted palpebral fissures and Hypertelorism. Carrying out a analysis in the state of art, we found a clinical case which report a patient with lateral meningocele syndrome (LMS) affected by both down slanting palpebral fissures and hyperteloris [33]. About the Rule (6Se) (HP:0100626, HP:0000007) associates Chronic hepatic failure to characteristic Autosomal recessive inheritance [48] In the Rule (7Se) (HP:0030050, HP:0002524) are connected two pathologic phenotype Narcolepsy and Cataplexy that are known as a sleep disorder associ-
+17
+
+ated with a centrally mediated hypocretin deficiency[49]. About Rule (8Se) (HP:0012240, HP:0000007) the evidence that the Increased
+intramyocellular lipid droplets is Autosomal recessive inheritance. The Rule (9Se) (HP:0010780, HP:0007018) associates the symptom Hyper-
+acusis to Attention deficit hyperactivity disorder (ADHD) as reported in[50] Instead the Rule (10Se) (HP:0000179, HP:0010780) i.eShort 3rd metacarpal,
+Hyperacusis has not evidence in literature. Here we interpret the rule mined by HPO-Miner from the dataset Harispe
+and contained in Table 3. Rule (1H) is composed of terms (HP:0009577, HP:0004220) i.e., (Short mid-
+dle phalanx of the 2nd finger, Short middle phalanx of the 5th finger). Analyzing the literature, we found that this abnormalities have been observed in the Adams-Oliver Syndrome as reported in the work of Kuster et.al. [51].
+Rule (2H) contains the terms (HP:0010105, HP:0010034) i.e., Short first metatarsal, Short 1st metacarpal
+Rule (3H) (HP:0000933,HP:0001305) i.e., Posterior fossa cyst at the fourth ventricle Dandy-Walker malformation involved in abnormality that affects brain development.
+Analyzing the literature has not been possible found any evidence on the involvement of the (HP:0004704, HP:0004689) i.e., Short fifth metatarsal, Short fourth metatarsalRule, contained in the rule (4H) found by HPO-Miner.
+Rule (5H) is formed by the two terms (HP:0001885, HP:0004209) i.e., Short 2nd toe, Clinodactyly of the 5th finger. Searching into the literature we found that both symptoms occurred in Carpenter Syndromeas states in the work of Gershoni et.al., [52].
+Rule (6H) involves the following two HPO terms (HP:0003065, HP:0006443) i.e., Patellar hypoplasia, Patellar aplasia. The work of Kaariainen et. al. [53]
+18
+
+that RAPADILINO syndrome involve both symptoms. Rule (7H) (HP:0009464, HP:0004209) i.e., Ulnar deviation of the 2nd fin-
+ger, Clinodactyly of the 5th finger consists of two terms involved in the KBG syndrome as reported in the work of Sirmaci et. al. [54].
+Rule (8H) is composed of (HP:0002834, HP:0002857) i.e., Flared femoral metaphysis, Genu valgum. Both symptom are observed in the metatropic dwarfism as described into the work of LaRose et. al. [55].
+The terms contained into the rule (9H) HP:0004209, HP:0000272 i.e., Clinodactyly of the 5th finger, Malar flattening are involved in 49,XXXXY syndrome as stated in the work of Peet et. al. [56].
+About Rules (10H) (HP:0001773, HP:0004279) i.e. Short foot, Short palm we didn't find any correlation between the terms, despite a depth research in literature it was conducted.
+19
+
+Here we analyze the rules contained in Table 5. The first rule Rule (1Z) (HP:0002335, HP:0001305) associates the Congenital absence of the vermis of cerebellum with Dandy Walker malformation. This evidence is confirmed in [57], that reported a cases of Dandy-Walker malformation including agenesis cerebellar vermis. HPO-MINER extracts the Rule (2Z) (HP:0003031, HP:0002986) i.eBending of the diaphysis (shaft) of the ulna (Ulnar bowing) A bending or abnormal curvature of the radius (Radial bowing) and the Rule (3Z) (HP:0000176, HP:0000193), i.e.submucous clefts Hard-palate Bifid uvula. Although we conducted a deep analysis of stare of art, these rules are not confirmed in literature. The Rule (4Z) (HP0001338 HP0002007) and the Rule (5Z) (HP0001338 HP0000494) associate the Partial agenesis of the corpus callosum to two abnormal phenotype: Frontal Bossing and Downslated palpebral fissures as confirmed in [58] and[59]. HPO-MINER finds the Rule (6Z) (HP:0000308, HP:0001305), Rule (8Z) (HP:0010804, HP:0001305), Rule (9Z) (HP:0009623, HP:0001305) that associate the phenotypesMicroretrognathia Tented upper lip vermilion in, Proximal placement of the thumb toDandy Walker malformation. Unfortunately we didn't find this evidences in literature. About Rule (7Z) (HP:0000269, HP:0001305) and the Rule (10Z) (HP:0000567, HP:0001305) Prominent occiput (HP:0010636 term) and the Chorioretinal coloboma (HP:0000567) are the abnormalities related to the Dandy Walker malformation as reported in [60] and [61].
+5 Conclusion
+We presented a new methodology based on weighted association rule for HPO data analysis that takes into account the relevance of terms; the relevance is a
+20
+
+weight assigned to a term based on, for example, its specificity to describe a phenotypic abnormality. The relevance of a HPO term, is obtained by computing the IC value related with each term. We presented the outline of an algorithm called HPO-Miner to mine weighted itemsets that have sufficient weighted supports. These itemsets are used in turn to generate association rules that have high weighted support. Finally, the relevance of the mined rules by HPO-Miner, is proved by the evidences found analyzing the literature.
+21
+
+References
+[1] T. Gruber, Ontology, Encyclopedia of database systems (2009) 1963­1965.
+[2] G. O. Consortium, et al., The gene ontology (go) database and informatics resource, Nucleic acids research 32 (suppl 1) (2004) D258­D261.
+[3] A. Hamosh, A. F. Scott, J. S. Amberger, C. A. Bocchini, V. A. McKusick, Online mendelian inheritance in man (omim), a knowledgebase of human genes and genetic disorders, Nucleic acids research 33 (suppl 1) (2005) D514­D517.
+[4] L. M. Schriml, C. Arze, S. Nadendla, Y.-W. W. Chang, M. Mazaitis, V. Felix, G. Feng, W. A. Kibbe, Disease ontology: a backbone for disease semantic integration, Nucleic acids research 40 (D1) (2012) D940­D946.
+[5] G. Flouris, Z. Huang, J. Z. Pan, D. Plexousakis, H. Wache, Inconsistencies, negations and changes in ontologies, in: Proceedings of the National Conference on Artificial Intelligence, Vol. 21, Menlo Park, CA; Cambridge, MA; London; AAAI Press; MIT Press; 1999, 2006, p. 1295.
+[6] I. Yeh, P. D. Karp, N. F. Noy, R. B. Altman, Knowledge acquisition, consistency checking and concurrency control for gene ontology (go), Bioinformatics 19 (2) (2003) 241­248.
+[7] D. Faria, A. Schlicker, C. Pesquita, H. Bastos, A. E. N. Ferreira, M. Albrecht, A. O. Falco, , PLoS ONE 7 (7) (2012) e40519. doi:10.1371/journal.pone.0040519. URL http://dx.doi.org/10.1371%2Fjournal.pone.0040519
+[8] P. Manda, S. Ozkan, H. Wang, F. McCarthy, S. M. Bridges, Cross-ontology multi-level association rule mining in the gene ontology, PloS one 7 (10) (2012) e47411.
+22
+
+[9] D. Faria, A. Schlicker, C. Pesquita, H. Bastos, A. E. N. Ferreira, M. Albrecht, A. O. Falco, Mining go annotations for improving annotation consistency, PLoS ONE 7 (7) (2012) e40519. doi:10.1371/journal.pone.0040519.
+[10] P. Manda, F. McCarthy, S. M. Bridges, Interestingness measures and strategies for mining multi-ontology multi-level association rules from gene ontology annotations for the discovery of new go relationships, Journal of biomedical informatics 46 (5) (2013) 849­856.
+[11] G. Agapito, M. Milano, P. H. Guzzi, M. Cannataro, Improving annotation quality in gene ontology by mining cross-ontology weighted association rules, in: Bioinformatics and Biomedicine (BIBM), 2014 IEEE International Conference on, IEEE, 2014, pp. 1­8.
+[12] G. Agapito, M. Cannataro, P. H. Guzzi, M. Milano, Using go-war for mining cross-ontology weighted association rules, Computer methods and programs in biomedicine 120 (2) (2015) 113­122.
+[13] S. Harispe, D. Sa´nchez, S. Ranwez, S. Janaqi, J. Montmain, A framework for unifying ontology-based semantic similarity measures: A study in the biomedical domain, Journal of biomedical informatics.
+[14] R. Agrawal, T. Imieli&#324;ski, A. Swami, Mining association rules between sets of items in large databases, SIGMOD Rec. 22 (2) (1993) 207­216. doi:10.1145/170036.170072. URL http://dx.doi.org/10.1145/170036.170072
+[15] W. Wang, J. Yang, P. S. Yu, Efficient mining of weighted association rules (war), in: Proceedings of the Sixth ACM SIGKDD International Conference on Knowledge Discovery and Data Mining, KDD '00, ACM, New York, NY, USA, 2000, pp. 270­274. doi:10.1145/347090.347149. URL http://doi.acm.org/10.1145/347090.347149
+23
+
+[16] C. Cai, A. Fu, C. Cheng, W. Kwong, Mining association rules with weighted items, in: Database Engineering and Applications Symposium, 1998. Proceedings. IDEAS'98. International, 1998, pp. 68­77. doi:10.1109/IDEAS.1998.694360.
+[17] D. Sa´nchez, M. Batet, D. Isern, Ontology-based information content computation, Knowledge-Based Systems 24 (2) (2011) 297­303.
+[18] P. Resnik, Using information content to evaluate semantic similarity in a taxonomy, in: IJCAI, 1995, pp. 448­453. URL http://citeseerx.ist.psu.edu/viewdoc/summary?doi=10.1.1. 55.5277
+[19] H. Hermjakob, L. Montecchi-Palazzi, G. Bader, J. Wojcik, L. Salwinski, A. Ceol, S. Moore, S. Orchard, U. Sarkans, C. von Mering, The hupo psi's molecular interaction format - a community standard for the representation of protein interaction data, Nat Biotechnol 22 (2004) 177­183. doi:10.1038/nbt926.
+[20] Z. Zhou, Y. Wang, J. Gu, A new model of information content for semantic similarity in wordnet, in: Future Generation Communication and Networking Symposia, 2008. FGCNS'08. Second International Conference on, Vol. 3, IEEE, 2008, pp. 85­89.
+[21] M. R. Berthold, N. Cebron, F. Dill, T. R. Gabriel, T. K¨otter, T. Meinl, P. Ohl, C. Sieb, K. Thiel, B. Wiswedel, KNIME: The Konstanz Information Miner, in: C. Preisach, H. Burkhardt, L. Schmidt-Thieme, R. Decker (Eds.), Data Analysis, Machine Learning and Applications, Springer Berlin Heidelberg, Berlin, Heidelberg, 2008, Ch. 38, pp. 319­326. doi:10.1007/9783-540-78246-9 38. URL http://dx.doi.org/10.1007/978-3-540-78246-9\_38
+24
+
+[22] M. Hall, E. Frank, G. Holmes, B. Pfahringer, P. Reutemann, I. Witten, The WEKA data mining software: an update, Special Interest Group on Knowledge Discovery and Data Mining Explorer Newsletter 11 (1) (2009) 10­18. doi:10.1145/1656274.1656278. URL http://dx.doi.org/10.1145/1656274.1656278
+
+[23] D. M. Danks, P. E. Campbell, I. Jack, J. Rogers, A. L.
+
+Smith, Studies of the aetiology of neonatal hepatitis and bil-
+
+iary atresia., Archives of Disease in Childhood 52 (5) (1977)
+
+360­367.
+
+arXiv:http://adc.bmj.com/content/52/5/360.full.pdf+html,
+
+doi:10.1136/adc.52.5.360.
+
+URL http://adc.bmj.com/content/52/5/360.abstract
+
+[24] A. ASHKENAZI, R. YAROM, A. GUTMAN, A. ABRAHAMOV, A. RUSSELL, Niemann-pick disease and giant cell transformation of the liver, Acta Pdiatrica 60 (3) (1971) 285­294. doi:10.1111/j.1651-2227.1971.tb06658.x. URL http://dx.doi.org/10.1111/j.1651-2227.1971.tb06658.x
+
+[25] P. T. Clayton, M. Casteels, G. Mieli-Vergani, A. M. Lawson, Familial giant cell hepatitis with low bile acid concentrations and increased urinary excretion of specific bile alcohols: A new inborn error of bile acid synthesis?, Pediatr Res 37 (4) (1995) 424­431. URL http://dx.doi.org/10.1203/00006450-199504000-00007
+
+[26] W. J. Byrne, B. F. Kase, I. Bjorkhem, P. Haga, J. I. Pedersen, Defective
+
+peroxisomal cleavage of the c27 steroid side chain in the cerebro., Journal
+
+of Pediatric Gastroenterology and Nutrition 4 (4).
+
+URL
+
+http://journals.lww.com/jpgn/Fulltext/1985/08000/
+
+DEFECTIVE_PEROXISOMAL_CLEAVAGE_OF_THE_C27_STEROID.40.aspx
+
+25
+
+[27] J. L. Byrne, K. Ward, Genetic factors in recurrent abortion., Clinical obstetrics and gynecology 37 (3) (1994) 693­704.
+[28] W. H. Kutteh, D. A. Triplett, Thrombophilias and recurrent pregnancy loss, Semin Reprod Med 24 (01) (2006) 054­066. doi:10.1055/s-2006931801.
+[29] A. Coumans, P. Huijgens, C. Jakobs, R. Schats, J. De Vries, M. Van Pampus, G. Dekker, Haemostatic and metabolic abnormalities in women with unexplained recurrent abortion, Human Reproduction 14 (1) (1999) 211­ 214.
+[30] B. R. Elejalde, M. M. De Elejalde, D. Pansch, J. M. Opitz, J. F. Reynolds, Prenatal diagnosis of jeune syndrome, American Journal of Medical Genetics 21 (3) (1985) 433­438. doi:10.1002/ajmg.1320210304. URL http://dx.doi.org/10.1002/ajmg.1320210304
+[31] G. Baujat, M. Le Merrer, Ellis-van creveld syndrome, Orphanet J Rare Dis 2 (6) (2007) 27.
+[32] T. Mizuguchi, G. Collod-Beroud, T. Akiyama, M. Abifadel, N. Harada, T. Morisaki, D. Allard, M. Varret, M. Claustres, H. Morisaki, et al., Heterozygous tgfbr2 mutations in marfan syndrome, Nature genetics 36 (8) (2004) 855­860.
+[33] K. M. Chen, L. Bird, P. Barnes, R. Barth, L. Hudgins, Lateral meningocele syndrome: vertical transmission and expansion of the phenotype, American Journal of Medical Genetics Part A 133 (2) (2005) 115­121.
+[34] W. R. Pickering, R. R. Howell, Galactokinase deficiency: clinical and biochemical findings in a new kindred, The Journal of pediatrics 81 (1) (1972) 50­55.
+26
+
+[35] J. A. Monteleone, E. Beutler, P. L. Monteleone, C. L. Utz, E. C. Casey, Cataracts, galactosuria and hypergalactosemia due to galactokinase deficiency in a child: studies of a kindred, The American journal of medicine 50 (3) (1971) 403­407.
+[36] S. A. LeMaire, H. Pannu, V. Tran-Fadulu, S. A. Carter, J. S. Coselli, D. M. Milewicz, Severe aortic and arterial aneurysms associated with a tgfbr2 mutation, Nature Clinical Practice Cardiovascular Medicine 4 (3) (2007) 167­171.
+[37] B. L. Loeys, H. C. Dietz, A. C. Braverman, B. L. Callewaert, J. De Backer, R. B. Devereux, Y. Hilhorst-Hofstee, G. Jondeau, L. Faivre, D. M. Milewicz, et al., The revised ghent nosology for the marfan syndrome, Journal of medical genetics 47 (7) (2010) 476­485.
+[38] W. Druml, M. Fischer, J. Pidlich, K. Lenz, Fat elimination in chronic hepatic failure: long-chain vs medium-chain triglycerides., The American journal of clinical nutrition 61 (4) (1995) 812­817.
+[39] B. R. Elejalde, M. M. De Elejalde, D. Pansch, J. M. Opitz, J. F. Reynolds, Prenatal diagnosis of jeune syndrome, American journal of medical genetics 21 (3) (1985) 433­438.
+[40] T. Nadasdy, R. Abdi, J. Pitha, D. Slakey, L. Racusen, Diffuse glomerular basement membrane lamellation in renal allografts from pediatric donors to adult recipients, The American journal of surgical pathology 23 (4) (1999) 437­442.
+[41] B. A. Afzelius, J. Srurgess, The immotile-cilia syndrome: a microtubuleassociated defec, CRC critical reviews in biochemistry 19 (1) (1985) 63­87.
+27
+
+[42] F. Buchthal, F. Behse, Peroneal muscular atrophy (pma) and related disorders, Brain 100 (1) (1977) 41­66.
+[43] J.-S. Liang, Y.-H. Chien, W.-L. Hwu, S.-J. Yeh, S.-F. Peng, Schizencephaly in leopard syndrome, Pediatric neurology 41 (1) (2009) 71­73.
+[44] N. H. Robin, K. Grace, T. G. DeSouza, D. McDonald-McGinn, E. H. Zackai, New finding of schinzel-giedion syndrome: A case with a malignant sacrococcygeal teratoma, American journal of medical genetics 47 (6) (1993) 852­856.
+[45] H. Reichenbach, D. Ho¨rmann, H. Theile, Hereditary congenital posterior dislocation of radial heads, American journal of medical genetics 55 (1) (1995) 101­104.
+[46] S. Flanagan, C. Munns, M. Hayes, B. Williams, M. Berry, D. Vickers, E. Rao, G. Rappold, J. Batch, V. Hyland, et al., Prevalence of mutations in the short stature homeobox containing gene (shox) in madelung deformity of childhood, Journal of medical genetics 39 (10) (2002) 758­763.
+[47] P. Clayton, J. Leonard, A. Lawson, K. Setchell, S. Andersson, B. Egestad, J. Sjo¨vall, Familial giant cell hepatitis associated with synthesis of 3 beta, 7 alpha-dihydroxy-and 3 beta, 7 alpha, 12 alpha-trihydroxy-5-cholenoic acids., Journal of Clinical Investigation 79 (4) (1987) 1031.
+[48] B. Blumberg, J. Friedlaender, A. Woodside, A. Sutnick, W. London, Hepatitis and australia antigen: autosomal recessive inheritance of susceptibility to infection in humans, Proceedings of the National Academy of Sciences 62 (4) (1969) 1108­1115.
+[49] E. Mignot, L. Lin, W. Rogers, Y. Honda, X. Qiu, X. Lin, M. Okun, H. Hohjoh, T. Miki, S. H. Hsu, et al., Complex hla-dr and-dq interactions confer
+28
+
+risk of narcolepsy-cataplexy in three ethnic groups, The American Journal of Human Genetics 68 (3) (2001) 686­699.
+[50] S. L. Einfeld, M. Aman, Issues in the taxonomy of psychopathology in mental retardation, Journal of Autism and Developmental Disorders 25 (2) (1995) 143­167.
+[51] W. Ku¨ster, W. Lenz, H. K¨aa¨ri¨ainen, F. Majewski, J. M. Opitz, J. F. Reynolds, Congenital scalp defects with distal limb anomalies (adams-oliver syndrome): Report of ten cases and review of the literature, American journal of medical genetics 31 (1) (1988) 99­115.
+[52] R. Gershoni-Baruch, Carpenter syndrome: Marked variability of expression to include the summitt and goodman syndromes, American journal of medical genetics 35 (2) (1990) 236­240.
+[53] H. K¨aa¨ri¨ainen, S. Ry¨oppy, R. Norio, Rapadilino syndrome with radial and patellar aplasia/hypoplasia as main manifestations, American journal of medical genetics 33 (3) (1989) 346­351.
+[54] A. Sirmaci, M. Spiliopoulos, F. Brancati, E. Powell, D. Duman, A. Abrams, G. Bademci, E. Agolini, S. Guo, B. Konuk, et al., Mutations in ankrd11 cause kbg syndrome, characterized by intellectual disability, skeletal malformations, and macrodontia, The American Journal of Human Genetics 89 (2) (2011) 289­294.
+[55] J. H. LAROSE, B. B. GAY JR, Metatropic dwarfism, American Journal of Roentgenology 106 (1) (1969) 156­161.
+[56] J. Peet, D. D. Weaver, G. H. Vance, 49, xxxxy: a distinct phenotype. three new cases and review., Journal of medical genetics 35 (5) (1998) 420­424.
+29
+
+[57] C. Bordarier, J. Aicardi, Dandy-walker syndrome and agenesis of the cerebellar vermis: Diagnostic problems and genetic counselling, Developmental Medicine & Child Neurology 32 (4) (1990) 285­294.
+[58] W. B. Taylor, D. E. Anderson, J. Howell, C. S. Thurston, The nevoid basal cell carcinoma syndrome: autopsy findings, Archives of dermatology 98 (6) (1968) 612­614.
+[59] Z. Gelman-Kohan, J. Antonelli, H. Ankori-Cohen, H. Adar, J. Chemke, Further delineation of the acrocallosal syndrome, European journal of pediatrics 150 (11) (1991) 797­799.
+[60] C. R. Archer, H. Darwish, K. Smith Jr, Enlarged cisternae magnae and posterior fossa cysts simulating dandy-walker syndrome on computed tomography 1, Radiology 127 (3) (1978) 681­686.
+[61] W. B. Dobyns, R. A. Pagon, D. Armstrong, C. J. Curry, F. Greenberg, A. Grix, L. B. Holmes, R. Laxova, V. V. Michels, M. Robinow, et al., Diagnostic criteria for walker-warburg syndrome, American journal of medical genetics 32 (2) (1989) 195­210.
+30
+
+Table 3: The ten first rules found by HPO-Miner using the Dataset obtained
+
+by applying the Harispe measure and ranked by weightedSupport. (IDs are
+
+inserted for a better discussion in the following.)
+
+Term 1
+
+Term 2
+
+WS C Function Function
+
+1H HP:0009577 HP:0004220 1.00 1.00 Short middle Short middle
+
+phalanx
+
+phalanx
+
+of the 2nd of the 5th
+
+finger
+
+finger
+
+2H HP:0010105 HP:0010034 1.00 1.00 Short first Short 1st
+
+metatarsal metacarpal
+
+3H HP:0000933 HP:0001305 1.00 1.00 Posterior
+
+Dandy-
+
+fossa cyst at Walker
+
+the fourth malforma-
+
+ventricle
+
+tion
+
+4H HP:0004704 HP:0004689 1.00 1.00 Short fifth Short fourth
+
+metatarsal metatarsal
+
+5H HP:0001885 HP:0004209 1.00 0.99 Short 2nd Clinodactyly
+
+toe
+
+of the 5th
+
+finger
+
+6H HP:0003065 HP:0006443 1.00 1.00 Patellar hy- Patellar
+
+poplasia
+
+aplasia
+
+7H HP:0009464 HP:0004209 1.00 1.00 Ulnar devia- Clinodactyly
+
+tion of the of the 5th
+
+2nd finger finger
+
+8H HP:0002834 HP:0002857 1.00 1.00 Flared
+
+Genu valgum
+
+femoral
+
+metaphysis
+
+9H HP:0004209 HP:0000272 1.00 0.99 Clinodactyly Malar flat-
+
+of the 5th tening
+
+finger
+
+10H HP:0001773 HP:0004279 1.00 1.00 Short foot Short palm
+
+31
+
+Table 4: The ten first rules found by HPO-Miner using the Dataset obtained by
+
+applying the Seco measure and ranked by weightedSupport. (IDs are inserted
+
+for a better discussion in the following.)
+
+Term 1
+
+Term 2
+
+WS C Function Function
+
+1Se HP:0200084 HP:0000007 1.00 1.00 Giant cell Autosomal
+
+hepatitis
+
+recessevie
+
+inheritance
+
+2Se HP:0100818 HP:0000774 1.00 1.00 Long thorax Narrow chest
+
+3Se HP:0100775 HP:0001537 1.00 1.00 Dural ectasia humbilical
+
+hernia
+
+4Se HP:0100775 HP:0000494 1.00 1.00 Dural ectasia Downslanted
+
+palpebral
+
+fissures
+
+5Se HP:0100775 HP:0000316 1.00 1.00 Dural ectasia Hypertelorism
+
+6Se HP:0100626 HP:0000007 1.00 1.00 Chronic hep- Autosomal
+
+atic failure recessevie
+
+inheritance
+
+7Se HP:0030050 HP:0002524 1.00 1.00 Narcolepsy Cataplexy
+
+8Se HP:0012240 HP:0000007 1.00 1.00 Increased
+
+Autosomal
+
+intramyocel- recessevie
+
+lular lipid inheritance
+
+droplets
+
+9Se HP:0010780 HP:0007018 1.00 1.00 Hyperacusis Attention
+
+deficit hy-
+
+peractivity
+
+disorder
+
+(ADHD)
+
+10Se HP:0010780 HP:0000179 1.00 1.00 Short 3rd Hypertelorism
+
+metacarpal
+
+32
+
+Table 5: The ten first rules found by HPO-Miner using the Dataset obtained by
+
+applying the Zhou measure and ranked by weightedSupport. (IDs are inserted
+
+for a better discussion in the following.)
+
+Term 1
+
+Term 2
+
+WS C Function Function
+
+1Z HP:0002335 HP:0001305 0.97 1 Congenital Dandy
+
+absence of Walker mal-
+
+the vermis of formation
+
+cerebellum
+
+2Z HP:0003031 HP:0002986 0.95 1 Bending of A bending
+
+the diaphysis or abnormal
+
+(shaft) of the curvature
+
+ulna (Uknar of the ra-
+
+bowing)
+
+dius (Radial
+
+bowing)
+
+3Z HP:0000176 HP:0000193 0.95 0.97 submucous Bifid uvula
+
+clefts Hard-
+
+palate
+
+4Z HP:0001338 HP:0002007 0.95 0.94 Partial age- Frontal
+
+nesis of the Bossing
+
+corpus callo-
+
+sum
+
+5Z HP:0001338 HP:0000494 0.95 0.94 Partial age- Downslated
+
+nesis of the palpebral
+
+corpus callo- fissures
+
+sum
+
+6Z HP:0000308 HP:0001305 0.95 1 Microre trog- Dandy
+
+nathia
+
+Walker mal-
+
+formation
+
+7Z HP:0000269 HP:0001305 0.95 1 Promiment Dandy
+
+occiput
+
+Walker mal-
+
+formation
+
+8Z HP:0010804 HP:0001305 0.95 1 Tented
+
+Dandy
+
+upper lip Walker mal-
+
+vermilion
+
+formation
+
+9Z HP:0009623 HP:0001305 0.95 1 Proximal
+
+Dandy
+
+placement of Walker mal-
+
+the thumb formation
+
+10Z HP:0000567 HP:0001305 0.95 1 Chorioretinal Dandy
+
+coloboma
+
+Walker mal-
+
+formation
+
+33
+
+OMIM100050 HP:0000431 10.95 OMIM100050 HP:0000484 11.36 OMIM100050 HP:0000494 11.27 OMIM100100 HP:0000126 11.18 OMIM100100 HP:0000144 9.57 OMIM302801 HP:0002167 7.78 OMIM302801 HP:0002311 9.72 1O. MOIMMI6M01001070550HP:0000H0P00600084.3314, HP 0000484, HP 0000494 2O.MOIMMI6M01001071500HP:0001H2P502000812.467, HP 0000144 3O.MOIMMI6M03001278501HP:0001H2P605002196.278, HP 0002311 4O.MOIMMI6M06001071575HP:0001H2P80400090.0567, HP 0001252, P 0001265, HP 0001284
+
+

@@ -1,0 +1,1357 @@
+Lorentz quantum mechanics
+Qi Zhang( )1 and Biao Wu( )2, 3, 4, 5 1College of Science, Zhejiang University of Technology, Hangzhou 310023, China 2International Center for Quantum Materials, School of Physics, Peking University, Beijing 100871, China
+3Collaborative Innovation Center of Quantum Matter, Beijing 100871, China 4Wilczek Quantum Center, Department of Physics and Astronomy, Shanghai Jiao Tong University, Shanghai 200240, China 5T.D. Lee Institute, Shanghai 200240, China (Dated: January 3, 2017)
+We present a theoretical framework called Lorentz quantum mechanics, where the dynamics of a system is a complex Lorentz transformation in complex Minkowski space. In contrast, in usual quantum mechanics, the dynamics is the unitary transformation in Hilbert space. In our Lorentz quantum mechanics, there exist three types of states, space-like, light-like, and time-like. Fundamental aspects are explored in parallel to the usual quantum mechanics, such as matrix form of a Lorentz transformation, construction of Pauli-like matrices for spinors. We also investigate the adiabatic evolution in this mechanics, as well as the associated Berry curvature and Chern number. Three typical physical systems, where this Lorentz quantum dynamics can arise, are presented. They are one dimensional fermion gas, Bose-Einstein condensate (or superfluid), and one dimensional antiferromagnet.
+PACS numbers:
+
+arXiv:1701.00057v1 [quant-ph] 31 Dec 2016
+
+I. INTRODUCTION
+At the core of theoretical physics, two forms of vector transformations are of fundamental importance: the unitary transformation and the Lorentz transformation. The former - usually representing rotation of a real vector in space - preserves the modulus of the vector. In contrast, the latter - associated with the relativistic boost of a real vector in space-time - preserves the interval. In the context of quantum mechanics based on the Schr¨odinger equation, unitarity is an essential requirement for transformations of space, time, and spin, such that the modulus of a state vector in the Hilbert space - representing the total probability of finding the particle - is ensured invariant under these transformations. Instead, in this paper we address the quantum mechanics building on Lorentz transformations of complex vectors, where the temporal evolution and representation transformations conserve the interval. As we show below, such Lorentz quantum mechanics describes, and allow new insights into, the dynamical behavior of bosonic Bogoliubov quasiparticles.
+We develop and study the Lorentz quantum mechanics basing on the Bogoliubov equation [1, 2] for a (1, 1)type spinor - the simplest Lorentz spinor, with extensions to multi-mode spinors. In particular, we construct the matrix representing the Lorentz transformation of complex vectors, and the Lorentz counterpart of the standard Pauli matrices. Based on it, we explore in which ways the Lorentz quantum mechanics are similar to, and different from, the conventional quantum mechanics. We show that there exist many close analogies between the two, which allow extensions of, for example, the familiar adiabatic theorem and the concept of Berry phase to the context of Lorentz quantum mechanics. However, Lorentz time evolution can result in important modifica-
+
+tions such as in Berry connection [3]. We show that Lorentz spinors can generically arise in
+a variety of physical systems containing bosonic Bogoliubov quasiparticles. Specifically, we illustrate our study of the Lorentz quantum mechanics by investigating the spin wave excitations in a one dimensional (1D) antiferromagnetic system, the phonon excitations on top of a vortex in the Bose-Einstein condensate (BEC), and a 1D fermion gas at low temperatures. We note that an experimental proposal to observe Berry phase effect on the dynamics of quasiparticles in a BEC with a vortex has been reported [3]. Thus our present work not only provide theoretically new insights into the dynamical properties of quasiparticles, but also allow feasible realization using the present experimental techniques with ultracold quantum gases.
+
+II. BASIC STRUCTURES OF LORENTZ QUANTUM MECHANICS
+
+The Lorentz quantum mechanics is described by the following dynamical equation
+
+ a1(t) 
+
+ a1(t) 
+
+d  a2(t) 
+
+ a2(t) 
+
+i
+
+dt
+
+ 
+
+...
+
+ 
+
+=
+
+m,nH
+
+ 
+
+
+
+
+
+...
+
+ , (1)  
+
+am+n(t)
+
+am+n(t)
+
+where H = H is a Hermitian matrix while m,n is given by
+
+m,n = diag{1, 1, . . . 1, -1, -1, . . . - 1}.
+
+(2)
+
+m
+
+n
+
+This type of equations are usually called Bogoliubovde Gennes (BdG) equations and are obeyed by bosonic
+
+2
+
+quasi-particles in many different physical system (see Sec. IV). For simplicity, we use the case 1,1 to explore the basic structures of the Lorentz quantum mechanics as generalization to m,n is straightforward.
+
+A. Complex Lorentz transformation and complex Minkowski space
+
+The BdG equation for spinor (1,1) is
+
+d i
+dt
+
+a(t) b(t)
+
+= 1,1H
+
+a(t) b(t)
+
+.
+
+(3)
+
+Here a(t) and b(t) are the standard Bogoliubov amplitudes, H = H is a Hermitian matrix, and 1,1 = z is the familiar Pauli matrix in the z direction, i.e.
+
+1,1 = diag{1, -1} =
+
+10 0 -1
+
+.
+
+(4)
+
+The 1,1H as the generator of the dynamics for spinor (1, 1) is an analogue of the Hamiltonian in the
+Schr¨odinger picture. Different from the Hamiltonian,
+though, 1,1H is not Hermitian. As we shall see, it will generate complex Lorentz transformation in complex
+Minkowski space For an arbitrary initial state |(0) = [a(0), b(0)]T , the
+wavefunction |(t) = [a(t), b(t)]T at times t > 0 can be
+solved formally from Eq. (3) as
+
+|(t) = U(t, 0)|(0) .
+
+(5)
+
+Here U(t, 0) is the evolution operator defined by
+
+U (t, 0) = e-i1,1Ht/ .
+
+(6)
+
+The goal of this section is to show that the operator U(t, 0) defined in Eq. (6) generates a complex Lorentz - instead of a unitary - evolution of |(t) . In particular, defining the interval for a Lorentz spinor
+
+In((a, b)T ) = (a, b)1,1(a, b)T = |a|2 - |b|2, (7)
+
+we prove below that the interval is conserved under the evolution generated by U(t, 0), i.e.
+
+|a(t)|2 - |b(t)|2 = |a(0)|2 - |b(0)|2.
+
+(8)
+
+For above purpose, we first establish the following relation,
+
+U 1,1U = 1,1.
+
+(9)
+
+Expanding 1,1U and (U )-11,1 in Taylor series, and
+noting 1,11,1 = 1, the nth term in the expansions of both 1,1U and (U )-11,1 are of the form
+
+1 n!
+
+(-
+
+i
+
+)n
+
+tn
+
+H
+
+1,1
+
+H
+
+1,1H
+
+.
+
+.
+
+.
+
+1,1H
+
+.
+
+n-1 (1,1H)s
+
+(10)
+
+This readily gives
+
+1,1U = (U )-11,1,
+
+(11)
+
+from which Eq. (9) ensues. Hence, by virtue of Eq. (9), we obtain
+
+(t)|1,1|(t) = (0)|1,1|(0) ,
+
+(12)
+
+and thus Eq. (8).
+While Eq. (8) formally resembles the conventional Lorentz evolution (transformation) in special relativity, there are delicate differences: in contrast to the conventional Lorentz transformation where only real numbers (space-time coordinate) are involved, here we are dealing with a complex vector specified by complex numbers, the interval of which requires the notion of modulus. In this sense, we shall refer to the space where these complex vectors reside as the complex Minkowski space. There, depending on In((a, b)T ) > 0, < 0 or = 0, we follow the convention and call (a, b)T as being space-like, time-like or light-like, respectively.
+We thus conclude that the evolution generated by U(t, 0) conserves the interval [see Eq. (8)], and therefore, represents a complex Lorentz evolution.
+
+B. Eigen-energies and eigenstates
+
+Although the 1,1H is not Hermitian, under certain conditions, it can admit real eigenvalues - which are relevant for physical processes. We write 1,1H in terms of three basic matrices as (dropping the term involving the identity matrix)
+
+1,1H = m1
+
+01 -1 0
+
++ m2
+
+0i i0
+
++ m3
+
+10 0 -1
+
+,
+
+(13)
+
+where parameters mi (i = 1, 2, 3) are real. The eigenenergies are the roots of the following equation
+
+m23 - (m21 + m22) = E2 .
+
+(14)
+
+It is clear that the eigenvalues are real provided the condition
+
+m23  m21 + m22
+
+(15)
+
+is satisfied. In this work, we shall restrict ourselves to this physically relevant regime of real-eigenvalues in the parameter domain specified by (m1, m2, m3), and we denote the two real eigenvalues as E1 and E2, with the corresponding eigenstates labeled as |1 and |2 , respectively.
+Two facts are clear from Eq.(14): (i) in the parameter space (m1, m2, m3), the two eigenstates |1 and |2 exhibit degeneracies on a circular cone (see Fig. 1), which resembles the light-cone in special relativity. This is in
+
+3
+
+ered, for E1 = E2 = E2, we have
+
+2|1,1|1 = 0.
+
+(18)
+
+It can be checked that the two eigenstates of 1,1H can always be specifically expressed as
+
+|1 =
+
+u v
+
+;
+
+|2 =
+
+v u
+
+.
+
+(19)
+
+FIG. 1: (color online) The degeneracy regime of Lorentz spinor parameterized by m1, m2 and m3 as in Eq. (13) forms the surface of a cone. As will be discussed in Sec. III, the charge (monopole) for Berry curvature (monopole) is at the tip of the cone rather than distributing over the whole degeneracy cone.
+
+This means that if |1 is space-like then |2 is time-like or vice versa.
+In the energy representation defined in terms of |1 and |2 , a time-evolved state |(t) = [a(t), b(t)]T [see Eq. (3)] can be written as
+
+|(t) = c1|1 e-iE1t + c2|2 e-iE2t.
+
+(20)
+
+In transforming |(t) from the Bogoliubov representation to the energy representation, the interval of the Lorentz spinor is preserved, i.e. it is a complex Lorentz transformation. To see this, using Eq. (18), we find
+
+In(|(t) ) = (t)|1,1|(t)
+
+(21)
+
+= |c1|2 1|1,1|1 + |c2|2 2|1,1|2 . (22)
+
+By further assuming a gauge for Lorentz-like normalization, i.e.,
+
+FIG. 2: (color online) Illustration of the constant-energy surfaces of BdG equation parameterized by m1, m2 and m3. The arrows indicate the directions of increasing (decreasing) of energy for state |1 (|2 ). On the cone's surface, the two eigenstates are degenerate. Because the surfaces assume the axial symmetry about the m3 axis, the two dimensional plot is depicted for clarity.
+
+marked contrast to a unitary spinor, where the degeneracy occurs only at an isolated point; (ii) unlike a unitary spinor where the constant-energy surfaces are elliptic surfaces, both eigenstates of 1,1H display hyperbolic constant-energy surfaces (see Fig. 2).
+We now describe the basic properties of the eigenstates associated with the operator 1,1H. They are solutions to the following eign-equations
+
+1,1H|1 = E1|1 ,
+
+(16)
+
+1,1H|2 = E2|2 .
+
+(17)
+
+Keeping in mind that only real eigenvalues are consid-
+
+In(|1 ) = 1|1,1|1 = 1,
+
+In(|2 ) = 2|1,1|2 = -1,
+
+(23)
+
+we obtain from (21) that
+
+In(|(t) ) = |a|2 - |b|2 = |c1|2 - |c2|2,
+
+(24)
+
+meaning the interval is conserved during the above rep-
+resentation transformation. The normalization condition |u|2 - |v|2 = 1 is different
+from the eigenstates of a conventional unitary spinor. In
+fact, if one naively enforce the unitary gauge on Eq. (19), say, |u|2 +|v|2 = 1, unphysical consequences would ensue:
+The time-evolved wavefunction in the original Bogoliubov representation [| = (a, b)T ] could not maintain its ordinary amplitude, such that |a(t)|2 + |b(t)|2 = 1
+for t > 0, and, in particular, the amplitude in dif-
+ferent representation would take different value, e.g., |c1|2 + |c2|2 = |a(t)|2 + |b(t)|2, which can be easily inferred from Eq. (20).
+In general, when 1,1H takes the form (13) with m3 = 0, it exhibits two light-like eigenvectors; whereas, when m3 = 0, there are one space-like and one timelike eigenvectors. Thus, in the physically relevant regime m23  m21 + m22 as considered here, we find |1 is spacelike and |2 time-like. As a result, a light-like vector can
+be formed from a superposition of two eigenvectors with equal weight, i.e., |c1|2 - |c2|2 = |a|2 - |b|2 = 0.
+
+4
+
+C. Representation transformation and physical meaning of the wavefunction
+
+In the usual quantum mechanics, the change from one representation to another (or from one basis to another) is given by a unitary matrix. As discussed above, the change from the Bogoliubov representation to the energy representation [see Eq. (20 and Eq. (24)] is facilitated by a Lorentz transformation. This motivates us to introduce a complex Lorentz operator L acting on the Lorentz (1, 1)-spinor, defined by
+
+L=
+
+x y y x
+
+,
+
+(25)
+
+where |x|2 - |y|2 = 1, with the corresponding inverse Lorentz matrix being
+
+L-1 =
+
+x -y -y x
+
+.
+
+(26)
+
+Using the identity L1,1L = 1,1, it is readily to see that both L and L-1 are Lorentz matrices.
+For an arbitrary Lorentz matrix, we have,
+
+In(| ) = In(L| ),
+
+(27)
+
+meaning the interval is preserved. Under a Lorentz transformation, an arbitrary physical operator K transforms as
+
+K  K = LKL-1,
+
+(28)
+
+while the corresponding eigenvalues stay unchanged. Note that, since L is no longer a unitary matrix, we have L-1 = L.
+To illustrate the above constructions, consider the transformation from the Bogoliubov to the energy representation as described earlier. In this case, the eigenstates |1 and |2 transform as
+
+|1 =
+
+u v
+
+
+
+1 0
+
+(29)
+
+|2 =
+
+v u
+
+
+
+0 1
+
+.
+
+(30)
+
+Obviously, the interval is conserved, i.e., |u|2 - |v|2 = 12 - 02 = 1, |v|2 - |u|2 = 02 - 12 = -1. In addition,
+the Bogoliubov operator transforms as,
+
+1,1H 
+
+E1 0 0 E2
+
+.
+
+(31)
+
+In light of the conservation of interval - rather than norm - of the state vector under transformations, a question immediately arises as to whether, or to what extent, the wavefunction in the context of Lorentz quantum mechanics still afford the physical interpretation as the probability wave? Indeed, in the energy representation,
+
+see Eq. (20), it is clear that |c1(2)|2, with |c1|2 + |c2|2 = 1, can be interpreted as the probability of finding the spinor
+in the eigenstate |1(2) , i.e., a wavefunction c1|1 + c2|2 still describes a probability wave. However, in the Bogoli-
+ubov representation, the interpretation of a wavefunction
+as the probability wave is no longer physically meaningful. For example, consider the eigenstate |1 = (u, v)T ,
+which is usually generated from creating a pair of Bogoli-
+ubov quasiparticles in the ground state of the system. Yet, |u|2 and |v|2 cannot represent the probabilities in
+the Bogoliubov basis: the Bogoliubov basis is not a set
+of orthonormal basis (see Sec. IV for concrete examples), and therefore, instead of |u|2 + |v|2 = 1, the convention |u|2 - |v|2 = 1 must be taken.
+
+D. Completeness of eigenvectors
+
+Based on Eq. (19) [see also Eqs. (18) and (23)], the completeness of eigenvectors in the energy representation now takes a different form compared to the unitary case, reading
+
+|j j|1,1 = 1,
+
+(32)
+
+j
+
+or, equivalently,
+
+1,1 |j j| = 1.
+
+(33)
+
+j
+
+Here, the notation j [for (1 + 1)-mode] is defined by
+
+|j j| = |1 1| - |2 2|.
+
+(34)
+
+j
+
+It can be found easily that, ensured by the property of Lorentz matrix L1,1L = 1,1, the completeness expression (32) (or (33)) maintains in any other representation.
+
+E. Analogue of Pauli Matrices
+
+In analogy with the conventional spinor that is acted by the basic operators known as Pauli matrices, it is natural to ask, for the Lorentz spinor, if similar matrices can be constructed. Such analogue of the Pauli matrices, denoted by i (i = 1, 2, 3), is required to fulfill the following conditions: (i) any operator 1,1H, when written in terms of i (dropping the term involving identity matrix), i.e.,
+
+1,1H = n11 + n22 + n33,
+
+(35)
+
+must have real-number components ni; (ii) the matrices i (i = 1, 2, 3) should have the same real eigenvalues, say, ±1, and can transform into each other via Lorentz transformation [see Eq. (28)].
+Based on (i) and (ii), we see that the matrices as appeared in Eq. (13) do not represent the analogue of the
+
+5
+
+Pauli matrix for the Lorentz spinor: while they satisfy the requirement (i), the condition (ii) is violated. Instead, we consider following constructions:
+
+
+
+
+
+1 =
+
+2 1 -1 - 2
+
+, 2 =
+
+2 i i -2
+
+, 3 =
+
+10 0 -1
+
+.
+
+(36)
+
+It is easy to check that i in Eq. (36) satisfy both requirements (i) and (ii). In particular, the transformation
+
+between 1 and 3 is explicitly found to be
+
+1 = L3L-1,
+
+(37)
+
+
+
+where L is of the form (25) with x =
+
+
+2+1 2
+
+i
+
+and
+
+y
+
+=
+
+-
+
+2-1 2
+
+i,
+
+and
+
+that
+
+between
+
+2
+
+and
+
+3
+
+is
+
+given
+
+by
+
+2 = L3L-1,
+
+
+
+
+
+for L with x =
+
+2+1 2
+
+e-i
+
+ 4
+
+and y = -
+
+2-1 2
+
+ei
+
+ 4
+
+.
+
+(38)
+
+It is easy to see that the intervals of the eigenstates are,
+
+In(|j ) = 1 for j = 1, 2, . . . m,
+
+(43)
+
+In(|j ) = -1 for j = m + 1, m + 2, . . . m + n.
+
+In addition, the orthogonal condition for two nondegenerate eigenstates is derived as,
+
+j|m,n|k = 0, for j = k,
+
+(44)
+
+generalizing Eq. (18) for the (1, 1)-mode. Using Eqs. (43) and (44), the completeness of eigenvectors can be expressed as
+
+|j j|m,n = 1,
+
+(45)
+
+j
+
+or, equivalently,
+
+m,n |j j| = 1,
+
+(46)
+
+j
+
+F. Heisenberg picture
+
+with the symbol j for (m, n)-mode defined as
+
+The current Lorentz evolution is in fact defined in the analogue of Schro¨dinger picture (denoted by subscript s), i.e., any physical operator keeps constant while the wavefunction undergoes Lorentz evolution. In analogy with the conventional spinor, the Lorentz quantum mechanics can also be expressed in the analogue of Heisenberg picture (denoted by subscript h). The relations of an operator O and the state | between the two pictures are,
+
+O(t)h = ei1,1HtOse-i1,1Ht, | h = ei1,1Ht|(t) s,
+
+(39) (40)
+
+where | h keeps constant but O(t)h satisfies the analogue of Heisenberg equation,
+
+i
+
+O(t)h t
+
+=
+
+[1,1H, O(t)h],
+
+(41)
+
+with [1,1H, O(t)h] being the commutator between 1,1H and O(t)h.
+
+G. Generalization to multi-mode
+
+In this section, we extend the above formulations for
+the 1,1 Lorentz spinor to the case of multi-mode spinor with m,n. The operator m,nH has m + n energy eigenstates, denoted by |1 , |2 , . . ., |m + n . Define
+the interval of a (m + n)-mode wavefunction | = (a1, a2, . . . , am+n)T as,
+
+m
+
+m+n
+
+In(| ) = |m,n| = |aj|2 -
+
+|aj |2.
+
+j=1
+
+j=m+1
+
+(42)
+
+m
+
+m+n
+
+|j j| = |j j| -
+
+|j j|.
+
+j
+
+j=1
+
+j=m+1
+
+(47)
+
+III. ADIABATICITY AND GEOMETRIC PHASE
+
+A. Adiabatic theorem
+
+Consider a (1, 1)-spinor described by the operator
+
+1,1H(R), which depends on a set of system's parameter R. Suppose the spinor is initially in an eigenstate,
+
+say |1 , before the parameter R undergoes a sufficiently
+
+slow variation, thus driving an adiabatic evolution for the
+
+Lorentz spinor. The relevant matrix element capturing
+
+the slowly varying time-dependent perturbation can be
+
+evaluated
+
+as,
+
+by
+
+acting
+
+the
+
+gradient
+
+operator
+
+
+
+
+
+ R
+
+on
+
+the Eq. (16) and using Eq. (17),
+
+2|H|1 2|H|1
+
+2|1,1|1
+
+=
+
+E1 - E2
+
+=
+
+. E1 - E2
+
+(48)
+
+Here, the last equality is ensured by the real eigenvalues in the considered parameter regimes, together with the condition E1 = E2.
+We see that the relation (48), except for an additional 1,1, is identical with that in unitary quantum mechanics [4]. This allows us to generalize the familiar adiabatic theorem to the context of Lorentz quantum mechanics: Starting from an initial eigenstate |1(R) (|2(R) ), the system will always be constrained in this instantaneous eigenstate so long as R is swept slowly enough in the parameter space. (A rigorous proof would be similar as that in the conventional quantum mechanics [4, 5], and therefore, here we shall leave out the detailed procedure.)
+
+6
+
+B. Analogue of Berry phase
+
+In conventional quantum mechanics, it is well known that an eigen-energy state undergoing an adiabatic evolution will pick up a Berry phase [6], when a slowly varying system parameter R realizes a loop in the parameter space. Here we show that in the context of Lorentz quantum mechanics, a Lorentz counterpart of the Berry phase will similarly arise.
+The time evolution of an instantaneous eigenstate, which is parametrically dependent on R, can be written as
+
+´
+| = |m e-i e , Em(R)dt i
+
+(49)
+
+´ with m = 1, 2. Here, - Em(R)dt/ denotes the dynamical phase and  the geometric phase. Substituting Eq. (49) into Eq. (3), we find
+
+d1 dR
+
+=
+
+i
+
+ 1|1,1 R |1
+
+;
+
+(50)
+
+and
+
+d2 dR
+
+=
+
+-i
+
+ 2|1,1 R |2
+
+.
+
+(51)
+
+From Eqs, (50) and (51), we can readily read off the Berry connections as
+
+A1 = i 1|1,1|1 ,
+
+(52)
+
+A2 = -i 2|1,1|2 .
+
+(53)
+
+Equations (52) and (53) show that the Berry connec-
+
+tion in the Lorentz quantum mechanics is modified from
+
+the conventional one, where the Berry connection is given
+
+by
+
+i
+
+m|
+
+ R
+
+|m
+
+.
+
+Will
+
+such
+
+modifications
+
+give
+
+rise
+
+to
+
+a
+
+dif-
+
+ferent monopole structure for the Berry curvature? Or,
+
+will the monopole in the Lorentz mechanics still occur
+
+at the degeneracy point (where E1 = E2)? To address these questions, we now calculate the Berry curvature
+
+B =  × A. Without loss of generality, we take the
+
+eigenvector |1 for concrete calculations.
+
+Our starting point is the identity 1|1,1|1 = 1. By
+
+acting  on both sides, we obtain
+
+1|1,1|1 + 1|1,1|1  = 0.
+
+(54)
+
+This indicates that 1|1,1|1 is purely imaginary (A1 is real). Hence, B1 can be evaluated as,
+
+B1 =  × A1 = -Im 1|1,1|j j|1,1 × |1 , (55)
+j
+where Im represents the imaginary part. In deriving Eq. (55), we have used the completeness relation (32) and the following relation
+
+ × (µb) = µ × b + µ × b,
+
+(56)
+
+valid for arbitrary scalar µ and vector b.
+
+According to Eq. (48), B1 in Eq. (55) is well defined provided E1 = E2, such that the monopole is expected to be absent in this case. To rigorously establish this, let us calculate the divergence of the Berry curvature, i.e.  · B1. Introducing an auxiliary operator,
+
+F = -i1,1 |j j|1,1,
+
+(57)
+
+j
+
+which is Hermitian, F = F, as ensured by the completeness relation (32), we have
+
+1,1|j = iF|j
+
+ × F = -i1,1 |j × j|1,1
+j
+
+= -i F|j × j|F
+
+j
+
+= -iF × 1,1F.
+
+(58)
+
+In deriving above, we have used Eq. (56). Further noting that
+
+i j|F|k = j|1,1|j j |1,1|k = j|1,1|k , (59)
+j
+
+the Berry curvature can be expressed in terms of F as
+
+B1 = -Im 1|F|j × j|F|1
+j
+= -Im 1|F × F1,1|1 = -Im 1|1,1F × F|1 . (60)
+
+Finally, by virtual of  × F in Eq. (58), we find
+
+ · B1
+
+= -Im[ 1| · 1,1(F × F)|1 + 1|(F × F)1,1 · |1
+
++ 1| · (F × F)1,1|1 ]
+
+= -Im[-i 1|F · (F × F)|1 + i 1|(F × F) · F|1
+
++ 1|( × F) · F1,1 - F · ( × F)1,1|1 ]
+
+= 0.
+
+(61)
+
+Therefore, as expected, the monopole in the Lorentz quantum mechanics can only appear in the degenerate regime where B1 diverges, similar as the conventional unitary quantum mechanics.
+Next, searching for the monopole, we focus on the degeneracy regime in the parameter space defined by (m1, m2, m3), which, as shown in Fig. 1, forms a circular cone. There, imagine the path of R = (m1, m2, m3) realizes a loop in the vicinity of the cone's surface. In this case, the instantaneous eigenstate, say, |1(R) , is expected to vary in a back-and-forth manner (dropping the overall phases including both the dynamical and Berry phase). This is because the instantaneous eigenstate, apart from an overall phase, is always the same along any straight line emanating from the origin. As a result, the integration of A1 along this loop vanishes, meaning there is no charge of Berry curvature on the cone's surface, even though it is in the degeneracy regime.
+
+7
+
+We thus conclude that - just as in the case of unitary spinor - the charge, if exists, can only be distributed on the isolated points, i.e., the original monopole O, in R = (m1, m2, m3) space. However, different from unitary spinor, the magnetic flux does not uniformly emanate from the monopole O to the parameter space, instead, it emanates only to the region outside of the cone (more closer to the m3 axis). In addition, even in this region, the magnetic flux is not uniformly distributed. Specifically, by evaluating the geometric phase along a loop perpendicular to the m3 axis, we can find the distribution of the magnetic flux density per solid angle as a function of the angle  from m3 axis, i.e.,
+
+(1
+
++
+
+tan2
+
+)
+
+3 2
+
+=± 
+
+,
+
+(62)
+
+2 1 - tan2 
+
+with +/- associated with the state |1 (|2 ). Note that
+
+the flux density is proportional to the Berry curvature,
+
+which acts as a magnetic field, whose magnitude accord-
+
+ing to Eq. (62) increases when approaching the cone.
+
+Right
+
+on
+
+the
+
+surface
+
+of
+
+the
+
+cone,
+
+where
+
+
+
+
+
+ 4
+
+,
+
+the
+
+mag-
+
+netic field diverges. Inside the cone, on the other hand,
+
+the eigenvalue becomes complex such that the notion of
+
+adiabatic evolution and geometric phase become mean-
+
+ingless, i.e., there is no magnetic field emanating into the
+
+cone from the monopole O. Again, due to the aforemen-
+
+tioned fact that the instantaneous eigenstate (apart from
+
+an overall phase) remains the same along any straight
+
+line emanating from the origin, we expect all the mag-
+
+netic field fluxes to be described by straight lines (see
+
+Fig. 3).
+
+Alternatively, we can write 1,1H in terms of the analogues of Pauli's matrices i [see Eq. (35)], which is then
+
+mapped onto a vector (n1, n2, n3) in the parameter space.
+
+However, this equivalent kind of decomposition will not
+
+contribute anything but modify the slope of Berry curvature    (tan() = 1/C, while tan( ) = 1/(C - 2),
+
+with C being any constant).
+
+C. Chern number
+
+The Chern number - which reflects the total magnetic charge contained by the monopole on O - can be calculated from Eq. (62) as,
+
+Cn = ±2,
+
+(63)
+
+with +/- for the state |1 (|2 ). Hence, while the Lorentz spinor has distinct distribution of the magnetic flux compared to the unitary spinor, both are associated with the same Chern number.
+
+IV. PHYSICAL EXAMPLES
+In previous sections, we have developed and studied the Lorentz quantum mechanics for the simplest Lorentz
+
+FIG. 3: (color online) Illustration of the analytic result given by Eq. (62) for the distribution of strength of Berry curvature (magnetic field) for instantaneous eigenstate |1 . For the state |2 , everything is the same except that the direction of Berry curvature is reversed, which we drop for clarity. The magnetic fluxes are always straight lines which emanate from the origin O (the tip of the cone) in (m1, m2, m3) space as parameterized in Eq. (13).  introduced in Eq. (62) is the angle spanned by m3 axis and direction of Berry curvature under study. There is no magnetic flux in the cone; away from the cone the magnetic field becomes stronger as approaching the cone's surface and tends to infinity on the surface. Because the flux density assumes the axial symmetry about the m3 axis, the two dimensional plot is depicted for clarity.
+
+spinor. Such Lorentz spinor can arise in physical systems containing bosonic Bogoliubov quasiparticles, for example, in Bose-Einstein condensates(BECs) [2]. Specifically, we illustrate our study of Lorentz quantum mechanics by investigating a 1D fermion gas at low temperatures, phonon excitations on top of a vortex in the BEC, and spin wave excitations in a 1D antiferromagnetic system.
+
+A. One dimensional Fermi gas
+
+As the first illustrative example, we investigate the fermion excitations in a one dimensional fermion gas at low temperatures. Since excitations dominantly occur for fermions near the Fermi surface (note at 1D, the Fermi surface shrinks to the left (L) and right (R) Fermi points), the corresponding Hamiltonian can then be written as [7]
+
+HF =
+
+(asq vF
+
+qasq
+
+s+
+
+1 2N
+
+g4 sq s-q +g2 sq s¯-q ).
+
+s=R,L q
+
+(64)
+
+Here, the operator asq (asq) creates (annihilates) an excited fermion near the Fermi point (s = R, L) with mo-
+
+mentum q (measured with respect to the ground state
+
+value). In addition, s = 1, -1 for s = R/L, s¯ = L/R,
+vF labels the fermi velocity, and sq = k ask+qask is the density operator in the momentum space representation.
+
+In writing down Eq. (64), we have taken into account
+
+8
+
+the interactions between two fermions. Specifically, g2 denotes the strength of interaction between two fermions near opposite Fermi points (i.e. q 2kF ), while g4 for those close to the same Fermi point (i.e. q 0).
+Let |0 denote the state of perfect Fermi sphere (a Fermi line in one dimensional case). A generic state describing density fluctuations near the Fermi points can then be written in terms of a pseduo-spinor as
+
+a b
+
+1
+
+2
+
+2
+
+a 
+
+lq Lq + b
+
+lq Rq |0 ,
+
+(65)
+
+where l is the size of the system. As discussed in Ref. [7], the density operators sq can be effectively treated as bosonic operators within the approximation
+
+[sq, s q ] 0[sq, s q ]|0 .
+
+(66)
+
+By assuming Eq. (66), it is found that Eq. (65) represents a Lorentz spinor whose dynamics is governed by the BdG equation below
+
+d i
+dt
+
+a b
+
+= 1,1q
+
+vF
+
++
+g2
+
+g4 2
+
+2
+
+g2
+
+vF
+
+2
++
+
+g4 2
+
+a b
+
+. (67)
+
+The generator 1,1H of the dynamics in Eq. (67),
+
+when written in form of Eq. (13), corresponds to m1 =
+
+g2q/(2), m2 = 0 and m3 = vF q + g4/(2)q. Thus, when
+
+vF
+
++
+
+g4 2
+
+
+
+g2 2
+
+[see
+
+Eq.
+
+(15)], the 1,1H exhibits real
+
+eigenvalues, and has a space-like and a time-like eigen-
+
+vectors. Due to m2 = 0, as illustrated in Fig. 3, there is no magnetic flux penetrating a loop in the plane defined
+
+by (m1, m3). As a result, the Berry phase picked up by the eigenstate, say |1(R) , is always zero when R varies
+
+along a loop in the parameter space of (m1, m3).
+
+potential of BEC, and  is the rotating frequency of the whole system. Furthermore, n(rc) and (rc) denote the particle density and phase of the wavefunction around the vortex center, respectively, with q labeling the wave vector of phonons.
+For every value of (q, rc), the 1,1H read off from Eq. (68) can be cast into the form (13) with
+
+m1 = gn(rc) cos[2(rc)],
+
+m2 = gn(rc) sin[2(rc)],
+
+m3 = q2/2 + 2gn(rc) + V (rc) - µ.
+
+(70)
+
+In this case, the space-like eigenstate of 1,1H reads
+
+1
+
+ + -1
+
+|1 = 2
+
+( - -1)e-2i(rc)
+
+,
+
+(71)
+
+1/4
+
+with  =
+
+H1 -m3 H1 +m3
+
+. The eigenstate (71) features a
+
+complex angle. As a result, when rc varies in the real
+
+space, the eigenstate |1 will pick up a non-zero Berry
+
+phase: calculating the Berry connection
+
+ A1 = i 1|1,1 rc |1 ,
+
+we derive the Berry phase as
+
+
+
+
+
+1 = drc · A1 = - (M - 1)d(rc),
+
+(72)
+
+with M the total atomic mass contained in the quasiparticle wave packet. The Berry connection A1 will then give rise to an effective vector potential acting on the spatial motion of the vortex [3].
+
+B. Phonon excitations on top of a Bose-Einstein condensate vortex
+
+The above example shows that the existence of a nonzero Berry phase requires 1,1H - when written in form of (13) - to contain a complex part, i.e., m2 = 0. Below, we demonstrate that this can be realized in the dynamics of phonons excited on top of a vortex in a BEC.
+Following Ref. [3], we assume the phonon wave packet has a narrow width smaller than all the relevant length scales associated with slowly varying potentials (e.g., trapping potential). The corresponding effective BdG equation can be derived as,
+
+d i
+dt
+
+a b
+
+= 1,1
+
+H+
+
+H2e2i(r)
+
+H2e-2i(r)
+
+H-
+
+a b
+
+,(68)
+
+where H2 = gn(rc) and
+q2 H± = 2 + 2gn(rc) + V (rc) - µ   · (rc × q) . (69)
+Here, rc labels the coordinate of the vortex center, g is the interatomic coupling constant, V (rc) is the trapping
+
+C. Spin-wave excitations in antiferromagnet
+
+Here we demonstrate the Lorentz spin-orbital coupling (SOC) for the spin wave excitations in a 1D antiferromagnet. Concretely, we consider two sublattices, labeled by A and B, which encode the positive and negative magnetic moments near zero temperature. The corresponding Hamiltonian in the standard Heisenberg's description reads
+
+Hs = J
+
+[SaziSbz,i+
+
++
+
+1 2
+
+(Sa+i
+
+Sb-,i+
+
++
+
+Sa-i Sb+,i+ )]
+
+i,
+
++J
+
+[Sbzj Saz,j+
+
++
+
+1 2
+
+(Sb+j
+
+Sa-,j+
+
++ Sb-j Sa+,j+)].
+
+(73)
+
+j,
+
+where  = ±1 stands for the nearest neighboring sites, J > 0 is the antiferromagnetic exchange integral, Sazi (Sbzj) are the spin operator (z component) on the sublattice A(B), and S± is the standard spin flip operators.
+Without loss of generality, we suppose the spins in the
+sublattice A (B) are along the positive (negative) z di-
+rection in the limit of low temperatures.
+
+9
+
+Hamiltonian (73) can be recast into a more transpar-
+ent form using the Holstein-Primakoff transformation [8]. Briefly, introducing ai = Sa-i, and bi = Sb+i, together with the Fourier transformation into the momentum space,
+
+ai
+
+=
+
+N
+
+-
+
+1 2
+
+bj
+
+=
+
+N
+
+-
+
+1 2
+
+eikRi ak,
+
+ai
+
+=
+
+N
+
+-
+
+1 2
+
+e-ikRi ak(,74)
+
+k
+
+k
+
+e-ikRj bk,
+
+bj
+
+=
+
+N
+
+-
+
+1 2
+
+eikRj bk(, 75)
+
+k
+
+k
+
+we rewrite Eq. (73) as (dropping a constant)
+
+H~s = 2ZSJ (akak + bkbk + kakbk + kbkak)
+
+k
+
+= 2ZSJ
+
+ak bk
+
+k
+
+1 k k 1
+
+ak bk
+
+.
+
+(76)
+
+Here, Z = 2 is the coordination number for the 1D sys-
+
+tem;
+
+k
+
+=
+
+1 Z
+
+ eik· = cos(k) is the structure factor of
+
+the 1D lattice (here the lattice constant is taken as al = 1,
+
+and the momentum is measured in the unit of /al). Let the ground state of Hamiltonian (76) be denoted as |0 ,
+
+(which involves a superposition of enormous number of
+
+Fock states in the particle number representation akak, bkbk. )
+The above Holstein-Primakoff transformation allows a
+
+vivid description of the spin wave excitations of the sys-
+
+tem [see Eq. (73)] in terms of "particles" and "holes"
+
+created in the ground state. In the simplest case, we
+
+consider the dynamics of an arbitrary (1,1)-spinor state
+
+given by
+
+a b
+
+
+
+1 
+
+(aak
+
++
+
+bbk )|0
+
+,
+
+(77)
+
+with  the normalization constant, corresponding to creations of a pair of particle and hole. The time evolution of Eq. (77) can be derived as
+
+d i
+dt
+
+a b
+
+= 1,1
+
+1 k k 1
+
+a b
+
+,
+
+(78)
+
+which features a k-dependent generator. The corresponding eigenspinors (u, v)T and (v, u)T are found to be real
+and take the form
+
+11
+
+u(k) =
+
++1 ,
+
+(79)
+
+2 | sin(k)|
+
+11
+
+v(k) = sgn(cos(k))
+
+- 1 , (80)
+
+2 | sin(k)|
+
+which manifestly exhibit SOC effect, with the orbital state k coupled to a Lorentz spinor.
+V. CONCLUSION
+
+To summarize, we have studied the dynamics of bosonic quasiparticles based on BdG equation for the (1, 1)-spinor. We show that the dynamical behavior of these bosonic quasiparticles is described by Lorentz quantum mechanics, where both time evolution of a quantum state and the representation transformation represent Lorentz transformations in the complex Minkowski space. The basic framework of the Lorentz quantum mechanics for the Lorentz spinor is presented, including construction of basic operators that are analogue of Pauli matrices. Based on it, we have demonstrated the Lorentz counterpart of the Berry phase, Berry connection, and Berry curvatures, etc. Since such Lorentz spinors can be generically found in physical systems hosting bosonic Bogoliubov quasi-particles, we expect that our study allows new insights into the dynamical properties of quasiparticles in diverse systems. In a broader context, the present work provides a new perspective toward the fundamental understanding of quantum evolution, as well as new scenarios for experimentally probing the coherent effect. While our study is primarily based on Bogoliubov equation for the (1, 1)-spinor, we expect the essential features also appear in dynamics described by the Bogoliubov equation of multi-mode, the study of which is of future interest.
+
+[1] N. N. Bogoliubov, J. Phys. USSR. 11, 23 (1947). [2] B. Wu and Q. Niu, New J. of Phys. 5, 104 (2003). [3] C. Zhang, A. M. Dudarev, and Q. Niu, Phys. Rev. Lett.
+97, 040401 (2006). [4] M. Born and V. A. Fock, Z. Phys. A 51, 165 (1928). [5] Q. Zhang, J. Gong, and B. Wu, New J. of Phys. 16, 123024
+
+(2014). [6] M. V. Berry, Proc. R. Soc. A 392, 45 (1984). [7] T. Giamarchi, Quantum Physics in One Dimension (Ox-
+ford University Press, 2004). [8] T. Holstein and H. Primakoff, Phys. Rev. 58, 1098 (1940).
+
+

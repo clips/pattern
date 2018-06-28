@@ -1,0 +1,235 @@
+draft November 26 2016 Preprint typeset using LATEX style emulateapj v. 01/23/15
+
+arXiv:1701.00043v1 [astro-ph.GA] 31 Dec 2016
+
+ALMA REVEALS STRONG [CII] EMISSION IN A GALAXY EMBEDDED IN A GIANT LY BLOB AT Z = 3.1
+Hideki Umehata1,2, Yuichi Matsuda3,4, Yoichi Tamura2, Kotaro Kohno2,5, Ian Smail6, R.J. Ivison7,8, Charles C. Steidel9, Scott C. Chapman10, James E. Geach11, Matthew Hayes12, Tohru Nagao13, Yiping Ao3,
+Ryohei Kawabe3,4,15, Min S. Yun14, Bunyo Hatsukade3, Mariko Kubo3, Yuta Kato3,15, Tomoki Saito16, Soh Ikarashi17, Kouichiro Nakanishi3,4, Minju Lee3,15, Takuma Izumi2, Masao Mori18, Masami Ouchi19 1 The Open University of Japan, 2-11 Wakaba, Mihama-ku, Chiba 261-8586, Japan; hideki.umehata@ouj.ac.jp 2 Institute of Astronomy, School of Science, The University of Tokyo, 2-21-1 Osawa, Mitaka, Tokyo 181-0015, Japan 3 National Astronomical Observatory of Japan, 2-21-1 Osawa, Mitaka, Tokyo 181-8588, Japan
+4 Department of Astronomy, School of Science, SOKENDAI (The Graduate University for Advanced Studies), Osawa, Mitaka, Tokyo 181-8588, Japan
+5 Research Center for the Early Universe, The University of Tokyo, 7-3-1 Hongo, Bunkyo, Tokyo 113-0033 6 Centre for Extragalactic Astronomy, Department of Physics, Durham University, South Road, Durham, DH1 3LE, UK
+7 European Southern Observatory, Karl-Schwarzschild-Str. 2, D-85748 Garching, Germany 8 Institute for Astronomy, University of Edinburgh, Royal Observatory, Blackford Hill, Edinburgh EH9 3HJ, UK
+9 California Institute of Technology, MS 249-17, Pasadena, CA 91125, USA 10 Department of Physics and Atmospheric Science, Dalhousie University, Halifax, NS B3H 4R2, Canada 11 Centre for Astrophysics Research, Science & Technology Research Institute, University of Hertfordshire, Hatfield AL10 9AB, UK 12 Department of Astronomy, Oskar Klein Centre, Stockholm University, AlbaNova University Centre, SE-106 91 Stockholm, Sweden 13 Research Center for Space and Cosmic Evolution, Ehime University, 2-5 Bunkyo-cho, Matsuyama, Ehime 790-8577
+14 Department of Astronomy, University of Massachusetts, Amherst, Massachusetts 01003 15 Department of Astronomy, Graduate school of Science, The University of Tokyo, 7-3-1 Hongo, Bunkyo-ku, Tokyo 133-0033 16 Nishi-Harima Astronomical Observatory, Centre for Astronomy, University of Hyogo, 407-2 Nichigaichi, Sayo-cho, Sayo, Hyogo
+679-5313, Japan 17 Kapteyn Astronomical Institute, University of Groningen, P.O. Box 800, 9700AV Groningen, The Netherlands
+18 Center for Computational Physics, University of Tsukuba, 1-1-1 Tennodai, Tsukuba, Ibaraki 305-8577 19 Institute for Cosmic Ray Research, University of Tokyo, 5-1-5 Kashiwa-no-Ha, Kashiwa City, Chiba 277-8582
+draft November 26 2016
+ABSTRACT
+We report the result from observations conducted with the Atacama Large Millimeter/submillimeter Array (ALMA) to detect [Cii] 158 µm fine structure line emission from galaxies embedded in one of the most spectacular Ly blobs (LABs) at z = 3.1, SSA22-LAB1. Of three dusty star-forming galaxies previously discovered by ALMA 860 µm dust continuum survey toward SSA22-LAB1, we detected the [Cii] line from one, LAB1-ALMA3 at z=3.0993±0.0004. No line emission was detected, associated with the other ALMA continuum sources or from three rest-frame UV/optical selected zspec  3.1 galaxies within the field of view. For LAB1-ALMA3, we find relatively bright [Cii] emission compared to the infrared luminosity (L[Cii]/LIR  0.01) and an extremely high [Cii] 158 µm and [Nii] 205 µm emission line ratio (L[Cii]/L[Nii] >55). The relatively strong [Cii] emission may be caused by abundant photodissociation regions and sub-solar metallicity, or by shock heating. The origin of the unusually strong [Cii] emission could be causally related to the location within the giant LAB, although the relationship between extended Ly emission and ISM conditions of associated galaxies is yet to be understand. Subject headings: catalogs ­ galaxies: high-redshift ­ galaxies: starburst
+
+1. INTRODUCTION
+Investigating the physical and chemical properties of the interstellar medium (ISM) of dusty star-forming galaxies and/or high-redshift galaxies has been difficult, as typical UV/optical nebular lines are not useful due to heavy dust extinction and/or the lines are not accessible with conventional ground-based instruments. Recently, the Atacama Large Millimeter/submillimeter Array (ALMA) has opened a new window, allowing us to exploit fine structure lines at rest-frame farinfrared (FIR) wavelengths to diagnose the ISM properties for these galaxy populations (e.g., Nagao et al. 2012; Decarli et al. 2014; Inoue et al. 2016). The [Cii] 158 µm (2P3/2 2 P1/2) is known to be the dominant coolant of the ISM and one of the brightest lines from starforming galaxies in the FIR (e.g., Israel et al. 1996). While the [Cii] emission arises primarily from dense photodissociation regions (PDRs), it is also observed
+
+in various regions/environments, including ionized regions, cool, diffuse interstellar gas, and shocked gas (e.g., Stacey et al. 1991; Madden et al. 1993; Nagao et al. 2011; Appleton et al. 2013).
+In order to characterize the [Cii] emission and investigate the nature of the ISM in star-forming galaxies at high redshift, Ly blobs (LABs) are a useful laboratory. LABs are extended gaseous nebulae, preferentially found in regions of galaxy overdensities in the distant universe (e.g., Steidel et al. 2000; Matsuda et al. 2004; Yang et al. 2009). A large number of LABs are associated with star-forming galaxies such as submillimeter galaxies (SMGs; e.g., Geach et al. 2005, 2014; Umehata et al. 2015, 2016), distant red galaxies (DRGs; e.g., Erb et al. 2011; Uchimoto et al. 2012; Kubo et al. 2013), and Lyman break galaxies (LBGs; e.g., Matsuda et al. 2004). Thus LABs are likely to be the sites of ongoing massive galaxy formation and assembly, and the extended gaseous structures around
+
+2
+
+Umehata et al.
+
+Fig. 1.-- Images of SSA22-LAB1. Each field is 20 × 20 in size. The field of view of the ALMA band 8 observation is shown in each figure. (left) A pseudo color image with Subaru/Suprime-Cam B-, N B497-, and V -band where the strong Ly emission falls in the green channel (Matsuda et al. 2004). (middle) HST STIS optical image as a finding chart. Contours show Ly emission at levels of 4,
+8, and 12 ×10-18 erg s-1 cm-2 arcsec-2 (Matsuda et al. 2004). We show the positions of three ALMA sources (ALMA1, ALMA2, and ALMA3; Geach et al. 2016; Y. Matsuda et al. in preparation) and other zspec  3.1 galaxies: one LBG (C11; Steidel et al. 2003), and one K-selected galaxy (K1; Kubo et al. 2015). One faint [Oiii] emitter at z = 3.0968 (S1; Geach et al. 2016) is also shown. (right) The non-primary-beam-corrected ALMA image at 860 µm (Y. Matsuda et al. in preparation).
+
+them are believed to be observational signs of largescale gas flows (inflow/outflow) and their interactions as well as photoionization (e.g., Taniguchi & Shioya 2000; Mori & Umemura 2006; Dijkstra & Loeb 2009). SSA22LAB1 (hereafter LAB1, Steidel et al. 2000) is a giant LAB discovered in the z = 3.1 SSA22 proto-cluster region and one of the most well-studied LABs (e.g., Chapman et al. 2004; Geach et al. 2014; Hayes et al. 2011; Kubo et al. 2015). The unique environment makes LAB1 a useful laboratory for investigating the [Cii] emission from growing galaxies in the early universe. Throughout the paper, we adopt a cosmology with m = 0.3,  = 0.7, and H0=70 km s-1 Mpc-1.
+2. OBSERVATIONS AND DATA REDUCTION
+We observed LAB1 with ALMA in band 8 as a part of an ALMA cycle-2 program (ID: 2013.1.00159.S; PI: Umehata), targeting the [Cii] 158 µm transition (rest = 1900.537 GHz, redshifted to 463.55 GHz or 647 µm, at z = 3.100). As shown in Fig. 1, the field of view (FoV) at  464 GHz is large enough to cover the majority of the Ly emitting region (d  13.5 or  100 kpc at z = 3.1 ) and contains three 860 µm continuum ALMA sources: LAB1-ALMA1, LAB1-ALMA2, and LAB1ALMA3 (hereafter ALMA1, ALMA2, and ALMA3, respectively; Geach et al. 2016)1. ALMA3 is spatially coincident with a DRG at zspec = 3.1 (Kubo et al. 2015). While ALMA1 and ALMA2 do not have spectroscopic redshifts, their photometric redshifts and the low probability of chance association of ALMA sources suggest a physical association between the two ALMA sources and the giant Ly nebula (Uchimoto et al. 2012; Y. Matsuda et al. in preparation). Three other galaxies at zspec  3.1 (a LBG, a K-band selected galaxy, and a [Oiii] emitter) are also located within the band 8 FoV (Fig. 1).
+Observations were carried out on 16 June 2015 using a spectral scan mode with the FDM correlator
+1 ALMA1, ALMA2, and ALMA3 correspond to SSA22-LAB01 ALMA b, SSA22-LAB01 ALMA a, and SSA22-LAB01 ALMA c in Geach et al. (2016), respectively.
+
+mode to cover the redshift range of the proto-cluster, z = 3.06 - 3.12 (Matsuda et al. 2005). Among four planned spectral windows, only two were actually executed. The incomplete observation resulted in frequency coverage of 461.03­462.78 GHz and 462.91­464.66 GHz (z[Cii]=3.090­3.105, 3.107­3.122) after flagging the edge channels. The array configuration was C34-5 and the baseline lengths were 21­784 m. The on-source time was 4.5 minutes. Ceres was observed for amplitude calibration, and the quasar J2148+0657 was utilized for bandpass and phase calibration. The data were processed with the Common Astronomy Software Application (casa) ver. 4.4.0 (McMullin et al. 2007). The cube was first created with the natural weighting using the casa task, clean. The resultant cube (hereafter "full" cube) has a typical synthesized beam FWHM of 0.27 × 0.26 (P.A. 46 deg). We also created a "tapered" cube adopting the taper parameter, outertaper = 0.5 arcsec, which has a typical synthesized beam, 0.53 × 0.52 (P.A. -70 deg). The typical rms level is  3.5 mJy beam-1 at the phase center per 80 km s-1 channel in the tapered cube. To search for band 8 continuum sources, we created a "tapered" continuum map at 463 GHz, using the line-free channels. The "dirty" map has a rms level of 0.8 mJy beam-1 at the phase center and none of the sources is found above 5.
+LAB1 has also been observed by ALMA in band 7. One program (ID. 2013.1.00704.S; PI. Matsuda) covered the redshifted [Nii] 205 µm transition line (rest = 1461.131 GHz, redshifted to 356.37 GHz, at z = 3.100) (Y. Matsuda et al. in preparation). The typical noise rms at 0.55 resolution, which is equivalent to the "tapered" cube in band 8, is 0.4 mJy beam-1 at the phase center, per 80 km s-1 channel.
+3. RESULTS
+3.1. [Cii] 158 µm in LAB1-ALMA3
+We detected [Cii] emission from one of the three dusty star-forming galaxies, ALMA3 (Fig. 2 and Fig. 3). Fig. 3 shows the [Cii] spectrum. A gaussian fit to the line
+
+[Cii] from LAB1
+
+3
+
+Fig. 2.-- Images of LAB1-ALMA3. The size of each map is 3 × 3. (a) The velocity-integrated map of the [Cii] emission. The background map is the "tapered" map (0.53 FWHM, magenta contours), while we also show the "full" map (0.27 FWHM, blue contours) for comparison. Contours start at ±2, with steps of 1 for both. (b) The velocity map of the [Cii] emission, blanked at 2.5. Velocities are
+relative to the [Oiii] peak (see also Fig. 3) and velocity contours are shown in steps of 80 km s-1. (c) The "tapered" band 7 continuum map (0.55 FWHM), which presents rest-frame 210 µm continuum emission. Contours are plotted from ±2 in steps of 1. For comparison, we also show contours of the tapered [Cii] map presented in panel a. (d) The HST STIS optical image, compared to the [Cii] emission. (e) The "tapered" [Nii] map. Contours are ±2. [Cii] emission is same as other panels.
+
+Fig. 3.-- [Cii] spectrum of LAB1-ALMA3, integrated over a region of d = 1 in the tapered cube after correcting for the primarybeam response. We also show the redshifts and errors determined from [Cii] (red lines) and [Oiii]/H (green lines) detections. Velocities are relative to the [Oiii]/H redshift (z = 3.1000 ± 0.0003; Kubo et al. 2015). [Cii] emission from ALMA3 is detected at consistent redshift (z = 3.0993 ± 0.0004) with FWHM of 270 ± 30 km s-1. The velocity range used to create the images in Fig. 2 is indicated below the spectrum.
+has z = 3.0993 ± 0.0004 with FWHM 275 ± 30 km s-1. Kubo et al. (2015) reported a redshift of z = 3.1000 ± 0.0003 on the basis of H and [Oiii] 5007 lines, and hence our measurement is consistent (the velocity offset is within  50 km s-1 and the two measurements are consistent within errors). Fig. 2 shows the velocityintegrated [Cii] intensity and velocity maps, compared to the rest-frame 210 µm continuum (Y. Matsuda et al. in preparation; Geach et al. 2016), HST STIS optical image2 (Chapman et al. 2003), and [Nii] image3. The [Cii] emission is spatially resolved as shown in Fig. 2a, while the [Cii] emission has a modest signal to noise ratio and the various clumps seen are not significant. The [Cii] velocity map (Fig. 2b) also shows complexity, which is not likely to be produced by a simple rotating disk. The position of [Cii] emission is generally consistent with those of dust continuum and stellar emission4.
+2 The image has a pivot wavelength of 5733 °A. 3 We created the [Nii] image, integrated the cube over the same velocity range of the [Cii] map. 4 There might be a small offset,  0.2, though the current data is insufficient to determine whether it is real.
+
+To describe the properties of [Cii] emission from the whole galaxy, we use the tapered map. A twodimensional elliptical Gaussian fit yields a deconvolved FWHM of (0.62 ± 0.11) × (0.55 ± 0.10), which corresponds to 4.8 × 4.3 kpc2. For comparison, we similarly measured the size of the dusty starburst core using the band 7 continuum image at 0.35 resolution. The yielded size is (0.53 ± 0.14) × (0.40 ± 0.12) (4.1 × 3.1 kpc2). The measured integrated line flux is I[Cii] = 16.8 ± 2.1 Jy km s-1 and hence the line luminosity is L[Cii] = (5.7 ± 0.7) × 109L (Table 1). The infrared (IR; 8-1000 µm) luminosity of ALMA3 is derived using an average SMG template from the ALESS survey (Swinbank et al. 2014) scaled to the 860 µm flux density, S860µm = 0.73 ± 0.05 mJy (Geach et al. 2016); LIR  5.8 ± 0.4 × 1011L, so that L[Cii]/LIR  0.010 ± 0.001 (We note that the IR luminosity may have larger uncertainty. Geach et al. (2016) estimated it in the range LIR  (0.2-1.5)×1012L using varying templates.). We also derived the dynamical mass of ALMA3, Mdyn,vir  1.0 × 1011M, using an isotropic virial estimator (e.g., Engel et al. 2010) on the basis of the line width and [Cii] size (major axis measured from the FWHM).
+We also searched for [Nii] 205 µm emission from ALMA3, which resulted in non-detection (Fig. 2e). Utilizing the [Nii] map at 0.55 resolution, we obtained a 3 (point-source) upper limit on its line intensity, I[Nii] < 0.35 Jy km s-1 and thus L[Nii] < 9.4 × 107L, and L[Cii]/L[Nii] > 61. The [Nii] upper limit can slightly be relaxed when the [Nii] 205 µm emission has larger extent compared to the size of the synthesized beam. If we use the the other tapered [Nii] map at 0.64 resolution, which is comparable to the measured [Cii] size of ALMA3, we will have I[Nii] < 0.39 Jy km s-1, L[Nii] < 1.0 × 108L, and L[Cii]/L[Nii] > 55, respectively. In the following discussion, we adopt the latter conservatively.
+3.2. No [Cii] emission from the remaining LAB1 members
+Except for ALMA3, no emission line is found in the band 8 cube. For ALMA1 and ALMA2, we just calculate a tentative upper limit of [Cii] emission, assuming that the lines fall within our frequency coverage and the line widths are same as that of ALMA3. The IR lumi-
+
+4
+
+Umehata et al.
+
+Galaxy
+
+RA (J2000)
+
+TABLE 1 [Cii] Line Parameters of galaxies in SSA22-LAB1
+
+Dec
+
+z
+
+(J2000)
+
+Type
+
+Ref
+
+ICii
+
+LCii
+
+LIR
+
+(Jy km-1) (109L) (1011L)
+
+LAB1-ALMA3
+
+22:17:26.11 +00:12:32.4 3.0993 ± 0.0004 [Cii] 158 µm
+
+1
+
+16.8±2.1 5.7±0.7
+
+5.8
+
+22:17:26.1 +00:12:32.3 3.1000 ± 0.0003 [Oiii] 5007, H 2
+
+--
+
+--
+
+LAB1-ALMA1
+
+22:17:25.94 +00:12:36.6
+
+(3.1?)
+
+photo-z
+
+--
+
+(< 2.3)
+
+(< 0.8)
+
+3.5
+
+LAB1-ALMA2
+
+22:17:26.01 +00:12:36.4
+
+(3.1?)
+
+photo-z
+
+--
+
+(< 2.3)
+
+(< 0.8)
+
+4.0
+
+C11 (LBG)
+
+22:17:25.7 +00:12:34.7 3.0999 ± 0.0004
+
+[Oiii] 5007
+
+3
+
+< 3.0
+
+< 1.0
+
+--
+
+K1 (K-band galaxy) 22:17:25.7 +00:12:38.7 3.1007 ± 0.0002
+
+[Oiii] 5007
+
+2
+
+< 2.6
+
+< 0.9
+
+--
+
+S1 ([Oiii] emitter) 22:17:26.08 +00:12:34.2
+
+3.0968
+
+[Oiii] 5007
+
+4
+
+< 2.2
+
+< 0.7
+
+--
+
+Note. -- [Cii] Line properties of three ALMA sources and three UV/optical selected galaxies. Since ALMA1 and ALMA2 don't have zspec, we estimated rough upper limits using the cube for ALMA3, assuming same redshifts and velocity widths. For C11, K1, and S1, we integrated the cube at the position in literatures over 300 km s-1 velocity range, and obtain 3 upper limits. References are: 1. This work, 2. Kubo et al. 2015, 3. McLinden et al. 2013, and 4. Geach et al. 2016.
+
+nosities of ALMA1 and ALMA2 are comparable to that of ALMA3 (LIR  3.5 × 1011L and LIR  4.0 × 1011L, respectively)5. Utilizing the intensity map for ALMA3, we obtained a 3 upper limit on their individual line intensity, I[Cii] < 2.3 Jy km s-1, and line luminosity, L[Cii] < 0.8 × 109L. Although this is just a crude estimate and zspec information is essential for further discussion, our result suggests that the L[Cii]/LIR of ALMA1 and ALMA2 may be different from that of ALMA3. We also evaluated 3 upper limits for the three rest-frame UV/optical galaxies with [Oiii] line detections, by integrating the cube over 300 km s-1 at the source position (Table 1).
+4. DISCUSSION AND SUMMARY
+One striking characteristic of ALMA3 is the high [Cii]­ IR ratio seen in Fig. 4. While this ratio is known to decrease as IR luminosity increases ("[Cii] deficit") for local and high-redshift IR luminous galaxies (e.g., D´iaz-Santos et al. 2013), ALMA3 shows approximately an order of magnitude higher ratio (Fig. 4) at the same IR luminosity range (This trend is independent of the uncertainties on LIR described in §3.1. While the L[Cii]/LIR ratio may be  ×3 lower, the increased corresponding LIR keeps the trend.). The result implies different conditions responsible for [Cii] emission between ALMA3 and the majority of previously known IR luminous galaxies. It has also been reported that some z  1 - 2 ULIRGs show L[Cii]/LIR ratios comparable to ALMA3, although they have slightly higher LIR than ALMA3 (Brisbin et al. 2015). One possible explanation for elevated [Cii]­IR ratios is that the galaxies host widely spread star formation, and the UV radiation field is therefore diluted, which make the [Cii] line a more efficient coolant (see e.g., Cicone et al. 2015; Brisbin et al. 2015, and references therein). The size of the dust continuum core in ALMA3 is 4.1 kpc, which is larger than a typical continuum size of bright SMGs at similar redshifts (2.4 kpc; Simpson et al. 2015; see also Ikarashi et al. 2015; Umehata et al. 2016). This supports that a relatively extended star-forming region in
+5 Geach et al. (2016) reported the sum of 860 µm flux density, S860µm = 0.95±0.04 mJy. We apportioned it between ALMA1 and ALMA2 according to their peak flux density at 0.35 resolution (Y. Matsuda et al. in preparation) and calculated IR luminosity in the same way for ALMA3.
+
+ALMA3 contributes the high [Cii]/IR ratio for ALMA3. Gas accretion from the cosmic web is expected to accumulate a large amount of molecular gas necessary to fuel such widespread star formation (Brisbin et al. 2015).
+We have another clue from the [Cii] 158 µm­[Nii] 205 µm line luminosity ratio, L[Cii]/L[Nii]. ALMA3 shows
+one of the largest ratios ever reported (Fig. 4). The L[Cii]/L[Nii] ratio has been utilized to diagnose the ISM conditions. In particular, it is used to evaluate global trend on the fraction of [Cii] emission associated with ionized regions (i.e. Hii regions; e.g., Oberst et al. 2006; Decarli et al. 2014; Pavesi et al. 2016), mainly because Nitrogen's ionization potential (14.5 eV) is higher than that of Hydrogen (13.6 eV) so that [Nii] arises only from ionized regions. Pavesi et al. (2016) reported the expected a line ratio L[Cii]/L[Nii]  3.5, for Hii regions with electron density of  10-1000 cm-3. If we adopt this estimate, it is expected that the contribution of ionized gas is only about 6% and the vast majority of [Cii] emission arises from the surface of dense PDRs and/or other regions/environments. The L[Cii]/L[Nii] ratio is also sen-
+sitive to estimate gas metallicity (e.g., Nagao et al. 2012; B´ethermin et al. 2016; Pavesi et al. 2016). Nagao et al. (2012) suggests that the line ratio increases as metallicity decreases, considering both PDRs and Hii regions in their model. The measured ratio, L[Cii]/L[Nii] > 55, favors sub-solar metallicity for the variety of densities and ionization parameters in their model. Gas accretion from the outside of ALMA3 may explain this relatively low metallicity. It is suggested that Nitrogen may dominantly be in its doubly ionized state in high ionization conditions with lower dust shielding (e.g., Pavesi et al. 2016). This effect is unlikely to be significant in ALMA3 because it is detected in dust continuum.
+Although it is not straightforward to identify the origin of [Cii] emission more, together with these clues, the properties and location of ALMA3 may support the importance of shock on the elevated [Cii] emission. Recently some work has suggested that mechanical heating due to turbulence in shocks can contribute to [Cii] emission at high redshift (e.g., Stacey et al. 2010; Lesaffre et al. 2013; Appleton et al. 2013; Brisbin et al. 2015). For instance, Appleton et al. (2013) reported that the resolved shocked regions of Stephan's Quintet have exceptionally high [Cii]­FIR ratio and they also suggest that this could be commonplace for high-redshift
+
+[Cii] from LAB1
+
+5
+
+Fig. 4.-- (left) [Cii]-IR luminosity ratio (L[Cii]/LIR) as a function of IR luminosity (LIR). We show the measured ratio of LAB1-
+ALMA3 and the "upper limit" of LAB1-ALMA1 and ALMA2, assuming their redshifts lie within our [Cii] coverage (see text). We also mark local IR-luminous galaxies (D´iaz-Santos et al. 2013), the SMGs at z = 3  6 (Riechers et al. 2014 (R14); Decarli et al. 2014; De Breuck et al. 2014; Rawle et al. 2014; Gullberg et al. 2015 (G15)), LBGs at z = 5 - 6 (R14; Capak et al. 2015 (C15)), and z = 1  2 star-forming galaxies (including SMGs; Stacey et al. 2010 (S10); Brisbin et al. 2015 (B15)). ALMA3 shows high [Cii]-IR luminosity ratio, compared to other IR luminous galaxies with similar luminosity. Here we convert the IR luminosities in the literature, multiplying by the following factors: L8-1000µm /L42.5-122.5µm = 1.7, L8-1000µm /L42.5-500µm = 1.3. (right) [Cii] 158 µm-[Nii] 205 µm line luminosity ratio (L[Cii]/L[Nii]) as a function of IR luminosity (LIR). The ratio of LAB1-ALMA3 is shown, compared with those of various galaxies at z  5
+(Rawle et al. 2014; Decarli et al. 2014; B´ethermin et al. 2016; Pavesi et al. 2016, and references therein) and local (U)LIRGs (Zhao et al. 2016; D´iaz-Santos et al. 2013). ALMA3 shows one of the highest values seen to date, which indicates an enhanced [Cii] emission.
+
+galaxies. Brisbin et al. (2015) suggested that a variety of shocks, originating from major-merger, intergalactic gas accretion, and stellar outflows, might contribute to the elevated [Cii] emission. ALMA3 shows complicated rest-frame UV morphologies and [Cii] velocity structures (Fig. 2), which is suggestive of galaxy-galaxy interaction (dust obscuration may also contribute to it). ALMA3 hosts intense star-formation activity, as the dust continuum detection shows, and appears to be a relatively evolved system with large stellar mass M  1011M (Kubo et al. 2015) comparable to the derived dynamical mass (we need to recognize both estimates contain large uncertainties). Therefore galactic outflow may interact with intergalactic gas stream (e.g., Cornuault et al. 2016). Thus shock heating might be a contributor of [Cii] emission from ALMA3.
+One key question is the role of environment, since ALMA3 is located within a giant LAB, SSA22-LAB1. LAB1 resides in a remarkable proto-cluster and is associated with a number of star-forming galaxies, which may reflect the abundant gas accretion from cosmic web. The overdensity of galaxies may lead a high frequency of galaxy-galaxy interaction. Therefore the unique environment might account for the relatively strong [Cii] line. On the other hand, if ALMA1 and ALMA2 are actually at redshifts similar to confirmed LAB1 members, the absence of detectable [Cii] would mean diversity of the ISM state within a LAB. While we detected the [Cii] line from a massive, dusty star-forming galaxy, much deeper observations of FIR lines like [Cii] and [Nii] toward a giant LAB at z  3, which allows us to assess the ISM state in UV/optical selected galaxies (e.g., LBGs like C11 in
+
+LAB1), is highly expected. Such surveys will give us an opportunity to estimate how the ISM in the galaxies evolve in biased regions in the early universe, through the comparison with other FIR line observations of galaxies in a biased region (e.g., AzTEC3 and LBG1 at z = 5.3; e.g., Riechers et al. 2014; Pavesi et al. 2016) or galaxies in general environment in the same era.
+We greatly appreciate the anonymous referee for a helpful report. HU is supported by the ALMA Japan Research Grant of NAOJ Chile Observatory, NAOJ-ALMA-0071, 0131, 140, and 0152. HU is supported by JSPS Grant-in-Aid for Research Activity Start-up (16H06713). HU is thankful for the support from JSPS KAKENHI No 16H02166 (PI. Y. Taniguchi). YT is supported by JSPS KAKENHI No. 25102073. RJI acknowledges support from ERC in the form of the Advanced Investigator Programme, 321302, COSMICISM. IRS acknowledge support from STFC (ST/L00075X/1). IRS acknowledge support from the ERC Advanced Investigator program DUSTYGAL 321334, and a Royal Society/Wolfson Merit Award. MH acknowledges the support of the Swedish Research Council, Vetenskapsr°adet and the Swedish National Space Board (SNSB), and is Fellow of the Knut and Alice Wallenberg Foundation. This paper makes use of the following ALMA data: ADS/JAO.ALMA#2013.1.00159.S, ADS/JAO.ALMA#2013.1.00704.S. ALMA is a partnership of ESO (representing its member states), NSF (USA) and NINS (Japan), together with NRC (Canada) and NSC and ASIAA (Taiwan) and KASI (Republic
+
+6
+
+Umehata et al.
+
+of Korea), in cooperation with the Republic of Chile. The Joint ALMA Observatory is operated by ESO,
+
+AUI/NRAO and NAOJ. Facilities: ALMA.
+
+REFERENCES
+
+Appleton, P. N., Guillard, P., Boulanger, F., et al. 2013, ApJ, 777, 66
+B´ethermin, M., De Breuck, C., Gullberg, B., et al. 2016, A&A, 586, L7
+Brisbin, D., Ferkinhoff, C., Nikola, T., et al. 2015, ApJ, 799, 13 Capak, P. L., Carilli, C., Jones, G., et al. 2015, Nature, 522, 455 Chapman, S. C., Scott, D., Windhorst, R. A., et al. 2004, ApJ,
+606, 85 Chapman, S. C., Windhorst, R., Odewahn, S., Yan, H., &
+Conselice, C. 2003, ApJ, 599, 92 Cicone, C., Maiolino, R., Gallerani, S., et al. 2015, A&A, 574, A14 Cornuault, N., Lehnert, M., Boulanger, F., & Guillard, P. 2016,
+ArXiv e-prints, arXiv:1609.04405 De Breuck, C., Williams, R. J., Swinbank, M., et al. 2014, A&A,
+565, A59 Decarli, R., Walter, F., Carilli, C., et al. 2014, ApJ, 782, L17 D´iaz-Santos, T., Armus, L., Charmandaris, V., et al. 2013, ApJ,
+774, 68 Dijkstra, M., & Loeb, A. 2009, MNRAS, 400, 1109 Engel, H., Tacconi, L. J., Davies, R. I., et al. 2010, ApJ, 724, 233 Erb, D. K., Bogosavljevi´c, M., & Steidel, C. C. 2011, ApJ, 740,
+L31 Geach, J. E., Matsuda, Y., Smail, I., et al. 2005, MNRAS, 363,
+1398 Geach, J. E., Bower, R. G., Alexander, D. M., et al. 2014, ApJ,
+793, 22 Geach, J. E., Narayanan, D., Matsuda, Y., et al. 2016, ApJ, 832,
+37 Gullberg, B., De Breuck, C., Vieira, J. D., et al. 2015, MNRAS,
+449, 2883 Hayes, M., Scarlata, C., & Siana, B. 2011, Nature, 476, 304 Ikarashi, S., Ivison, R. J., Caputi, K. I., et al. 2015, ApJ, 810, 133 Inoue, A. K., Tamura, Y., Matsuo, H., et al. 2016, Science, 352,
+1559 Israel, F. P., Bontekoe, T. R., & Kester, D. J. M. 1996, A&A,
+308, 723 Kubo, M., Yamada, T., Ichikawa, T., et al. 2015, ApJ, 799, 38 Kubo, M., Uchimoto, Y. K., Yamada, T., et al. 2013, ApJ, 778,
+170 Lesaffre, P., Pineau des For^ets, G., Godard, B., et al. 2013, A&A,
+550, A106
+
+Madden, S. C., Geis, N., Genzel, R., et al. 1993, ApJ, 407, 579 Matsuda, Y., Yamada, T., Hayashino, T., et al. 2004, AJ, 128, 569 --. 2005, ApJ, 634, L125 McLinden, E. M., Malhotra, S., Rhoads, J. E., et al. 2013, ApJ,
+767, 48 McMullin, J. P., Waters, B., Schiebel, D., Young, W., & Golap,
+K. 2007, in Astronomical Society of the Pacific Conference Series, Vol. 376, Astronomical Data Analysis Software and Systems XVI, ed. R. A. Shaw, F. Hill, & D. J. Bell, 127 Mori, M., & Umemura, M. 2006, Nature, 440, 644 Nagao, T., Maiolino, R., De Breuck, C., et al. 2012, A&A, 542, L34 Nagao, T., Maiolino, R., Marconi, A., & Matsuhara, H. 2011, A&A, 526, A149 Oberst, T. E., Parshley, S. C., Stacey, G. J., et al. 2006, ApJ, 652, L125 Pavesi, R., Riechers, D. A., Capak, P. L., et al. 2016, ArXiv e-prints, arXiv:1607.02520 Rawle, T. D., Egami, E., Bussmann, R. S., et al. 2014, ApJ, 783, 59 Riechers, D. A., Carilli, C. L., Capak, P. L., et al. 2014, ApJ, 796, 84 Simpson, J. M., Smail, I., Swinbank, A. M., et al. 2015, ApJ, 799, 81 Stacey, G. J., Geis, N., Genzel, R., et al. 1991, ApJ, 373, 423 Stacey, G. J., Hailey-Dunsheath, S., Ferkinhoff, C., et al. 2010, ApJ, 724, 957 Steidel, C. C., Adelberger, K. L., Shapley, A. E., et al. 2000, ApJ, 532, 170 --. 2003, ApJ, 592, 728 Swinbank, A. M., Simpson, J. M., Smail, I., et al. 2014, MNRAS, 438, 1267 Taniguchi, Y., & Shioya, Y. 2000, ApJ, 532, L13 Uchimoto, Y. K., Yamada, T., Kajisawa, M., et al. 2012, ApJ, 750, 116 Umehata, H., Tamura, Y., Kohno, K., et al. 2015, ApJ, 815, L8 --. 2016, ArXiv e-prints, arXiv:1611.09857 Yang, Y., Zabludoff, A., Tremonti, C., Eisenstein, D., & Dav´e, R. 2009, ApJ, 693, 1579 Zhao, Y., Lu, N., Xu, C. K., et al. 2016, ApJ, 819, 69
+
+

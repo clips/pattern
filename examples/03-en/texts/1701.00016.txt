@@ -1,0 +1,326 @@
+Non-Negative Matrix Factorization Test Cases
+Connor Sell and Jeremy Kepner Massachusetts Institute of Technology, Cambridge, MA 02139
+email: csell@mit.edu, kepner@ll.mit.edu
+
+arXiv:1701.00016v1 [math.NA] 30 Dec 2016
+
+Abstract--Non-negative matrix factorization (NMF) is a problem with many applications, ranging from facial recognition to document clustering. However, due to the variety of algorithms that solve NMF, the randomness involved in these algorithms, and the somewhat subjective nature of the problem, there is no clear "correct answer" to any particular NMF problem, and as a result, it can be hard to test new algorithms. This paper suggests some test cases for NMF algorithms derived from matrices with enumerable exact non-negative factorizations and perturbations of these matrices. Three algorithms using widely divergent approaches to NMF all give similar solutions over these test cases, suggesting that these test cases could be used as test cases for implementations of these existing NMF algorithms as well as potentially new NMF algorithms. This paper also describes how the proposed test cases could be used in practice.
+
+I. INTRODUCTION
+What do document clustering, recommender systems, and audio signal processing have in common? All of them are problems that involve finding patterns buried in noisy data. As a result, these three problems are common applications of algorithms that solve non-negative matrix factorization, or NMF [2], [6], [7].
+Non-negative matrix factorization involves factoring some matrix A, usually large and sparse, into two factors W and H, usually of low rank
+
+A = WH
+
+(1)
+
+Because all of the entries in A, W, and H must be nonnegative, and because of the imposition of low rank on W and H, an exact factorization rarely exists. Thus NMF algorithms often seek an approximate factorization, where WH is close to A. Despite the imprecision, however, the low rank of W and H forces the solution to describe A using fewer parameters, which tends to find underlying patterns in A. These underlying patterns are what make NMF of interest to a wide range of applications.
+In the decades since NMF was introduced by Seung and Lee [5], a variety of algorithms have been published that compute NMF [1]. However, the non-deterministic nature of these NMF algorithms make them difficult to test. First, NMF asks for approximations rather than exact solutions, so whether or not an output is correct is somewhat subjective. Although cost functions can quantitatively indicate how close a given solution is to being optimal, most algorithms do not claim
+
+This material is based in part upon work supported by the NSF under grant number DMS-1312831. Any opinions, findings, and conclusions or recommendations expressed in this material are those of the authors and do not necessarily reflect the views of the National Science Foundation.
+
+to find the globally optimal solution, so whether or not an algorithm gives useful solutions can be ambiguous. Secondly, all of the algorithms produced so far are stochastic algorithms, so running the algorithm on the same input multiple times can give different outputs if they use different random number sequences. Thirdly, the algorithms themselves, though often simple to implement, can have very complex behavior that is difficult to understand. As a result, it can be hard to determine whether a proposed algorithm really "solves" NMF.
+This paper proposes some test cases that NMF algorithms should solve verifiably. The approach uses very simple input, such as matrices that have exact non-negative factorizations, that reduce the space of possible solutions and ensure that the algorithm finds correct patterns with little noise. In addition, small perturbations of these simple matrices are also used, to ensure that small variations in the matrix A do not drastically change the generated solution.
+II. PERTURBATIONS OF ORDER
+Suppose NMF is applied to a non-negative matrix A to get non-negative matrices W and H such that A  WH. If A is chosen to have an exact non-negative factorization, then the optimal solution satisfies A = WH. Furthermore, if A is simple enough, most "good" NMF algorithms will find the exact solution.
+For example, suppose A0 is a non-negative square diagonal matrix, and the output W0 and H0 is also specified to be square. Let the diagonal n × n matrix A0 be denoted A0 = diag(a0), where a0 is an n-dimensional vector, so that the diagonal entries A0(i, i) are a0(i). It is easy to show that W0 and H0 must be monomial matrices (diagonal matrices under a permutation) [3]. Ignoring the permutation and similarly denoting W0 = diag(w0) and H0 = diag(h0), then a0(i) = w0(i)h0(i) for applicable i. Such diagonal matrices A0 were given as input to the known NMF algorithms described in the next section, and all of the algorithms successfully found exact solutions in the form of monomial matrices for W0 and H0.
+One way to analyze the properties of an algorithm is to perturb the input by a small amount > 0 and see how the output changes. Formally, if the input A0 gives output W0H0, then the output generated from A0 + A1 can be approximated as (W0 + W1)(H0 + H1). It is assumed that is sufficiently small that 2 terms are negligible.
+For the test case, the nonzero entries of A1 were chosen to be the on the superdiagonal (the first diagonal directly above the main diagonal). This matrix is denoted as A1 =
+
+diag(a1, 1), where a1 is an n - 1-dimensional vector such that A1(i, i + 1) = a1(i). The resulting matrix A0 + A1 has O(1) entries on its main diagonal, O( ) entries on the superdiagonal, and zeroes elsewhere. It is assumed that all the vector entries a0(i) and a1(i) are of comparable magnitude.
+
+III. RESULTS FROM VARIOUS ALGORITHMS
+
+Three published NMF algorithms were implemented and run with input of the form A = A0 + A1 as described above. Algorithm 1 was the multiplicative update algorithm described by Seung and Lee in their groundbreaking paper [5], which was run for 106 iterations in each test. Algorithm 2 was the ALS algorithm described in [1], and which was run for 106 iterations as well. Algorithm 3 was a gradient descent method as described by Guan and Tao [4], and was run for 104 iterations. These three algorithms were chosen because they were representative and easy-to-implement algorithms of three distinct types. Many published NMF algorithms are variations of these three algorithms.
+The experiments began with the simplest nontrivial case, in which A is a 2×2 matrix with only three nonzero entries, with fixed a0 = [1 1] and a1 = [1], while was varied over several different values. Each of the algorithms used randomness in the form of initial seed values for W and H. The random seeds were held constant as varied. As a result, the outputs from the algorithms with different values of were comparable within each test case.
+For the 2 × 2 case, it is possible to enumerate all of the non-negative exact factorizations of A. Given that the factors W and H are also 2 × 2 matrices, they can be written as shown below.
+
+mn pq
+
+rs tu
+
+=
+
+1 1
+
+(2)
+
+Multiplying the matrices directly produces the the following four equations:
+
+mr + nt = 1
+
+(3)
+
+ms + nu =
+
+(4)
+
+pr + qt = 0
+
+(5)
+
+ps + qu = 1
+
+(6)
+
+Recall that all entries must be non-negative, so from equation (5), either p or r must be 0, and either q or t must be 0. Furthermore, it cannot be that p = q = 0 because that would contradict equation (6), and it cannot be that r = t = 0 because that would contradict equation (3). Thus two cases remain: p = t = 0 and q = r = 0.
+Substituting p = t = 0 into equations (3), (4), and (6) and solving for r, s, and u gives
+
+1
+
+1
+
+n
+
+1
+
+r= , s=
+
+- , u=
+
+(7)
+
+m
+
+m
+
+q
+
+q
+
+Likewise, substituting q = r = 0 into (3), (4), and (6) and solving for s, t, and u to gives
+
+1
+
+1
+
+1
+
+m
+
+s= , t= , u=
+
+-
+
+(8)
+
+p
+
+n
+
+n
+
+p
+
+Fig. 1. The figure shows the slope associated with the change in each of the three parameters for each of several values of . As approaches zero on the right of the graph, the values of the slopes converge, showing that for sufficiently small , each of the parameters is linear in .
+
+Observe that these two solutions look similar. In fact, they differ merely by a permutation. In the first case, W and H have the same main diagonal and superdiagonal format as A, and can be written in matrix notation as
+
+WH =
+
+w0(1) w1(1) w0(2)
+
+1 w0 (1)
+
+1 w0 (1)
+
+(
+
+-
+
+w1 w0
+
+(1) (2)
+
+)
+
+1
+
+w0 (2)
+
+(9)
+
+The second case can be written as (WP)(P-1H), where P
+
+1
+
+is the permutation matrix 1
+
+.
+
+All three of the algorithms tested gave solutions of this
+
+form 1000 times out of 1000, for each of several values of
+
+. The consistency of the solutions enabled further analysis.
+
+The change in the solution can be measured by the change in
+
+the three parameters w0(1), w0(2), and w1(1) (ignoring the permutation if present). Figure 1 shows the change in each
+
+of the three parameters from the base case A0 for several different values of when input into Algorithm 1. Each of
+
+the values is the arithmetic mean of the corresponding values
+
+generated from 1000 different random seeds. Of course, the
+
+precise values depend on the distribution of randomness used.
+
+But notice that as approaches 0, the values of the three
+
+parameters become very nearly linear in . The results for
+
+Algorithms 2 and 3 were very similar - they also showed
+
+linearity of the parameters in , with comparable slopes.
+
+However, w1(1) was not always linear in , even for small . In some cases, the difference approached 0 much more quickly.
+
+To see why this occurred, consider that the entries in H could
+
+have been chosen to be the parameters rather than the entries
+
+in W. Also, recall that in the base case A0, in which = 0, w1(1) = h1(1) = 0 since both entries are off the diagonal. Thus, when either is linear in , they are of the form x for
+
+some slope x. Since the solution is exact, it can be deduced
+
+that
+
+w0(1)h1(1) + w1(1)h0(2) =
+
+(10)
+
+Therefore, in the cases that w1(1) approaches 0 very quickly, since w0(1) approaches a large, stable value as approaches 0, h1(1) must be nearly linear in . So in the cases that w1(1) is not linear in , its symmetrical counterpart, h1(1), is. To simplify this complication out of the data, the parameters in W were chosen when w1(1) was closer to linearity in , and the parameters in H were chosen when h1(1) was closer to linearity in .
+Curiously, although it was possible for w1(1) and h1(1) to "split" the nonlinearity so that both were somewhat linear, this rarely occurred. All three algorithms preferred to make one of them very close to linear at the expense of the other. When w1(1) approached zero very rapidly, by equations (3) and (4), h1(1) = h0(1), and similarly, when h1(1) is negligible, w1(1) = h0(2).
+Next, different values for the entries of a0 and a1 were tried, so they had a range of entries rather than all 1's. The algorithms all behaved similarly; up to permutation, they satisfied the following formula
+
+WH =
+
+w0(1) w1(1) w0(2)
+
+a0 (1) w0 (1)
+
+a1 (1) w0 (1)
+
+(
+
+-
+
+w1 (1)a0 a1 (1)w0
+
+(2) (2)
+
+)
+
+a0 (2)
+
+w0 (2)
+
+(11)
+
+Note that equation (9) is just a special case of this equation
+
+in which a0(1) = a0(2) = a1(1) = 1. The same phenomena
+
+was also observed in which the algorithm usually made one of
+
+w1(1) and h1(1) be nearly linear in and the other approach
+
+zero rapidly, rather than having both entries be non-negligible.
+
+As long as the entries of a0 and a1 are roughly on the order
+
+of 1, the algorithms operated similarly.
+
+The next case examined set A to be a 3 × 3 matrix. Using
+
+similar logic to the 2×2 case, it can be deduced that any exact
+
+factorization of A is likely to be of the form
+
+ w0(1) 
+
+w1(1) w0(2)
+
+  h0(1) w1(2)   w0(3)
+
+h1(1) h0(2)
+
+
+h1(2)  h0(3)
+(12)
+
+Indeed, all three algorithms always gave solutions of this form.
+
+In fact, most of the time there were two more zero entries
+
+than necessary - either w1(1) or h1(1), and either w1(2) or h1(2). This is similar to the way that w1(1) or h1(1) often approached 0 rapidly in the 2 × 2 case. To note another
+
+similarity to the 2 × 2 case, whenever w1(i) was significant and h1(i) was not, w1(i) was very close to w0(i + 1) - in similar situations h1(i) was approximately h0(i).
+As a result, there were 4 distinct configurations of the
+
+nonzero elements in the solutions, as given by Figure 2. Note
+
+that Type IV appears to be an inexact solution; since it has
+
+positive w1(1) and h1(2), the entry at position A(1, 3) =
+w1(1)h1(2) in the product W H would have to be nonzero.
+However, both w1(1) and h1(2), like all entries on the superdiagonal, are O( ), so w1(1)h1(2) is O( 2), and is
+
+considered negligible. In fact, most of the solutions generated
+
+by the algorithms had nonzero values for entries that were supposed to be zero, but for this analysis anything below O( 2)
+
+was considered negligible.
+
+Type Algorithm 1 Algorithm 2 Type Type I 18 I Type Type II 49 II Type Type IV 21 III Type IV
+
+equal Algorithm 3 to 0 w1 15 (1), w16 (2) h1 59 (1), h1(2) 74 w1 12 (1), h19(2) h1(1), w1(2)
+
+Fig. 2. We categorized the solutions when A was a 3 × 3 matrix by where the non-negligible entries in the solution were. For each type, this table shows which entries that are usually positive are negligible.
+
+Algorithm 1 Algorithm 2 Algorithm 3 80
+
+60
+
+40
+
+20
+
+0 Type I
+
+Type II
+
+Type III
+
+Type IV
+
+Fig. 3. Categorized the solutions for A being a 3 × 3 matrix by where the non-negligible entries in the solution were. This chart shows how often each algorithm generated a solution of each type out of 100 cases. Type II (in which H is diagonal) was the most common among all the algorithms, but by differing amounts.
+
+Each algorithm was run 100 times on the 3 × 3 input with w0 = [1 1 1], w1 = [1 1], and = 10-3. The solutions were categorized by the solution type in Figure 2. The distributions of the solutions by algorithm type are given in Figure 2. Note that some solutions did not have two negligible entries among w1(1), w1(2), h1(1), and h1(2), in which case the smaller entry was ignored for the sake of sorting - this accounted for about 20% of the three algorithms, the majority occurring in Algorithm 1. It is significant to note that even the solutions that didn't fall cleanly into a "type" still satisfied the pattern given in (12). It seems that an NMF algorithm should satisfy this pattern, but little more is required.
+Next, entries in a0 and a1, were changed as in the 2 × 2 case. As long as the entries were O(1) (as opposed to O( ) or O( 1 )), the behavior of the algorithms was similar.
+Finally, A larger than 3×3 were examined. Several different sizes of matrices were tested, ranging from 4 × 4 to 20 × 20, always keeping A, W, and H square, with positive entries only on the main diagonal and the superdiagonal. The experiments followed the same general pattern; nonzero entries in W and H appeared only on the main diagonal and superdiagonal. Using similar logic to the 2×2 and 3×3 cases, it can be shown that these are the only exact solutions. However, in practice, as the matrices get larger, exceptions to this pattern become more common, particularly in Algorithm 3. The general rule seems to mostly hold (over half the time) until A becomes around 20 × 20. Note, however, that because the run-time of
+
+the algorithms are cubic in the size of the matrix, at best, the sample size for large matrices is small.
+IV. PROPOSED TESTS FOR NMF ALGORITHMS
+Since all three algorithms, which cover a variety of approaches to NMF, had a lot in common in their solutions, it is propose that these inputs A could be used as a test case of an NMF algorithm implementation. In this section, it is proposed how such test cases could be executed.
+The test begins with input of the form
+A = A0 + A1 = diag(a0) + diag(a1, 1) (13)
+A is square, and preferably somewhere between 3 × 3 and 8 × 8 in size, although bigger inputs may be useful as well. The entries should vary between tests. Each test should start by using = 0 so that A is diagonal. The results of this test should have W and H monomial - only one nonzero element in each row and column. Ignore entries that are below O(10-10), for the entirety of testing, as any such entries are negligible.
+If W or H is not monomial, or if the product WH is not equal to A to within a negligible margin of error, the algorithm fails the test. Otherwise, the generated solution can be used to find the permutation matrix P that makes WP and P-1H diagonal by replacing the nonzero entries of H with 1's. Since A = WH is diagonal, WP is also diagonal, and since I = P-1P is diagonal, so is P-1H. Knowing P will make the rest of the testing much simpler since it is easier to identify whether a solution is of the form given above when it is not permuted.
+Next, run the test again using a positive value for ; = 10-3 seems to work well, although using a variety of is also recommended. Make sure to use the same random seeds that were used in the = 0 test to produce corresponding output. Then check that the W and H given by the algorithm are such that WP and P-1H have nonzero entries only on the two diagonals that they are supposed to. If this doesn't hold, changing might have changed which permutation returns W and H to the proper form, so check again; this happens more commonly among larger matrices than smaller ones. However, if W and H really do break the form, or A = WH, the algorithm fails the test on this input. Otherwise, it passes.
+Note that even widely accepted algorithms do fail these tests occasionally, especially with matrices larger than 8 × 8, so it's advisable to perform the test many times to get a more accurate idea of an algorithm's performance.
+
+The test cases have been used as input on three known NMF algorithms that represent a variety of algorithms, and all of them behaved similarly, which suggests testable, quantifiable behaviors that many NMF algorithms share. These test cases offer one approach for testing candidate NMF implentations to help determine whether it behaves as it should.
+ACKNOWLEDGMENT
+The authors would like to thank Dr. Alan Edelman for providing and overseeing this research opportunity, and Dr. Vijay Gadepally for his advice and expertise.
+REFERENCES
+[1] Berry Browne Langville Pauca and Plemmons, Algorithms and applications for approximate nonnegative matrix factorization, Computational Statistics and Data Analysis 52 (2007), 155­173.
+[2] Rainer Gemulla, Erik Nijkamp, Peter J. Haas, and Yannis Sismanis, Large-scale matrix factorization with distributed stochastic gradient descent, Proceedings of the 17th ACM SIGKDD International Conference on Knowledge Discovery and Data Mining (New York, NY, USA), KDD '11, ACM, 2011, pp. 69­77.
+[3] John Gilbert, personal communication, Sep 2015. [4] N. Guan, D. Tao, Z. Luo, and B. Yuan, Nenmf: An optimal gradient
+method for nonnegative matrix factorization, IEEE Transactions on Signal Processing 60 (2012), no. 6, 2882­2898. [5] Daniel D. Lee and H. Sebastian Seung, Algorithms for non-negative matrix factorization, Advances in Neural Information Processing Systems 13 (T. K. Leen, T. G. Dietterich, and V. Tresp, eds.), MIT Press, 2001, pp. 556­562. [6] Suvrit Sra and Inderjit S. Dhillon, Generalized nonnegative matrix approximations with bregman divergences, Advances in Neural Information Processing Systems 18 (Y. Weiss, B. Scho¨lkopf, and J. C. Platt, eds.), MIT Press, 2006, pp. 283­290. [7] Wenwu Wang, Instantaneous vs. convolutive non-negative matrix factorization: Models, algorithms and applications, Machine Audition: Principles, Algorithms and Systems: Principles, Algorithms and Systems (2010), 353.
+
+V. CONCLUSION
+This paper proposes an approach to the problem of testing NMF algorithms by running the algorithms on simple input that can produce an exact non-negative factorization, and perturbations of such input. In particular, square matrices with O(1) entries on the main diagonal and O( ) entries on the superdiagonal are proposed, because they have exact solutions that can enumerated mathematically, or because they are perturbations of matrices with exact solutions.
+
+

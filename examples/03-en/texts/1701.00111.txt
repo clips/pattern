@@ -1,0 +1,5125 @@
+A functional limit theorem for the sine-process
+Alexander I. Bufetov1,2,3,4,5 and Andrey V. Dymov2,3
+1Aix-Marseille Universit´e, CNRS, Centrale Marseille, I2M, UMR 7373, 39 rue F. Joliot Curie, Marseille, FRANCE
+2Steklov Mathematical Institute of RAS, Moscow 3National Research University Higher School of Economics, Moscow
+4Institute for Information Transmission Problems, Moscow 5The Chebyshev Laboratory, Saint-Petersburg State University, Saint-Petersburg,
+RUSSIA
+
+arXiv:1701.00111v2 [math.DS] 3 May 2017
+
+Abstract
+The main result of this paper is a functional limit theorem for the sine-process. In particular, we study the limit distribution, in the space of trajectories, for the number of particles in a growing interval. The sine-process has the Kolmogorov property and satisfies the Central Limit Theorem, but our functional limit theorem is very different from the Donsker Invariance Principle. We show that the time integral of our process can be approximated by the sum of a linear Gaussian process and independent Gaussian fluctuations whose covariance matrix is computed explicitly. The proof relies on a general form of the multidimensional Central Limit Theorem under the sine-process for linear statistics of two types: those having growing variance and those with bounded variance corresponding to observables of Sobolev regularity 1/2.
+
+Contents
+
+1 Introduction
+
+2
+
+1.1 Formulation of the main result . . . . . . . . . . . . . . . . . . . . . . . . . 2
+
+1.2 Finite dimensional distributions and motivation behind Theorem 1.1 . . . . 5
+
+1.3 Functional limit theorem for ergodic integrals . . . . . . . . . . . . . . . . 7
+
+1.4 Central Limit Theorem for linear statistics . . . . . . . . . . . . . . . . . . 9
+
+1.5 Outline of the proofs of Theorems 1.1 and 1.8 . . . . . . . . . . . . . . . . 11
+
+1.6 Organization of the paper . . . . . . . . . . . . . . . . . . . . . . . . . . . 11
+
+2 Preliminaries
+
+12
+
+2.1 Notation . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 12
+
+2.2 Determinantal point processes . . . . . . . . . . . . . . . . . . . . . . . . . 12
+
+2.3 Elementary inequalities for the trace . . . . . . . . . . . . . . . . . . . . . 14
+
+3 Cumulants of linear statistics
+
+15
+
+3.1 Cumulants and traces . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 15
+
+3.2 Cumulants under the sine-process . . . . . . . . . . . . . . . . . . . . . . . 19
+
+bufetov@mi.ras.ru dymov@mi.ras.ru
+
+1
+
+4 Central Limit Theorems for linear statistics
+
+22
+
+4.1 Linear statistics with growing variance: Theorem 4.1 . . . . . . . . . . . . 23
+
+4.2 Joint linear statistics of growing and bounded variances: Theorem 4.3 . . . 24
+
+4.3 Examples . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 26
+
+4.4 Beginning of the proof of Theorem 4.3 . . . . . . . . . . . . . . . . . . . . 27
+
+4.5 Conclusion of the proof of Theorem 4.3 . . . . . . . . . . . . . . . . . . . . 30
+
+4.6 Proofs of auxiliary results . . . . . . . . . . . . . . . . . . . . . . . . . . . 34
+
+5 Proofs of main results
+
+39
+
+5.1 Proofs of Theorem 1.1 and Propositions 1.2,1.3 . . . . . . . . . . . . . . . 39
+
+5.2 Proofs of auxiliary propositions . . . . . . . . . . . . . . . . . . . . . . . . 42
+
+5.3 Proof of Theorem 1.8 . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 44
+
+6 Main order asymptotic for determinantal processes with logarithmically
+
+growing variance
+
+45
+
+1 Introduction
+
+1.1 Formulation of the main result
+
+In this paper we study the asymptotic behaviour of trajectories of determinantal random point processes; for basic definitions and background concerning determinantal point processes, see Section 2.2 below. Mostly we deal with the sine-process given by the kernel
+
+sin(x - y)
+
+1
+
+Ksine(x, y) = (x - y)
+
+if
+
+x=y
+
+and
+
+Ksine(x, x)
+
+
+
+, 
+
+x, y  R.
+
+(1.1)
+
+The sine-process is a strongly chaotic stationary process: it satisfies the Kolmogorov property [Ly], [BQS], [OO], having, therefore, Lebesgue spectrum and positive entropy, and enjoys an analogue of the Gibbs property [Buf14, Buf15], namely, the quasi-invariance under the group of diffeomorphisms with compact support. At the same time, the sineprocess is rigid in the sense of Ghosh and Peres [G, GP]: the number of particles in a bounded interval is almost surely determined by the configuration in its exterior. The reason for the rigidity is the slow growth of the variance for the sine-process: for instance, the number of particles #[0,N] in the interval [0, N ] satisfies
+
+1 Var #[0,N] = 2 ln N + O(1),
+
+(1.2)
+
+see e.g. Exercise 4.2.40 from [AGZ]. This slow growth of the variance can be seen from
+
+the form () = || of the spectral density for the sine-process, cf. [So00], [BDQ]. Costin
+
+and Lebowitz [CL] showed that the sine-process satisfies the Central Limit Theorem: the
+
+random variable
+
+^N := #[0,N] - E #[0,N] Var #[0,N]
+
+(1.3)
+
+converges in distribution to the normal law:
+
+D(^N ) N (0, 1) as N  .
+
+(1.4)
+
+2
+
+Here E , Var and D stand for the expectation, variance and distribution under the sineprocess.
+The Central Limit Theorem was subsequently proven for arbitrary determinantal processes governed by self-adjoint kernels and arbitrary additive statistics with growing variance (see [So00, So00a, So00b, So01, HKPV]), in particular, for the Airy and Bessel processes ([So00a]), for which the variance of the number of particles has logarithmic growth and rigidity holds [Buf16].
+Many classical dynamical systems satisfying the Central Limit Theorem also satisfy the Donsker Invariance Principle, which, informally speaking, states that trajectories of the system can be approximated by the Brownian motion, cf. [Sinai89]. The main result of this paper is a functional limit theorem for the sine-process. The limit dynamics is completely different from Brownian motion. As far as we know, this is the first example of such behaviour in the theory of dynamical systems. More specifically, we investigate asymptotic behaviour, as N  , of the piecewise continuous random process
+
+tN
+
+=
+
+#[0,tN ]
+
+-E 
+
+#[0,tN ]
+
+,
+
+-1 ln N
+
+0  t  1,
+
+(1.5)
+
+under the sine-process. Trajectories of the process tN become extremely irregular when N grows (see Lemma 1.3), so that the sequence of distributions of trajectories D(N ) does
+not have a limit in any separable metric space. That is why, instead of the process tN
+t
+itself we study its time integral sN ds in the space of continuous functions C([0, 1], R).
+0
+We fix 0 <   1 and set
+
+
+
+N := 1 
+
+ sN ds and ztN := -1 ln N
+
+t
+sN ds - tN ,
+
+0
+
+0
+
+(1.6)
+
+so that
+
+t
+
+sN
+
+ds
+
+=
+
+tN
+
++
+
+ztN -1 ln
+
+N
+
+.
+
+0
+
+(1.7)
+
+The parameter  is fixed throughout the paper, and we skip it in the notation. Denote
+
+t2 ln |t|
+
+(t) :=
+
+and set (0) := 0. Let
+
+22
+
+1
+
+s
+
+s
+
+t
+
+s
+
+w(t, s) := (t - s) - 1 - (t) - (t -  ) + 1 - ( ).
+
+2
+
+
+
+
+
+
+
+
+
+Our first main result is
+
+Theorem 1.1. For any 0 <   1, under the sine-process we have the weak convergence of measures
+
+D(N , zN ) D(, z) as N   in R × C([0, 1], R),
+
+(1.8)
+
+where  and z are independent,   N (0, 1/2) and zt is a centred continuous Gaussian random process with the covariances
+
+E ztzs = w(t, s) + w(s, t), 0  t, s  1.
+
+(1.9)
+
+3
+
+C ln N
+
+N t
+
+t
+
+sN
+
+ds
+
+=
+
+Nt +
+
+zt -1 ln N
+
++o
+
+1 ln N
+
+0
+
+t
+
+
+
+1t
+
+t
+
+Figure 1: Up to terms of the size o (ln N )-1/2 , the integral sN ds decomposes to the sum of the linear
+
+in time process N t and Gaussian fluctuations
+
+zt
+
+0
+. Deviation of the process N t from the process
+
+-1 ln N
+
+C t is of the size  .
+
+ln N
+
+Proof of Theorem 1.1 is given in Section 5.1. Informally, Theorem 1.1 states that,
+
+t
+up to terms of the size o (ln N )-1/2 , the process sN ds can be decomposed to a linear
+
+0
+
+
+
+random process N t and small Gaussian fluctuations zt/-1 ln N , see figure (1). Here zt
+
+is a continuous centred Gaussian process whose covariances (1.9) we compute explicitly,
+
+while about the linear process N t we know that asymptotically it is governed by the
+
+process t, where   N (0, 1/2) is independent from z. For the rate of convergence of N
+
+to  we have
+
+Proposition 1.2. Cumulants (ANk ) and (Ak) of the random variables N and  satisfy AN1 = A1 = 0, |AN2 - A2|  C2(ln N )-1 and
+
+|ANk
+
+- Ak|
+
+
+
+Ck (ln N )k/2-1
+
+for all
+
+k  3,
+
+(1.10)
+
+with some constants Ck.
+
+For a short reminding about cumulants see the beginning of Section 3. Proof of Propo-
+
+sition 1.2 is given in Section 5.1. Informally, Proposition 1.2 states that the deviation of
+
+the process N t, specifying the linear growth of the integral (1.7), from the process t is of the size (ln N )-1/2. So that, it coincides with the size of the term zt/-1 ln N , specifying the nonlinear fluctuations.
+
+About the Gaussian process zt we can only say that, due to (1.9), z0 = z = 0, the
+distribution of zt restricted to the interval [0,  ] is symmetric with respect to the reflection
+t   - t, and that the increments of the process zt are not independent. Theorem 1.1 has the following statistical interpretation. 1 In order to predict behaviour
+
+t
+of the process sN ds on the whole time interval 0  t  1 it suffices to know its realization
+0
+at arbitrarily small positive time  . Indeed, then we determine N by the formula (1.6) and
+
+approximate
+
+the
+
+integral
+
+t 0
+
+sN
+
+ds
+
+by
+
+the
+
+sum
+
+N t
+
++
+
+zt , -1 ln N
+
+where
+
+zt
+
+is
+
+the
+
+Gaussian
+
+process from Theorem 1.1.
+
+1We are deeply grateful to Leonid Petrov for this remark.
+
+4
+
+The main order asymptotic D(N ) N D() from Theorem 1.1 only uses the logarithmic growth of the variance and holds for a general determinantal process with logarithmically growing variance (in particular, similar convergence takes place under the Airy and Bessel processes). We show this in Section 6. To prove the asymptotic D(zN ) D(z) however we crucially use the form of the sine-kernel (1.1). More specifically, this asymptotic relies on a multidimensional Central Limit Theorem 1.9 discussed in Section 1.4. To establish the latter we analyse the corresponding cumulants using a combinatorial identity (4.36) which is due to [So00b] and is specific for the sine-process. While we expect the result to hold for the discrete sine-process, additional arguments are needed. It would be interesting to establish the convergence analogous to D(zN ) D(z) for a general determinantal process with logarithmically growing variance by using some different method, e.g. that of contour integrals developed in [BF].
+The rest of Section 1 is organized as follows. It the next subsection we describe motivation behind Theorem 1.1. In Section 1.3 we state Theorem 1.8 which is our second main result. There we show that a large class of observables ergodic integrals corresponding to a shift operator on the space of configurations, has exactly the same asymptotic behaviour under the sine-process as that described by Theorem 1.1. In Section 1.4 we discuss the multidimensional Central Limit Theorem mentioned above, which is the main ingredient of the proofs of Theorems 1.1 and 1.8. In Section 1.5 we outline the proof of Theorem 1.1.
+
+1.2 Finite dimensional distributions and motivation behind Theorem 1.1
+
+We first look at the finite-dimensional distributions of the process tN . Proposition 1.3. For any 0 < t1 < . . . < td  1, d  1, we have
+
+D(tN1 , . . . , tNd ) D(t1, . . . , td) as N  , where  = (t1, . . . , td) is a centred Gaussian vector with the covariance matrix (bij),
+
+bij = 1/2 + ij/2,
+
+(1.11)
+
+where ij is the Kronecker symbol.
+
+Proposition 1.3 generalizes convergence (1.4) to many dimensions and is established in
+Section 5.1. Without a detailed proof a similar result was stated by Soshnikov, see [So00],
+p. 962 and [So00a], p. 499. The covariance matrix (bij) is independent from the choice of times t1, . . . , td. In particular, this means that if the limit as N   of the process tN exists in some sense, then it can not be a continuous process, so nothing as Brownian motion can appear. Note that proof of the fact that the matrix (bij) has the form (1.11) crucially uses the logarithmic growth of the variance (1.2).
+
+Remark 1.4. In the sense of finite-dimensional distributions, asymptotic for large N
+
+behaviour of the process tN is close to behaviour of the fractional Brownian motion BtH
+
+with small parameter H 1. Indeed, in Lemma 4.1 of [BMNZ] it is pointed out that
+
+D(BtH1 , . . . , BtHd ) tion 1.3.
+
+D() as H  0, where the  is the Gaussian vector from Proposi-
+
+5
+
+Due to (1.11), distribution of the Gaussian vector  can be represented in the form
+
+D() = D (, . . . , ) + (t1, . . . , td) ,
+
+where the random variables , t1, . . . , td  N (0, 1/2) and are mutually independent. That is why we expect that the limiting behaviour of the process tN is governed by the sum of independent processes t + t, where t   and the process t is a centred Gaussian with the covariances E ts = ts/2. However, such a process t does not exist in a classical sense (more precisely, it cannot be defined over a separable metric space). That
+
+is why, in order to regularize the limiting dynamics, instead of the process tN we study
+t
+
+its time integral sN ds. We expect that when N   the latter is governed by the sum
+
+0
+
+t
+
+t
+
+t
+
+ + s ds = t + s ds where we the integral s ds should be defined appropriately.
+
+0
+
+0
+
+0
+
+Here one can draw an analogy with the white noise, which is not defined in the classical
+
+sense but its time integral gives the Brownian motion. However, this heuristic idea leads
+
+us to the following rigorous result.
+
+Proposition 1.5. For any function   L1[0, 1] we have
+
+1
+D (s)sN ds
+0
+
+1
+D  (s) ds
+0
+
+as N  ,
+
+(1.12)
+
+where   N (0, 1/2).
+
+Remark 1.6. Here and below by the normal law with zero expectation and variance
+1
+we understand the Dirac delta-measure at zero 0. In particular, if (s) ds = 0 then
+0 1
+D (s)sN ds 0.
+0
+
+t
+Choosing  = I[0,t] we find the leading term of the asymptotic for the process sN ds,
+0
+claimed in Theorem 1.1:
+
+t
+D sN ds
+0
+
+D(t) as N  .
+
+(1.13)
+
+t
+Thus, we do not observe the integral s ds. The reason is that the process t is completely
+0
+uncorrelated in time and has a bounded variance (in difference with the white noise whose variance is the delta-function). So that, t oscillates fast with not very large amplitude and averages out under the integration over the interval [0, t]. Note that convergence (1.12) takes place even for a very rough observable : only integrability of  is assumed.
+Proposition 1.5 is a particular case of Proposition 6.1, in which we establish a stronger result for an important class of determinantal point processes including those with logarithmically growing variance, as the sine, Airy and Bessel processes; see Section 6.
+
+6
+
+Proposition 1.5 gives some information about the asymptotic behaviour of the process
+
+tN . But we lose a lot: we do not observe any influence of the process t which we find
+
+at the level of finite dimensional distributions. Our next goal is to catch the process
+
+t
+
+t. The informal identity s ds = 0 resembles the law of large numbers. To observe the
+
+0
+
+influence of t we try to look at the Central Limit Theorem scaling. Since we expect that,
+
+informally,
+
+t
+
+t
+
+sN ds - t  s ds as N  ,
+
+0
+
+0
+
+we need to find a sequence N   as N  , such that the random process
+
+ztN = N
+
+t
+sN ds - t
+0
+
+(1.14)
+
+converges to a non-trivial limit. However, joint distribution of the process tN and the random variable  is undefined. To overcome this difficulty we note that, due to (1.13),
+D(N ) N D() where N is defined in (1.6), and replace in the definition (1.14) of the process ztN the random variable  by N . Then, setting N = -1 ln N we arrive at Theorem 1.1.
+
+Remark 1.7. It could seem that influence of the process t could be discovered by consid-
+eration of some nonlinear functional of the process tN such as, for example, the integral
+1
+(t)(tN )m dt for integer m  2, where   L1[0, 1]. However, this is not the case. In-
+0 m
+deed, we expect that (tN )m  ( + t)m = Cmk tkm-k, if N is large. Since terms tk and
+k=0
+sk are independent for t = s, the situation here is similar to that of Proposition 1.5: the
+1
+integral (t)tk dt averages the terms tk, so feels only their means E tk. More precisely,
+0
+one can prove that
+
+1
+
+1
+
+m
+
+D (t)(tN )m dt N D (s) ds Cmk m-kE 0k .
+
+0
+
+0
+
+k=0
+
+(1.15)
+
+Comparing with the right-hand side of (1.12), the r.h.s. of (1.15) depends on the moments E tk, so that now we feel the "noise" t but in a trivial way. Indeed, all the randomness is still due to , although modified by the moments of t.
+
+1.3 Functional limit theorem for ergodic integrals
+In this section we explain that ergodic integrals corresponding to a shift operator acting on the space of configurations possess the same asymptotic behaviour as the number of particles #[0,N]. Denote by Conf(R) the space of locally finite configurations on R,
+Conf(R) = X  R X does not have limit points in R .
+
+7
+
+Let T u, u  0, be a shift operator acting on Conf(R) as T u : Conf(R)  Conf(R), T u(X ) = X - u.
+
+Consider the dynamical system
+
+Conf(R), (T u)u0, P ,
+
+(1.16)
+
+where P is the probability measure on Conf(R), given by the sine-process. Take a bounded measurable function  : R  R with compact support. The linear statistics S corresponding to the function  is introduced by the formula
+
+S : Conf(R)  R, S(X ) := (x).
+xX
+
+(1.17)
+
+In particular, if  = I[a,b], we have S = #[a,b]. Assume that the function  satisfies the
+normalization requirement
+
+
+(u) du = 1.
+
+(1.18)
+
+-
+Consider the ergodic integral
+
+tN
+S  T u du, 0  t  1,
+
+0
+
+where
+
+S  T u(X ) =
+
+(x) = (x - u).
+
+xT u(X )
+
+xX
+
+(1.19)
+
+Let tN Nt := (· - u) du.
+
+0
+Then, exchanging the integral with the sum, we see that the ergodic integral coincides with the linear statistics SNt ,
+
+tN
+S  T u du = SNt .
+0
+
+(1.20)
+
+Consider the random process
+
+N,t
+
+:=
+
+SNt
+
+-E 
+
+SNt
+
+-1 ln N
+
+.
+
+In the next theorem, which is our second main result, we show that under the sine-process the process N,t possesses exactly the same asymptotic behaviour as the process tN given by (1.5). Fix 0 <   1 and set
+
+
+
+N = 1 
+
+N,s ds.
+
+0
+
+8
+
+Nt 1
+
+mM
+
+x m + Nt M + Nt
+
+Figure 2: Function Nt . Here m := inf supp  and M := sup supp .
+
+Choose the random process ztN in such a way that
+
+t
+
+N,s
+
+ds
+
+=
+
+tN
+
++
+
+ztN -1 ln
+
+N
+
+.
+
+0
+
+Theorem 1.8. Under the sine-process we have
+
+1. For any t > 0,
+
+ Var SNt = -2 ln N + O( ln N ) as N  .
+
+2. For any 0 < t1 < . . . < td  1, d  1, distribution of the random vector
+N := (N,t1 , . . . , N,td )
+satisfies D(N ) D() as N  , where  the Gaussian random vector from Proposition 1.3.
+
+3. The distribution D(N , zN ) satisfies D(N , zN ) D(, z) as N   in R × C([0, 1], R), where the random variable  and the random process zt are as in Theorem 1.1.
+
+4. Cumulants (ANk ) and (Ak) of the random variables N and  satisfy AN1 = A1 = 0, |AN2 - A2|  C2(ln N )-1/2, and (1.10) for k  3 and some constants Ck.
+Theorem 1.8 is proven in Section 5.3. To see the connection between the processes tN and N,t observe that the function Nt has the form as shown on figure 2: it has a flat part
+
+of the length  N where Nt (x) = (x) dx = 1, and tails with the length of order
+-
+one. So that, Nt almost coincides with a shifted indicator function I[0,N], if N is large. But the linear statistics SI[0,N] is equal exactly to the number of particles #[0,N].
+
+1.4 Central Limit Theorem for linear statistics
+Proofs of Theorems 1.1 and 1.8 follow the same pattern and rely on the multidimensional Central Limit Theorem 4.3, which we state below in a simpler form. Recall that the linear statistic S of a function  is defined in (1.17).
+Theorem 1.9. Let f1, . . . , fp, g1, . . . , gq : R  R, p, q  0, be measurable bounded functions with compact supports. Set fiN := fi(·/N ), gjN := fj(·/N ) and consider the corresponding linear statistics
+Sf1N , . . . , SfpN , Sg1N , . . . , SgqN as random variables under the sine-process. Assume that
+
+9
+
+1. There exists a sequence VN   as N   and numbers bfij satisfying bfii > 0, such
+
+that for any i, j
+
+Cov(SfiN , SfjN ) VN
+
+
+
+bfij
+
+as
+
+N  .
+
+(1.21)
+
+2. The functions gi belong to the Sobolev space H1/2(R).
+
+Let (fN , gN ) be the random vector with components
+
+fNi
+
+:=
+
+SfiN
+
+- E SfiN VN
+
+and gNj := SgjN - E SgjN .
+
+Then we have the weak convergence D(fN , gN ) D(f , g), where (f , g) is a centred
+
+Gaussian random vector with the covariance matrix
+
+(bfij) 0 0 (bgkl)
+
+and bgkl = gk, gl 1/2,
+
+where the pairing ·, · 1/2 is given by (2.1).
+
+Note that under the assumption gi  H1/2 the variances Var SgiN do not grow at all, so that assumption (1.21) can not be satisfied for the functions gi. Conversely, the inclusion fi  H1/2 can not take place once (1.21) holds.
+The difference between Theorems 1.9 and 4.3 is that in the latter we admit more
+general dependence of the functions fiN , gjN on N than in Theorem 1.9. This is needed for the proof of Theorem 1.8.
+The marginal convergence D(fN ) N D(f ) does not use the special structure of the sine-kernel and takes place under a large class of determinantal point processes, once
+
+(1.21) holds. We prove this in Theorem 4.1 and use in Section 6, where we establish the
+
+main order asymptotic from Theorem 1.1 for a general determinantal process with loga-
+rithmically growing variance. To establish the convergence D(gN ) N D(g), however, we crucially use the form of the sine-kernel. Indeed, proof of our Central Limit Theorem
+is based on analysis of cumulants (ANk )kZ+p+q of the random vector (fN , gN ). In particular,
+we show that ANk N 0 once |k| > 2. For the cumulants corresponding to the component fN the latter convergence follows from general estimates obtained in Section 3 and decay of the normalization factor VN-1. For the component gN such normalization is lacking and the analysis is more delicate. We rely on the combinatorial identity (4.36) obtained by
+
+Soshnikov in [So00b], while application of the latter requires the relation (3.30) which is
+
+specific for the sine-process.
+
+The main novelty of Theorem 1.9 is that we study asymptotic behaviour of the joint
+
+linear statistics (SfiN , SgjN ), so that we work simultaneously on two different scales, corresponding to the growing and bounded variance. Indeed, the marginal convergence
+D(fNi )  D(fi) in the generality of Theorem 4.1 generalizes convergences obtained by Costin and Lebowitz [CL] and Soshnikov [So00, So00a, So01], see Section 4.1 for the
+discussion. The convergence D(gNi )  D(gi) was proven by Spohn [Sp] and Soshnikov [So00b, So01]. For further developments see also works [JL, L15, L15a, BD16, BD17],
+
+where certain one-dimensional Central Limit Theorems were established for linear statis-
+tics with bounded variance, related to the marginal convergence D(gNi )  D(gi). More precisely, in [JL, L15] and [BD16] the Central Limit Theorems were proven for linear
+
+statistics of various orthogonal polynomial ensembles on mesoscopic scales. In [L15a] and
+
+[BD17] those were obtained for linear statistics of certain biorthogonal ensembles.
+
+10
+
+1.5 Outline of the proofs of Theorems 1.1 and 1.8
+
+First we discuss Theorem 1.1. We note that, due to (1.5),
+
+
+ -1
+
+N =
+
+0
+
+#[0,sN] - E #[0,sN] 
+-1 ln N
+
+ds
+
+=
+
+Sf N
+
+-E 
+
+Sf
+
+N
+
+,
+
+-1 ln N
+
+where SfN is the linear statistics corresponding to the function f N (x) = f (x/N ) with
+
+
+
+f (x)
+
+=
+
+1 
+
+I[0,s](x) ds. Similarly,
+
+0
+
+t
+ztN =
+0
+
+#[0,sN] - E #[0,sN]
+
+
+t ds -
+
+0
+
+#[0,sN] - E #[0,sN]
+
+ds = SgtN - E SgtN ,
+
+where gtN (x) = gt(x/N ) and the functions gt, 0  t  1, are given by
+
+t
+
+
+
+t gt(x) := I[0,s](x) ds -  I[0,s](x) ds.
+
+0
+
+0
+
+(1.22)
+
+It is easy to see that the functions f and gt have compact support, are piecewise linear, and
+the functions gt are continuous (see (5.9)-(5.10) for the explicit form of gt). In particular, gt  H1(R) for all 0  t  1.
+1 Next we show that Var SfN  22 ln N and that the pairing gt, gs 1/2 equals to the right-hand side of (1.9). Thus, for any 0  t1 < . . . < td  1 the functions (f, gt1, . . . , gtd) satisfy assumptions of Theorem 1.9, with VN = -2 ln N , bf11 = 1/2 and bgij = r.h.s. of (1.9). The latter implies the convergence
+
+D(N , ztN1 , . . . , ztNd ) D(, zt1, . . . , ztd) as N  ,
+
+(1.23)
+
+where the random variable  and the random process zt are as in Theorem 1.1. Then, using a compactness argument in a standard way, we show that convergence (1.23) implies
+
+assertion of the theorem.
+
+Proof of Theorem 1.8 uses similar argument. Its main difference from the proof of Theorem 1.1 is that the functions f N and gtN depend on N in a more complicated way. That is why instead of Theorem 1.9 we use more general Theorem 4.3.
+
+1.6 Organization of the paper
+In Section 2 we first introduce notation which will be used throughout the paper. Then we recall some basic definitions concerning determinantal point processes and establish some simple facts needed in the sequel. In Section 3 we compute and estimate cumulants of linear statistics first under a general determinantal process and then specify our attention on the sine-process. Results obtained there are used in Section 4, where we establish the Central Limit Theorems 4.1 and 4.3, which are discussed Section 1.4. Section 5 is devoted to the proofs of our main results: Propositions 1.2, 1.3 and Theorems 1.1, 1.8. In Section 6 we prove an analogue of Proposition 1.5 for an important class of determinantal processes, including those with logarithmically growing variance (in particular, the Airy and Bessel processes).
+
+11
+
+2 Preliminaries
+
+2.1 Notation
+
+1. By C, C1, . . . we denote various positive constants. By C(a), . . . we denote constants depending on a parameter a. Unless otherwise stated, the constants never depend on N .
+
+2. For d  1 we set Zd+ := {Zd k = (k1, . . . , kd) = 0 : kj  0 1  j  d}.
+3. For k  Zd+ and z  Cd we denote |k| := k1 + · · · + kd, k! := k1! · · · kd! and zk := z1k1 · · · zdkd .
+
+4. Our convention for the Fourier transform is as follows: h^(t) = F (h) = h(x)e-itx dx.
+- 
+For the inverse Fourier transform we write F -1(h^)(x) = (2)-1 h^(t)eitx dt.
+-
+
+5. We denote by · the usual operator norm, by · HS the Hilbert-Schmidt norm and by ·  and · Lm, m  1, the Lebesgue L and Lm-norms. By Hn(R), n > 0, we denote the Sobolev space of order n and for functions f, g  Hn(R) we set
+
+
+
+f
+
+2 n
+
+:=
+
+1 22
+
+|u|2n|f^(u)|2 du,
+
+-
+
+
+
+1 f, g n := 22
+
+|u|2nf^(u)g^(u) du,
+
+-
+
+(2.1)
+
+and
+
+f
+
+2 Hn
+
+:=
+
+f
+
+2 L2
+
++
+
+
+
+f
+
+2 n
+
+.
+
+6. By Conf(Rm) we denote the space of locally finite configurations of particles in Rm, m  1,
+
+Conf(Rm) := X  Rm X does not have limit points in Rm .
+
+(2.2)
+
+7. Let X  Conf(Rm). By #B(X ) := #{B  X } we denote the number of particles from the configuration X intersected with the set B.
+8. For a bounded compactly supported function h : Rm  R, by Sh we denote the corresponding linear statistics,
+
+Sh : Conf(Rm)  R, Sh(X ) = h(x).
+xX
+
+9. By IB we denote the indicator function of a set B  Rm.
+
+2.2 Determinantal point processes
+In this section we recall some basic definitions and facts concerning determinantal processes. Determinantal (or fermion) random point processes form a special class of random point processes, which was introduced by Macchi in seventies (see [Ma75, Ma77, DVJ]). They play an important role in the random matrix theory, statistical and quantum mechanics, probability, representation and number theory. For detailed background see [So00, ST, STa], see also Chapter 4.2 in [AGZ].
+
+12
+
+Consider on the space of locally finite configurations Conf(Rm), defined in (2.2), a -algebra F generated by cylinder sets
+CBn = {X  Conf(Rm) : #B(X ) = n},
+where n and B run over natural numbers and bounded Borel subsets of Rm correspondingly. The triple (Conf(Rm), F , P ), where P is a probability measure on (Conf(Rm), F ), is called a random point process.
+Assume that there exists a family of locally integrable nonnegative functions n : (Rm)n  R, n  1, such that for any n  1 and any mutually disjoint Borel subsets B1, . . . , Bn of Rm we have
+
+E #B1 · · · #Bn =
+
+n(x1, . . . , xn) dx1 · · · dxn.
+
+B1×...×Bn
+
+The functions n are called correlation functions. Under natural assumptions the family
+(n)n1 determines the probability P uniquely, see e.g. [So00]. Consider a non-negative integral operator K : L2(Rm, dx)  L2(Rm, dx) with a Her-
+mitian kernel K : Rm × Rm  C,
+
+Kf (x) = K(x, y)f (y) dy, K  0.
+Rm
+
+(2.3)
+
+Assume that K is locally trace class, i.e. for any bounded Borel set B  Rm the operator IBKIB is trace class. Lemmas 1 and 2 from [So00] imply that it is possible to choose the kernel K in such a way that for any bounded Borel sets B1, . . . , Bn, n  1, we have
+
+tr IBnKIB1KIB2 . . . KIBn =
+
+K(x1, x2)K(x2, x3) · · · K(xn, x1) dx1 . . . dxn. (2.4)
+
+B1×...×Bn
+
+In particular, for n = 1 we have tr IB1KIB1 = K(x, x) dx. Assume that (2.4) is satisfied.
+B1
+Definition 2.1. A random point process is called determinantal if it has the correlation functions of the form
+
+K(x1, x1) . . . K(x1, xn)
+
+n(x1, . . . , xn)  det  ...
+
+... 
+
+K(xn, x1) . . . K(xn, xn)
+
+for all n  1.
+
+Determinantal processes possess the following property, which can be viewed as their equivalent definition. Take any bounded measurable function h : Rm  R with a compact
+support D := supp h. Consider the corresponding linear statistics Sh. Then the generating function E zSh, z  C, takes the form
+
+E zSh = det 1 + (zh - 1)KID ,
+
+(2.5)
+
+where the expectation is taken under the determinantal process and det denotes the Fredholm determinant. The latter is well-defined since the operator K is locally trace class.
+
+13
+
+2.3 Elementary inequalities for the trace
+
+We will need the following elementary inequalities. Consider a determinantal point process on Rm, m  1, given by a Hermitian kernel K. Take a bounded measurable function h : Rm  R with compact support. Set
+
+D := supp h and KD := IDKID,
+
+where the integral operator K is defined in (2.3).
+
+Proposition 2.2. We have
+
+h(KD - KD2 )h  0.
+
+Proof. It is well-known that 0  K  Id. Consequently, 0  KD  Id and KD - KD2 = KD(Id - KD)  0. Then, denoting by ·, · L2 the scalar product in L2(Rm, dx), for any function f  L2(Rm, dx) we obtain
+
+h(KD - KD2 )hf, f L2 = (KD - KD2 )hf, hf L2  0.
+
+It is well-known that
+
+Var Sh = h2(x)K(x, x) dx -
+
+h(x)h(y)|K(x, y)|2 dxdy,
+
+D
+
+DD
+
+= tr h2KD - tr(hKD)2.
+
+(2.6)
+
+The traces above are well-defined since the operator K is locally trace class, so that the operators h2KD and (hKD)2 are trace class. Denote by [·, ·] the commutator, [A, B] = AB - BA. We have
+
+[KD, h]
+
+2 HS
+
+=2
+
+h2(x)|K(x, y)|2 dxdy - 2
+
+h(x)h(y)|K(x, y)|2 dxdy
+
+DD
+= 2 tr h2KD2 - tr(hKD)2 .
+
+DD
+
+(2.7)
+
+Proposition 2.3. We have
+
+0  tr h2(KD - KD2 )  Var Sh and
+
+[KD, h]
+
+2 HS
+
+ 2 Var Sh.
+
+(2.8)
+
+Proof. Proposition 2.2 together with cyclicity of the trace implies tr h2(KD - KD2 )  0. Next, subtracting (2.7) divided by two from (2.6), we get
+
+1 Var Sh - 2
+
+[h, KD]
+
+2 HS
+
+=
+
+tr h2(KD
+
+-
+
+KD2 ).
+
+Since
+
+[h, KD]
+
+2 H
+
+S
+
+,
+
+tr
+
+h2(KD
+
+-
+
+KD2 )
+
+
+
+0,
+
+we obtain
+
+(2.8).
+
+Proposition 2.4. For any linear operators G1, . . . , Gn, F , n  1, we have
+
+n
+[G1 · · · Gn, F ] = G1 · · · Gl-1[Gl, F ]Gl+1 · · · Gn.
+l=1
+
+Proof. By induction.
+
+14
+
+3 Cumulants of linear statistics
+
+3.1 Cumulants and traces
+
+In this section we compute cumulants of linear statistics viewed as random variables under a determinantal process and obtain some estimates for them. Despite that in the present paper we mainly work with the sine-process, first in this section we consider a general determinantal process. This is needed for the proof of Theorem 4.1.
+Recall that the numbers (Jk)kZd+ are called cumulants of a random vector  = (1, . . . , d)  Rd if for any sufficiently small y  Rd we have
+
+ln E eiy· =
+
+(iy)k Jk k! ,
+
+kZd+
+
+where · denotes the standard scalar product in Rd while (iy)k and k! are defined in item 3
+of Section 2.1. A cumulant Jk can be expressed through the moments (ml)|l|k of the random vector  and the other way round. If (e1, . . . , ed) is the standard basis of Zd then
+
+Jei = E i and Jei+ej = Cov(i, j) for any 1  i, j  d.
+
+(3.1)
+
+The vector  is Gaussian iff Jk = 0 for all |k|  3. For more information see e.g. [Shi], Section 2.12.
+Let h1, . . . , hd : Rm  R, d  1, be bounded Borel measurable functions with compact supports and h := (h1, . . . , hd). Consider the vector of linear statistics
+
+Sh := (Sh1, . . . , Shd)
+
+(3.2)
+
+as a random vector under a determinantal process given by a Hermitian kernel K. Denote
+
+D := di=1 supp hi and KD = IDKID,
+
+(3.3)
+
+where the locally trace class operator K is given by (2.3). The proofs of the following Lemma 3.1 and Proposition 3.2 are routine (cf. formulas (1.14) and (2.7) from [So00b]) and we include them for completeness.
+
+Lemma 3.1. For any k  Zd+ satisfying |k|  2 the cumulant Bk of the random vector (3.2) has the form
+
+|k| (-1)j+1
+
+Bk = k!
+
+j
+
+tr ha1 K · · · haj-1 Khaj KD . a1! · · · aj!
+
+j=1
+
+a1,...,aj Zd+:
+
+a1+···+aj =k
+
+(3.4)
+
+Proof. Due to (2.5) with z := ei and h := h · y, we have
+
+ln E eiSh·y = ln det 1 + (eih·y - 1)KD .
+
+Then, Lemma XIII.17.6 from [RS] implies that for a sufficiently small y  Rd we have
+
+ln E eiSh·y = ln exp
+
+
+
+(-1)j+1 tr
+j
+
+(eih·y - 1)KD
+
+j
+
+j=1
+
+ (-1)j+1 =
+
+
+
+tr(iy · h)l1K · · · (iy · h)lj KD .
+
+j
+
+l1! · · · lj!
+
+j=1
+
+l1,...,lj =1
+
+(3.5)
+
+15
+
+Note that
+
+d
+
+(iy · h)ln =
+
+iym1 hm1 · · · iymln hmln .
+
+(3.6)
+
+m1,...,mln =1
+
+We have
+
+iym1 hm1 · · · iymln hmln = (iy1h1)an1 · · · (iydhd)and = (iy)an han ,
+
+where
+
+an := (an1 , . . . , and )  Zd+ and anr := #{q, 1  q  ln : mq = r}.
+
+(3.7)
+
+Next we replace in (3.6) the summation over m1, . . . , mln by that over an  Zd+. To this end, we note that |an| = ln and for a given vector an the number of vectors (m1, . . . , mln) satisfying (3.7) is equal to ln!/an!. Then
+
+(iy · h)ln =
+
+ln! (iy)anhan.
+
+an!
+
+anZd+:|an|=ln
+
+Now (3.5) implies
+
+ln E eiSh·y =  (-1)j+1  j
+
+tr(iy)a1ha1K · · · (iy)aj haj KD l1! · · · lj!
+
+l1! · · · lj!
+
+a1! · · · aj!
+
+j=1
+
+l1,...,lj =1 a1,...,aj Zd+:
+
+|a1|=l1,...,|aj |=lj
+
+=
+
+(iy)k |k| (-1)j+1
+
+tr ha1K · · · haj KD ,
+
+j
+
+a1! · · · aj!
+
+kZd+
+
+j=1
+
+a1,...,aj Zd+:
+
+a1+···+aj =k
+
+where in the last equality the second sum is taken only over j  |k| since for j > |k| the relation a1 + · · · + aj = k with a1, . . . , aj  Zd+ is impossible.
+Proposition 3.2. For any k  Zd+ satisfying |k|  2 we have
+
+|k| (-1)j+1
+
+1
+
+j
+
+a1! · · · aj! = 0.
+
+j=1
+
+a1,...,aj Zd+:
+
+a1+···+aj =k
+
+(3.8)
+
+Proof. Denote the left-hand side of (3.8) by Tk. Represent the function
+
+g(x) := x1 + . . . + xd where x = (x1, . . . , xd),
+
+(3.9)
+
+in the form g(x) = ln 1 + (ex1+···+xd - 1) . Developing the logarithm and exponents to
+the series, we see that g(x) = Tkxk. Indeed,
+kZd+
+
+ (-1)j+1 g(x) =
+
+
+
+xn11 · · ·
+
+
+
+xndd - 1
+
+j
+=
+
+
+
+(-1)j+1
+
+xn j
+
+j
+j=1
+
+n1=0 n1!
+
+nd=0 nd!
+
+j
+j=1
+
+n!
+nZd+
+
+ (-1)j+1 =
+j
+
+xa1 · · · xaj =
+a1! · · · aj!
+
+Tkxk.
+
+j=1
+
+a1,...,aj Zd+
+
+kZd+
+
+Thus, due to (3.9), we have Tk = 0 for |k|  2. Lemma 3.1 together with Proposition 3.2 immediately implies
+
+16
+
+Corollary 3.3. For any k  Zd+ satisfying |k|  2, the cumulants Bk of the random vector (3.2) can be represented in the form
+
+|k| (-1)j+1
+
+Bk = k!
+
+j
+
+tr ha1K · · · haj KD - tr hkKD . a1! · · · aj!
+
+j=1
+
+a1,...,aj Zd+:
+
+a1+···+aj =k
+
+(3.10)
+
+In the next lemma we estimate the right-hand side of (3.10).
+
+Lemma 3.4. Let k  Zd+, |k|  2, and vectors a1, . . . , aj  Zd+, j  1, satisfy a1 + · · · + aj = k. Then
+
+d
+
+| tr ha1K · · · haj KD - tr hkKD|  C(|k|, d, j) max 1id
+
+hi
+
+|k|-2 
+
+Var Shl.
+
+l=1
+
+(3.11)
+
+Proof of Lemma 3.4 follows a scheme similar to that used in the proof of Lemma 3.2
+
+from [BD15]. However, in [BD15] only the case when K is a projection was considered
+
+and the operators hlK, Khl were assumed to be of the trace class. We do not impose these restrictions.
+
+Proof. Step 1. We argue by induction. If j = 1 then the left-hand side of (3.11) is equal
+
+to zero. Consider the case j = 2. Using cyclicity of the trace, by a direct computation we
+
+get
+
+tr ha1 Kha2 KD
+
+=
+
+tr ha1 KDha2 KD
+
+=
+
+1 2
+
+tr[ha1, KD][ha2, KD] + tr hkKD2 .
+
+Then
+
+| tr ha1Kha2KD - tr hkKD|
+
+
+
+1 2
+
+[ha1, KD]
+
+HS
+
+[ha2, KD]
+
+HS + | tr(hkKD2 - hkKD)|.
+
+(3.12)
+
+We estimate the terms of the right-hand side above separately. Set
+
+(x) := h21(x) + · · · + h2d(x).
+
+(3.13)
+
+Using
+
+the
+
+convention
+
+0 0
+
+=:
+
+0,
+
+we
+
+obtain
+
+| tr(hkKD - hkKD2 )| =
+
+tr
+
+hk 2
+
+(KD
+
+-
+
+KD2 )
+
+
+
+hk 2
+
+tr (KD - KD2 ),
+
+
+(3.14)
+
+since, due to Proposition 2.2, the operator (KD - KD2 ) is non-negative. Clearly,
+
+hk 2
+
+ max
+ 1id
+
+hi |k|-2.
+
+On the other hand, due to (2.8), we have
+
+d
+
+d
+
+tr (KD - KD2 ) = tr 2(KD - KD2 ) = tr h2l (KD - KD2 )  Var Shl.
+
+l=1
+
+l=1
+
+Thus,
+
+d
+
+|
+
+tr(hkKD
+
+-
+
+hkKD2 )|
+
+
+
+max
+1id
+
+hi
+
+|k|-2 
+
+Var Shl.
+
+l=1
+
+(3.15) (3.16)
+
+17
+
+We now estimate the Hilbert-Schmidt norm of the commutators from (3.12). Due to Proposition 2.4, for any b  Zd+ we have
+
+d
+
+[hb, KD] HS  |b| max 1id
+
+hi
+
+|b|-1 
+
+[hl, KD] HS
+
+l=1
+
+ C(|b|, d) max 1id
+
+hi
+
+|b|-1 
+
+d
+
+1/2
+
+Var Shl ,
+
+l=1
+
+(3.17)
+
+where in the last inequality we have used the second relation from (2.8). Now (3.12) joined with (3.16) and (3.17) implies the desired estimate.
+Step 2. Assume that j  3. Denote
+
+G := ha1 KDha2 KD · · · haj-3 KDhaj-2 ,
+
+(3.18)
+
+so that tr ha1K · · · haj KD = tr ha1KD · · · haj KD = tr GKDhaj-1KDhaj KD (in particular, for j = 3 we have G = h1). It suffices to show that
+
+d
+
+| tr GKDhaj-1KDhaj KD - tr GKDhaj-1+aj KD|  C(|k|, d) max 1id
+
+hi
+
+|k|-2 
+
+Var Shl.
+
+l=1
+
+(3.19)
+
+A direct computation gives
+
+tr GKDhaj-1 KDhaj KD = tr GKD[haj-1 , KD][haj , KD] + tr GKDhaj-1 KD2 haj
+
+- tr GKD2 haj-1 KDhaj + tr GKD2 haj-1+aj KD.
+
+(3.20)
+
+Write
+
+| tr GKDhaj-1 KDhaj KD - tr GKDhaj-1+aj KD|  | tr GKD[haj-1 , KD][haj , KD]|
+
++ | tr GKDhaj-1 KD2 haj - tr GKD2 haj-1 KDhaj |
+
+(3.21)
+
++ | tr GKD2 haj-1+aj KD - tr GKDhaj-1+aj KD| =: I1 + I2 + I3.
+
+We estimate the terms I1, I2, I3 separately. We have
+
+I1  GKD [haj-1 , KD] HS [haj , KD] HS.
+
+(3.22)
+
+Recalling that 0  KD  Id, we obtain
+
+GKD
+
+ max 1id
+
+hi
+
+. |k|-|aj-1|-|aj |
+
+
+(3.23)
+
+Then the relation (3.17) implies
+
+Next,
+
+d
+
+I1  C(|k|, d) max hi |k|-2 1id
+
+Var Shl.
+
+l=1
+
+I2  | tr GKDhaj-1 KD2 haj - tr GKDhaj-1 KDhaj | + | tr GKDhaj-1 KDhaj - tr GKD2 haj-1 KDhaj | =: I2 + I2 .
+
+18
+
+Due to (3.15) and (3.23),
+
+I2 = 
+
+tr
+
+GKD
+
+haj-1 
+
+(KD2
+
+-
+
+KD)
+
+haj 
+
+GKD
+
+haj-1 
+
+
+
+haj 
+
+
+
+tr
+
+(KD
+
+-
+
+KD2 )
+
+
+
+max
+1id
+
+d
+
+hi
+
+|k|-2 
+
+Var Shl.
+
+l=1
+
+In a similar way we get the same estimate for the terms I2 and I3. Then (3.21) implies (3.19).
+
+3.2 Cumulants under the sine-process
+
+In this section we assume that K = Ksine is the sine-kernel given by (1.1). Using its special structure we rewrite the traces from (3.4) in an appropriate way, representing them through the Fourier transforms h^i.
+Let k  Zd+, v = (v1, . . . , v|k|) and a1, . . . , aj  Zd+, j  1, satisfy a1 + . . . + aj = k. Denote
+h^a1,...,aj (v) := h^1(v1) . . . h^1(va11 )h^2(va11+1) . . . h^2(va11+a12 ) . . . h^d(va11+...+a1d-1+1) . . . h^d(v|a1|) h^1(v|a1|+1) . . . h^1(v|a1|+a21 ) . . . h^d(v|a1|+a21+...+a2d-1+1) . . . h^d(v|a1|+|a2|)h^1(v|a1|+|a2|+1) . . . .
+We abbreviate the relation above as
+
+|k|
+h^a1,...,aj (v) = h^li (vi),
+i=1
+
+(3.24)
+
+where li = r, 1  r  d, if
+
+i  ds=1 |a1| + . . . + |as-1| + as1 + . . . + asr-1 + 1, |a1| + . . . + |as-1| + as1 + . . . + asr .
+
+Let for j  2
+
+|a1| |a1|+|a2|
+
+|a1|+...+|aj-1|
+
+J |a1|,...,|aj|(v) := - max 0, vi,
+
+vi, . . . ,
+
+vi
+
+i=1
+
+i=1
+
+i=1
+
+|a1|
+
+|a1|+|a2|
+
+|a1|+...+|aj-1|
+
+- max 0, - vi, -
+
+vi, . . . , -
+
+vi ,
+
+i=1
+
+i=1
+
+i=1
+
+and for j = 1 set J |a1|,...,|aj| := 0.
+
+(3.25)
+
+Proposition 3.5. Let K = Ksine and vectors k, a1, . . . , aj  Zd+, |k|  2, j  1, satisfy a1 + . . . + aj = k. Then
+
+tr ha1K
+
+· · · haj KD
+
+=
+
+1 (2)|k|
+
+h^a1,...,aj (v) max 2 + J |a1|,...,|aj|(v), 0 dS,
+
+v1+...+v|k|=0
+
+(3.26)
+
+where dS is an elementary volume of the hyperplane v1 + . . . + v|k| = 0, normalized in such a way that dS(v1, . . . , v|k|) = dv1 . . . dv|k|-1.
+
+19
+
+Proof. In this proof we always consider the kernel K as a function of one variable
+
+sin x K(x) = .
+x
+
+(3.27)
+
+Denote the trace from the left-hand side of (3.26) by Tr. Step 1. Assume first j = 1. We have
+
+
+
+
+
+Tr = tr hkKD =
+
+hk(x)K(0) dx = 1 
+
+hk(x) dx = 1 F (hk)(0). 
+
+-
+
+-
+
+Denote by  the convolution and set h^k := h^1k1  . . .  h^dkd. Changing the order of the convolutions, we obtain h^k = |ik=|1h^li, where we recall that the indices li are defined below (3.24). Then, using that F (f g) = (2)-1f^  g^ for f, g  L2(R) we get
+
+Tr =
+
+1 h^k(0)
+
+(2)|k|-1
+
+2 =
+(2)|k|
+
+h^l1 (-y1)h^l2 (y1 - y2) . . . hl|k|-1 (y|k|-2 - y|k|-1)hl|k| (y|k|-1) dy1 . . . dy|k|-1.
+
+R|k|-1
+
+Next we change the variables, v1 := -y1 and for 2  i  |k|-1 we set vi := yi-1-yi. Then,
+
+denoting v|k| := -v1 - . . . v|k|-1 (so that y|k|-1 = v|k|) and passing from the integration over R|k|-1 to the integration over the hyperplane v1 + . . . + v|k| = 0 in R|k|, we arrive at (3.26):
+
+|k|
+
+2 Tr =
+(2)|k|
+
+h^li(vi) dS.
+
+v1+...+v|k|=0 i=1
+
+Step 2. Let now j  2. In this step we show that
+
+1 Tr =
+(2)|k|
+
+h^a1(y1 - y2)K^(y2)h^a2(y2 - y3)K^(y3) . . . h^aj (yj - y1)K^(y1) dy1 . . . dyj.
+
+Rj
+(3.28)
+
+We have
+
+Tr = ha1(x1)K(x1 - x2)ha2(x2)K(x2 - x3) · · · haj (xj)K(xj - x1) dx1 . . . dxj.
+
+Rj
+
+Note that F K(·-b) (y) = K^(y)e-iyb, for b  R. Then, using that f, g L2 = (2)-1 f^, g^ L2 and F (f g) = (2)-1f^  g^ for f, g  L2(R), and that the function K^ is real, we find
+
+
+
+
+
+K(xj
+
+-
+
+x1)ha1 (x1 )K(x1
+
+-
+
+x2) dx1
+
+=
+
+1 2
+
+F K(xj - ·) (y)F ha1(·)K(· - x2) (y) dy
+
+-
+
+-
+
+1 = (2)|a1|+1
+
+K^ (y1)eiy1xj h^a1 (y1 - y2)K^ (y2)e-iy2x2 dy1dy2.
+
+R2
+
+20
+
+Thus,
+
+1 Tr = (2)|a1|+1
+
+h^a1(y1-y2)K^ (y2)e-iy2x2ha2(x2)K(x2-x3) . . . haj (xj)eiy1xj K^ (y1) dy1dy2dx2 . . . dxj.
+
+Rj+1
+
+Since
+
+e-iy2x2ha2(x2)K(x2 - x3) dx2 = F ha2(·)K(· - x3)
+-
+
+
+
+1 = (2)|a2|
+
+h^a2(y2 - y3)K^ (y3)e-iy3x3 dy3,
+
+-
+
+we obtain
+
+1 Tr = (2)|a1|+|a2|+1
+
+h^a1(y1 - y2)K^ (y2)h^a2(y2 - y3)K^ (y3)e-iy3x3
+
+Rj+1
+
+ha3(x3)K(x3 - x4) . . . haj (xj)eiy1xj K^ (y1) dy1dy2dy3dx3 . . . dxj.
+
+Continuing the procedure, finally we arrive at the formula
+
+1 Tr = (2)|a1|+...+|aj-1|+1
+
+h^a1(y1 - y2)K^ (y2) · · · h^aj-1(yj-1 - yj)K^ (yj)
+
+Rj+1
+
+e-iyjxj haj (xj)eiy1xj K^ (y1) dy1 . . . dyjdxj.
+
+Then, taking the integral over xj, we get (3.28). Step 2. Writing the convolutions from (3.28) explicitly, we obtain
+
+|a1|
+
+|a1|+|a2|
+
+1 Tr =
+(2)|k|
+
+h^li (yi - yi+1)K^ (y|a1|+1)
+
+h^li (yi - yi+1)K^ (y|a1|+|a2|+1)
+
+R|k| i=1
+
+i=|a1|+1
+
+|k|
+
+...
+
+h^li(yi - yi+1)K^ (y1) dy1 . . . dy|k|,
+
+i=|a1|+...+|aj-1|+1
+
+where we set y|k|+1 := y1. Introducing the variables y := y1 and vi := yi - yi+1, 1  i 
+n-1
+|k| - 1, and using the relation yn = y - vi, we obtain
+i=1
+
+1 Tr = (2)|k|
+
+|k|-1
+h^li (vi)h^l|k| (-v1 - . . . - v|k|-1)
+
+R|k|-1 i=1
+
+
+
+|a1|
+
+|a1|+...+|aj-1|
+
+K^(y)K^(y - vi) · · · K^(y -
+
+vi) dy dv1 . . . dv|k|-1.
+
+-
+
+i=1
+
+i=1
+
+Denoting v|k| = -v1 - . . . - v|k|-1 and passing from the integration over R|k|-1 to that over the hyperplane v1 + . . . + v|k| = 0, we find
+
+
+
+|a1|
+
+|a1|+...+|aj-1|
+
+1 Tr = (2)|k|
+
+h^a1,...,aj (v) K^(y)K^(y - vi) · · · K^(y -
+
+vi) dy dS.
+
+v1+...+v|k|=0
+
+-
+
+i=1
+
+i=1
+
+(3.29)
+
+21
+
+Step 3. Using that the Fourier transform of the sine-kernel (3.27) has the form K^ = I[-1,1], by a direct computation we find
+
+
+
+|a1|
+
+|a1|+...+|aj-1|
+
+K^(y)K^(y - vi) · · · K^(y -
+
+vi) dy = max 2 + J |a1|,...,|aj|(v), 0 ,
+
+-
+
+i=1
+
+i=1
+
+(3.30)
+
+where the function J|a1|,...,|aj| is defined in (3.25). Then (3.29) implies (3.26).
+
+Remark 3.6. In the proof of Proposition 3.5 we use the special structure of the sine-kernel only in Step 3.
+
+Recall that the seminorm · 1/2 is defined in (2.1).
+Corollary 3.7. For any bounded measurable function h : R  R with compact support under the sine-process we have
+
+1 Var Sh = 42 2
+
+|h^(s)|2 ds +
+
+|s||h^(s)|2 ds .
+
+|s|2
+
+|s|<2
+
+(3.31)
+
+In particular, Corollary 3.7 implies
+
+1 Var Sh  2
+
+h
+
+21/2.
+
+(3.32)
+
+Proof. Recall that the variance Var Sh is given by (2.6). Since K(x, x) = 1/, we have
+
+
+tr h2KD = h2(x)K(x, x) dx =
+-
+
+h
+
+2 L2
+
+=
+
+
+
+h^
+
+2
+L2 .
+
+22
+
+(3.33)
+
+On the other hand, Proposition 3.5 implies
+
+tr(hKD)2
+
+=
+
+1 42
+
+h^(v1)h^(v2) max(2 - |v1|, 0) dS.
+
+v1+v2=0
+
+Then, using that h^(-s) = h^(s) since the function h is real, we get
+
+
+
+tr(hKD)2
+
+=
+
+1 42
+
+|h^(s)|2 max(2 - |s|, 0) ds = 1 42
+
+|h^(s)|2(2 - |s|) ds.
+
+-
+
+|s|<2
+
+(3.34)
+
+Inserting (3.33) and (3.34) into (2.6), we find
+
+1 Var Sh = 42
+
+2
+
+h^
+
+2 L2
+
+-
+
+|h^(s)|2(2-|s|) ds
+
+1 = 42
+
+2
+
+|h^(s)|2 ds+
+
+|s||h^(s)|2 ds .
+
+|s|<2
+
+|s|2
+
+|s|<2
+
+4 Central Limit Theorems for linear statistics
+In this section we prove multidimensional Central Limit Theorems 4.1 and 4.3.
+22
+
+4.1 Linear statistics with growing variance: Theorem 4.1
+Let d  1 and hN1 , . . . , hNd : Rm  R, N  N, be a family of bounded Borel measurable functions with compact supports. Consider the corresponding vector of linear statistics
+
+ShN := (ShN1 , . . . , ShNd )
+as a random vector under a determinantal process given by a Hermitian kernel KN . Denote by EN , VarN and CovN the corresponding expectation, variance and covariance. In this section we prove the Central Limit Theorem for the vector ShN under assumption that the variances VarN ShNj grow to infinity as N  .
+Theorem 4.1. Assume that there exists a sequence VN   as N  , VN > 0, such that the following two conditions hold.
+
+1. For all 1  i, j  d there exist the limits
+
+CovN (ShNi , ShNj ) VN
+
+N
+
+bij ,
+
+for some numbers bij.
+
+2. We have
+
+max
+1jd
+
+hNj
+
+ = o(
+
+VN )
+
+as
+
+N  .
+
+(4.1) (4.2)
+
+Let N  Rd be a random vector with components
+
+jN
+
+=
+
+ShNj
+
+- 
+
+EN
+
+ShNj
+
+VN
+
+.
+
+(4.3)
+
+Then for the family of distributions D(N ) we have the weak convergence D(N ) D() as N  , where  is a centred Gaussian random vector with the covariance matrix (bij).
+
+Theorem 4.1 generalizes results obtained in works [CL, So00, So00a, So01], where the
+Central Limit Theorems for various linear statistics were established, under the assump-
+tion that VarN ShNj   as N  . More precisely, in papers [CL] and [So00] the Central Limit Theorem was proven in the one-dimensional setting (i.e. d = 1) for the linear statistics corresponding to a family of functions hN of the form
+
+hN (x) = IA(x/N ),
+
+(4.4)
+
+where A is a bounded Borel set, so that ShN = #A. In [So00a] the author considered the linear statistics of the same form under the Airy and Bessel processes. He showed
+that their variances Var ShN have the logarithmic growth and proved a multidimensional Central Limit Theorem (i.e. d  1). In [So01] a one-dimensional Central Limit Theorem was established for a general family of bounded measurable functions hN with compact
+supports, under the assumptions that
+
+hN  = o (VarN ShN ) and EN S|hN | = O (VarN S|hN |) ,
+
+(4.5)
+
+for any  > 0 and some  > 0. This result can not be applied for the linear statistics corresponding to the family of functions (4.4) under the sine, Airy and Bessel processes.
+
+23
+
+Indeed, the variance in these cases has the logarithmic growth while the expectation grows as N n, n > 0, so that (4.5) fails. Since in Theorem 4.1 we do not impose assumption
+(4.5), it covers all the Central Limit Theorems above.
+Proof of Theorem 4.1. The proof uses a method developed in [CL] and [So00], and is
+based on application of Corollary 3.3 and Lemma 3.4. Since the normal law is specified by its moments it suffices to show that the moments of the random vector N converge to the moments of  (see [F], page 269). Denote by (ANk )kZd+ and (Ak)kZd+ the cumulants of N and  respectively, so that
+
+Ak =
+
+0 if |k| = 2, bij if k = ei + ej,
+
+where (el) is the standard base of Zd. Since the moments can be expressed through the cumulants, it suffices to prove that
+
+ANk  Ak as N   for any k  Zd+. In the case |k|  2 the convergence (4.6) is clear. Indeed, due to (3.1), we have
+
+(4.6)
+
+ANei = 0
+
+and
+
+AN ei+ej
+
+=
+
+CovN
+
+ShNi
+
+- 
+
+EN
+
+ShNi
+
+,
+
+ShNj
+
+- 
+
+EN
+
+ShNj
+
+VN
+
+VN
+
+= CovN (ShNi , ShNj ) , VN
+
+so that (4.6) follows from assumption (4.1). It remains to study the case |k|  3. By definition (4.3) of the vector N we have
+
+ANk
+
+=
+
+BkN , VN|k|/2
+
+(4.7)
+
+where BkN are cumulants of the random vector ShN . Due to Corollary 3.3 joined with Lemma 3.4, we have
+
+d
+
+|BkN
+
+|
+
+
+
+C
+
+max
+1id
+
+hNi
+
+|k|-2 
+
+VarN ShNl .
+
+l=1
+
+Then, assumptions (4.1) and (4.2) imply BkN = o(VN|k|/2), if |k|  3. Now the desired convergence (4.6) follows from (4.7).
+
+4.2 Joint linear statistics of growing and bounded variances: Theorem 4.3
+Consider a family of measurable bounded functions with compact supports f1N , . . . , fpN , g1N , . . . , gqN : R  R, where N  N and p, q  0. In this section we prove a multidimensional Central Limit Theorem 4.3 for the vector of the linear statistics
+
+(Sf1N , . . . , SfpN , Sg1N , . . . , SgqN ),
+
+(4.8)
+
+under the sine-process. We assume that the functions fiN are as in Theorem 4.1 while the functions gjN are supposed to be sufficiently regular and for large N asymptotically behave as gj(·/N ), for some functions gj independent from N . This situation is not covered by Theorem 4.1 since under our hypotheses the variances Var SgjN do not grow at all, so that condition (4.1) fails.
+
+24
+
+Before formulating our assumptions let us note that all of them except f.1 are automatically satisfied if fiN (x) = fi x/N , gjN (x) = gj x/N , where the functions fi, gj are bounded measurable with compact supports and gj belong to the Sobolev space H1/2(R). For the proof of this fact see Example 4.4 in the next section.
+We assume that there exist sequences VN , RN   as N  , VN , RN > 0, such that for all 1  i  p, 1  j  q, the the following hypotheses hold. Let
+
+fiN (x) := fiN (RN x) and gjN (x) := gjN (RN x). f.1 Under the sine-process there exist the limits
+
+(4.9)
+
+Cov(SfiN , SfjN ) VN
+
+
+
+bfij
+
+as
+
+N  ,
+
+(4.10)
+
+for some numbers bfij and any 1  i, j  p.
+
+
+
+f.2 We have max 1ip
+
+fiN  = o(
+
+VN ) as N  .
+
+
+
+f.3 We have max 1ip
+
+fiN L2 = o(
+
+VN ) as N  .
+
+Since fiN L2 = RN-1/2 fiN L2, assumption f.3 just means that the norm fiN L2 grows slower than (RN VN )1/2.
+
+g.1 The functions gjN belong to the Sobolev space H1/2(R) and gjN  gj as N   in H1/2(R), for some functions gj and any j.
+
+g.2 The functions gjN are bounded uniformly in N .
+
+Before stating the theorem let us note that, due to the estimate (3.32) and the following obvious proposition, assumption g.2 implies in particular that
+
+the variances Var SgjN are bounded uniformly in N .
+
+(4.11)
+
+Proposition 4.2. For any function k  H1/2(R) and any  = 0 we have k 1/2 = k 1/2, where k(x) := k(x).
+Proof. Since k^(x) = -1k^(-1x), we get
+
+
+
+
+
+22
+
+k
+
+2 1/2
+
+=
+
+-2
+
+|v||k^(-1v)|2 dv =
+
+|u||k^(u)|2 du = 22
+
+k
+
+2 1/2
+
+,
+
+-
+
+-
+
+where we set u = -1v.
+
+Theorem 4.3. Let a family of measurable bounded compactly supported functions f1N , . . . , fpN , g1N , . . . , gqN , p, q  0, satisfies assumptions f.1-f.3, g.1-g.2 above. Consider the vector of linear statistics (4.8) as a random vector under the sine-process. Let N = (fN , gN )  Rp+q be a random vector with components
+
+fNj
+
+=
+
+SfjN
+
+- 
+
+E
+
+SfjN
+
+VN
+
+,
+
+gNi = SgiN - E SgiN .
+
+(4.12)
+
+25
+
+Then D(N ) D() as N  , where  = (f , g)  Rp+q is a centred Gaussian random vector with the covariance matrix
+
+(bfij ) 0
+
+0 (bgkl)
+
+,
+
+where bgkl = gk, gl 1/2. In particular, the components f and g of the vector  are independent.
+
+Theorem 4.3 applied to the functions (4.13) implies Theorem 1.9 stated in Section 1.4.
+If q = 0 then Theorem 4.3 is covered by Theorem 4.1, while in the case p = 0, q = 1 it
+is proven by Spohn [Sp] and Soshnikov [So00b, So01]. See the discussion in Section 1.4.
+Proof of Theorem 4.3 employs a method developed in [So00b] mixed with that related to
+the method used in the proof of Theorem 4.1. Note that the required regularity H1/2 of the functions giN is optimal: if we replace
+H1/2 by H1/2- then assertion of the theorem will not be true any more. Indeed, the indicator function I[0,N] belongs to the space H1/2-, for all  > 0. But the linear statistics SI[0,N] = #[0,N] has (logarithmically) growing variance, so that the indicator I[0,N] belongs to the class of functions fiN but not gjN .
+
+4.3 Examples
+
+In this section we present two examples where assumptions f.2 -g.2 2 are satisfied. We will use them in Section 5, when proving our main results, Theorems 1.1 and 1.8.
+
+Example 4.4. Let
+
+fiN (x) = fi
+
+x N
+
+,
+
+gjN (x) = gj
+
+x N
+
+,
+
+1  i  p, 1  j  q,
+
+(4.13)
+
+where the functions fi, gj are bounded measurable with compact supports and gj belong to the Sobolev space H1/2(R). Then assumptions f.2 -g.2 are fulfilled with RN = N , arbitrary sequence VN and gj = gj.
+
+Proof. Assumptions f.2 and g.2 are obviously satisfied. Fulfilment of assumptions f.3 and g.1 immediately follows from the fact that, due to (4.13), we have fiN = fi and gjN = gj.
+
+Example 4.5. Assume that functions fiN , gjN satisfy assumptions f.2 -g.2. Take a bounded
+
+measurable function  with compact support such that (x) dx = 1. Then the func-
+
+tions
+
+-
+fN,i :=   fiN , gN,j :=   gjN
+
+also satisfy f.2 -g.2 with the same sequences VN , RN and functions gj.
+
+Proof. Assumption f.2 follows from the identity
+
+
+fN,i   fiN  |(x)| dx.
+- 2Here and below by f.2 -g.2 we mean f.2,f.3,g.1,g.2.
+
+26
+
+Assumptions g.2 follows in the same way. To get assumption f.3 we define the functions fN,i as in (4.9) and note that f^N,i(v) = ^(v/RN )f^iN (v). Then
+
+fN,i
+
+1
+
+L2
+
+=
+
+ 2
+
+^
+
+· /RN
+
+f^iN
+
+1
+
+L2
+
+
+
+ 2
+
+^  f^iN
+
+L2 =
+
+^  fiN L2 .
+
+Since   L1(R), we have ^  < , so that assumption f.3 follows. The fact that the functions gN,j belong to the space H1/2(R) is implied by the inequality
+
+gN,j 1/2  ^  gjN 1/2,
+
+which can be obtained similarly to the argument above. To establish the convergence
+claimed in assumption g.1, it suffices to show that gN,j - gjN H1/2  0 as N  . Using
+
+that g^N,j(v) = ^(RN-1v)g^jN (v) and ^(0) = (x) dx = 1, we obtain
+-
+
+
+
+2
+
+gN,j - gjN
+
+= 2
+H 1/2
+
+1 + |v| ^ RN-1v - ^(0) 2 g^jN (v) 2 dv
+
+-
+
+ max ^ RN-1v - ^(0) 2
+
+1 + |v| g^jN (v) 2 dv
+
+|v| RN
+
+
+
+|v| RN
+
++2
+
+^
+
+2 
+
+1 + |v| g^jN (v) 2 dv.
+
+ |v| RN
+
+Using assumption g.1 for the functions gjN , the continuity of the function ^ and the relation ^  < , we see that both of the summands above go to zero as N  .
+
+4.4 Beginning of the proof of Theorem 4.3
+
+The rest of Section 4 is devoted to the proof of Theorem 4.3. From now on we will skip the upper index N in the notation fiN , gjN , fiN , gjN . Let us start by formulating the following smoothing proposition which is established in Section 4.6.
+
+Proposition 4.6. Assume that Theorem 4.3 is proven when the assumption g.1 is replaced by a stronger assumption
+
+g.1 The functions gj belong to the Sobolev space H1(R) and gj  gj as N   in H1(R), for some functions gj and any j.
+Then it holds under the assumption g.1 as well.
+
+Due to Proposition 4.6 we can assume that the functions gi satisfy condition g.1 . Let (ei)1ip and (j)1jq be standard bases of Zp and Zq. To prove the theorem, it suffices to show that the cumulants (ANk )kZp++q of the random vector N satisfy
+
+ANk  Ak as N  ,
+
+(4.14)
+
+27
+
+where
+
+k
+
+=
+
+(kf , kg)
+
+=
+
+(kf1, . . . , kfp, kg1, . . . , kgq )
+
+
+
+p+q
+Z+
+
+and
+
+ 
+
+bfij
+
+Ak = bgij
+
+0
+
+if kf = ei + ej, kg = 0, if kf = 0, kg = i + j, otherwise.
+
+By the definition (4.12) of the vector N , for |k| = 1 we have ANk = 0 and for |k|  2
+
+ANk
+
+=
+
+BkN , (VN )|kf |/2
+
+(4.15)
+
+where BkN are cumulants of the random vector (4.8). Further on we assume |k|  2. We single out four cases: kg = 0; |kg|  1 and |kf |  3; |kg|  1 and |kf | = 2; |kg|  1 and
+|kf |  1. The last one turns out to be the most complicated, so we study it separately in
+the next subsection. The reason is that in this case the denominator in (4.15) grows too slowly or does not grow at all, so that estimates for the cumulants BkN like those we use to study the other cases, do not suffice in this situation to prove the convergence ANk  0 for |k|  3. Instead, we employ combinatorial techniques developed by Soshnikov in [So00b].
+
+Note that we use the special form of the sine-kernel and the assumption g.1 only in this
+
+last case.
+
+Case 1: kg = 0. In this situation convergence (4.14) is established in the proof of Theorem 4.1. Indeed, the cumulant ANk in the present case coincides with the cumulant ANkf of the random vector (Sf1N , . . . , SfpN ).
+Case 2: |kg|  1 and |kf |  3. Denote d := p + q and let
+
+h = (h1, . . . , hd) := (f1, . . . , fp, g1, . . . , gq).
+
+(4.16)
+
+In view of Corollary 3.3, the desired estimate immediately follows from (4.15) joined with the following proposition.
+Proposition 4.7. In the case |kf |  3 (while kg is arbitrary), for any a1, . . . , aj  Zd+, j  1, satisfying a1 + . . . + aj = k, we have
+
+tr ha1K . . . haj KD - tr hkKD = o(VN|kf |/2) as N  .
+
+Proposition 4.7 is obtained as a refinement of Lemma 3.4, adapted for the present
+
+situation. Its proof is given in Section 4.6.
+
+Case 3: |kg|  1 and |kf | = 2. Consider a partition k = a1 +. . .+aj from Corollary 3.3.
+
+Let
+
+ai
+
+=
+
+(aif , aig)
+
+
+
+p+q
+Z+
+
+,
+
+so
+
+that
+
+kf
+
+=
+
+a1f
+
++ . . . + ajf
+
+and
+
+kg
+
+=
+
+a1g + . . . + ajg.
+
+Since
+
+|kf |
+
+=
+
+2,
+
+there are only two possible situations:
+
+S1 There is 1  l  j such that alf = kf and for all i = l we have aif = 0.
+S2 There are 1  l1 < l2  j such that |alf1| = |alf2| = 1, while for all i = l1, l2 we have aif = 0.
+Proposition 4.8. In the situation S1 above we have
+
+tr ha1K . . . haj KD - tr hkKD = o(VN ) as N  .
+
+(4.17)
+
+In the situation S2,
+
+tr ha1K . . . haj KD - tr fm1gkg Kfm2KD = o(VN ), where 1  m1, m2  p are such that f kf = fm1fm2.
+
+(4.18)
+
+28
+
+Proof of Proposition 4.8 is given in Section 4.6. Assume that a sequence (BkN )NN satisfies
+
+BkN - BkN = o(VN ).
+
+(4.19)
+
+Then, in view of (4.15) and equality |kf | = 2, we have
+
+lim
+N 
+
+ANk
+
+=
+
+lim
+N 
+
+BkN VN
+
+,
+
+in the sense that if one of the limits exists then the other exists as well and the two are equal. Due to Corollary 3.3 joined with Proposition 4.8, the choice
+
+BkN = k! tr fm1gkg Kfm2KD - tr hkKD
+
+|k| (-1)j+1
+
+1
+
+j
+
+a1! . . . aj!
+
+j=2
+
+a1,...,aj Zd+
+
+satisfying S2:
+
+a1+...+aj =k
+
+(4.20)
+
+satisfies (4.19). Then, to prove that ANk  0 as N  , it suffices to show that the sum from the right-hand side of (4.20) vanishes, i.e.
+
+|k| (-1)j+1
+
+1
+
+Lk :=
+
+j
+
+a1! . . . aj! = 0.
+
+j=2
+
+a1,...,aj Zd+
+
+satisfying S2:
+
+a1+...+aj =k
+
+Let us subtract Lk from the both sides of identity (3.8). Using that |k| = |kg| + 2, we find
+
+|kg|+2 (-1)j+1
+
+1
+
+|kg|+1 (-1)j j
+
+1
+
+Lk = -
+
+j
+
+=
+
+a1! . . . aj!
+
+j
+
+a1! . . . aj!
+
+j=1
+
+a1,...,aj Zd+
+
+j=1
+
+l=1 a1,...,aj Zd+:
+
+satisfying S1:
+
+a1+...+aj =k,
+
+a1+...+aj =k
+
+alf =kf
+
+|kg |+1
+= (-1)j
+
+1 .
+
+a1! . . . aj!
+
+j=1
+
+a1,...,aj Zd+:
+
+a1+...+aj =k,
+
+ajf =kf
+
+(4.21)
+
+In the last sum from (4.21) the f -components a1f , . . . , ajf are defined uniquely, a1f = . . . =
+
+ajf-1 = 0 and ajf = kf . Then we can pass from the summation over a1, . . . , aj  Zd+ to
+
+that
+
+over
+
+a1g, . . . , ajg,
+
+where
+
+a1g, . . . , ajg-1
+
+
+
+q
+Z+
+
+and
+
+ajg
+
+
+
+q
+Z+
+
+
+
+{0}.
+
+Using
+
+that
+
+a1! . . . aj!
+
+=
+
+kf !a1g! . . . ajg!, we obtain
+
+Lk
+
+=
+
+|kg |+1
+(-1)j
+j=1
+
+a1g,...,ajg-1Zq+, ajgZq+{0}:
+
+1 kf !a1g! . . . ajg! .
+
+a1g +...+ajg =kg
+
+(4.22)
+
+29
+
+Next we separate the last sum from (4.22) into two parts, over a1g, . . . , ajg such that ajg = 0 and such that ajg = 0. We find
+
+|kg |+1
+
+Lk =
+
+(-1)j
+
+j=1
+
+1
+
+1
+
+a1g,...,ajg-1Zq+: kf !a1g! . . . ajg-1! + a1g,...,ajgZq+: kf !a1g! . . . ajg! .
+
+a1g +...+ajg-1=kg
+
+a1g +...+ajg =kg
+
+(4.23)
+
+Denote
+
+1 xj := a1g,...,ajgZq+: kf !a1g! . . . ajg! .
+a1g +...+ajg =kg
+
+Since
+
+in
+
+the
+
+case
+
+j
+
+=
+
+|kg |
+
++
+
+1
+
+the
+
+set
+
+{a1g ,
+
+.
+
+.
+
+.
+
+,
+
+ajg
+
+
+
+q
+Z+
+
+:
+
+a1g
+
++
+
+.
+
+.
+
+.
+
++
+
+ajg
+
+=
+
+kg }
+
+is
+
+empty,
+
+the
+
+relation (4.23) takes the form
+
+|kg |
+Lk = -x1 + (-1)j(xj-1 + xj) + (-1)|kg|+1x|kg| = 0.
+j=2
+This finishes the consideration of Case 3.
+
+4.5 Conclusion of the proof of Theorem 4.3
+
+Here we consider the last case, when |k|  2,
+
+|kg|  1 and |kf |  1.
+
+(4.24)
+
+Similarly to the notation fi and gj, we set
+
+h = (h1, . . . , hd), hi(x) := hi(RN x),
+
+where we recall that the vector-function h is defined in (4.16). Due to Proposition 3.5, for
+
+any a1, . . . , aj  Zd+, j  1, satisfying a1 + . . . + aj = k, the trace tr ha1K . . . haj KD has the form (3.26). Since h^i(s) = RN h^ i(RN s), the change of variables ul := RN vl transforms
+
+(3.26) to
+
+tr ha1K
+
+. . . haj KD
+
+=
+
+1 (2)|k|
+
+FNa1,...,aj (u) dS,
+
+(4.25)
+
+u1+...+u|k|=0
+
+where
+
+FNa1,...,aj (u) := h^ a1,...,aj (u) max 0, 2RN + J |a1|,...,|aj|(u) ,
+
+(4.26)
+
+and the function h^ a1,...,aj is defined as in (3.24), with h^li replaced by h^ li. Then Lemma 3.1 joined with (4.25) implies that the cumulant BkN takes the form
+
+BkN
+
+=
+
+k! (2)|k|
+
+|k|
+
+(-1)j+1 j
+
+1 a1! · · · aj!
+
+F a1,...,aj N
+
+(u)
+
+dS.
+
+j=1
+
+a1,...,aj Zd+:
+
+u1+...+u|k|=0
+
+a1+···+aj =k
+
+(4.27)
+
+Let us split it into two components,
+
+BkN = BkN,1 + BkN,2,
+
+30
+
+where
+
+BkN,1
+
+=
+
+k! (2)|k|
+
+|k|
+
+(-1)j+1 j
+
+1 a1! · · · aj!
+
+FNa1,...,aj (u) dS
+
+j=1
+
+a1,...,aj Zd+:
+
+u1+...+u|k|=0,
+
+a1+···+aj =k
+
+|u1|+...+|u|k||RN
+
+(4.28)
+
+and
+
+BkN,2
+
+=
+
+k! (2)|k|
+
+|k|
+
+(-1)j+1 j
+
+1 a1! · · · aj!
+
+F a1,...,aj N
+
+(u)
+
+dS.
+
+j=1
+
+a1,...,aj Zd+:
+
+u1+...+u|k|=0,
+
+a1+···+aj =k
+
+|u1|+...+|u|k||RN
+
+To finish the proof of the theorem it suffices to check that under the assumption (4.24)
+
+assertions B1 and B2 below are satisfied (note that, in fact, the proof of B1 does not use
+
+assumption (4.24)).
+
+B1. We have
+
+BkN,1 = 0 if |k| > 2 N,
+
+(4.29)
+
+and if |k| = 2,
+
+BkN,1 N VN|kf |/2
+
+bgij if kf = 0, kg = i + j, 0 if kf = 0.
+
+(4.30)
+
+B2. We have
+
+BkN,2 VN|kf |/2
+
+N 0.
+
+(4.31)
+
+Proof of B1. For |u1| + . . . + |uk|  RN we have max 0, 2RN + J |a1|,...,|aj|(u) = 2RN + J |a1|,...,|aj|(u). So that,
+
+F |a1|,...,|aj N
+
+|
+
+(u)
+
+=
+
+h^ a1,...,aj (u)
+
+2RN
+
++ J |a1|,...,|aj|(u)
+
+.
+
+(4.32)
+
+Then the integral from (4.28) takes the form I1 + I2, where
+
+I1 := 2RN
+
+h^ a1,...,aj dS and I2 :=
+
+h^ a1,...,aj J |a1|,...,|aj| dS.
+
+u1+...+u|k|=0, |u1|+...+|u|k||RN
+
+u1+...+u|k|=0, |u1|+...+|u|k||RN
+
+Changing the order in the product h^ a1,...,aj , we obtain
+
+I1 = 2RN
+
+(h^ )k dS.
+
+u1+...+u|k|=0, |u1|+...+|u|k||RN
+
+Thus, the integral I1 is independent from the choice of the vectors ai, so that in the formula (4.28) it can be put in front of the sums. In view of Proposition 3.2 the sums vanish, so that only the integral I2 has an input to the term BkN,1:
+
+BkN,1
+
+=
+
+k! (2)|k|
+
+|k|
+
+(-1)j+1 j
+
+1 a1! · · · aj!
+
+h^ a1,...,aj (u)J |a1|,...,|aj|(u) dS.
+
+j=1
+
+a1,...,aj Zd+:
+
+u1+...+u|k|=0,
+
+a1+···+aj =k
+
+|u1|+...+|u|k||RN
+
+(4.33)
+
+31
+
+Denote by |k| the symmetric group of degree |k|.
+
+Proposition 4.9. Fix k  Zd+ and l1, . . . , lj  N \ {0}, j  1, satisfying l1 + . . . + lj = |k|. Then
+
+1
+
+h^ a1,...,aj (u)J l1,...,lj (u) dS
+
+a1! . . . aj!
+
+a1,...,aj Zd+:
+
+u1+...+u|k|=0,
+
+a1+···+aj =k, |a1|=l1,...,|aj |=lj
+
+|u1|+...+|u|k||RN
+
+1 =
+k!l1! . . . lj!
+
+h^ 1(u1) · · · h^ 1(uk1)h^ 2(uk1+1) · · · h^ 2(uk1+k2)
+
+|k| u1+...+u|k|=0,
+
+|u1|+...+|u|k||RN
+
+· · · h^ d(uk1+...+kd-1+1) · · · h^ d(u|k|)J l1,...,lj (u) dS,
+
+(4.34)
+
+where u := (u(1), . . . , u(|k|)).
+
+Proof of Proposition 4.9 is postponed to Section 4.6. In view of the definition (3.25) of the function Jl1,...,lj , Proposition 4.9 applied to (4.33) implies
+
+BkN,1
+
+=
+
+1 (2)|k|
+
+h^ 1(u1) · · · h^ 1(uk1)h^ 2(uk1+1) · · · h^ d(u|k|) G(u) + G(-u) dS,
+
+u1+...+u|k|=0,
+
+|u1|+...+|u|k||RN
+
+(4.35)
+
+where
+
+|k| (-1)j
+
+1
+
+l1
+
+l1+l2
+
+l1+...+lj-1
+
+G(u) := j
+
+max 0, l1! . . . lj!
+
+u(i),
+
+u(i), . . . ,
+
+u(i) .
+
+j=1
+
+l1,...,lj N\{0}: |k|
+
+i=1
+
+i=1
+
+i=1
+
+l1+···+lj =|k|
+
+The Main Combinatorial Lemma from [So00b] (see page 1356 in [So00b]) states that for any real numbers u1, . . . , u|k| satisfying u1 + . . . + u|k| = 0 we have
+
+G(u) =
+
+|u1| = |u2| 0
+
+if |k| = 2, if |k| > 2.
+
+(4.36)
+
+Then, (4.35) implies (4.29). Now it remains only to study the term BkN,1 in the case |k| = 2.
+Case |k| = 2 and kf = 0. In this situation we have k = i + j, for some 1  i, j  q.
+Since the functions gl are real, we have g^l(-s)  g^l(s). Then, in view of (4.35) and (4.36), we get
+
+BkN,1
+
+=
+
+1 (2)2
+
+RN /2
+
+1
+
+g^i(u1)g^j(u2)2|u1| dS = 22
+
+|s|g^i(s)g^j(s) ds.
+
+u1+u2=0, |u1|+|u2|RN
+
+-RN /2
+
+(4.37)
+
+Due to assumption g.1 (even g.1 suffices here), the right-hand side of (4.37) converges to bgij, so that we get (4.30).
+
+32
+
+Case |k| = 2 and |kf | = 1. In this situation we have k = ei + j, for some 1  i  p and 1  j  q. Then (4.35) joined with (4.36) implies
+
+ANk,1
+
+:=
+
+BkN,1 VN|kf |/2
+
+=
+
+RN /2
+
+1  22 VN
+
+|s|f^i(s)g^j(s) ds.
+
+-RN /2
+
+Using the Cauchy-Bunyakovsky-Schwarz inequality, we obtain
+
+|ANk,1|
+
+
+
+1 22
+
+RN /2
+
+RN /2
+
+1 VN
+
+|f^i(s)|2 ds 1/2
+
+1/2
+|s|2|g^j(s)|2 ds .
+
+-RN /2
+
+-RN /2
+
+(4.38)
+
+Due to assumption f.3, the first integral above goes to zero as N  . Since, in view
+of assumption g.1 , the second one is bounded uniformly in N , the desired convergence
+follows. Proof of B2. Since, by the definition, J |a1|,...,|aj|  0, we have |FN|a1|,...,|aj||  2RN |h^ a1,...,aj |,
+see (4.26). Thus, it suffices to prove that
+
+VN-|kf |/2RN
+
+|h^ a1,...,aj (u)| dS  0 as N  ,
+
+u1+...+u|k|=0, |u1|+...+|u|k||RN
+
+(4.39)
+
+for any a1, . . . , aj. Since |kf |  1, the product h^ a1,...,aj contains at most one function from the set {f^1, . . . , f^p} while all the other functions from this product belong to the set
+{g^1, . . . , g^q}. Then
+
+|h^ a1,...,aj (u)|  ^(u1)^(u2)^(u3) . . . ^(u|k|),
+
+where ^ := |g^1| + . . . + |g^q| and ^ := ^ + |f^1| + . . . + |f^p|. Excluding the variable u1, we get
+
+RN
+
+|h^ a1,...,aj (u)| dS
+
+u1+...+u|k|=0, |u1|+...+|u|k||RN
+
+ RN
+
+^(-u2 - . . . - u|k|)^(u2) . . . ^(u|k|) du2 . . . du|k|
+
+|u2|+...+|u|k||RN /2
+
+2
+
+(|u2| + . . . + |u|k||)^(-u2 - . . . - u|k|)^(u2) . . . ^(u|k|) du2 . . . du|k|
+
+|u2|+...+|u|k||RN /2
+
+= 2(|k| - 1)
+
+|u2|^(-u2 - . . . - u|k|)^(u2) . . . ^(u|k|) du2 . . . du|k|
+
+|u2|+...+|u|k||RN /2
+=: 2(|k| - 1)LN .
+
+Next we separate the cases |k| = 2 and |k| > 2.
+
+33
+
+Case |k| = 2. Applying the Cauchy-Bunyakovsky-Schwarz inequality, we obtain
+
+LN =
+
+|u2|^(-u2)^(u2) du2  ^ L2
+
+1/2
+|u2|2|^(u2)|2 du2 .
+
+|u2|RN /2
+
+|u2|RN /2
+
+Assumptions f.3 and g.1 (or g.1) imply that
+
+^ L2  CVN|kf |/2.
+
+(4.40)
+
+Then, using assumption g.1 , we find V -|kf |/2LN  0 as N  . So that, we get (4.39). Case |k| > 2. We have
+
+LN 
+
+^(u3) . . . ^(u|k|)
+
+|u2|^(-u2 - . . . - u|k|)^(u2) du2 . . . du|k|
+
+|u3|+...+|u|k||RN /4
+
+|u2|RN /4
+
++
+
+^(u3) . . . ^(u|k|)
+
+|u2|^(-u2 - . . . - u|k|)^(u2) du2 . . . du|k|
+
+R|k|-2
+=: LN1 + LN2 .
+
+|u2|RN /4
+
+Using the Cauchy-Bunyakovsky-Schwarz inequality, we find
+
+LN1  ^ L2 ^ 1
+
+^(u3) . . . ^(u|k|) du2 . . . du|k| and
+
+|u3|+...+|u|k||RN /4
+
+LN2 
+
+^
+
+|k|-2 L1
+
+^
+
+L2
+
+1/2
+|u2|2|^(u2)|2 du2 .
+
+|u2|RN /4
+
+In view of (4.40) and assumption g.1 , to see that VN-|kf |/2LN2  0 as N   it suffices to show that the L1-norm ^ L1 is finite and bounded uniformly in N . This follows from the estimate
+
+
+
+
+
+
+
+|s| + 1
+
+^(s) ds =
+
+^(s) ds  C |s| + 1
+
+^
+
+H1
+
+ds
+
+1/2
+
+(|s| + 1)2
+
+= C1 ^ H1.
+
+-
+
+-
+
+-
+
+(4.41)
+
+To see that VN-|kf |/2LN1  0, we need additionally prove that the integral
+
+^(s) ds
+
+|s|>M
+
+converges to zero as M   uniformly in N . This follows similarly.
+
+4.6 Proofs of auxiliary results
+
+In this section we establish Propositions 4.6, 4.7, 4.8 and 4.9 used in the proof of Theorem 4.3.
+Proof of Proposition 4.6. Let the functions fj, gi satisfy assumptions f.1-g.2. Consider a smooth function w : R  R
+
+w(x) =
+
+1
+C e x2-1
+0
+
+if |x| < 1, if |x|  1,
+
+34
+
+
+where the constant C is chosen in such a way that w(x) dx = 1. Set w(x) :=
+-
+-1w(-1x), where 0 <  < 1, and let
+
+g,i := w  gi.
+
+Step 1. In this step we show that the functions g,i defined through the functions g,i as in (4.9) satisfy assumptions g.1 , g.2 with g,i = w  gi. Fulfilment of g.2 follows from the inequality
+
+
+
+g,i  = g,i   gi  w(x) dx = gi  = gi .
+-
+
+Since the function w is smooth, the functions g,i also are, so in particular g,i belong to the space H1(R). Then, to get assumption g.1 it suffices to show that g,i  g,i as N   in H1(R). We have
+
+
+
+g,i - g,i
+
+2 H1
+
+=
+
+1 2
+
+-
+
+1 + |u|2
+
+w^ 2 g^i - g^i 2 du 
+
+^
+
+
+
+gi - gi
+
+, 2
+H 1/2
+
+(4.42)
+
+where ^ := (1+|u|2)(1+|u|)-1w^. Since the function w^ is of the Schwarz class, the norm ^  is finite (although dependent from ). Then, assumption g.1 for the functions gi
+implies that the right-hand side of (4.42) goes to zero as N  , for each  > 0.
+Step 2. It remains to show that assertion of Theorem 4.3 holds for the functions fj, gi. By assumption of the proposition, it is satisfied for the functions fj, g,i. So that, for the random vector (fN , gN) defined as in (4.12) and any (t, s)  Rp+q we have
+
+E e  e i(fN ·t+gN ·s)
+
+-
+
+1 2
+
+(t,s)B
+
+(t,s)T
+
+as N  ,
+
+(4.43)
+
+where B :=
+
+(bfij) 0 0 (bgkl )
+
+and bgkl := g,k, g,l 1/2. Let B :=
+
+(bfij ) 0
+
+0 (bgkl)
+
+. Then
+
+E
+
+ei(fN ·t+gN ·s)
+
+-
+
+e-
+
+1 2
+
+(t,s)B(t,s)T
+
+ I1N, + I2N, + I3,,
+
+where
+
+I1N, =
+
+E e - e i(fN ·t+gN ·s)
+
+-
+
+1 2
+
+(t,s)B
+
+(t,s)T
+
+,
+
+I2N, = E ei(fN ·t+gN ·s) - E ei(fN ·t+gN ·s)
+
+and
+
+I3, =
+
+e - e -
+
+1 2
+
+(t,s)B
+
+(t,s)T
+
+-
+
+1 2
+
+(t,s)B(t,s)T
+
+.
+
+In view of (4.43), I1N,  0 as N   for any  > 0 and any t, s. Thus, to finish the proof of the proposition it remains to show that I2N,, I3,  0 as   0 uniformly in N , for any t, s. We have
+
+I2N,  E eigN ·s - eigN ·s  E |gN · s - gN · s|  C(s)
+
+q
+
+Var(gNi
+
+-
+
+N g,i
+
+).
+
+i=1
+
+35
+
+Due to (3.32),
+
+Var(gNi
+
+-
+
+N g,i
+
+)
+
+=
+
+Var Sgi-g,i
+
+
+
+gi - g,i
+
+2 1/2
+
+=
+
+gi - g,i 21/2,
+
+where in the last identity we used Proposition 4.2. For any r > 0 we have
+
+
+
+22
+
+gi - g,i
+
+2 1/2
+
+=
+
+|u||1 - w^(u)|2|g^i(u)|2 du
+
+-
+
+r
+
+ sup |1 - w^(x)|2 |u||g^i|2 du + ( w^  + 1 2 |u||g^i|2 du.
+
+|x|r
+
+-r
+
+|u|r
+
+Due to assumption g.1 for the functions gj and the relation w^(x) = w^(x)  w^(0) = 1 as   0, which holds for any x, we see that the first term above goes to zero as   0, for any r uniformly in N . Using assumption g.1 again, we find that the second term goes to zero when r  , uniformly in  and N . Consequently,
+
+gi - g,i
+
+2 1/2
+
+
+
+0
+
+as
+
+0
+
+uniformly in N ,
+
+(4.44)
+
+so that I2N, aslo does. To show that I3,  0 as   0, it suffices to prove that gi - g,i 1/2  0 as   0, for any i. This follows by taking the limit N   in (4.44).
+Proof of Proposition 4.7. We follow the scheme used in the proof of Lemma 3.4.
+
+Assume first that j = 2 (the case j = 1 is trivial). Then we have estimates (3.12) and
+
+(3.14). Assumptions f.2 and g.2 state that
+
+fi  = o( VN ) and gi   C.
+
+(4.45)
+
+Then
+
+hk 2
+
+ C max
+
+
+
+1ip
+
+fi
+
+|kf |-2 
+
+=
+
+|kf |-2
+o(VN 2 ),
+
+where  is defined in (3.13). Then, in view of (3.14) and (3.15), we have
+
+|kf |-2
+| tr(hkKD - hkKD2 )|  o(VN 2 )
+
+Var Shl = o(VN|kf |/2).
+
+1ld
+
+(4.46)
+
+Here we have used that Var Sfi  CVN and Var Sgi  C, accordingly to assumption f.1
+
+and (4.11).
+
+Let
+
+b
+
+=
+
+(bf , bg)
+
+
+
+p+q
+Z+
+
+.
+
+If
+
+bf
+
+=
+
+0
+
+then,
+
+due
+
+to
+
+Proposition
+
+2.4
+
+joined
+
+with
+
+(2.8),
+
+we
+
+have
+
+[hb, KD] HS  C max 1iq
+
+gi
+
+|b|-1 
+
+[gl, KD] HS
+
+1lq
+
+1/2
+
+ C1 max 1iq
+
+gi
+
+|b|-1 
+
+Var Sgl  C2.
+
+1lq
+
+(4.47)
+
+If |bf | = 1 then
+
+1/2
+
+[hb, KD] HS  C max 1ip
+
+fi
+
+ max 1iq
+
+gi
+
+|b|-2 
+
+Var Sgi
+
+1iq
+
+1/2
+
++ C max 1iq
+
+gi
+
+|b|-1 
+
+Var Sfi  o( VN ) + C1
+
+1ip
+
+(4.48) VN  C2VN|bf |/2.
+
+36
+
+If |bf |  1, then arguing similarly we find
+
+[hb, KD] HS = o(VN|bf |/2).
+
+(4.49)
+
+Take a1, a2  Zd+ satisfying a1 + a2 = k. Since |kf |  3, the situation |a1f |, |a2f |  1 is impossible. Then, without loss of generality we assume that |a2f | > 1 and get
+
+[ha1 , KD] HS [ha2 , KD] HS  CVN|a1|/2o(VN|a2|/2) = o(VN|kf |/2).
+
+(4.50)
+
+Now estimates (4.46) and (4.50) imply that the right-hand side of (3.12) is bounded by o(VN|kf |/2), so that we get the desired inequality. The case j  3 can be studied in a similar way, following the scheme of the proof of Lemma 3.4.
+Proof of Proposition 4.8. To get the desired estimates we revise the proof of
+Lemma 3.4, additionally using the regularity of the functions gi and the fact that the operator K corresponds to the sine-kernel, so that K is a projection: K2 = K. The latter
+relation will be used in estimates analogous to (3.12) and (3.21), to kill there the second
+and the second and the third terms of the right-hand side correspondingly. The problem here is that KD2 = KD. Thus, our first aim is to reduce estimates on the operator KD to estimates on K.
+Let m  2 and b1, . . . , bm  Zd+. Since the supports supp hi are compact and the sine-kernel K has the form (1.1), the operators Khbi and hbiK are Hilbert-Schmidt. This implies that the operator hb1K . . . hbmK is of the trace class as a product of Hilbert-
+Schmidt operators. Jointly with cyclicity of the trace this provides
+
+tr hb1K . . . hbmKD = tr hb1K . . . hbmKID = tr IDhb1K . . . hbmK = tr hb1K . . . hbmK. (4.51)
+Thus, it suffices to establish relations (4.17)-(4.18), where the index D is dropped everywhere except the term tr hkKD (we do not know if the operator hkK is of the trace class, so we can not argue as in (4.51) to drop the index D there).
+Now let us consider the situations S1 and S2 separately. If j = 1, we are automatically
+in the case S1 and the left-hand side of (4.17) vanishes. Further on we assume that j  2. Case S1. Let first j = 2. Since a1 + a2 = k, we have
+
+[ha1, K][ha2, K] = ha1Kha2K + Kha1Kha2 - KhkK - ha1K2ha2.
+
+(4.52)
+
+Using that for any Hilbert-Schmidt operators A, B we have tr AB = tr BA and that K = K2, we obtain
+
+tr KhkK = tr KIDhkK = tr hkKKID = tr hkKD. Similarly, tr ha1K2ha2 = tr hkKD and tr Kha1Kha2 = tr ha1Kha2K. Then, due to (4.52),
+
+tr[ha1, K][ha2, K] = 2 tr ha1Kha2K - 2 tr hkKD.
+
+Consequently,
+
+tr ha1Kha2K - tr hkKD
+
+1 
+2
+
+[ha1, K] HS
+
+[ha2, K] HS.
+
+(4.53)
+
+Arguing as in (2.7) we find
+
+[hi, K]
+
+2 HS
+
+= 2 tr h2i K2ID - 2 tr(hiKD)2
+
+= 2 tr h2i KD - 2 tr(hiKD)2
+
+= 2 Var Shi,
+
+37
+
+for any 1  i  d, where in the last equality we have used (2.6). Now for definiteness we assume that a1f = kf and a2f = 0. Then, similarly to (4.47) and (4.49), we get
+[ha2, K] HS  C and [ha1, K] HS = o VN|kf |/2 = o(VN ).
+Thus, (4.53) implies the desired inequality (4.17). Assume now j  3. Define the operator G as in (3.18) with KD replaced by K. Then,
+literally repeating (3.20)-(3.22) with KD replaced by K and using the identity K2 = K, we get
+
+tr GKhaj-1Khaj K - tr GKhaj-1+aj K  GK [haj-1, K] HS [haj , K] HS. (4.54)
+Without loss of generality we assume that a1f = kf and aif = 0 for i  2 (in particular, ajf-1 = ajf = 0). Then, arguing as above, we see that the Hilbert-Schmidt norms from (4.54) are bounded uniformly in N . On the other hand,
+
+GK
+
+d
+
+i=1
+
+hi
+
+|ki-aij-1-aji | 
+
+=
+
+o(VN|kf |/2)
+
+=
+
+o(VN ),
+
+(4.55)
+
+due to (4.45). Thus, the right-hand side of (4.54) is bounded by o(VN ). Now, by the induction axiom, we get the desired inequality (4.17).
+
+Case S2. Without loss of generality we assume that |a1f | = |anf | = 1 for some n > 1, while for i = 1, n we have aif = 0. Consider first the situation when j  3. Then j, j - 1 = 1. If additionally j, j - 1 = n, then the norms [haj , K] HS and [haj-1, K] HS
+are bounded uniformly in N . Moreover, (4.55) is satisfied, so that the right-hand side of
+
+inequality (4.54) is bounded by o(VN ). If one of the numbers j - 1 or j is equal to n,
+
+then, arguing as in (4.48), we see that the Hilbert-Schmidt norm of the corresponding commutator is majorated by C VN . On the other hand, the product from (4.55) is then
+
+|kf |-1
+
+bounded by o(VN 2 ) in this case. Thus, the right-hand side of (4.54) is majorated by
+
+
+
+|kf |-1
+
+C VN o(VN 2 ) = o(VN ). Summing up, for j  3 we obtain
+
+tr GKhaj-1 Khaj K - tr GKhaj-1+aj K = o(VN ).
+
+(4.56)
+
+Let now j = 2. Then tr ha1Kha2K = tr fm1ga1g Kfm2ga2g K, for some 1  m1, m2  p. Using cyclicity of the trace, we obtain
+
+tr fm1 ga1g Kfm2 ga2g K - tr fm1 gkg Kfm2 K  tr fm1 ga1g Kfm2 ga2g K - tr fm1 ga1g Kga2g Kfm2 K
+
++ tr fm2 Kfm1 ga1g Kga2g K - tr fm2 Kfm1 gkg K  o(VN ),
+
+(4.57)
+
+in view of (4.56). Now the desired estimate (4.18) follows by induction from (4.56) and (4.57).
+
+Proof of Proposition 4.9. Consider functions 1, . . . , |k|, where
+
+1 = . . . = k1 := h^ 1, k1+1 = . . . = k1+k2 := h^ 2, . . . , k1+...+kd-1+1 = . . . = |k| := h^ d.
+
+Then the sum from the right-hand side of (4.34) can be rewritten as
+
+(1)(u1)(2)(u2) . . . (|k|)(u|k|)J l1,...,lj (u) dS.
+|k| u1+...u|k|=0 |u1|+...+|u|k||RN
+
+(4.58)
+
+38
+
+Fix any partition a1 + . . . + aj = k, where |ai| = li for all i. The function J |a1|,...,|aj|(u)
+depends on u only through the unordered sets {u1, . . . , u|a1|}, {u|a1|+1, . . . u|a1|+|a2|}, . . .. Then the integral from the left-hand side of (4.34), corresponding to this partition, co-
+incides with the integral from (4.58), corresponding to a permutation , iff among the functions (1), . . . , (|a1|) there are exactly a11 functions equal to h^ 1, a12 functions equal to h^ 2, . . . , a1d functions equal to h^ d; among the functions (|a1|+1), . . . , (|a1|+|a2|) there are a21 functions equal to h^ 1, a22 functions equal to h^ 2, and so on. The number of such permutations can be found directly and is equal to
+
+k!l1! . . . lj! a1! . . . aj! .
+
+Thus, the sum (4.58) can be rewritten as
+
+k!l1! . . . lj!
+
+h^ a1,...,aj (u)J l1,...,lj (u) dS.
+
+a1! . . . aj!
+
+a1,...,aj Zd+:
+
+u1+...+u|k|=0
+
+a1+···+aj =k,
+
+|u1|+...+|u|k||RN
+
+|a1|=l1,...,|aj |=lj
+
+5 Proofs of main results
+In this section we establish Propositions 1.3, 1.2 and Theorems 1.1, 1.8.
+
+5.1 Proofs of Theorem 1.1 and Propositions 1.2,1.3
+
+Here we prove Propositions 1.3, 1.2 and Theorem 1.1.
+
+Proof of Proposition 1.3.
+
+The number of particles #[0,tiN] coincides with the linear statistics SfiN , where fiN := I[0,tiN]. Then the desired convergence would follow from the Central Limit Theorem 4.1
+
+if we show that
+
+Cov(SfiN , SfjN ) -2 ln N
+
+
+
+bij
+
+as
+
+N  .
+
+(5.1)
+
+In the case i = j convergence (5.1) follows from (1.2). Assume that i > j. Since
+
+SfiN - SfjN = #[tjN,tiN], due to (1.2) we have
+
+Var(SfiN - SfjN ) = -2 ln N + O(1).
+
+Then (5.1) follows from (1.2) and the obvious relation
+
+1 Cov(SfiN , Sfj ) = 2 Var SfiN + Var SfjN - Var(SfiN - SfjN ) .
+
+(5.2)
+
+Proof of Theorem 1.1. Step 1. In this step we show that for any 0  t1 < . . . < td  1,
+D(N , ztN1 , . . . , ztNd ) D(, zt1, . . . , ztd) as N  .
+39
+
+(5.3)
+
+Note that
+
+N
+
+=
+
+Sf N
+
+-E 
+
+Sf
+
+N
+
+and
+
+-1 ln N
+
+where f N (x) = f (x/N ), gtN (x) = gt(x/N ) and
+
+ztN = SgtN - E SgtN ,
+
+
+
+1
+
+f (x) := 
+
+I[0,s](x) ds,
+
+0
+
+t
+
+
+
+t gt(x) := I[0,s](x) ds -  I[0,s](x) ds.
+
+0
+
+0
+
+(5.4) (5.5)
+
+The following simple result is established in the next section.
+
+Proposition 5.1. We have
+1 1. Var SfN = 22 ln N + O(1).
+2. gt  H1(R), for any t  [0, 1].
+3. gt, gs 1/2 = right-hand side of (1.9), for any t, s  [0, 1].
+We claim that the family of functions f N , gtN1 , . . . , gtNd satisfies assumptions of Theorem 4.3. Indeed, due to Proposition 5.1(1), assumption f.1 is fulfilled with VN = -2 ln N and bf11 = 1/2. Assumptions f.2 -g.2 are fulfilled as well with RN = N and gti = gti since we are in the situation of Example 4.4, in view of Proposition 5.1(2). Then, in due to Proposition 5.1(3), Theorem 4.3 implies the convergence (5.3).
+Step 2. In this step we show that the family of measures {D(N , zN ), N  N} is tight in the space R × C([0, 1], R). To this end, it suffices to prove that the family of measures {D(N ), N  N} is tight in R and the family {D(zN ), N  N} is tight in C([0, 1], R). Indeed, then for any  > 0 we will be able to find compact sets K  R and Kz  C([0, 1], R) such that
+P (N  K) > 1 - /2 and P (zN  Kz) > 1 - /2, for all N.
+
+Then we will have
+
+P (N , zN )  K × Kz = P (N  K) - P (N  K, zN / Kz)  P (N  K) - P (zN / Kz) > 1 - .
+
+Tightness of the family of measures {D(N ), N  N} follows from convergence (5.3) since the weak convergence implies the tightness. To show that the family {D(zN ), N  N}
+is tight, we first formulate the following proposition.
+
+Proposition 5.2. Consider a family of bounded measurable functions with compact supports hNt : R  R, 0  t  1, N  N. Assume that for each t and N the function hNt belongs to the Sobolev space H1/2(R). Assume also that there exist constants C,  > 0 such that for any 0  t, s  1 and N  N we have
+
+hN0 1/2  C,
+
+hNt - hNs
+
+2 1/2
+
+
+
+C (t
+
+-
+
+s)1+ .
+
+(5.6)
+
+Consider the random process
+
+tN := ShNt - E ShNt , 0  t  1,
+
+40
+
+under the sine-process. Then there exists a continuous modification tN of the process tN such that the family of measures {D(N ), N  N} is tight in the space of continuous functions C([0, 1], R).
+
+Proof of Proposition 5.2 is given in the next section. Now to get the desired tightness of the family {D(zN )}, it remains only to check that assumption (5.6) is satisfied for the functions gtN . Its first part is obvious since g0N = 0. Using that g^tN (u) = N g^t(N u), we find
+
+
+
+
+
+gtN , gsN
+
+1/2 =
+
+N2 22
+
+1 |u|g^t(N u)g^s(N u) du = 22
+
+|v|g^t(v)g^s(v) dv = gt, gs 1/2. (5.7)
+
+-
+
+-
+
+u2 Then, recalling the notation (u) = 22 ln |u|, (0) = 0, and using Proposition 5.1(3), we obtain
+
+1 2
+
+gtN -gsN
+
+2 1/2
+
+=
+
+t
+
+- 
+
+s
+
+t-s (t)-(s)+(s- )-(t- )- ( )
+
+
+-(t-s) =: (t, s)-(t-s).
+
+Since the derivative  (u) is bounded uniformly in u  (0, 1), we have (t, s)  C(t - s)2. Since |(t - s)|  C()(t - s)1+ for any 0 <  < 1, the second part of assumption (5.6)
+is satisfied as well.
+Step 3. In this step we derive the required convergence (1.8) from the first two steps by standard argument. Since the family of measures {D(N , zN ), N  N} is tight, by the Prokhorov Theorem it is weakly compact. Take a subsequence Nk   such that
+
+D(Nk, zNk) D(, z) as k   in R × C([0, 1], R),
+
+where D(, z) is a limit point. Due to (5.3), for any 0  t1 < . . . < td  1 we have
+
+D(, zt1, . . . , ztd) = D(, zt1, . . . , ztd).
+
+Since finite-dimensional distributions specify a process, all the limit points coincide with D(, z), so that we get the desired convergence. Proof of the theorem is completed.
+
+Proof of Proposition 1.2.
+
+Consider first a cumulant ANk with k  3. Denote by (BmN ) cumulants of the random variable SfN , where the function f N is defined above (5.5). Due to Corollary 3.3 joined
+
+with Lemma 3.4, we have
+
+|BkN |  C
+
+fN
+
+k-2 
+
+Var
+
+Sf
+
+N
+
+.
+
+Since the norm f N  is independent from N , Proposition 5.1 implies |BkN |  C ln N .
+
+In
+
+view
+
+of
+
+(5.4),
+
+we
+
+have
+
+ANk
+
+=
+
+BkN
+
+.
+
+(-2 ln N )k/2
+
+Then
+
+|ANk |
+
+
+
+C ln N (ln N )k/2
+
+=
+
+C .
+(ln N )k/2-1
+
+Since for k  3 cumulants Ak of the normal distribution vanish, we get the desired
+
+estimate (1.10).
+
+For
+
+k
+
+= 2 we have
+
+AN2
+
+= Var N
+
+=
+
+Var SfN -2 ln N
+
+and A2 = Var 
+
+= 1/2.
+
+Then the desired
+
+estimate follows from Proposition 5.1. Since AN1 = E N = 0 and A1 = E  = 0, the proof
+
+of the proposition is finished.
+
+41
+
+5.2 Proofs of auxiliary propositions
+
+Here we establish Propositions 5.1 and 5.2 used in the previous section.
+
+Proof of Proposition 5.1. Item 1. Since f N =  -1 I[0,sN] ds, we have SfN =
+0 
+ -1 ShNs ds, where hNs = I[0,sN]. Then, using the Fubini theorem, we get 0
+
+Var SfN = E
+
+
+
+
+
+1
+
+21
+
+
+
+ShNs - E ShNs ds
+
+= 2
+
+Cov(ShNt , ShNs ) dsdt.
+
+0
+
+00
+
+(5.8)
+
+Let us represent the covariance Cov(ShNt , ShNs ) through the variances Var ShNt , Var ShNs as in (5.2). Since ShNs = #[0,sN], we have ShNt - ShNs = #[sN,tN], if t > s. Then, due to the logarithmic grows of the variances (1.2), we obtain
+
+1 Cov(ShNt , ShNs ) = 22 ln N + O(1),
+
+
+for t = s. It can be shown that the integral O(1) dsdt is bounded uniformly in N .
+00
+Now (5.8) implies the desired relation.
+Item 2. Calculating the integrals from (5.5) explicitly, we see that the functions gt are piecewise linear and continuous, so that gt  H1(R). Indeed, for 0  t   we have
+
+
+
+0
+
+
+
+gt(x) = x( -1t - 1)
+
+ t( -1x - 1)
+
+if x  0 or x  , if 0  x  t, if t  x  .
+
+(5.9)
+
+For   t  1,
+
+
+
+0
+
+
+
+gt(x) = x( -1t - 1)
+
+ t-x
+
+if x  0 or x  t, if 0  x  , if   x  t.
+
+(5.10)
+
+Item 3. Since g0 = g = 0, in the case t = 0,  or s = 0,  the result is trivial. Assume that t, s = 0,  . By a direct computation we find
+
+g^t(y)
+
+=
+
+ht(y) y2
+
+where
+
+ht(y)
+
+:=
+
+1
+
+-
+
+e-ity
+
+-
+
+t 
+
+(1
+
+-
+
+e-i y ).
+
+Then, using that g^t(y) = g^t(-y), we obtain
+
+
+
+
+
+1 gt, gs = 2 Re
+
+1 yg^t(y)g^s(y) dy = 2 Re
+
+ht(y)hs(y) y3
+
+dy.
+
+0
+
+0
+
+Integrating by parts two times we find
+
+
+
+
+
+hths
+
+dy
+
+= - hths
+
+
+-
+
+(hths)
+
+
++
+
+(hths) dy,
+
+y3
+
+2y2 0
+
+2y 0
+
+2y
+
+0
+
+0
+
+(5.11)
+
+42
+
+where the prime stands for the derivative with respect to y. We have
+
+ht(y) = ite-ity - ite-iy and ht (y) = t2e-ity -  te-iy.
+
+(5.12)
+
+Since ht(0) = ht(0) = 0 for any t, we have (hths)(0) = (hths) (0) = (hths) (0) = 0, so that the boundary terms from (5.11) vanish. Then, using (5.11) and (5.12), by a direct
+computation we find
+
+
+
+
+
+
+
+Re
+
+hths dy = Re
+
+(hths) dy = -
+
+v(t, s) + v(s, t) ,
+
+y3
+
+2y
+
+2y
+
+0
+
+0
+
+0
+
+(5.13)
+
+where
+
+(t - s)2
+
+v(t, s) =
+
+cos
+
+(t-s)y
+
+-t2
+
+s 1-
+
+s cos(ty)-
+
+ -t
+
+2 cos
+
+(t- )y +t( -s) cos( y).
+
+2
+
+
+
+
+
+Proposition 5.3. Let a1, . . . an, b1, . . . , bn  R \ {0} and a1 + . . . + an = 0. Then
+
+n
+
+ai cos(biy) dy = - y
+
+n
+
+ai ln |bi|.
+
+0 i=1
+
+i=1
+
+(5.14)
+
+Observe that the last integral from (5.13) has the form (5.14). Then, applying Proposition 5.3 we obtain the desired identity.
+Proof of Proposition 5.3. Since a1 + . . . + an = 0, the integral under the question converges. Take  > 0 and write
+
+n
+
+ai cos(biy) dy = y
+
+ n
++
+
+ai
+
+cos(biy) y
+
+dy
+
+=:
+
+I0
+
++
+
+I.
+
+0 i=1
+
+0
+
+ i=1
+
+Clearly, I0  0 as   0. On the other hand,
+
+I =
+
+n
+
+
+
+ai
+
+cos(biy) dy = y
+
+n
+
+ai
+
+
+cos y dy =
+y
+
+n
+
+ai
+
+
+cos y dy +
+y
+
+n
+
+|b1|
+
+cos y
+
+ai
+
+dy. y
+
+i=1 
+
+i=1 |bi|
+
+i=1 |b1|
+
+i=2 |bi|
+
+Since a1 + . . . + an = 0, this implies I =
+
+n
+
+|b1|
+
+cos y
+
+ai
+
+dy. Letting  go to zero, we y
+
+i=2 |bi|
+
+obtain
+
+I
+
+
+
+n i=2
+
+|b1|
+1 ai y
+|bi|
+
+dy
+
+=
+
+-
+
+n i=2
+
+ai
+
+ln
+
+|bi| |b1|
+
+=
+
+-
+
+n i=1
+
+ai ln |bi|.
+
+Proof of Proposition 5.2. Due to the Kolmogorov-C entsov Theorem (see Theorem 2.8 in [KaSh]) and Problem 2.4.11 from [KaSh], to prove the proposition it suffices to show that
+
+(1) sup E |0N |2 <  N N
+
+(2) sup E (tN - sN )2  C(t - s)1+ uniformly in 0  s, t  1. N N
+
+43
+
+We have
+
+E (tN - sN )2 = Var ShNt -hNs .
+
+(5.15)
+
+Due to estimate (3.32) of Corollary 3.7, the right-hand side of (5.15) is bounded by
+
+1 2
+
+hNt - hNs
+
+2 1/2
+
+.
+
+Then assumption (5.6) implies item (2) above.
+
+Assertion of item (1)
+
+follows in the same way,
+
+E |0N |2
+
+=
+
+Var ShN0
+
+
+
+1 2
+
+hN0
+
+2 1/2
+
+
+
+C.
+
+5.3 Proof of Theorem 1.8
+Item 1. Denote m := inf supp  and M := sup supp . It is easy to see that, in view of (1.18), the function Nt has the form
+Nt = I[M,m+Nt] + rtN ,
+where |rtN |  C and the Lebesgue measure Leb(supp rtN )  C1, with constants C, C1 independent from N (see figure 2). Then
+
+Var SNt = Var
+
+S + S I[M,m+Nt]
+
+rtN
+
+= Var SI[M,m+Nt] + Var SrtN + 2 Cov(SI[M,m+Nt] , SrtN ).
+
+(5.16)
+
+In view of (1.2), Var SI[M,m+Nt] = -2 ln N + O(1). Clearly, Var SrtN  C, where C is independent from N . Then the desired relation follows from (5.16) joined with the Cauchy-
+
+Bunyakovsky-Schwartz inequality
+
+Cov(SI[M,m+Nt] , SrtN )  Var SI[M,m+Nt] Var SrtN .
+
+Item 2. To get the desired result it suffices to note that assumptions of Theorem 4.1 are satisfied for the family of functions Nt1 , . . . , Ntd , with VN = -2 ln N and the covariance matrix (bij) from (1.11). Indeed, estimate (4.2) is obvious since the functions Nti are bounded uniformly in N . Assumption (4.1) follows from the logarithmic growth of the variance by the argument similar to that used in the proof of Proposition 1.3.
+Item 3. We follow the same strategy as when proving Theorem 1.1. We set
+
+
+
+t
+
+
+
+fN
+
+:=
+
+1 
+
+Ns ds and gN,t :=
+
+Ns
+
+ds
+
+-
+
+t 
+
+Ns ds.
+
+0
+
+0
+
+0
+
+Then we have
+
+N
+
+=
+
+SfN
+
+-E 
+
+SfN
+
+-1 ln N
+
+and ztN = SgN,t - E SgN,t .
+
+Take any 0  t1 < . . . < td  1. We claim that the functions fN , gN,t1, . . . , gN,td satisfy assumptions of Theorem 4.3 with VN = -2 ln N , RN = N , bf11 = 1/2 and the functions g,ti = gti, where the gti are defined in (5.5). Indeed, note that
+
+Ns =   I[0,sN].
+
+44
+
+Consider the functions f N and gtN , defined above (5.5). We have
+
+fN =  
+
+
+1  I[0,sN] ds
+0
+
+=   fN.
+
+Similarly,
+
+gN,t =   gtN .
+
+(5.17)
+
+As it was shown in the proof of Theorem 1.1, the functions f N , gtNi satisfy assumptions of Theorem 4.3 with VN , RN , bf11 as above and gti = gti. Then, due to Example 4.5, the functions fN , gN,ti fulfil assumptions f.2 -g.2, with the same VN , RN , bf11 and g,ti = gti . To show that assumption f.1 is satisfied as well, it suffices to prove that
+
+1
+
+
+
+Var SfN = 22 ln N + O ln N .
+
+In view of item 1 of the theorem, this can be shown by the argument used in the proof of
+
+Proposition 5.1(1). Now Theorem 4.3 joined with Proposition 5.1(3) implies the conver-
+
+gence
+
+D(N , ztN1 , . . . , ztNd ) D(, zt1, . . . , ztd) as N  ,
+
+(5.18)
+
+where the random variable  and the process zt are as in the formulation of Theorem 1.1. Next we show that the family of measures {D(N , zN ), N  N} is tight. To this end, as
+in Theorem 1.1, it suffices to prove that the family of functions gN,t satisfies assumption (5.6) of Proposition 5.2. The first estimate from (5.6) is obvious since gN,0 = 0. In view of the identity g^N,t = ^g^tN which follows from (5.17), we have
+
+gN,t - gN,s 1/2  ^  gtN - gsN 1/2.
+
+Since   L1(R), the norm ^  is finite. Then it remains to establish the second estimate from (5.6) for the functions gtN . But it was already done in the proof of Theorem 1.1.
+Now, literally repeating arguments from Step 3 of the proof of Theorem 1.1, we see that
+the convergence of finite-dimensional distributions (5.18) together with the tightness of the family of measures D(N , zN ) implies the desired convergence D(N , zN ) D(, z).
+
+Item 4. The proof literally repeats that of Proposition 1.2. The rate of convergence of the cumulants AN2 and A2 in this case is different with that from Proposition 1.2 because of the correction O( ln N ) in item 1 of the theorem (cf. (1.2)).
+
+6 Main order asymptotic for determinantal processes with logarithmically growing variance
+In this section we prove a generalized version of Proposition 1.5 for an important class of determinantal processes. The latter includes processes with logarithmically growing variance, e.g. the sine, Bessel and Airy processes.
+Let hN : [0, 1] × Rm  R be a family of Borel measurable bounded functions with compact supports. Consider the linear statistics
+ShNt := hN (t, x)
+xX
+45
+
+as a random variable under a determinantal process given by a Hermitian kernel KN . Denote by VarN , CovN and EN the corresponding variance, covariance and expectation.
+Proposition 6.1. Assume that there exists a sequence VN   as N  , VN > 0, such that the following three conditions hold.
+
+1. There exists a constant C such that for any N and almost all t  [0, 1] we have
+
+VarN ShNt  C. VN
+
+(6.1)
+
+2. There exists b  R such that for almost all (t, s)  [0, 1]2 we have CovN (ShNt , ShNs ) N b. VN
+
+(6.2)
+
+3. We have
+
+hN  = o( VN ).
+
+Denote
+
+tN
+
+=
+
+ShNt
+
+- 
+
+EN
+
+ShNt
+
+,
+
+VN
+
+0  t  1.
+
+Then for any functions 1, . . . , n  L1[0, 1], n  1, we have
+
+1
+
+1
+
+1
+
+1
+
+D 1(t)tN dt, . . . , n(t)tN dt N D  1(s) ds, . . . ,  n(s) ds ,
+
+0
+
+0
+
+0
+
+0
+
+(6.3)
+
+where   N (0, b).
+
+The principal assumption of Proposition 6.1 is (6.2). In particular, it is satisfied for determinantal processes with the logarithmic growth of the variance. Let us explain this on the following examples. Consider the sine or the Bessel process and the linear statistics corresponding to the function
+
+hN (t, x) = I[0,Nt](x), so that ShNt = #[0,tN]. It is known that for 0 < a < b we have
+
+Var #[aN,bN]  C ln N as N  ,
+
+for the both processes (see (1.2) for the sine-process and [So00a] for the Bessel process). Then, literally repeating arguments from the proof of the convergence (5.1), we obtain (6.2) with b = 1/2 and VN = C ln N . The same holds for the Airy process, if one puts hN (t, x) = I[-Nt,0](x) (so that ShNt = #[-tN,0]) and a < b < 0.
+It can be checked that in the examples above the other assumptions of Proposition 6.1 are satisfied as well, so that the convergence (6.3) takes place. In particular, taking n = 1 and 1 = I[0,t], we get the following corollary, which is a version of the main order asymptotic from Theorem 1.1 for the Airy and Bessel processes. Set
+
+AN,t
+
+=
+
+#[-tN,0] - E #[-tN,0] Var #[-tN,0]
+
+and
+
+BN,t
+
+=
+
+#[0,tN] - E #[0,tN] . Var #[0,tN]
+
+46
+
+Corollary 6.2.
+
+Under the Airy processes for any 0 
+
+t  1 we have D(
+
+t 0
+
+AN,s
+
+ds)
+
+D(t)
+
+as N
+
+ , where   N (0, 1/2).
+
+Under the Bessel process, we have D(
+
+t 0
+
+BN,s
+
+ds)
+
+D(t).
+
+Similar result holds true for the ergodic integrals under the shift operator (studied in
+Section 1.3). Let  : R  R be a bounded measurable function with compact support
+1
+satisfying (s) ds = 1. Set
+0
+
+tN
+
+tN
+
+NA,t := (· + u) du and NB,t := (· - u) du.
+
+0
+
+0
+
+Denote
+
+AN,,t := SNA,t - E SNA,t , Var SNA,t
+
+and define BN,,t in the same way.
+
+Corollary 6.3. Assertion of Corollary 6.2 holds if replace the processes AN,s and BN,s by the processes AN,,s and BN,,s.
+
+1
+Proof of Proposition 6.1. Let Ni (x) := i(t)hN (t, x) dt. Using the Fubini theorem,
+0
+for any 1  i  n we obtain
+
+1
+
+i(t)tN
+
+dt
+
+=
+
+SNi
+
+- 
+
+EN
+
+SNi
+
+VN
+
+.
+
+0
+
+We claim that the family of functions Ni satisfies assumptions of Theorem 4.1. Indeed, the only condition fulfilment of which is not obvious is (4.1). Let us check it. In view of
+the Fubini theorem, we have
+
+CovN (SNi , SNj ) VN
+
+=
+
+EN
+
+1
+
+1
+
+i(t)tN dt j(s)sN ds
+
+0
+
+0
+
+11
+
+=
+
+i
+
+(t)j
+
+(s)
+
+CovN
+
+(ShNt VN
+
+,
+
+ShNs
+
+)
+
+dtds.
+
+00
+
+Then, using the dominated convergence theorem, (6.1) and (6.2) we get
+
+CovN (SNi , SNj )  b VN
+
+1
+
+1
+i(t)j(s) dtds =: cij
+
+as
+
+N  ,
+
+00
+
+(6.4)
+
+so that assumption (4.1) is fulfilled with bij = cij. Now it remains to apply Theorem 4.1. Indeed, since the limiting vector  obtained there is Gaussian with the covariance matrix
+(cij), it coincides in distribution with the random vector from the right-hand side of (6.3).
+
+47
+
+Acknowledgements. We are deeply grateful to Vadim Gorin, Alexei Klimenko, Gaultier Lambert, Leonid Petrov, Alexander Sodin and Mikhail Zhitlukhin for useful discussions. Both authors are supported by the grant MD 5991.2016.1 of the President of the Russian Federation. A. Bufetov's research has received funding from the European Research Council (ERC) under the European Union's Horizon 2020 research and innovation programme (grant agreement No 647133 (ICHAOS)). It has also been funded by the Russian Academic Excellence Project `5-100' and by the Gabriel Lam´e Chair at the Chebyshev Laboratory of the SPbSU, a joint initiative of the French Embassy in the Russian Federation and the Saint-Petersburg State University.
+References
+[AGZ] G.W. Anderson, A. Guionnet, O. Zeitouni, An introduction to random matrices, Cambridge University Press, Cambridge (2009).
+[BF] A. Borodin, P.L. Ferrari, Anisotropic growth of random surfaces in 2 + 1 dimensions, Comm. Math. Phys. 325 (2014), 603-684.
+[BMNZ] K. Borovkov, Y. Mishura, A. Novikov, M. Zhitlukhin, Bounds for expected maxima of Gaussian processes and their discrete approximations, STOCHASTICS, 89 (2017), 21-37.
+[BD15] J. Breuer, M. Duits, The Nevai condition and a local law of large numbers for ortogonal polynomial ensembles, Adv. Math. 265 (2014), 441-484.
+[BD16] J. Breuer, M. Duits, Universality of Mesoscopic Fluctuations for Orthogonal Polynomial Ensembles, Comm. Math. Phys. 342 (2016), 491-531.
+[BD17] J. Breuer, M. Duits, Central Limit Theorems for biorthogonal Ensembles and asymptotics of recurrence coefficients, J. Amer. Math. Soc. 30 (2017), 27-66.
+[Buf14] A.I. Bufetov, Quasi-Symmetries of Determinantal Point Processes, arXiv:1409.2068.
+[Buf15] A.I. Bufetov, Action of the group of diffeomorphisms on determinantal measures, Russian Math. Surveys, 70 (2015), 953-954.
+[Buf16] A.I. Bufetov, Rigidity of determinantal point processes with the Airy, the Bessel and the Gamma kernel, Bull. Math. Sci. 6 (2016), 163-172.
+[BDQ] A.I. Bufetov, Y. Dabrowski and Y. Qiu. Linear rigidity of stationary stochastic processes, arXiv:1507.00670, Ergodic Theory Dynam. Systems, online 3 April 2017.
+[BQS] A.I. Bufetov, Y. Qiu and A. Shamov, Kernels of conditional determinantal measures, arXiv:1612.06751.
+[CL] O. Costin, J. Lebowitz, Gaussian fluctuations in random matrices, Phys. Rev. Lett., 75 (1995), 69-72.
+[DVJ] D.J. Daley, D. Vere-Jones, An Introduction to the Theory of Point Processes, Springer, New York (1988).
+48
+
+[F] W. Feller, An Introduction to Probability Theory and Its Applications, Vol. 2, John Wiley, New York (1971).
+[G] S. Ghosh, Determinantal processes and completeness of random exponentials: the critical case, Probab. Theory Relat. Fields, 163 (2014), 1-23.
+[GP] S. Ghosh, Y. Peres, Rigidity and Tolerance in point processes: Gaussian zeros and Ginibre eigenvalues, arXiv:1211.2381.
+[HKPV] J.B. Hough, M. Krishnapur, Y. Peres, B. Vir´ag, Determinantal processes and independence, Probab. Surv., 3 (2006), 206-229.
+[JL] K. Johansson, G. Lambert, Gaussian and non-Gaussian fluctuations for mesoscopic linear statistics in determinantal processes, arXiv:1504.06455.
+[KaSh] I. Karatzas, S. Shreve, Brownian Motion and Stochastic Calculus, 2nd ed., Springer Verlag, Berlin (1991).
+[L15] G. Lambert, Mesoscopic fluctuations for unitary invariant ensembles, arXiv:1510.03641.
+[L15a] G. Lambert, CLT for biorthogonal ensembles and related combinatorial identities, arXiv:1511.06121.
+[Ly] R.Lyons, Determinantal probability measures, Publ. Math. Inst. Hautes Etudes Sci., 98 (2003), 167-212.
+[LySt] R. Lyons, J.E. Steif, Stationary determinantal processes: phase multiplicity, Bernoullicity, entropy, and domination, Duke Math. J., 120 (2003), 515-575.
+[Ma75] O. Macchi, The coincidence approach to stochastic point processes, Adv. Appl. Probab., 7 (1975), 82-122.
+[Ma77] O. Macchi, The fermion process - a model of stochastic point process with repulsive points, In Transactions of the Seventh Prague Conference on Information Theory, Statistical Decision Functions, Random Processes and of the Eighth European Meeting of Statisticians, A, Reidel, Dordrecht, (1977), 391-398.
+[OO] H. Osada and S. Osada. Discrete approximations of determinantal point processes on continuous spaces: tree representations and tail triviality, arXiv:1603.07478.
+[RS] M. Reed, B. Simon, Methods of modern mathematical physics. IV, Academic Press, London (1978).
+[ST] T. Shirai, Y. Takahashi, Random point fields associated with certain Fredholm determinants. I. Fermion, Poisson and boson point processes, J. Funct. Anal. 205 (2003), 414-463.
+[STa] T. Shirai, Y. Takahashi, Random point fields associated with certain Fredholm determinants. II. Fermion shifts and their ergodic and Gibbs properties, Ann. Probab. 31 (2003), 1533-1564.
+[Shi] A.N. Shiryaev, Probability, 2nd ed., Springer, New-York (1995).
+49
+
+[Sinai89] Ya.G. Sinai, Dynamical Systems II, Ergodic Theory with Applications to Dynamical Systems and Statistical Mechanics, Springer Verlag (1989).
+[So00] A.B. Soshnikov, Determinantal random point fields, Russian Math. Surveys, 55 (2000), 923-975.
+[So00a] A.B. Soshnikov, Gaussian fluctuation for the number of particles in Airy, Bessel, sine, and other determinantal random point fields, Jour. Stat. Phys., 100 (2000), 491522.
+[So00b] A. Soshnikov, Central Limit Theorem for Local Linear Statistics in Classical Compact Groups and Related Combinatorial Identities, Ann. Probab., 28 (2000), 13531370.
+[So01] A. Soshnikov, Gaussian limits for determinantal random point fields, Ann. Probab., 30 (2002), 171-187.
+[Sp] H. Spohn, Interacting Brownian particles: A study of Dyson's model, in Hydrodynamic Behavior and Interacting Particle Systems, G. Papanicolau, ed., SpringerVerlag, New York, 1987.
+50
+
+

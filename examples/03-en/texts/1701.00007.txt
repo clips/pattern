@@ -1,0 +1,2708 @@
+Particle-Hole Symmetry in the Fermion-Chern-Simons and Dirac Descriptions of a Half-Filled Landau Level
+Chong Wang,1 Nigel R. Cooper,2 Bertrand I. Halperin,1 and Ady Stern3 1Department of Physics, Harvard University, Cambridge MA 02138, USA 2T.C.M. Group, Cavendish Laboratory, University of Cambridge, JJ Thomson Avenue, Cambridge, CB3 0HE, U.K.
+3Department of Condensed Matter Physics, Weizmann Institute of Science, Rehovot, Israel 76100
+It is well known that there is a particle-hole symmetry for spin-polarized electrons with two-body interactions in a partially filled Landau level, which becomes exact in the limit where the cyclotron energy is large compared to the interaction strength, so one can ignore mixing between Landau levels. This symmetry is explicit in the description of a half-filled Landau level recently introduced by D. T. Son, using Dirac fermions, but it was thought to be absent in the older fermion-ChernSimons approach, developed by Halperin, Lee, and Read and subsequent authors. We show here, however, that when properly evaluated, the Halperin, Lee, Read (HLR) theory gives results for long-wavelength low-energy physical properties, including the Hall conductance in the presence of impurities and the positions of minima in the magnetoroton spectra for fractional quantized Hall states close to half-filling, that are identical to predictions of the Dirac formulation. In fact, the HLR theory predicts an emergent particle-hole symmetry near half filling, even when the cyclotron energy is finite.
+
+arXiv:1701.00007v2 [cond-mat.str-el] 6 Jul 2017
+
+July 7, 2017
+
+CONTENTS
+
+I. Introduction
+
+1
+
+II. Review of the HLR approach
+
+3
+
+A. Definition of the Problem
+
+3
+
+B. The HLR hypothesis
+
+3
+
+C. Infrared divergences
+
+4
+
+D. Energy gaps at  = p/(2p + 1)
+
+5
+
+III. DC transport at  = 1/2
+
+5
+
+A. Disorder potential and fluctuations of the
+
+magnetic field
+
+6
+
+B. Semiclassical analysis using the Kubo
+
+formula
+
+7
+
+C. Calculation using the Born Approximation
+
+and Boltzmann Equation
+
+8
+
+1. Scattering rate of a single composite
+
+fermion
+
+8
+
+2. Scattering rate in a composite fermion
+
+liquid in the presence of an electric field 9
+
+D. Thermopower and thermal transport
+
+10
+
+1. General considerations
+
+10
+
+2. Thermopower
+
+10
+
+3. Thermal Transport
+
+10
+
+IV. Commensurability Oscillations
+
+11
+
+A. Magnetoroton spectrum at  = p/(2p + 1) 12
+
+1. Semiclassical calculation of ^
+
+12
+
+2. Corrections for the poles of W^
+
+13
+
+B. Magnetorotons near  = 1/(2N )
+
+15
+
+C. Weiss oscillations
+
+15
+
+D. Ambiguity of kF
+
+16
+
+V. Comparison with the Dirac theory
+
+16
+
+VI. Conclusions
+
+18
+
+Acknowledgments
+
+19
+
+References
+
+20
+
+I. INTRODUCTION
+A series of recent developments have focused renewed attention on the problem of a two-dimensional system of interacting electrons at, or close to, a half-filled Landau level. In particular, in a highly original work, D. T. Son[1] has proposed a description of the half-filled Landau level that employs a collection of relativistic Dirac fermions, interacting with an emergent gauge field with no Chern-Simons term. This description stands in contrast to the more traditional description in terms of non-relativistic "composite fermions" interacting with a Chern-Simons gauge field, developed by Halperin, Lee and Read (HLR)[2] and others, some twenty years ago. (See, e.g., Refs. [3­11]).
+The Son-Dirac description has led to a number of valuable insights into the conventional problem of twodimensional electrons in a strong magnetic field[12­16], and it has also served to elucidate connections to other physical problems, such as exotic electronic states that could arise at the surface of a three-dimensional topological insulator[12, 17, 18], time-reversal invariant U (1) quantum spin liquids in three dimensions[12, 19, 20], and a class of field theory dualities in (2 + 1) dimensions[12, 18, 21­25].
+The Dirac picture seems to have some significant advantages compared with the HLR description for the conventional two-dimensional electron system, in particular with respect to particle-hole (PH) symmetry. It is
+
+2
+
+well known that a partially-filled Landau level of spinpolarized electrons with two-body interactions should have an exact PH symmetry about half-filling, in the limit where the electron-electron interaction is weak compared to the cyclotron energy, so one can neglect mixing between Landau levels[26]. Numerical calculations, either through trial wave functions motivated by the composite fermi liquid picture[27, 28], or through unbiased energetic calculations[14, 27], seem to confirm that this symmetry is unbroken in the incompressible phase. This symmetry is made manifest in the Dirac model by setting a single parameter equal to zero, the Dirac mass mD.
+By contrast, the HLR approach is not explicitly PH symmetric, and in fact it has been questioned whether the approach is even compatible with PH symmetry[29, 30]. It has been suggested that the Dirac theory and the HLR theory actually represent different fixed points and that there might necessarily be some kind of discontinuous phase transition separating these fixed points[1, 29­ 31]. These suggestions have been based on analyses of several key physical properties, in which it appeared that predictions of HLR were contradictory to PH symmetry.
+In this paper, we reexamine several of these properties, and we find that when properly analyzed, the HLR theory gives identical results to the Dirac theory, in the limit of long wavelengths and low energies, near half filling. Some of the confusion about these points has arisen simply because the predictions of HLR theory were not previously analyzed with sufficient care. Despite our limitations to long-wavelengths and low-energies, we believe that our analysis casts strong doubt on the possibility that there is any regime of parameters in which the Dirac description and the HLR description correspond to two different phases of matter. Specifically, we have carried out detailed studies of two types of properties where it has been suggested that there are irreconcilable differences between the HLR and Son-Dirac descriptions ­ the Hall conductance of a half-filled Landau level in the presence of disorder, and the momentum values of the minima in the magnetoroton spectra of fractional quantized Hall states that are symmetrically displaced from  = 1/2.
+In the presence of a disorder potential that is statistically PH symmetric, symmetry dictates that the Hall conductance should be exactly e2/2h, in the absence of Landau level mixing. Since 1997, it has been widely believed that HLR is incompatible with this requirement, and that HLR implies deviations in the Hall conductance proportional to the inverse square of the mean-free path of the composite fermions. We show below, however, that when properly evaluated, these deviations are absent in the HLR theory, at least in the case of weak, long-wavelength, disorder potentials.
+For a system where the electronic filling factor  is close to one half, oscillations in the conductivity at finite wave vector q and frequency  have been predicted, and in some cases observed, as a function of the deviations from half filling. These oscillations involve excitation or modulation at a non-zero wave vector q, where maxima
+
+or minima in some characteristic of the response are predicted to occur at a series of values of q, approximately given by
+
+qn
+
+
+
+zn|eB| kF
+
+(1)
+
+where zn is the n-th zero of the J1 Bessel function, B is the deviation of the magnetic field from the field at half filling, and kF is the Fermi wave vector of the composite fermions. PH symmetry requires that if the electron density is varied, while the magnetic field is held fixed, the wave vectors qn should be precisely independent of the sign of B. In the Son-Dirac theory, Eq. (1) directly obeys this PH symmetry, because the value of kF is a constant, determined by the magnetic field, independent of the electron density. In HLR, however, kF is determined by the electron density, which will be slightly different for positive and negative values of B. Therefore, if one were to treat Eq. (1) as an exact equality, using the definition of kF in HLR, one would find that PH symmetry is obeyed to first order in B, but is violated at second order.
+We show below that a careful evaluation of the locations of minima in the magnetoroton excitation spectrum in fractional quantum Hall states close to  = 1/2, originally discussed by Simon and Halperin (SH)[10], using the HLR approach, gives predictions that are PH symmetric, at least to order (B)2. We show that these predictions coincide with the predictions of the Son-Dirac theory. The SH formulas actually contain corrections to Eq. (1), which vanish in the limit B  0 but are nonzero at order (B)2 and which precisely eliminate the PH asymmetry at this order.
+We note that the results described above were both obtained by careful evaluation of the HLR theory at the RPA level, and did not require any explicit assumption of particle hole symmetry, or any apparent assumption about the ratio between the electron interaction strength and the bare electron cyclotron energy. These results suggest that even when this ratio is finite, so the electrons are not projected into a single Landau level, there may be an emergent PH symmetry, which becomes asymptotically exact in the limit of low-frequency, long-wavelength and small deviation from half-filling. Our results show that for the properties we have analyzed, this is true at least to some nontrivial orders in frequency, momentum and deviation from half-filling.
+Within the context of HLR theory, we find that a similar degree of PH symmetry should emerge in the vicinity of other fractions of the form 1/(2n), such as 1/4, 1/6, etc. As a practical matter, this is only of interest for small values of n, since at least for the case of Coulomb interactions between the electrons, the ground state for values of n > 3 appears to be a Wigner crystal of electrons, rather than a liquid of composite fermions. Nevertheless, an emergent PH symmetry at  = 1/4 or 1/6 would be noteworthy, since there is no exact particle hole symmetry about fractions other than 1/2, even for electrons
+
+3
+
+confined to a single Landau level. The structure of the paper is the following. In the
+next Section we review the HLR approach to the halffilled Landau level. In Section III we address the issue of dc transport at  = 1/2 in the presence of disorder, and show how the HLR approach yields results which are consistent with the requirements of particle-hole symmetry. In Section IV we address "commensurability oscillations", which occur at fillings slightly away from  = 1/2, with a focus on the locations of minima in the dispersion curves for the lowest-energy magnetoroton excitations in fractional quantized Hall states near half filling. We show how an analysis within the HLR approach yields results that are consistent with the requirements of particle-hole symmetry. In Section V, we review the Son-Dirac approach, and make a comparison between results of that approach and our analyses based on HLR. We conclude with a Summary section.
+
+II. REVIEW OF THE HLR APPROACH
+
+A. Definition of the Problem
+
+We consider a two-dimensional system of interacting electrons in a strong magnetic field, with a Landau level filling fraction  that is equal to or close to  = 1/2. We assume that the electrons are fully spin polarized, so we may neglect the spin degree of freedom. The Hamiltonian of the system may be written in the form
+
+H0 =
+
+|pj
+
+- A(rj)|2 2m
+
++
+
+V2,
+
+(2)
+
+j
+
+where V2 is a two-body interaction of the form
+
+1
+
+V2 = 2 v2(ri - rj),
+
+(3)
+
+i=j
+
+and A is the vector potential due to a uniform magnetic field B in the z-direction. In the case where v2 is a longrange potential, the Hamiltonian must include interactions between the electrons and a uniform neutralizing background, which we include in V2. In the presence of impurities, we shall add a one-body potential V1(rj) which depends on position; for the present, however, we shall consider a system without impurities, so we take V1 = 0. Except where otherwise stated, we use units where the electron charge is positive and equal to unity, and = c = 1.
+The system under consideration has several important properties. First, it is Galilean invariant, so that it must obey Kohn's theorem, which states that the response to a uniform time-varying electric field should be the same as for a system of non-interacting electrons in the given magnetic field. Second, as mentioned in the Introduction, in the limit where the electron mass m is taken to zero, so that the cyclotron energy becomes infinite while
+
+the electron-electron interaction is held fixed, the system should manifest an exact PH symmetry about Landaulevel filling fraction  = 1/2. We shall see to what extent these properties are preserved by approximations that have been proposed for treating the system.
+
+B. The HLR hypothesis
+
+The fermion-Chern-Simons approach employed in HLR began with an exact unitary transformation, a singular gauge transformation, where the many-body electron wave function is multiplied by a phase factor that depends on the positions of all the electrons, such that the transformed Hamiltonian acquires a Chern-Simons gauge field aµ, with -2 flux quanta attached to every electron. The transformed problem may be expressed in Lagrangian form by the following Lagrangian density:
+
+L0 = ¯
+
+D·D iDt - µ + 2m
+
+ada  - 8 + Lint
+
+(4)
+
+ada  µaµ a
+
+(5)
+
+Dµ  µ + i (aµ + Aµ).
+
+(6)
+
+Taking the variation of the Lagrangian with respect to a0, we obtain the constraint
+
+ × a = -4 ¯ = -4 nel(r).
+
+(7)
+
+In these equations,  is the Grassmann field for a set of transformed "composite fermions" (CFs), whose density ¯ is identical to the electron density nel(r).
+At this stage, we have merely transformed one insoluble problem to another. However, the transformed problem admits a sensible mean-field approximation, whereas the original problem did not. In particular, if the Landau level is half full, so that there is one electron for each quantum of electromagnetic flux, the mean field problem describes a set of non-interacting fermions in zero magnetic field. To go beyond mean-field theory, one must include the effects of fluctuations in the gauge field and fluctuations in the two-body potential. The central hypothesis of HLR is that, in principle, one could obtain the correct properties of the system by starting from the mean field solution, treating the omitted fluctuation terms via perturbation theory. This assumes that the interacting ground state can be reached from the mean-field solution by turning on the perturbing terms adiabatically, without encountering any phase transition. Among the consequences of this assumption are that the ground state at  = 1/2 should be compressible, and that there should be something like a Fermi surface, with a well-defined Fermi wave vector, kF = 4nel[2, 8, 9, 11].
+Experimentally, in GaAs two-dimensional electron systems, it appears that the HLR hypothesis is correct for
+
+4
+
+electrons in the lowest Landau level. However, it appears that the HLR hypothesis breaks down for electrons in the second Landau level, where one observes an incompressible fractional Hall state, with an energy gap, at half filling, in high quality samples[32]. It is widely believed that this quantized Hall state may be understood as arising from an instability of the Fermi surface to formation of Cooper pairs in the second Landau level[33­36]. In still higher Landau levels, it appears that the Fermi surface is unstable with respect to the formation of charge density waves, which can lead to a large anisotropy in the measured electrical resistivity at low temperatures[37­40].
+If one is interested in dynamic properties, such as the response to a time-dependent and space-dependent electric field, the first level of approximation, beyond static mean field theory, is the random phase approximation (RPA), or time-dependent Hartree approximation. In this approximation, the composite fermions are treated as non-interacting fermions, with the bare mass m, driven by an effective electromagnetic field which is the sum of the applied external electromagnetic field, the Hartree potential arising from the interaction V2, in the case where there are induced modulations in the selfconsistent charge density, and induced electric and magnetic fields arising from modulations of the Chern Simons gauge field. These fields may be written as
+
+e = -4z^ × jel , b = -4nel ,
+
+(8)
+
+where jel is the electron current density at the point in question.
+As we shall discuss further below, many properties of the system near  = 1/2 are described properly by the RPA, including the response of the system to a uniform time-dependent electric field. However, use of the unrenormalized electron mass as assumed in the RPA, can lead to a serious error in the energy scale for various excitations. A proper low-energy description of the composite fermion liquid requires the use of an effective mass m, which may be very different than the bare mass m. In particular, one expects that the renormalized mass should be determined by the electron-electron interaction v2, and should be independent of m, in the limit where m  0 and the cyclotron energy goes to infinity. The renormalized mass enters directly in the low temperature specific heat, and it also is manifest in the magnitudes of the energy gaps at fractional quantized Hall states of the form  = p/(2p + 1), where p is a positive or negative integer, in the limit |p|   or   1/2[2, 11].
+A simple modification of the RPA, which we denote RPA*, would consist of replacing m by m in the RPA. Although this would correctly give the energy scale for the specific heat and energy gaps in the fractional quantized Hall states, this would change the response to a time-dependent uniform electric field, which was correctly given in RPA. Specifically, if we write E = ^()jel, at frequency , then it is required by Kohn's theorem that the resistivity tensor should be given by
+
+^() = -im - 4^,
+
+(9)
+
+where ^ is the unit antisymmetric tensor, xy = - yx = 1. Using RPA*, one would find, incorrectly, that m is replaced by m in the formula for ^.
+This defect in RPA* is familiar from the theory of ordinary Fermi liquids. In order to get the correct lowfrequency response functions in the presence of a renormalized effective mass, it is necessary to include effects of the Landau interaction parameters Fl. These may be defined by the energy cost to form a distortion of the Fermi surface. Specifically, a small distortion of the form
+
+
+
+kF (r, ) =
+
+ul(r)e-il
+
+l=-
+
+(10)
+
+will have an energy cost
+
+E = vF kF 4
+
+
+
+d2r
+
+(1 + Fl) |ul(r)|2,
+
+(11)
+
+l=-
+
+where vF  kF /m. For a Galilean invariant system, we must have
+
+F1 = F-1 = (m/m) - 1 = (vF /vF ) - 1.
+
+(12)
+
+As noted in SH [10], inclusion of these interaction parameters will also restore the correct response for the composite fermion system at  = 1/2. In the presence of a non-zero current, the l = ±1 parameters lead to an extra force on the electrons, which restores m to m in the resistivity tensor (9).
+We remark that it is also necessary to take into account a Landau interaction parameter if one wishes to obtain the correct value for the electron compressibility. As in a normal Fermi liquid, we have
+
+dµ 2
+
+dnel = m (1 + F0),
+
+(13)
+
+where µ is the chemical potential (defined to exclude the contribution of the macroscopic electrostatic potential).
+
+C. Infrared divergences
+As was already observed in HLR, in the case of Coulomb interactions, which behave as 1/r for large separations r, an analysis of contributions to the effective mass m arising from long-wavelength fluctuations of the Chern-Simons gauge field predicts a logarithmic divergence in m as one approaches the Fermi surface. A similar divergence is found in the Landau interaction parameters, however, so that Galilean invariance is preserved, and the compressibility remains finite. The decay rate for quasiparticles close to the Fermi energy is predicted to be small compared to the quasiparticle energy, in this case, so that the quasiparticle excitations remain well-defined, and the composite Fermion system may be described as a "marginal Fermi liquid." Similar infrared divergences are
+
+5
+
+found in the Son-Dirac theory of the half-filled Landau level.
+It is believed that these infrared divergences will be absent, and m will remain finite, if one assumes an electron-electron interaction that falls off more slowly than 1/r, so that long-wavelength density fluctuations in the electron density are suppressed. Moreover, these divergences are irrelevant to the issues of PH symmetry which are the focus of the current investigation. Consequently, we shall assume, for the purposes of our discussion, that we are dealing with an electron-electron interaction that falls of more slowly than 1/r and that m is finite.
+We remark that for short-range electron-electron interactions, fluctuations in the gauge field lead to divergences that are stronger than logarithmic, and long-lived quasiparticles can no longer be defined at the Fermi surface. Nevertheless, it is believed that many predictions of the HLR theory remain valid in this case[8, 9]. We expect that the results of the present paper with regard to particle hole symmetry should also apply in the case of short-range interactions, but we have not investigated this case in detail.
+
+D. Energy gaps at  = p/(2p + 1)
+
+According to the HLR picture, if there is a finite effective mass m at  = 1/2, then for fractional quantized Hall states of the form  = p/(2p + 1), where p is a positive or negative integer, the energy gaps, in the limit p  , should have the asymptotic form
+
+|B|
+
+Eg = m ,
+
+(14)
+
+where B the deviation from the magnetic field at  = 1/2 for the given electron density, i.e.,
+
+B
+
+B
+
+=
+
+B
+
+-
+
+4nel
+
+=
+
+. 2p + 1
+
+(15)
+
+Note that the allowed values of B are symmetric about  = 1/2, assuming that the electron density is varied while B is held fixed, since B(p) = -B(-p - 1).
+In the limit m  0, PH symmetry requires that the energy gap should be the same for B and -B, assuming that B has been held fixed. Equation (14) will satisfy this requirement, at least to first order order in B. Symmetry beyond first order depends on the choice of m used in the formula. Although the HLR analysis specifies that m should be evaluated under the condition of  = 1/2, there is still an ambiguity when B = 0, because one must decide whether to use the value appropriate for the given magnetic field or for the given electron density. These conditions are precisely equivalent to each other only when B = 0. If one employs in Eq. (14) the value of m calculated at the given value of B, then the formula will exhibit PH symmetry to all orders in B.
+
+If one were to use the value of m calculated at the given value of nel, however, there would be violations of PH symmetry at second order in B.
+In practice, the value of the renormalized mass cannot be calculated entirely within the HLR approach, so the value of m to be used in the effective theory must be obtained from experiment or from some other microscopic calculation. Thus we can say that the HLR theory is compatible with PH symmetry in the fractional quantized Hall energy gaps, but it can only be deduced from the theory to first order in B. We remark that the same situation occurs in the Son-Dirac theory. Precise PH symmetry in that case depends on a separate assumption that the renormalized value of the Dirac velocity should be determined by the magnetic field and not by the electron density.
+
+III. DC TRANSPORT AT  = 1/2
+
+PH symmetry, in the limit m  0, implies that the Hall conductivity in response to a spatially uniform electric field should be precisely given by
+
+1
+
+xy
+
+=
+
+-yx
+
+=
+
+, 4
+
+(16)
+
+regardless of the applied frequency. This should be true even in the presence of impurities, provided that the disorder potential Vimp is PH symmetric in a statistical sense. This means that if one chooses the uniform background potential such that the average Vimp = 0, then all odd moments of the disorder potential must vanish.
+In the absence of impurities, we may use the result (9) for a Galilean invariant system to calculate the conductivity tensor
+
+^()
+
+=
+
+^-1()
+
+=
+
+-im + 4^ 162 - m22 .
+
+(17)
+
+If m = 0, this gives ^() = -^/4, which satisfies the condition for PH symmetry. As we have seen, the HLR theory will satisfy Galilean invariance if the F±1 interaction parameter is taken into account. However, if one were to use the renormalized mass without the F±1 interaction, one would find that m is replaced by m in Eq. (17), so that particle hole symmetry would not be satisfied for  = 0.
+Of greater interest is the dc Hall conductivity in the presence of impurities. For many years, beginning with the work of Kivelson et al. in 1997[29], it has been widely believed that the HLR approach must give a result for the dc Hall conductivity that is inconsistent with PH symmetry, at least at the level of RPA and perhaps beyond, if the mean free path for composite fermions is finite. The reasoning goes as follows. Within the HLR approach, the electron resistivity tensor is related to the resistivity tensor of the composite fermions by
+
+^ = ^cf + ^CS,
+
+(18)
+
+6
+
+where ^CS is the Chern-Simons resistivity tensor, given by
+
+^CS = -4^.
+
+(19)
+
+One finds that in order to obtain the PH symmetric result for xy, if xx = 0, it is necessary that xcyf = -1/4. However, it was argued that xcyf is necessarily equal to zero at  = 1/2. This is because, in the absence of impurities, the composite fermions see an average effective magnetic field equal to zero, which is effectively invariant under time reversal. The presence of impurities leads to non-uniformities in the electron density, which lead to local fluctuations in the effective magnetic field b(r). These fluctuations, in turn, will be the dominant source of scattering of composite fermions, under conditions where the correlation length for the impurity potential is large compared to the Fermi wave length. If the impurity potential is statistically PH symmetric, then there will be equal probability to have a positive or negative value of b at any point, so that the resulting perturbation to the composite fermions should again be invariant under time reversal in a statistical sense.
+The fallacy we find here in this reasoning is that fluctuations in b are correlated with fluctuations in the electrostatic potential, which though their effects are weak compared to the effects of b, are sufficient to break the statistical time-reversal symmetry produced by the b fluctuations alone. We shall see below that when these correlated fluctuations are taken into account we recover precisely the result xcyf = -1/4 required by PH symmetry.
+In the subsections below, we show how disorder leads to the desired result for xcyf . As there are some subtleties involved in these calculations, we present here two different derivations, which bring different insights to the problem and which may be applicable in somewhat different regimes. The first derivation employs a semi-classical analysis and uses the Kubo formula, which expresses the conductivity in terms of equilibrium correlation functions. The second derivation employs the Born Approximation and the Boltzmann Equation , and calculates the conductivity by analyzing the effect of the electric field on the particles' dynamics. We also discuss consequences for thermoelectric transport at  = 1/2.
+Our calculations are restricted to the case where the Fourier components of the disorder potential have wave vectors small compared to kF . Neither the HLR nor the Dirac theories, in their simplest forms, can describe quantitatively the effect of potential fluctuations with wave vectors comparable to or larger than kF . In either theory, the coupling between a short-wavelength potential fluctuation and the operators that scatter a composite fermion from one point to another on the Fermi surface will be affected by vertex corrections, whose value is determined by microscopic considerations and cannot be calculated within the low-energy theory itself.
+It should be emphasized that while the effects discussed below may be important as a matter of princi-
+
+ple, they are all sub-leading corrections to the transport
+in the presence of impurities. For small impurity concentrations, the CF Hall conductance xcyf = -1/4 is small compared to the diagonal CF conductance, xcxf , which is proportional to kF lcf, where lcf is the transport
+mean free path for composite fermions. Conversely, if one were to set xcyf = 0, this would lead to a deviation of the electronic xy from the PH-symmetric value by an amount proportional to x2x  1/(kF lcf)2, which is small compared to xx as well as to xy, in the limit of large
+kF lcf.
+
+A. Disorder potential and fluctuations of the magnetic field
+
+In general, density fluctuations produced by an external electrostatic potential such as Vimp will tend to screen the external potential and give rise to a combined selfconsistent potential, which we denote V (r). Within a mean-field approximation, for long-wavelength potential fluctuations, the induced density fluctuation should be related to V by
+
+ncf(r) = -V (r),
+
+(20)
+
+where  = m/2 is the compressibility of noninteracting fermions. We assume here that the potential Vimp contains only Fourier components with wave vectors q that are small compared to kF , which is appropriate for a remotely doped system, where the impurities are set back from the 2DES by a distance large compared to the Fermi wavelength.
+Beyond the mean field approximation, we should replace m by m, and we should redefine the potential V to include effects of the F0 Landau parameter. The effective magnetic field b = b(r) + B produced by a fluctuation in the redefined V is then given by
+
+b(r) = 2mV (r) .
+
+(21)
+
+Equivalently, we may describe this in terms of the induced vector potential a, which may be written in Fourier space as
+
+a(q)
+
+=
+
+-2mV
+
+(q)
+
+iz^ × q2
+
+q
+
+(22)
+
+Since the gauge fluctuation will couple to the momentum of a composite fermion with a term -a · pj/m, we find that the total effect of the impurity potential is a term in
+the Hamiltonian whose matrix element between an initial
+state of momentum k and a final state k is given by
+
+2i(k × k ) · z^
+
+Ukk = V (q) 1 +
+
+q2
+
+,
+
+(23)
+
+where q = k - k .
+
+7
+
+B. Semiclassical analysis using the Kubo formula
+
+In this subsection, we employ a semiclassical analysis of the dynamics of CFs of mass m in the presence of the (screened) impurity potential V (r). We restore factors of e and , and we consider a more general situation, where  = 1/(2n), where n is an integer, not necessarily equal to 1. Then Eq (21) for the effective magnetic field b should be replaced by
+
+2nm
+
+b = V (r)
+
+.
+
+(24)
+
+e
+
+The semiclassical equations of motion are then
+
+2nV (r)
+
+p = -V +
+
+p × z^
+
+(25)
+
+r = p/m .
+
+(26)
+
+(We assume, here, and in the formulas below, that the
+
+product of the electron charge and the z-component of
+
+the external magnetic field is positive. Results for the
+
+opposite case may be obtained by interchanging indices
+
+for the x and y axes.)
+
+We shall consider V (r) to be a random function, sym-
+
+metrically distributed around V = 0. Its correlation
+
+length  is assumed large compared to /pF with pF = 2m the Fermi momentum and  the Fermi energy, as
+
+required for validity of the semiclassical approximation.
+
+Note that the Lorentz force (of order V pF / ) is then large compared to the force exerted by gradient of the poten-
+
+tial (of order V /) by a factor pF / . The validity of the
+
+semiclassical analysis also requires that the typical scat-
+
+tering angle from this Lorentz force,   V m/( pF ),
+
+is large compared to the diffraction angle  /(pF ), i.e.
+
+V
+
+2/(m2).
+
+It is convenient to separate into radial and angular co-
+
+ordinates, by writing
+
+p(t)  px(t) + ipy(t) = |p(t)|ei(t) .
+
+(27)
+
+For a particle of energy 
+
+|p(t)| = 2m{ - V [r(t)]}
+
+(28)
+
+while the angle  must be found by integrating
+
+(t) = 1
+
+V
+
+V 2nV
+
+sin  - cos  -
+
+(29)
+
+|p(t)|
+
+x
+
+y
+
+along the trajectory r(t) of the particle. We shall use the classical form of the Kubo formulas for
+the conductivity in terms of velocity-velocity correlation functions. To this end, we construct the correlator
+
+1 K(t - t0)  m2
+
+p(t)p(t0)
+
+(30)
+
+with the average taken over the distribution of particles in phase space. To represent the degenerate Fermi gas
+
+we shall consider the microcanonical distribution at the Fermi energy . The conductivities are then
+
+m e2
+
+xcfx - ixcfy = 2
+
+h
+
+
+K(t) dt
+0
+
+(31)
+
+where the prefactor involves the compressibility. For fixed Fermi energy , large compared to V , we use (28) expanded to first order in V /, to write
+
+K(t - t0)
+
+2 m
+
+ - V (rt) + V (rt0 )
+
+ei
+
+t t0
+
+(t
+
+)dt
+
+2
+
+(32)
+
+and then use (29) to replace V (r) -( /2n) for pF / 1 at both t and t0, leading to
+
+K(t - t0)
+
+2
+
+id
+
+m
+
+- 2n dt
+
+ei
+
+t t0
+
+(t
+
+)dt
+
+. (33)
+
+The correlator
+
+ei
+
+t t0
+
+(t
+
+)dt
+
+(34)
+
+depends on how the particles move in real space. Assuming that the composite mean free path lcf is large compared to the correlations length  for fluctuations in the potential V , we may expect that each particle will explore phase space with the probability of the microcanonical distribution, (p, r)  [ - |p|2/2m - V (r)]. (The assumption lcf  is clearly valid in the limit where the magnitude of the potential fluctuations is small while  is held fixed.) Integrating the microcanonical distribution over 2D momentum leads to a uniform real-space density distribution [since  > V (r)]. Thus, each particle moves in such a way that its time-varying potential V [r(t)] has the same probability distribution as V (r). For example, from Eqn (29),  vanishes under time-averaging. More specifically, since the distribution of V is invariant under V  -V , so too is that of  under   -, such that (34) is real. Hence, from (33)
+
+Im [K(t)]
+
+d - nm dt
+
+ei
+
+t 0
+
+(t
+
+)dt
+
+.
+
+(35)
+
+Inserting this in Eqn (31), and noting that the correlator (34) will vanish at t - t0   for any disordered potential, we obtain the result
+
+1 e2
+
+xcfy
+
+=
+
+- n
+
+4
+
+.
+
+(36)
+
+For the case  = 1/2, where n = 1, we recover our
+desired result xcfy = -1/(4), in units where e = = 1. More generally, the result (36) implies that the electron
+Hall conductivity at  = 1/(2n) is precisely given by xy = (e2)/(4 n), even in the presence of impurities. Thus there seems to be a kind of emergent PH symmetry
+at fractions such as  = 1/4 and  = 1/6.
+
+8
+
+C. Calculation using the Born Approximation and Boltzmann Equation
+
+It seems reasonable that we are justified in using a
+
+semiclassical approximation for our problem, because we
+
+are necessarily focused on potential fluctuations on a length scale  that is large compared to kF-1. However, the requirement also that the classical scattering
+
+angle exceeds the diffraction angle, [i.e., the condition
+
+V
+
+2/(m2) discussed above], leads to some sub-
+
+tleties in the applicability of the classical results for weak
+
+potentials[41]. It can be shown that the transport scat-
+
+tering cross section, (i.e., the integrated cross section
+
+weighted by the square of the momentum transfer) is
+
+correctly given by the semiclassical approximation in this
+
+case, and it agrees with a quantum mechanical calcula-
+
+tion based on the Born approximation. However, the to-
+
+tal scattering cross section, as well as the differential cross
+
+section at any particular angle, is generally not given cor-
+
+rectly by a semiclassical analysis. Therefore, it seems
+
+useful to check that our semiclassical calculation of the
+
+off-diagonal part of the CF conductivity tensor can be
+
+duplicated in a more quantum mechanical calculation.
+
+Here we follow closely the analysis used by Nozi`eres
+
+and Lewiner (NL)[42] for the anomalous Hall effect due
+
+to spin-orbit interactions in a spin-polarized semiconduc-
+
+tor. In their analysis, NL employed a Boltzmann equa-
+
+tion to study the evolution of the electron system in a
+
+uniform applied electric field, paying careful attention to
+
+the effects of spin orbit coupling on the collision integral
+
+in the presence of the field.
+
+In our case, we wish to study carefully the scattering
+
+of a composite fermion by an impurity described by an
+
+effective Hamiltonian of the form (23). In order to use
+
+the NL analysis directly, we must impose the condition
+
+that the scattering matrix element Ukk due to a single impurity is zero in the limit k  k . This means that
+
+the associated potential V (q) should vanish for q  0
+
+faster than q. In real space, this means that the space
+
+integral of the potential V (r) should vanish, as well as
+
+its first spatial moments. If individual impurities do
+
+not satisfy these conditions, the NL analysis may still
+
+be used if impurities can be grouped into small clusters
+
+that satisfy the conditions. In any case, the purpose of
+
+this subsection is to provide a check of the validity of the
+
+above-described semiclassical approximation as a matter
+
+of principle, rather than to check the validity in a realistic
+
+situation.
+
+It is instructive to describe our calculation in two parts.
+
+In the first part we consider the scattering of a single
+
+composite fermion from momentum k to momentum k
+
+by the potential (23) in the absence of an electric field.
+
+We show - following NL - that this scattering involves a
+
+"side-jump"
+
+rq
+
+=
+
+-
+
+(z^×q) (2kF2 )
+
+,
+
+i.e.,
+
+a
+
+motion
+
+of
+
+the
+
+elec-
+
+tron in the direction perpendicular to the momentum
+
+transferred from the disordered potential to the compos-
+
+ite fermion. When averaged over all scattering processes
+
+from a momentum k each scattering event involves a side-
+
+jump, which results in a net motion perpendicular to the
+
+direction of k. In the presence of an electric field Ex, the
+
+net flux of electrons that experience scattering by the
+
+potential is proportional to eEx , where   lcfm/kF is the transport scattering time. As they scatter from
+
+impurities, the extra electrons acquire a velocity in the
+
+y-direction given by / where  is the cumulative side
+
+jump during the time  in which their direction of mo-
+
+tion is randomized. Since  is of order kF-1, this results
+
+in
+
+a
+
+current
+
+in
+
+the
+
+y-direction
+
+of
+
+the
+
+order
+
+of
+
+e2 h
+
+Ex
+
+,
+
+which
+
+gives rise to a non-zero contribution to xcfy that is inde-
+
+pendent of the mean free path.
+
+In the second part we consider the effect of an applied
+
+electric field on the scattering. In the presence of that
+
+field the change in position associated with the side-jump
+
+implies that the scattering of the composite fermion in-
+
+volves also a change in its kinetic energy. As explained
+
+below, that change results in another contribution to the
+
+Hall current, equal in magnitude and sign to the first con-
+
+tribution. Throughout this subsection, we assume n = 1,
+
+and return to units where e = = 1.
+
+1. Scattering rate of a single composite fermion
+
+For the first part, suppose that a composite fermion, described by a Gaussian wave packet, centered at a momentum k0 on the Fermi surface, is incident on the impurity. As discussed in Appendix B of NL, we may write the wave function of the CF as
+
+(r, t) = Ck(t)eik·r
+
+(37)
+
+k
+
+Ck = Ck0 + Ck1 + Ck2,
+
+(38)
+
+where Ck0 describes the incident wave:
+
+Ck0 = N e-ikte-(k-k0)2/22
+
+(39)
+
+where k is the energy of a fermion of wave vector k, and N is a normalization constant, and C1 and C2 are of order U and U 2 respectively. (Note that the incident
+wave packet is centered at the origin at time t = 0.) In
+the limit of large positive times one finds that
+
+Ck1 = -2i Ukk (k - k )Ck0
+
+(40)
+
+k
+
+Ck2 = -42
+
+Ukk Uk k (k - k ) × (41)
+
+kk
+
+×(k - k )Ck0 .
+
+As noted in NL, the average position of the particle at time t can be written as
+
+i 2
+
+Ck
+
+Ck k
+
+-
+
+Ck
+
+Ck k
+
+=
+
+|Ck|2rk,
+
+(42)
+
+k
+
+k
+
+9
+
+where
+
+
+
+rk
+
+=
+
+- Arg k
+
+Ck.
+
+(43)
+
+There are two contributions to the shift of the average
+position. The first is seen when we consider a momentum
+k in the scattered wave, with |k - k0| , so that Ck0 = 0. Then, to lowest order, Ck may be replaced by Ck1, and the phase is equal to the phase of C1. Using (23) for U , we find that C1 has an extra argument, beyond the contribution from e-ikt, arising from the complex value of Ukk . This extra argument has the form Arg Ck1  -q2/[2z^ · (k × k0)], and it leads to an extra displacement of the center of the scattered wave packet by an amount
+
+r(k1)
+
+=
+
+z^ × k - 2kF2 .
+
+(44)
+
+The second contribution to the average displacement
+comes from weight that has been asymmetrically re-
+moved from the incident part of the wave packet, where k is close to k0. Here there is an interference between C0 and C2. If one assumes that V (q) is vanishing for q = 0,
+then one finds that the contribution from this term is
+given by
+
+r0 = |Ck1|2(z^ × k)/(2kF2 ).
+
+(45)
+
+k
+
+Summing the two contributions we find that the net displacement ("side jump") associated with a particle that scatters from a direction k0 into direction k = k0 + q depends on the transferred momentum, and is given by
+
+(z^ × q)
+
+rq = - (2kF2 ) .
+
+(46)
+
+This side jump contributes directly to the total current through a net charge displacement per unit time
+
+J = f (k)Wk,k rk -k,
+k,k
+
+(47)
+
+where f (k) is the occupation probability for a state of
+momentum k, and Wk,k is the transition probability [see Eq. (52) below]. We can express the side-jump contri-
+bution J in terms of the current in the absence of that contribution, J0 = k f (k)k/m. Using Eq. (46) for the displacement, and noticing that the transport scattering
+rate is given by
+
+1 
+
+
+Wk,k (1 - k^ · k^ )
+
+(48)
+
+k
+
+we can simplify Eq. (47) to
+
+m
+
+J = - 2 kF2 J0 × z^.
+
+(49)
+
+Since,
+
+to
+
+leading
+
+order,
+
+J0
+
+=
+
+ne  m
+
+E,
+
+the
+
+J
+
+term
+
+leads
+
+to
+
+a contribution to xcfy of the form
+
+xsjy
+
+=
+
+1 -
+8
+
+.
+
+(50)
+
+2. Scattering rate in a composite fermion liquid in the presence of an electric field
+
+Eq. (50) is half of the amount we need for PH symmetry. The second half is a consequence of having a liquid of composite fermions, in which an applied electric field affects the occupation of momentum states. While the scattering rate from momentum k to momentum k is symmetric with respect to the sign of (k × k ) · z^ for a single composite fermion in the absence of an electric field, the situation is more complicated in the presence of both a liquid of composite fermions and an electric field. In that case, due to the electric field the side-jump is associated with a change of the composite fermion's kinetic energy by an amount eE · rq. The effect of this change of energy on the transport is best understood by means of the Boltzmann equation. For dc transport in the presence of impurities the equation reads
+
+F · kf = - Wk,k (f (k) - f (k )), (51)
+k
+where
+
+Wk,k = 2|Vk,k |2( k + F · rq - k ) (52)
+
+Here f0 is the Fermi-Dirac distribution, F = eE is the force acting on the composite fermions, is the energy,
+
+and V is the disordered potential. The -function ex-
+
+presses the change of the kinetic energy incurred by the
+
+scattered electron, a change which is our main focus here.
+
+As customary, linear response to F is analyzed by set-
+
+ting f to be f0 on the left-hand side of (51) and by writing
+
+f (k)
+
+=
+
+f0
+
++ f1
+
+=
+
+f0
+
++
+
+f0 
+
+u
+
+·
+
+vk
+
+on
+
+the
+
+right-hand
+
+side.
+
+The transfer of energy affects the expansion of the distri-
+
+bution functions on the right hand side. Specifically we
+
+have,
+
+-
+
+f0 
+
+u
+
+·
+
+k Wk,k (f (k) - f (k )) =
+
+k
+
+Wk,k
+
+(v(k)
+
+-
+
+v(k
+
+))
+
++
+
+f0 
+
+Wk,k
+
+F
+
+·
+
+rq
+
+.
+
+We now make use of the definition of the transport scattering rate (48) to write the Boltzmann equation as
+
+z^ × k F · vk - 2kF2 
+
+f0 = u · vk f0 ,
+
+
+
+
+
+(53)
+
+which amounts to
+
+f1(k) =  F ·
+
+z^ × k vk - 2kF2 
+
+f0 . 
+
+(54)
+
+As this expression shows, in the limit of a small scattering rate 1/ the shift of the Fermi sea that results from the application of the electric field is primarily parallel to the electric field, but includes also a small term perpendicular to the field. This term contributes to the Hall conductivity.
+
+10
+
+The current is J = dkf1(k)vk, with dk =
+
+m (2)2
+
+d d. The angular integral gives  for both com-
+
+ponents of the current (each component from a different
+
+term), leading to xcfx =
+
+kF vF 4
+
+
+
+,
+
+and
+
+xcfy
+
+=
+
+-
+
+1 8
+
+.
+
+This
+
+contribution to the Hall conductivity adds to the side-
+
+jump contribution calculated in the previous subsection,
+
+with
+
+the
+
+sum
+
+of
+
+the
+
+two
+
+being
+
+-
+
+1 4
+
+.
+
+D. Thermopower and thermal transport
+
+1. General considerations
+
+In this subsection, we again restore and the electron charge e. The formulas are correct for either sign of e, provided that the product of the electron charge and the z-component of the external magnetic field is positive. For eB < 0, the x and y axes should be interchanged.
+The thermoelectric and thermal responses for the CFs can be obtained from standard results for non-interacting fermions, based on interpreting the CF conductivity in terms of an energy-dependent conductivity cµf () through
+
+µcf =
+
+cµf ()
+
+f -
+
+
+d,
+
+(55)
+
+with f the Fermi distribution. We explore the consequences, making use only of the fact that xcfy = -(e2/4n ), independent of the Fermi energy, and hence that dcxfy/d = 0. Here we focus on the  = 1/2 state with n = 1.
+Although observations of thermal effects require that the temperature should not be too small, the calculations here also assume that the temperature should not be too high. In particular, we assume that the temperature is sufficiently low that the mean free path for inelastic scattering of composite fermions is large compared to the mean free path for elastic scattering by impurities. This restriction becomes more severe as the sample becomes more ideal.
+
+2. Thermopower
+
+The heat current jQ = jE - µjN induced by a field
+Ecf applied to the CFs is described by a response function, jµQ = Lcµf Ecf, assuming that the temperature is a constant. For a non-interacting Fermi gas, at low tem-
+peratures, expanding around the Fermi level leads to the
+general result
+
+Lcµf
+
+=
+
+2kB2 T 2 3e
+
+dcµf dE
+
+.
+
+(56)
+
+Since the Hall conductivity of the CFs is fixed to xcfy = -e2/2h, requiring dcxfy/dE = 0, then
+
+Lcµf = Lcxfxµ .
+
+(57)
+
+This (diagonal) result is of the form required by PH symmetry, as discussed in [31], so that µcf and Lcµf are each characterized by a single non-universal quantity, xcfx = ycfy and Lcxfx = Lcyfy.
+To construct the thermoelectric response tensor for the
+electrons (not the CFs), one must take account of the fact
+that the electric field that couples to the electrons is
+
+E = E cf + ^CSj
+
+(58)
+
+where j is the current of either electrons or CFs and
+
+^CS  -4 ^.
+
+(59)
+
+e2
+
+The response tensors for the electrons are readily found to be
+
+^ = ^cf(1 + ^CS^cf)-1 L^ = L^cf(1 + ^CS^cf)-1 .
+
+(60) (61)
+
+With our specific forms of ^cf and L^cf, these become
+
+e2
+
+e2
+
+^ =
+
+^+
+
+,
+
+(62)
+
+4
+
+4 xcfx
+
+L^ = ^ e2Lcxfx . 4 xcfx
+
+(63)
+
+In a thermopower experiment, one measures a voltage gradient induced when there is a heat current, but no electric current, flowing through the sample. Making use of an Onsager relation[43], as well as the relations between CF and electron coefficients, one finds
+
+1 Sµ = T
+
+L^ (^cf)-1
+
+µ
+
+=
+
+1 T
+
+Lcxfx
+
+(^cf)-1 µ .
+
+(64)
+
+We see that the thermopower tensor has non-zero offdiagonal elements, since µcf is not diagonal. This contrasts with predictions based on a naive application of the HLR theory, pointed out by [31], in which the offdiagonal thermopower vanishes. It recovers the central result of their PH symmetric theory.
+
+3. Thermal Transport
+
+In a thermal transport experiment, one seeks to measure the heat current jQ induced by a temperature gradient T , under conditions where the electrical current is zero. As shown in Ref. [13], the diagonal thermal conductivity Kxx at  = 1/2 should be related by the Wiedemann-Franz law to the conductivity of the composite fermions, that is
+
+Kxx
+
+=
+
+xcfx
+
+
+
+2kB2 3e2
+
+T
+
+.
+
+(65)
+
+This result is obtained in both the HLR theory and the Dirac theory. Note that the thermal conductivity will
+
+11
+
+become large as the mean free path becomes large, while the diagonal electrical conductivity xx approaches zero in this limit.
+It was also suggested in Ref. [16] that for a system confined to the lowest Landau level, with a particle-hole symmetric distribution of impurities, the off-diagonal thermal conductivity should be given precisely by
+
+Kxy
+
+=
+
+1 2kB2 T 2 6
+
+=
+
+xy
+
+2kB2 T 3e2
+
+.
+
+(66)
+
+However, in an actual experiment in a strong magnetic field, one expects that thermal gradients and currents will be quite inhomogeneous, and a major part of the thermal Hall current will be associated with chiral heat flow near the sample boundaries, where particle-hole symmetry is strongly broken[43]. Moreover, the transverse heat flow will be small compared to the longitudinal heat current, if the disorder scattering is weak. A proper analysis of the transverse heat flow is, therefore, a non-trivial problem, which we shall not address here.
+
+IV. COMMENSURABILITY OSCILLATIONS
+
+An important property investigated in HLR, which turns out to be sensitive to PH symmetry, was the wavevector dependent longitudinal conductivity, xx(q), for a wave vector q in the x-direction, in the limit of frequency   0. Precisely at  = 1/2, In the absence of impurities, it was found, using the RPA that
+
+q
+
+xx(q) = 8kF ,
+
+(67)
+
+independent of the renormalized mass or the bare mass. Subsequent analyses supported the idea that this result should be correct to all orders in perturbation theory, even in the case of short range electron-electron interactions or of 1/r interactions, where the effective mass is found to diverge at the Fermi energy[8]. In the presence of disorder, it was predicted that Eq (67) should hold for qlcf 1, where lcf is the transport mean free path for the composite fermions. For qlcf 1, the electrical conductivity approaches a constant, given by
+
+1
+
+xx(q
+
+=
+
+0)
+
+
+
+. 4kF lcf
+
+(68)
+
+(This equation may be taken as a definition of lcf). The non-trivial q-dependence of xx results from an
+inverse q-dependence of the transverse conductivity for composite fermions, which is non-local, because at  = 1/2, the composite fermions can travel in straight lines for distances of the order of lcf, which can be very large compared to the inter-particle distance kF-1. For filling factors that differ slightly from  = 1/2, the composite fermions will no longer travel in straight lines, but rather should follow cyclotron orbits with an effective cyclotron
+
+radius given by
+
+RC
+
+=
+
+kF . |B|
+
+(69)
+
+One would expect, therefore, that the conductivity
+should become independent of q for wavelengths large compared to RC , or qRC 1. Analysis at the RPA level, using a semiclassical description of the composite fermion
+trajectories, found that the value of the conductivity in
+this regime is essentially the same as the q = 0 conductivity at  = 1/2. By contrast, in the regime qRC  1, if lcf  RC , one finds that the longitudinal conductivity depends on q and |B|, and is a non-monotonic function
+of these variables. If either q or B is varied, one finds a
+series of maxima and minima, with the maxima occurring
+roughly at points which satisfy Eq. (1), or equivalently
+
+qRC  zn.
+
+(70)
+
+Since
+
+zn
+
+
+
+(n +
+
+1 4
+
+),
+
+with
+
+a
+
+high
+
+degree
+
+of
+
+accuracy,
+
+it is natural to describe the oscillatory dependence as
+
+a commensurability phenomenon, with maxima in xx where the diameter of the cyclotron orbit is approxi-
+
+mately (n + 1/4) times the wavelength 2/q. The cal-
+
+culated peaks and valleys are generally broad if qlcf is of order unity, but the peaks are predicted to become
+
+sharp, and the positions of the maxima to become more
+
+precisely defined, in the limit of a clean sample and small
+
+B.
+
+Experimentally, the values of xx(q, ), at relatively low frequencies, have been extracted from accurate mea-
+
+surements of the propagation velocity of surface acoustic
+
+waves, as a function of acoustic wavelength and applied
+
+magnetic field, in a sample containing a two-dimensional
+
+electron gas, by Willett and coworkers[44]. These surface
+
+acoustic wave experiments were, in fact, very important
+
+in establishing the validity of the HLR picture.
+
+Another type of commensurability oscillation, com-
+
+monly referred to as Weiss oscillations, may be ob-
+
+served by measuring the dc resistivity in the presence
+
+of a periodic electrostatic potential, which may be im-
+
+posed by a periodic array of gates or etched defects on
+
+the surface[45­51]. In this case, theory predicts, and ex-
+
+periments have seen, maxima in the resistivity at mag-
+
+netic fields where the wave vector q of the array satisfies
+
+approximately Eq (1) or (70).
+
+In the following subsections, we shall examine a third
+
+type of commensurability oscillation related to the exis-
+
+tence of local minima in the spectrum (q) of so-called
+
+magnetoroton excitations in a fractional quantized Hall
+
+state with  close to 1/2. Magnetorotons may be un-
+
+derstood as bound states of a quasiparticle in the lowest
+
+empty composite-Fermion Landau level and a quasihole
+
+in the highest filled level. As was discussed by Simon
+
+and Halperin[10], the spectrum should have a series of
+
+minima, at wave vectors given approximately by Eq. (1),
+
+which become increasingly sharp for small values of |B|.
+
+The frequencies (q) are manifest as poles in the response
+
+12
+
+function to an applied electric field at frequency  and wave vector q. For certain filling fractions the magnetoroton minima have been numerically calculated using composite fermion trial wave functions[52].
+Although the magnetoroton spectrum may be difficult to measure experimentally in the region of interest to us1, it has a big advantage from a theoretical point of view compared to predictions for the magnetoresistance in a periodic potential or the zero-frequency longitudinal conductance. The last two quantities are well defined only in the presence of a small but finite density of impurities. However, the behavior of a partially full compositefermion Landau level in the presence of weak impurity scattering may be quite complicated, and is certainly not well understood. By contrast, the magnetoroton spectrum may be studied in system without impurities, in a fractional quantized Hall state where there is an energy gap and where the magnetoroton may be precisely defined, as the lowest energy excitation for the given value of q. We shall comment briefly on our understanding of the Weiss oscillations at the end of this section.
+The requirements imposed by PH symmetry on the magnetoroton minima were stated in the Introduction. They are not satisfied in a naive application of the HLR approach. Below we show how they are satisfied by a more careful application of the HLR theory.
+
+A. Magnetoroton spectrum at  = p/(2p + 1)
+
+We now look for the dispersion minima of the magneto-
+
+roton modes within the HLR composite fermion theory,
+
+at
+
+filling
+
+fraction
+
+
+
+=
+
+p 2p+1
+
+,
+
+when
+
+|p|
+
+is
+
+large.
+
+The
+
+mag-
+
+netoroton frequencies will appear as poles in the current
+
+response matrix W^ (q, ) to an electric field E at wave
+
+vector q and frequency , defined by
+
+j(q, ) = W^ E(q, ).
+
+(71)
+
+We shall take q to lie along the x-axis, so the indices x and y refer to longitudinal and transverse components respectively.
+Our analysis will follow closely the work of SH[10], and we shall first consider the response function using the RPA. Following Eqs. (27) and (28) of SH, we may write
+
+W^ -1 = ^ + U^ ,
+
+(72)
+
+^ = ^cf(q, ) + ^CS,
+
+(73)
+
+where ^cf(q, ) = (^cf)-1(q, ) is the resistivity tensor of the composite fermions, and U^ has matrix elements
+
+q2 Uxx = i  v2(q), Uxy = Uyx = Uyy = 0, (74)
+
+1 However, the magnetoroton spectrum has been successfully measured at filling fractions 2/5, 3/7 and 4/9 by Kukushkin et al.[53].
+
+where v2 is the two-body interaction, defined above.
+According to SH, the composite fermion conductivity tensor, for a general value of p, can be expressed in terms of an infinite sum of terms involving associated Laguerre polynomials. It the limit of large p, one can employ a semiclassical approximation, where the sums can be carried out, and one can write the conductivity tensor in closed form in terms of Bessel functions. For the moment, we shall employ this semiclassical approximation, and shall comment later on the corrections that would be expected if one were to employ the full expressions for ^cf(q, ).
+
+1. Semiclassical calculation of ^
+
+The semiclassical results of SH may be written (in units where e2/h = 1/2) as
+
+2pR 1
+
+R
+
+xcfx = i X2
+
+- 2
+
++
+
+2sin(R) JR(X)J-R(X)
+
+,
+
+xcfy
+
+=
+
+ixcfx
+
++
+
+pR Xsin(R) JR+1(X)J-R(X),
+
+p ycfy = xcfx + i sin(R) JR+1(X)J1-R(X),
+
+(75)
+
+where R  /c and X  qRC
+
+=
+
+|2p+1|qkF B
+
+=
+
+2|p|q kF
+
+(RC is the cyclotron radius of the composite fermion),
+
+c = B/m, and J(X) is the Bessel function of the
+
+first kind. The full resistivity is given by the composition
+
+rule
+
+ = (cf)-1 - 4^.
+
+(76)
+
+We begin by looking for the poles of the physical conductivity tensor, which correspond to zeros of Det(). To leading order in 1/p, these poles are located at the zeros of Det(cf), which would yield dispersion minima at X = zn, R = 0 where zn is the n'th zero of the Bessel function J1. Here, however, we calculate the momenta ( X) at these dispersion minima to next order in 1/p and address the question of their PH symmetry near halffilling.
+To leading order in R and X = X -zn, the cf tensor is given by
+
+xcfx
+
+=
+
+i
+
+J02(zn) zn2
+
+-
+
+1 pR,
+
+xcfy
+
+=
+
+J02(zn) pX, zn
+
+ycfy
+
+=
+
+i
+
+J02(zn) - 1 zn2 J02(zn)
+
+pR
+
++
+
+i J02(zn) 
+
+p(X )2 ,
+R
+
+(77)
+
+where the following Bessel function identities were used
+
+13
+
+to reach the above result:
+
+J0(z)
+
+=
+
+J1(z)
+
++
+
+J1(z) , z
+
+ J=1(z)
+
+=
+
+ 2 Y1(z)
+
++
+
+J0(z) , z
+
+2
+
+z = J1(z)Y0(z) - J0(z)Y1(z).
+
+(78)
+
+We are looking for values of R and X that satisfy
+
+Det(^^cf) = Det(1 - 4^cf) = 0.
+
+(79)
+
+Using Eq. (77), we find the dispersion curve
+
+4(J02(zn) - 1) zn2 J0(zn)
+
+2
+(pR)2 =
+
+4J0(zn) 2 zn
+
+pX + zn 4
+
+2
++ (1 - J02(zn)).
+
+(80)
+
+The dispersion minima are then given by
+
+X = - zn ,
+
+(81)
+
+4p
+
+which means that at  = p/(2p + 1), we have
+
+1
+
+X = zn
+
+1- 4p
+
+.
+
+(82)
+
+Since the composite fermion Fermi momentum kF is determined solely by the electron density in the HLR theory, we have
+
+X=
+
+2|p|q
+
+ 2q|p|
+
+1 1+
+
+,
+
+(83)
+
+2pB
+
+B
+
+4p
+
+2p+1
+
+which gives
+
+
+
+qn
+
+
+
+zn B 2|p|
+
+1 1-
+2p
+
+.
+
+(84)
+
+For p = p0 with p0 positive, we have B = B/(2p0 + 1)
+
+and
+
+
+
+qn
+
+
+
+zn B 2p0
+
+1 1-
+2p0
+
+
+
+znB B1/2
+
+,
+
+(85)
+
+while for p = -p0 - 1, we have B = -B/(2p0 + 1) and
+
+
+
+
+
+qn
+
+
+
+zn 2(p0
+
+B + 1)
+
+1 1+
+2p0
+
+ zn B 2p0
+
+1 1-
+2p0
+
+, (86)
+
+which is again equal to zn|B|/B1/2. This is consistent with PH symmetry, at least to order 1/p2.
+The frequencies corresponding to these dispersion min-
+ima are given by
+
+n
+
+=
+
+4|p|
+
+zn2 J0(zn) 1 - J02(zn
+
+)
+
+|c
+
+|
+
+.
+
+(87)
+
+As we will see below, the exact values of qn and n will receive significant corrections once we take other effects into account. However, particle-hole symmetry of the dispersion will still hold even after we include all the leading corrections.
+
+2. Corrections for the poles of W^
+
+We now discuss various corrections to the above re-
+sult. The regime we are interested in, for p 1, will have X  1/p and R  1/p1/2. In this regime, the components of ^cf in Eq. (77) will be of order p1/2 or p0,
+and any correction of higher order in 1/p will not affect
+our results.
+
+First we consider Fermi-liquid corrections including
+
+mass renormalization and the residual Landau interac-
+
+tion. To incorporate mass renormalization we simply
+
+replace c by c = B/m. This leads to a violation of Kohn's theorem and the f -sum rule, which has
+
+to be compensated by introducing the proper Landau in-
+
+teraction parameter F1. The Landau parameter leads to
+
+another contribution to the diagonal components of the
+
+composite
+
+fermion
+
+resistivity
+
+tensor,
+
+cxfx
+
+=
+
+i(m -m) nel
+
+,
+
+which is of order 1/p3/2 in the regime we consider. This
+
+will not change our result for the dispersion minima.
+
+We can also consider corrections to the semiclassical expression of cf in Eq. (77), for example from the full quantum-mechanical summation in Appendix A of SH.[10] Since we expect the semiclassical expression to be justified in the large p limit (which has been explicitly demonstrated recently in [54]), the corrections should be formally higher order in 1/p. In principle several leading
+
+14
+
+order corrections are possible:
+
+xcfy
+
+=
+
+p a,
+|p|
+
+ycfy
+
+=
+
+ip b
+|p|R
+
+ipX +c
+|p|R
+
+i +d ,
+pR
+
+(88)
+
+where other types of corrections are either higher order in 1/p (taking into account X  R  1/p), or forbidden by general constraints. These constraints include cf being odd under p  -p when fixing R, and xcfx, ycfy being odd under R  -R when fixing p. Both constraints are closely related to the symmetry of the conductivity matrix elements under a change of the sign of the frequency. These terms would give rise to corrections to the dispersion curve in Eq. (80), which would lead to corrections of the locations of the dispersion minima, so that
+
+1
+
+Xn = zn
+
+1- + 4p |p|
+
+,
+
+(89)
+
+with some constant . The actual momenta at the dispersion minima would thus be shifted to
+
+
+
+qn
+
+
+
+zn B 2|p|
+
+1 1- +
+2p |p|
+
+.
+
+(90)
+
+These corrections beyond the semiclassical approximation could indeed shift the momenta of the magneto-roton minima at order 1/p2. However, this correction would be symmetric in p  -p - 1 (at order 1/p2), so particle-hole symmetry is still preserved at this order.
+The correction terms in (88) will also lead to a correction of the frequencies at the minima:
+
+(n2 )Quantum
+
+
+
+ p
+
+(c)2
+
+,
+
+(91)
+
+with some constant . This gives a frequency n of order p-1/2c , which is parametrically larger than the semiclassical result in Eq. (87).
+We have calculated numerically the values of the coefficients a, b, c and d in Eq. (88) at the first two magnetoroton minima, n = 1, 2. We find that the coefficients a, b, and c are all zero, and consequently,  = 0 in Eqs. (89) and(90). The values of d, are nonzero, however, being equal to 0.082 at n = 1 and and 0.297 at n = 2. These lead to values of  equal to 0.0046 and 0.029, respectively, in Eq. (91). Hence, corrections due to the difference between the semiclassical expressions in terms of Bessel functions, and the full quantum sum in SH can affect the frequency at the magnetoroton minimum, but do not actually contribute a shift in the wave vectors, to order |B|2.
+Finally we notice that the real dispersion curve is given by the poles of the full response tensor W^ in Eq. (72). This modifies Eq. (79) to
+
+Det(W^ -1cf) = Det(1 - 4^cf + U^ cf) = 0. (92)
+
+This leads to an extra term
+
+Uxxxcfx
+
+=
+
+(1 - J02(zn))|p|q2v2(q) zn2 |c|
+
+(93)
+
+on the right hand side of the dispersion relation in
+
+Eq. (80). Generically this term is dominating over the
+
+other terms in Eq. (80). To see this, let us consider very
+
+long-ranged
+
+interaction
+
+v2(q)
+
+
+
+, 1
+|q|1+
+
+which
+
+gives
+
+rise
+
+to
+
+simple Fermi-liquid behavior at low energy. In this case
+
+the above term becomes
+
+Uxxxcfx
+
+
+
+p|q|1- c
+
+ |p|1+X1-
+
+ zn1-|p|1+ + (1 - )zn-|p|1+X,
+
+(94)
+
+where we have used the fact that c  1/p. The first term  |p|1+ dominates over the other terms in the original dispersion curve Eq. (80). Its effect is to set the frequency at the dispersion minima, in leading order, to be
+
+n
+
+=
+
+znJ0(zn) 4|p|
+
+pcqn2 v2(qn) (1 - J02(zn))
+
+.
+
+(95)
+
+In the physical case of Coulomb repulsion, v2(q) = 2/ q where is the dielectric constant, (95) still gives the leading result for the minimum frequency, but one should take into account the variation of  due to logarithmic divergence of the effective mass. Specifically it is predicted that [11, 55]
+
+||
+
+=
+
+|B| m
+
+
+
+2
+
+lB |2p
+
+e2 ,
++ 1|[C + ln |2p + 1|]
+
+(96)
+
+where the constant C depends on the bare mass and on the behavior of the interaction at short distances. For pure Coulomb interactions and vanishing bare mass, the best available estimate is C  4.1[55].
+The second term in Eq. (94) leads to a shift in the momenta at the minima, giving
+
+
+
+qn
+
+
+
+zn B 2|p|
+
+1
+
+
+
+1 - 2p - |p|1-
+
+.
+
+(97)
+
+The extra shift is parametrically dominating, but it does not depend on the sign of p, so it does not affect particlehole symmetry, at least to the order |p|-2 that we are considering. For Coulomb repulsion the correction is of the form  log|p|/|p|, which is again particle-hole symmetric.
+The predicted magnetoroton spectrum for the symmetric fractions  = 20/41 and  = 21/41 are plotted in Figure 1, at our various levels of approximation, for the case of pure Coulomb interactions.
+
+15
+
+~
+
+Dispersion Curve
+
+1.4 1.2 1.0 0.8 0.6 0.4 0.2
+
+  
+
+  
+
+RPA+Coulomb
+
+
+
+RPA 
+
+
+
+4
+
+6
+
+8
+
+10
+
+12
+
+q~ 
+
+RPA vs. Semiclassical vs. Naive ~
+
+0.12 0.10 0.08 0.06 0.04 0.02
+
+Naive, RPA SemiNcalaivsesq~i,cal 
+
+3.75
+
+3.80
+
+3.85
+
+3.90
+
+3.95
+
+FIG. 1: Magnetoroton spectrum at fractions  = 20/41 and  = 21/41. Plots show the reduced frequency ~  /|| versus the reduced wave vector q^  qlB/|2 - 1|. The curve labeled "RPA + Coulomb" shows the magnetoroton spectrum computed in the HLR approach, including the correction due to the Coulomb interaction. The curves labeled "RPA" and "Semiclassical" show the locations of the poles in the electron conductivity tensor ^(q, ), which does not include the interaction effect, computed in the Random Phase Approximation and semiclassical approximation, respectively. Curves for  = 20/41 and  = 21/41 could not be distinguished in these plots. The expanded figure in the lower panel includes for comparison a naive approximation, which identifies the magnetoroton spectrum with the zeros of the determinant of the composite fermion conductivity ^cf(q, ). Although the naive approximation coincides with the RPA and semiclassical approximations to leading order in the deviation from  = 1/2, it deviates from them at second order and is not symmetric about  = 1/2 at this order.
+
+B. Magnetorotons near  = 1/(2N )
+
+The analysis given above can be readily extended to the magnetoroton spectrum in fractional quantized Hall states of the form
+
+p
+
+=
+
+,
+
+(98)
+
+2pN + 1
+
+where N is an integer > 1, which are close to  = 1/(2N ), for large |p|. Here we define B as
+
+B 
+
+B
+
+
+
+B
+
+-
+
+4N nel
+
+=
+
+2pN
+
++
+
+, 1
+
+(99)
+
+which is the difference between B and the value corresponding to  = 1/(2N ) at the given electron density. Using the same analysis as for N = 1, we find that the minima of the lowest magnetoroton modes occur at momentum values qn which depend on the absolute value, but not on the sign, of B, at least through order |B|2, provided we compare systems with different electron densities but the same magnetic field B. Specifically, we have
+
+qn
+
+=
+
+zn
+
+|eB|lB N 1/2
+
+,
+
+(100)
+
+up to small corrections which are symmetric in B. Along with our previous result that in the presence of PHsymmetric disorder, the Hall conductance at  = 1/(2N ) is fixed at 1/(4N ), at least through second order in the impurity scattering rate, this suggests that there is a type of emergent particle-hole symmetry near all these even-denominator fillings.
+Interestingly, a similar type of emergent particle-hole symmetry was found also when the energy gaps EG of fractional quantum Hall states at filling factors close to 1/(2N ) were calculated for electrons interacting through the Coulomb interaction. The energy gap, in this case, is predicted to have the form [11]
+
+|| 
+
+e2 , (101)
+
+2 lBN 3/2|2pN + 1|[C + ln |2pN + 1|]
+
+which reduces to Eq. (96) for N = 1. This expression is predicted to be exact in the limit of large p, and the leading logarithmic term is independent of the bare mass of the electron electron. Moreover, the result is symmetric in B, at least to lowest order. However, the possibility of asymmetric corrections at second order in B was not investigated.
+
+C. Weiss oscillations
+As remarked above, a proper analysis of the experiments measuring the resistivity in the presence of an imposed periodic potential with wave vector q would require a careful analysis of the effects of impurity scattering at filling factors away from  = 1/2, which is beyond the scope of the current paper. However, one can gain insight into the problem from a very recent investigation by Cheung, Raghu and Mulligan ([56] and private communications). They have calculated the change in resistivity xx produced by a weak modulating potential in an approximation where they treat impurities in a simple relaxation approximation, where the relaxation rate is take to be a constant, independent of B and the
+
+16
+
+scattering wave vector, etc. Although the bulk of their paper is based on the Son-Dirac model, they also present results based on the HLR equations.
+Treating the ratio x = V (r)m/b(r) as a free parameter, where V is the residual screened electric potential produced by the external periodic potential and b is the induced Chern-Simons magnetic field seen by the composite fermions, they find a series of curves for the induced magnetoresistance, as a function of B whose shapes depend on x. When x = 1/2, they find that the HLR prediction coincides precisely with the Dirac prediction and is properly symmetric in B, when the density is varied while B is held fixed. In particular, when x = 1/2, it is predicted that there will be minima in xx at magnetic fields that satisfy
+
+B 1/2 q
+
+|B| 
+
+.
+
+e
+
+zn
+
+(102)
+
+According to the discussion in Subsection III A of the present paper, leading to Eq. (21), the value x = 1/2 is indeed the proper choice for that parameter. (We note that the Weiss oscillations are measured at a temperature T that is larger than the energy scale |B|/m, so that the electron compressibility may be taken to be the same as at  = 1/2.)
+The fact that one must take into account modulations in the Chern-Simons scalar potential as well as in the Chern-Simons magnetic field, in order to understand in a quantitative way the effects of an imposed periodic potential on the electrical resistivity, was previously emphasized by Zwerschke and Gerhardts [51]. Also, a correct formula for the magnetoresistance in the presence of modulations in both the screened electrostatic potential and the effective magnetic field b was contained in Ref. [30] by Barkeshli, Mulligan, and Fisher. In that paper, however, authors then ignored the electrostatic potential on the grounds that its effects would be small compared to the effect of b, so they did not obtain the small correction necessary to restore the PH symmetry.
+Although the resistance minima observed experimentally in Ref. [45] do obey particle-hole symmetry, the actual positions deviate (symmetrically) from the values predicted by Eq. (102), by amounts of order |B|2. We do not know whether these deviations could be explained by a theory that includes the effects of impurity scattering in a more accurate way.
+It should be emphasized that theoretical discussions about presence or absence of particle-hole symmetry generally refer to a situation where nel is varied while B is held constant. In experiments, however, it is most common to vary B while nel is held constant. In that mode of operation, features that occur at positions we consider symmetric, such as those given by Eq. (102), will appear asymmetric in the data, by amounts of order |B|2. By contrast, the values of |B| given by the naive HLR theory, where modulations in the ChernSimons scalar potential are ignored, would appear symmetric about  = 1/2 in the data.
+
+D. Ambiguity of kF
+The question of what determines the Fermi momentum kF of composite fermions, away from half-filling, has played a significant role in the literature[30, 45, 57]. Naively, there are three possible answers depending on which theory one uses: in HLR theory the Fermi volume is given by the particle density, in anti-HLR it is given by the hole density, and in Son-Dirac it is given by the half of the flux density. These answers are identical at  = 1/2, but deviate from one another away from half-filling. However, one should be more careful when addressing this issue.
+There are two sources of confusion regarding kF . First, kF of the composite fermions is not a sharply defined quantity away from half-filling, since the composite fermions move in a nonzero effective magnetic field B and do not have a sharp Fermi surface. The ambiguity in the definition of kF , set by the inverse effective cyclotron radius, is of order B. The differences in kF determined from electron, hole or flux densities are also of this order, so the three answers are identical within this intrinsic ambiguity.
+A subtler point is that kF itself is not a measurable quantity, especially away from  = 1/2. What can be measured in commensurability oscillation experiments are the commensurability momenta qn. Past work has inferred kF from qn via Eq. (1). However, the simple relation Eq. (1) is valid only to leading order in B. Once we go to higher order in B, which is necessary to differentiate particle-density from hole-density, the simple relation Eq. (1) no longer holds and a more careful calculation is needed. This is exactly what we did in the earlier parts of this Section. Our results show that the commensurability momenta are indeed particle-hole symmetric, even though in HLR theory kF , which is not an observable by itself, appears to be formally PH asymmetric.
+
+V. COMPARISON WITH THE DIRAC THEORY
+
+The Son-Dirac model may be defined by Lagrangian density of the form
+
+LD =(iDt - µ - ivD D ×  - mD z) +
+
++
+
+AdA 8
+
++
+
+adA 4
+
+-
+
+ada 8
+
+mD |mD |
+
++ Lint,
+
+(103)
+
+Dµ  µ + i aµ,
+
+(104)
+
+where  is a two-component Grassmann spinor, A is the
+external magnetic field,  are the Pauli spin matrices, and
+Lint is a term which represents the two-body interaction v2. The velocity vD is an input parameter, like the effective mass m in the HLR theory, which must be taken
+either from experiment or from an independent micro-
+scopic calculation. We shall be interested in a situation
+
+17
+
+in which the Fermi level is inside the band of positive en-
+
+ergy fermion states. The lower Dirac band is integrated
+
+out,
+
+which
+
+produces
+
+the
+
+±
+
+1 8
+
+ada
+
+term.
+
+The Son-Dirac Lagrangian becomes explicitly PH sym-
+
+metric if one takes the limit mD  0. In this limit, the contribution of the ada term is precisely canceled by
+
+the contribution from the Berry curvature, which is com-
+
+pletely concentrated at the bottom of the occupied states
+
+in the positive energy Dirac band. Then, the Lagrangian
+
+may be replaced by a form in which mD is precisely zero and the ada term is simply omitted; i.e., there is no
+
+longer a Chern-Simons term in the action for the gauge
+
+field aµ In the following discussion, we confine ourselves to the case mD=0, except where otherwise specified.
+In the Son-Dirac formulation, the composite fermions
+
+see an effective magnetic field b(r) which is related to the
+
+electron density and the applied magnetic field in the
+
+same way as in HLR:
+
+b =  × a = 4nel -  × A.
+
+(105)
+
+However, the electron density and the composite fermion density are no longer identical. Rather, the density of Dirac composite fermions is tied to the (local) value of the magnetic field
+
+nDF
+
+=:
+
+
+
+:=
+
+1 -
+4
+
+
+
+×
+
+A.
+
+(106)
+
+Similarly, the current of the Dirac fermions is related to the local electric field by
+
+1
+
+jDF
+
+=
+
+- 4
+
+z^
+
+×
+
+E,
+
+(107)
+
+while the effective electric field felt by the Dirac fermions is given by
+
+eDF = -a0 - ta = z^ × (4jel - E).
+
+(108)
+
+The electrical conductivity tensor, for a long-wavelength electric field is then given by
+
+^ = ^DF + ^CS,
+
+(109)
+
+where ^DF = (^DF)-1 is the resistivity tensor of the Dirac fermions, and
+
+1 ^CS = ^.
+4
+
+(110)
+
+As in the HLR theory the presence of potential disorder will cause fluctuations in electron density, which will lead to fluctuations in the effective field b(r) proportional to the self-consistent electric potential V (r). Potential fluctuations do not lead to fluctuations in a0 or in the effective electric field e. Therefore, if the potential fluctuations are statistically PH symmetric, so that all odd moments of b are zero, the Dirac fermions will see a field that is statistically time-reversal symmetric, and ^DF will be purely diagonal. Therefore, we recover xy = 1/4 as required by particle hole symmetry.
+
+At a finite frequency , in the absence of impurities, in the RPA, the resistivity tensor for Dirac fermions is readily calculated to be
+
+^DF = -im/nel
+
+(111)
+
+where m = kF /vD. As this is purely diagonal, the ac Hall conductivity remains fixed at the value required by PH symmetry. However, the diagonal conductivity xx predicted by (109) does not agree with the result xx() = 0, which is required by Kohn's theorem in the limit where the electron mass m  0, and electrons are restricted to the lowest Landau level. As remarked above, this can be corrected, beyond the RPA, by including the effects of Landau interaction parameters F±1.
+Using the Son-Dirac Lagrangian for mD = 0, one predicts that fractional quantized Hall states should occur when
+
+B B = ,
+2pDF
+
+(112)
+
+where pDF is half of an odd integer, either positive or negative. This condition is obviously PH symmetric and it is equivalent to the HLR prediction, with the identification pDF = p + 1/2. The shift in the choice of indexing reflects the presence of a Berry phase of  for the Dirac fermions at the Fermi energy. The energy gaps in the quantized Hall states are given, within RPA by Eq. (14) with m replaced by m = kF /vD. As remarked previously, the gaps will obey PH symmetry provided that the velocity vD is assumed to depend on the magnetic field, and not on the electron density, or more generally, if vD is assumed to be an even function of B.
+According to PH symmetry, the magneto-exciton spectra should also be independent of the sign of B. The positions of the magnetoroton minima may be found, to lowest order in B, by tracking the dispersion of poles in the electrical conductivity ^(q, ), as was done in Subsection IV A 1 above in the HLR picture. Taking into account Eq. (109), we see that within the Dirac description, poles in ^(q, ) coincide with the occurrence of a zero in the determinant of the composite fermion conductivity tensor ^DF(q, ). Within the semiclassical approximation, these zeros occur at  = 0, if
+
+B1/2
+
+qn
+
+=
+
+zn
+
+. 2|pDF|
+
+(113)
+
+These values are clearly PH symmetric and are identical to the results obtained using HLR in Subsection IV A 1, through order |B|2. This result for Dirac composite fermions was also obtained in [58], to lowest order in |B|, with careful attention to interaction effects.
+As in the HLR case, the actual locations of the magnetoroton minima in the Dirac theory will be shifted from these values (by amounts small compared to qn), and the frequency values will be shifted from zero, due to interaction effects and to corrections to the semiclassical theory, but all such shifts should be symmetric in B.
+
+18
+
+Finally, we discuss properties of the Dirac Lagrangian (103) in the case where the Dirac mass mD is not set equal to zero, so the theory is not explicitly PH symmetric. As was observed by Son[1], in the non-relativistic limit, where mDvD kF , the Dirac action reduces precisely to the HLR action (4), after a redefinition of the gauge field, (aµ  aµ + Aµ). As we have seen, the HLR theory and the massless Dirac theory give identical results for long-wavelength low-energy properties in the limit of  = 1/2, so that PH symmetry reappears in this case. We find that there is a similar emergent PH symmetry for intermediate values of mD. Since the Lagrangian for the Dirac theory with finite mD includes a Chern-Simons term identical to that in the HLR theory, the relations between the composite fermion and the electronic response functions are identical in the two theories. The semiclassical theory for the minima of the magnetoroton spectra take the same form as we found in Section IV above, which implies that the spectrum is, again, symmetric in B, at least through order |B|2. Similarly, we find that the Hall conductance in the presence of impurities at  = 1/2 is fixed at 1/4, at least through order (1/lcf)2, under the same conditions that we assumed in the analysis of HLR in Section III.
+An apparent difference between HLR and a Dirac theory with finite mD is that in the latter case the fermions near the Fermi energy have a non-zero Berry curvature. This Berry curvature is the same as that which results from spin-orbit coupling in a semiconductor, which, as we have remarked, is responsible for side-jump contributions to the anomalous Hall effect in semiconductor models. However, in the limit of scattering wavevectors q much smaller than kF , which we have assumed in our analysis, the matrix element for the spin-orbit term is negligible compared to that from the screened impurity potential V or the effective magnetic field fluctuation b. Scattering from potential fluctuations with q of order kF would depend on renormalized matrix elements whose values are beyond the scope of an effective theory.
+In the Dirac theory with finite mD, fermions at the Fermi energy will have a Berry phase which is neither zero nor . In contrast with the Berry curvature, the total Berry phase has no direct effect on the dc Hall conductivity in the presence of impurities, but it does affect the ac Hall conductivity. Just as in HLR, the finite frequency Hall conductivity will deviate from 1/4 at order 2, unless the effect is counteracted by a non-zero Fermi-liquid interaction parameter, whose actual value will depend on details of the original microscopic theory.
+VI. CONCLUSIONS
+We have seen that in the limit of long wavelengths and low frequencies, with  close to 1/2, and in the limit of small disorder potential, the Son-Dirac and HLR theories make identical physical predictions for several key properties, provided that the HLR theory is properly
+
+evaluated. Both theories give results for these properties that are consistent with PH symmetry, even at the RPA level. In the Dirac theory, PH symmetry is put in by hand, at the outset, by setting the Dirac mass mD equal to zero. In the HLR theory, PH symmetry seems to emerge, asymptotically, in this limit, even though it is not put in at the beginning. Moreover, the PH symmetry seems to emerge even if the bare mass m is not taken to zero, which would be the condition for electrons to be confined to a single Landau level, where PH symmetry would be exact.
+In order to get the correct energy scale for the specific heat or for energy gaps in fractional quantized Hall states close to  = 1/2, at the RPA level, the bare mass m in HLR must be replaced by a renormalized mass m, whose value cannot be obtained within the theory itself. Similarly in the massless Dirac theory, one must use a renormalized value of the Fermi velocity vD. After these substitutions are made, however, neither the Dirac theory nor the HLR theory will give the correct response functions to perturbations at a finite frequency, unless one also includes the effects of the Landau interaction parameters Fl, for l = ±1. In the HLR theory, this correction gives the correct frequency response, dictated by the Galilean invariance of the original model. In the limit m  0, this leads to a conductivity tensor ^() for a spatially uniform electric field that is independent of  and which, therefore, satisfies the requirement that xy() should be independent of frequency by PH symmetry, for electrons confined to the lowest Landau level. If the Landau interaction were omitted, however, an RPA calculation with the renormalized mass would incorrectly give a frequency-dependence to ^, which would result in a non-zero correction to xy() at order 2.
+In the Dirac theory, for mD = 0, one obtains correctly xy() = 1/4 at all frequencies, even at the simple RPA level, because of the explicit built in PH symmetry. However, the diagonal conductance xx() will be incorrect at order , unless one includes the Landau interaction correction.
+We have also investigated the positions of minima in the dispersion curve for magnetorotons, at quantized Hall states of the form  = p/(2p + 1), in the limit of large p, in the absence of impurity scattering. The minima of interest to us occur at wave vectors qn that are small compared to kF , and at frequencies that are small compared to the energy gap c = |B|/m, where B is the deviation of the magnetic field B from the value corresponding to  = 1/2, at the given electron density. Therefore, the positions of these minima are properly a subject for investigation in a theory that is supposed to be valid in the limit of long wavelengths and low frequencies. We have found that the HLR and Dirac theories give identical values for the location of these minima, consistent with PH symmetry, at least to order |B|2.
+It is more difficult to compare predictions of the two theories for correlation functions or response functions at a wave vector q that is not small compared to kF , even
+
+19
+
+if the frequency is arbitrarily small. An important example is the correlation function studied by Geraedts et al.[14]. The authors introduce an operator P (r) which is proportional to nel(r)2nel(r), projected to the lowest Landau level, and they study the correlation function for the Fourier transform, P-qPq , for q close to 2kF . According to the Dirac theory, this correlation function should have no observable singularity at q = 2kF , because P (r) is even under PH inversion, and fluctuations in such quantifies should not give rise to backscattering across the Fermi surface at q = 2kF . Geraedts et al. have studied this correlation function numerically, for electrons confined to the lowest Landau level at half filling, using density-matrix renormalization group (DMRG) methods, and have found the singularity to be missing, as predicted. By contrast, they do observe a singularity at q = 2kF , as expected, in the density correlation function ne-lqneql .
+There does not seem to be any obvious reason in HLR theory why P-qPq should be immune from a singularity at q = 2kF , even if one imposes the requirement of particle-hole symmetry. However, in order to actually calculate this response function in the HLR theory, one would have to know the correct form of the renormalized vertex that couples Pq to the composite fermions at q = 2kF . It is certainly possible that this quantity will vanish when m = 0, but at present, we do not have an argument to that effect. Thus, we cannot say that HLR and the Dirac theories make identical predictions for this property, but we can say that there is not a necessary contradiction between the two theories, in so far as the relevant vertices are unknown.
+The HLR and Dirac theories can both be extended to describe a situation where the Fermi surface turns out to be unstable to formation of Cooper pairs, with the result that the actual ground state is an incompressible fractional quantized Hall state, with an energy gap. As Son has observed, pairing in the Dirac theory must occur in a channel with even angular momentum, because of the Berry phase associated with the Dirac composite fermions. The three most obvious channels for pairing are then l = 0, 2, and -2. The symmetries of the l = 2 and l = -2 state coincide, respectively, with the of the well-known "Pfaffian" and "anti-Pfaffian" states, which are related to each other by PH conjugation[33­36]. The Dirac theory predicts that these two states should have identical energies, as is indeed required by PH symmetry, in the limit where electrons there are confined to a single Landau level, and there are only two-body interactions among them. Within the HLR theory, the Pfaffian and anti-Pfaffian states would be described by pairing in the channels l = 1 and l = -3 respectively. There is no obvious reason, within the theory, why these two states should have the same energy. However, such a coincidence is perfectly compatible with the theory; it means that for a PH symmetric system, the pairing interaction must be the same in the l = 1 and l = -3 channels. Pairing in the l = 0 channel of the Dirac
+
+model would lead to a new PH symmetric quantized Hall state, which Son named the PH-Pfaffian. Such a state would be described in HLR by pairing in the channel l = -1. There does not seem to be any numerical evidence that such a state would actually be the ground state of any quantum Hall system with realistic parameters. Wang and Chakravarty[59] argued that within a particular approximation scheme, the l = 0 pairing appears to be unfavorable in Dirac composite fermi liquid. However, Zucker and Feldman have suggested that the PH-Pfaffian state seems compatible with existing experiments, and the state could have been stabilized by disorder and Landau-level mixing[60]. (The PH-Pfaffian is equivalent to the "T-Pfaffian" state, which was proposed, independently, in the context of surface states of topological superconductors[61].)
+In summary, we have found no contradictions between physical predictions of the HLR and Son-Dirac theories for the low-energy properties of a half-filled Landau level. We find that the HLR approach is quite compatible with the existence of particle-hole symmetry, which is required in the case where the bare electron mass is taken to zero. For some properties this symmetry emerges automatically from the HLR theory, while in other cases it may be necessary to properly specify the value of parameters such as the Landau interactions strengths or a renormalized finite-momentum vertex. These results are all consistent with the point of view that the physics described by the particle-hole symmetric Son-Dirac theory is in fact a special case of the HLR theory.
+As this manuscript was nearing completion, however, we became aware of recent work by M. Levin and D. T. Son, which asserts that the HLR approach is not able to obtain the correct value for the Hall viscosity at  = 1/2, in the PH symmetric limit[62]. The Hall viscosity is reflected in a correction to the Hall conductance at nonzero wavevector q, which appears in the limit q  0 and   0, with  qvF . Although the Hall viscosity may be very difficult to measure experimentally, this suggests that there are theoretical problems that need to be resolved before we can determine the precise relation between the HLR and Son-Dirac theories. Therefore it is still possible that the two theories may eventually be physically distinct, in which case the difference in their measurable behaviors would be much subtler than previously believed. Of course, even if both theories agree, it remains possible that neither one is correct in all respects.
+Acknowledgments
+The authors acknowledge stimulating discussions with T. Senthil, S. Raghu, D. T. Son, and D. Mross. We thank Raghu and Son for sending us advanced copies of their respective works. CW is supported by the Harvard Society of Fellows. This work was also supported, in part, by the Microsoft Corporation Station Q, by EPSRC
+
+20
+
+Grant no. EP/J017639/1, by the European Research Council under the European Unions Seventh Framework
+
+Program (FP7/2007-2013) / ERC Project MUNATOP, by the DFG (CRC/Transregio 183, EI 519/7-1), by the Minerva Foundation, and by the U.S.-Israel BSF.
+
+[1] Dam Thanh Son, "Is the Composite Fermion a Dirac
+
+Particle?" Phys. Rev. X 5, 031027 (2015).
+
+[2] B. I. Halperin, Patrick A. Lee, and Nicholas Read, "The-
+
+ory of the half-filled Landau level," Phys. Rev. B 47,
+
+7312­7343 (1993).
+
+[3] J. K. Jain, "Composite-fermion approach for the frac-
+
+tional quantum Hall effect," Phys. Rev. Lett. 63, 199­202
+
+(1989).
+
+[4] Vadim Kalmeyer and Shou-Cheng Zhang, "Metallic
+
+phase of the quantum Hall system at even-denominator
+
+filling fractions," Phys. Rev. B 46, 9889­9892 (1992).
+
+[5] Ana Lopez and Eduardo Fradkin, "Fractional quantum
+
+hall effect and chern-simons gauge theories," Phys. Rev.
+
+B 44, 5246­5262 (1991).
+
+[6] Martin Greiter and Frank Wilczek, "Exact solutions and
+
+the adiabatic heuristic for quantum Hall states," Nuclear
+
+Physics B 370, 577­600 (1992).
+
+[7] B. Rejaei and C. W. J. Beenakker, "Vector-mean-field
+
+theory of the fractional quantum Hall effect," Phys. Rev.
+
+B 46, 15566­15569 (1992).
+
+[8] Yong Baek Kim, Akira Furusaki, Xiao-Gang Wen, and
+
+Patrick A. Lee, "Gauge-invariant response functions of
+
+fermions coupled to a gauge field," Phys. Rev. B 50,
+
+17917­17932 (1994).
+
+[9] B. L. Altshuler, L. B. Ioffe, and A. J. Millis, "Low-energy
+
+properties of fermions with singular interactions," Phys.
+
+Rev. B 50, 14048­14064 (1994).
+
+[10] S. H. Simon and B. I. Halperin, "Finite-wave-vector
+
+electromagnetic response of fractional quantized Hall
+
+states," Phys. Rev. B 48, 17368­17387 (1993), cond-
+
+mat/9307048.
+
+[11] Ady Stern and Bertrand I. Halperin, "Singularities in the
+
+Fermi-liquid description of a partially filled Landau level
+
+and the energy gaps of fractional quantum Hall states,"
+
+Phys. Rev. B 52, 5890­5906 (1995).
+
+[12] M. A. Metlitski and A. Vishwanath, "Particle-vortex du-
+
+ality of 2d Dirac fermion from electric-magnetic dual-
+
+ity of 3d topological insulators," ArXiv e-prints (2015),
+
+arXiv:1505.05142 [cond-mat.str-el].
+
+[13] Chong Wang and T. Senthil, "Half-filled Landau level,
+
+topological insulator surfaces, and three-dimensional
+
+quantum spin liquids," Phys. Rev. B 93, 085110 (2016).
+
+[14] S. D. Geraedts, M. P. Zaletel, R. S. K. Mong, M. A.
+
+Metlitski, A. Vishwanath, and O. I. Motrunich,
+
+"The half-filled Landau level: The case for Dirac
+
+composite fermions," Science 352, 197­201 (2016),
+
+arXiv:1508.04140 [cond-mat.str-el].
+
+[15]
+
+Ganpathy
+
+Murthy
+
+and
+
+R.
+
+Shankar,
+
+"
+
+=
+
+1 2
+
+Landau
+
+level:
+
+Half-empty versus half-full," Phys. Rev. B 93, 085405
+
+(2016).
+
+[16] C. Wang and T. Senthil, "Composite Fermi liquids in the
+
+lowest Landau level," Phys. Rev. B 94, 245107 (2016),
+
+arXiv:1604.06807 [cond-mat.str-el].
+
+[17] David F. Mross, Andrew Essin, and Jason Alicea, "Com-
+
+posite Dirac Liquids: Parent States for Symmetric Sur-
+
+face Topological Order," Phys. Rev. X 5, 011011 (2015).
+
+[18] Chong Wang and T. Senthil, "Dual Dirac Liquid on the Surface of the Electron Topological Insulator," Phys. Rev. X 5, 041031 (2015).
+[19] C. Wang and T. Senthil, "Time-Reversal Symmetric U (1) Quantum Spin Liquids," Physical Review X 6, 011034 (2016), arXiv:1505.03520 [cond-mat.str-el].
+[20] M. A. Metlitski, "S-duality of u(1) gauge theory with  =  on non-orientable manifolds: Applications to topological insulators and superconductors," ArXiv e-prints (2015), arXiv:1510.05663 [hep-th].
+[21] D. F. Mross, J. Alicea, and O. I. Motrunich, "Explicit Derivation of Duality between a Free Dirac Cone and Quantum Electrodynamics in (2 +1 ) Dimensions," Physical Review Letters 117, 016802 (2016), arXiv:1510.08455 [cond-mat.str-el].
+[22] N. Seiberg, T. Senthil, C. Wang, and E. Witten, "A duality web in 2 + 1 dimensions and condensed matter physics," Annals of Physics 374, 395­433 (2016), arXiv:1606.01989 [hep-th].
+[23] A. Karch and D. Tong, "Particle-Vortex Duality from 3D Bosonization," Physical Review X 6, 031043 (2016), arXiv:1606.01893 [hep-th].
+[24] J. Murugan and H. Nastase, "Particle-vortex duality in topological insulators and superconductors," ArXiv eprints (2016), arXiv:1606.01912 [hep-th].
+[25] S. Kachru, M. Mulligan, G. Torroba, and H. Wang, "Bosonization and mirror symmetry," Phys. Rev. D 94, 085009 (2016), arXiv:1608.05077 [hep-th].
+[26] S. M. Girvin, "Particle-hole symmetry in the anomalous quantum Hall effect," Phys. Rev. B 29, 6012­6014 (1984).
+[27] E. H. Rezayi and F. D. M. Haldane, "Incompressible Paired Hall State, Stripe Order, and the Composite Fermion Liquid Phase in Half-Filled Landau Levels," Phys. Rev. Lett. 84, 4685­4688 (2000).
+[28] A. C. Balram and J. K. Jain, "Nature of composite fermions and the role of particle-hole symmetry: A microscopic account," Phys. Rev. B 93, 235152 (2016), arXiv:1604.03911 [cond-mat.str-el].
+[29] S. A. Kivelson, D-H. Lee, Y. Krotov, and J. Gan, "Composite-fermion hall conductance at  = 1/2," Phys. Rev. B 55, 15552­15561 (1997).
+[30] M. Barkeshli, M. Mulligan, and M. P. A. Fisher, "Particle-hole symmetry and the composite Fermi liquid," Phys. Rev. B 92, 165125 (2015), arXiv:1502.05404 [cond-mat.str-el].
+[31] A. C. Potter, M. Serbyn, and A. Vishwanath, "Thermoelectric Transport Signatures of Dirac Composite Fermions in the Half-Filled Landau Level," Physical Review X 6, 031026 (2016), arXiv:1512.06852 [condmat.str-el].
+[32] R. Willett, J. P. Eisenstein, H. L. Sto¨rmer, D. C. Tsui, A. C. Gossard, and J. H. English, "Observation of an even-denominator quantum number in the fractional quantum Hall effect," Phys. Rev. Lett. 59, 1776­1779 (1987).
+
+21
+
+[33] Gregory Moore and Nicholas Read, "Nonabelions in the
+
+fractional quantum hall effect," Nuclear Physics B 360,
+
+362 ­ 396 (1991).
+
+[34] N. Read and Dmitry Green, "Paired states of fermions
+
+in two dimensions with breaking of parity and time-
+
+reversal symmetries and the fractional quantum hall ef-
+
+fect," Phys. Rev. B 61, 10267­10297 (2000).
+
+[35] Michael Levin, Bertrand I. Halperin, and Bernd
+
+Rosenow, "Particle-hole symmetry and the pfaffian
+
+state," Phys. Rev. Lett. 99, 236806 (2007).
+
+[36] Sung-Sik Lee, Shinsei Ryu, Chetan Nayak, and Matthew
+
+P.
+
+A.
+
+Fisher,
+
+"Particle-hole
+
+symmetry
+
+and
+
+the
+
+
+
+=
+
+5 2
+
+quantum hall state," Phys. Rev. Lett. 99, 236807 (2007).
+
+[37] M. P. Lilly, K. B. Cooper, J. P. Eisenstein, L. N. Pfeif-
+
+fer, and K. W. West, "Evidence for an Anisotropic State
+
+of Two-Dimensional Electrons in High Landau Levels,"
+
+Phys. Rev. Lett. 82, 394­397 (1999).
+
+[38] A. A. Koulakov, M. M. Fogler, and B. I. Shklovskii,
+
+"Charge density wave in two-dimensional electron liquid
+
+in weak magnetic field," Phys. Rev. Lett. 76, 499­502
+
+(1996).
+
+[39] M. M. Fogler and A. A. Koulakov, "Laughlin liquid to
+
+charge-density-wave transition at high Landau levels,"
+
+Phys. Rev. B 55, 9326­9329 (1997).
+
+[40] R. Moessner and J. T. Chalker, "Exact results for inter-
+
+acting electrons in high Landau levels," Phys. Rev. B 54,
+
+5006­5015 (1996).
+
+[41] M. I. D'yakonov and A. V. Khaetskii, "Transport cross
+
+section for small angle scattering," Sov. Phys. JETP 72,
+
+590 (1991).
+
+[42] P. Nozi`eres and C. Lewiner, "A simple theory of the
+
+anomalous Hall effect in semiconductors," Journal de
+
+Physique 34, 901­915 (1973).
+
+[43] N. R. Cooper, B. I. Halperin, and I. M. Ruzin, "Thermo-
+
+electric response of an interacting two-dimensional elec-
+
+tron gas in a quantizing magnetic field," Phys. Rev. B
+
+55, 2344­2359 (1997).
+
+[44] R. L. Willett, R. R. Ruel, K. W. West, and L. N. Pfeiffer,
+
+"Experimental demonstration of a Fermi surface at one-
+
+half filling of the lowest Landau level," Phys. Rev. Lett.
+
+71, 3846­3849 (1993).
+
+[45] D. Kamburov, Yang Liu, M. A. Mueed, M. Shayegan,
+
+L. N. Pfeiffer, K. W. West, and K. W. Baldwin, "What
+
+determines the fermi wave vector of composite fermions?"
+
+Phys. Rev. Lett. 113, 196801 (2014).
+
+[46] W. Kang, H. L. Stormer, L. N. Pfeiffer, K. W. Baldwin,
+
+and K. W. West, "How real are composite fermions?"
+
+Phys. Rev. Lett. 71, 3850­3853 (1993).
+
+[47] J. H. Smet, D. Weiss, R. H. Blick, G. Lu¨tjering, K. von
+
+Klitzing, R. Fleischmann, R. Ketzmerick, T. Geisel, and
+
+G. Weimann, "Magnetic focusing of composite fermions
+
+through arrays of cavities," Phys. Rev. Lett. 77, 2272­
+
+2275 (1996).
+
+[48] J. H. Smet, K. von Klitzing, D. Weiss, and W. Wegschei-
+
+der, "dc transport of composite fermions in weak periodic
+
+potentials," Phys. Rev. Lett. 80, 4538­4541 (1998).
+
+[49] J. H. Smet, S. Jobst, K. von Klitzing, D. Weiss,
+
+W. Wegscheider, and V. Umansky, "Commensurate
+
+composite fermions in weak periodic electrostatic potentials: Direct evidence of a periodic effective magnetic field," Phys. Rev. Lett. 83, 2620­2623 (1999). [50] R. L. Willett, K. W. West, and L. N. Pfeiffer, "Geometric resonance of composite fermion cyclotron orbits with a fictitious magnetic field modulation," Phys. Rev. Lett. 83, 2624­2627 (1999). [51] S. D. M. Zwerschke and R. R. Gerhardts, "Positive magnetoresistance of composite fermion systems with a weak one-dimensional density modulation," Phys. Rev. Lett. 83, 2616­2619 (1999). [52] V. W. Scarola, K. Park, and J. K. Jain, "Magneto-roton excitation of fractional quantum Hall effect: Comparison between theory and experiment," eprint arXiv:condmat/9910491 (1999), cond-mat/9910491. [53] Igor V. Kukushkin, Jurgen H. Smet, Vito W. Scarola, Vladimir Umansky, and Klaus von Klitzing, "Dispersion of the excitations of fractional quantum hall states," Science 324, 1044­1047 (2009), http://science.sciencemag.org/content/324/5930/1044.full.pdf. [54] D. X. Nguyen and A. Gromov, "Exact electromagnetic response of Landau level electrons," ArXiv e-prints (2016), arXiv:1610.03516 [cond-mat.str-el]. [55] R. H. Morf, N. d'Ambrumenil, and S. Das Sarma, "Excitation gaps in fractional quantum hall states: An exact diagonalization study," Phys. Rev. B 66, 075408 (2002). [56] A. K. C. Cheung, S. Raghu, and M. Mulligan, "Weiss oscillations and particle-hole symmetry at the half-filled Landau level," ArXiv e-prints (2016), arXiv:1611.08910 [cond-mat.str-el]. [57] A. C. Balram, C. Toke, and J. K. Jain, "Luttinger Theorem for the Strongly Correlated Fermi Liquid of Composite Fermions," Physical Review Letters 115, 186805 (2015), arXiv:1506.02747 [cond-mat.str-el]. [58] S. Golkar, D. X. Nguyen, M. M. Roberts, and D. T. Son, "Higher-Spin Theory of the Magnetorotons," Physical Review Letters 117, 216403 (2016), arXiv:1602.08499 [cond-mat.mes-hall]. [59] Z. Wang and S. Chakravarty, "Pairing of particlehole symmetric composite fermions in half-filled Landau level," Phys. Rev. B 94, 165138 (2016), arXiv:1606.00899 [cond-mat.str-el]. [60] P. T. Zucker and D. E. Feldman, "Stabilization of the particle-hole Pfaffian order by Landau-level mixing and impurities that break particle-hole symmetry," Phys. Rev. Lett. 117, 096802 (2016). [61] Lukasz Fidkowski, Xie Chen, and Ashvin Vishwanath, "Non-abelian topological order on the surface of a 3d topological superconductor from an exactly solved model," Phys. Rev. X 3, 041016 (2013). [62] M. Levin and D. Thanh Son, "Particle-Hole Symmetry and Electromagnetic Response of a Half-Filled Landau Level," ArXiv e-prints (2016), arXiv:1612.06402 [condmat.mes-hall].
+
+

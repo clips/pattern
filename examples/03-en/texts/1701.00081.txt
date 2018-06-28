@@ -1,0 +1,1024 @@
+Dissipative stabilization of quantum-feedback-based multipartite entanglement with Rydberg atoms
+Xiao-Qiang Shao,1 Jin-Hui Wu,1 and Xue-Xi Yi1 1Center for Quantum Sciences and School of Physics, Northeast Normal University, Changchun 130024, Peoples Republic of China, and Center for Advanced Optoelectronic Functional Materials Research and Key Laboratory for UV Light-Emitting Materials and Technology of Ministry of Education, Northeast Normal University, Changchun 130024, Peoples Republic of China
+A quantum-feedback-based scheme is proposed for generating multipartite entanglements of Rydberg atoms in a dissipative optical cavity. The Rydberg blockade mechanism efficiently prevents double excitations of the system, which is further exploited to speed up the stabilization of an entangled state with a single Rydberg state excitation. The corresponding feedback operations are greatly simplified, since only one regular atom needs to be controlled during the whole process, irrespective of the number of particles. The form of entangled state is also adjustable via regulating the Rabi frequencies of driving fields. Moreover, a relatively long-life time of the high-lying Rydberg level guarantees a high fidelity in a realistic situation.
+PACS numbers: 03.67.Bg, 03.65.Yz, 32.80.Qk, 32.80.Ee
+
+arXiv:1701.00081v1 [quant-ph] 31 Dec 2016
+
+I. INTRODUCTION
+Quantum entanglement, formally proposed by Ervin Schr¨odinger, is defined to describe a strongly correlated system constituted by pairs or groups of particles [1]. This kind of correlation is so peculiar that a measurement made on either of the particles apparently collapses the state of system instantaneously, even when the particles are separated by a large distance. Although this `spooky action at a distance' has made Einstein thought that quantum mechanics is not a complete [2], the observations of quantum entanglement have been continuously demonstrated in experiments with linear photons system [3­5], cavity quantum electrodynamics (QED) system [6, 7], and trapped ions systems [8­10], etc. Nowadays, quantum entanglement, as a fundamental feature in quantum mechanics, has greatly promoted the development of quantum information.
+There are several entangled states that appear often in theory and experiments. For two qubits, the four maximally entangled Bell states form a complete orthonormal basis of the Hilbert space [11], which play a fundamental role in Bell's theorem, and are also known as EPR pairs in quantum key distribution protocols [12, 13]. For three qubits or more, there are two inequivalent classes of maximally entangled states such as Greenberger-HorneZeilinger (GHZ) and W states, both of them provide stronger refutations of local realism and are more useful in quantum information processing (QIP) [14, 15]. Compared with the maximal entanglement, some nonmaximally entangled states possess more practical capability in certain QIP tasks. For instance, the idea of decoherence-free subspaces (DFS) was brought forward
+Corresponding author: shaoxq644@nenu.edu.cn
+
+to passively prevent the quantum system against a special class of decohrence [16­18]. The quantum information encoded into DFS could keep a unitary evolution of system, since they are decoupled from the environment. Due to the above properties, quantum entanglement has become the core of quantum information science, and researchers have devoted themselves to generate various of entangled states with high quality [19­22].
+An intuitive and effective way for manipulation of quantum states is to design a quantum dynamic or adiabatic process that unitarily map an initial state to the target state. Nevertheless, the inevitable interaction between quantum system and its surrounding reservoir will destroy the coherence of quantum components, thus decoherence makes it an obstacle to preparing faithful and reliable entanglements in experiments [23, 24]. Fortunately, recent developments of technologies suggest that quantum feedback strategy can be taken advantage of controlling and overcoming entanglement degradation in open quantum system. Using approach of quantum trajectories [25], the theory of quantum-limited feedback for continuously monitored systems is characterized by a deterministic Markovian master equation, as the time delay in the feedback loop is negligible. This method was successfully exploited to enhance the steady-state entanglement of two atoms by homodyne-mediated feedback [26, 27], and the amount and the robustness of entanglement were substantially improved further via quantumjump-based quantum feedback [28­32].
+In the later direct feedback schemes [28, 30], application of nonidentical feedback Hamiltonian, breaking the symmetry properties with respect to exchange of atoms, admits a single steady-state solution of the master equation for system. As a result, a maximally entangled state is always achievable from an arbitrary initial state. However, we note that the output entangled state is closely related to the angular momentum state with J = 0, where J is the total spin of system consisting of n equivalent
+
+2
+
+pseudospin-1/2 particles. This situation imposes a strict restriction on the parity of particle number n, which is not available to prepare any other kinds of multipartite entanglement.
+In this paper, we propose an efficient scheme for stabilization of quantum-feedback-based entanglement with Rydberg atoms [33­39]. The advantage for adopting Rydberg atoms as qubits is twofold: On the one hand, an excited atom can cause sufficiently large energy shifts of Rydberg states in its neighboring atoms, thus the whole system is blockaded into a single excitation subspace at most. This blockade mechanism greatly reduces the dimension of investigated system and contributes to an analytical steady-state solution for the stochastic master equation. On the other hand, the Rydberg state with a large principle quantum number is able to live for a very long time, which admirably suits for being encoded quantum information. Furthermore, the form of entangled steady states is adjustable and the feedback control is applied simply on a regular atom, irrespective of the number of particles.
+The remainder of the paper is organized as follows. In Sec. II, we derive an effective Hamiltonian of the interaction between multipartite cascade-type Rydberg atoms and a damped cavity. In Sec. III, we obtain an effective master equation describing atomic collective amplitude damping induced by a large cavity loss. In Sec. IV, we analytically and numerically investigate the effect of quantum feedback on preparation of bipartite-, tripartite-, and multipartite entanglement, respectively. In Sec. V, we discuss the experimental feasibility of our proposal and give a conclusion.
+
+II. EFFECTIVE PHYSICAL MODEL
+
+We consider multipartite Rydberg atoms with cascadetype configuration are trapped in an optical cavity, as shown in Fig. 1. Each atom is constituted by a Rydberg state |r , an optical state |p , and a ground state |g . The indirect transition from |g to |r mediated by |p is driven by two independent channels: In one channel, the atom is first coupled to the cavity mode with strength g, detuned by b, and then pumped by a classical field with Rabi frequency c, detuning -a. The other channel is totally composed by two laser fields, and the corresponding Rabi frequencies and detuings are R, -b, and B, a, respectively. All parameters are assumed to be real for the sake of simplicity. In the interaction picture, the Hamiltonian of the system reads ( = 1)
+
+N
+
+HI =
+
+[(geibta + iRe-iat)|p ii g|
+
+i=1
+
++(ice-ibt + iBeiat)|r ii p| + H.c.]
+
+N
+
++ Uij (r)|r ii r|  |r jj r|,
+
+(1)
+
+i<j
+
+FIG. 1: (Color online) Schematic view of the feedback setup and atomic-level configuration. The system consists of many cascade three-level atoms simultaneously interaction with non-resonant classical fields and a quantized cavity field. Each atom is constituted by a Rydberg state |r , an optical state |p , and a ground state |g . The intermediate state |p can be eliminated adiabatically under the large-detuning condition |a(b)|  {g, c(B,R)}, which is then reduced to an effective two-level atom resonantly coupled to a damped optical cavity with coupling strength -gc/b, and driven by a laser field with Rabi frequency RB/a. The single-atom feedback control Ufb is triggered right after the leakage photon is measured by the detector D.
+
+where the Rydberg-mediated interaction Uij(r) arises from the dipole-dipole potential of the scale C3/r3 or the long-range van der Waals interaction proportional to C6/r6, with r being the distance between two Rydberg atoms, and C3(6) depending on the quantum numbers of Rydberg state. In the regime of the large detuning
+|a(b)|  {g, c(B,R)}, we may safely eliminate the intermediate state |p , and the above Hamiltonian reduces
+to
+
+HI
+
+=
+
+N i=1
+
+(
+
+iR2 a
+
+-
+
+g2 b
+
+a
+
+a)|g
+
+ii
+
+g|
+
++
+
+(
+
+iB2 a
+
+-
+
+ic2 b
+
+)|r
+
+ii
+
+r|
+
++[(
+
+iR iB a
+
+-
+
+gic b
+
+a)|r
+
+ii
+
+g| + H.c.]
+
+N
+
++ Uij(r)|r ii r|  |r jj r|.
+
+(2)
+
+i<j
+
+The first two terms represent the Stark shifts of ground states and Rydberg states, respectively. Apart from canceling them via introducing other auxiliary levels, these terms can be set to commute with our prepared target steady state. Therefore, we just reserve the Raman-like transition terms and the above Hamiltonian is simplified to be
+
+N
+
+Heff =
+
+ieff |r ii g| + geiff |r ii g|a + H.c.
+
+i=1
+
+N
+
++ U |r ii r|  |r jj r|,
+
+(3)
+
+i<j
+
+3
+
+where ieff = iRiB/a, and geiff = -gic/b. It is reasonable to replace the distance-related Rydberg mediated interaction strength with an identical U = min{Uij(r)}, because the blockade effect merely depends upon the minimum of all Uij(r). Eq. (3) describes the interaction between multipartite effective two-level atoms and a cavity field, simultaneously driven by classical laser fields. One may also choose a two-level configuration of the trapped atom right from the start, but the possible benefit of starting from a cascade-type atomic configuration is that the effective atom-cavity interaction is tunable via modulating the corresponding detunings and Rabi frequencies, which provides more feasibility for experimental control.
+
+III. DISSIPATIVE DYNAMICS OF MULTIPARTITE RYDBERG ATOMS
+
+The dissipation channels of the present physical model include the spontaneous emission of Rydberg state (symbolled as r) and photon loss of the cavity mode (symbolled as ). Under the assumptions that the decay channels are independent, the master equation of the whole system can be expressed by the Lindblad form [40]
+
+
+
+=
+
+-i[Heff ,
+
+]
+
++
+
+ 2
+
+(2aa
+
+-
+
+aa
+
+-
+
+aa)
+
++
+
+N
+
+r 2
+
+(2-i +i
+
+-
+
++i -i 
+
+-
+
++i -i ),
+
+(4)
+
+i=1
+
+where -i = +i = |g ii r| is the lowering operator of a single atom. In a strong Rydberg blockade regime, the above Lindblad master equation is reduced to
+
+r = -ieff [(Jl+ + Jl-), r] - igeff [(Jc+a + Jc-a), r]
+
+N
+
++ D[-i ]r + D[a]r,
+
+(5)
+
+i=1
+
+where r stands for the density matrix of system with-
+
+out considering the double occupations of Rydberg states
+
+or more. The corresponding coupling strengths are
+
+scaled by eff =min{ieff } and geff =min{geiff}. Jl- =
+
+|g1. . . gi. . . gN
+
+N i=1
+
+ieff
+
+/eff
+
+g1. . . ri. . . gN |
+
+and
+
+Jc-
+
+=
+
+|g1. . . gi. . . gN
+
+N i=1
+
+geiff
+
+/geff
+
+g1. . . ri. . . gN |
+
+represent
+
+the
+
+collective lowing operators related to the classical fields
+
+and the quantized cavity mode, respectively. D[-i ] and D[a] denote the superoperators describing decay
+
+of atom and cavity, respectively.
+
+In order to gain a better insight into the dissipative
+
+dynamics of system, we now rewrite the density operator
+
+in the photon number representation [27], i.e.
+
+
+
+r =
+
+rmn|m n|,
+
+(6)
+
+m,n=0
+
+where rmn are the density matrix elements in the basis of the photon number states with respect to the cavity mode. For a strongly damped cavity mode, the highly excited cavity modes only act as perturbations, thus an expansion to m, n = 1 is good enough for our concerns. After substituting the above equation into r, we obtain a set of coupled equations for the cavity field matrix elements:
+
+r00 = Lr00 - igeff[Jc+r10 - r01Jc-] + r11, (7)
+
+r10
+
+=
+
+Lr10
+
+-
+
+igeff [Jc-r00
+
+-
+
+r11Jc-]
+
+-
+
+ 2
+
+r10
+
+,
+
+(8)
+
+r11 = Lr11 - igeff [Jc-r01 - r10Jc+] - r11, (9)
+
+where the photon-independent terms have been absorbed into the superoperator Lrij . Compared with other two terms, the coherence r10 changes more slowly in time, as the most populated state of cavity mode is the vacuum
+state. Thus it is reasonable to take r10 = 0, and we get the value of this operator as
+
+r10
+
+=
+
+r01
+
+
+
+-
+
+2igeff 
+
+[Jc-r00
+
+-
+
+r11Jc-].
+
+(10)
+
+Substituting the corresponding result into r00 and r11, we find
+
+r00
+
+=
+
+Lr00
+
+-
+
+4ge2ff 
+
+[Jc+
+
+Jc-r00
+
++
+
+r00 Jc+ Jc-
+
+-2Jc+r11Jc-] + r11,
+
+(11)
+
+r11
+
+=
+
+Lr11
+
+-
+
+4ge2ff 
+
+[Jc-Jc+
+
+r11
+
++
+
+r11 Jc- Jc+
+
+-2Jc-r00Jc+] - r11.
+
+(12)
+
+These two terms characterize the dynamical evolution of atoms because of r00 + r11 = ratom. Now we add them together and adiabatically eliminate the element r11, the master equation for the reduced density operator of atoms becomes
+
+N
+r = -ieff [(Jl+ + Jl-), r] + D[Jc-]r + D[-i ]r,
+i=1
+(13) where  = 4ge2ff/ is the collective amplitude damping rate of the transition from |r to |g . Supposing that the
+collective decay rate is much larger than the spontaneous
+emission rate   , we may have an effective master
+equation of multipartite Rydberg atoms as
+
+r = -ieff [(Jl+ + Jl-), r] + D[Jc-]r. (14)
+
+In general, the dynamical steady solution of Eq. (14)
+
+is a mixed state. A sufficient condition that a steady
+
+state should satisfy is ieff/eff = geiff /geff, i.e. it is
+
+an eigenstate of the collective quantum jump opera-
+
+tor J ([J +,
+
+-
+r
+
+= ]=
+
+Jc- = 0 due
+
+Jl- corresponding to to the strong Rydberg
+
+zero eigenvalue blockade effect).
+
+In the following, we will pick up a maximally steady en-
+
+tanglement with the help of quantum feedback control.
+
+4
+
+IV. QUANTUM-JUMP-BASED FEEDBACK
+
+The quantum feedback theory is a combination of
+quantum measurement and master equation. For the
+purpose of understanding quantum feedback dynamics
+concisely, it is instrumental to decompose the superoperator D[J-]r into two parts [25], one part
+
+A[J -]r
+
+=
+
+1 2
+
+[J
+
++
+
+J
+
+-
+
+r
+
++
+
+rJ +J -]
+
+(15)
+
+indicats a null measurement, leaving the density operator ~r0(t + dt) unchanged, and the other part
+
+J [J -]r = J -rJ +
+
+(16)
+
+corresponds to a detection of signal, which is immediately followed by the feedback control in the form of
+
+~r1(t + dt) = eKJ -r(t)J +dt,
+
+(17)
+
+where K is a Liouville superoperator. Since the nonselective evolution of the system is given by
+
+r(t + dt) = ~r1(t + dt) + ~r0(t + dt),
+
+(18)
+
+we can directly incorporate the feedback operator into the master equation of system as
+
+r = -ieff[(J + +J -), r]+eKJ [J -]r -A[J -]r. (19)
+
+In the case that Kr = -i[z, r], we have
+
+r = -ieff [(J + + J -), r] + D[UfbJ -]r, (20)
+
+where Ufb = e-iz is the unitary operator of feedback control operating on system under the circumstance of Rydberg blockade. Note that the feedback does not alter the steady pure state solution of Eq. (14), because of D[UfbJ -]r = UfbJ -rJ +Ufb - (J +J -r + rJ +J -)/2. Therefore, a choice of z is key to generate bipartite-, tripartite-, and multipartite entanglement.
+
+A. Bipartite entanglement
+
+i.e. dissipative preparation of entanglement for Rydberg atoms. The previous works suggest that the principle of selecting feedback control is to violate the symmetry with respect to exchange of atoms, so we take the feedback operator as
+
+Ufb
+
+=
+
+exp{-i[(|g
+
+11
+
+r|
+
++ |r
+
+11
+
+g|)  I2
+
++
+
+U 
+
+|rr
+
+rr|]t},
+
+(21)
+
+where  denotes the feedback strength operated on the
+
+first atom, I2 is the identity operator of the second atom,
+
+and we have assumed that the Rydberg blockade still
+
+works during the feedback operation. This unitary oper-
+
+ator can be approximated to
+
+Ufrb = exp[-i(|g 11 r| + |r 11 g|)  |g 22 g|], (22)
+which represents the finite amount of evolution ( = t) imposed by the control Hamiltonian on the system under the condition of U  . Thus a single-qubit flip operation on the first atom is equivalent to a controlledflip operation in the strong Regime of Rydberg blockade. In order to find the stationary solution of Eq. (20), we are encouraged to expand the density operator r in a subspace spanned by
+
+|1 B = |gg ,
+
+|2 B
+
+=
+
+1 (|gr 2
+
++ |rg ),
+
+|3 B
+
+=
+
+1 (|gr 2
+
+- |rg ).
+
+(23)
+
+Although the entangled states of two particles are the simplest example of entanglement, which have been realized with different approaches, we will show the specific function of quantum feedback in the present scheme,
+
+After setting eff = ieff and r = 0 in Eq. (20), we acquire an analytical expression for the corresponding algebraic equation
+
+
+
+-i2(r12-r21)-2r22 cos 2
+
+ r21 +-ii2 2((r1r312-+r22r2)2+cor2s2scions)sin 
+
+r12
+
+ -i 2
+
+(r11-r22)+r22 cos  sin 
+
+i-2i(2r12-r31r2+1)(-r32r2+2 r2(s2insin2-2)2)
+
+ i2(r23+r22 cos  sin ) i2r13+(r23 +r22 sin 2)  = 0,
+-r22 sin 2
+
+(24)
+
+where the subscript of Rabi frequency is omitted.
+
+Let us now analyze the nontrivial solution of Eq. (24). The feedback strength  is an adjustable parameter. If
+
+5
+
+(a)
+
+(b)
+
+(c)
+
+(d)
+
+FIG. 2: (Color online) Analysis of bipartite entanglement under quantum feedback conrol. (a) The target-state fidelity obtained from the effective master equation of Eq. (20) (undersurface), which is in excellent agreement with result derived from the original master equation of Eq. (25) (upper surface), under the given parameters  = 25, geff = 2.5, U = 500, t = 100/. (b) The fidelity calculated from the effective master equation is not consistent with the original one (inset), out of weak driving regime, (N denotes the considered dimension of cavity mode) where we have chosen  = 0.5, and other parameters are the same as Fig. 2(a). (c) The Rydberg blockade provides a way to speed up convergence of target-state population originating from a two-atom ground state |gg (solid line), compared with the population in the absence of Rydberg blockade (dotted-dashed line). This speedup effect will be more pronounced for a stronger driving field  = 10 as shown in the inset. (d) Time evolution of the fidelity for the target-state (cos |gr + sin |rg ) with unity (solid line) and 0.5 (dotted-dashed line) detection efficiency, respectively. The effective Rabi frequency has been set as  = 0.25.
+
+we restrict sin  = 0, a straightforward calculation shows that all elements in Eq. (24) are zeros. Keeping in mind the feedback operator does not violate the conservation of probability, i.e. r11 + r22 + r33 = 1, so we can conclude that the antisymmetric Bell state |3 = (|gr - |rg )/ 2 is the unique steady solution. In experiments, the signal does not come from the collective damping of atoms, but monitoring the photon leakage out of the cavity mode. Thus the correctness of adiabatic approximation made in Eq. (20) can be determined by considering a more realistic feedback master equation
+ = L - igeff[(J +a + J -a), ] + D[Ufba], (25)
+where L = -i[(J+ + J-), ] - iU [|rr rr|, ]. This model is able to be transformed back to Eq. (20) if an adiabatic elimination is performed. In order to measure the distance between quantum states, we adopt the def-
+
+inition of fidelity F (, (t))  Tr 1/2(t)1/2 with  being the target state [41]. In Fig. 2(a), we initialize the system into state |gg and plot the target-state fidelity as a function of feedback strength  and effective Rabi frequency  with the effective master equation of Eq. (20) (undersurface), and the original master equation of Eq. (25) (upper surface). These two results are in excellent agreement with each other under the given parameters  = 25, geff = 2.5, U = 500, t = 100/, which in turn proves the rationality of the above adiabatic approximation. It can also be seen that the present scheme is robust again the fluctuation of parameters, as the fidelity maintains unity for a wide range of  and .
+In Fig. 2(b), we investigate the effect of strong driving on the convergent time for fidelity with Eqs. (20) and (25), respectively. For the effective model, there exists a limit value for , beyond which the asymptotic time
+
+6
+
+is almost unchanged. But this is not the case in reality, as shown in the inset of Fig 2(b), where we have considered four-photon excitation in the cavity mode (N = 5) to provide a more distinct physical picture. In fact, the stationary entanglement is produced under the competitions of classical driving, quantum feedback and dissipation. The numerical simulation illustrates that an better value (guaranteeing a shorter time for reaching the target state) of Rabi frequency for driving field should be modulated to the same order of magnitude of geff . Thus our results reveal that in the presence of strong driving fields, the effective master equation of Eq. (20) is not suitable for describing dynamical evolution of system, but the feedback mechanism remains established from the viewpoint of steady state. In what follows, our simulations are all based on the original master equation Eq. (25) without any specification.
+Fig. 2(c) displays one of the superiority of Rydberg atoms for implementing quantum-feedback-based entanglement. The solid line and the dashed-dotted line represent the populations of target states with and without considering Rydberg Blockade, respectively. For weak driving fields  = 2.5 = geff, the solid line exceeds 99% at a short time t = 9, while the dashed-dotted line is just about 96%. The gap between the above populations is further broadened in the regime of strong driving fields ( = 10), as shown from the inset. For t = 16, the solid line is almost stabilized to 99.68%, but the dasheddotted line merely rises to 84.91%. The physical principle behind this phenomenon is that the strong Rydberg blockade excludes a simultaneous population of double Rydberg states, resulting in closure of a transition channel. Thence the concerning rate of stabilization is accelerated from an initial state to the target steady state.
+Another superiority of our scheme is shown in Fig. 2(d). We are able to engineer an arbitrary state (cos |gr + sin |rg ) as the stationary state via modulating the real Rabi frequencies of classical fields. Comparatively speaking, the previous proposals are concerned only with the maximal entanglement. The preparation of superposition between states |gr and |rg is especially important for quantum coding, since the logic qubit |0 L  |gr and |1 L  |rg are robust against the phase error caused by Hde = g( )|g g| + r( )|r r|. For simplicity, we opt several values of  and plot the corresponding evolutions of fidelities. (a relative phase between |gr and |rg is also realizable by simply introducing some complex Rabi frequencies). The dashed-dotted lines of Fig. 2(d) correspond to the case of imperfect detections, which are governed by
+
+ = L - igeff[(J +a + J -a), ] + D[e-iza]
+
++(1 - )D[a],
+
+(26)
+
+where  represents the efficiency of the detector and (1 - ) indicates the case no feedback control is activated. These results show that the efficiency of the detector will delay the convergent time of entanglement, but unaffect the quality of final state.
+
+(a) 1
+
+Population
+
+0.5
+0 0
+1
+
+|1 TN |2 TN |1 TY |2 TY |3 TY
+
+2
+
+4
+
+6
+
+8
+
+10
+
+t
+
+(b)
+
+Population
+
+0.5
+0 0
+
+|1 TN |3 TN |1 TY |3 TY |2 TY
+
+2
+
+4
+
+6
+
+8
+
+10
+
+t
+
+FIG. 3: (Color online) The populations of quantum states are simulated with and without quantum feedback control during the preparation of three-qubit DFS state (a) and W state (b), where  = 0.5,  = 100, geff = 5,  = 5, and U = 2500.
+
+B. Tripartite entanglement
+
+In this part, we mainly discuss the possibility of generating tripartite entanglement for Rydberg atoms under quantum feedback control. Referring to the case of bipartite entanglement, we first introduce four quantum states below as a new set of density operator up to single excitation,
+
+|1 T = |ggg ,
+
+|2 T
+
+=
+
+1 (|ggr 3
+
++ |grg
+
++ |rgg ),
+
+|3 T
+
+=
+
+1 (|ggr 6
+
++ |grg
+
+- 2|rgg ),
+
+|4 T
+
+=
+
+1 (|ggr 2
+
+- |grg ),
+
+(27)
+
+where |2 T, |3 T, and |4 T constitute a complete basis for the single excitation subspace. States |2 T and |3 T are the three-qubit W state and the three-qubit DFS state against collective amplitude damping, both of them be-
+long to the tripartite entanglement of interest. But the state |4 T will not participate in the process of evolution and it can be excluded further. This point can be seen more clearly with the dissipative model of Eq. (14).
+In the absence of quantum feedback, a quantum state initialized in |1 T can only be pumped to the collective single excitation state |2 T which then decays back to the ground state |1 T, and this process repeats again and again until a dynamic equilibrium is achieved. As shown in Fig. 3(a), the upper (lower) dashed-dotted line
+represents the stationary population of |2 T (|1 T) without applying quantum feedback. Even in the presence of
+
+7
+
+quantum feedback, the operation on the first atom will not change the relative phase between other two atoms. Thus state |4 T is safely disregarded, and the density
+
+operator of system is expanded with other three states, whose steady state is solved as
+
+
+
+-i3(r12-r21)-3r22 cos 2
+
+3
+2
+
+r21
+
+-+ii33(r3(2 r11+-r222)r22 +cor22s
+
+ 
+
+cos sin
+
+ sin )
+
+
+
+3 2
+
+r12
+
+ -i 3
+
+(r11 -r22)+r22 cos  sin 
+
+-ii33(r3r112-+r21()32-r32+r22(2sir2n2s2in-32) )
+
+ i3(r23+2r22 cos  sin )
+
+ = 0. i3r13+(
+
+3 2
+
+r23 +2r22
+
+sin
+
+2)
+
+-2r22 sin 2
+
+(28)
+
+if we modulated the Rabi frequencies of classical fields
+
+1
+
+so satisfy -1eff = 22eff = 23eff = 2eff , and -ge1ff =
+
+2ge2ff = 2ge3ff = 2geff, the roles of states |2 T and |3 T
+
+0.8
+
+is interchanged, and the tripartite W state becomes the
+
+stationary state of system, illustrated by the uppermost
+
+solid line of Fig. 3(b).
+
+0.6
+
+Fidelity
+
+0.4
+
+four-atom DFS state, N=2
+
+0.2
+
+four-atom DFS state, N=5
+
+four-atom W state, N=2
+
+four-atom W state, N=5
+
+0
+
+0
+
+5
+
+10
+
+15
+
+20
+
+t
+
+FIG. 4: (Color online) The fidelities of four-qubit DFS state and W state are simulated numerically with dimension of cavity mode N = 2 (solid line) and N = 5 (dotted line), where  = 0.5,  = ,  = 25, geff = 2.5, U = 500.
+
+C. Multipartite entanglement
+
+The generalization from the tripartite entanglement to the multipartite entanglement is straightforward. The corresponding closed subspace with identical  and geff is spanned by
+|1 M = |gg . . . g ,
+|2 M = 1n (|gg . . . r + |g . . . r . . . g + |rg . . . g ),
+
+|3 M =
+
+1 (|gg . . . r + |g . . . r . . . g n(n - 1)
+
+-(n - 1)|r . . . gg ).
+
+(29)
+
+Through the same analysis of the process as previously on bipartite entanglement, we find the three-qubit DFS state |3 T is the unique solution of Eq. (28) for a nonzero sin , of which the dynamic evolution is characterized by the uppermost solid line of Fig. 3(a). Interestingly,
+
+Besides state |3 M, there are additional (n-2) degenerate quantum states, under the action of J-, in the single excitation subspace. But these quantum states contribute noting for our system. So the steady-state solution of the multipartite feedback master equation is given by
+
+
+
+-in(r12-r21)-nr22 cos 2
+
+n
+2
+
+r21-i+in(nr32(r1+,1-n-r221)r22+cr22os cossins)in
+
+
+
+n 2
+
+r12
+
+-in
+
+(r11-r22)+r22 cos  sin 
+
+-iinn(r31r12+-r2(1n2)r3-2 +r22 n(-si1nr222
+
+-n) sin 2
+
+)
+
+in(r23+n-1r22 cos  sin ) 
+
+ = 0. inr13+(
+
+n 2
+
+r23 +n-1r22
+
+sin
+
+2)
+
+-(n-1)r22 sin 2
+
+(30)
+
+This equation signifies that the multipartite DFS state |3 M is the unique steady state of system in the presence of sin  = 0, and this steady state is able to be transformed into the multipartite W state via adjustment of Rabi frequencies of classical driving fields. As an example, we plot the fidelities of four-qubit DFS state (upper lines) and W state (lower lines) in Fig. 4. Under the
+
+parameters  = ,  = 25, geff = 2.5, U = 500, it is precise enough for cutting off the dimension of cavity mode to N = 2 (solid line), since the results agree well with the case of N = 5 (dotted line). Eq. (30) is the key finding of our work, because it provides an analytical expression for stabilization of multipartite entanglement for Rydberg atom with quantum feedback control. By
+
+8
+
+setting n = 2 or n = 3, the expression of Eqs (24) or (28) is recovered.
+
+V. DISCUSSIONS AND CONCLUSIONS
+
+The physical model mentioned above has gotten rid of the stark-shift terms, as they have no effect on current scheme from the perspective of the steady-state solution. Without loss of generality, we will take the case of realizing tripartite entanglement to support the statement. As shown in Eq. (2), the effective Rabi frequency and atom-cavity interaction are determined by ieff = iRiB/a and geiff = -gic/b. The generation of three-qubit DFS state |3 T require the condition ieff = eff and geiff = geff. Although there are more than one way for selecting parameters to accomplish this goal, we choose iB = B, iR = R, ic = c, |iB| = |ic| and a = b. Note that the last two terms are crucial for our proposal as they automatically counteract the Stark shifts of Rydberg states |r . Now all atoms see the same Stark shift of ground state |g , leading to the relation [|3 T 3|, (2R - g2aa)/] = 0. Thus the threequbit DFS state |3 T remains the steady state of system in the presence of Stark shifts. Nevertheless, we find that the Stark shifts does affect the dynamic evolution of quantum states. Fig. 5(a) demonstrates the effects of Stark shifts and Rydberg blockade on preparation of bipartite entanglement (|gr - |rg )/ 2. Compared with other three cases, the fidelity with Rydberg blockade but without Stark shift converges to unity fastest (upper solid line). The influences of Stark shifts on the preparation of tripartite DFS state (solid line) and tripartite W states (dashed-dotted line) are also displayed in Fig 5(b), which still play the role of retarding convergence.
+Next we study the effect of spontaneous emission on the current proposal. In order to fully characterize the dissipative factors, we must introduce the following timedependent master equation
+
+
+
+=
+
+-i[HI, ] +
+
+N
+
+r 2
+
+D[|p
+
+ii
+
+r|]
+
++
+
+N
+
+r 2
+
+D[|g
+
+ii
+
+r|]
+
+i=1
+
+i=1
+
+N
+
++ pD[|g ii p|] + D[Ufba],
+
+(31)
+
+i=1
+
+where HI is the full Hamiltonian of Eq. (1), and we have assumed the branching ratios of the atomic decays from level |r to |p and |r to |g are the same for simplicity. Generally speaking, the decay rate of the Rydberg state r is three orders of magnitude below the decay
+
+rate of the intermediate state p. In Fig. 5(c), we plot the populations of quantum states in the process of producing the antisymmetric Bell state and tripartite DFS state, respectively. We see that under the joint actions of two decay rates r and p, the system is stabilized into an entangled state mixed up by the ground state and all single excitation states. A large single photon detuning a(b) does substantially reduce the effect of spontaneous emission for |p , but it is at the cost of extending the convergent time and amplifying the influence of spontaneous emission for |r . Thence the tradeoff between p and r should be considered according to different parameters of system.
+Now let us consider the basic elements that may be candidates for the intended experiment. The cavity QED with Rydberg-blocked atoms is a favorable platform for implementing the current proposal [42­45]. The transition between atomic ground level 5S1/2 and the optical level 5P3/2 of 87Rb atom is coupled to the quantized cavity mode with strength g = 2 × 14.4 MHz. The decay rates of the intermediate state |p , the Rydberg state |r and the cavity mode are p = 2 × 3 MHz, r = 2 × 1 kHz, and  = 2 × 0.66 MHz, respectively. The Rabi laser frequency c(B,R) can be tuned continuously and we adopt |c(B,R)| = g, and the single-photon detunings a and b are set to be 80g in order to preclude the excitation of the intermediate atomic state |p . By substituting these parameters into Eq. (31), the fidelities of bipartite and tripartite entanglement reach 98.31% and 98.57% for a short time gefft = 20, as demonstrated in Fig. 5(d).
+In conclusion, we have shown that the quantum feedback control combined with Rydberg atoms can be exploited to stabilize multipartite entanglement. The dimension of the system is effectively reduced due to the strong Rydberg blockade, which is instrumental in simplifying the complexity of the quantum feedback control. Most interestingly, the entangled state is not restricted to a fixed form, but can be adjustable via tuning classical fields, and a high fidelity is obtained with experimentally achievable parameters. We hope that this work may open a new venue for the experimental realization of multipartite entanglement in the near future.
+ACKNOWLEDGMENT
+This work is supported by Natural Science Foundation of China under Grant No. 11647308, No. 11547303, No. 11534002, and No. 61475033, Fundamental Research Funds for the Central Universities under Grant No. 2412016KJ004.
+
+[1] E. Schr¨odinger, Proc. Cambridge Philos. Soc. 31, 555 (1935).
+[2] A. Einstein, B. Podolsky, and N. Rosen, Phys. Rev. 47,
+
+777 (1935). [3] D. Bouwmeester, J. W. Pan, M. Daniell, H. Weinfurter,
+and A. Zeilinger, Phys. Rev. Lett. 82, 1345 (1999).
+
+9
+
+1
+
+1
+
+0.8
+
+0.8
+
+Fidelity
+
+Fidelity
+
+0.6
+
+0.6
+
+0.4
+
+SS no, RB yes
+
+0.2
+
+SS yes, RB yes SS no, RB no
+
+SS yes, RB no
+
+0
+
+0
+
+10
+
+20
+
+30
+
+40
+
+gefft
+
+(a)
+
+0.4
+
+three-atom DFS state without SS
+
+0.2
+
+three-atom DFS state with SS three-atom W state without SS
+
+three-atom W state with SS
+
+0
+
+0
+
+10
+
+20
+
+30
+
+40
+
+gefft
+
+(b)
+
+1
+
+0.9
+
+0.8
+
+0.7
+
+Fidelity
+
+0.6
+
+0.5
+
+0.4
+
+0.3
+
+0.2
+
+bipartite Bell state
+
+0.1
+
+tripartite DFS state
+
+0
+
+0
+
+5
+
+10
+
+15
+
+20
+
+gefft
+
+(c)
+
+(d)
+
+FIG. 5: (Color online) (a) The effects of Stark shifts and Rydberg blockade on preparation of antisymmetric Bell state (|gr - |rg )/ 2, where  = 0.5,  = geff ,  = 10geff , and U = 200geff . (b) The influences of Stark shifts on preparation of tripartite DFS state (solid line) and tripartite W states (dashed-dotted line), with the same parameters to Fig. 5(a). (c) Populations of quantum states versus time during generation of the Bell state (tripartite DFS state) with spontaneous emission rates r = 0.008geff , and p = 8geff . (d) Fidelities of bipartite Bell state and tripartite DFS state versus time under experimental parameters.
+
+[4] J. W. Pan, M. Daniell, S. Gasparoni, G. Weihs, and A. Zeilinger, Phys. Rev. Lett. 86, 4435 (2001).
+[5] X. L. Wang, L. K. Chen, W. Li et al, arXiv:1605.08547 (2016).
+[6] A. Rauschenbeutel, G. Nogues, S. Osnaghi, P. Bertet, M. Brune, J. M. Raimond, S. Haroche, Science 288, 2024 (2000).
+[7] J. M. Raimond, M. Brune, and S. Haroche, Rev. Mod. Phys. 73, 565 (2001).
+[8] Q. A. Turchette, C. S. Wood, B. E. King, C. J. Myatt, D. Leibfried, W. M. Itano, C. Monroe, and D. J. Wineland, Phys. Rev. Lett. 81, 3631 (1998).
+[9] R. Blatt and D. J. Wineland, Nature (London) 453, 1008 (2008).
+[10] T. Monz, P. Schindler, J. T. Barreiro et al, Phys. Rev. Lett. 106, 130506 (2011).
+[11] J. S. Bell, Physics (Long Island City, N.Y.) 1, 195 (1965). [12] G. L. Long and X. S. Liu, Phys. Rev. A 65, 032302
+(2002). [13] F. G. Deng and G. L. Long, Phys. Rev. A 68, 042315
+(2003). [14] D. M. Greenberger, M. A. Horne, and A. Zeilinger, 1989,
+
+Going beyond Bells theorem in Bells Theorem, Quantum Theory, and Conceptions of the Universe (Kluwer Academic, Dorthecht) [15] W. Du¨r, G. Vidal, and J. I. Cirac, Phys. Rev. A 62, 062314 (2000). [16] D. A. Lidar, I. L. Chuang, and K. B. Whaley, Phys. Rev. Lett. 81, 2594 (1998). [17] L. M. Duan and G. C. Guo, Phys. Rev. A 58, 3491 (1998). [18] A. Beige, D. Braun, B. Tregenna, and P. L. Knight, Phys. Rev. Lett. 85, 1762 (2000). [19] A. Orieux, A. Eckstein, A. Lema^itre, P. Filloux, I. Favero, G. Leo, T. Coudreau, A. Keller, P. Milman, and S. Ducci, Phys. Rev. Lett. 110, 160502 (2013). [20] M. Neeley, R. C. Bialczak, M. Lenander, E. Lucero, M. Mariantoni, A. D. O'Connell, D. Sank, H. Wang, M. Weides, J. Wenner, Y. Yin, T. Yamamoto, A. N. Cleland, and J. M. Martinis, Nature (London) 467, 570 (2010). [21] D. R. Hamel, L. K. Shalm, H. Hu¨bel, A. J. Miller, F. Marsili, V. B. Verma, R. P. Mirin, S. W. Nam, K. J. Resch, and T. Jennewein, Nat. Photon. 8, 801 (2014). [22] X. M. Xiu, Q. Y. Li, Y. F. Lin, H. K. Dong, L Dong, and Y. J. Gao, Phys. Rev. A 94, 042321 (2016).
+
+10
+
+[23] T. Pellizzari, S. A. Gardiner, J. I. Cirac, and P. Zoller Phys. Rev. Lett. 75, 3788 (1995).
+[24] W. H. Zurek, Rev. Mod. Phys. 75, 715 (2003). [25] H. M. Wiseman, Phys. Rev. A 49, 2133 (1994). [26] S. Schneider and G. J. Milburn, Phys. Rev. A 65, 042107
+(2002). [27] J. Wang, H. M. Wiseman, and G. J. Milburn, Phys. Rev.
+A 71, 042309 (2005). [28] A. R. R. Carvalho and J. J. Hope, Phys. Rev. A 76,
+010301(R) (2007). [29] A. R. R. Carvalho, A. J. S. Reid, and J. J. Hope, Phys.
+Rev. A 78, 012334 (2008). [30] R. N. Stevenson, J. J. Hope, and A. R. R. Carvalho,
+Phys. Rev. A 84, 022332 (2011). [31] X. Q. Shao, T. Y. Zheng, and S. Zhang, Phys. Rev. A
+85, 042308 (2012); X. Q. Shao, Z. H. Wang, H. D. Liu, and X. X. Yi, Phys. Rev. A 94, 032307 (2016). [32] C. D. B. Bentley, A. R. R. Carvalho, D. Kielpinski, J. J. Hope, Phys. Rev. Lett. 113, 040501 (2014). [33] M. Saffman and K. Mølmer, Phys. Rev. Lett. 102, 240502 (2009). [34] M. Saffman, T. G. Walker, and K. Mølmer, Rev. Mod. Phys. 82, 2313 (2010). [35] T. Wilk, A. Ga¨etan, C. Evellin, J. Wolters, Y. Miroshnychenko, P. Grangier, and A. Browaeys, Phys. Rev. Lett.
+
+104, 010502 (2010). [36] H. Z. Wu, Z. B. Yang, and S. B. Zheng, Phys. Rev. A 82,
+034307 (2010). [37] M. M. Mu¨ller, M. Murphy, S. Montangero, T. Calarco,
+P. Grangier, and A. Browaeys, Phys. Rev. A 89, 032334 (2014). [38] X. Q. Shao, J. B. You, T. Y. Zheng, C. H. Oh, and S. Zhang, Phys. Rev. A 89, 052313 (2014). [39] M. Saffman, J. Phys. B 49, 202001 (2016). [40] M. O. Scully and M. S. Zubairy, Quantum Optics (Cambridge University Press, Cambridge, 1997). [41] M. A. Nielsen and I. L. Chuang, Quantum Computation and Quantum Information (Cambridge University Press, Cambridge, 2000). [42] F. Brennecke, T. Donner, S. Ritter, T. Bourdel, M. K¨ohl, and T. Esslinger, Nature (London) 450, 268 (2007). [43] C. Guerlin, E. Brion, T. Esslinger, and K. Mølmer, Phys. Rev. A 82, 053832 (2010). [44] X. F. Zhang, Q. Sun, Y. C. Wen, W. M. Liu, S. Eggert, and A. C. Ji, Phys. Rev. Lett. 110, 090402 (2013). [45] A. Grankin, E. Brion, E. Bimbard, R. Boddeda, I. Usmani, A. Ourjoumtsev, and P Grangier, New J. Phys. 16, 043020 (2014).
+
+

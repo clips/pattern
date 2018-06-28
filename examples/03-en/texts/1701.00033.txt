@@ -1,0 +1,1352 @@
+Stochastic Artificial Potentials for Online Safe Navigation
+Santiago Paternain and Alejandro Ribeiro
+
+arXiv:1701.00033v1 [math.OC] 30 Dec 2016
+
+Abstract--Consider a convex set of which we remove an arbitrarily number of disjoints convex sets ­ the obstacles ­ and a convex function whose minimum is the agent's goal. We consider a local and stochastic approximation of the gradient of a RimonKoditschek navigation function where the attractive potential is the convex function that the agent is minimizing. In particular we show that if the estimate available to the agent is unbiased convergence to the desired destination while obstacle avoidance is guaranteed with probability one under the same geometrical conditions than in the deterministic case. Qualitatively these conditions are that the ratio of the maximum over the minimum eigenvalue of the Hessian of the objective function is not too large and that the obstacles are not too flat or too close to the desired destination. Moreover, we show that for biased estimates a similar result holds under some assumptions on the bias. These assumptions are motivated by the study of the estimate of the gradient of a Rimon-Koditschek navigation function for sensor models that fit circles or ellipses around the obstacles. Numerical examples explore the practical value of these theoretical results.
+I. INTRODUCTION
+The problem of navigating towards a desired goal configuration has been extensively studied in the robotics community. In the particular case where the set of available configurations to the robot is convex it is possible to reach the desired configuration by implementing a gradient controller (see e.g. [1]). The main advantages of such controllers are their simplicity and the fact that they rely only on local information, this is, in the gradient of a function whose minimum is the goal configuration.
+A much more complex setting is one in which the workspace is cluttered by obstacles that must be avoided by the agent. Solutions to this problem have been provided in the form of artificial potentials, see for instance [2]­[18]. The main idea of this approach is to combine the attractive potential with repulsive fields that push the agent away of the boundary of the obstacles. With proper design ­ and restring the geometry of the obstacles to certain classes ­ it is possible to construct a potential that attains its maximum at the boundary of the obstacles and with a unique minimum at the goal configuration. Therefore ensuring non collision with the obstacles and convergence to the desired destination from almost every initial configuration when following the negative gradient of this potential. The existence guarantees of such functions ­ termed navigation functions ­ is highly dependent on the geometry of the free space. For instance for
+Work in this paper is supported by NSF CNS-1302222 and ONR N0001412-1-0997. The authors are with the Department of Electrical and Systems Engineering, University of Pennsylvania, 200 South 33rd Street, Philadelphia, PA 19104. Email: {spater, aribeiro}@seas.upenn.edu.
+
+artificial potentials of the Rimon-Koditschek form introduced in [2] the above properties can be guaranteed in the case of focally admissible obstacles [18] of which spherical worlds considered in the original work [2] are a particular case. This said, by implementing a suitable diffeomorphism it is possible to extend the results of [2] to star worlds [3], [19] thus extending considerably the families of free spaces that can be navigated. Different families of navigation functions can be constructed, such is the case of navigation function based in harmonic functions which allow navigation in topologically complex three dimensional spaces [20], [21]. The latter construction needs the free space to be diffeomorphically mapped to a reference world. In that sense the navigation framework lack the advantage of pure gradient controllers: these cannot be implemented locally as they necessitate access to some amount of global information. Efforts in overcoming this limitation have been pursued, in particular through the use of polynomial navigation functions in the case of twodimensional configuration spaces with convex obstacles [14], [15] and in n dimensional configuration spaces with spherical obstacles [16].
+In the navigation function framework typically the goal configuration is provided to the robot and therefore a rotational symmetric attractive potential can be considered. However, in some settings it is desirable to provide the configuration goal as the minimum ­ or maximum ­ of an objective function instead of the configuration itself. Consider for instance the hill climbing problem in which an agent can sense its way "up" by following the slope of the terrain estimated by an inertial measurement unit (IMU). It is more reasonable to solve the problem as navigating towards the top of the hill following its slope ­and reaching a point where the slope becomes zero­ as compared as navigating towards a given location. This is especially true if the height profile of the hill is unknown or if the interest is on building a system that is independent of the particular hill under consideration. Generally speaking reaching the minimum of an unknown function is a desirable capability for robots to perform complex missions such as environmental monitoring [22], [23], surveillance and reconnaissance [24] and search and rescue operations [25]. The problem of navigating towards the minimum of a convex function in a space with convex holes is studied [26], where generic conditions are presented to ensure that a RimonKoditschek navigation function can be constructed when the attractive potential is a generic convex function rather than the squared of the distance to a desired configuration for a workspace with convex obstacles. The qualitative implication of this conditions is that Rimon-Koditschek have a unique
+
+minimum when one of the following conditions are met. (i) The condition number of the Hessian of the attractive potential is not large and the obstacles are not too flat. (ii) The distance from the obstacles' boundary to the minimum of the attractive potential is large relative to the size of the obstacle. These conditions are compatible with the definition of sufficiently curved worlds in [17].
+In [26] it is assumed that the information about the objective function and the obstacles is exact. However, this is not the case in systems where the magnitudes that the robot needs to build the navigation function are gathered by sensors and therefore the measurements have errors in the form of noise. In that sense the objective of this work is to generalize the results in [26] to stochastic scenarios, understood as a setting in which the sensorial information available to the agent comes from a probability distribution instead of being deterministic (Section II). In particular we show that if the agent is able to construct an unbiased estimate of the gradient of the navigation function, convergence to the minimum of the objective function can be ensured with probability one as well as collision avoidance (Theorem 2 Section IV). Moreover, there might be a mismatch between the model that the agent has of the environment and the real one. This mismatch translates into the fact that estimates of the gradient of the navigation function are not unbiased. Hence we devote Section V to this end. In particular, we show that if in a neighborhood of the saddle points of the navigation function the bias is small the same theoretical guaranties as in the unbiased case can be provided (Theorem 2). The previous technical hypothesis is motivated by the study of particular sensor models in Section III. The practical implications of these theoretical conclusions are explored in numerical simulations (Section VII) in which we consider the problem of reaching the minimum of non rotational symmetric potentials in a space where the obstacles are ellipses (Section VII-A) and where the obstacles are egg shaped as an example of a generic convex obstacle (Section VII-B).
+
+The free space F represents the points of the workspace that are accessible to the agent, i.e., the set difference between the workspace and the obstacles. We formally define this set next.
+
+Definition 1. The free space F  Rn is the set given by
+
+m
+
+F = X \ Oi.
+
+(3)
+
+i=1
+
+Let f0 : X  R+ be a convex function such that its minimum is the agent's goal. Then the problem of interest is to navigate the free space F towards the minimum of the convex potential f0(x) from all initial positions. Formally, this is finding a sequence
+
+{xt  F , t  N  {0}} such that lim xt = x, (4)
+t
+where x = argmin f0(x). For such a problem to be feasible we need the minimum of the potential to be in the free space. We also require the objective function to be twice continuously differentiable and strongly convex. We formalize these assumptions about the objective function next.
+
+Assumption 2 (Objective function). The objective function f0(x) is such that:
+Optimal point The minimum x of the objective function is such that f0(x)  0 and it is in the interior of the free space,
+
+x  int(F ).
+
+(5)
+
+Twice continuously differentiable and strongly convex
+The objective function is twice continuously differentiable and strongly convex in X . These assumptions in addition to the fact that the workspace is compact imply that the eigenvalues of the Hessian 2f0(x) are contained in the interval [min, max] for all x  F , with 0 < min.
+
+II. PROBLEM FORMULATION
+In this work we are interested in navigating towards the minimum of a convex potential in a space with convex holes in cases where the information available to the agent about the potential and the space is local and inexact. To be formal, define the workspace X  Rn as a non empty convex compact set and consider a set of m  N obstacles Oi  X that we define as non empty, open, strongly convex sets with smooth boundary Oi. The obstacles are such that they do not intersect with each other or with the boundary of the workspace. We formalize these assumptions next.
+Assumption 1 (Obstacles do not intersect). The workspace and the obstacles are such that the obstacles and its boundaries are contained in the interior of the workspace
+(Oi  Oi)  int(X ) for all i = 1 . . . m, (1)
+and the obstacles do not intersect with each other
+(Oi  Oi)  (Oj  Oj) =  i, j = 1 . . . m, i = j. (2)
+
+In cases where exact information about the objective function and complete information about the obstacles is available to the agent, it is possible ­under mild conditions about the geometry of the free space and the objective function­ to build a navigation function [26]. An agent that follows the flow given by the negative gradient of a navigation function converges to the destination x without running into the free space boundary for a set of initial conditions that is dense in the free space [27]. Thus solving problem (4). For completeness we provide here the definition of a navigation function as well as a different characterization of the free space that is useful to the navigation function framework.
+Definition 2 (Navigation Function). Let F  Rn be a compact connected analytic manifold with boundary. A map  : F  [0, 1], is a navigation function in F if:
+Differentiable. It is twice continuously differentiable in F.
+Polar at x. It has a unique minimum at x which belongs to the interior of the free space, i.e., x  int(F ).
+Morse. It has non degenerate critical points on F.
+
+Admissible. All boundary components have the same maximal value, namely F = -1(1)1.
+
+Since the workspace X is a convex set, there exists a concave function 0 : Rn  R such that x  X if and only if 0(x)  0. Such a function exists because super level sets of
+concave functions are convex. Likewise we can define convex functions i(x) : Rn  R for i = 1 . . . m such that i(x)  0 if and only if x  Oi Oi. Since the obstacles Oi are smooth and strongly convex the Hessian of the function i(x) is well defined and its eigenvalues are lower bounded by µimin > 0. Define then the following product function  : Rn  R
+
+m
+
+(x) = i(x).
+
+(6)
+
+i=0
+
+The interest in defining the above function is that it is possible to characterize the free space as the set for which (x) is nonnegative, in particular its boundary are the points satisfying (x) = 0. With this characterization of the free space one can define the following Rimon Koditschek artificial potential
+
+k(x) =
+
+f0(x)
+
+,
+
+f0k(x) + (x) 1/k
+
+(7)
+
+where k > 0 is an order parameter. It can be shown that for large enough k under mild assumptions on the condition number of the Hessian of the objective functions and the geometry of the free space the above artificial potential is a navigation function. These conditions are given in the following Theorem [26].
+
+Theorem 1. Let F be the free space defined in (3) verifying
+Assumption 1, and let k : F  [0, 1] be the function defined
+in (7). Let max, min be the bounds from Assumption 2 and µimin the minimum eigenvalue of the Hessian of i(x). Furthermore let the following inequality hold for all i = 1..m
+
+max min
+
+i(xs)T (xs xs - x
+
+- x)
+2
+
+<
+
+µimin,
+
+(8)
+
+where xs  Oi . Then there exists a constant K such that
+if k > K, k(x) is a navigation function with minimum at x if f0(x) = 0 and with minimum arbitrarily close to x if f0(x) = 0.
+
+Proof: See Theorem 2 in [26].
+Theorem 1 provides a condition on the obstacles and the
+objective function for which k(x) is a navigation function for sufficiently large k. The condition has to be satisfied for all the
+points lying in the boundary of an obstacle. Notice however that the product i(xs)T (xs -x) is negative if i(xs) and xs-x point in opposite directions, meaning that the condition can be violated only by points in the boundary of the obstacle
+that are behind the obstacle as seen from the minimum point.
+In that case the worst scenario is when i(xs) is aligned with xs - x. In this case it is of interest that the gradient i(xs) is not too large with respect to the minimum eigenvalue µimin, i.e., the obstacle is not too flat. On the other hand we want the
+
+1For a function f (x) we denote its inverse by f -1(x).
+
+ratio 1/ xs - x to be small in order to satisfy (8). This ratio being small means that the destination x is not too close to the boundary of the obstacle. Finally, condition (8) is easier to satisfy when the ratio max/min is close to one, meaning that the closer the level sets of the objective function are to spheres, the easier is to navigate the environment. In summary, the simplest navigation problems have obstacles and objective function whose level sets are close tho spheres and minima that are not close to the boundary of the obstacles.
+While the navigation function approach provides a provable way of navigating towards the minimum of a convex potential in a cluttered workspace, its drawback is that it needs a complete characterization of the obstacles to build the function k(x) defined in (7). Moreover, to ensure that the agent is moving in the direction of the negative gradient of the navigation function, the measurements of the objective function and the obstacles need to be exact. In this work we relax these assumptions by considering only local and stochastic information. Formally, let (, G, P ) be a probability space and define the following filtration defined as a sequence of increasing sigma algebras {, } = G0  G1  . . .  Gt  . . .  G. For each t  0, define a random vector t to be Gt measurable. Then at each time t  N for a given position in the free space xt  F the agent is able to compute a biased estimate of the gradient of the navigation function g^t(xt, t) satisfying
+
+E g^t(xt, t) Gt = (x) (k(x) + bk(x)) , (9)
+
+where  : F  R is a strictly positive differentiable function and bk : F  Rn is piece-wise differentiable. As it will be explored in Section III the bias bk(x) accounts for a mismatch between the real free space and the one that the robot is able to estimate given some belief about the environment. This mismatch is the consequence of using local information about the free space. Drawing inspiration from the deterministic scenario we propose a stochastic gradient descent scheme to solve (4) using only local and stochastic information in which the agent updates its configuration recursively as
+
+xt+1 = xt - tg^t(xt, t),
+
+(10)
+
+where t is a step size assumed to be not summable and square summable. Typically one can select the step size as t = 0/(1+t), where 0 is the initial step size and  controls the rate at which the step size is decreased. We formalize the assumption on he step size for future reference.
+
+Assumption 3. The step size t for the update (10) is a positive and strictly decreasing sequence that satisfies
+
+
+
+
+
+t = ,
+
+2t < .
+
+(11)
+
+t=0
+
+t=0
+
+The main contribution of this work is to show that an agent operating in a workspace with convex holes, that is given an estimate of the form (9) is able to reach the minimum of a unknown convex function without running into the free space boundary with probability one (Section V). Before presenting this result, in Section III we consider a sensor model from
+
+which an estimate satisfying (9) arises and we present a preliminary result for unbiased estimates (Section IV).
+
+III. SENSOR MODEL EXAMPLES
+
+In this section we propose an estimate of the gradient of a Rimon-Koditschek navigation function based on local and stochastic observations about the objective functions and the obstacles. The estimate proposed is based in the fact that the direction of the gradient of the potential defined in (7) is given by the following expression
+
+(x)f0(x)
+
+-
+
+f0(x)(x) . k
+
+(12)
+
+The above fact can be conclude after differentiating the expression (7) and noticing that the terms that multiply (12) are strictly positive. Since the objective function is typically a physical magnitude that must be minimized or maximized one can assume that the robot has estimates of the function f0(x) and its gradient at the current location. For instance in the problem of climbing a forested hill the function f0(x) represents the height profile of the hill. Using a GPS the agent is able to have a measure of the height at the current location and with an inertial measurement unit (IMU) it is possible to estimate the slope of the hill understood as the gradient of the height profile function f0(x). Denote these estimates at time t by f^0(xt, t) and ^ f0(xt, t), where t is a random vector measurable with respect to the sigma algebra Gt. In order to estimate the obstacles ­ the trees in the hill climbing problem­ the agent may have information available gathered by a range finder. In this case depending on the belief that the agent has about the world there exists different forms of estimating the obstacles of which we discuss two examples next. Before doing that we define the set of obstacles that can be measured at a given position x. Due to physical limitations like the range of the sensor or the fact that obstacles can be "hidden" behind others the agent is not able to sense all the obstacles at a given position x. In that sense we define the set obstacles that can be estimated as those obstacles that are at a distance smaller than a given limit c
+
+Ac(x) = i = 1 . . . m di(x)  c ,
+
+(13)
+
+where di(x) is the distance to the i­th obstacle.
+
+A. Circle Fitting
+
+We consider the case where the belief that the robot has about the free space is that obstacles are spherical. Online estimation of distance, direction and curvature of the obstacles has been studied in the literature [28]. Denoting these quantities corresponding to the i­th obstacle by di(x), ni(x) and Ri(x), the agent assumes the obstacle function to be
+
+~i(x) = d2i (x) + 2Ri(x)di(x),
+
+(14)
+
+and the assumed gradient of the function is of the form
+
+~i(x) = 2 (di(x) + Ri(x)) ni(x).
+
+(15)
+
+In particular observe that if the free space is indeed a spherical world the functions ~i(x) and i(x) are identical as well as ~i(x) and i(x). Denoting the estimates of the distance,
+direction and curvature of the i-th obstacle respectively by
+
+d^i(xt, t), n^i(xt, t) and R^i(xt, t), one can define an estimate of the function corresponding to the obstacle Oi as
+
+^(xt, t) = d^2i (xt, t) + 2R^i(xt, t)d^i(xt, t),
+
+(16)
+
+and its gradient by
+
+^i(xt, t) = 2 d^i(xt, t) + R^i(xt, t) n^i(xt, t). (17)
+
+With this information available a natural possibility inspired in (12) is to define the estimate of the direction of the gradient of the navigation function as
+
+g^t(xt, t) := ^ f0(xt, t)
+
+^i(xt, t)
+
+iAc (xt )
+
+- f^0(xt, t) k
+
+^i(xt, t)
+
+^j(xt, ).
+
+iAc (xt )
+
+j Ac (xt ),j =i
+
+(18)
+
+By taking the expectation of the estimate with respect to the sigma algebra Gt and assuming independence across estimates it is possible to show that the estimate (18) satisfies (9). Observe that if the estimates corresponding to the objective function and the obstacles are bounded ­ which is the case in practical applications­ the estimate of the direction of the gradient has bounded norm. Further notice, that when an agent is close to the obstacle Oi we have that i(xt)  0. Therefore, the direction g^t(xt, t) is approximately given by
+
+g^t(xt,
+
+t)
+
+
+
+-
+
+f^0(xt, k
+
+t)
+
+^j(xt, )^i(xt, t).
+
+j Ac (xt ),j =i
+
+(19)
+
+The above means that the update direction proposed in (10)
+
+points outwards the i-th obstacle when the agent is close to
+
+it. These observations made for this particular estimator are
+
+presented as Assumption 4 in Section III-C for the general
+
+case. We next devote our attention to the properties of the bias bk(x). Let d2i (x) be the variance of the estimate of the distance to obstacle Oi. For the estimate defined in (18) the
+bias bk(x) takes the particular form of
+
+bk (x)
+
+=
+
+k
+
+f0(x)(x)
+
+×
+
+(f0(x)k + (x))1+1/k
+
+
+
+
+
+m
+
+i=0
+
+i(x) i(x)
+
+-
+
+iAc (x)
+
+~i
+
+~i (x) +
+
+(x) d2i
+
+(x)
+
+
+
+.
+
+(20)
+
+Observe that the bias depends upon three main factors, the limitation in the number of obstacles that can be measured, the difference between the free space and the belief of the agent and the variance of the estimation of the distance to the obstacles. In the particular case where the wolrd is spherical, the agent is able to sense all the obstacles and the distance to the obstacle is know exactly ­ or an unbiased estimate of the distance squared is available­ the estimator is unbiased. In the general case it is possible to show that as long as the variance d2i (x) vanishes fast enough when x approaches the boundary of Oi we have that
+
+m i=0
+
+i(x) i(x)
+
+-
+
+iAc (x)
+
+~i(x) ~i(x) + d2i (x)
+
+B,
+
+(21)
+
+for all x  F, where B is a nonnegative constant. The fact that
+the variance of the estimate of the distance vanishes translates
+in the fact that the closest the agent is to an obstacle the
+better it can be estimated. In particular, the estimation in the boundary is exact. Since the gradient of k(x) has a factor of 1/ f0(x)k + (x) 1+1/k it is more convenient to work with the following scaling of the bias
+
+~bk(x) = f0(x)k + (x) 1+1/k bk(x).
+
+(22)
+
+Some consequences of the bias vanishing in the boundary
+
+of the free space are that for any x  F we have ~bk(x) = bk(x) = 0 since (x) = 0. Further observe that the norm of ~bk(x) is decreasing at the rate 1/k for
+any point in the interior of the free space and in particular limk ~bk(x) = 0. Moreover, under this model the function ~bk(x) is piece-wise twice differentiable and the discontinuities
+are due to changes in the set Ac(x), this is either when a
+new obstacle is sensed or when an obstacle cannot be sensed
+
+anymore. Therefore, the discontinuities occur away from the
+
+obstacles. Further observe that since ~bk(x) is decreasing with k and because limk ~bk(x) = 0 we have that the region where k(x)T (k(x) + bk(x))  0 are disjoint regions
+
+around the critical points of k(x) for large enough k. Let
+
+xc be a saddle point of k(x) and define the direction
+
+v = (xc)/ (xc) and v a unit vector satisfying
+
+vT v = 0. One can show that if the obstacles are spherical
+
+the quotient of the quadratic form of the Jacobian of bk(x) at
+
+xc over the quadratic form of the Hessian of k(x) at xc is
+
+such that
+
+vT J bk(xc)v vT 2k(xc)v
+
+= O(1/k),
+
+(23)
+
+and
+
+vT J bk(xc)v (v)T 2k(xc)v
+
+= O(1/k),
+
+(24)
+
+where O(1/k) is a function whose limit limk O(1/k)k is a positive constant. It is also worth noticing that the saddle
+
+points xc of k(x) satisfy that (xc)  L/k where L is a
+non-negative constant (see Lemma 3 of [26]) the scaled bias satisfies ~bk(xc) = O(1/k2). The interpretation of the previous fact is that at the critical points of k(x), the C1 norm2 of
+the bias is small compared to that of the vector field k(x).
+In particular, for large enough k in a neighborhood around
+
+a saddle point of k(x) the eigenvalues of the Jacobian of k(x) + bk(x) have the same sign as those of the Hessian of k(x), therefore having the same stability properties. These observations about the bias for the particular estimate here
+
+presented are summarized under Assumption 5 for the generic
+
+case (c.f. Section III-C).
+
+B. Ellipse Fitting
+
+A different approach for obstacle estimation is to fit ellipses
+
+around the obstacles instead of circles. In this case the func-
+
+tions defining the obstacles take the form
+
+~i(x) = (x - xi)T Ai(x - xi) - ri2,
+
+(25)
+
+2Given a vector field f (x) we denote its n-derivative by D(n)f (x). We define the Cn norm of a vector field f (x) in a manifold M as f (x) Cn = supxM f (x) , Df (x) , . . . , D(n)f (x) .
+
+where Ai is a symmetric n × n matrix. Thus, in order to fit ellipses around the obstacles one needs to estimate (n - 1)2/2 + n parameters corresponding to the matrix Ai, n parameters corresponding to the center of the ellipses xi and one parameter corresponding to the scaling ri. This is a drawback compared to the case of the circle where only its radius was needed, yet it reduces the mismatch between the model and the true environment for a larger class of obstacles. Under this model and assuming that unbiased estimates of the discussed quantities are available one can estimate the obstacle function as
+^i(xt, t) = -r^i2(xt, t)+ (x^t(xt, t) - x^i(xt, t))T A^i(xt, t) (x^t(xt, t) - x^i(xt, t)) ,
+(26)
+and its gradient as
+^i(xt, t) = 2A^i(xt, t) (x^t(xt, t) - x^i(xt, t)) . (27)
+As discussed in the previous section (23) and (24) hold when the obstacles are spherical, likewise when considering ellipses as hallucinated obstacles (23) and (24) holds for obstacles that do not differ much from ellipsoids.
+
+C. General Model Assumptions
+We summarize the observations about the estimate of the gradient of the navigation function g^t(xt, t) for the particular models described in Sections III-A and III-B under the following assumptions for a generic estimate satisfying (9).
+Assumption 4. The estimate of the gradient of the navigation function g^(xt, t) is
+Bounded There exists a strictly positive constant B such that for all x  F and for all  we have that
+
+g^(x, )  B.
+
+(28)
+
+Points outwards the obstacles For each obstacle Oi there
+
+exists a constant i > 0 such that if di(x) < i we have
+
+for all 
+
+- g^(x, )T i(x) > 0,
+
+(29)
+
+where di(x) denotes the distance to the obstacle Oi.
+
+Biased Let (x) : F  R++ be a differentiable function bounded away from zero and let bk(x) : F  Rn be piecewise differentiable on the free space and let k(x) be the function defined in (7). Then the expected value of the estimate
+g^t(xt, t) with respect to the sigma algebra Gt satisfies
+
+E g^t(xt, t) Gt = (xt) (k(xt) + bk(xt)) . (30)
+
+Assumption 5. The bias bk(x) defined in (9) is piece-wise differentiable on the free space and has the following properties.
+Unbiased at the boundary The bias bk(x) is such that for any x  F we have that bk(x) = 0 for all k.
+
+Dependence with k The scaled bias
+
+~bk(x) = bk(x) f0(x)k + (x))1+1/k
+
+(31)
+
+is such that for any point x in the interior of the free space F
+
+we have that
+
+bk(x) = O(1/k),
+
+(32)
+
+where O(1/k) is a function satisfying limk O(1/k)k = M with M a positive constant.
+
+gradient of the navigation function (7) satisfying Assumption 4. Then, by choosing a step size satisfying Assumption 3 with 0 < mini i/B, where i and B are defined in Assumption 4, the update (10) is such that the sequence {xt, t  0}  F.
+Proof: Denote by di(x) the euclidean distance of the point x to the set Oi and observe that by virtue of the triangular inequality one has that
+
+di(xt+1)  di(xt) - t g^t(xt, t) .
+
+(34)
+
+Discontinuities away of the boundary There exists a constant D > 0 such that the function bk(x) is differentiable for all x  F satisfying i(x) < D for every i = 1 . . . m.
+
+Regularity Assumption Let Uki be the set defined as
+
+Uki = x  F k(x)T (k(x) + bk(x))  0
+
+(33)
+
+ x  F i(x)  D .
+
+Since k(x) is a Morse function the vector field k(x) is strucutraly stable (c.f. Theorem 1.4 p.127 [29]). This is,
+there exists k > 0 such that for any function g(x) satisfying g(x) C1 < k we have that the orbits of x = k(x) + g(x)
+are conjugate to those of x = k(x). We assume the bias bk(x) be such that bk(x) < k for any x  Uki .
+
+As discussed in Sections III-A and III-B the bias bk(x) accounts for a mismatch between the free space and the free space that the agent is able to estimate. This mismatch does not introduce a problem as long as the Regularity Assumption holds as we show in Section V, where we show that despite this mismatch the agent is able to converge to a point that is arbitrarily close to the minimum of the objective function. However the Regularity Assumption limits the mismatch between the true environment and the model that the agent may have of it. In that sense, it is not clear to us whether this assumption is a limitation on the type of hallucinated obstacles that can be used to fit a given world or if it is a limitation on the analysis in Section V. In the next section we present a preliminary result for unbiased estimates.
+
+Because the estimate of the gradient of the navigation function satisfies that g^t(xt, t)  B (c.f. Assumption 4) and t is a decreasing sequence (c.f. Assumption 3), if 0  mini i/B we have that t g^t(xt, t) < mini {i}. Therefore, for cases in which di(xt)  i (34) can be lower bounded by
+
+di(xt+1) > i - min i  0.
+
+(35)
+
+i
+
+The above implies that if at time t, the iterate xt is at a distance larger than i of the obstacle Oi then at time t + 1 the iterate xt+1 remains in the free space. We are left to show that this is also true for cases where di(xt) < i. By Assumption 4, in this case we have that -g^t(xt, t)T i(xt) > 0 and therefore non collision with obstacle Oi is ensured trivially.
+The previous lemma shows that for a small enough initial
+
+step size the update (10) is such that it avoids collisions.
+
+Observe that the previous result holds independently of the
+
+fact that the estimate is unbiased, so non collision is ensured
+
+both in the biased and unbiased cases. We next show that
+
+when the estimate is unbiased the gradient descent update
+
+(10) converges almost surely to the set of critical points of
+
+the navigation function (7).
+
+Lemma 2. Let F be the free space defined in (1) verifying Assumption 1 and let (8) hold. Denote by g^t(xt, t) an unbiased estimate of the gradient of the artificial potential (7) satisfying Assumption 4 with b(x)  0. Furthermore, let t be a sequence satisfying Assumption 3 with 0 < mini i/B, where i and B are defined in Assumption 5. Then, there exists K > 0 such that for any x0  F and for any k > K the sequence generated by the update (10) is such that
+
+IV. UNBIASED ESTIMATOR
+In this section we consider the particular case of an agent that has access to an unbiased estimator of the gradient of the navigation function rather than the general model presented in (9). This means that the bias is identically zero bk(x)  0. The main result of this section is that an agent that follows the gradient update (10) converges to the minimum of the navigation function k(x) defined in (7) while avoiding the obstacles with probability one. Therefore solving problem (4). We start by showing that the update proposed ensures obstacle avoidance. In the continuous time and deterministic framework this is a trivial consequence of the fact that the navigation function is admissible. Due to both the discretization and the stochasticity this not longer the case unless the step size is small enough. The following lemma formalizes this result.
+Lemma 1. Let F be the free space defined in (1) verifying Assumption 1. Furthermore, let g^t(xt, t) be an estimate of the
+
+lim xt = Xc a.e.,
+
+(36)
+
+t
+
+where Xc is a random variable taking values on the set of the critical points of k(x).
+
+Proof: By virtue of Theorem 1 there exists K > 0 such that for any k > 0 the function k(x) defined in (7) is a navigation function. Let us write k(xt+1) in terms of the previous iterate using the update rule given in (10) and the Taylor expansion of k(x) around the point xt
+
+k(xt+1) = k (xt - tg^t(xt, t)) =
+
+k (xt )
+
+-
+
+t k (xt )g^t (xt ,
+
+t)
+
++
+
+2t 2
+
+g^t(xt
+
+)T
+
+2 k (z )g^t (xt ),
+
+(37)
+
+where z is a point in the segment xt - µtg^t(xt) with µ  [0, 1]. Since the sequence of iterates is contained in the free space F (c.f. Lemma 1), so is z. The free space being a compact set and k(x) being a twice differentiable function
+
+(c.f. Definition 2), the maximum eigenvalue of the Hessian of k(x) is upper bounded by a constant. Let L be an upper bound for this eigenvalue. Then the quadratic term in (37) can be bounded as
+g^tT (xt, t)2k(z)g^t(xt, t)  L g^t(xt) 2. (38)
+Consider the expectation with respect to the sigma field Gt on both sides of (37). Using the linearity of the expectation, the fact that k(xt) is Gt measurable and the bound derived in (38) we have that
+
+E k(xt+1) Gt  k(xt) - tE k(xt)T g^t(xt, t) Gt
+
++
+
+2t
+
+L 2
+
+E
+
+gt(xt, t) 2 Gt .
+
+(39)
+
+Which by Assumption 4 can be further upper bounded by
+
+E k(xt+1) Gt  k(xt) - tE k(xt)T g^t(xt, t) Gt
+
++
+
+2t
+
+LB2 2
+
+.
+
+(40)
+
+We next show that the following subsequence is a nonnegative supermartingale
+
+St = k(xt) +
+
+
+
+2s
+
+LB 2
+
+2
+
+(41)
+
+s=t
+
+Since k(x) is a navigation function it is nonnegative and therefore St is nonnegative sequence. Furthermore it is admissible and its value in the boundary is one, thus bounded. This fact in addition with the assumption that the selected step size t is a square summable sequence (c.f. Assumption 3) implies that St is an integrable random variable. St is also adapted to Gt since xt is. Thus, in order to show that St is a nonnegative supermartingale it remains to be prooved that
+E St+1 Gt  St, which we do next. Using the linearity of
+
+the expectation and the bound for E k(xt+1) Gt derived in (40) we have that
+
+E St+1 Gt
+
+ k(xt) +
+
+
+
+2s
+
+LB 2
+
+2
+
+s=t
+
+(42)
+
+- tE k(xt)T g^t(xt, t) Gt .
+
+Since we are considering an unbiased estimator satisfying (9), we have that E g^t(xt, t) Gt = (xt)k(xt) and therefore
+
+E k(xt)T g^t(xt, t) Gt = (x) k(xt) 2  0 (43)
+
+since (x) is strictly positive (c.f. Assumption 4). This completes the proof that St is non negative supermartingale. Thus we have that (see e.g. Theorem 5.2.9 in [30])
+
+lim
+t
+
+St
+
+=
+
+S
+
+a.e.,
+
+(44)
+
+where S is a random variable such that E [S]  E [S0] and
+
+
+
+t(xt) (xt) 2 <  a.e..
+
+(45)
+
+t=0
+
+Since the sequence of step sizes {t, t  0} is not summable and (x) is bounded away from zero (c.f. Assumption 4) the convergence of the above series implies that
+
+lim inf (xt) 2 = 0 a.e..
+
+(46)
+
+t
+
+Therefore, there exists a subsequence {xts , s  N  {0}} that converges to the set of critical points of the navigation function k(x). Since the limit of St exists we have that
+
+lim
+s
+
+k(xts )
+
+=
+
+S
+
+a.e.
+
+(47)
+
+Moreover the critical points of the navigation function are hyperbolic (c.f. Definition 2), and therefore the limit of the sequence xt generated by the update (10) is either the minimum of k(x) or one of the saddles of k(x). Thus completing the proof of the lemma.
+The previous lemma states that with probability one the update (10) results in a sequence that converges to either the minimum of the navigation function k(x) or to one of its saddle points. In the deterministic and continuous time framework, the stable manifold of the saddles has zero measure and therefore, for a set of initial conditions of measure one we can guarantee convergence to its minimum. The next lemma is the analogous of this statement for the stochastic setting, where we show that the probability of converging to a saddle is zero. We state the result in its generic form for any hyperbolic function.
+
+Lemma 3. Let V (x) : F  R be a hyperbolic function. Consider the sequence generated by the update of the form given in (10) for which g^t(xt, t) satisfies
+
+E g^tT (xt, t)V (xt) Gt > 0,
+
+(48)
+
+if xt is not a critical point of V (x) and
+
+E g^tT (xt, t)V (xt) Gt = 0,
+
+(49)
+
+if xt is a critical point of V (x). Then for any x0  F , the probability of the sequence {xt, t  0} converging to a saddle point of V (x) is zero.
+
+Proof: See Section A
+As mentioned before, Lemma 3 is more general than what is needed to show that the probability of converging to the saddle point of the navigation function is zero. In particular observe that by substituting V (x) by k(x) and considering the case of an unbiased estimator the left hand side of (52) and (53) yields (xt) k(xt) 2 which is strictly positive if xt is not a critical point of k(x) and is zero if xt is a critical point of k(x). Therefore in the particular case where we take V (x) to be the navigation function k(x) and g^t(xt, t) to be an unbiased estimator of the gradient of the navigation function the above lemma states that with probability zero the sequence {xt  Rn, t  N  {0}} given by the update (10) converges to a saddle point of the navigation function k(x) for any initial position x0  F. Thus, by combining lemmas 2 and 3 we can show convergence to the minimum of the navigation function with probability one. This is the subject of the following Theorem where we establish that an agent that has available an unbiased estimate of the gradient of the navigation function
+
+k(x) defined in (7) converges to x if f0(x) = 0 or to a
+point that is arbitrarily close to the minimum of the objective function x if f0(x) = 0 with probability one.
+
+Theorem 2. Let F be the free space defined in (3) verifying
+
+Assumption 1 and let f0 : X  R be a function satisfying Assumption 2 with minimum at x. Consider the artificial
+
+potential k : F  [0, 1] defined in (7) and let g^t(xt, t) be an unbiased estimate of k(x) satisfying Assumption 4. Also let (8) hold for all i = 1 . . . m. Let {xt, t  0} be the sequence generated by the update (10) with a step size
+
+satisfying Assumption 3 and 0 < mini i/B with  and B defined in Assumption 4. Then for every  > 0, there exists a
+
+constant K such that if k > K, we have that {xt, t  0}  F
+
+and
+
+lim xt = x a.e.,
+
+(50)
+
+t
+
+if f0(x) = 0, or
+
+lim
+t
+
+xt
+
+=
+
+x¯
+
+a.e.,
+
+(51)
+
+when f0(x) = 0, where x¯ - x < .
+
+Proof: From Theorem 1 it follows that for every  > 0 there exists some K > 0 such that for any k > K the artificial potential k(x) is a navigation function with minimum at x¯ satisfying x¯ - x <  if f0(x) = 0 and with minimum at x otherwise. Then, the fact that the sequence {xt, t  0}  F is a direct consequence of Lemma 1 and the convergence to the minimum of the navigation function is a consequence of lemmas 2 and 3.
+The previous theorem states that an agent who has access to an unbiased estimate of the gradient of a Rimon-Koditschek navigation function succeeds in navigating towards the minimum of the objective function or to a point that is arbitrarily close to it with probability one while remaining on the free space by selecting the tuning parameter k large enough. In section VI we generalize this result to arbitrary spaces and suitable navigation functions. In the next section we generalize the result of Theorem 2 to case where the estimate biased.
+
+V. BIASED ESTIMATOR
+In this section we generalize Theorem 2 presented in Section IV for biased estimators satisfying Assumption 4 and 5. The main difference with the unbiased estimator is that the estimate g^t(xt, t) is not a descent direction in expectation for the navigation function k(x). However it can be shown that there exists an energy like function that has the same structural properties as k(x) for which the estimate is a descent direction in expectation. We formalize this result in the next lemma.
+Lemma 4. Let F be the free space defined in (3) verifying Assumption 1 and let f0 : X  R be a function satisfying Assumption 2 with minimum at x. Consider the artificial potential k : F  [0, 1] defined in (7) and let g^t(xt, t) be an estimate of k(x) satisfying assumptions 4 and 5. Also let (8) hold for all i = 1 . . . m. Then, for every  > 0 there is a constant K such that if k > K, there exists a twice differentiable function Vk : F  R whose critical points are
+
+at a distance smaller than  to those of k(x). Furthermore, the index of the critical points of the two functions are equal and Vk(x) is such that
+
+E g^tT (xt, t)Vk(xt) Gt > 0,
+
+(52)
+
+if xt is not a critical point of Vk(x) and
+
+E g^tT (xt, t)Vk(xt) Gt = 0,
+
+(53)
+
+if xt is a critical point of Vk(x).
+
+Proof: See Appendix B. In the above lemma we established the existence of an energy function for which the expected value of the estimate of the gradient of the navigation function g^t(xt, t) is a descent direction. In particular, the critical points of this energy function are arbitrarily close to those of the navigation function k(x). We are now in conditions of stating an proving the main result of the work, where we show that an agent that descends along the direction of a biased estimator of the gradient of a navigation function converges with probability one to a point that is arbitrarily close to the minimum of f0(x). We formalize this result next.
+
+Theorem 3. Let F be the free space defined in (3) verifying
+
+Assumption 1 and let f0 : X  R be a function satisfying Assumption 2 with minimum at x. Consider the artificial
+
+potential k : F  [0, 1] defined in (7) and let g^t(xt, t) be an estimate of k(x) satisfying assumptions 4 and 5. Also let (8) hold for all i = 1 . . . m. Let {xt, t  0} be the sequence generated by the update (10) with a step size
+
+satisfying Assumption 3 and 0 < mini i/B with  and B defined in Assumption 4. Then for every  > 0, there exists a
+
+constant K such that if k > K, we have that {xt, t  0}  F and
+
+lim
+t
+
+xt
+
+=
+
+x¯
+
+a.e.,
+
+(54)
+
+where x¯ is a point arbitrarily close to x.
+
+Proof: Observe that non collision is ensured by virtue of Lemma 1. Moreover because of Lemma 4 we know that there exists an energy function such that its critical points are arbitrarily close to those of k(x) and the indexes of said critical points are the same for both functions. Thus Lemma 2 holds for the self indexing energy function. Finally for k large enough k(x) is a navigation function and thus Lemma 3 and Theorem 1 hold completing the proof.
+The above theorem states that under the same conditions on the free space and the objective function than in the deterministic case, by following the update (10) the agent is able, with probability one, to reach a point arbitrarily close to the minimum of the objective function f0(x) without running into the free space boundary. In particular, the update is performed by considering only local information about the objective function and the obstacles whereas in the construction in [26] (Theorem 1) complete information about the obstacles is needed. Furthermore, instead of requiring exact information about both the objective function and the obstacles, stochastic measurements suffice to solve the problem of interest. Notice that in Theorem 3 it is implicitly stated the need of satisfying
+
+condition (8). Thus for the stochastic case the same comments than in the deterministic case regarding the geometry of the free space and the condition number of the Hessian of the objective function are pertinent. This is, it is easier to navigate the free space when the obstacles and the level sets of the objective function are close to spheres.
+Observe that the bias of the estimator accounts for a mismatch between the real free space and the one that is hallucinated by the agent. As explained in sections III-A and III-B there are three main components of this bias; the obstacles that cannot be measured since they are far away from the agent, the error introduces for assuming a specific model of the obstacles (circles or ellipses) and the error in the estimation of the parameters of the model. In that sense, the Regularity Assumption tells us that the perception that the agent has about the world is not that different from the real world when the configuration of the robot is in a neighborhood of the saddle points of the navigation function.
+A difference between the results in Theorem 1 ­ complete and deterministic ­ and Theorems 2 and 3 ­ local and stochastic ­ is in the sense in which the navigation is almost surely. While in the deterministic case the navigation is almost surely in the sense that except for a set of initial positions of measure zero ­the stable manifold of the saddle points of k(x) ­ the solutions of the dynamical system x = -k(x) converge to the minimum of the objective function; in the stochastic case the goal is achieved with probability one. This means, that for any initial position the probability of converging to minimum of f0(x) is one. Even when the initial position of the system is a saddle point of k(x).
+VI. ALTERNATIVE ARTIFICIAL POTENTIALS
+Throughout this paper we focused on navigation functions that are of the Rimon Koditschek form, however the results here presented can be generalized to larger classes of artificial potentials. We devote the current section to do so by considering the generic case of any navigation function for which it is possible to build an unbiased estimator of its gradient and for biased gradients of a potential where the obstacles are encoded by a logarithmic barrier. In Section V we showed that under certain geometrical conditions of the free space and the objective function an agent is able to navigate towards to the minimum of the objective function ­or to a point that is arbitrarely close­ with probability one while remaining in the free space if the agent has access to an unbiased estimate of the gradient of a Rimon-Koditschek navigation function (Theorem 3). We next generalize this result to any free space and suitable navigation functions as long as the estimate of its gradient is unbiased. This allows to consider different families of navigation functions that are suitable for other geometries of the free space e.g. harmonic functions to navigate topologically complex spaces [20], [21].
+
+Then the update rule (10) generates a sequence {xt, t  0}  F and such that limt xt = x.
+
+Proof: The non collision proof is a direct consequence of 1 and the convergence to the minimum of the navigation function follows from lemmas 2 and 3. Observe that these do not depend on the specific form of the free space nor the navigation function selected.
+The previous result generalizes Theorem 2 for any space and suitable navigation function, meaning that following the sequence that arises from descending along the direction of an unbiased stochastic gradient succeeds in navigating towards the minimum of the objective function without running into the free space boundary. Next, we extend the result for biased estimates (c.f. Theorem 3) for a different class of artificial potentials, that of logarithmic barriers. Inspired in the optimization literature we define the following barrier function
+
+1
+
+k(x) = f0(x) - k log((x)).
+
+(55)
+
+The previous potential is not a navigation function since it is
+
+not defined in the boundary and its image is not bounded
+
+between zero and one. However its supremum is at the
+
+boundary of the free space and we will show that all the critical
+
+points of the previous equation are non degenerate and it has
+
+a unique minimum. Differentiate (55) to get
+
+(x)
+
+k(x) = f0(x) -
+
+. k(x)
+
+(56)
+
+Observe that the previous expression is similar to that of the
+
+direction of the gradient considered in 18. In particular the
+
+same fundamental properties of the critical points hold, i.e.,
+
+non degeneracy and polarity follow from analogous proofs to
+
+those in [26]. Since (x) is not zero in the boundary of the
+
+free space (see proof of Lemma 2 in [26]) the critical points can be pushed by increasing k either arbitrarily close to the
+
+minimum of f0(x) or arbitrarily close to (x). In particular, the first one can be showed to be a unique local minima and
+
+the second ones to be saddles. Furthermore the eigenvalues of the Hessian of these critical points depend on k with the same
+
+order as in the case of Rimon-Koditschek artificial potentials.
+
+In that sense if we consider the sensor model discussed in
+
+Section III the assumptions for the bias of the estimate of
+
+the gradient (4 and 5) are reasonable. Hence by following the negative direction of the gradient of k(x)) we converge to a point arbitrarily close to the minimum of f0(x). We state formally this theorem after defining the estimate of the descent
+
+direction current position xt and random vector t
+
+g^(xt,
+
+)
+
+=
+
+^(xt,
+
+t)^ f0(xt,
+
+t)
+
+-
+
+^ (xt, k
+
+t) .
+
+(57)
+
+Observe that the above direction is the estimate of the gradient of k(x) multiplied by (x), this has been done in order to avoid the norm of the estimate being large near the boundary
+
+of the free space.
+
+Corollary 1. Let F be a free space and let  : F  [0, 1] be
+a navigation function (c.f. Definition 2) with minimum at the agent's goal x. Let g^t(xt, t) be an unbiased estimate of the gradient of the navigation function satisfying Assumption 4.
+
+Theorem 4. Let F be the free space defined in (3) verifying
+Assumption 1 and let f0 : X  R be a function satisfying Assumption 2 with minimum at x. Consider the artificial
+potential k : F  R defined in (55) and let g^t(xt, t),
+
+the estimate defined in (57) satisfy the assumptions 4 and
+
+5. Also let (8) hold for all i = 1 . . . m. Let {xt, t  0} be the sequence generated by the update (10) with a step size
+
+satisfying Assumption 3 and 0 < mini i/B with  and B defined in Assumption 4. Then for every  > 0, there exists a
+
+constant K such that if k > K, we have that {xt, t  0}  F and
+
+lim
+t
+
+xt
+
+=
+
+x¯
+
+a.e.,
+
+(58)
+
+where x¯ is a point arbitrarily close to x.
+
+Proof: Observe that non collision is ensured by virtue of Lemma 1. The fact that the critical points of k(x) are non degenerate and that only one of them is a minimum and it can be pushed arbitrarily close to the minimum of f0(x) can be shown in the same way as Lemmas 2-6 in [26]. Hence by virtue of Lemma 4 there exists an energy function such that its critical points are arbitrarily close to those of k(x) and the indexes of said critical points are the same for both functions. Thus Lemma 2 holds for the self indexing energy function. Moreover since all the critical points but one are non degenerate saddles for large enough k and by virtue of Lemma 3 the theorem is proved.
+The previous results extends the result for the biased estimate of the Rimon-Koditschek navigation function to a new class of artificial potentials under the same conditions over the geometry of the free space and the bias. In the next section we study the results of Theorems 3 and 4 numerically.
+
+VII. NUMERICAL EXAMPLES
+We evaluate the performance of the local stochastic approximation of the gradient of the navigation function given in (18) in two different scenarios for which the condition (8) is satisfied. In particular, the estimations of the obstacles are done by considering osculating circles at the closest point of the obstacle to the agent as in Section III-A. In Section VII-A the free space is such that the obstacles are ellipsoids and in section VII-B these are egg shaped. In both cases the external boundary of the free space is a spherical shell of center c0 and radius r0.
+
+A. Elliptical obstacles
+In this section we consider m elliptical obstacles in R2. For i = 1 . . . m, let Ai  M2×2 be symmetric and positive definite matrices, and let µimin > 0 be the minimum eigenvalue of matrix Ai. We describe the obstacles in a functional form through the following functions
+
+i(x) = (x - ci)T Ai(x - ci) - µiminri2.
+
+(59)
+
+where ci  X is the center of the i-th ellipse and ri > 0 is the length of its largest axis. With this selection of i(x) the i-th obstacle is defined as
+
+Oi = x  X i(x) < 0 .
+
+(60)
+
+In these experiments we place the center of each ellipsoid in a different orthant. In particular, each center is set to be in the position L(±1, ±1) and then we add a random variation drawn
+
+uniformly from [-, ]2, where 0 <  < L. The maximum axis of the ellipse ­ ri­ is drawn uniformly from [r0/10, r0/5] and the matrices Ai for i = 1...m are such that they are orthogonal and their eigenvalues are random and uniformly selected from the interval [1, 2]. We verify that the obstacles resulting of the previous process do not intersect. If they do, we re draw all previous parameters. For the objective function we consider a quadratic cost given by f0(x) = (x-x)T Q(x- x), where x is drawn uniformly over [-r0/2, r0/2]2 and we verify that it is in the free space. The matrix Q  M2×2 is a random positive definite symmetric matrix whose eigenvalues are selected as follows. For each obstacle we compute the maximum condition number that Q could have in order to satisfy condition (8). Let Ncond be the maximum among these admissible condition numbers. Then, the eigenvalues of Q are selected randomly from [1, Ncond + 1], hence ensuring that (8) is satisfied. For the estimates of the objective function, its gradient, the distance to the obstacles, the normal direction to them and their curvature we consider independent gaussian additive noise with mean zero and standard deviation q. The step size selected for the update (10) is of the form t = 0/(1 + t) and the initial position is selected randomly over [-r0, r0]2.
+For this experiment we set the parameters to be c0 = 0, r0 = 20, L = 6,  = 1, f0 = f0 = 1 and di = Ri = ni = di(x)/10. The selection of a variance that depends on the the distance is done so to ensure that the closer the agent is to the boundary of the free space the better the estimation of the obstacle is. In particular, at the boundary we have that di = Ri = ni = 0. We set the constant at which the agent is able to measure an obstacle [c.f. (13)] to be c = 7. Finally, the parameters of the step size are 0 = 5 × 10-2 and  = 5 × 10-3 and we run each simulation 100 steps.
+In Figure 1 we observe the behavior of the system that follows the local and stochastic update (10) ­ marked with stars ­ and that of the system following the gradient dynamical system x = -k(x)­ solid lines ­ for five different initial conditions. In Figure 1a the order parameter is set to be k = 7 while in 1b it is set to be 12. In both cases it can be observed that the local and stochastic update succeeds in generating a sequence that remains in the free space and that converges to the minimum of the objective function. It is also observed that the direction in which the agent moves while following the local update differs from that of the agent following the gradient of the navigation function. This result is not surprising in virtue of the fact that as discussed in Section III-A the model selected results in a biased estimate of the gradient of the navigation function.
+However notice that by increasing k the two trajectories become closer to each other. This effect can be observed by comparing the trajectories depicted in figures 1a and 1b where the order parameter k is set to be 7 and 12 respectively. This result is expected because as discussed in Section III-A the bias is such that its norm is decreasing with k. In particular by selecting k large enough the bias could be reduced arbitrarily. Notice that when the order parameter k is increased the sequence resulting from the stochastic approximation is not modified as much as the trajectory that considers complete
+
+(a) Trajectories resulting of the navigation function approach ­ solid (b) Trajectories resulting of the navigation function approach ­ solid line­ and its stochastic approximation given in (10) ­stars­ for k = 7. line­ and its stochastic approximation given in (10)­stars­ for k = 12.
+Fig. 1: The trajectories resulting from the update (10) succeed in driving the agent to the goal configuration for five different initial positions as expected in virtue of Theorem 3. We observe that the larger the order parameter k is, the closer the trajectory resulting from stochastic approximation is to the trajectory resulting of descending along the gradient of the navigation function (7).
+
+(a) Local estimation of the obstacle with perfect measures.
+
+(b) Stochastic estimation of the obstacle with noisy measurements.
+
+Fig. 2: Estimation of the obstacles by the hallucinated osculating circle for a particular position in the free space with exact and stochastic information. Obstacles are sensed if di(x) < 7. Noise is Gaussian, additive, mean zero and with variance di = Ri = ni = di(x)/10.
+
+information about the free space. This is because the larger the value of k the smaller is the effect of obstacles that are far from the agent as compared to the gradient of the objective function (c.f. (7)). Thus in a sense higher value of k resembles to considering only nearby obstacles as in the case of the stochastic approximation.
+The effect of the standard deviations of the noise in the estimation of the obstacles with which the simulations were done is illustrated in Figure 2 by the green circles depicted. In particular, for the initial position of one of the trajectories depicted in Figure 1a we observe the estimation of the closest obstacle to that position in the noiseless case 2a and the estimate with noise 2b.
+
+over [-L/2, L/2] × [-L/2, L/2]. The distance between the "tip" and the "bottom" of the egg, ri, is drawn uniformly over [r0/10; r0/5] and with equal probability the egg is horizontal or vertical. The obstacle being horizontal translates into the fact that the function i(x) representing the obstacle takes the following form
+
+i(x) =
+
+x - ci 4 - 2ri
+
+x(1) - c(i1)
+
+3
+,
+
+(61)
+
+where the superscript (1) refers to first component of a vector. Likewise, for vertical eggs the function i(x) takes the form
+
+3
+
+i(x) = x - ci 4 - 2ri x(2) - x(c2) .
+
+(62)
+
+B. Egg shaped world obstacles
+In this section we consider egg shaped obstacles as an example of convex obstacles different than ellipses. We draw the center of the each obstacle, ci, from a uniform distribution
+
+Notice that the functions i as defined above are not convex on R2, however since their Hessians are positive definite outside the obstacles it is possible to define a convex extension of
+them inside the obstacles. This is not needed because the agent
+operates in the free space and therefore there is no difference
+
+Fig. 3: Trajectories resulting of the navigation function approach ­ solid line­ and its stochastic approximation given in (10) for k = 15 in an egg shaped world. The trajectories resulting from the update (10) succeed in driving the agent to the goal configuration for five different initial positions as expected in virtue of Theorem 3.
+
+Fig. 4: Trajectories resulting of following the negative gradient of the logarithmic barrier given in (55) for k = 10 in an elliptical world. The trajectories resulting from the update (10) succeed in driving the agent to the goal configuration for five different initial positions as expected in virtue of Theorem 4.
+
+to him between the functions defined in (61) and (62) and their convex extensions. In particular, for this experiment we set r0 = 20 and L = 6 The selection of the noises standard deviations q and the distance at which the obstacles can be measured are the same as in Section VII-A.
+In Figure 3 we observe the level sets of the navigation function (7) and the trajectories resulting from the stochastic approximation (10) ­marked with stars­ and from descending along the direction of the negative gradient of the navigation function for k = 15. It can be observed that the update (10) succeeds in driving the agent to the goal configuration given by the minimum of the objective function f0(x) while remaining in the free space at all times.
+
+unbiased estimate of the gradient of an artificial potential of the Rimon-Koditschek form is capable of navigating towards the minimum of this objective function while avoiding the obstacles with probability one under the same geometric restrictions than in the deterministic case. Furthermore, for biased estimates we show that if near the saddle points of the navigation function the bias is not too large the same holds true. Numerical experiments support the theoretical results.
+APPENDIX
+A. Proof of Lemma 3
+
+C. Logarithmic barrier
+In this section we evaluate the performance of the descent along the direction of the negative gradient of the logarithmic barrier artificial potential in (57). For this experiments the obstacles and the boundary of the workspace are selected as in Section VII-A and the parameters selected are set to c0 = 0, r0 = 20, L = 6,  = 1, f0 = f0 = 1, di = Ri = ni = di(x)/10 and k = 10. In Figure 4 we depict the trajectory of an agent starting at different initial positions. As it can be observed the agent succeeds in reaching the minimum of the objective function f0(x) while avoiding the obstacles. By comparing these trajectories to those in figures 1a and 1a ­which were generated by following the gradient of the Rimon-Koditschek artificial potential­ we observe that the logarithmic barrier artificial potential results in paths that pass closer to the obstacles.
+VIII. CONCLUSIONS
+We considered a set with convex holes in which an agent must navigate to the minimum of a convex function. The objective function and the obstacles are unknown a priori to the agent and sensorial information about these is available to him. In particular, this information is local and stochastic. We showed that an agent that is capable of constructing an
+
+Let us add and subtract tE g^t(xt, t) Gt to (10)
+
+xt+1 = xt - t g^t(xt, t) - E g^t(xt, t) Gt (63)
+- tE g^t(xt, t) Gt .
+
+Since g^t(xt, ) is an unbiased estimator of the gradient of the function V (x) we can think of the expression
+g^t(xt, t) - E g^t(xt, t) Gt as an error et between the stochastic gradient and the gradient of the function V (x). With this definition the above equation can be written as
+
+xt+1 = xt - tV (xt) - tet,
+
+(64)
+
+where et is a random vector whose expected value is zero and it is bounded with probability one because g^t(xt, t) is bounded with probability one. Let xc be a saddle point of the energy function V (x) and let H denote the Hessian of V (x) evaluated at xc, i.e., H = 2V (xc). Then, we have that V (xt) = H(xt - xc) + o( xt - xc 2). Replacing this expression for the gradient of V (xt) in (64) yields,
+xt+1 - xc = (I - tH)(xt - xc) + t o( xt - xc 2) - et . (65)
+
+Recursively it is possible to write the difference xt+1 - xc as
+
+t
+
+xt+1 - xc = (I - sH)(x0 - xc)
+
+s=0
+
+t
+
+t-1
+
++ s
+
+I - uH o( xs - xc 2) - es .
+
+s=0
+
+u=s
+
+(66)
+
+Let vi be the eigenvector corresponding to the eigenvalue i of the Hessian, then we can write the projection over vi of the above equation as
+
+t
+
+(xt+1 - xc)i = (1 - si)(x0 - xc)i
+
+s=0
+
+t
+
+t-1
+
++ s o( xs - xc 2) - es i (1 - ui) .
+
+s=0
+
+u=s
+
+(67)
+
+Taking
+
+t-1 s=0
+
+(I
+
+-
+
+si)
+
+as
+
+a
+
+common
+
+factor
+
+we
+
+can
+
+write
+
+the
+
+above equation as
+
+t-1
+
+(xt+1 - xc)i = (1 - si) (1 - ti)(x0 - xc)i +
+
+s=0
+
+t
+s
+s=0
+
+s-1
+(1 - ui)-1
+u=0
+
+o( xs - xc 2) - es i . (68)
+
+Let us assume that the sequence resulting from the update
+
+given in (10) converges to a saddle point with strictly positive
+
+probability. Therefore, there is a subset of  for which for any
+
+ > 0, there exists a time T such that the absolute value of the
+
+sequence xt+1 - xc is smaller than  for any t > T . Without
+
+loss of generality let T = 0. This implies that for every s 
+
+0 we have that o( xs - xc 2) is uniformly bounded. Next,
+
+we will show that the series
+
+t s=0
+
+s
+
+su-=10(1 - ui)-1
+
+converges. Let us start by writing su-=10(1 - ui)-1 as
+
+s-1
+(1
+u=0
+
+-
+
+ui)-1
+
+=
+
+s-1 u=0
+
+1
+
+1 + u - 0i +
+
+u
+
+(69)
+
+Divide both numerator and denominator by  and write the quotient of products as the following quotient of gamma functions
+
+s-1
+(1 -
+u=0
+
+ui)-1
+
+=
+
+(1/ + s) ((1 - 0i)/) . ((1 - 0i)/ + s) (1/)
+
+(70)
+
+Let s tend to infinity and write the limit of the gamma function
+
+evaluated in c + s for any c as
+
+lim (c + s) = lim (s)sc.
+
+(71)
+
+s
+
+s
+
+Therefore the limit of the expression (70) for s tending to
+
+infinity can be computed using the asymptotic behavior of the gamma function from the above equation. This limit yields
+
+s-1
+
+lim
+s
+
+(1 - ui)-1
+
+=
+
+((1 - 0i)/) s0i/ (1/ )
+
+(72)
+
+u=0
+
+Since the index of the critical point xc is n - 1, we have n - 1
+eigenvalues that are strictly negative. For any of these we have that the asymptotical behavior of s us-=10(1 - ui)-1 is o(s-q), with q > 1 and therefore
+
+
+
+s-1
+
+s
+
+(1 - ui)-1 < .
+
+(73)
+
+s=0
+
+u=0
+
+This implies in turn that (68) can be written as
+
+t
+
+lim (xt+1 - xc)i = lim (1 - si) [(x0 - xc)i + C] ,
+
+t
+
+t
+
+s=0
+
+(74)
+
+where C is given as
+
+
+C = s
+s=0
+
+s-1
+(1 - ui)-1
+u=0
+
+o( xs - xc 2) - es i . (75)
+
+Without loss of generality we can assume that (x0 - xc)i it is not zero, because in finite time with probability one any
+
+component of the update will be different than zero. In the
+
+subset of the probability space for which limt xt() = xc,
+
+the left hand side of (74) is equal to zero. However, the
+
+right hand side of (74) diverges since i < 0 which is a
+
+contradiction. In fact, in order to ensure divergence of the
+
+right hand side of (74) we need to show that C = (x0 - xc)i only in a set of zero measure. Since we are assuming that
+
+limt xt = xc the approximation errors o( xs - xc ) are arbitrarily small. Thus, in order to have C = (x0 - xc)i
+
+it must be the case that the sum of independent random
+
+variables (es)i weighted by its corresponding coefficients is equal to (x0 - xc)i. Which cannot hold since these are
+
+independent of the initial position. Thus, the set for which
+
+limt xt() = xc has measure zero. Thus completing the
+
+proof of the Lemma.
+
+B. Proof of Lemma 4
+To develop the proof of Lemma 4 we need the definition of a gradient like vector field and a theorem by Smale that states that any gradient like vector field on a manifold has a self indexing energy function [31]. We formalize this result next after providing the definition of a gradient like vector field.
+Definition 3 (Gradient like vector field). Let x  Rn and let g : Rn  Rn be a smooth function, we say that g(x) is a gradient like vector field if its non wandering set consists of finitely many hyperbolic equilibrium states and the stable and unstable manifolds of singular points intersect transversally.
+Instead of presenting the original version of Smale's Theorem in [31] we provide a more recent version of it that can be found in [32].
+Theorem 5. Let M n be a smooth closed orientable manifold and let g(x) : M n  [0, n] be a gradient-like vector field, then, there exists a function V : M n  R such that
+(i) is twice differentiable and all of its critical points are nondegenerate,
+
+(ii) its critical points coincide with the set of the critical points of g(x)
+(iii) V (x) = V (x)T g(x) < 0, for any x such that g(x) = 0
+(iv) V(x) = ind(x) for x such that g(x) = 0.
+
+Proof: See Theorem B in [31].
+In virtue of the previous theorem to prove the existence of
+a function Vk(x) satisfying (52) and (53) it suffices to show that the vector field k(x) + bk(x) is gradient-like. This however is not possible since bk(x) is not differentiable but piece-wise differentiable (c.f. Assumption 5). We consider then a smooth approximation bdkiff (x) of the bk(x) and show that k(x) + bdkiff (x) is gradient like. We formalize this result in the next lemma thus showing that a self indexing function
+for the smooth approximation of the vector field of interest
+exists.
+
+Lemma 5. Let F be the free space defined in (3) verifying
+Assumption 1 and let k : F  [0, 1] be the function defined
+in (7). Let max, min be the bounds from Assumption 2 and µimin be the minimum eigenvalue of the Hessian of i(x). Furthermore let (8) hold for all i = 1 . . . m and let bk(x) satisfy Assumption 5. Define a smooth approximation bdkiff (x) of bk(x), then there exists a constant K such that if k > K, the vector field k(x) + bdkiff (x) is gradient like.
+
+Proof: Observe that k(x) and bk(x) share a commun factor 1/(f0(x)k + (x))1+1/k. Since this factor is strictly
+positive it is equivalent to analyze the vector field
+
+x = ~ k(x) + ~bk(x),
+
+(76)
+
+where ~ k(x) = (f0(x)k + (x))1+1/kk(x) and ~bk(x) = (f0(x)k + (x))1+1/kbdkiff (x). Observe that there exists a region, depending on k away of the critical points of k(x)
+such that it holds that
+
+~ k(x) + ~bk(x)
+
+T
+k(x) > 0.
+
+(77)
+
+term in the above equation dominates the Jacobian of ~ k(x). In particular, this implies that the eigenvalues of the Jacobian in a neighborhood of the minimum of k(x) are of the order O(k0). Thus the region around the minimum where the linearized system is conjugate to the original is also independent of k. This means that for large enough k the region where (77) near the minimum is contained in the region where the flow x = -~ k(x) is conjugate to the flow of the linearization. Furthermore, in that region the norm of the linearized field is lower bounded by the eigenvalues of 2f0(x) and this bound is independent of k. On the other hand, we have that limk ~bk(x) C1 = 0. Since the minimum of k(x) is non degenerate the flow x = -~ k(x) is structurally stable and therefore for large enough k x = -~ k(x) - ~bk is conjugate to x = -~ k(x). Which means that the vector field ~ k(x) + ~bk cannot have recurrences in the neighborhood of the minimum of k(x). We are left to show that the same holds true in the neighborhoods of the saddle points of k(x). The latter is a direct consequence of Assumption 5 and the fact that k(x) is Morse-Smale, therefore structurally stable. The above completes the proof that the vector field ~ k(x)+~bk(x) is gradient-like. Since the original vector field of interest is the one analyzed times a strictly positive function the same holds for it thus completing the proof of the lemma.
+The above lemma shows that the vector field k(x) + bdkiff (x) is gradient-like, therefore by virtue of Theorem 5 a function Vk(x) satisfying (52) and (53)
+for an estimate g^t(xt, t) such that E g^t(xt, t Gt =
+(xt) k(x) + bdkiff (x) exists. The same function satisfies (52) and (53) for an estimate g^t(xt, t) with a piece-wise differentiable bias since its discontinuities are away from the obstacles and thus away of the critical points. This completes the proof of the Lemma.
+REFERENCES
+
+To prove the previous statement, observe that ~bk is strictly decreasing with k (c.f. Assumption 5). Therefore, for any x such that ~ k is bounded away from zero we have that there exists a K for which ~ k(x) dominates the term ~bk(x) and therefore (77) holds. In this region the function k(x) is strictly decreasing along the flow of the differential equation x = - ~ k(x) + ~bk(x) and thus there cannot be
+recurrences. Therefore, it remains to be shown that the flow is
+gradient like in the neighborhood of the critical points where
+(77) is not satisfied. Observe that there exists two types of
+critical points, the minimum of k(x) and the saddles. Let us focus on the neighborhood around the minimum first. To that end we compute the Jacobian of ~ k(x)
+
+(x)2f0(x) + (x)f0(x)T
+
+1 1-
+k
+
+- f0(x) 2(x). k
+
+(78)
+
+It can be shown that for every  > 0 there exists K such
+
+that if k > K then the minimum of k(x) is at a distance
+
+smaller than  from the minimum of f0(x) (c.f. Lemma 2
+
+[26]). Thus (x) is bounded away from zero and thus the first
+
+[1] M. W. Hirsch, S. Smale, and R. L. Devaney, Differential equations, dynamical systems, and an introduction to chaos, vol. 60. Academic press, 2004.
+[2] D. E. Koditschek and E. Rimon, "Robot navigation functions on manifolds with boundary," Advances in Applied Mathematics, vol. 11, no. 4, pp. 412­442, 1990.
+[3] E. Rimon and D. E. Koditschek, "Exact robot navigation using artificial potential functions," Robotics and Automation, IEEE Transactions on, vol. 8, no. 5, pp. 501­518, 1992.
+[4] O. Khatib, Commande dynamique dans l'espace ope´rationnel des robots manipulateurs en pre´sence d'obstacles. PhD thesis, 1980.
+[5] O. Khatib, "Real-time obstacle avoidance for manipulators and mobile robots," Int. J. Rob. Res., vol. 5, pp. 90­98, Apr. 1986.
+[6] T. Lozano-Perez, J. L. Jones, E. Mazer, P. O'Donnell, E. W. Grimson, P. Tournassoud, A. Lanusse, et al., "Handey: A robot system that recognizes, plans, and manipulates," in Robotics and Automation. Proceedings. 1987 IEEE International Conference on, vol. 4, pp. 843­ 849, IEEE, 1987.
+[7] W. S. Newman, High-speed robot control in complex environments. PhD thesis, Massachusetts Institute of Technology, 1987.
+[8] J. Barraquand, B. Langlois, and J.-C. Latombe, "Numerical potential field techniques for robot path planning," Systems, Man and Cybernetics, IEEE Transactions on, vol. 22, no. 2, pp. 224­241, 1992.
+[9] P. Khosla and R. Volpe, "Superquadric artificial potentials for obstacle avoidance and approach," in Robotics and Automation, 1988. Proceedings., 1988 IEEE International Conference on, pp. 1778­1784, IEEE, 1988.
+
+[10] J. Barraquand and J.-C. Latombe, "A monte-carlo algorithm for path planning with many degrees of freedom," in Robotics and Automation, 1990. Proceedings., 1990 IEEE International Conference on, pp. 1712­ 1717, IEEE, 1990.
+[11] C. I. Connolly, J. Burns, and R. Weiss, "Path planning using laplace's equation," in Robotics and Automation, 1990. Proceedings., 1990 IEEE International Conference on, pp. 2102­2106, IEEE, 1990.
+[12] B. H. Krogh, A generalized potential field approach to obstacle avoidance control. RI/SME, 1984.
+[13] C. W. Warren, "Global path planning using artificial potential fields," in Robotics and Automation, 1989. Proceedings., 1989 IEEE International Conference on, pp. 316­321, IEEE, 1989.
+[14] G. Lionis, X. Papageorgiou, and K. J. Kyriakopoulos, "Locally computable navigation functions for sphere worlds," in Robotics and Automation, 2007 IEEE International Conference on, pp. 1998­2003, IEEE, 2007.
+[15] G. Lionis, X. Papageorgiou, and K. J. Kyriakopoulos, "Towards locally computable polynomial navigation functions for convex obstacle workspaces," in Robotics and Automation, 2008. ICRA 2008. IEEE International Conference on, pp. 3725­3730, IEEE, 2008.
+[16] I. Filippidis and K. J. Kyriakopoulos, "Adjustable navigation functions for unknown sphere worlds," in Decision and Control and European Control Conference (CDC-ECC), 2011 50th IEEE Conference on, pp. 4276­4281, IEEE, 2011.
+[17] I. F. Filippidis and K. J. Kyriakopoulos, "Navigation functions for everywhere partially sufficiently curved worlds," in Robotics and Automation (ICRA), 2012 IEEE International Conference on, pp. 2115­2120, IEEE, 2012.
+[18] I. Filippidis and K. J. Kyriakopoulos, "Navigation functions for focally admissible surfaces," in American Control Conference (ACC), 2013, pp. 994­999, IEEE, 2013.
+[19] E. Rimon and D. E. Koditschek, "The construction of analytic diffeomorphisms for exact robot navigation on star worlds," Transactions of the American Mathematical Society, vol. 327, no. 1, pp. 71­116, 1991.
+[20] S. G. Loizou, "Closed form navigation functions based on harmonic potentials," in Decision and Control and European Control Conference (CDC-ECC), 2011 50th IEEE Conference on, pp. 6361­6366, IEEE, 2011.
+[21] S. G. Loizou, "Navigation functions in topologically complex 3-d workspaces," in American Control Conference (ACC), 2012, pp. 4861­ 4866, IEEE, 2012.
+[22] P. O¨ gren, E. Fiorelli, and N. E. Leonard, "Cooperative control of mobile sensor networks: Adaptive gradient climbing in a distributed environment," Automatic Control, IEEE Transactions on, vol. 49, no. 8, pp. 1292­1302, 2004.
+[23] G. S. Sukhatme, A. Dhariwal, B. Zhang, C. Oberg, B. Stauffer, and D. A. Caron, "Design and development of a wireless robotic networked aquatic microbial observing system," Environmental Engineering Science, vol. 24, no. 2, pp. 205­215, 2007.
+[24] P. E. Rybski, S. A. Stoeter, M. D. Erickson, M. Gini, D. F. Hougen, and N. Papanikolopoulos, "A team of robotic agents for surveillance," in Proceedings of the fourth international conference on autonomous agents, pp. 9­16, ACM, 2000.
+[25] V. Kumar, D. Rus, and S. Singh, "Robot and sensor networks for first responders," Pervasive Computing, IEEE, vol. 3, no. 4, pp. 24­33, 2004.
+[26] S. Paternain, D. Koditschek, and A. Ribeiro, "Navigation functions for convex potentials in a space with convex obstacles," IEEE Trans. Automatic Control., vol. (submitted), Aug. 2015. Available at http://www.seas.upenn.edu/ aribeiro/wiki.
+[27] D. E. Koditschek, "Strict global lyapunov functions for mechanical systems," 1988.
+[28] A. De and D. E. Koditschek, "Toward dynamical sensor management for reactive wall-following," in Proceedings of the 2013 IEEE Intl. Conference on Robotics and Automation, May 2013.
+[29] J. Palis and S. Smale, "Structural stability theorems," in Global Analysis (Proc. Sympos. Pure Math., Vol. XIV, Berkeley, Calif., 1968), pp. 223­ 231, World Scientific, 1970.
+[30] R. Durrett, Probability: theory and examples. Cambridge university press, 2010.
+[31] S. Smale, "On gradient dynamical systems," Annals of Mathematics, vol. 74, no. 1, pp. 199­206, 1961.
+[32] V. Z. Grines, E. Y. Gurevich, and O. V. Pochinka, "The energy function of gradient-like flows and the topological classification problem," Mathematical Notes, vol. 96, no. 5-6, pp. 921­927, 2014.
+
+PLACE PHOTO HERE
+
+Santiago Paternain received the B.Sc. degree in electrical engineering from Universidad de la Repu´blica Oriental del Uruguay, Montevideo, Uruguay in 2012. Since August 2013, he has been working toward the Ph.D. degree in the Department of Electrical and Systems Engineering, University of Pennsylvania. His research interests include optimization and control of dynamical systems.
+
+Alejandro Ribeiro received the B.Sc. degree in
+
+electrical engineering from the Universidad de la
+
+Republica Oriental del Uruguay, Montevideo, in
+
+PLACE PHOTO HERE
+
+1998 and the M.Sc. and Ph.D. degree in electrical engineering from the Department of Electrical and Computer Engineering, the University of Minnesota, Minneapolis in 2005 and 2007. From 1998 to 2003,
+
+he was a member of the technical staff at Bell-
+
+south Montevideo. After his M.Sc. and Ph.D studies,
+
+in 2008 he joined the University of Pennsylva-
+
+nia (Penn), Philadelphia, where he is currently the
+
+Rosenbluth Associate Professor at the Department of Electrical and Systems
+
+Engineering. His research interests are in the applications of statistical signal
+
+processing to the study of networks and networked phenomena. His focus
+
+is on structured representations of networked data structures, graph signal
+
+processing, network optimization, robot teams, and networked control. Dr.
+
+Ribeiro received the 2014 O. Hugo Schuck best paper award, the 2012 S.
+
+Reid Warren, Jr. Award presented by Penn's undergraduate student body for
+
+outstanding teaching, the NSF CAREER Award in 2010, and paper awards
+
+at the 2016 SSP Workshop, 2016 SAM Workshop, 2015 Asilomar SSC
+
+Conference, ACC 2013, ICASSP 2006, and ICASSP 2005. Dr. Ribeiro is
+
+a Fulbright scholar and a Penn Fellow.
+
+

@@ -1,0 +1,7545 @@
+Spin Transport and Accumulation in a 2D Weyl Fermion System
+
+T. Tzen Ong1, 2 and Naoto Nagaosa1, 2
+1RIKEN Center for Emergent Matter Science (CEMS), Saitama 351-0198, Japan 2Department of Applied Physics, University of Tokyo, Tokyo 113-8656, Japan (Dated: October 19, 2017)
+
+In this work, we study the spin Hall effect and Rashba-Edelstein effect of a 2D Weyl fermion
+
+system in the clean limit using the Kubo formalism. Spin transport is solely due to the spin-torque
+
+current in this strongly spin-orbit coupled (SOC) system, and chiral spin-flip scattering off non-SOC
+
+scalar impurities, with potential strength V and size a, gives rise to a skew-scattering mechanism
+
+for the spin Hall effect. The key result is that the resultant spin-Hall angle has a fixed sign, with
+
+SH  O
+
+V2 vF2 /a2
+
+(kF
+
+a)4
+
+being a strongly-dependent function of kF a, with kF and vF being the
+
+Fermi wave-vector and Fermi velocity respectively. This, therefore, allows for the possibility of
+
+tuning the SHE by adjusting the Fermi energy or impurity size.
+
+arXiv:1701.00074v3 [cond-mat.mes-hall] 18 Oct 2017
+
+The spin Hall effect (SHE) has a long and rich history,
+
+starting with the initial proposal of asymmetric Mott
+
+scattering by Dyakonov and Perel [1, 2]. This extrin-
+
+sic mechanism was re-introduced in 1999[3, 4], while an
+
+intrinsic SHE was first proposed in 2003[5, 6]. The pro-
+
+posal of a two-dimensional (2D) Z2-protected Quantum Spin Hall (QSH) state[7], and its successful prediction
+
+in HgTe/CdTe quantum well [8] quickly followed; thus
+
+giving rise to a new field of topological materials[9, 10],
+
+which now include 2D QSH states [11], 3D topological in-
+
+sulators (TI)[12, 13], topological Kondo insulators[14, 15]
+
+and Weyl semi-metals[16].
+
+One of the most striking characteristic of 3D TI ma-
+
+terials is the existence of spin-momentum locked chiral
+
+Weyl fermions on the surfaces, which are expected to
+
+provide highly efficient spin-charge conversion[17, 18], via
+
+the spin Hall effect or spin accumulation in the Rashba-
+
+Edelsten effect[19]. Hence, there is a strong interest
+
+in spintronic TI heterostructures, with many theoret-
+
+ical works[20­25], discussing a plethora of spin-charge
+
+phenomena, including magnetoresistance effects, inverse
+
+spin-galvanic effect, and spin-transfer torque, which have
+
+stimulated a flurry of experimental efforts[18, 26­30].
+
+In heavy-metal/ ferromagnet systems, e.g. FePt/Au,
+
+a giant spin Hall angle (SHA) of  0.1 has been
+
+reported[31], which has been interpreted as resonant
+
+skew-scattering off the Fe impurities[32]. However, re-
+
+cent experiments on TI heterostructures[26, 29] have reported values of tan SH > 100%, with combined sur-
+
+face and bulk contributions. In order to disentangle the
+
+surface Weyl fermion contribution from the bulk bands,
+
+a Cu-layer inserted TI/Cu/ferromagnet heterostructure has recently been engineered, with tan SH  50% [30].
+
+Similar to the anomalous Hall effect, there are both
+
+intrinsic Berry curvature and extrinsic scattering contri-
+
+butions to the SHE. For systems with weak spin-orbit
+
+coupling (SOC), it has been shown[33] that the extrinsic
+
+skew scattering mechanism dominates in the clean limit;
+
+hence, the spin Hall conductivity xzy scales with the lon-
+
+gitudinal conductivity yy, and the SHA, SH
+
+=
+
+xzy yy
+
+is
+
+a well-defined measure of the SHE. The Rasha-Edelstein
+
+effect is a closely related transport-driven spin accumula-
+
+tion phenomena, which also scales with yy in the clean limit; the spin accumulation Si = i E is proportional to the applied electric field E (along -direction) with a coefficient i . For the strongly SOC-coupled Weyl system considered here, the main results are that due
+
+to spin-momentum locking, chiral spin-flip scattering off
+
+non-magnetic
+
+impurities
+
+drives
+
+an
+
+O(
+
+1 ni
+
+)
+
+skew-scattering
+
+mechanism,
+
+and
+
+that
+
+Rashba-Edelstein
+
+is
+
+an
+
+O(
+
+1 t
+
+)
+
+ef-
+
+fect; here, ni is the impurity concentration and t is the
+
+transport scattering rate.
+
+We adopt the Kubo formula framework for
+
+calculating yy, xzy and yi , given by the retarded current-current correlation functions, yy =
+
+-lim0
+
+lim
+k0
+
+Im
+
+yy (k,) 
+
+,
+
+xzy
+
+=
+
+-lim0
+
+lim
+k0
+
+I
+
+m
+
+xzy (k,) 
+
+,
+
+and yi
+
+=
+
+-lim0
+
+lim
+k0
+
+I
+
+m
+
+yi (k,) 
+
+;
+
+where, yy(k, ),
+
+xzy(k, ), and yi (k, ) are the current-current, spin current-current and spin accumulation-current correla-
+tion functions respectively.
+
+In spin-orbit coupled systems, the proper definition
+
+of the spin current is more subtle as spin is not a
+
+conserved quantity. Ref. [34] presented a bulk con-
+
+served spin current that satisfies a continuity equation,
+
+dSz dt
+
++
+
+·
+
+(Js
+
++
+
+P )
+
+=
+
+0,
+
+with
+
+an
+
+additional
+
+spin-torque
+
+density term,  · Pi = i [Si, H0], as well as the conven-
+
+tional
+
+spin
+
+current
+
+jsz
+
+=
+
+
+
+1 2
+
+{v,
+
+S
+
+z
+
+}.
+
+Hence,
+
+the
+
+trans-
+
+port spin current is the sum of a spin-polarized and a
+
+spin-torque current, Jsi = jsi + Pi, succintly expressed as
+
+the
+
+time-derivative
+
+of
+
+a
+
+spin-dipole
+
+operator,
+
+J^s
+
+=
+
+d(r^S^) dt
+
+.
+
+As pointed out by several groups[35­37], there is no fi-
+
+nite conventional spin current for Weyl systems; hence,
+
+spin transport for Weyl fermions is solely due to the spin-
+
+torque density P coming from quantum-mechanical evolution of the electron spin.
+
+We consider elastic scattering near the Fermi energy, EF , of 2D Weyl fermions (Dresselhaus-type vF k ·  sys-
+
+2
+
+(a)
+ky
+kF 
+
+(b) |k, 
+
+T (k, k)
+
+
+
+T (k, k)
+
+kx
+
+
+
+|k, 
+
+x
+
+x
+
+x
+
+=
+
++
+
++
+
++...
+
+=
+
+FIG. 1: Fig. (a) shows a colour density plot of the FS contribution to the Rashba-Edelstein effect yy (Eq. 15c). When the FS is shifted by ky = eEyt due to an external electric field Ey, the non-equilibrium distribution gives rise to a net Sy . Fig. (b) illus-
+trates spin-dependent skew scattering, T , (k, k) and
+T ,(k, k) having positive () and negative (-) chirality respectively, with the helical Weyl fermions defining positive () chirality.
+
+tem) from a dilute (ni  1) random distribution of non-
+
+magnetic impurities, with scattering off each impurity
+
+given by Himp =
+
+r
+
+c (r)V
+
+e-
+
+|r|2 a2
+
+c (r),
+
+with
+
+impurity
+
+size a. Note that the results can be easily translated
+
+into the Rashba-type vF z^ × k ·  case via rotation of the momentum by 90. Choosing the chemical potential µ
+
+to lie in the upper helical band, we obtain the following
+
+Hamiltonian as,
+
+H = H0 + Himp
+
+(1)
+
+H0 =
+
+ck,vF k · , ck, - µ ck,ck,
+
+k,,
+
+H imp =
+
+c
+k,
+
+Vk
+
+,k
+
+ck
+
+,
+
+(2)
+
+k,k
+
+Here, Vk,k =
+
+n Vnein(k-k ),
+
+and
+
+Vn
+
+
+
+V a2 2
+
+(kF 2n(
+
+a)n n+1
+2
+
+)
+
+,
+
+while vF and i  [1, ] are the Fermi velocity and spin
+
+Pauli matrices, and kF a determines Vn, which will be
+
+shown to control the skew scattering strength. Since the
+
+impurity is non-magnetic, the system is invariant under time-reversal symmetry, T = Ki2, H = T HT -1. All
+the scattering events from an impurity are summed up in
+
+the T -matrix, and the spin-dependent skew scattering is captured by the ± terms, illustrated in Fig. 1. The fol-
+
+lowing Dyson equations, in operator formalism, give the effective Green's function, G^ eff = G^ 0 + G^ 0T^ G^ 0, and T matrix, T^ = V^ + V^ G^ 0T^ , with G^ 0 being the bare Green's
+function, and Fig. 2 shows the Feynman diagram for the
+
+effective Green's function.
+
+FIG. 2: Feynman diagram for Geff (k, k, , ) that sums up the infinite set of scattering events from a sin-
+gle impurity. This is captured by the T -matrix, which is represented by the diamond symbol in the second line above.
+
+G0(k, in)
+
+=
+
+in
+
++
+
+µ
+
+1 -
+
+vF k
+
+·
+
+
+
+(3a)
+
+= g00(k, in)1 + g0a(k, in)(cos  x + sin  y)
+
+T (k, k, in) = Tnim(|k|, |k|, in)eink e-imk i (3b)
+
+nm
+
+Rotational symmetry of the Hamiltonian allows us
+
+to carry out a multipole expansion of G0(k, in) and
+
+the T -matrix, where g00(k, in)
+
+=
+
+, in +µ
+(in+µ)2-vF2 k2
+
+and
+
+g0a(k, in)
+
+=
+
+. vF k
+(in+µ)2-vF2 k2
+
+We assume the T -matrix
+
+varies slowly near EF , i.e. absence of resonances, thereby
+
+simplifying the radial integral and reducing the Dyson
+
+equation to a set of coupled algebraic recurrence equa-
+
+tions for the retarded T -matrix coefficients, Tnim(|k| = |k| = kF ,  = EF ).
+
+Tnzm± = n,m Vn 1 - Vn±1 g00(EF )
+
+1 - Vn g00(EF )
+
+× 1 - Vn±1 g00(EF )
+
+- VnVn±1
+
+g01(EF )
+
+2
+
+-1
+(4a)
+
+Tn±m
+
+=
+
+n1,m 2
+
+VnVn1 g01(EF )
+
+1 - Vn1 g00(EF )
+
+× 1 - Vn g00(EF ) - VnVn1 g01(EF ) 2 -1 (4b)
+
+The T -coefficients reduce to two set of coupled equa-
+
+tions for T z± = Tn0m ± Tn3m and T ± = Tn1m ± iTn2m,
+
+given in terms of Vn and the momentum-averaged re-
+
+tarded Green's functions, g0i,(R)() =
+
+dk 2
+
+kg0i,(R)(k,
+
+)
+
+(refer to SOM for calculation details). The arguments
+
+of the T -matrix coefficients are dropped, understanding that they are evaluated at kF and EF . Defining the symmetric and asymmetric parts of the spin-flip scattering as T S/A = T1+0 ± T--10, T03  T030, and T13  T131, we can now
+write down the s and p-wave channels of the T -matrix.
+
+T (k, k ) = T 01 + T03z + T13 ei(k-k ) - e-i(k-k ) z
+
++ T S + T A eik - + T S - T A e-ik +
+
+2
+
+2
+
++ T S + T A e-ik + + T S - T A eik -
+
+(5)
+
+2
+
+2
+
+3
+
+with detailed expressions for the T -matrix coefficients
+shown in the SOM. Charge-transport is dominated by the largest term, |T 0|  V0, while spin-flip scatterings are captured by the T S/A± terms. Upon projection
+into the upper helical band, we obtain a chiral spin-flip scattering term, T S sin(k - k ), which comes from 3rd and higher orders in perturbation; T S  V0V12N0(EF )2, in agreement with previous work [37]. Hence, the skew
+scattering strength can be tuned by varying kF a, i.e. either the Fermi level or the impurity size a.
+
+It is now straightforward to calculate the effective
+
+Green's function in the dilute impurity limit (ni 
+
+(R)
+
+(R)
+
+-1
+
+1)[38], G (k, ) =  - vF k ·  -  (k, ) ,
+
+(R)
+where the retarded self-energy is  (k, ) =
+
+(R)
+
+(R)
+
+ni k1 V (k, k1)Geff (k1, )T (k1, k, ). The appear-
+
+(R)
+
+(R)
+
+ance of Geff (k, ) instead of G0 (k, ) reflects the pres-
+
+ence of multiple impurities. We assume an average
+
+quasi-particle scattering rate near the Fermi surface, i.e.
+(R)
+  Im[ (kF , EF )], and take vF and EF to be exper-
+imentally determined parameters, thereby dropping the
+
+real part of the self-energy.
+
+ = 01 - a (cos  x + sin  y) - b(sin  x - cos  y) + i3 z
+0 = niNe(f0)f (EF ) |T 0|2 + |T03|2 -2 |T13|2 + |T A|2 - |T S|2
+a = 4niNe(f1)f (EF ) |T S |2 - |T A|2
+
+(6a)
+(6b) (6c)
+
+We have carried out a multipole expansion of , and
+
+the main quasi-particle scattering channels relevant to
+
+transport are the s and p-wave 0 and a terms (re-
+
+fer to SOM for complete expressions of all ). As we
+
+shall show later, the transport scattering rate, t, will
+
+be given in terms of 0 and a. The angular momentum resolved density of states (DOS) is defined as Ne(fi)f () =
+
+kdk 2
+
+I
+
+m
+
+geiff (k, ) , and Ne(f0)f (EF ) and Ne(f1)f (EF ) cor-
+
+respond to the s and p-wave components respectively.
+
+Since scattering events that result in a change of angular
+
+momentum, i.e involving the l = 1 component Ne(f1)f (EF ), will also cause a spin-flip due to spin-orbit coupling, we
+
+see that 0 and a are due to spin-independent and dependent scattering respectively.
+
+The effective Green's function is therefore given by,
+
+(R)
+
+-1
+
+Geff (k, ) =  + µ - vF k ·  - i(k, )
+
+(7)
+
+= ge0ff (k, )1 + geaff (k, ) (cos  x + sin  y) + gebff (k, ) (sin  x - cos  y) + ge3ff (k, )z
+
+where,
+
+ge0ff (k, )
+
+=
+
+((k)
+
++ i(k))( + µ 2(k) + 2(k)
+
+-
+
+i0)
+
+(8a)
+
+geaff (k, )
+
+=
+
+((k)
+
++ i(k))(vF |k| + ia) 2(k) + 2(k)
+
+(8b)
+
+with (k) = ( + µ)2 - vF2 |k|2 - 02 + a2 + b2 - 32, and (k) = 2 ( + µ)0 + vF |k|a .
+
+(R)
+A similar multipole expansion of Geff (k, ) has been done, and we show here only the main s and p-wave
+
+terms, ge0ff (k, ) and geaff (k, ), with complete expressions for the scattering-induced gebff (k, ) and ge3ff (k, ) terms relegated to the SOM for brevity. From Eqs. (8a)
+
+& (8b), it is clear that Weyl fermions in the s and p-wave
+
+channels pick up a 0 and a scattering rate respectively,
+
+and we shall show later that it is chiral scattering between
+
+the s and p-wave electrons that drive the SHE.
+
+(R)
+
+(R)
+
+Geff (k, ) and  (k, ) are determined self-
+
+(R)
+
+consistently by solving Eqns. 6a & 7, i.e.  (k, ) is
+
+calculated using the disorder-averaged density of states,
+
+Ne(fi)f () =
+
+kdk 2
+
+I
+
+m
+
+geiff (k, )
+
+.
+
+However, in the dilute
+
+impurity
+
+limit,
+
+Ne(f0)f/(1)(EF )
+
+=
+
+N0
+
+(EF 2
+
+)
+
+(1
+
++
+
+O( ))
+
+[38];
+
+allowing us to drop the O(ni) corrections.
+
+As stated earlier, the DC longitudinal charge conduc-
+
+tivity, spin-Hall conductivity and spin accumulation are
+
+given by analytic continuation of the corresponding Mat-
+
+subara correlation functions,
+
+
+yy(k, in) = - d e-in T jy(k,  )jy(k, 0) (9a)
+0
+
+yi (k, in) = - d e-in T i(k,  )jy(k, 0) (9b)
+0
+
+xzy(k, in) = - d e-in T Pxz(k,  )jy(k, 0) (9c)
+0
+Note that yy and yi are equal up to a factor of evF for Weyl fermions due to spin-momentum locking, i.e. j^y = evF ^y. The spin torque current, Pxz, arises from the intrinsic quantum-mechanical evolution of the elec-
+tron spin, and the z-component of the spin-torque cur-
+rent along x^ is,
+
+Pxz (k)
+
+=
+
+i kx
+
+dS^z (k) dt
+
+
+
+= 2vF ikx
+
+cp, 
+p
+
+p
+
++
+
+k 2
+
+x -
+y
+
+p
+
++
+
+k 2
+
+(10) 
+y cp+k,
+x
+
+The Feynman diagrams for these correlation functions are shown in Fig. 3, with chiral spin-flip scattering starting to contribute at third-order in perturbation theory. Fig. 3 shows the infinite subset of Feynman ladder diagrams summed up in the Bethe Salpeter equation for the scattering vertex,
+
+4
+
+y
+ (k
+
++
+
+p,
+
+p,
+
+im
+
++
+
+in,
+
+in)
+
+=
+
+y
+
++
+
+T (k + p, k + q, im + in)Geff (k + q, im + in)
+
+q
+
+y
+
+× (k + q, q, im + in, in)Geff (q, in)T (q, p, in)
+
+(11)
+
+x
+
++
+
+x
+
++
+
+x
+
+=
+
++
+
++
+
+=
+
+FIG. 3: Feynman diagram for the effective scattering
+y
+vertex,  (p, ), is shown in the second line. This includes an infinite subset of scattering events from the dilute concentration of impurities. The first line shows all the scattering events from a single impurity, and the second and third diagrams in the first line are the leading-order contributions to skew scattering.
+
+Here, k and im are the external momentum and fre-
+
+quency, and the uniform DC limit of the conductivities is
+
+obtained by analytic continuation of im   + i, and
+
+taking the limit k  0 followed by   0. Hence, we
+
+only need to calculate the on-shell component of the scat-
+
+y
+
+y
+
+tering vertex  (p, ) =  (p,  - i,  + i). The Bethe-
+
+y
+
+Salpeter equation for  (p, ) is solved self-consistently
+
+y
+by expanding  (p, ) =
+
+n ineini
+
+in
+y
+
+multipole
+
+terms, assuming that the T -matrix and  (p, ) vary
+
+slowly near EF (see SOM for details). Keeping only the
+y
+s- and p-wave channels, and evaluating  (|p| = kF ,  =
+
+EF ) at the Fermi surface, we obtain,
+
+y
+ (kF
+
+,
+
+EF
+
+)
+
+=
+
+(0px
+
+cos
+
+
+
++
+
+i0py
+
+sin
+
+)
+
+1
+
+(12)
+
++10(EF )x + 20(EF ) y +(3px (EF ) cos  + i3py (EF ) sin ) z
+
+where,
+
+20
+
+=
+
+0 , t
+
+3px
+
+=
+
+-
+
+s t
+
+.
+
+(13)
+
+After analytic continuation of the current-current correlation functions in Eq. (9a) - (9c), we find that the main contributions come from the 20 charge-transport and 3px spin-transport scattering vertices (refer to SOM for all
+the -coefficients). We can therefore define a transport and chiral spin-flip scattering rate respectively as,
+
+t
+
+=
+
+(
+
+1 2
+
+0
+
++
+
+a),
+
+s
+
+=
+
+niN0(EF 2
+
+)
+
+|T
+
+0
+
+||T
+
+S
+
+|.
+
+(14)
+
+The main results of this paper are the charge and spin
+
+conductivities, and the Rashba-Edelstein coefficient,
+
+yy
+
+=
+
+(evF )2
+
+N0(EF 2
+
+)
+
+1 t
+
+xzy
+
+=-
+
+evF2
+
+N0(EF 2
+
+)
+
+1 t
+
+0
+
+s +
+
+a
+
+yy =
+
+evF
+
+N0(EF 2
+
+)
+
+1 t
+
+(15a) (15b) (15c)
+
+Our
+
+key
+
+finding
+
+is
+
+Eq.
+
+(15b),
+
+which
+
+shows
+
+an
+
+O(
+
+1 ni
+
+)
+
+skew scattering contribution to the SHE. Explicitly writ-
+
+ing out the spin and angular-momentum scattering chan-
+
+nels for xzy = evF2 Re[3px(a0(EF ) - 0a(EF ))], where
+
+ij() =
+
+dp 2
+
+p2
+
+gei(fRf) (p,) p
+
+gejf(Af )
+
+(p,
+
+),
+
+we
+
+see
+
+that
+
+chiral
+
+spin-flip scattering between the s and p-wave electrons
+
+is the cause of the skew-scattering mechanism, and the
+
+strength of which is measured via the spin-Hall angle,
+
+SH
+
+=
+
+-e
+
+s 0 + a
+
+(16)
+
+Here, e < 0 is the electron charge, and power counting of
+
+t  0  niV02N0(EF ) and s  niV02V12N0(EF )3, gives
+
+SH  O
+
+V2 vF2 /a2
+
+(kF
+
+a)4
+
+. This is our key result: SH has
+
+a fixed positive sign, and is a strongly-dependent function
+
+of kF a; hence, the SHE can be tuned by EF .
+
+Finally, we briefly discuss the effects of band bending in
+
+Weyl
+
+systems.
+
+The
+
+leading
+
+O(
+
+1 m
+
+)
+
+correction
+
+comes
+
+from
+
+including
+
+a
+
+conventional
+
+spin
+
+current,
+
+jsz
+
+=
+
+
+
+1 2
+
+{v,
+
+S
+
+z},
+
+with v =
+
+k m
+
+.
+
+However, it has been pointed out[35­37]
+
+that jsz  y for Rashba-type systems; hence, up to
+
+O(
+
+1 m
+
+),
+
+band
+
+bending
+
+does
+
+not
+
+give
+
+rise
+
+to
+
+a
+
+spin
+
+current
+
+for Weyl fermion systems.
+
+In conclusion, we have analysed both the spin Hall
+
+and Rashba-Edelstein effects in a 2D Weyl electron sys-
+
+tem. Our results show that strong spin-orbit coupling in the band-structure is sufficient to cause chiral spin-
+
+flip scattering of the helical electrons off non-SOC scalar
+
+impurities, resulting in a skew-scattering contribution to
+
+the SHE. The strength of this mechanism is measured by
+
+the
+
+SHA,
+
+SH
+
+=
+
+-e
+
+s 0 +a
+
+ -e
+
+O
+
+V2 vF2 /a2
+
+(kF
+
+a)4
+
+, and
+
+we highlight the fact that the skew scattering strength
+
+can be tuned by varying kF a, thereby providing an
+
+experimentally-accessible parameter for controlling the
+
+SHE.
+
+In
+
+addition,
+
+we
+
+have
+
+also
+
+found
+
+an
+
+O(
+
+1 t
+
+)
+
+Rashba-
+
+Edelstein effect due to spin-momentum locking of the
+
+Weyl fermions. We gratefully acknowledge I. Mertig, K.
+
+Kondou and Y. Tokura for helpful discussions, and this
+
+work was supported by CREST, Japan Science and Tech-
+
+nology Agency (JST).
+
+5
+
+[1] M. I. Dyakonov and V. I. Perel, Soviet Physics JETP-
+
+USSR 33, 1053 (1971).
+
+[2] M. I. Dyakonov and V. I. Perel,
+
+Physics Letters A A 35, 459 (1971).
+
+[3] J. E. Hirsch, Physical Review Letters 83, 1834 (1999).
+
+[4] S. Zhang, Physical Review Letters 85, 393 (2000).
+
+[5] S. Murakami, N. Nagaosa, and S.-C. Zhang,
+
+Science 301, 1348 (2003).
+
+[6] J. Sinova, D. Culcer, Q. Niu, N. A. Sinit-
+
+syn, T. Jungwirth, and A. H. MacDonald,
+
+Phys. Rev. Lett. 92, 126603 (2004).
+
+[7] C. L. Kane and E. J. Mele,
+
+Phys. Rev. Lett. 95, 146802 (2005).
+
+[8] B. A. Bernevig, T. L. Hughes, and S.-C. Zhang,
+
+Science 314, 1757 (2006).
+
+[9] M. Z. Hasan and C. L. Kane,
+
+Rev. Mod. Phys. 82, 3045 (2010).
+
+[10] X.-L.
+
+Qi
+
+and
+
+S.-C.
+
+Zhang,
+
+Rev. Mod. Phys. 83, 1057 (2011).
+
+[11] For a review of SHE and QSHE, see S. Mu-
+
+rakami and N. Nagaosa, "Spin hall effect," in
+
+Comprehensive Semiconductor Science and Technology,
+
+Vol. 1, edited by P. Bhattacharya, R. Fornari, and
+
+H. Kamimura (Elsevier Science, 2011) Chap. 7, pp. 222
+
+­ 278, 1st ed.
+
+[12] L. Fu, C. L. Kane,
+
+and E. J. Mele,
+
+Phys. Rev. Lett. 98, 106803 (2007).
+
+[13] J.
+
+E.
+
+Moore
+
+and
+
+L.
+
+Balents,
+
+Phys. Rev. B 75, 121306 (2007).
+
+[14] M. Dzero, K. Sun, V. Galitski, and P. Coleman,
+
+Phys. Rev. Lett. 104, 106408 (2010).
+
+[15] N. Xu, P. K. Biswas, J. H. Dil, R. S. Dhaka, G. Landolt,
+
+S. Muff, C. E. Matt, X. Shi, N. C. Plumb, M. Radovi´c,
+
+E. Pomjakushina, K. Conder, A. Amato, S. V. Borisenko,
+
+R. Yu, H. M. Weng, Z. Fang, X. Dai, J. Mesot, H. Ding,
+
+and M. Shi, Nat Commun 5 (2014).
+
+[16] X. Wan, A. M. Turner, A. Vishwanath, and S. Y.
+
+Savrasov, Phys. Rev. B 83, 205101 (2011).
+
+[17] J. C. R. S´anchez, L. Vila, G. Desfonds, S. Gambarelli,
+
+J. P. Attan´e, J. M. De Teresa, C. Mag´en, and A. Fert,
+
+Nat Commun 4, 2944 (2013).
+
+[18] Y. Shiomi, K. Nomura, Y. Kajiwara, K. Eto,
+
+M. Novak, K. Segawa, Y. Ando, and E. Saitoh,
+
+Physical Review Letters 113, 196601 (2014). [19] V. M. Edelstein, Solid State Commun 73, 233 (1990).
+
+[20] S. Mondal, D. Sen, K. Sengupta, and R. Shankar, Phys. Rev. B 82, 045120 (2010).
+
+[21] D. Culcer, E. H. Hwang, T. D. Stanescu, and S. Das Sarma, Physical Review B 82, 155457 (2010).
+[22] A. A. Burkov and D. G. Hawthorn, Phys. Rev. Lett. 105, 066802 (2010).
+
+[23] I.
+
+Garate
+
+and
+
+M.
+
+Phys. Rev. Lett. 104, 146802 (2010).
+
+Franz,
+
+[24] T. Yokoyama, J. Zang,
+
+and N. Nagaosa,
+
+Phys. Rev. B 81, 241410 (2010).
+
+[25] F. Mahfouzi, N. Nagaosa, and B. K. Nikoli´c,
+
+Phys. Rev. Lett. 109, 166602 (2012).
+
+[26] A. R. Mellnik, J. S. Lee, A. Richardella, J. L. Grab, P. J. Mintun, M. H. Fischer, A. Vaezi, A. Manchon, E. A. Kim, N. Samarth, and D. C. Ralph, Nature 511, 449 (2014).
+
+[27] C. H. Li, O. M. J. van `t Erve, J. T. Robinson, Y. Liu,
+
+L. Li, and B. T. Jonker, Nat Nano 9, 218 (2014). [28] Y. Ando, T. Hamasaki, T. Kurokawa, K. Ichiba, F. Yang,
+M. Novak, S. Sasaki, K. Segawa, Y. Ando, and M. Shiraishi, Nano Letters 14, 6226 (2014).
+
+[29] Y. Fan, P. Upadhyaya, X. Kou, M. Lang, S. Takei, Z. Wang, J. Tang, L. He, L.-T. Chang, M. Montazeri,
+
+G. Yu, W. Jiang, T. Nie, R. N. Schwartz, Y. Tserkovnyak, and K. L. Wang, Nat Mater 13, 699 (2014). [30] K. Kondou, R. Yoshimi, A. Tsukazaki, Y. Fukuma, J. Matsuno, K. S. Takahashi, M. Kawasaki, Y. Tokura,
+
+and Y. Otani, Nat Phys 12, 1027 (2016). [31] T. Seki, Y. Hasegawa, S. Mitani, S. Takahashi, H. Ima-
+
+mura, S. Maekawa, J. Nitta, and K. Takanashi,
+
+Nat Mater 7, 125 (2008).
+
+[32] G.-Y. Guo, S. Maekawa,
+
+and N. Nagaosa,
+
+Phys. Rev. Lett. 102, 036401 (2009).
+
+[33] H.-A. Engel, B. I. Halperin, and E. I. Rashba, Phys. Rev. Lett. 95, 166605 (2005).
+
+[34] J. Shi, P. Zhang, D. Xiao, and Q. Niu, Phys. Rev. Lett. 96, 076604 (2006).
+[35] J.-i. Inoue, G. E. W. Bauer, and L. W. Molenkamp, Phys. Rev. B 67, 033104 (2003).
+
+[36] E. G. Mishchenko, A. V. Shytov, and B. I. Halperin, Phys. Rev. Lett. 93, 226602 (2004).
+
+[37] N. Sugimoto, S. Onoda, S. Murakami, and N. Nagaosa, Phys. Rev. B 73, 113305 (2006).
+[38] J. Rammer, Quantum Transport Theory, Frontiers in Physics (Book 99) (Westview Press, 2004).
+
+Supplementary Online Material: Spin Hall Effect on Topological Insulator Surface
+
+arXiv:1701.00074v3 [cond-mat.mes-hall] 18 Oct 2017
+
+CONTENTS
+
+I. 2D Weyl Fermion and Chiral Skew Scattering from Non-magnetic Impurity
+
+1
+
+II. Effective Greens Function and Quasi-particle Scattering Rate
+
+5
+
+III. SHE & Rashba Edelstein Effect Correlation Functions
+
+7
+
+IV. Vertex Correction
+
+11
+
+V. Longitudinal Charge Transport and SHE DC Conductivities
+
+15
+
+References
+
+23
+
+I. 2D WEYL FERMION AND CHIRAL SKEW SCATTERING FROM NONMAGNETIC IMPURITY
+
+We consider elastic scattering near EF of 2D Weyl fermions (Dresselhaus-type vF k · 
+
+system) from a dilute (ni  1) random distribution of non-magnetic impurities, at positions
+
+Ri, with impurity scattering Himp =
+
+r,Ri
+
+V
+
+e-
+
+|r -Ri |2 a2
+
+c(r)1
+
+c
+
+(r),
+
+and
+
+the
+
+impurity
+
+size
+
+a determines the strength of skew scattering. Note that the results can be easily translated
+
+into the Rashba-type vF z^ × k ·  case by rotating the momentum by 90. The chemical
+
+potential µ is chosen to lie in the upper helical band, with the upper/ lower helical Weyl
+
+fermions
+
+being
+
+±,k
+
+=
+
+1 2
+
+(±
+
+ck,
+
++
+
+eik ck,),
+
+and
+
+the
+
+Hamiltonian
+
+is,
+
+H = H0 + Himp
+
+(1)
+
+H0 =
+
+ck,vF k
+
+·
+
+, ck,
+
+-
+
+µ
+
+c k,
+
+ck,
+
+k,,
+
+H imp =
+
+c k,
+
+Vk,k,
+
+ck
+
+,
+
+(2)
+
+k,k
+
+The non-magnetic impurity is modelled with a scattering potential V and a Gaussian
+
+profile,
+
+V
+
+e . -
+
+r2 a2
+
+Hence
+
+the
+
+scattering
+
+matrix
+
+element
+
+of
+
+2D
+
+Weyl
+
+fermions
+
+off
+
+this
+
+impurity
+
+is,
+
+Vk,k, =
+
+k, 
+
+V e-
+
+r2 a2
+
+k, 
+
+1
+
+=
+
+Vnein(k-k )1
+
+(3)
+
+n
+
+where
+
+Vn
+
+=
+
+e k a V a2 8
+
+-
+
+1 8
+
+kF2
+
+a2
+
+F
+
+I
+
+(
+
+n-1 2
+
+,
+
+kF2 a2 8
+
+)
+
+-
+
+I
+
+(
+
+n+1 2
+
+,
+
+kF2 a2 8
+
+)
+
+
+
+. V a2 (kF a)n
+
+2
+
+2n
+
+(
+
+n+1 2
+
+)
+
+We
+
+have
+
+assumed
+
+that transport involves mainly the quasi-particles near EF , i.e. |k| = |k|  kF , and have used
+
+the result
+
+ 0
+
+r
+
+drJn(kF
+
+r)e-
+
+r2 a2
+
+=
+
+k a e a2
+8F
+
+-
+
+1 8
+
+kF2
+
+a2
+
+I
+
+(
+
+n-1 2
+
+,
+
+) kF2 a2 8
+
+-
+
+I
+
+(
+
+n+1 2
+
+,
+
+) kF2 a2 8
+
+, with J(n, z)
+
+and I(n, z) being the Bessel and modified Bessel functions of the first kind respectively, and
+
+(n) is the Gamma function
+
+All the scattering events from a single impurity are captured in the T -matrix, given by the Dyson equation T^ = V^ + V^ G^ 0 T^ . Making use of the rotational symmetry of the system,
+we express the Greens function and T -matrix in a multipole-expansion,
+
+G0(k, in)
+
+=
+
+in
+
++
+
+1 µ - vF k · 
+
+(4)
+
+= g00(k, in)1 + g01(k, in)(cos k x + sin k y)
+
+g00(k, in)
+
+=
+
+(in
+
+in + µ + µ)2 - vF2 k2
+
+g01(k, in)
+
+=
+
+(in
+
+vF k + µ)2 -
+
+vF2 k2
+
+, where
+
+T (k, k) 
+
+Tnimeink e-imk i
+
+nm
+
+= V (k, k) +
+n1n2n3
+
+dk1 2
+
+k1dk1 2
+
+Vn1
+
+ein1
+
+(k
+
+-k1
+
+)
+
+× g00(k1, in)1 + g01(k1, in)(cos k1 x + sin k1 y)
+
+×Tnj2n3 (k1, k)ein2k1 e-in3k j
+
+(5)
+
+The Pauli matrices are defined as i  [1, ]. As discussed in the main paper, we shall
+
+assume that there are no resonances, so the T -matrix varies slowly as a function of k near
+
+EF . Approximating the T -matrix as a constant near kF , the dk1-integral is carried out
+
+only over the Green's function. This is the momentum-averaged retarded Green's function,
+
+g0i,(R,A)(in) 
+
+kdk 2
+
+gi,(R,A)(k,
+
+in),
+
+and
+
+the
+
+results
+
+are,
+
+g00,(R,A)(EF )
+
+=
+
+
+
+i 2
+
+N0(EF
+
+)sgn(EF
+
+)
+
+g01,(R,A)(EF )
+
+=
+
+±
+
+i 2
+
+N0(EF
+
+)sgn(EF
+
+)
+
+(6a) (6b)
+
+Here,
+
+N0(EF )
+
+=
+
+EF 2vF2
+
+is the bare density of states,
+
+and in terms of the momentum-
+
+averaged retarded Greens functions, the retarded T -matrix is now given by,
+
+2
+
+T (k, k) =
+
+Vnein(k-k )1nm + Vneink e-imk g00(EF ) Tn0m1 + Tn1mx + Tn2my + Tn3mz (7)
+
+nm
+
++ g01(EF ) Tn--1m1 + Tn--1mz + Tnz-+1m- + g01(EF ) Tn++1m1 + Tn++1mz + Tnz+-1m+
+
+The
+
+coefficients
+
+of
+
+the
+
+T -matrix
+
+are
+
+Tnzm±
+
+
+
+Tn0m
+
+± Tn3m,
+
+Tn±m
+
+
+
+1 2
+
+(Tn1m
+
+± iTn2m),
+
+and
+
+are
+
+now defined by the following set of coupled recurrence equations,
+
+Tnzm+ = Vnnm + Vn g0(EF ) Tnzm+ + 2Vn g1(EF ) Tn++1m
+
+Tn+m
+
+= Vn
+
+g0(EF )
+
+Tn+m +
+
+1 2
+
+Vn
+
+g1(EF )
+
+Tnz-+1m
+
+Tnzm- = Vnnm + Vn g0(EF ) Tnzm- + 2Vn g1(EF ) Tn--1m
+
+Tn-m
+
+= Vn
+
+g0(EF )
+
+Tn-m +
+
+1 2
+
+Vn
+
+g1(EF )
+
+Tnz+-1m
+
+(8)
+
+The T -coefficients reduce to two set of coupled equations for T z± = Tn0m ± Tn3m and T ± = Tn1m ± iTn2m, given in terms of Vn and the momentum-averaged retarded Green's functions, gi,(R)(EF ) . The arguments of the T -matrix coefficients are dropped, understanding that they are evaluated at kF and EF . Some straightforward, albeit tedious, algebra allows us to solve Eq. 8.
+
+Tnzm+
+
+=
+
+(1 - Vn
+
+Vn (1 - Vn+1 g0(EF )) nm g0(EF ) ) (1 - Vn+1 g0(EF ) ) - VnVn+1
+
+g1(EF )
+
+2
+
+Tn+m
+
+=
+
+1 2 (1 - Vn-1
+
+VnVn-1 g1(EF )n-1m g0(EF ) ) (1 - Vn g0(EF ) ) - VnVn-1
+
+g1(EF )
+
+2
+
+Tnzm-
+
+=
+
+(1 - Vn
+
+Vn (1 - Vn-1 g0(EF )) nm g0(EF ) ) (1 - Vn-1 g0(EF ) ) - VnVn-1
+
+g1(EF )
+
+2
+
+Tn-m
+
+=
+
+1 2 (1 - Vn+1
+
+VnVn+1 g1(EF )n+1m g0(EF ) ) (1 - Vn g0(EF ) ) - VnVn+1
+
+g1(EF )
+
+2
+
+(9)
+
+Therefore, the T -matrix coefficients are,
+
+Tn0m
+
+=
+
+1 2 (1 - Vn
+
+Vn (1 - Vn+1 g0(EF )) nm g0(EF ) ) (1 - Vn+1 g0(EF ) ) - VnVn+1
+
+g1(EF )
+
+2
+
++
+
+1 2 (1 - Vn
+
+Vn (1 - Vn-1 g0(EF )) nm g0(EF ) ) (1 - Vn-1 g0(EF ) ) - VnVn-1
+
+g1(EF )
+
+2
+
+Tn3m
+
+=
+
+1 2 (1 - Vn
+
+Vn (1 - Vn+1 g0(EF )) nm g0(EF ) ) (1 - Vn+1 g0(EF ) ) - VnVn+1
+
+g1(EF )
+
+2
+
+-
+
+1 2 (1 - Vn
+
+Vn (1 - Vn-1 g0(EF )) nm g0(EF ) ) (1 - Vn-1 g0(EF ) ) - VnVn-1
+
+g1(EF )
+
+2
+
+Tn1m
+
+=
+
+1 2 (1 - Vn-1
+
+VnVn-1 g1(EF )n-1m g0(EF ) ) (1 - Vn g0(EF ) ) - VnVn-1
+
+g1(EF )
+
+2
+
+3
+
++
+
+1 2 (1 - Vn+1
+
+VnVn+1 g1(EF )n+1m g0(EF ) ) (1 - Vn g0(EF ) ) - VnVn+1
+
+g1(EF )
+
+2
+
+Tn2m
+
+=
+
+-
+
+i 2
+
+(1
+
+-
+
+Vn-1
+
+VnVn-1 g1(EF )n-1m g0(EF ) ) (1 - Vn g0(EF ) ) - VnVn-1
+
+g1(EF )
+
+2
+
++
+
+i 2 (1 - Vn+1
+
+VnVn+1 g1(EF )n+1m g0(EF ) ) (1 - Vn g0(EF ) ) - VnVn+1
+
+g1(EF )
+
+2
+
+(10)
+
+We calculate the T -matrix up to order O(V0V12), at which skew scattering appears, and keep only the l = 0 and l = 1 channels. Defining the symmetric and asymmetric parts of the spin-flip scattering as T S/A = T1+0 ± T--10, we can now write down the s and p-wave channels of the T -matrix.
+
+T (k, k ) = T 01 + T03z + T13
+
+e - e i(k-k )
+
+-i(k-k )
+
+z
+
++
+
+TS
+
++ 2
+
+T A eik -
+
++
+
+TS
+
+- 2
+
+T A e-ik +
+
++ T S + T A e-ik + + T S - T A eik -
+
+2
+
+2
+
+and the coefficients are defined as,
+
+T0
+
+=
+
+1 2
+
+V0 1 - V1 g0(EF ) (1 - V0 g0(EF ) ) (1 - V1 g0(EF ) ) - V0V1 g1(EF ) 2
+
++
+
+1 2
+
+V0 1 - V-1 g0(EF ) (1 - V0 g0(EF ) ) (1 - V-1 g0(EF ) ) - V0V-1 g1(EF ) 2
+
+=
+
+V0
+2
+
+1 - V0 g0(EF )
+
+T03
+
+=
+
+1 2
+
+V0 1 - V1 g0(EF ) (1 - V0 g0(EF ) ) (1 - V1 g0(EF ) ) - V0V1 g1(EF ) 2
+
+-
+
+1 2
+
+V0 1 - V-1 g0(EF ) (1 - V0 g0(EF ) ) (1 - V1 g0(EF ) ) - V0V-1 g1(EF ) 2
+
+=
+
+V02V1 g1(EF ) 2
+2
+
+1 - V0 g0(EF )
+
+T13
+
+=
+
+1 2
+
+V1 1 - V2 g0(EF ) (1 - V1 g0(EF ) ) (1 - V2 g0(EF ) ) - V1V2 g1(EF ) 2
+
+-
+
+1 2
+
+V1 1 - V0 g0(EF ) (1 - V1 g0(EF ) ) (1 - V0 g0(EF ) ) - V1V0 g1(EF ) 2
+
+4
+
+(11) (12a) (12b)
+
+=
+
+-
+
+1 2
+
+V0V12 g1(EF ) 2
+2
+1 - V1 g0(EF )
+
+TS
+
+=
+
+1 2 (1 - V0
+
+g0(EF )
+
+V0V1 g1(EF ) )(1 - V1 g0(EF )
+
+) - V0V1
+
+g1(EF )
+
+2
+
++
+
+1 2
+
+(1
+
+-
+
+V0
+
+g0(EF )
+
+V0V-1 )(1 - V-1
+
+g1(EF ) g0(EF )
+
+) - V0V-1
+
+g1(EF )
+
+2
+
+= V0V12 g0(EF )
+
+g1(EF )
+2
+
+1 - V0 g0(EF )
+
+TA
+
+=
+
+1 2 (1 - V0
+
+g0(EF )
+
+V0V1 g1(EF ) )(1 - V1 g0(EF )
+
+) - V0V1
+
+g1(EF )
+
+2
+
+-
+
+1 2
+
+(1
+
+-
+
+V0
+
+g0(EF )
+
+V0V-1 )(1 - V-1
+
+g1(EF ) g0(EF )
+
+) - V0V-1
+
+g1(EF )
+
+2
+
+=
+
+V0V1 g1(EF )
+2
+
+1 - V0 g0(EF )
+
+(12c) (12d) (12e)
+
+We point out that upon projecting into the upper helical band, i.e. calculating the matrix elements k, + T S(eik - + e-ik +) k, + = 2 T S (cos(k - k ) - i sin(k - k )), we find that the spin-flip scattering gives rise to a skew-scattering term 2iT S sin(k - k ) in the chiral band basis, which will drive the SHE.
+
+II. EFFECTIVE GREENS FUNCTION AND QUASI-PARTICLE SCATTERING RATE
+
+The retarded T -matrix calculated in Eq. 5 includes only scattering from a single impurity, and in the dilute impurity limit, the T -matrix for scattering from all impurities can be calculated in the non-crossing approximation NCA) [1]) by including scattering events from other impurities in the bare Greens function leg, i.e. replacing G0 by Geff , in the calculation of the T -matrix. Hence, this forms an implicit self-consistent solution for the retarded and advanced Geff function and T -matrix.
+
+T
+
+(R)
+(k,
+
+k)
+
+=
+
+niV
+
+(k,
+
+k)
+
++
+
+ni
+
+V
+
+(k,
+
+(R)
+k1 )Gef f
+
+(k1,
+
+
+
+)T
+
+(R)
+(k1,
+
+k,
+
+)
+
+k1
+
+T
+
+(A)
+(k,
+
+k)
+
+=
+
+niV
+
+(k,
+
+k)
+
++
+
+ni
+
+V
+
+(k,
+
+(A)
+k1 )Gef f
+
+(k1,
+
+
+
+)T
+
+(A)
+(k1
+
+,
+
+k,
+
+
+
+)
+
+k1
+
+(13)
+
+5
+
+(R)
+In the non-crossing approximation, the retarded self-energy  (k, ) and quasi-particle
+(R)
+scattering rate (k, ) = Im[ (k, )] are given by,
+
+(R)
+ (k, ) = ni
+
+V
+
+(k,
+
+(R)
+k1 )Gef f
+
+(k1
+
+,
+
+
+
+)T
+
+(R)
+
+(k1,
+
+k,
+
+
+
+)
+
+k1
+
+(R)
+
+(A)
+
+(R)
+
+(k, ) = Im[ (k, )] = T (k, k1, )Aeff (k1, )T (k1, k, )
+
+(14)
+
+k1
+
+(R)
+The spin-dependent spectral weight is given by Aeff (k, ) = 2Im[Geff (k, )]. Similar to
+
+the calculation of the T -matrix, the dk-integral for the self-energy is done using the ap-
+
+proximation that the T -matrix varies slowly near kF , leaving only the dk-integral of the spin-dependent spectral weight, which is none other than the density of states,
+
+Ne(f0)f () =
+
+kdk 2
+
+I
+
+m[ge0f
+
+f
+
+(k,
+
+)]
+
+Ne(f1)f () =
+
+kdk 2
+
+I
+
+m[ge1f
+
+f
+
+(k,
+
+)]
+
+(15)
+
+As
+
+pointed
+
+out
+
+in
+
+the
+
+main
+
+paper,
+
+Ne(f0)f/(1)(EF )
+
+=
+
+N0 (EF 2
+
+) (1
+
++
+
+O())
+
+in
+
+the
+
+dilute
+
+limit;
+
+hence, we will approximate Ne(f0)f/(1)(EF ) 
+
+N0(EF ) 2
+
+=
+
+|EF2 | 4vF2
+
+and Ne(f1)f (EF ) 
+
+N0 (EF 2
+
+)
+
+sgn(EF
+
+).
+
+This finally gives the result for the quasi-particle lifetime near the Fermi surface, i.e.  =
+
+(R)
+(kF , EF ) = Im[ (kF , EF )], which is shown below. The real part of the self-energy
+
+that renormalizes vF and µ are ignored here, as vF and µ are taken to be experimentally
+
+determined parameters.
+
+ = 01 + a (cos  x + sin  y)
+- b(sin  x - cos  y) + i3 z
+0 = niNe(f0)f (EF ) |T 0|2 - 2 |T 3|2 + |T S|2 - |T A|2 a = -4niNe(f1)f (EF ) |T S|2 + |T A|2 b = 2niNe(f0)f (EF ) |T 0||T A| + |T 3||T S| 3 = 4niNe(f1)f (EF ) |T 0||T S| + |T 3||T A|
+
+(16a) (16b)
+
+The effective Greens function in the dilute impurity limit is now given by,
+
+(R)
+
+-1
+
+Geff (k, ) =  + µ - vF k ·  - i(k, )
+
+= ge0ff (k, )1 + geaff (k, ) (cos  x + sin  y)
+
++ gebff (k, ) (sin  x - cos  y) + ge3ff (k, )z
+
+ge0ff (k, )
+
+=
+
+((k)
+
++ i(k))( + µ - i0) 2(k) + 2(k)
+
+(17a)
+
+6
+
+geaff (k, )
+
+=
+
+((k)
+
++ i(k))(vF |k| 2(k) + 2(k)
+
++
+
+ia)
+
+gebff (k, )
+
+=
+
+ib((k) + i(k)) 2(k) + 2(k)
+
+ge3ff (k,
+
+)
+
+=
+
+-
+
+3((k) + i(k)) 2(k) + 2(k)
+
+(17b)
+
+where the denominator terms are (k) = ( + µ)2 - vF2 |k|2 - 02 + a2 + b2 - 32, (k) = 2 ( + µ)0 + vF |k|a .
+
+III. SHE & RASHBA EDELSTEIN EFFECT CORRELATION FUNCTIONS
+
+Within the Kubo formalism, the longitudinal charge conductivity and spin-Hall con-
+
+ductivity, yy and xzy, are given by the retarded current-current and spin current-current correlation functions respectively,
+
+
+
+y(Ry )(k, ) = -i
+
+dt eit(t) [jy(k, t), jy(k, 0])
+
+-
+
+
+
+xzy,(R)(k, ) = -i
+
+dt eit(t) [Jxz(k, t), jy(k, 0])
+
+-
+
+(18a) (18b)
+
+Similarly, it is straightforward to derive a Kubo formula for the spin-accumulation due
+
+longitudinal charge transport, i.e. the Rashba-Edelstein effect.
+
+S
+
+=
+
+lim
+0
+
+lim
+k0
+
+E ei(k · r-t) 
+
+
+dt(t) [S(k, t), j(k, 0)]
+-
+
+
+
+i,(R)(k, ) = -i
+
+dteit [Si(k, t), j(k, 0)]
+
+-
+
+(19a) (19b)
+
+The spin current Jxz has two components, one is the conventional spin current jxz due
+
+to band-bending effects, and the other is the spin-torque current Pxz, which are defined as
+
+follow,
+
+jxz(k,  ) =
+
+c ( k1,
+
+)
+
+(k
+
++ k1)x m
+
+z 
+
+ck+k1, (
+
+)
+
+k1
+
+Pxz(k,  )
+
+=
+
+2ivF kx
+
+c ( ) k1,
+
+(k1
+
++
+
+k 2
+
+)x
+
+y
+
+-
+
+(k1
+
++
+
+k 2
+
+)y
+
+x
+
+ ck+k1, ( )
+
+k1
+
+(20a) (20b)
+
+We will now separate the SHE into two contributions, xzy(1) and xz(y2), coming from the
+
+conventional spin current and the spin torque current respectively. All the Matsubara cor-
+
+relation functions, yy(k, in), yi (k, in), xz(y1)(k, in) and xzy(2)(k, in), are given below,
+
+7
+
+and analytic continuation (in   + i) will give the corresponding retarded correlation
+
+functions.
+
+
+yy(k, in) = - d e-in T U (, 0)jy(k,  )jy(k, 0)
+0
+
+yi (k, in) = - d e-in T U (, 0)Si(k,  )jy(k, 0) 0
+
+xzy,(1)(k, in) = - d e-in T U (, 0)jxz(k,  )jy(k, 0) 0
+
+xz,y(2)(k, in) = - d e-in T U (, 0)Pxz(k,  )jy(k, 0) 0
+
+(21a) (21b) (21c) (21d)
+
+The correlation functions are written in the interaction representation, and U(, 0) is the
+
+S-matrix, which can be formally expanded as an infinite series of interacting terms involving
+
+Hint. Hence, the correlation functions are evaluated by expanding the S-matrix, and we show the expansion for xzy,(1)(k,  ) below.
+
+xz,y(1)(k,  ) = -
+
+
+
+(-1)n n!
+
+n=0
+
+
+d1 . . .
+0
+
+
+dn T jxz(k,  )Hint(1) . . . Hint(n)jy(k, 0) (22)
+0
+
+The n = 0 term in Eq. 22 is just the bare bubble diagram, and the n = 2 term will give
+
+the first correction to the scattering vertex.
+
+xz,y(1,n=2)(k, in) = -
+
+
+d
+0
+
+
+d1
+0
+
+
+d2e-in
+0
+
+evF c
+
+T
+
+c ( k1,
+
+)
+
+(k
+
++ k1)x m
+
+z 
+
+ck+k1,
+
+(
+
+)
+
+k1 ,k2
+
+×H int(1)H int(2)ck2,(0)y ck+k2,
+
+= - evF mc
+
+1 
+
+z Gµ1 (p + k, i1 + in)Vµ1µ2 (p + k, p + q)
+
+p,q
+
+i1
+
+×Gµ2(p + q, i1 + in)y Gµ3(p + q - k, i1)
+
+×Vµ3µ4(p + q - k, p)Gµ4(p, i1)(k1 + k)x
+
+(23)
+
+This corresponds to the Feynman diagram for the vertex correction from a single scattering event. Notice that only elastic scattering is considered here, as each scattering event does not change the energy of the electron; hence, all the Green's functions on the upper (and lower) legs of the bubble diagram have the same energy, e.g. in Eq. 23, Gµ1(p + k, i1 + in) and Gµ2(p + q, i1 + in) undergo a change of momentum and spin upon scattering off Vµ1µ2(p + k, p + q), but do not exchange energy with the impurity.
+Since energy is conserved in the upper and lower legs of the bubble diagram, we can now include the effect of all the scattering events from a single impurity on the vertex correction
+
+8
+
+by replacing the scattering potential Vµ1µ2(k, k) by the full T -matrix to obtain,
+
+xzy,(1,T )(k,
+
+in)
+
+=
+
+- evF c
+
+1 
+
+(p + k)x Tr m
+
+zG(p + k, i1 + in)T (p + k, p + q)
+
+p,q
+
+i1
+
+×G(p + q, i1 + in)yG(p + q - k, i1)T (p + q - k, p)G(p, i1) (24)
+
+Finally, scattering events from all the impurities can be included by defining a scattering
+y
+vertex  (p+k, k, i1 +in, in), whereby an infinite subset of scattering events are included
+in the Bethe-Salpeter equation,
+
+y
+ (p
+
++
+
+k,
+
+k,
+
+i1
+
++
+
+in,
+
+in)
+
+=
+
+y
+
++
+
+T (p + k, p + q, i1 + in)Geff (p + q, i1 + in)
+
+q y
+× (p + q, q, i1 + in, in)Geff (q, in)T (q, k, in) (25)
+
+and the full correlation function is therefore,
+
+xzy,(1)(k,
+
+in)
+
+=
+
+-
+
+evF c
+
+1 
+
+(p + k)x m
+
+p
+
+i1
+
+× Tr
+
+G(p,
+
+i1)zG(p
+
++
+
+k,
+
+i1
+
++
+
+y
+in) (p
+
++
+
+k,
+
+p,
+
+i1
+
++
+
+in,
+
+i1)
+
+(26)
+
+This infinite subset of ladder diagrams includes all the scattering corrections to the vertex
+
+from all the impurities, but does not include diagrams where scattering events from different
+
+impurities cross each other, i.e. this is the non-crossing approximation, which is reasonable
+
+in the dilute impurity limit.
+
+Now let us evaluate the uniform limit of the Matsubara correlation function, lim xz,y(1)(k, in),
+k0
+by first doing the sum over the i1 frequencies using the standard method of integrating
+
+over the poles of nF (z) = (ez + 1)-1 in the complex z-plane. The poles of nF (z) are at
+
+z
+
+=
+
+i
+
+2(n+1) 
+
+,
+
+with
+
+residue
+
+of
+
+-
+
+1 
+
+,
+
+and
+
+the
+
+sum
+
+i1 is replaced by an integration over the
+
+complex plane,
+
+xzy,(1)(k
+
+=
+
+0,
+
+in)
+
+=
+
+- evF mc
+
+dz 2i
+
+P (z,
+
+z
+
++
+
+in)nF
+
+(z)
+
+P(z, z + in) =
+
+px Tr
+
+G(p,
+
+z )z G(p,
+
+z
+
++
+
+y
+in) (p,
+
+p,
+
+z,
+
+z
+
++
+
+in)
+
+(27)
+
+p
+
+The integral over the complex z-plane will also pick up the branch cuts of the Green's function G(p, z) and G(p, z + in), which leads to branch cuts at z = vF |p| - µ = (p) and z + in = vF |p| - µ = (p), and the upper ( + i) and lower ( - i) paths along the branch cuts will give the following retarded and advanced contributions to the correlation function.
+
+9
+
+xzy,(1)(k = 0, in) = -
+
+d 2i
+
+nF
+
+()
+
+P( + i,  + in) - P( - i,  + in)
+
++P( - in,  + i) - P( - in,  - i)
+
+(28)
+
+Therefore, the retarded correlation function is obtained by analytic continuation in 
+
+ + i,
+
+xz,y(1)(k
+
+=
+
+0,
+
+)
+
+=
+
+- evF mc
+
+d 2i
+
+(nF
+
+()
+
+-
+
+nF
+
+(
+
++
+
+ ))P (
+
+-
+
+i,
+
+
+
++
+
+
+
++
+
+i)
+
+-nF ()P( + i,  +  + i) + nF ( + )P( - i,  +  - i) (29)
+
+Following the standard discussion in [2], the most singular contribution comes from P( -
+
+i,  +  + i).
+
+Since
+
+the
+
+SHE
+
+conductivity
+
+is
+
+given
+
+by
+
+xz y (
+
+=
+
+0)
+
+=
+
+- lim I 0
+
+m[
+
+xzy
+
+(k=0,) 
+
+],
+
+hence we will calculate the following contribution to the retarded SHE correlation function.
+
+xzy,(1)(k
+
+=
+
+0,
+
+)
+
+=
+
+- evF mc
+
+d 2i
+
+(nF
+
+()
+
+-
+
+nF
+
+(
+
++
+
+ ))P (
+
+-
+
+i,
+
+
+
++
+
+
+
++
+
+i)
+
+xzy,(1)(k = 0,  = 0) = -Im
+
+evF mc
+
+d 2i
+
+dnF () d
+
+P
+
+(
+
+-
+
+i,
+
+
+
++
+
+i)
+
+P( - i,  + i) =
+
+px Tr
+
+(A)
+G (p,
+
+)
+
+z
+
+(R)
+G (p,
+
+y
+)
+
+(p,
+
+p,
+
+
+
+-
+
+i,
+
+
+
++
+
+i
+
+)
+
+(30)
+
+p
+
+The other correlation functions for the spin-torque current contribution to the SHE
+
+(xz,y(2)(k, )), the Rashba-Edelstein effect (yi (k, )), and the charge current conductivity
+
+(yy(k, )) are derived in a similar manner, and we obtain,
+
+yy(k = 0, ) = lim
+k0
+
+evF c
+
+2
+
+ d - 2i
+
+d2p (2)2
+
+(nF
+
+()
+
+-
+
+nF
+
+(
+
++
+
+))
+
+× Tr
+
+(A)
+G (p,
+
+)y
+
+(R)
+G (p
+
++
+
+k,
+
+y
+) (p,
+
+k1
+
++
+
+k,
+
+)
+
+(31)
+
+xzy,(2)(k = 0, ) = xzy,(2a)(k = 0, ) + xz,y(2b)(k = 0, )
+
+(32)
+
+xz,y(2a)(k
+
+=
+
+0,
+
+)
+
+=
+
+lim 2ievF2 k0 c
+
+ d - 2i
+
+d2p py + (2)2 kx
+
+ky 2
+
+(nF () - nF ( + ))
+
+× Tr
+
+(A)
+G (p,
+
+)xG(R)
+
+(p
+
++
+
+k,
+
+y
+)
+
+(p,
+
+p
+
++
+
+k
+
+,
+
+)
+
+xz,y(2b)(k
+
+=
+
+0,
+
+)
+
+=
+
+lim 2ievF2 k0 c
+
+ d - 2i
+
+d2p (2)2
+
+px + kx
+
+kx 2
+
+(nF (
+
++
+
+)
+
+-
+
+nF ())
+
+× Tr
+
+(A)
+G (p,
+
+)y
+
+(R)
+G (p
+
++
+
+k,
+
+y
+)
+
+(p,
+
+p
+
++
+
+k,
+
+)
+
+yi (k
+
+=
+
+0,
+
+)
+
+=
+
+lim evF k0 c
+
+ d - 2i
+
+d2p (2)2
+
+(nF
+
+(
+
++
+
+)
+
+-
+
+nF
+
+())
+
+× Tr
+
+(A)
+G (p,
+
+)iG(R)(p
+
++
+
+k,
+
+y
+)
+
+(p,
+
+p
+
++
+
+k,
+
+)
+
+(33)
+
+10
+
+IV. VERTEX CORRECTION
+
+For four fermion correlation functions, like the current-current and spin current-current
+
+correlation functions, we have to consider the effects of impurity scattering on the scattering
+
+vertex[2], in addition to the quasi-particle self-energy corrections. This arises from an infinite
+
+subset of Feynman ladder diagrams shown in the main paper, and is summed up in the Bethe
+y
+Salpeter equation for the scattering vertex  (k + p, p, i1 + in, in) (Eq. 34).
+
+y
+ (k
+
++
+
+p,
+
+p,
+
+i1
+
++
+
+in,
+
+in)
+
+=
+
+y
+
++
+
+T (k + p, k + q, i1 + in)Geff (k + q, i1 + in)
+
+q y
+× (k + q, q, i1 + in, in)Geff (q, in)T (q, p, in) (34)
+
+Here, k and i1 are the external momentum and frequency, and the DC uniform limit of
+
+the conductivities are obtained by analytic continuation of i1   + i, setting the limit
+
+k  0, and then setting   0, i.e. lim lim. Hence, we only need to calculate the on-shell
+
+0 y
+
+k0
+
+y
+
+component of the scattering vertex  (p, ) =  (p,  - i,  + i), which is defined by,
+
+y
+ (p,
+
+)
+
+=
+
+y
+
++
+
+T (p, q,  + i)Geff (q,  + i)
+
+q
+
+y
+× (q, )Geff (q,  - i)T (q, p,  - i)
+
+= y +
+
+(R)
+
+(R)
+
+y
+
+(A)
+
+(A)
+
+T (p, q, )Geff (q, ) (q, )Geff (q, )T (q, p, )
+
+(35)
+
+q
+
+(R)
+
+Note that both the advanced and retarded Green's function and T -matrices, Geff (p, ),
+
+(A)
+
+(R)
+
+(A)
+
+Geff (p, ), T (p, q, ) and T (p, q, ) enter into the Bethe-Salpeter equation due to
+
+the branch cut in the complex plane, when the integral over the complex plane is car-
+
+ried out. Similar to the assumption for the T -matrix, the scattering vertex is assumed
+
+to be momentum-independent near EF , and we will do a similar multipole expansion of
+
+y
+ (|p| = kF , ,  = EF ) =
+
+n ineini, keeping only the l = 0 and l = 1 scattering chan-
+
+nels.
+
+y
+ (|p|
+
+=
+
+kF
+
+,
+
+,
+
+
+
+=
+
+EF
+
+)
+
+=
+
+i0i
+
++
+
+0px cos  + i0py sin 
+
+1+
+
+ipx cos  + iipy sin 
+
+i
+
+(36)
+
+Hence, the Bethe-Salpeter equation is reduced to,
+
+y
+ (p,
+
+)
+
+=
+
+y
+
++
+
+dq 2
+
+T
+
+(R)
+(|p|
+
+=
+
+|p
+
++
+
+q|
+
+=
+
+kF
+
+,
+
+p,
+
+p+q ,
+
+)
+
+(37)
+
+×
+
+qdq 2
+
+(R)
+G (p
+
++
+
+q,
+
+y
+)
+
+(p
+
++
+
+q,
+
+(A)
+)G (p
+
++
+
+q
+
+,
+
+)
+
+11
+
+(A)
+×T (|p + q| = |q| = kF , p+q, q, )
+
+ineini = y +
+
+n
+
+n1 ...n7
+
+dq 2
+
+T i1 n1n2
+
+ei(n1k
+
+-n2
+
+k+q
+
+)
+
+T i5 n6
+
+n7
+
+ei(n6
+
+k
+
+-n7
+
+k+q
+
+)
+
+i1
+
+i2
+
+i3
+
+
+
+i4
+
+
+
+i5
+
+×
+
+qdq 2
+
+gi2,(R) n3
+
+(|p
+
++
+
+q|,
+
+)e-in3p+q
+
+i3 n4
+
+e-in4p+q
+
+gi4,(A) n5
+
+(|p
+
++
+
+q|,
+
+)e-in5p+q
+
+Since the in coefficients are assumed to be invariant near kF , the dq-integral is carried out over all the spin and angular momentum resolved Green's function components, gmi,(R)(|p + q|, ) gnj,(A)(|p + q|, ). As the Weyl fermions are spin-momentum locked; hence, the spin i and momentum m indices are related, i.e. m = 0 for i = [0, 3], and m = ±1 for
+
+i  [1, 2]. We can now define,
+
+ij() = kdk gi,(R)(|k|, )gj,(A)(|k|, )
+
+(38)
+
+2
+
+We have carried out a change of variable from  + µ   here, thereby absorbing the factors
+
+of µ that appear in the Green's function into , which is now the energy measured from EF .
+
+Knowing
+
+that
+
+G(R)(k, )G(A)(k, )
+
+=
+
+A(k,) I m[(k,)]
+
+
+
+A(k,) 
+
+,
+
+this
+
+means
+
+that
+
+ ij ()
+
+is
+
+basically
+
+the spin-resolved density of states divided by the quasi-particle scattering rate. The domi-
+
+nant terms are the s-wave, p-wave and s-p spin-flip DOS, 00(), aa() and 0a() = (a0())
+
+respectively, which are calculated to be,
+
+00()
+
+=
+
+1 2vF2
+
+
+
++
+
+02
+
+2(0 + a) 2(0 + a)
+
+aa() 0a()
+
+= =
+
+1 21vF2 2vF2
+
+ 2(0 +
+
+a)
+
++
+
+a2 2(0 + a)
+
+ 2(0 +
+
+a) (
+
+-
+
+i0)(1
+
+-
+
+ia 
+
+)
+
+(39)
+
+The above set of coupled equations for the -coefficients are then solved analytically, and
+
+the finite terms are shown below; and the other terms 00, 30, 1px, 1py , 2px and 2py are equal to zero.
+
+10(EF ) = 2ni(|T13||T A| + |T 0||T03| - 2i|T A||T S|)(00 + aa)
+
+× 1 - ni |T 0|2 + |T03|2 + 2|T S|2 - 2|T A|2 - 2|T13|2 (00 + aa)
+
+-1
+-2ni |T13|2 - |T03|2 (0a + a0)
+
+= asym,1 + 30 - iasym,3 + O(  )
+
+t
+
+EF
+
+(40a)
+
+12
+
+20(EF ) = 1 - ni |T 0|2 + |T03|2 - 2|T13|2 00 - ni |T S|2 + |T A|2 aa + i ni|T13||T S|(0a + a0)
+
+× 1 - ni |T 0|2 + |T03|2 + 2|T S|2 - 2|T A|2 - 2|T13|2 (00 + aa)
+
+-1
+-2ni |T13|2 - |T03|2 (0a + a0)
+
+= 0 + a + i 31,s + O(  )
+
+t
+
+t
+
+EF
+
+(40b)
+
+0px(EF ) = ni |T A|2| + |T S|2 (0a + a0) + 2|T 0||T13|(0a - a0) × 2ni(|T13||T A| + |T 0||T03| - 2i|T A||T S|)(00 + aa)
+× 1 - ni |T 0|2 + |T03|2 + 2|T S|2 - 2|T A|2 - 2|T13|2 (00 + aa)
+-1
+-2ni |T13|2 - |T03|2 (0a + a0)
++ni 2|T A||T13|(00 + aa) - 2i|T A||T S|(0a + a0)
+× 1 - ni |T 0|2 + |T03|2 - 2|T13|2 00 - ni |T S|2 + |T A|2 aa + i ni|T13||T S|(0a + a0)
+
+× 1 - ni |T 0|2 + |T03|2 + 2|T S|2 - 2|T A|2 - 2|T13|2 (00 + aa)
+
+-1
+-2ni |T13|2 - |T03|2 (0a + a0)
+
+=
+
+asym,1
+
+- iasym,3 t
+
+-
+
+a(30
+
++ asym,1 - iasym,3) 4t(0 + a)
+
+ + O(
+EF
+
+)
+
+(40c)
+
+0py (EF ) = 2i ni |T13||T A|(00 + aa) + |T A||T S|(0a + a0) × 2ni(|T13||T A| + |T 0||T03| - 2i|T A||T S|)(00 + aa)
+× 1 - ni |T 0|2 + |T03|2 + 2|T S|2 - 2|T A|2 - 2|T13|2 (00 + aa)
+-1
+-2ni |T13|2 - |T03|2 (0a + a0)
+-i ni |T S|2 + |T A|2 (0a + a0)
+× 1 - ni |T 0|2 + |T03|2 - 2|T13|2 00 - ni |T S|2 + |T A|2 aa + i ni|T13||T S|(0a + a0)
+
+13
+
+× 1 - ni |T 0|2 + |T03|2 + 2|T S|2 - 2|T A|2 - 2|T13|2 (00 + aa)
+
+-1
+-2ni |T13|2 - |T03|2 (0a + a0)
+
+=
+
+i 4
+
+a t
+
++
+
+i 2
+
+(asym,1
+
+-
+
+iasym,3)(asym,1 - t(0 + a)
+
+iasym,3
+
++
+
+30)
+
++
+
+O(  EF
+
+)
+
+(40d)
+
+3px(EF ) = 2ni |T03||T S| - i|T 0||T A| 00 × 2ni(|T13||T A| + |T 0||T03| - 2i|T A||T S|)(00 + aa)
+× 1 - ni |T 0|2 + |T03|2 + 2|T S|2 - 2|T A|2 - 2|T13|2 (00 + aa)
+-1
+-2ni |T13|2 - |T03|2 (0a + a0)
+-2ni (|T 0||T S| + i|T A||T03|)00 - i|T 0||T13|(0a + a0)
+× 1 - ni |T 0|2 + |T03|2 - 2|T13|2 00 - ni |T S|2 + |T A|2 aa + i ni|T13||T S|(0a + a0)
+
+× 1 - ni |T 0|2 + |T03|2 + 2|T S|2 - 2|T A|2 - 2|T13|2 (00 + aa)
+
+-1
+-2ni |T13|2 - |T03|2 (0a + a0)
+
+=
+
+- s t
+
+-
+
+i 31
+
++ asym,2 t
+
++
+
+3sasym,1 2t(0 + a)
+
+(40e)
+
+3py (EF ) = ni |T 0||T A| + i|T03||T S| 00 × 1 - ni |T 0|2 + |T03|2 - 2|T13|2 00 - ni |T S|2 + |T A|2 aa + i ni|T13||T S|(0a + a0)
+
+× 1 - ni |T 0|2 + |T03|2 + 2|T S|2 - 2|T A|2 - 2|T13|2 (00 + aa)
+-1
+-2ni |T13|2 - |T03|2 (0a + a0)
+-ni (|T03||T A| + i|T 0||T S|)00 + |T 0||T13|(0a + a0) × 2ni(|T13||T A| + |T 0||T03| - 2i|T A||T S|)(00 + aa)
+× 1 - ni |T 0|2 + |T03|2 + 2|T S|2 - 2|T A|2 - 2|T13|2 (00 + aa)
+
+14
+
+-1
+-2ni |T13|2 - |T03|2 (0a + a0)
+
+=
+
+-
+
+3 4t
+
+-
+
+i
+
+3s 2t
+
++
+
+1 2
+
+(30
+
++
+
+asym,1)(31 + asym,2) t(0 + a)
+
+-
+
+sasym,3
+
+-
+
+i 2
+
+s(30
+
++
+
+asym,1) + asym,3(31 t(0 + a)
+
++
+
+asym,2)
+
+Hence, using the results of ij(EF ) listed above, the scattering vertex is,
+
+y
+ (|k|
+
+=
+
+kF
+
+,
+
+,
+
+EF
+
+)
+
+=
+
+10(EF
+
+)1
+
++
+
+20(EF
+
+)
+
+y
+
++
+
+(0px (EF
+
+)1
+
++
+
+3px (EF
+
+)
+
+z)
+
+cos
+
+
+
++i 0py (EF )1 + 3py (EF ) z sin 
+
+(40f ) (41)
+
+Since 20 is the scattering vertex channel for longitudinal electrical conductivity, we have
+
+defined
+
+a
+
+transport
+
+scattering
+
+rate
+
+t
+
+=
+
+(
+
+1 2
+
+0
+
++
+
+a
+
+-
+
+2t
+
+),
+
+in
+
+terms
+
+of
+
+0,
+
+a,
+
+and
+
+an
+
+additional
+
+transport contribution, t = 2niN0(EF )(|T13|2 - |T03|2). Since t  V04V12N0(EF )5, it is
+
+much weaker than 0  V02N0(EF ) and a  V02V12N0(EF )3, and we do not display t in
+
+the main paper, but instead, display it here for completeness.
+
+In addition, there are spin flip scattering rates arising from |T A| and |T S|, s =
+
+niN0 2
+
+(EF
+
+)
+
+|T
+
+0||T
+
+S
+
+|,
+
+asym,1
+
+=
+
+2niN0(EF )|T13||T A|,
+
+asym,2
+
+=
+
+niN0 2
+
+(EF
+
+)
+
+|T03||T
+
+A|,
+
+asym,3
+
+=
+
+niN0 2
+
+(EF
+
+)
+
+|T
+
+S
+
+||T
+
+A|,
+
+30
+
+=
+
+ni
+
+N0(EF 2
+
+)
+
+|T03
+
+||T
+
+0|,
+
+31
+
+=
+
+niN0 2
+
+(EF
+
+)
+
+|T13
+
+||T
+
+0|,
+
+3s
+
+=
+
+niN0 2
+
+(EF
+
+)
+
+|T03||T
+
+S
+
+|
+
+and
+
+31,s
+
+=
+
+ni
+
+N0(EF 2
+
+)
+
+|T13||T
+
+S
+
+|,
+
+which
+
+are
+
+proportional
+
+to
+
+TS
+
+and
+
+T A,
+
+the
+
+symmetric
+
+and
+
+asymmetric component of the T -matrix, as well as the z components of the T -matrix, T03
+
+and T13.
+
+V. LONGITUDINAL CHARGE TRANSPORT AND SHE DC CONDUCTIVITIES
+
+We calculate the longitudinal charge conductivity, the Rashba-Edelstein effect, and the
+
+spin torque contribution to the SHE here. The retarded correlation functions for the spin-
+
+torque current contribution to the SHE (xzy,(2)(k, )), the Rashba-Edelstein effect (yi (k, )),
+
+and the charge current conductivity (yy(k, )) are shown below, and the DC conductivities
+
+are all given by first taking the limit of lim k  0, then taking the DC limit of lim   0,
+
+(DC)
+
+=
+
+-lim lim 0k0
+
+I
+
+m[
+
+(k,) 
+
+].
+
+yy(k = 0, ) = lim
+k0
+
+evF c
+
+2
+
+ d - 2i
+
+d2p (2)2
+
+Tr
+
+(A)
+G (p,
+
+)y
+
+(R)
+G (p
+
++
+
+k,
+
+y
+)
+
+(p,
+
+p
+
++
+
+k,
+
+)
+
+15
+
+× (nF () - nF ( + ))
+
+(42)
+
+xz,y(2)(k = 0, ) = xzy,(2a)(k = 0, ) + xz,y(2b)(k = 0, )
+
+(43)
+
+xzy,(2a)(k
+
+=
+
+0,
+
+)
+
+=
+
+lim 2ievF2 k0 c
+
+ d - 2i
+
+d2p (2)2
+
+Tr
+
+(A)
+G (p,
+
+)xG(R)(p
+
++
+
+k,
+
+y
+)
+
+(p,
+
+p
+
++
+
+k,
+
+)
+
+×
+
+py + px
+
+ky 2
+
+(nF () - nF ( + ))
+
+xz,y(2b)(k
+
+=
+
+0,
+
+)
+
+=
+
+-lim 2ievF2 k0 c
+
+ d - 2i
+
+d2p (2)2
+
+Tr
+
+(A)
+G
+
+(p,
+
+)y
+
+(R)
+G
+
+(p
+
++
+
+k,
+
+y
+)
+
+(p,
+
+p
+
++
+
+k,
+
+)
+
+×
+
+px + px
+
+kx 2
+
+(nF ()
+
+-
+
+nF ( +
+
+))
+
+yi (k
+
+=
+
+0,
+
+)
+
+=
+
+lim evF k0 c
+
+ d - 2i
+
+d2p (2)2
+
+Tr
+
+(A)
+G
+
+(p,
+
+)i
+
+(R)
+G
+
+(p
+
++
+
+k,
+
+y
+) (p,
+
+p
+
++
+
+k,
+
+)
+
+× (nF ( + ) - nF ())
+
+(44)
+
+We have specialized to the case of a charge current along y^ in the expression for the Rashba-
+
+Edelstein effect. For the SHE Kubo formula, we have to Taylor expand the Green's function
+
+(R)
+G (p
+
++
+
+k,
+
+)
+
+=
+
+(R)
+G (p,
+
+)
+
++
+
+(R)
+
+ki
+
+dG
+
+(p,) dpi
+
+,
+
+which
+
+is
+
+shown
+
+in
+
+detail
+
+below.
+
+(R)
+
+(R)
+
+(R)
+
+dG (p, ) = G (p, ) p + G (p, ) 
+
+dpx
+
+p px
+
+ px
+
+(45a)
+
+(R)
+G (p, ) p = p px
+
+dg0 dp 1
+
++
+
+dg3 dp
+
+z
+
++
+
+dga (cos
+dp
+
+px
+
++
+
+sin
+
+p  y )
+
++
+
+dgb (sin
+dp
+
+px
+
+-
+
+cos
+
+p  y )
+
+cos p
+
+(R)
+
+G (p, )  =  px
+
+ga(- sin px + cos py) + gb(cos px + sin py)
+
+- sin p p
+
+(R)
+
+(R)
+
+(R)
+
+dG (p, ) = G (p, ) p + G (p, ) 
+
+(45b)
+
+dpy
+
+p py
+
+ py
+
+(R)
+G (p, ) p = p py
+
+dg0 dp 1
+
++
+
+dg3 dp
+
+z
+
++
+
+dga (cos dp
+
+px
+
++
+
+sin
+
+p  y )
+
++
+
+dgb (sin dp
+
+px
+
+-
+
+cos
+
+p  y )
+
+sin p
+
+(R)
+
+G (p, )  =  py
+
+ga(- sin px + cos py) + gb(cos px + sin py)
+
+cos p p
+
+Following the same approximation of an average -matrix near EF , the spin current-current
+
+correlation function is then given in terms of the -coefficients, and the spin-resolved density
+
+of
+
+states
+
+ij(EF ),
+
+as
+
+well
+
+as
+
+the
+
+quantity
+
+involving
+
+the
+
+integral
+
+of
+
+(A)
+G
+
+(k,
+
+)
+
+(R)
+dG
+
+(k,)
+
+,
+
+dk
+
+which
+
+we term ij(),
+
+ij() 
+
+ -
+
+dp 2
+
+p2
+
+dgi,(R)(p, dp
+
+) gejf,(fA)(p,
+
+)
+
+(46a)
+
+16
+
+00() =
+
+dp 2
+
+vF
+
+p2
+
+2(-vF p + ia)( - i0) (p)2 + (p)2
+
++
+
+4(vF
+
+p(p)
+
+-
+
+a(p))((p) + i(p))( ((p)2 + (p)2)2
+
+-
+
+i0)
+
+((p) - i(p))( + i0) (p)2 + (p)2
+
+=
+
+1 2vF2
+
+i2 8(0 + a)2
+
+-
+
+ 16(0 +
+
+a)
+
++
+
+i0(02 + a2) 4(02 - a2)2
+
++
+
+i(202 - 16(0
+
+0a + + a)2
+
+a2)
+
+-
+
+1 8
+
++
+
+O(
+
+ 
+
+)
+
+(46b)
+
+aa() =
+
+dp 2
+
+vF
+
+p2
+
+2(-vF p + ia)(vF p + ia) (p)2 + (p)2
+
++
+
+4(vF
+
+p(p)
+
+-
+
+a(p))((p) + i(p))(vF ((p)2 + (p)2)2
+
+p
+
++
+
+ia
+
+)
+
+((p) - i(p))(vF p - ia) (p)2 + (p)2
+
+=
+
+1 2vF2
+
+i2 8(0 + a)2
+
+-
+
+ 16(0 +
+
+a)
+
++
+
+i0(02 + a2) 4(02 - a2)2
+
+-
+
+i(0 - 3a)a 16(0 + a)2
+
+-
+
+04 + 602a2 + a4 8(02 - a2)2
+
++
+
+O( ) 
+
+(46c)
+
+aa()
+
+-
+
+00()
+
+=
+
+1 2vF2
+
+-
+
+02a2 (02 - a2)2
+
+-
+
+i
+
+(0 8(0
+
+- a) + a)
+
+(46d)
+
+0a() =
+
+dp 2
+
+vF
+
+p2
+
+2(-vF p + ia)( - i0) (p)2 + (p)2
+
++
+
+4(vF
+
+p(p)
+
+-
+
+a(p))((p) + i(p))( ((p)2 + (p)2)2
+
+-
+
+i0)
+
+((p) - i(p))(vF p - ia) (p)2 + (p)2
+
+=
+
+1 2vF2
+
+2 i 8(0 + a)2
+
++
+
+ 16(0 +
+
+a)
+
++
+
+i
+
+a(02 + a2) 4(02 - a2)2
+
+-i
+
+
+
+(02 - 0a + 2a2) 16 (0 + a)2
+
++
+
+03a 2(02 - a2)2
+
++
+
+O(
+
+ 
+
+)
+
+(46e)
+
+a0() =
+
+dp 2
+
+vF
+
+p2
+
+2(-vF p + ia)(vF p + ia) (p)2 + (p)2
+
++
+
+4(vF
+
+p(p)
+
+-
+
+a(p))((p) + i(p))(vF ((p)2 + (p)2)2
+
+p
+
++
+
+ia
+
+)
+
+((p) - i(p))( + i0) (p)2 + (p)2
+
+=
+
+1 2vF2
+
+2 i 8(0 + a)2
+
++
+
+0a2 2(02 - a2)2
+
+-
+
+3 16(0 +
+
+a)
+
++
+
+ia(502 + a2) 4(02 - a2)2
+
+-
+
+i0(0 + 5a) 16 (0 + a)2
+
+-
+
+303a + 20a3) 2(02 - a2)2
+
++
+
+O(
+
+ 
+
+)
+
+(46f )
+
+0a() - a0()
+
+=
+
+1 2vF2
+
+ 4(0 +
+
+a)
+
+-
+
+i02a (02 - a2)2
+
++
+
+0a(202 + a2) (02 - a2)2
+
++
+
+O(
+
+ 
+
+)
+
+(46g)
+
+17
+
+Note that  =  + µ is the energy measured from EF ; hence, the DC conductivities
+
+will depend on ij(EF ). We now re-write the SHE correlation function as a sum of several
+
+terms, xzy,(2)(k, ) = xzy,(2a)(k, ) + xz,y(2b)(k, ), where xz,y(2a)(k, ) and xz,y(2b)(k, ) are the
+
+kyx and kxy terms respectively.
+
+(R)
+It is then necessary to Taylor expand G (p + k, ) =
+
+(R)
+G (p,
+
+)
+
++
+
+ki
+
+(R)
+
+dG
+
+(p,) dpi
+
+,
+
+and
+
+z,(2a1)(k, )
+
+is
+
+the
+
+zeroth-order
+
+term,
+
+while
+
+z,(2a2)(k, )
+
+and
+
+(R)
+
+(R)
+
+z,(2a3)(k,
+
+)
+
+are
+
+the
+
+kx dG
+
+(p,) dpx
+
+and
+
+ky
+
+dG
+
+(p,) dpy
+
+terms
+
+respectively;
+
+thus,
+
+giving
+
+xz,y(2a)(k,
+
+)
+
+=
+
+xzy,(2a1)(k = 0, ) + xz,y(2a2)(k = 0, ) + xzy,(2a3)(k = 0, ) and xz,y(2b)(k, ) = xz,y(2b1)(k =
+
+(R)
+
+0, ) + xz,y(2b2)(k
+
+=
+
+0, ) + xz,y(2b3)(k
+
+=
+
+0, ).
+
+Finally,
+
+we
+
+make
+
+use
+
+of
+
+the
+
+chain
+
+rule
+
+dG
+
+(p,) dpi
+
+=
+
+(R)
+
+(R)
+
+dG
+
+(p,) p dp pi
+
++
+
+dG
+
+
+
+(p,) 
+
+ pi
+
+,
+
+which
+
+give
+
+xz,y(2a1)(k
+
+=
+
+0, )
+
+=
+
+xzy,(2a1P 1)(k, ) +
+
+xz,y(2a1P 2)(k, )
+
+(R)
+
+respectively,
+
+with
+
+xzy,(2a1P 1)(k, )
+
+and
+
+xzy,(2a1P 2)(k, )
+
+being
+
+proportional
+
+to
+
+the
+
+dG
+
+(p,) p dp pi
+
+(R)
+
+and
+
+dG (p,)   pi
+
+terms respectively.
+
+A similar procedure is carried out for the other terms,
+
+and we have symmetrized the expressions for xzy,(2a)(k, ) and xz,y(2b)(k, ) by doing a shift
+
+of
+
+variable
+
+py +
+
+ky 2
+
+
+
+py
+
+and
+
+px +
+
+kx 2
+
+ px
+
+respectively.
+
+The
+
+results
+
+are
+
+shown
+
+below.
+
+xzy,(2a)(k,
+
+)
+
+=
+
+lim
+k0
+
+2ievF2 c
+
+d 2i
+
+p
+
+(nF
+
+()
+
+-
+
+nF
+
+(
+
++
+
+))
+
+py kx
+
+× Tr
+
+(A)
+G (p
+
+-
+
+k 2,
+
+)
+
+x
+
+R)
+G (p
+
++
+
+k 2,
+
+)
+
+(y)
+ (p,
+
+)
+
+= xzy,(2a1)(k = 0, ) + xzy,(2a2)(k = 0, ) + xzy,(2a3)(k = 0, )
+
+xzy,(2a1)(k
+
+=
+
+0,
+
+)
+
+=
+
+lim 2ievF2 k0 c
+
+1 kx
+
+d 2i
+
+(nF () - nF ( + ))
+
+p
+
+× Tr
+
+(A)
+G
+
+(p,
+
+)xGR)(p,
+
+(y)
+) (p,
+
+)
+
+p sin 
+
+=0
+
+(47a) (47b)
+
+xzy,(2a2)(k
+
+=
+
+0,
+
+)
+
+=
+
+lim 2ievF2 k0 c
+
+kx kx
+
+d 2i
+
+(nF
+
+()
+
+-
+
+nF
+
+(
+
++
+
+))
+
+p
+
+sin 2
+
+
+
+p
+
+(R)
+
+(A)
+
+×
+
+Tr
+
+(A)
+G
+
+(p,
+
+)x
+
+G
+
+(p,
+
+)
+
+(y)
+ (p,
+
+)
+
+- Tr
+
+G
+
+(p,
+
+)
+
+xG(R)
+
+(p,
+
+(y)
+)
+
+(p,
+
+)
+
+px
+
+px
+
+= lim 2ievF2 kx k0 c kx
+
+d 2i
+
+(nF
+
+()
+
+-
+
+nF
+
+(
+
++
+
+))
+
+p
+
+sin 2
+
+
+
+p
+
+ (R)
+
+(R)
+
+
+
+×
+
+Tr
+
+(A)
+G
+
+(p,
+
+)x
+
+
+
+G
+
+(p, ) p p px
+
++
+
+G
+
+(p, 
+
+)
+
+ px
+
+
+
+(y)
+
+
+(p,
+
+)
+
+18
+
+ (A)
+
+(A)
+
+
+
+- Tr
+
+G 
+
+(p, ) p p px
+
++
+
+G
+
+
+
+(p, 
+
+)
+
+ px
+
+
+
+xG(R)
+
+(p,
+
+(y)
+) (p,
+
+)
+
+= xzy,(2a2P 1)(k = 0, ) + xzy,(2a2P 2)(k = 0, )
+
+(47c)
+
+xzy,(2a2P 1)(k
+
+=
+
+0,
+
+)
+
+=
+
+lim 2ievF2 k0 c
+
+kx kx
+
+d 2i
+
+(nF
+
+()
+
+-
+
+nF
+
+(
+
++
+
+))
+
+p
+
+sin 2
+
+
+
+p
+
+ (R)
+
+
+
+×
+
+Tr
+
+(A)
+G
+
+(p,
+
+)x
+
+
+
+G
+
+
+
+(p, p
+
+)
+
+p px
+
+
+
+(y)
+
+
+(p,
+
+)
+
+ (A)
+
+
+
+- Tr
+
+G 
+
+(p, p
+
+)
+
+p px
+
+
+
+xG(R)(p,
+
+(y)
+) (p,
+
+)
+
+= lim 2ievF2 kx k0 c kx
+
+d 2i
+
+p
+
+(nF
+
+()
+
+-
+
+nF
+
+(
+
++
+
+))
+
+p
+
+sin 2
+
+
+
+p px
+
+(R)
+
+(A)
+
+×
+
+Tr
+
+(A)
+G
+
+(p,
+
+)x
+
+G
+
+(p,
+
+)
+
+(y)
+ (p,
+
+)
+
+- Tr
+
+G
+
+(p,
+
+)
+
+xG(R)
+
+(p,
+
+(y)
+)
+
+(p,
+
+)
+
+p
+
+p
+
+= 2ievF2 c
+
+d 2i
+
+(nF
+
+()
+
+-
+
+nF
+
+(
+
++
+
+))
+
+1 2
+
+×
+
+1 4
+
+2s() (2aa() - 2(aa()))
+
++0py () a0() + 0a() - (a0()) - (0a())
+
++i3px() a0() - 0a() + (a0()) - (0a())
+
++ O(  ) EF
+
+(47d)
+
+xzy,(2a2P 2)(k
+
+=
+
+0,
+
+)
+
+=
+
+lim 2ievF2 p0 c
+
+kx kx
+
+d 2i
+
+p
+
+(nF
+
+()
+
+-
+
+nF
+
+(
+
++
+
+))
+
+p
+
+sin 2
+
+
+
+ px
+
+(R)
+
+(A)
+
+×
+
+Tr
+
+(A)
+G
+
+(p,
+
+)x
+
+G
+
+(p,
+
+)
+
+(y)
+ (p,
+
+)
+
+- Tr
+
+G
+
+(p,
+
+)
+
+xG(R)
+
+(p,
+
+(y)
+)
+
+(p,
+
+)
+
+
+
+
+
+= 2ievF2 c
+
+d 2i
+
+(nF
+
+()
+
+-
+
+nF
+
+(
+
++
+
+))
+
+1 2
+
+×
+
+1 4
+
+30py
+
++3px ()
+
+() i0a
+
+ 0a ()
+
+() + a0() + ia0()
+
++ +
+
+i3b() 
+O( EF
+
++ )
+
+i
+
+b3
+
+()
+
+(47e)
+
+xzy,(2a3)(k
+
+=
+
+0,
+
+)
+
+=
+
+lim 2ievF2 k0 c
+
+ky kx
+
+d 2i
+
+(nF
+
+()
+
+-
+
+nF
+
+(
+
++
+
+))
+
+p
+
+sin 2
+
+
+
+p
+
+(R)
+
+(A)
+
+×
+
+Tr
+
+(A)
+G
+
+(p,
+
+)x
+
+G
+
+(p,
+
+)
+
+(y)
+ (p,
+
+)
+
+- Tr
+
+G
+
+(p,
+
+)
+
+xG(R)
+
+(p,
+
+(y)
+)
+
+(p,
+
+)
+
+py
+
+py
+
+19
+
+= lim 2ievF2 ky k0 c kx
+
+d 2i
+
+(nF
+
+()
+
+-
+
+nF
+
+(
+
++
+
+))
+
+p
+
+sin 2
+
+
+
+p
+
+ (R)
+
+(R)
+
+
+
+×
+
+Tr
+
+(A)
+G
+
+(p,
+
+)x
+
+
+
+G
+
+(p, ) p p py
+
++
+
+G
+
+(p, 
+
+)
+
+ py
+
+
+
+(y)
+
+
+(p,
+
+)
+
+ (A)
+
+(A)
+
+
+
+- Tr
+
+G 
+
+(p, ) p p py
+
++
+
+G
+
+
+
+(p, 
+
+)
+
+ py
+
+
+
+xG(R)
+
+(p,
+
+(y)
+)
+
+(p,
+
+)
+
+= xzy,(2a3P 1)(k = 0, ) + xzy,(2a3P 2)(k = 0, )
+
+(47f )
+
+xzy,(2a3P 1)(k
+
+=
+
+0,
+
+)
+
+=
+
+lim 2ievF2 p0 c
+
+ky kx
+
+d 2i
+
+p
+
+(nF
+
+()
+
+-
+
+nF
+
+(
+
++
+
+))
+
+p
+
+sin 2
+
+
+
+p py
+
+(R)
+
+(A)
+
+×
+
+Tr
+
+(A)
+G
+
+(p,
+
+)x
+
+G
+
+(p,
+
+)
+
+(y)
+ (p,
+
+)
+
+- Tr
+
+G
+
+(p,
+
+)
+
+xG(R)
+
+(p,
+
+(y)
+)
+
+(p,
+
+)
+
+p
+
+p
+
+= 2ievF2 c
+
+d 2i
+
+(nF
+
+()
+
+-
+
+nF
+
+(
+
++
+
+))
+
+1 2
+
+×
+
+1 4
+
+1s ()
+
+400() - 4(00()) - 2aa() + 2(aa())
+
++0px() a0() + 0a() - (a0()) + (0a())
+
++3py () -3a0() + 30a() - 3(a0()) + 3(0a())
+
++ O(  ) EF
+
+(47g)
+
+xzy,(2a3P 2)(k
+
+=
+
+0,
+
+)
+
+=
+
+lim 2ievF2 p0 c
+
+ky kx
+
+d 2i
+
+p
+
+(nF
+
+()
+
+-
+
+nF
+
+(
+
++
+
+))
+
+p
+
+sin 2
+
+
+
+ py
+
+(R)
+
+(A)
+
+×
+
+Tr
+
+(A)
+G
+
+(p,
+
+)x
+
+G
+
+(p,
+
+)
+
+(y)
+ (p,
+
+)
+
+- Tr
+
+G
+
+(p,
+
+)
+
+xG(R)
+
+(p,
+
+(y)
+)
+
+(p,
+
+)
+
+
+
+
+
+= 2ievF2 c
+
+d 2i
+
+(nF
+
+()
+
+-
+
+nF
+
+(
+
++
+
+))
+
+1 2
+
+×
+
+1 4
+
+0px ()
+
+0a() - a0()
+
+- 3py ()
+
+0a() + a0()
+
+ + O( )
+EF
+
+(47h)
+
+xz,y(2b)(k,
+
+)
+
+=
+
+lim
+k0
+
+-
+
+2ievF2 c
+
+d 2i
+
+p
+
+(nF
+
+()
+
+-
+
+nF
+
+(
+
++
+
+))
+
+px kx
+
+× Tr
+
+(A)
+G (p
+
+-
+
+k 2
+
+,
+
+)
+
+y
+
+R)
+G (p
+
++
+
+k 2
+
+,
+
+)
+
+(y)
+ (p,
+
+)
+
+= xz,y(2b1)(k = 0, ) + xz,y(2b2)(k = 0, ) + xz,y(2b3)(k = 0, )
+
+(47i)
+
+xz,y(2b1)(k
+
+=
+
+0, )
+
+=
+
+lim
+k0
+
+-
+
+2ievF2 c
+
+1 kx
+
+d 2i
+
+(nF () - nF ( + ))
+
+p
+
+× Tr
+
+(A)
+G
+
+(p,
+
+)y
+
+R)
+G
+
+(p,
+
+(y)
+)
+
+(p,
+
+)
+
+p cos 
+
+20
+
+=0
+
+(47j)
+
+xz,y(2b2)(k
+
+=
+
+0, )
+
+=
+
+lim
+k0
+
+-
+
+2ievF2 c
+
+kx kx
+
+d 2i
+
+(nF
+
+()
+
+-
+
+nF
+
+(
+
++
+
+))
+
+p
+
+cos 2
+
+
+
+p
+
+(R)
+
+(A)
+
+×
+
+Tr
+
+(A)
+G
+
+(p,
+
+)y
+
+G
+
+(p,
+
+)
+
+(y)
+
+
+(p,
+
+)
+
+- Tr
+
+G
+
+(p,
+
+)
+
+y
+
+(R)
+G (p,
+
+(y)
+) (p,
+
+)
+
+px
+
+px
+
+= lim - 2ievF2 kx
+
+k0
+
+c kx
+
+d 2i
+
+(nF
+
+()
+
+-
+
+nF
+
+(
+
++
+
+))
+
+p
+
+cos 2
+
+
+
+p
+
+ (R)
+
+(R)
+
+
+
+×
+
+Tr
+
+(A)
+G
+
+(p,
+
+)y
+
+
+
+
+
+G
+
+(p, ) p p px
+
++
+
+G
+
+(p, 
+
+)
+
+ px
+
+
+
+(y)
+ (p,
+
+)
+
+ (A)
+
+(A)
+
+
+
+- Tr
+
+G 
+
+(p, ) p p px
+
++
+
+G
+
+
+
+(p, 
+
+)
+
+ px
+
+
+
+y
+
+(R)
+G (p,
+
+(y)
+) (p,
+
+)
+
+= xz,y(2b2P 1)(k = 0, ) + xz,y(2b2P 2)(k = 0, )
+
+(47k)
+
+xz,y(2b2P 1)(k
+
+=
+
+0, )
+
+=
+
+lim
+p0
+
+-
+
+2ievF2 c
+
+kx kx
+
+d 2i
+
+p
+
+(nF
+
+()
+
+-
+
+nF
+
+(
+
++
+
+))
+
+p
+
+cos 2
+
+
+
+p px
+
+(R)
+
+(A)
+
+×
+
+Tr
+
+(A)
+G
+
+(p,
+
+)y
+
+G
+
+(p,
+
+)
+
+(y)
+
+
+(p,
+
+)
+
+- Tr
+
+G
+
+(p,
+
+)
+
+y
+
+(R)
+G (p,
+
+(y)
+) (p,
+
+)
+
+p
+
+p
+
+= - 2ievF2 c
+
+d 2i
+
+(nF
+
+()
+
+-
+
+nF
+
+(
+
++
+
+))
+
+1 2
+
+×
+
+1 4
+
+2s ()
+
+400() - 4(00()) - 2aa() + 2(aa())
+
++0py () a0() + 0a() - (a0()) - (0a())
+
++i3px() 30a() - 3a0() + 3(0a()) - 3(a0())
+
++ O(  ) EF
+
+(47l)
+
+xz,y(2b2P 2)(k
+
+=
+
+0, )
+
+=
+
+lim
+p0
+
+-
+
+2ievF2 c
+
+kx kx
+
+d 2i
+
+p
+
+(nF
+
+()
+
+-
+
+nF
+
+(
+
++
+
+))
+
+p
+
+cos 2
+
+
+
+ px
+
+(R)
+
+(A)
+
+×
+
+Tr
+
+(A)
+G
+
+(p,
+
+)y
+
+G
+
+(p,
+
+)
+
+(y)
+
+
+(p,
+
+)
+
+- Tr
+
+G
+
+(p,
+
+)
+
+y
+
+(R)
+G (p,
+
+(y)
+) (p,
+
+)
+
+
+
+
+
+= - 2ievF2 c
+
+d 2i
+
+(nF
+
+()
+
+-
+
+nF
+
+(
+
++
+
+))
+
+1 2
+
+×
+
+1 4
+
+0py ()
+
+0a() - a0()
+
+- 3px()
+
+i0a() + ia0()
+
++ O(  ) EF
+
+(47m)
+
+xz,y(2b3)(k = 0, ) = xz,y(2b3P 1)(k = 0, ) + xz,y(2b3P 2)(k = 0, )
+
+(47n)
+
+21
+
+xz,y(2b3P 1)(k
+
+=
+
+0, )
+
+=
+
+lim
+k0
+
+-
+
+2ievF2 c
+
+ky kx
+
+d 2i
+
+p
+
+(nF
+
+()
+
+-
+
+nF
+
+(
+
++
+
+))
+
+p
+
+cos 2
+
+
+
+p py
+
+(R)
+
+(A)
+
+×
+
+Tr
+
+(A)
+G
+
+(p,
+
+)y
+
+G
+
+(p,
+
+)
+
+(y)
+
+
+(p,
+
+)
+
+- Tr
+
+G
+
+(p,
+
+)
+
+y
+
+(R)
+G (p,
+
+(y)
+) (p,
+
+)
+
+p
+
+p
+
+= - 2ievF2 c
+
+d 2i
+
+(nF
+
+()
+
+-
+
+nF
+
+(
+
++
+
+))
+
+1 2
+
+×
+
+1 4
+
+1s() (2aa() - 2(aa()))
+
++0px() a0() + 0a() - (a0()) - (0a())
+
++3py () a0() - 0a() + (a0()) - (0a())
+
++ O(  ) EF
+
+(47o)
+
+xz,y(2b3P 2)(k
+
+=
+
+0, )
+
+=
+
+lim
+k0
+
+-
+
+2ievF2 c
+
+ky kx
+
+d 2i
+
+p
+
+(nF
+
+()
+
+-
+
+nF
+
+(
+
++
+
+))
+
+p
+
+sin 2
+
+
+
+ py
+
+(R)
+
+(A)
+
+×
+
+Tr
+
+(A)
+G
+
+(p,
+
+)x
+
+G
+
+(p,
+
+)
+
+(y)
+ (p,
+
+)
+
+- Tr
+
+G
+
+(p,
+
+)
+
+xG(R)
+
+(p,
+
+(y)
+)
+
+(p,
+
+)
+
+
+
+
+
+= - 2ievF2 c
+
+d 2i
+
+(nF
+
+()
+
+-
+
+nF
+
+(
+
++
+
+))
+
+1 2
+
+×
+
+1 4
+
+30px ()
+
+a0() - 0a()
+
+- 3py ()
+
+0a() + a0()
+
+ + O( )
+EF
+
+(47p)
+
+Therefore, summing up all the different contributions, we finally obtain the SHE correlation function,
+
+z,(2)(p = 0, ) = 2ievF2 c
+
+d 2i
+
+(nF
+
+()
+
+-
+
+nF
+
+(
+
++
+
+))
+
+× 21 0px() 0a() - a0() + 0py () a0() - 0a()
+
+1s() 00() - aa() - (00()) + (aa()) +2s() aa() - 00() - (aa()) + (00()) +3px() ia0() - i0a() + i(a0()) - i(0a())
+
++3py () 0a() - a0() + (0a()) - (a0())
+
++
+
+O(
+
+ 
+
+)
+
+(48)
+
+Using
+
+the
+
+results
+
+for
+
+ ij ( )
+
+and
+
+ ij ( )
+
+from
+
+above,
+
+where
+
+0a() - a0()
+
+=
+
+-
+
+i 2vF2
+
+,
+
+Im[aa() - 00()]
+
+=
+
+-1 2vF2
+
+, (0-a)
+8(0 +a )
+
+and
+
+Re[0a() - a0()]
+
+=
+
+1 2vF2
+
+ 4(0 +a )
+
+=
+
+, N0()
+4(0 +a )
+
+we
+
+see
+
+that
+
+the
+
+main
+
+O(
+
+1 
+
+)
+
+contributions
+
+come
+
+from
+
+the
+
+3px ( )
+
+scattering
+
+channel.
+
+The uniform DC longitudinal charge and spin-Hall conductivity are given by yy =
+
+-lim0
+
+lim
+k0
+
+Im
+
+y y (k ,) 
+
+,
+
+xzy
+
+=
+
+-lim0
+
+lim
+k0
+
+I
+
+m
+
+xz y (k,) 
+
+,
+
+and keeping
+
+only
+
+the
+
+O(
+
+1 
+
+)
+
+terms,
+
+they
+
+22
+
+are,
+
+yy
+
+=
+
+1 2
+
+(evF )2 Re
+
+220(EF ) 00(EF )
+
+=
+
+(evF )2
+
+N0(EF ) 2t
+
++
+
+O
+
+ EF
+
+(49)
+
+xzy,(2)
+
+=
+
+h¯evF2 Im 
+
+i3px(EF )
+
+Re[0a(EF ) - a0(EF )]
+
+=
+
+-h¯evF2
+
+N0(EF ) 2t 0
+
+s +
+
+a
+
++
+
+O
+
+ EF
+
+(50)
+
+yy
+
+=
+
+h¯evF 2
+
+Re
+
+22s(EF )00(EF )
+
+=
+
+h¯evF
+
+N0(EF 2t
+
+)
+
++
+
+O
+
+ EF
+
+(51)
+
+Hence, we see that the SHE is driven by scattering between the s and p-wave electrons
+
+due to the symmetric spin-flip T S term, which occurs at 3rd-order in perturbation. Eq. 40e,
+
+3px (EF )
+
+=
+
+- s t
+
+-
+
+i 31+asym,2 t
+
++
+
+, 3s asy m,1
+2t (0 +a )
+
+shows
+
+that
+
+the
+
+asymmetric
+
+spin-flip
+
+term
+
+TA
+
+also
+
+contributes but as a sub-leading term, .
+
+[1] J. Rammer, Quantum Transport Theory, Frontiers in Physics (Book 99) (Westview Press, 2004). [2] G. D. Mahan, Many-Particle Physics, 3rd ed., Physics of Solids and Liquids (Springer US,
+2000).
+
+23
+
+

@@ -1,0 +1,1565 @@
+Identification-robust moment-based tests for Markov-switching in autoregressive models 
+
+Jean-Marie Dufour  McGill University
+
+Richard Luger  Universit´e Laval
+
+January 3, 2017
+
+arXiv:1701.00029v1 [stat.ME] 30 Dec 2016
+
+ This work was supported by the William Dow Chair in Political Economy (McGill University), the Canada Research Chair Program (Chair in Econometrics, Universit´e de Montr´eal), the Bank of Canada (Research Fellowship), a Guggenheim Fellowship, a Konrad-Adenauer Fellowship (Alexander-von-Humboldt Foundation, Germany), the Institut de finance math´ematique de Montr´eal (IFM2), the Canadian Network of Centres of Excellence [program on Mathematics of Information Technology and Complex Systems (MITACS)], the Natural Sciences and Engineering Research Council of Canada, the Social Sciences and Humanities Research Council of Canada, and the Fonds de recherche sur la soci´et´e et la culture (Qu´ebec).
+ William Dow Professor of Economics, McGill University, Centre interuniversitaire de recherche en analyse des organisations (CIRANO), and Centre interuniversitaire de recherche en ´economie quantitative (CIREQ). Mailing address: Department of Economics, McGill University, Leacock Building, Room 919, 855 Sherbrooke Street West, Montr´eal, Qu´ebec H3A 2T7, Canada. TEL: (1) 514 398 4400 ext. 09156; FAX: (1) 514 398 4800; e-mail: jeanmarie.dufour@mcgill.ca. Web page: http://www.jeanmariedufour.com
+ D´epartement de finance, assurance et immobilier, Universit´e Laval, Qu´ebec, Qu´ebec G1V 0A6, Canada. E-mail address: richard.luger@fsa.ulaval.ca.
+
+ABSTRACT
+This paper develops tests of the null hypothesis of linearity in the context of autoregressive models with Markov-switching means and variances. These tests are robust to the identification failures that plague conventional likelihood-based inference methods. The approach exploits the moments of normal mixtures implied by the regime-switching process and uses Monte Carlo test techniques to deal with the presence of an autoregressive component in the model specification. The proposed tests have very respectable power in comparison to the optimal tests for Markov-switching parameters of Carrasco et al. (2014) and they are also quite attractive owing to their computational simplicity. The new tests are illustrated with an empirical application to an autoregressive model of U.S. output growth.
+Keywords: Mixture distributions; Markov chains; Regime switching; Parametric bootstrap; Monte Carlo tests; Exact inference.
+JEL Classification: C12, C15, C22, C52
+
+1 Introduction
+The extension of the linear autoregressive model proposed by Hamilton (1989) allows the mean and variance of a time series to depend on the outcome of a latent process, assumed to follow a Markov chain. The evolution over time of the latent state variable gives rise to an autoregressive process with a mean and variance that switch according to the transition probabilities of the Markov chain. Hamilton (1989) applies the Markov-switching model to U.S. output growth rates and argues that it encompasses the linear specification. This class of models has also been used to model potential regime shifts in foreign exchange rates (Engel and Hamilton, 1990), stock market volatility (Hamilton and Susmel, 1994), real interest rates (Garcia and Perron, 1996), corporate dividends (Timmermann, 2001), the term structure of interest rates (Ang and Bekaert, 2002b), portfolio allocation (Ang and Bekaert, 2002a), and government policy (Davig, 2004). A comprehensive treatment of Markov-switching models and many references are found in Kim and Nelson (1999), and more recent surveys of this class of models are provided by Guidolin (2011) and Hamilton (2016).
+A fundamental question in the application of such models is whether the data-generating process is indeed characterized by regime changes in its mean or variance. Statistical testing of this hypothesis poses serious difficulties for conventional likelihood-based methods because two important assumptions underlying standard asymptotic theory are violated under the null hypothesis of no regime change. Indeed, if a two-regime model is fitted to a single-regime linear process, the parameters which describe the second regime are unidentified. Moreover, the derivative of the likelihood function with respect to the mean and variance are identically zero when evaluated at the constrained maximum under both the null and alternative hypotheses. These difficulties combine features of the statistical problems discussed in Davies (1977, 1987), Watson and Engle (1985), and Lee and Chesher (1986). The end result is that the information matrix is singular under the null hypothesis, and the usual likelihood-ratio test does not have an asymptotic chi-squared distribution in this case. Conventional likelihood-based inference in the context of Markov-switching models can thus be very misleading in practice. Indeed, the simulation results reported by Psaradakis and Sola (1998) reveal just how poor the first-order asymptotic approximations to the finite-sample distribution of the maximum-likelihood estimates can be.
+Hansen (1992, 1996) and Garcia (1998) proposed likelihood-ratio tests specifically tailored to deal with the kind of violations of the regularity conditions which arise in Markov-switching models. Their methods differ in terms of which parameters are considered of interest and those taken as nuisance parameters. Both methods require a search over the intervening nuisance parameter space with an evaluation of the Markov-switching likelihood function at each considered grid point, which makes them computationally expensive. Carrasco et al. (2014) derive asymptotically optimal tests for Markov-switching parameters. These information matrix-type tests only require estimating the model under the null hypothesis, which is a clear advantage over Hansen (1992, 1996) and Garcia (1998). However, the asymptotic distribution of the optimal tests is not free of nuisance parameters, so Carrasco et al. (2014) suggest a parametric bootstrap procedure to find the critical values.
+In this paper, we propose new tests for Markov-switching models which, just like the Carrasco et al. (2014) tests, circumvent the statistical problems and computational costs of likelihood-based methods. Specifically, we first propose computationally simple test statistics ­ based on least-squares residual moments ­ for the hypothesis of no Markov-switching (or linearity) in autoregressive models. The residual moment statistics considered include statistics focusing on the mean, variance,
+1
+
+skewness, and excess kurtosis of estimated least-squares residuals. The different statistics are combined through the minimum or the product of approximate marginal p-values.
+Second, we exploit the computational simplicity of the test statistics to obtain exact and asymptotically valid test procedures, which do not require deriving the asymptotic distribution of the test statistics and automatically deal with the identification difficulties associated with such models. Even if the distributions of these combined statistics may be difficult to establish analytically, the level of the corresponding test is perfectly controlled. This is made possible through the use of Monte Carlo (MC) test methods. When no new nuisance parameter appears in the null distribution of the test statistic, such methods allow one to control perfectly the level of a test, irrespective of the distribution of the test statistic, as long as the latter can be simulated under the null hypothesis; see Dwass (1957), Barnard (1963), Birnbaum (1974), and Dufour (2006). This feature holds for a fixed number of replications, which can be quite small. For example, 19 replications of the test statistic are sufficient to obtain a test with exact level .05. A larger number of replications decreases the sensitivity of the test to the underlying randomization and typically leads to power gains. Dufour et al. (2004), however, find that increasing the number of replications beyond 100 has only a small effect on power.
+Further, when nuisance parameters are present ­ as in the case of linearity tests studied here ­ the procedure can be extended through the use of maximized Monte Carlo (MMC) tests (Dufour, 2006). Two variants of this procedure are described: a fully exact version which requires maximizing a p-value function over the nuisance parameter space under the null hypothesis (here, the autoregressive coefficients), and an approximate one based on a (potentially much smaller) consistent set estimator of the autoregressive parameters. Both procedures are valid (in finite samples or asymptotically) without any need to establish the asymptotic distribution of the fundamental test statistics (here residual moment-based statistics) or the convergence of the empirical distribution of the simulated test statistics toward the asymptotic distribution of the fundamental test statistic used (as in bootstrapping).
+When the nuisance-parameter set on which the p-values are computed is reduced to a single point ­ a consistent estimator of the nuisance parameters under the null hypothesis ­ the MC test can be interpreted as a parametric bootstrap. The implementation of this type of procedure is also considerably simplified through the use of our moment-based test statistics. It is important to emphasize that evaluating the p-value function is far simpler to do than computing the likelihood function of the Markov-switching model, as required by the methods of Hansen (1992, 1996) and Garcia (1998). The MC tests are also far simpler to compute than the information matrix-type tests of Carrasco et al. (2014), which require a grid search for a supremum-type statistic (or numerical integration for an exponential-type statistic) over a priori measures of the distance between potentially regime-switching parameters and another parameter characterizing the serial correlation of the Markov chain under the alternative.
+Third, we conduct simulation experiments to examine the performance of the proposed tests using the optimal tests of Carrasco et al. (2014) as the benchmark for comparisons. The new moment-based tests are found to perform remarkably well when compared to the asymptotically optimal ones, especially when the variance is subject to regime changes. Finally, the proposed methods are illustrated by revisiting the question of whether U.S. real GNP growth can be described as an autoregressive model with Markov-switching means and variances using the original Hamilton (1989) data set from 1952 to 1984, as well as an extended data set from 1952 to 2010. We find that the empirical evidence does not justify a rejection of the linear model over the period 1952­1984. However, the linear autoregressive model is firmly rejected over the extended time period.
+The paper is organized as follows. Section 2 describes the autoregressive model with Markovswitching means and variances. Section 3 presents the moments of normal mixtures implied by
+2
+
+the regime-switching process and the test statistics we propose to combine for capturing those moments. Section 3 also explains how the MC test techniques can be used to deal with the presence of an autoregressive component in the model specification. Section 4 examines the performance of the developed MC tests in simulation experiments using the optimal tests for Markov-switching parameters of Carrasco et al. (2014) as the benchmark for comparison purposes. Section 5 then presents the results of the empirical application to U.S. output growth and Section 6 concludes.
+
+2 Markov-switching model
+
+We consider an autoregressive model with Markov-switching means and variances defined by
+
+r
+
+yt = µst + k(yt-k - µst-k ) + st t
+
+(1)
+
+k=1
+
+where the innovation terms {t} are independently and identically distributed (i.i.d.) according to
+
+the N (0, 1) distribution. The time-varying mean and variance parameters of the observed variable
+
+yt are functions of a latent first-order Markov chain process {St}. The unobserved random variable
+
+St takes integer values in the set {1, 2} such that Pr(St = j) =
+
+2 i=1
+
+pij
+
+Pr(St-1
+
+=
+
+i),
+
+with
+
+pij = Pr(St = j | St-1 = i). The one-step transition probabilities are collected in the matrix
+
+P=
+
+p11 p12 p21 p22
+
+where
+
+2 j=1
+
+pij
+
+= 1,
+
+for
+
+i = 1, 2.
+
+Furthermore,
+
+St
+
+and
+
+
+
+are
+
+assumed
+
+independent
+
+for
+
+all
+
+t,  .
+
+The model in (1) can also be conveniently expressed as
+
+2
+
+r
+
+2
+
+2
+
+yt = µiI[St = i] + k yt-k - µiI[St-k = i] + iI[St = i]t
+
+(2)
+
+i=1
+
+k=1
+
+i=1
+
+i=1
+
+where I[A] is the indicator function of event A, which is equal to 1 when A occurs and 0 otherwise. Here µi and 2i are the conditional mean and variance given the regime St = i.
+The model parameters are collected in the vector  = (µ1, µ2, 1, 2, 1, . . . , r, p11, p22). The sample (log) likelihood, conditional on the first r observations of yt, is then given by
+
+T
+
+LT () = log f (yT1 | y0-r+1; ) = log f (yt | yt--r1+1; )
+
+(3)
+
+t=1
+
+where yt-r+1 = {y-r+1, . . . , yt} denotes the sample of observations up to time t, and
+
+2
+
+2
+
+2
+
+f (yt | yt--r1+1; ) =
+
+...
+
+f (yt, St = st, St-1 = st-1, . . . , St-r = st-r | yt--r1+1; ) .
+
+st=1 st-1=1 st-r =1
+
+Hamilton (1989) proposes an algorithm for making inferences about the unobserved state variable St given observations on yt. His algorithm also yields an evaluation of the sample likelihood in (3), which is needed to find the maximum likelihood (ML) estimates of .
+The sample likelihood LT () in (3) has several unusual features which make it notoriously difficult for standard optimizers to explore. In particular, the likelihood function has several modes
+
+3
+
+of equal height. These modes correspond to the different ways of reordering the state labels. There is no difference between the likelihood for µ1 = µ1 , µ2 = µ2, 1 = 1, 2 = 2 and the likelihood for µ1 = µ2 , µ2 = µ1, 1 = 2, 2 = 1. Rossi (2014, Ch. 1) provides a nice discussion of these issues in the context of normal mixtures, which is a special case implied by (2) when the 's are
+zero. He shows that the likelihood has numerous points where the function is not defined with an
+infinite limit. Furthermore, the likelihood function also has saddle points containing local maxima.
+This means that standard numerical optimizers are likely to converge to a local maximum and will
+therefore need to be started from several points in a constrained parameter space in order to find
+the ML estimates.
+
+3 Tests of linearity
+
+The Markov-switching model in (2) nests the following linear autoregressive (AR) specification as
+
+a special case:
+r
+
+yt = c + kyt-k + 1t,
+
+(4)
+
+k=1
+
+where c = µ1(1-
+
+r k=1
+
+k ).
+
+Here
+
+µ1
+
+and
+
+21
+
+refer
+
+to
+
+the
+
+single-regime
+
+mean
+
+and
+
+variance
+
+parameters.
+
+It is well known that the conditional ML estimates of the linear model can be obtained from an
+
+ordinary least squares (OLS) regression (Hamilton, 1994, Ch. 5). A problem with the ML approach
+
+is that the likelihood function will always increase when moving from the linear model in (4) to
+
+the two-regime model in (2) as any increase in flexibility is always rewarded. In order to avoid
+
+over-fitting, it is therefore desirable to test whether the linear specification provides an adequate
+
+description of the data.
+
+Given model (2), the null hypothesis of linearity can be expressed as either (µ1 = µ2, 1 = 2) or (p11 = 1, p21 = 1) or (p12 = 1, p22 = 1). It is easy to see that if (µ1 = µ2, 1 = 2), then the transition probabilities are unidentified. On the contrary, if (p11 = 1, p21 = 1) then it is µ2 and 2 which become unidentified, whereas if (p12 = 1, p22 = 1) then µ1 and 1 become unidentified. One of the regularity conditions underlying the usual asymptotic distributional theory of ML estimates
+
+is that the information matrix be nonsingular; see, for example, Gouri´eroux and Monfort (1995,
+
+Ch. 7). Under the null hypothesis of linearity, this condition is violated since the likelihood function
+
+in (3) is flat with respect to the unidentified parameters at the optimum. A singular information
+
+matrix results also from another, less obvious, problem: the derivatives of the likelihood function
+
+with respect to the mean and variance are identically zero when evaluated at the constrained
+
+maximum; see Hansen (1992) and Garcia (1998).
+
+3.1 Mixture model
+
+We begin by considering the mean-variance switching model:
+
+yt = µ1I[St = 1] + µ2I[St = 2] + 1I[St = 1] + 2I[St = 2] t,
+
+(5)
+
+where t  i.i.d. N (0, 1). The Markov chain governing St is assumed ergodic and we denote the ergodic probability associated with state i by i. Note that a two-state Markov chain is ergodic provided that p11 < 1, p22 < 1, and p11 + p22 > 0 (Hamilton, 1994, p. 683). As we already mentioned, the null hypothesis of linearity (no regime changes) can be expresses as
+
+H0(µ, ) : µ1 = µ2 and 1 = 2,
+
+4
+
+and a relevant alternative hypothesis states that the mean and/or variance is subject to first-order
+Markov-switching. The tests of H0(µ, ) we develop exploit the fact that the marginal distribution of yt is a mixture of two normal distributions. Indeed, under the maintained assumption of an ergodic Markov chain we have:
+
+yt  1N (µ1, 21) + 2N (µ2, 22),
+
+(6)
+
+where 1 = (1 - p22)/(2 - p11 - p22) and 2 = 1 - 1. In the spirit of Cho and White (2007) and Carter and Steigerwald (2012, 2013), the suggested approach ignores the Markov property of St.
+The marginal distribution of yt given in (6) is a weighted average of two normal distributions. Timmermann (2000) shows that the mean (µ), unconditional variance (2), skewness coefficient ( b1), and excess kurtosis coefficient (b2) associated with (6) are given by
+
+µ = 1µ1 + 2µ2,
+
+(7)
+
+2 = 121 + 222 + 12(µ2 - µ1)2,
+
+(8)
+
+b1
+
+=
+
+12(µ1 - µ2) 3(21 - 22) + (1 - 21)(µ2 - µ21)2 121 + 222 + 12(µ2 - µ1)2 3/2
+
+,
+
+(9)
+
+b2
+
+=
+
+a b
+
+,
+
+(10)
+
+where
+
+a = 312(22 - 21)2 + 6(µ2 - µ1)212(21 - 1)(22 - 21)
+
++12(µ2 - µ1)4(1 - 612),
+
+b = 121 + 222 + 12(µ2 - µ1)2 2.
+When compared to a bell-shaped normal distribution, the expressions in (7)­(10) imply that a mixture distribution can be characterized by any of the following features: the presence of two peaks, right or left skewness, or excess kurtosis. The extent to which these characteristics will be manifest depends on the relative values of 1 and 2 by which the component distributions in (6) are weighted, and on the distance between the component distributions. This distance can be characterized by either the separation between the respective means, µ = µ2 - µ1, or by the separation between the respective standard deviations,  = 2 - 1, where we adopt the convention that µ2 > µ1 and 2 > 1. For example, if  = 0, then the skewness and relative difference between the two peaks of the mixture distribution depends on µ and the weights 1 and 2. When 1 = 2, the mixture distribution is symmetric with two modes becoming more distinct as µ increases. On the contrary, if µ = 0 then the mixture distribution will have heavy tails depending on the difference between the component standard deviations and their relative weights. See Hamilton (1994, Ch. 22), Timmermann (2000), and Rossi (2014, Ch. 1) for more on these effects.
+To test H0(µ, ), we propose a combination of four test statistics based on the theoretical moments in (7)­(10). The four individual statistics are computed from the residual vector ^ = (^1, ^2, . . . , ^T ) comprising the residuals ^t = yt - y¯, themselves computed as the deviations from the sample mean. Each statistic is meant to detect a specific characteristic of mixture distributions.
+
+5
+
+The first of these statistics is
+
+M (^) = |m2 - m1| ,
+
+(11)
+
+s22 + s21
+
+where
+
+m2 =
+
+T t=1
+
+^tI[^t
+
+>
+
+0]
+
+T t=1
+
+I[^t
+
+>
+
+0]
+
+,
+
+s22 =
+
+Tt=1(^t - m2)2I[^t
+
+T t=1
+
+I[^t
+
+>
+
+0]
+
+>
+
+0] ,
+
+and
+
+m1 =
+
+T t=1
+
+^tI[^t
+
+<
+
+0]
+
+T t=1
+
+I[^t
+
+<
+
+0]
+
+,
+
+s21 =
+
+Tt=1(^t - m1)2I[^t
+
+T t=1
+
+I[^t
+
+<
+
+0]
+
+<
+
+0] .
+
+The statistic in (11) is a standardized difference between the means of the observations situated
+
+above the sample mean and those below the sample mean. The next statistic partitions the obser-
+
+vations on the basis of the sample variance ^2 = T -1
+
+T t=1
+
+^2t .
+
+Specifically,
+
+we
+
+consider
+
+V
+
+(^)
+
+=
+
+v2(^) v1(^)
+
+,
+
+(12)
+
+where
+
+v2 =
+
+T t=1
+
+^2t I[^2t
+
+>
+
+^2]
+
+T t=1
+
+I[^2t
+
+>
+
+^2]
+
+,
+
+v1 =
+
+T t=1
+
+^2t I[^2t
+
+<
+
+^2]
+
+T t=1
+
+I[^2t
+
+<
+
+^2]
+
+,
+
+so that v2 > v1. Note that we partition on the basis of average values because (6) is a two-component
+
+mixture. The last two statistics are the absolute values of the coefficients of skewness and excess
+
+kurtosis:
+
+S(^) =
+
+T t=1
+
+^3t
+
+T (^2)3/2
+
+(13)
+
+and
+
+K(^) =
+
+T t=1
+
+^4t
+
+T (^2)2
+
+-3
+
+,
+
+(14)
+
+which were also considered in Cho and White (2007). Observe that the statistics in (11)­(14) can
+only be non-negative and are each likely to be larger in value under the alternative hypothesis.
+Taken together, they constitute a potentially useful battery of statistics to test H0(µ, ) by capturing characteristics of the first four moments of normal mixtures. As one would expect, the power
+of the tests based on (11)­(14) will generally be increasing with the frequency of regime changes.
+It is easy to see that the statistics in (11)­(14) are exactly pivotal as they all involve ratios and
+can each be computed from the vector of standardized residuals ^/^, which are scale and location invariant under the null of linearity. That is, the vector of statistics (M (^), V (^), S(^), K(^)) is distributed like M (^), V (^), S(^), K(^) , where   N (0, IT ) and ^ =  - ¯. The null distribution of the proposed test statistics can thus be simulated to any degree of precision, thereby
+paving the way for an MC test as follows.
+First, compute each of the statistics in (11)­(14) with the actual data to obtain (M (^), V (^), S(^), K(^)). Then generate N - 1 mutually independent T × 1 vectors i, i = 1, . . . , N - 1, where i  N (0, IT ). For each such vector compute ^i = (^i1, ^i2, . . . , ^iT ) with typical element ^it = it-i, where i is the sample mean, and compute the statistics in (11)­(14) based on ^i so as to obtain N - 1 statistics vectors (M (^i), V (^i), S(^i), K(^i)), i = 1, . . . , N - 1. Let  denote any one of the above four statistics, 0 its original data-based value, and i, i = 1, . . . , N -1, the corresponding simulated values. The individual MC p-values are then given by
+
+G[0; N ]
+
+=
+
+N
+
++
+
+1
+
+- R[0; N
+
+N],
+
+(15)
+
+6
+
+where R[0; N ] is the rank of 0 when 0, 1, . . . , N-1 are placed in increasing order. The associated MC critical regions are defined as
+
+WN() = R[0; N ]  cN ()
+
+with
+
+cN () = N - I[N ] + 1,
+
+where I[x] denotes the largest integer not exceeding x. These MC critical regions are exact for any given sample size, T . Further discussion and applications of the MC test technique can be found in Dufour and Khalaf (2001) and Dufour (2006).
+Note that the MC p-values GM [M (^); N ], GV [V (^); N ], GS[S(^); N ], and GK[K(^); N ] are not statistically independent and may in fact have a complex dependence structure. Nevertheless, if we choose the individual levels such that M + V + S + K =  then, for T S = {M, V, S, K}, we have by the Boole-Bonferroni inequality:
+
+
+
+
+
+Pr 
+
+WN()  ,
+
+T S
+
+so the induced test, which consists in rejecting H0(µ, ) when any of the individual tests rejects, has level . For example, if we set each individual test level at 2.5%, so that we reject if G[0; N ]  2.5% for any   {M, V, S, K}, then the overall probability of committing a Type I error does not exceed 10%. Such Bonferroni-type adjustments, however, can be quite conservative and lead to power losses; see Savin (1984) for a survey of these issues.
+In order to resolve these multiple comparison issues, we propose an MC test procedure based on combining individual p-values. The idea is to treat the combination like any other (pivotal) test statistic for the purpose of MC resampling. As with double bootstrap schemes (MacKinnon, 2009), this approach can be computationally expensive since it requires a second layer of simulations to obtain the p-value of the combined (first-level) p-values. Here though we can ease the computational burden by using approximate p-values in the first level. A remarkable feature of the MC test combination procedure is that it remains exact even if the first-level p-values are only approximate. Indeed, the MC procedure implicitly accounts for the fact that the p-value functions may not be individually exact and yields an overall p-value for the combined statistics which itself is exact. For this procedure, we make use of approximate distribution functions taking the simple logistic form:
+
+F^[x]
+
+=
+
+1
+
+exp(^0 + + exp(^0
+
+^1x) + ^1x)
+
+,
+
+(16)
+
+whose estimated coefficients are given in Table 1 for selected sample sizes. These coefficients were obtained by the method of non-linear least squares (NLS) applied to simulated distribution functions comprising a million draws for each sample size. The approximate p-value of, say, M (^) is then computed as G^M [M (^)] = 1 - F^M [M (^)], where F^M [x] is given by (16) with associated ^'s from Table 1. The other p-values G^V , G^S, G^K are computed in a similar way.
+We consider two methods for combining the individual p-values. The first one rejects the null when at least one of the p-values is sufficiently small so that the decision rule is effectively based on the statistic
+
+Fmin(^) = 1 - min G^M [M (^)], G^V [V (^)], G^S [S(^)], G^K [K(^)] .
+
+(17)
+
+The criterion in (17) was suggested by Tippett (1931) and Wilkinson (1951) for combining inferences obtained from independent studies. The second method, suggested by Fisher (1932) and Pearson
+
+7
+
+(1933), again for independent test statistics, is based on the product (rather than the minimum) of the p-values:
+
+F×(^) = 1 - G^M [M (^)] × G^V [V (^)] × G^S[S(^)] × G^K [K(^)].
+
+(18)
+
+The MC p-value of the combined statistic in (17), for example, is then given by
+
+GFmin [Fmin(^); N ]
+
+=
+
+N
+
++
+
+1
+
+-
+
+RFmin N
+
+[Fmin
+
+(^);
+
+N
+
+]
+
+,
+
+(19)
+
+where RFmin[Fmin(^); N ] is the rank of Fmin(^) when Fmin(^), Fmin(^1), . . . , Fmin(^N-1) are placed in ascending order. Although the statistics which enter into the computation of (17) and (18) may have a rather complex dependence structure, the MC p-values computed as in (19) are provably exact. See Dufour et al. (2004) and Dufour et al. (2014) for further discussion and applications of these test combination methods.
+
+3.2 Autoregressive dynamics
+In this section we extend the proposed MC tests to Markov-switching models with state-independent autoregressive dynamics. To keep the presentation simple, we describe in detail the test procedure in the case of models with a first-order autoregressive component. Models with higher-order autoregressive components are dealt with by a straightforward extension of the AR(1) case. For convenience, the Markov-switching model with AR(1) component that we treat is given here as
+
+where
+
+yt = µst + (yt-1 - µst-1 ) + st t
+
+(20)
+
+µst = µ1I[St = 1] + µ2I[St = 2], st = 1I[St = 1] + 2I[St = 2].
+The tests exploit the fact that, given the true value of , the simulation-based procedures of the previous section can be validly applied to a transformed model. The idea is that if  in (20) were known we could test whether zt() = yt - yt-1, defined for t = 2, . . . , T , follows a mixture of at least two normals.
+Indeed, when µ1 = µ2 (µ1, µ2 = 0), the random variable zt() follows a mixture of two normals (when  = 0), three normals (when || = 1), or four normals otherwise. That is, when yt-1 is subtracted on both sides of (20), the result is a model with a mean that switches between four states according to
+
+zt() = µ1I[St = 1] + µ2I[St = 2] + µ3I[St = 3] + µ4I[St = 4] + 1I[St = 1] + 2I[St = 2] t
+
+where
+
+µ1 = µ1(1 - ), µ2 = µ2 - µ1, µ3 = µ1 - µ2, µ4 = µ2(1 - )
+
+(21)
+
+and St is a first-order, four-state Markov chain with transition probability matrix
+
+ p11 p12 0 0 
+
+P
+
+=
+
+  
+
+0 p11
+
+0 p12
+
+p21 0
+
+p22 0
+
+ 
+
+.
+
+
+
+0 0 p21 p22
+
+8
+
+If µ1 = µ2, the quantities in (21) admit either two distinct values (when  = 0), three distinct values (when  = 1 or -1), or four distinct values otherwise. Under H0(µ, ), the filtered observations zt(), t = 2, . . . , T , are i.i.d. when evaluated at the true value of the autoregressive parameter.
+To deal with the fact that  in unknown, we use the extension of the MC test technique
+proposed in Dufour (2006) to deal with the presence of nuisance parameters. Treating  as a
+nuisance parameter means that the proposed test statistics become functions of ^t(), where ^t() = zt() - z¯(). Let  denote the set of admissible values for  which are compatible with the null hypothesis. Depending on the context, the set  may be R itself, the open interval (-1, 1), the closed interval [-1, 1], or any other appropriate subset of R. In light of a minimax argument
+(Savin, 1984), the null hypothesis may then be viewed as a union of point null hypotheses, where
+each point hypothesis specifies an admissible value for . In this case, the statistic in (19) yields a
+test of H0(µ, ) with level  if and only if
+
+GFmin [Fmin(^); N ]  ,    ,
+
+or, equivalently,
+
+sup GFmin[Fmin(^); N ]   .
+
+
+In words, the null is rejected whenever for all admissible values of  under the null, the corresponding point null hypothesis is rejected. Therefore, if N  is an integer, we have under H0(µ, ),
+
+Pr sup GFmin[Fmin(^); N ] :        ,
+i.e. the critical region sup{GFmin[Fmin(^); N ] :   }   has level . This procedure is called a maximized MC (MMC) test. It should be noted that the optimization is done over  holding fixed the values of the simulated T × 1 vectors i, i = 1, . . . , N - 1, with i  N (0, IT ) ­ from which the simulated statistics are obtained.
+The maximization involved in the MMC test can be numerically challenging for Newton-type methods since the simulated p-value function is discontinuous. Search methods for non-smooth objectives which do not rely on gradients are therefore necessary. A computationally simplified procedure can be based on a consistent set estimator CT of ; i.e., one for which limT  Pr[  CT ] = 1. For example, if ^T is a consistent point estimate of  and c is any positive number, then the set
+CT =    : ^T -  < c
+is a consistent set estimator of ; i.e., limT  Pr[ ^T -  < c] = 1, c > 0. Under H0(µ, ), the critical region based on (19) satisfies
+
+lim Pr
+T 
+
+sup
+
+GFmin [Fmin(^); N ]
+
+:   CT
+
+   .
+
+The procedure may even be based on the singleton set CT = {^T }, which yields a local MC (LMC) test based on a consistent point estimate. See Dufour (2006) for additional details.
+
+4 Simulation evidence
+This section presents simulation evidence on the performance of the proposed MC tests using model (20) as the data-generating process (DGP). As a benchmark for comparison purposes, we take the optimal tests for Markov-switching parameters developed by Carrasco et al. (2014) (CHP).
+9
+
+To describe these tests, let t = t(0) denote the log of the predictive density of the tth observation
+under the null hypothesis of a linear model. For model (20), the parameter vector under the null hypothesis becomes 0 = (c, , 2) and we have
+
+t
+
+=
+
+-
+
+1 2
+
+log(22)
+
+-
+
+(yt
+
+-
+
+c - yt-1)2 22
+
+.
+
+Let ^0 denote the conditional maximum likelihood estimates under the null hypothesis (which can be obtained by OLS) and define
+
+(t1)
+
+=
+
+t 
+
+=^0
+
+and
+
+(t2) =
+
+2t 
+
+.
+=^0
+
+The CHP information matrix-type tests are calculated with
+
+T = T (h, ) =
+
+µ2,t(h,
+
+ )/ T
+
+t
+
+where
+
+µ2,t(h, )
+
+=
+
+1 2
+
+h
+
+(t2) + (t1)(t1) + 2
+
+t-s (t1) (s1)
+
+s<t
+
+h.
+
+Here the elements of vector h are a priori measures of the distance between the corresponding
+switching parameters under the alternative hypothesis and the scalar  characterizes the serial
+correlation of the Markov chain. To ensure identification, the vector h needs to be normalized such that h = 1. For given values of h and , let ^ = ^(h, ) denote the residuals of an OLS regression of µ2,t(h, ) on (t1).
+Following the suggestion in CHP, h in the case of model (20) is a 3-vector whose first and third
+elements (corresponding to a switching mean and variance) are generated uniformly over the unit
+sphere, and  takes values in the interval [, ¯] = [-0.7, 0.7]. The nuisance parameters in h and 
+can be dealt with in two ways. The first is with a supremum-type test statistic:
+
+supTS =
+{h, :
+
+sup
+h =1,<<¯}
+
+1 2
+
+max
+
+0,
+
+T ^^
+
+2
+
+and the second is with an exponential-type statistic (based on an exponential prior):
+
+expTS =
+
+(h, ) dh d
+
+{ h =1,<<¯}
+
+where
+
+  2 exp (h, ) =
+
+1 2
+
+1
+
+ T ^^
+
+-1
+
+2
+
+
+
+ T ^^
+
+-
+
+1
+
+if ^^ = 0 , otherwise.
+
+Here (·) stands for the standard normal cumulative distribution. CHP suggest using a parametric bootstrap to assess the statistical significance of these statistics because their asymptotic distributions are not free of nuisance parameters. This is done by generating data from the linear AR model with ^0 and calculating supTS and expTS with each artificial sample. We implemented this procedure using 500 bootstrap replications.
+In the following tables, LMC and MMC stand for the local and maximized MC procedures, respectively. The first-level p-values are computed from the estimated distribution functions in
+
+10
+
+Table 1, and the subscript "min" is used to indicate that the first-level p-values are combined via their minimum, while the subscript "×" indicates that they are combined via their product. The MC tests were implemented with N = 100 and the MMC test was performed by maximizing the MC p-value by grid search over an interval defined by taking two standard errors on each side of ^0, the OLS estimate of . The simulation experiments are based on 1000 replications of each DGP configuration.
+For a nominal 5% level, Table 2 reports the empirical size (in percentage) of the LMC, MMC, supTS, and expTS tests for  = 0.1, 0.9 and T = 100, 200. The MMC tests are seen to perform according to the developed theory with empirical rejection rates  5% under the null hypothesis. The LMC tests based on ^0 perform remarkably well, revealing an empirical size close to the nominal 5% level in each case. The same can be said about the bootstrap supTS and expTS tests even though they seem to be less stable than the LMC tests.
+Tables 3 and 4 report the empirical power (in percentage) of the tests for  = 0.1 and  = 0.9, respectively. The DGP configurations vary the separation between the means µ = µ2 - µ1 and standard deviations  = 2 - 1 as (µ, ) = (2, 0), (0, 1), (2, 2); the sample size as T = 100, 200; and the transition probabilities as (p11, p22) = (0.9, 0.9), (0.9, 0.5), (0.9, 0.1).
+As expected, the power of the proposed tests increases with µ and , and the sample size. For given values of µ and , test power tends to increase with the frequency of regime switches. For example, when µ = 2 and  = 1, the power of the MC tests increases when p22 decreases (increase) from 0.9 (0.1) to 0.5. Comparing the LMCmin and MMCmin to LMC× and MMC×, respectively, reveals that there is a power gain in most cases from using the product rule to combine the first-level p-values in the MC procedure. Not surprisingly, the LMC procedures (based on the point estimate ^0) have better power than the MMC procedures, which maximize the MC p-value over a range of admissible values for  in order to hedge the risk of committing a Type I error.
+The supTS and expTS generally tend to be more powerful than the MC tests, particularly when there are regimes only in the mean (e.g. µ = 2,  = 0). Nevertheless, it is quite remarkable that the LMC tests have power approaching that of the supTS and expTS tests as soon as the variance is also subject to regime changes. In some cases, the LMC tests even appears to outperform the optimal CHP tests. For instance this can be observed in the middle portion of Table 3, where µ = 0,  = 1. Another important remark is that the proposed moment-based MC tests are far easier to compute than the information matrix-type bootstrap tests.
+5 Empirical illustration
+In this section, we present an application of our test procedures to the study by Hamilton (1989) who suggested modelling U.S. output growth with a Markov-switching specification as in (2) with r = 4 and where only the mean is subject to regime changes. With this model specification, business cycle expansions and contractions can be interpreted as a process of switching between states of high and low growth rates. Hamilton estimated his model by the method of maximum likelihood with quarterly data ranging from 1952Q2 to 1984Q4. Probabilistic inferences on the state of the economy were then calculated and compared to the business-cycle dates as established by the National Bureau of Economic Research. On the basis of simulated residual autocorrelations, Hamilton argued that his Markov-switching model encompasses the linear AR(4) specification.
+We applied our proposed MC procedures to formally test the linear AR(4) specification. In this context, the LMC and MMC procedures are based on the filtered observations
+zt() = yt - 1yt-1 - 2yt-2 - 3yt-3 - 4yt-4,
+11
+
+where yt is 100 times the change in the logarithm of U.S. real GNP. Following Carrasco et al. (2014), we considered Hamilton's original data set (135 observations of yt) and an extended data set including observations from 1952Q2 to 2010Q4 (239 observations of yt). The  values used in zt() for the LMC procedure are obtained by an OLS regression of yt on a constant and four of its lags. The MMC test procedure maximizes the MC p-value by grid search over a four-dimensional box defined by taking 2 standard errors on each side of the OLS parameter estimates. To ensure stationarity of the solutions, we only considered grid points for which the roots of the autoregressive polynomial 1-1z-2z2-3z3-4z4 = 0 lie outside the unit circle. The number of MC replications was set as N = 100.
+Table 5 shows the test results for the LMC and MMC procedures based on the minimum and product combination rules. For the MMC statistics the table reports the maximal MC p-value, the  values that maximized the p-value function, and the smallest modulus of the roots of 1 - 1z - 2z2 - 3z3 - 4z4 = 0. These points on the grid with the highest MMC p-values can be interpreted as Hodges-Lehmann-stye estimates of the autoregressive parameters (Hodges and Lehmann, 1963). In the case of the LMC statistics, the reported  values are simply the OLS point estimates.
+For Hamilton's data, the results clearly show that the null hypothesis of linearity cannot be rejected at usual levels of significance. Furthermore, the retained values of the autoregressive component yield covariance-stationary representations of output growth. This shows that the GNP data from 1952 to 1984 is entirely compatible with a linear and stationary autoregressive model. It is interesting to note from Table 5 that the MMCmin and MMC× procedures find  values yielding p-values = 1 for the period 1952Q2­1984Q4. Our MC tests, however, reject the stationary linear AR(4) model with p-values  0.06 over the extended sample period from 1952 to 2010, which agrees with the findings of Carrasco et al. (2014). The results presented here are also consistent with the evidence in Kim and Nelson (1999) and McConnell and Perez-Quiros (2000) about a structural decline in the volatility of business cycle fluctuations starting in the mid-1980's ­ the so-called Great Moderation.
+6 Conclusion
+We have shown how the MC test technique can be used to obtain provably exact and useful tests of linearity in the context of autoregressive models with Markov-switching means and variances. The developed procedure is robust to the identification issues that plague conventional likelihoodbased inference methods, since all the required computations are done under the null hypothesis. Another advantage of our MC test procedure is that it is easy to implement and computationally inexpensive.
+The suggested test statistics exploit the fact that, under the Markov-switching alternative, the observations unconditionally follow a mixture of at least two normal distributions once the autoregressive component is properly filtered out. Four statistics, each ones meant to detect a specific feature of normal mixtures, are combined together either through the minimum or the product of their individual p-values. Of course, one may combine any subset of the proposed test statistics, or even include others not considered here. As long as the individual statistics are pivotal under the null of linearity, the proposed MC test procedure will control the overall size of the combined test.
+The provably exact MMC tests require the maximization of a p-value function over the space of admissible values for the autoregressive parameters. A simplified version (LMC test) limits the maximization to a consistent set estimator. Strictly speaking, the LMC tests are no longer exact in finite samples. Nevertheless, the level constraint will be satisfied asymptotically under much
+12
+
+weaker conditions than those typically required for the bootstrap. In terms of both size and power, the LMC tests based on a consistent point estimate of the autoregressive parameters were found to perform remarkably well in comparison to the bootstrap tests of Carrasco et al. (2014).
+The developed approach can also be extended to allow for non-normal mixtures. Indeed, it is easy to see that the standardized residuals ^/^ remain pivotal under the null of linearity as long as t in (5) has a completely specified distribution. As in Beaulieu et al. (2007), the MMC test technique can be used to further allow the distribution of t to depend on unknown nuisance parameters. Such extensions go beyond the scope of the present paper and are left for future work.
+13
+
+References
+Ang, A. and G. Bekaert (2002a). International asset allocation with regime shifts. Review of Financial Studies 15, 1137­1187.
+Ang, A. and G. Bekaert (2002b). Regime switches in interest rates. Journal of Business and Economic Statistics 20, 163­182.
+Barnard, G. (1963). Comment on `the spectral analysis of point processes' by m.s. bartlett. Journal of the Royal Statistical Society (Series B) 25, 294.
+Beaulieu, M.-C., J.-M. Dufour, and L. Khalaf (2007). Multivariate tests of mean-variance efficiency with possible non-Gaussian errors: an exact simulation-based approach. Journal of Business and Economic Statistics 25, 398­410.
+Birnbaum, Z. (1974). Computers and unconventional test-statistics. In F. Proschan and R. Serfling (Eds.), Reliability and Biometry, pp. 441­458. SIAM, Philadelphia.
+Carrasco, M., L. Hu, and W. Ploberger (2014). Optimal test for Markov switching parameters. Econometrica 82 (2), 765­784.
+Carter, A. and D. Steigerwald (2012). Testing for regime switching: a comment. Econometrica 80, 1809­1812.
+Carter, A. and D. Steigerwald (2013). Markov regime-switching tests: asymptotic critical values. Journal of Econometric Methods 2, 25­34.
+Cho, J. and H. White (2007). Testing for regime switching. Econometrica 75, 1671­1720.
+Davies, R. (1977). Hypothesis testing when a nuisance parameter is present only under the alternative. Biometrika 64, 274­254.
+Davies, R. (1987). Hypothesis testing when a nuisance parameter is present only under the alternative. Biometrika 74, 33­43.
+Davig, T. (2004). Regime-switching debt and taxation. Journal of Monetary Economics 51, 837­ 859.
+Dufour, J.-M. (2006). Monte Carlo tests with nuisance parameters: A general approach to finitesample inference and nonstandard asymptotics in econometrics. Journal of Econometrics 133, 443­477.
+Dufour, J.-M. and L. Khalaf (2001). Monte Carlo test methods in econometrics. In B. Baltagi (Ed.), Companion to Theoretical Econometrics. Basil Blackwell, Oxford, UK.
+Dufour, J.-M., L. Khalaf, J.-T. Bernard, and I. Genest (2004). Simulation-based finite-sample tests for heteroskedasticity and arch effects. Journal of Econometrics 122, 317­347.
+Dufour, J.-M., L. Khalaf, and M. Voia (2014). Finite-sample resampling-based combined hypothesis tests, with applications to serial correlation and predictability. Communications in Statistics Simulation and Computation 44, 2329­2347.
+Dwass, M. (1957). Modified randomization tests for nonparametric hypotheses. Annals of Mathematical Statistics 28, 181­187.
+14
+
+Engel, C. and J. Hamilton (1990). Long swings in the dollar: Are they in the data and do markets know it? American Economic Review 80, 689­713.
+Fisher, R. (1932). Statistical Methods for Research Workers. Oliver and Boyd, Edinburgh.
+Garcia, R. (1998). Asymptotic null distribution of the likelihood ratio test in Markov switching models. International Economic Review 39, 763­788.
+Garcia, R. and P. Perron (1996). An analysis of the real interest rate under regime shifts. Review of Economics and Statistics 78, 111­125.
+Gouri´eroux, C. and A. Monfort (1995). Statistics and Econometric Models, Volume 1. Cambridge University Press.
+Guidolin, M. (2011). Markov switching models in empirical finance. In D. Drukker (Ed.), Missing Data Methods: Time-Series Methods and Applications (Advances in Econometrics, Volume 27 Part 2). Emerald Group Publishing Limited.
+Hamilton, J. (1989). A new approach to the economic analysis of nonstationary time series and the business cycle. Econometrica 57, 357­384.
+Hamilton, J. (1994). Time Series Analysis. Princeton University Press, Princeton, New Jersey.
+Hamilton, J. (2016). Macroeconomic regimes and regime shifts. In J. Taylor and H. Uhlig (Eds.), Handbook of Macroeconomics, Vol. 2. Elsevier Science Publishers B.V.
+Hamilton, J. and R. Susmel (1994). Autoregressive conditional heteroskedasticity and changes in regime. Journal of Econometrics 64, 307­333.
+Hansen, B. (1992). The likelihood ratio test under nonstandard conditions: Testing the Markov switching model of GNP. Journal of Applied Econometrics 7, S61­S82.
+Hansen, B. (1996). Erratum: The likelihood ratio test under nonstandard conditions: Testing the Markov switching model of GNP. Journal of Applied Econometrics 11, 195­198.
+Hodges, J. and E. Lehmann (1963). Estimates of location based on rank tests. The Annals of Mathematical Statistics 35, 598­611.
+Kim, C. and C. Nelson (1999). Has the U.S. economy become more stable? a Bayesian approach based on a Markov-switching model of the business cycle. Review of Economic and Statistics 81, 608­616.
+Lee, L.-F. and A. Chesher (1986). Specification testing when score statistics are identically zero. Journal of Econometrics 31, 121­149.
+MacKinnon, J. (2009). Bootstrap hypothesis testing. In D. Belsley and J. Kontoghiorghes (Eds.), Handbook of Computational Econometrics, pp. 183­213. Wiley.
+McConnell, M. and G. Perez-Quiros (2000). Output fluctuations in the United States: What has changed since the early 1980's? American Economic Review 90, 1464­1476.
+Pearson, K. (1933). On a method of determining whether a sample of size n supposed to have been drawn from a parent population having a known probability integral has probably been drawn at random. Biometrika 25, 379­410.
+15
+
+Psaradakis, Z. and M. Sola (1998). Finite-sample properties of the maximum likelihood estimator in autoregressive models with Markov switching. Journal of Econometrics 86, 369­386.
+Rossi, P. (2014). Bayesian Non- and Semi-parametric Methods and Applications. Princeton University Press.
+Savin, N. (1984). Multiple hypothesis testing. In Z. Griliches and M. Intriligator (Eds.), Handbook of Econometrics, pp. 827­879. North-Holland, Amsterdam.
+Timmermann, A. (2000). Moments of Markov switching models. Journal of Econometrics 96, 75­111.
+Timmermann, A. (2001). Structural breaks, incomplete information and stock prices. Journal of Business and Economic Statistics 19, 299­315.
+Tippett, L. (1931). The Method of Statistics. Williams & Norgate, London. Watson, M. and R. Engle (1985). Testing for regression coefficient stability with a stationary AR(1)
+alternative. Review of Economics and Statistics 67, 341­346. Wilkinson, B. (1951). A statistical consideration in psychological research. Psychology Bulletin 48,
+156­158.
+16
+
+Table 1. Coefficients of approximate distribution functions
+
+F^M
+
+^0
+
+^0
+
+F^V
+
+^0
+
+^0
+
+F^S
+
+^0
+
+^0
+
+F^K
+
+^0
+
+^0
+
+T =50 T =100 T =150 T =200 T =250
+
+-16.178 8.380 -23.041 12.125 -28.289 14.961 -32.719 17.348 -36.653 19.463
+
+-7.700 0.879 -10.923 1.253 -13.394 1.539 -15.484 1.781 -17.312 1.992
+
+-1.944 8.423 -1.975 11.614 -1.995 14.128 -2.012 16.311 -2.021 18.197
+
+-2.191 5.106 -2.101 6.538 -2.068 7.690 -2.051 8.680 -2.046 9.597
+
+Note: The entries are the coefficients of the approximate distribution functions in (16) used to compute the first-level p-values in the test combination procedure. The coefficients are obtained by NLS with one million simulated samples for each sample size, T .
+
+Table 2. Empirical size of tests for Markov-switching
+
+Test LMCmin LMC× MMCmin MMC× supTS expTS
+
+ = 0.1
+
+T = 100 T = 200
+
+5.3
+
+4.6
+
+5.2
+
+4.9
+
+0.6
+
+0.6
+
+0.2
+
+0.5
+
+4.8
+
+5.1
+
+6.8
+
+6.2
+
+ = 0.9
+
+T = 100 T = 200
+
+4.9
+
+4.4
+
+4.7
+
+4.4
+
+0.8
+
+1.0
+
+0.9
+
+1.2
+
+6.0
+
+4.5
+
+5.4
+
+6.9
+
+Note: The DGP is an AR(1) model and the nominal level is 5%. LMC and MMC stand for the local and maximized MC procedures, respectively. The subscript "min" means that the first-level p-values are combined via their minimum, while the subscript "×" means that they are combined via their product. The supTS and expTS tests refer to the supremum-type and exponential-type tests of Carrasco et al. (2014).
+
+17
+
+Table 3. Empirical power of tests for Markov-switching with  = 0.1
+
+(p11, p22) = (0.9, 0.9)
+
+Test
+
+T = 100 T = 200
+
+µ = 2,  = 0
+
+LMCmin LMC× MMCmin MMC× supTS
+
+5.8
+
+4.7
+
+6.8
+
+4.6
+
+0.4
+
+0.3
+
+0.6
+
+0.3
+
+24.3
+
+49.9
+
+expTS
+
+15.6
+
+25.4
+
+µ = 0,  = 1
+
+LMCmin LMC× MMCmin MMC× supTS
+
+39.4
+
+62.0
+
+42.6
+
+64.3
+
+15.5
+
+39.0
+
+17.1
+
+43.2
+
+32.4
+
+58.0
+
+expTS
+
+40.1
+
+62.6
+
+µ = 2,  = 1
+
+LMCmin LMC× MMCmin MMC× supTS
+
+52.3
+
+84.0
+
+46.6
+
+75.4
+
+21.7
+
+51.9
+
+23.0
+
+49.0
+
+72.7
+
+96.2
+
+expTS
+
+75.6
+
+97.0
+
+(p11, p22) = (0.9, 0.5) T = 100 T = 200
+
+14.4
+
+26.7
+
+12.5
+
+23.4
+
+1.9
+
+7.6
+
+2.3
+
+7.1
+
+23.8
+
+47.0
+
+24.6
+
+47.1
+
+48.4
+
+72.6
+
+49.4
+
+73.2
+
+28.1
+
+55.2
+
+27.3
+
+52.8
+
+29.9
+
+46.4
+
+43.9
+
+68.3
+
+82.1
+
+98.8
+
+82.8
+
+98.9
+
+57.0
+
+92.5
+
+61.3
+
+93.5
+
+80.8
+
+96.9
+
+86.6
+
+99.4
+
+(p11, p22) = (0.9, 0.1) T = 100 T = 200
+
+20.1
+
+39.2
+
+19.0
+
+36.6
+
+2.8
+
+15.5
+
+3.1
+
+13.9
+
+24.4
+
+45.6
+
+28.9
+
+52.3
+
+40.0
+
+55.7
+
+41.3
+
+55.5
+
+21.2
+
+40.7
+
+19.9
+
+39.8
+
+22.8
+
+30.4
+
+34.4
+
+52.4
+
+78.5
+
+96.3
+
+80.0
+
+96.3
+
+57.1
+
+89.5
+
+59.6
+
+90.2
+
+65.5
+
+89.7
+
+78.2
+
+96.2
+
+Note: The DGP is model (20) with  = 0.1 and the nominal level is 5%. LMC and MMC stand for the local and maximized MC procedures, respectively. The subscript "min" means that the first-level p-values are combined via their minimum, while the subscript "×" means that they are combined via their product. The supTS and expTS tests refer to the supremum-type and exponential-type tests of Carrasco et al. (2014).
+
+18
+
+Table 4. Empirical power of tests for Markov-switching with  = 0.9
+
+(p11, p22) = (0.9, 0.9)
+
+Test
+
+T = 100 T = 200
+
+µ = 2,  = 0
+
+LMCmin LMC× MMCmin MMC× supTS
+
+15.5
+
+21.8
+
+15.2
+
+23.0
+
+3.8
+
+7.9
+
+3.6
+
+7.4
+
+8.4
+
+12.5
+
+expTS
+
+21.7
+
+32.6
+
+µ = 0,  = 1
+
+LMCmin LMC× MMCmin MMC× supTS
+
+37.8
+
+64.7
+
+40.9
+
+68.1
+
+17.1
+
+42.2
+
+19.9
+
+43.8
+
+32.2
+
+67.4
+
+expTS
+
+54.1
+
+84.7
+
+µ = 2,  = 1
+
+LMCmin LMC× MMCmin MMC× supTS
+
+40.9
+
+64.4
+
+42.1
+
+65.8
+
+16.8
+
+37.5
+
+19.3
+
+44.1
+
+34.6
+
+62.9
+
+expTS
+
+53.9
+
+77.9
+
+(p11, p22) = (0.9, 0.5) T = 100 T = 200
+
+14.5
+
+22.2
+
+14.4
+
+20.9
+
+3.7
+
+6.9
+
+3.8
+
+9.1
+
+11.9
+
+18.2
+
+22.1
+
+33.5
+
+48.1
+
+70.9
+
+48.5
+
+72.8
+
+27.8
+
+55.5
+
+28.1
+
+55.4
+
+30.0
+
+50.3
+
+52.8
+
+78.6
+
+65.7
+
+88.8
+
+67.6
+
+91.2
+
+41.8
+
+76.6
+
+46.4
+
+83.2
+
+53.2
+
+79.8
+
+75.1
+
+94.7
+
+(p11, p22) = (0.9, 0.1) T = 100 T = 200
+
+14.8
+
+24.5
+
+14.9
+
+25.9
+
+3.3
+
+7.9
+
+3.2
+
+9.7
+
+20.7
+
+45.6
+
+25.6
+
+43.2
+
+38.9
+
+61.7
+
+40.1
+
+62.7
+
+22.6
+
+47.3
+
+22.2
+
+45.2
+
+20.0
+
+34.1
+
+41.9
+
+65.3
+
+70.9
+
+89.0
+
+72.0
+
+90.6
+
+50.2
+
+77.3
+
+53.3
+
+82.1
+
+58.6
+
+82.3
+
+77.4
+
+94.2
+
+Note: The DGP is model (20) with  = 0.9 and the nominal level is 5%. LMC and MMC stand for the local and maximized MC procedures, respectively. The subscript "min" means that the first-level p-values are combined via their minimum, while the subscript "×" means that they are combined via their product. The supTS and expTS tests refer to the supremum-type and exponential-type tests of Carrasco et al. (2014).
+
+19
+
+Table 5. MC test results: U.S. real GNP growth
+
+Test
+
+p-value
+
+1 2
+
+3
+
+4
+
+|z|
+
+1952Q2 ­ 1984Q4
+
+LMCmin
+
+0.57
+
+0.31 0.13 -0.12 -0.09 1.50
+
+LMC×
+
+0.57
+
+0.31 0.13 -0.12 -0.09 1.50
+
+MMCmin
+
+1.00
+
+0.48 0.20 -0.23 -0.16 1.23
+
+MMC×
+
+1.00
+
+0.38 0.30 -0.28 -0.09 1.32
+
+1952Q2 ­ 2010Q4
+
+LMCmin
+
+0.01
+
+0.34 0.12 -0.08 -0.07 1.59
+
+LMC×
+
+0.01
+
+0.34 0.12 -0.08 -0.07 1.59
+
+MMCmin
+
+0.05
+
+0.43 0.09 0.05 0.05 1.33
+
+MMC×
+
+0.06
+
+0.46 0.08 0.05 0.02 1.41
+
+Note: LMC and MMC stand for the local and maximized MC procedures, respectively. The subscript "min" means that the first-level p-values are combined via their minimum, while the subscript "×" means that they are combined via their product. Entries under |z| are the smallest moduli of the roots of the autoregressive polynomial for the corresponding line.
+
+20
+
+

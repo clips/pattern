@@ -1,0 +1,1697 @@
+arXiv:1701.00073v1 [math.RT] 31 Dec 2016
+
+CATEGORICAL RESOLUTIONS OF BOUNDED DERIVED CATEGORIES
+JAVAD ASADOLLAHI, RASOOL HAFEZI AND MOHAMMAD H. KESHAVARZ
+Abstract. Using a relative version of Auslander's formula, we show that bounded derived category of every artin algebra admits a categorical resolution. This, in particular, implies that bounded derived categories of artin algebras of finite global dimension determine bounded derived categories of all artin algebras. This in a sense provides a categorical level of Auslander's result stating that artin algebras of finite global dimension determine all artin algebras.
+
+Contents
+
+1. Introduction
+
+1
+
+2. Preliminaries
+
+3
+
+2.1. Recollements of abelian categories
+
+3
+
+2.2. Dualising R-varieties
+
+4
+
+2.3. Stable categories
+
+5
+
+3. Relative Auslander Formula
+
+5
+
+4. Examples and applications
+
+11
+
+4.1. Some examples
+
+12
+
+4.2. Applications
+
+14
+
+5. Covariant functors
+
+16
+
+5.1. Injective finitely presented covariant functors
+
+16
+
+5.2. Existence of Recollement
+
+18
+
+5.3. Dualities of the categories of right and left -modules
+
+20
+
+6. Categorical resolutions of bounded derived categories
+
+20
+
+References
+
+26
+
+1. Introduction
+Let X be an algebraic variety. A resolution of singularities of X is a certain (proper and birational) morphism  : X  X, where X is a non-singular algebraic variety. The functor Db(cohX)  Db(cohX) induced by  enjoys some remarkable properties. The bounded derived categories of coherent sheaves on X and X are related by two natural functors, known as the derived pushforward  : Db(cohX)  Db(cohX) and the derived pullback functor  : Dperf (cohX)  Db(cohX), such that  is left adjoint to . Here Dperf(cohX) stands for the full subcategory of Db(cohX) consisting of perfect complexes. If furthermore, X have
+2010 Mathematics Subject Classification. 18E30, 16E35, 14E15, 16G10, 18G25, 16B50, 18A40, 18G05. Key words and phrases. Categorical resolutions, artin algebras, Auslander's formula, recollements.
+1
+
+2
+
+JAVAD ASADOLLAHI, RASOOL HAFEZI AND MOHAMMAD H. KESHAVARZ
+
+rational singularities, then the unit of adjunction 1Dperf -  is an isomorphism and  induces an identification between Db(cohX) and the quotient of Db(cohX) by the kernel of .
+Based on this observation, Kuznetsov [Ku] introduced the notion of a categorical resolution of singularities. By definition a categorical resolution of Db(A) is a smooth triangulated category D and a pair of functors  and  satisfying almost similar conditions as above, see [Ku, Definition 3.2]. Recall that a triangulated category T is called smooth if it is triangle equivalent to the bounded derived category of an abelian category A with vanishing singularity category, i.e. Dbsg(A) = 0.
+Note that Bondal and Orlov [BO] also took the above observation as a template and defined a categorical desingularization of a triangulated category T to be a pair (A, K), where A is an abelian category of finite homological dimension and K is a thick triangulated subcategory of Db(A) such that T  Db(A)/K, see [BO, §5]. Recall that a full triangulated subcategory of a triangulated category T is called thick if it is closed under taking direct summands.
+Recently, Zhang [Z] combined these two categorical levels of the notion of a resolution of singularities and suggested a new definition for a categorical resolution of a non-smooth triangulated category [Z, Definition 1.1]. He then proved that if  is an artin algebra of infinite global dimension and has a module T with idT < 1 such that T is of finite type, then the bounded derived category Db(mod-) admits a categorical resolution [Z, Theorem 4.1]. The main technique for proving this result is the notion of relative derived categories studied by several authors in different settings, see e.g [N], [Bu] and [GZ].
+In this paper, we generalize Zhang's result to arbitrary artin algebras and show that the bounded derived category of every artin algebra admits a categorical resolution. The technique for the proof is based on a relative version of the so-called Auslander's Formula [Au1] and [L]. This relative version will be treated explicitly in Section 3 and is of independent interest. Auslander's formula suggests that for studying an abelian category A one may study mod-A, the category of finitely presented additive functors on A, that has nicer homological properties than A, and then translate the results back to A. Here, among other results, we replace A with a contravariantly finite subcategory X of A that contains projective objects. We establish the existence of a recollement and show that Auslander's formula is in fact derived from this recollement, see Theorem 3.7. Similar result will be provided for finitely presented covariant functors, Theorem 3.8. Beside Auslander's formula, some interesting corollaries will be derived from this recollement, among them Auslander's four terms exact sequence. Some examples and also applications will be presented in Section 4. Then we consider the category of left -modules, where  is an artin algebra, in Section 5 and present a recollement containing -mod, see Theorem 5.2.4 below. To this end we discuss briefly the structure of injective finitely presented covariant functors in a subsection, Subsection 5.1. Using this, for every resolving contravariantly
+finite subcategory X of mod-, we construct a duality DX between the categories of right and left -modules, also in stable level.
+Last section is devoted to the proof of our main theorem. To this end, besides Auslander's formula we use the following known result of Auslander. In his Queen Mary College lectures
+[Au2] he proves that for an artin algebra  there exists an artin algebra  of finite global
+dimension and an idempotent e of  such that  = ee. Hence, as he mentioned, artin algebras of finite global dimension determine all artin algebras. Later on Dlab and Ringel [DR] showed
+that  in Auslander's construction is in fact a quasi-hereditary artin algebra. Our volunteer for
+the proof of the main theorem is , that throughout for ease of reference we call it A-algebra of . `A' stands both for `Auslander' and also `Associated' algebra.
+
+CATEGORICAL RESOLUTIONS OF BOUNDED DERIVED CATEGORIES
+
+3
+
+Our main theorem, in particular, implies that for any artin algebra  of infinite global dimension there exits an artin algebra  of finite global dimension, its A-algebra, such that Db(mod-) is equivalent to a quotient of Db(mod-). Therefore artin algebras of finite global dimensions, or better quasi-hereditary algebras, determine all artin algebras also in the categorical level.
+
+2. Preliminaries
+Let A be an additive skeletally small category. The Hom sets will be denoted either by HomA(-, -), A(-, -) or even just (-, -), if there is no risk of ambiguity. Let X be a full subcategory of A. By definition, a (right) X -module is a contravariant additive functor F : X  Ab, where Ab denotes the category of abelian groups. The X -modules and natural transformations between them, called morphisms, form an abelian category denoted by Mod-X or sometimes (X op, Ab). An X -module F is called finitely presented if there exists an exact sequence
+X (-, X)  X (-, X)  F  0,
+with X and X in X . All finitely presented X -modules form a full subcategory of Mod-X , denoted by mod-X or sometimes f.p.(Cop, Ab). Covariant additive functors and its full subcategory consisting of finitely presented (left) X -modules will be denoted by X -Mod and X -mod, respectively. Since every finitely generated subobject of a finitely presented object is finitely presented [Au1, Page 200], Auslander called them coherent functors.
+The Yoneda embedding X  mod-X , sending each X  X to X (-, X) := A(-, X)|X , is a fully faithful functor. Note that for each X  X , X (-, X) is a projective object of mod-X . Moreover, every projective objects of mod-X is a direct summand of X (-, X), for some X  X . These facts are known and also easy to prove using Yoneda Lemma.
+A morphism X  Y is a weak kernel of a morphism Y  Z in X if the induced sequence
+(-, X) - (-, Y ) - (-, Z)
+is exact on X . It is known that mod-X is an abelian category if and only if X admits weak kernels, see e.g. [Au2, Chapter III, §2] or [Kr2, Lemma 2.1].
+Let A  A. A morphism  : X  A with X  X is called a right X -approximation of A if A(-, X)|X - A(-, A)|X - 0 is exact, where A(-, A)|X is the functor A(-, A) restricted to X . Hence A has a right X -approximation if and only if (-, A)|X is a finitely generated objects of Mod-X . X is called contravariantly finite if every object of A admits a right X -approximation. Dually, one can define the notion of left X -approximations and covariantly finite subcategories. X is called functorially finite, if it is both covariantly and contravariantly finite.
+It is obvious that if X is contravariantly finite, then it admits weak kernels and hence mod-X is an abelian category.
+2.1. Recollements of abelian categories. A subcategory S of an abelian category A is called a Serre subcategory, if it is closed under taking subobjects, quotients and extensions. Let S be a Serre subcategory of A. The quotient categoryA/S is by definition the localization of A with respect to the collection of morphisms that their kernels and cokernels are in S. It is known [Ga] that A/S is an abelian category and the quotient functor Q : A - A/S is exact with KerQ = S.
+
+4
+
+JAVAD ASADOLLAHI, RASOOL HAFEZI AND MOHAMMAD H. KESHAVARZ
+
+Let A, A and A be abelian categories. A recollement of A with respect to A and A is a
+
+diagram
+
+u
+
+v
+
+A
+
+x f
+
+u
+
+/
+
+A
+
+x f
+
+v
+
+/ A
+
+u
+
+v
+
+of additive functors such that u, v and v are fully faithful, (u, u), (u, u), (v, v) and (v, v) are adjoint pairs and Imu = Kerv.
+Note that v is fully faithful if and only if v is fully faithful. It follows quickly in a recollement situation that the functors u and v are exacts, u induces an equivalence between A and the Serre subcategory Imu = Kerv of A and there exists an equivalence A  A/A, see for instance
+[Ps, Remark 2.2].
+A localisation, resp. colocalisation, sequence consists only the lower, resp. upper, two rows of
+a recollement such that the functors appearing in them satisfy all the conditions of a recollement
+that involve only these functors. Two recollements (A, A, A) and (B, B, B) are equivalent if there exist equivalences  :
+A  B,  : A  B and  : A  B, such that the six diagrams associated to the six functors
+of the recollements commute up to natural equivalences, see [PV, Lemma 4.2].
+
+Remark 2.1. Let v : A  A be an exact functor between abelian categories admitting a left and a right adjoint, v, v, respectively, such that one of the v or v, and hence both of them, are fully faithful. Then we get a recollement (Kerv, A, A) of abelian categories, see [Ps, Remark 2.3] for details.
+
+In our recollement (A, A, A) let us denote the counits of the adjunctions uu  1A and vv  1A by uu and vv, respectively and the units of the adjunctions 1A  uu and 1A  vv by uu and vv, respectively.
+Remark 2.2. Let (A, A, A) be a recollement of abelian categories. Then for any A  A there exists the following two exact sequences
+0 - uu(A) -Auu A -Avv vv(A) - CokerAvv - 0; 0 - KerAvv - vv(A) -Avv A -Auu uu(A) - 0. Moreover, there exist A0 and A1  A such that CokerAvv = u(A0) and KerAvv = u(A1). For the proof see [FP] and [PV, Proposition 2.8].
+
+2.2. Dualising R-varieties. Let R be a commutative artinian ring. The notion of dualising Rvarieties is introduced by Auslander and Reiten [AR1]. A dualising R-variety can be considered as an analogue of the category of finitely generated projective modules over an artin algebra, but with possibly infinitely many indecomposable objects, up to isomorphisms. Let X be an additive R-linear essentially small category. X is called a dualising R-variety if the functor Mod-X - Mod-X op taking F to DF , induces a duality mod-X - mod-X op. Note that D(-) := HomR(-, E), where E is the injective envelope of R/radR. If X is a dualising Rvariety, then mod-X and mod-X op are abelian categories with enough projectives and injectives [AR1, Theorem 2.4].
+
+Remark 2.3. Let X be a dualising R-variety. Then (i) mod-X is a dualising R-variety [AR1, Proposition 2.6].
+
+CATEGORICAL RESOLUTIONS OF BOUNDED DERIVED CATEGORIES
+
+5
+
+(ii) Every functorially finite subcategory of X is again a dualising R-variety [AS, Theorem 2.3], [I1, Proposition 1.2].
+
+Remark 2.4. The most basic example of a dualising R-variety is the category prj-, finitely generated projective -modules, where  is an artin algebra [AR1, Proposition 2.5]. Since mod- = mod-(prj-), by the above remark, mod- and also any functorially finite subcategory of it is dualising R-variety.
+
+2.3. Stable categories. Let A be an abelian category with enough projective objects. Let
+
+X be a subcategory of A containing Prj-A, the full subcategory of A consisting of projective
+
+objects. The stable category of X denoted by X is a category whose objects are the same as
+
+those
+
+of
+
+X,
+
+but
+
+the
+
+hom-set
+
+X (X, X)
+
+of
+
+X, X
+
+X
+
+is
+
+defined
+
+as
+
+X (X, X) :=
+
+A(X,X P (X,X
+
+ 
+
+) )
+
+,
+
+where
+
+P(X, X) consists of all morphisms from X to X that factor through a projective object. We
+
+have the canonical functor  : X  X , defined by identity on objects but morphism f : X  Y
+
+will be sent to the residue class f := f + P(X, X).
+
+Throughout the paper,  denotes an artin algebra over a commutative artinian ring R, Mod- denotes the category of all right -modules and mod- denotes its full subcategory consisting of all finitely presented modules. Moreover, Prj-, resp. prj-, denotes the full subcategory of Mod-, resp. mod-, consisting of projective, resp. finitely generated projective, modules. Similarly, the subcategories Inj- and inj- are defined. D(-) := HomR(-, E), where E is the injective envelope of R/radR, denotes the usual duality. For a -module M , we let add-M denote the class of all modules that are isomorphic to a direct summand of a finite direct sum of copies of M .
+
+3. Relative Auslander Formula
+
+Let A be an abelian category. Auslander's work on coherent functors [Au1, page 205] implies that the Yoneda functor A - mod-A induces a localisation sequence of abelian categories
+
+mod0-Aj
+
+/ mod-Ah
+
+/A
+
+where mod0-A is the full subcategory of mod-A consisting of those functors F for them there exists a presentation A(-, A) - A(-, A) - F - 0 such that A - A is an epimorphism. See [Kr1, Theorem 2.2], where mod0-A is denoted by effA. This, in particular, implies that the functor mod-A - A, that is the left adjoint of the Yoneda functor, induces an equivalence
+
+mod-A mod0-A
+
+
+
+A.
+
+Following Lenzing [L] this equivalence will be called the Auslander's formula. In this section, we show that for a right coherent ring A and every contravariantly finite
+subcategory X of mod-A containing projective A-modules, there exists a recollement
+
+t mod0-Xj
+
+t / mod-Xi
+
+/ mod-A
+
+This, in particular, implies that
+
+mod-X mod0-X
+
+ mod-A.
+
+6
+
+JAVAD ASADOLLAHI, RASOOL HAFEZI AND MOHAMMAD H. KESHAVARZ
+
+In case we set X = mod-A, we get the usual Auslander's formula. The importance will be illustrated by some interesting examples of X , see Section 4.
+
+Let us begin with the following proposition that is an immediate consequence of Proposition 2.1 of [Au1].
+Proposition 3.1. Let A be an abelian category and X be a full subcategory of A that admits weak kernels. Consider the Yoneda embedding Y : X - mod-X . Then given any abelian category D, the induced functor Y D : (mod-X , D) - (X , D) has a left adjoint YD such that for each F  (X , D), YD(F ) is right exact and YD(F )Y = F .
+Proof. Set A = Mod-X and P = (-, X ) in the settings of Proposition 2.1 of [Au1]. Then P(A) = mod-X , which is an abelian category, because X has week kernels. So the result follows immediately.
+Remark 3.2. Consider the same settings as in the above proposition. Following Auslander [Au1], set D := A and let  : X  A be the inclusion. Hence  can be extended to a right exact functor YA() : mod-X - A. Let us for simplicity denote YA() by .
+We could provide an explicit interpretation of . Let F  mod-X and X (-, X1) (--,d) X (-, X0) - F - 0 be a projective presentation of F , where X0 and X1 are in X . Apply  and use the fact that by the above proposition (X (-, X)) = X, for all X in X , (F ) is then determined by the exact sequence
+X1 -d X0 - (F ) - 0.
+Moreover, if f : F - F  is a morphism in mod-X , then clearly it can be lifted to a morphism between their projective presentations. Yoneda lemma now come to play for the projective terms to provide unique morphisms on X1 and X0. These morphisms then induce a morphism (F ) - (F ), which is exactly (f ).
+Lemma 3.3. Let A be an abelian category with enough projective objects and X be a contravariantly finite subcategory of A containing all projectives. Then  is an exact functor.
+Proof. Since X is contravariantly finite, it admits weak kernels and hence mod-X is an abelian category. Since F  mod-X and X is contravariantly finite and contains projectives, there exists an exact sequence X (-, X2) - X (-, X1) - X (-, X0) - F - 0 in mod-X such that the induced sequence X2 - X1 - X0 is exact. So by applying , we get the exact sequence
+(X (-, X2)) - (X (-, X1)) - (X (-, X0)).
+So L1(F ), the first left derived functor of F , vanishes. Since this happens for all F  mod-X , we deduce that  is exact.
+Towards the end of this subsection, we show that if A = mod-A, where A is a right coherent ring and if X is a contravariantly finite subcategory of mod-A containing prj-A, then  has a left adjoint  and a fully faithful right adjoint . Let us first define the adjoint functors.
+3.4. Let M  mod-A. To define , let An -d Am - M - 0 be a projective presentation of M and set
+(M ) := Coker((-, An) - (-, Am)).
+
+CATEGORICAL RESOLUTIONS OF BOUNDED DERIVED CATEGORIES
+
+7
+
+For M   mod-A with projective presentation An -d Am - M  - 0 and a morphism f : M  M , we have the commutative diagram
+
+An d / Am  / M
+
+/0
+
+f1
+
+f0
+
+f
+
+ An
+
+ d / Am
+
+
+
+ / M
+
+/ 0.
+
+Then, Yoneda lemma in view of the fact that X contains projectives, induces a natural transformation (f ) : (M )  (M ) by the following commutative diagram
+
+(-, An) (-,d) / (-, Am)
+
+/ (M )
+
+/0
+
+ (-, An )
+
+(-,d ) /
+
+(-,
+
+ Am )
+
+/ (M )
+
+/ 0.
+
+A standard argument applies to show that (M ) and (f ) are independent of the choice of projective presentations of M and M  and also lifting of f .
+Moreover, define (M ) := (mod-A)(-, M )|X = HomA(-, M )|X .
+We sometimes write (-, M )|X for HomA(-, M )|X , where it is clear from the context. Note that if M  X , HomA(-, M )|X = X (-, M ).
+
+Lemma 3.5. With the above assumptions, the functor  is full and faithful.
+
+Proof. Its faithfulness is easy and follows from the fact that X contains projectives. We provide a proof for the fullness. Let  : HomA(-, A)|X - HomA(-, A)|X be a morphism in mod-X . Since X is contravariantly finite, we have exact sequences X1 - X0 - A - 0 and X1 - X0 - A - 0 of A-modules such that X0, X0 , X1, X1  X and the induced sequences
+
+HomA(-, X1)
+
+/ HomA(-, X0)
+
+/ HomA(-, A)|X
+
+/0
+
+
+
+
+
+HomA(-, X1 )
+
+/ HomA(-, X0 )
+
+/ HomA(-, A)|X
+
+/ 0,
+
+are exact on X . Since (-, Xi) is projectives for i = 0, 1,  lifts to morphisms 0 : HomA(-, X0)  HomA(-, X0) and 1 : HomA(-, X1 )  HomA(-, X1 ) making the diagram commutative. By Yoneda lemma, we get the commutative diagram
+
+X1
+
+/ X0
+
+/A
+
+/0
+
+
+
+
+
+X1
+
+/ X0
+
+/ A
+
+/ 0,
+
+This induces a morphism f : A  A. It is easy to check that (f ) =  and hence  is full.
+
+Proposition 3.6. Let A be a right coherent ring and X be a contravariantly finite subcategory of mod-A containing prj-A. Then the functors  and  are respectively the left and the right adjoins of the functor  defined in Remark 3.2.
+
+8
+
+JAVAD ASADOLLAHI, RASOOL HAFEZI AND MOHAMMAD H. KESHAVARZ
+
+Proof. Fix projective presentations (-, X1) (--,d) (-, X0) - F - 0 and An - Am - M - 0 of F  mod-X and M  mod-A. We first show that  is the left adjoint of . Define
+
+M,F : HomA(M, e(F )) - Hommod-X ((M ), F )
+
+as follows. An A-morphism f : M  (F ) can be lifted to commute the following diagram
+
+An
+
+/ Am
+
+/M
+
+/0
+
+f1
+
+f0
+
+f
+
+ X1
+
+d
+
+ / X0
+
+
+
+ / (F )
+
+/ 0.
+
+Yoneda lemma helps us to have the following diagram in mod-X such that the left square is
+
+commutative.
+
+(-, An)
+
+/ (-, Am)
+
+/ (M )
+
+/0
+
+(-,f1 )
+
+(-,f0)
+
+
+
+
+
+(-, X1)
+
+/ (-, X0)
+
+/F
+
+/0
+
+So it induces a map  : (M )  F . Define M,F (f ) := . Standard homological arguments guarantee that  is well-defined. We show that it is an isomorphism. Assume that M,F (f ) =  = 0. So there exists an A-morphism S = (-, s) : (-, Am) - (-, X1) such that the lower triangle is commutative
+
+(-, An)
+
+/ (-, Am)
+
+(-,f1 )
+
+
+ys(s-ss,ss)sssss
+
+(-,f0)
+
+
+(-, X1)
+
+/ (-, X0)
+
+So by Yoneda we get the following diagram
+
+An
+
+/ Am
+
+/M
+
+/0
+
+
+
+f1
+
+s
+
+  
+
+
+
+
+
+f0
+
+f
+
+ }
+
+
+
+
+
+X1
+
+/ X0
+
+/ (F )
+
+/ 0.
+
+where the lower triangle is commutative. This in turn implies that f = 0. So M,F is one to one. One can follow similar argument to see that M,F is also surjective and hence is an isomorphism.
+To show that  is the right adjoint of , define with the same F and M as above,
+M,F : HomA((F ), M )  Hommod-X (F, (M )),
+by sending a morphism f : (F )  M to (f ), where  is the unique morphism that is obtained from the universal property of the cokernels in the following diagram
+
+(-, X1) (-,d) / (-, X0)  / F
+
+/0
+
+(-,)
+
+
+{
+
+(-, (F ))
+
+CATEGORICAL RESOLUTIONS OF BOUNDED DERIVED CATEGORIES
+
+9
+
+We claim that M,F is an isomorphism. Assume that (f ) = 0. This in turn yields that (-, f )(-, ) = 0. So f  = 0, that implies f = 0, because  is a surjective map. Therefore M,F is a monomorphism.
+To show that it is also surjective, pick a natural transformation  : F  (M ). By Lemma 3.5,  can be presented by a unique map say, g : X0  M . But gd = 0 and hence there exists a unique morphism h : (F )  M such that h = g. It is obvious then that M,F (h) = .
+
+Set mod0-X := Ker, the full subcategory of mod-X consisting of all functors F such that (F ) = 0. This is equivalent to say that mod-X consists of all functors that vanish on  or
+equivalently on all finitely generated projective -modules. Since  is exact, mod0-X is a Serre subcategory of mod-X . Moreover the inclusion functor mod0-X  mod-X is exact.
+
+Theorem 3.7. Let A be a right coherent ring and X be a contravariantly finite subcategory of mod-A containing prj-A. Then there exists a recollement
+
+i
+
+
+
+t mod0-Xj
+
+i
+
+t / mod-Xi
+
+
+
+/ mod-A
+
+i
+
+
+
+of abelian categories. In particular,
+
+mod-X mod0-X
+
+ mod-A.
+
+Proof. By Proposition 3.6,  : mod-X - mod-A has a left and a right adjoint. Hence by Remark 2.1 to deduce that the recollement exists, we just need to show that either  or , and hence both of them, is full and faithful. This follows from Lemma 3.5. Hence the proof of the existence of recollement is complete. The equivalence is just an immediate consequence of the recollement. Hence we are done.
+
+The equivalence
+
+mod-X mod0 -X
+
+ mod-R will be called X -Auslander's formula.
+
+In case X
+
+= mod-R,
+
+we get the known (absolute) formula. Later on we will choose some specific classes and discuss
+
+some interesting examples.
+
+Analogously Theorem 3.7 can be stated for X -mod, the category of finitely presented covariant functors.
+
+Theorem 3.8. Let A be a right coherent ring and X be a covariantly finite subcategory of mod-A containing inj-A. Then, there exists a recollement
+
+i
+
+
+
+t X -mod0j
+
+i
+
+t / X -modi
+
+
+
+/ (mod-A)op
+
+i
+
+
+
+of abelian categories, where X -mod0 = Ker is the full subcategory of X -mod consisting of all functors that vanish on injective modules.
+
+Proof. Let F  X -mod. Pick a projective presentation (X1, -)  (X0, -)  F  0 of F and define (F ) := Ker(X0  X1).
+On the other hand, for M  mod-A define (M ) := (M, -)|X and (M ) := Coker((I1, -)  (I0, -)), where 0  M  I0  I1 is an injective copresentation of M . One should now follow
+
+10
+
+JAVAD ASADOLLAHI, RASOOL HAFEZI AND MOHAMMAD H. KESHAVARZ
+
+similar, or rather dual, argument as we did, to prove that  is exact, (, ) and (, ) are adjoint pairs and  is fully faithful and hence deduce from Remark 2.1 that recollement exists. We leave the details to the reader.
+
+Remark 3.9. By Remark 2.2, two exact sequences can be derived from a recollement of abelian categories. Here we explicitly study these two exact sequences attached to the recollement of Theorem 3.7.
+Let F  mod-X . By the same notation as in the Remark 2.2 for the units and counits of adjunctions, we have the following two exact sequences
+0 - ii(F ) -Fii F -F (F ) - Coker(F) - 0;
+0 - Ker(F) - (F ) -F F -Fii ii(F ) - 0. As it is shown in the proof of Proposition 3.6,
+(F ) = (-, (F ))|X
+and (F ) = Coker((-, An) - (-, Am)),
+where An - Am - (F ) - 0 is a projective presentation of (F ). Clearly ii(F ) and ii(F ) both are in mod0-X . Moreover, we may deduce from Remark
+2.2 that CokerF and Ker(F) belong to mod0-X . Putting together, we obtain the exact sequences
+0 - F0 - F - (-, (F ))|X - F1 - 0;
+0 - F2 - (F ) - F - F3 - 0,
+where F0, F1, F2 and F3 are in mod0-X . It is worth to note that in case X = mod-, where  is an artin algebra, the first exact
+sequence is exactly the fundamental exact sequence obtained by Auslander [Au1, Page 203].
+
+Remark 3.10. Let X1  X2 be contravariantly finite subcategories of mod-A that both contain projectives. Let F  mod-X1 and consider a projective presentation of F
+(-, X1) (--,d) (-, X0)-F - 0.
+
+Clearly we may write this presentation as
+
+HomA(-, X1)|X1 - HomA(-, X0)|X1 - F - 0. This allow us to extend F to X2 and consider it as an object of mod-X2 by setting
+
+F = Coker(HomA(-, X1)|X2 - HomA(-, X0)|X2 ).
+
+Hence we can define a functor  : mod-X1 - mod-X2 by (F ) = F . It can be checked easily
+
+that | : mod0-X1 - mod0-X2 is a functor and hence we have the following morphism of
+
+recollements
+
+u
+
+u
+
+mod0-Xi1
+
+/ mod-X1i
+
+/ mod-A
+
+|
+u mod0-Xi2
+
+
+u / mod-X2i
+
+¯
+ / mod-A.
+
+CATEGORICAL RESOLUTIONS OF BOUNDED DERIVED CATEGORIES
+
+11
+
+In some sense the upper recollement is a sub-recollement of the lower one. Therefore, we have a partial order on the recollements and Auslander in a sense has considered the maximum case X = mod-A.
+
+Remark 3.11. Let  be a self-injective artin algebra over a commutative artinian ring R. By combining Theorems 3.7 and 3.8, we plan to construct auto-equivalences of mod-. To this end, let X be a functorially finite subcategory of mod- containing inj- = prj-. By [AS, Theorem 2.3], X is a dualising R-variety. So we have the following commutative diagram
+
+0
+
+/ mod0-X
+
+/ mod-X
+
+/
+
+mod-X mod0 -X
+
+/0
+
+D|
+
+D
+
+D
+
+0
+
+ / X -mod0
+
+ / X -mod
+
+
+
+/
+
+X -mod X -mod0
+
+/ 0,
+
+where D is the usual duality of R-varieties. Hence the composition
+
+DX :
+
+mod- -- 1
+
+mod-X
+
+-D
+
+X -mod
+
+-
+
+(mod-)op
+
+op
+-
+
+mod-,
+
+mod0-X
+
+X -mod0
+
+denoted by DX is an auto-equivalence of mod- with respect to X . Note that if X = prj-, then
+
+Dprj is the identity functor.
+
+4. Examples and applications
+In this section, we provide some examples as well as applications of the recollements introduced in the previous section. Throughout the section  is an artin algebra. Let X be a full subcategory of mod-. The set of isoclasses of indecomposable modules of X will be denoted by Ind-X . X is called of finite type if Ind-X is a finite set.  is called of finite representation type if mod- is of finite type. If X is of finite type then it admits a representation generator, i.e. there exists X  X such that X = add-X. It is known that add-X is a contravariantly finite subcategory of mod-. Set (X ) = End(X). Clearly (X ) is an artin algebra. It is known that the evaluation functor X : mod-X - mod-(X ) defined by X (F ) = F (X), for F  mod-X , is an equivalence of categories. It also induces an equivalence of categories mod-X and mod-(X ). Recall that (X ) = End(X)/P, where P is the ideal of (X ) including morphisms factoring through projective modules.
+The artin algebra (X ), resp. (X ), is called relative, resp. stable, Auslander algebra of  with respect to the subcategory X .
+
+We need the following result in this section. Let  : X  X be the canonical functor. It then induces an exact functor F : Mod-X  Mod-X . It is not hard to see that F in turn induces an equivalence between Mod-X and the full subcategory of Mod-X consisting of functors vanishing on Prj-A.
+Proposition 4.1. Let A be an abelian category with enough projective objects and X be a subcategory of A containing Prj-A. Then we have the following commutative diagram
+ModO -X F / ModO -X
+
+mo ?d-X F| / mod ? 0-X ,
+
+12
+
+JAVAD ASADOLLAHI, RASOOL HAFEZI AND MOHAMMAD H. KESHAVARZ
+
+such that the lower row is an equivalence and the others are inclusions. If furthermore X is contravariantly finite, then mod-X is an abelian category with enough projective objects.
+
+Proof. Pick F  mod-X . Clearly F(F ) vanishes on projective objects, so to show that F(F )  mod0-X , we just need to show that F(F )  mod-X . To this end, since F is an exact functor, it is enough to show that F(X (-, X))  mod-X , for any X  X . We let (-, X) denote the image of X (-, X) under F. Since A has enough projective objects, for X  X , there exists a short exact sequence
+0  (X)  P  X  0,
+where P is a projective object. Then, we get the following exact sequence
+
+0  (-, (X))|X  (-, P )  (-, X)  (-, X)  0
+in Mod-X . Hence, (-, X)  mod-X , since X contains Prj-A. On the other hand, let F  mod0-X and take a projective presentation (-, X1) (-,d) (-, X0)  F  0 of F . Since F  mod0-X , d : X1  X0 is surjective and hence we have the following commutative diagram
+
+(-, X1) (-,d) / (-, X0)
+
+/F
+
+/0
+
+ (-, X1)
+
+(-,d)
+
+/
+
+(-,
+
+ X0)
+
+ /F
+
+/ 0.
+
+Note that the two vertical natural transformations on the left attach to any morphism X  X1 and X  X0, its residue class modulo morphisms factoring through projective objects. As F is an equivalence of categories, there exists morphism d such that F(d) = (-, d). Set
+
+F  := Coker(X (-, X1) d X (-, X0))
+Then F(F ) = F , since F is an exact functor. The proof of this part is hence complete. It is now plain that mod-X is an abelian category.
+
+Note that in [MT] special subcategories X of an abelian category A, called quasi-resolving subcategories, have been studied with the property that mod-X is still an abelian category. X is called a quasi-resolving subcategory if it contains the projective objects and closed under finite direct sums and kernels of epimorphisms.
+
+4.1. Some examples. Now we are ready to investigate some examples.
+
+Example 4.1.1. Let X = add-X be a subcategory of mod- such that  is a summand of X. Hence X is a contravariantly finite subcategory of mod- containing prj-. So Theorem 3.7 applies to show, in view of Proposition 4.1, that the following recollement exists.
+
+X iX -1
+
+X 
+
+{ mod-(X )
+c
+
+X -1 iX
+
+| / mod-(X )
+b
+
+X -1
+
+/ mod-
+
+X i X -1
+
+X 
+
+It is routine to check that this recollement is equivalent to the one presented in [Ps, Example 2.10]. So in this case, we just give a functor category approach to the existence of this recollement.
+
+CATEGORICAL RESOLUTIONS OF BOUNDED DERIVED CATEGORIES
+
+13
+
+Example 4.1.2. As a particular case of the above example, let  be of finite representation type. Then, in view of Proposition 4.1, we have the recollement
+
+r mod-(mod-)
+l
+
+i
+
+
+
+i
+
+s / mod-(mod-)
+
+
+
+k
+
+i
+
+
+
+/ mod-
+
+It is interesting to note that in this recollement Auslander algebra, stable Auslander algebra and the algebra itself are appeared.
+
+Example 4.1.3. Recall that a -module G is called Gorenstein projective if it is a syzygy of a Hom(-, Prj-)-exact exact complex
+· · ·  P1P0P 0  P 1  · · · ,
+of projective modules. The class of Gorenstein projective modules is denoted by GPrj-. Dually one can define the class of Gorenstein injective modules GInj-. We set Gprj- = GPrj-  mod- and Ginj- = GInj-mod-.  is called virtually Gorenstein if (GPrj-) = (GInj-), where orthogonal is taken with respect to Ext1, see [BR]. It is proved by Beligiannis [Be, Proposition 4.7] that if  is a virtually Gorenstein algebra, then Gprj- is a contravariantly finite subcategory of mod-.
+
+Let  be a virtually Gorenstein algebra and set X = Gprj-. Hence Gprj- is contravariantly finite and obviously contains prj-. So Theorem 3.7 applies and again in view of Proposition 4.1, we get the following recollement
+
+i
+
+
+
+r mod-(Gprj-)
+
+i
+
+s / mod-(Gprj-)
+
+
+
+l
+
+k
+
+i
+
+
+
+/ mod-
+
+Recall that an algebra  is called of finite Cohen-Macaulay type, CM-finite for short, if Gprj- is of finite type. Assume that  is a CM-finite Gorenstein algebra. Then by [E, Corollary 3.5], (Gprj-) is a self-injective algebra and by [Be, Corollary 6.8(v)] (Gprj-) is of finite global dimension. Hence, in this case, we have a recollement including three types of algebras: selfinjective, finite global dimension and Gorenstein.
+
+Example 4.1.4. Let n  1. Roughly speaking a subcategory X of mod- is called n-cluster tilting if it is functorially finite and the pair (X , X ) forms a cotorsion pair with respect to Exti for 0 < i < n, see [I2, Definition 1.1] for the exact definition. Obviously, an n-cluster tilting subcategory X of mod- satisfies the conditions of Theorem 3.7 and so we have a recollement with respect to X . Note that this fact also has been announced by Yasuaki Ogawa in ICRA 2016, see the abstract book of ICRA 17th, page 34.
+
+Remark 4.1.5. Above examples show that for many different subcategories X of mod-, we
+
+have a relative Auslander's formula, i.e an equivalence
+
+mod-X mod0-X
+
+ mod-.
+
+At least with some
+
+extra assumptions on the algebra, we may guarantee that the functor category mod-X has similar
+
+nice homological properties as in Auslander's cases, i.e. X = mod-(mod-). For example, if we
+
+assume that  is a 1-Gorenstein algebra, then Gprj- is closed under submodules and hence
+
+mod-(Gprj-) has global dimension at most 2, like Auslander's result. Therefore, it seems worth
+
+to study this case more explicitly.
+
+14
+
+JAVAD ASADOLLAHI, RASOOL HAFEZI AND MOHAMMAD H. KESHAVARZ
+
+4.2. Applications. Study of Morita equivalence of two algebras through the study of Morita equivalence of related algebras has some precedents in the literature, see e.g. [HT] and [KY]. As applications of the recollement of Theorem 3.7, we present two results in this direction. We precede them with a lemma, that is of independent interest, as it provides a description for functors in mod0-X .
+Lemma 4.2.1. Let X be a contravariantly finite subcategory of mod-A containing all finitely generated projective modules, where as usual A is a right coherent ring. Let F  mod-X . Then F  mod0-X if and only if (F, (-, M )|X ) = 0, for all M  mod-. Moreover Ext1(F, (-, M )|X ) = 0, for all F  mod0-X and all M  mod-.
+Proof. Let F  mod0-X and pick M  mod-. Consider epimorphism (-, X)  F  0. Let   (F, (-, M )|X ). Since F () = 0,  = 0. So clearly  = 0. This, in turn, implies that  = 0, because  is an epimorphism.
+Conversely, assume that (F, (-, M )|X ) = 0, for all M  mod-. By Remark 3.9, we have the exact sequence
+0 - F0 - F -F (-, (F ))|X - F1 - 0
+such that F0 and F1 are in mod0-X . By assumption F = 0. Therefore F = F0. The proof is hence complete.
+Now assume that F  mod0-X . We show that Ext1(F, (-, M )|X ) = 0 for all M  mod-. Consider a projective presentation
+(-, X1) (--,d) (-, X0) - F - 0
+of F , with X1 and X0 in X . Set K = Kerd. So we get the following exact sequence 0 - (-, K)|X - (-, X1) - (-, X0) - F - 0
+with (-, X1) and (-, X0) projectives. Hence, for M  Mod-, Ext1(F, (-, M )|X ) can be calculated by the deleted sequence
+0 - (-, K)|X - (-, X1) - (-, X0) - 0.
+Pick M  mod-A and apply the functor (-, (-, M )|X ) on this sequence to obtain the following sequence
+0 - ((-, X0), (-, M )|X ) - ((-, X1), (-, M )|X ) - ((-, K)|X , (-, M )|X ).
+So, to complete the proof, it is enough to show that this sequence is exact. This we do. Since by Lemma 3.5,  is full and faithful, we deduce that the vertical maps of the diagram
+
+0
+
+/ Hom(X0, M )
+
+/ Hom(X1, M )
+
+/ Hom(K, M )
+
+
+
+
+
+
+
+
+
+
+
+
+
+0
+
+/ ((-, X0), (-, M )|X )
+
+/ ((-, X1), (-, M )|X )
+
+/ ((-, K)|X , (-, M )|X )
+
+are isomorphisms. On the other hand, since F  mod0-X , the sequence 0 - K - X1 - X0 - 0 is exact. So the left exactness of Hom(-, M ), implies the exactness of the upper row. Hence the lower row is exact and we get the result.
+
+Proposition 4.2.2. Let , resp. , be artin algebras. Let X  mod-, resp. X   mod-, be subcategories of finite type such that , D()  X , resp. , D()  X . Then  and  are
+
+CATEGORICAL RESOLUTIONS OF BOUNDED DERIVED CATEGORIES
+
+15
+
+Morita equivalent if (X ) and (X ) are Morita equivalent. In particular, in this situation (X ) and (X ) are also Morita equivalent.
+Proof. Since, X and X  are of finite type, they are contravariantly finite subcategories of mod- and mod-, respectively. Moreover, they both are containing projectives. So Theorem 3.7, applies. Assume that (X ) and (X ) are Morita equivalent and  : (X ) - (X ) denote the equivalence. Let  : mod-(X )  mod-(X ) denote the equivalence which of course is an exact functor. In view of the related recollements of X and X  obtained from Theorem 3.7, to get the proof, it suffices to prove that (F )  mod0-X , for each F  mod0-X and similarly for its quasi-inverse  = -1. By symmetry we just prove it for . Let F  mod0-X . By the above lemma, to show that (F )  mod0-X , we show that ((F ), (-, M )|X ) = 0, for all M   mod-. To do this, pick M  mod-. Since D()  X , there exists a monomorphism 0  M   I in mod- with I  inj-. So there is a monomorphism
+0  (-, M )|X  - (-, I)
+in mod-X . Note that (-, I) is in fact a projective object in mod-X , because D()  X . Since  preserves projective functors we get monomorphism 0  -1((-, M )|X ) --1() (-, X) in mod-X with X  X . Now for any   ((F ), (-, M )|X ), -1()-1()  (F, (-, X)) should be zero, since F  mod0-X , see Lemma 4.2.1. Hence  = 0. This implies that  = 0 since  is a monomorphism. It is now plain that (X ) and (X ) are also Morita equivalent. The proof is hence complete.
+
+It has been proved by Auslander [Au2] that for an arbitrary artin algebra  there exists
+
+an artin algebra  of finite global dimension and an idempotent  of  such that  = .
+
+Therefore, artin algebras of finite global dimension determine all artin algebras. To construct
+
+the algebra , let J be the radical of  and n be its nilpotency index. Set M :=
+
+1in
+
+ Ji
+
+,
+
+as right -module. Then  = End(M ). We throughout call  the A-algebra of , where `A'
+
+stands both for `Auslander' and also `Associated'.
+
+As a corollary of Proposition 4.2.2 we have the following result.
+
+Corollary 4.2.3. Let  and  be self-injective artin algebras. If their A-algebras  and  are Morita equivalent, then so are  and . In this case, stable A-algebras of  and  are also
+Morita equivalent.
+
+Proof. Let  = End(M ) = (add-M ) and  = End (M ) = (add-M ). Set X = add-M and X  = add-M . So mod-  mod-X and mod-  mod-X . Since for self-injective algebras the subcategories of projective and injective modules coincide and   X , resp.   X , we deduce that D()  X , resp. D()  X . Now the result follows immediately from the above
+proposition.
+
+Remark 4.2.4. Let F and F  be functors in mod-X . By Remark 3.9 there exists exact sequences
+0 - F0 - F - (-, (F ))|X - F1 - 0;
+0 - F0 - F  - (-, (F ))|X - F1 - 0; such that F0, F1, F0 and F1 are in mod0-X . Note that Lemma 4.2.1 allow us to follow similar argument as in the Proposition 3.4 of [Au1] and deduce that
+(F, (-, (F ))|X ) = ((-, (F ))|X , (-, (F ))|X ).
+
+16
+
+JAVAD ASADOLLAHI, RASOOL HAFEZI AND MOHAMMAD H. KESHAVARZ
+
+So for a morphism  : F  F  in mod-X , there exists a unique map  : (-, (F ))|X  (-, (F ))|X commuting the square
+
+F
+
+/ (-, (F ))|X
+
+
+
+
+
+
+
+
+
+F
+
+/ (-, (F ))|X 
+
+Consequently, there are unique morphisms 0 : F0  F0 and 1 : F1  F1 such that the following diagram is commutative
+
+0
+
+/ F0
+
+/F
+
+/ (-, (F ))|X
+
+/ F1
+
+/0
+
+0
+
+
+
+
+
+
+
+0
+
+/ F0
+
+/F
+
+
+ / (-, (F ))|X
+
+It is not difficult to see that  = (-, ())|X .
+
+1
+
+
+
+/ F1
+
+/ 0.
+
+5. Covariant functors
+Throughout this section, assume that X is a functorially finite subcategory of mod- containing projectives, where as before  is an artin algebra over a commutative artinian ring R. The aim of this section is to construct analogously a recollement involving the category of finitely presented covariant functors X -mod and the category of left -modules. To this end, we use the structure of injective objects in X -mod and follow the general argument as in the proof of Theorem 3.7, i.e. introduce three appropriate functors that are mutually adjoints and apply Remark 2.1. Since injectives of X -mod play a significant role in the functors appearing in this recollement, we study them in a subsection with some details.
+
+Set up. Throughout the section,  is an artin algebra and X is a functorially finite subcategory of mod- containing prj-.
+5.1. Injective finitely presented covariant functors. Let A be an arbitrary ring. Let (mod-A)-mod denote the subcategory of (mod-A)-Mod consisting of finitely presented covariant functors on mod-A.
+5.1.1. It is proved by Auslander [Au1, Lemma 6.1] that for a left A-module M , the covariant functor - A M is finitely presented if and only if M is a finitely presented left A-module. It is known that there is a full and faithful functor T : A-mod - (mod-A)-mod defined by the attachment M  (- A M )|mod-A. Gruson and Jensen [GJ, 5.5] showed that the category (mod-A)-mod has enough injective objects and injectives are exactly those functors isomorphic to a functor of the form - A M , for some left A-module M , see also [Pr, Proposition 2.27].
+Our aim in this subsection is to study inj-(X -mod).
+
+5.1.2. We begin by considering the functor t := tX : -mod - X -mod
+
+CATEGORICAL RESOLUTIONS OF BOUNDED DERIVED CATEGORIES
+
+17
+
+defined by the attachment M  (- A M )|X . It is easy to see that (-  M )|X  X -mod. The proof is similar to [Au1, Lemma 6.1]: one should apply the functorial isomorphism
+
+-  P  (Hom(P, ), -),
+where P  prj-, to the first two terms of the exact sequence -  n  -  m  M  0,
+that is induced from a projective presentation n  m  M  0 of M . Obviously t sends any morphism f : M  M  of left -modules to (-  f )|X .
+
+Lemma 5.1.3. The functor t defined above is full and faithful.
+
+Proof. By definition, it is plain that t is a faithful functor. To prove that it is full, consider a natural transformation  : (-  M )|X  (-  M )|X . There exists a morphism h : M  M 
+that commutes the following diagram
+
+M
+
+h
+
+/ M
+
+
+   M
+
+
+
+
+
+ /   M .
+
+Therefore  let X be an
+
+   h. This equality can be extended easily to n, that is, arbitrary right -module. Consider a projective presentation
+
+nn
+
+= 
+
+n  m 
+
+h. X
+
+Now 0
+
+of X. It follows from the following diagram
+
+n  M
+
+/ m  M
+
+/ X  M
+
+/0
+
+n  h
+
+m  h
+
+X
+
+
+
+
+
+
+
+n  M 
+
+/ m  M 
+
+/ X  M 
+
+/ 0.
+
+that X  X  h. So t(h) = . This completes the proof.
+5.1.4. By Remark 2.4, mod- and also X are dualising R-varieties. So duality D = HomR(-, E) induces the following commutative diagram
+
+mod-(mod-) - Dmod  / (mod-)-mod
+
+|X
+ mod-X
+
+|X
+
+DX
+
+ / X -mod
+
+where the rows are duality and columns are restrictions.
+Since Dmod- is a duality, it sends projective objects to the injective ones. Hence, in view of 5.1.1, we may deduce that for M  mod-, there exists a left -module M  such that Dmod-(Hom(-, M ))  -  M . M  is uniquely determined up to isomorphism, thanks to the faithfulness of the functor T .
+
+This isomorphism can be restricted to X , to induce the following isomorphism Dmod-(Hom(-, M ))|X  (-  M )|X .
+In case X  X , this can be written more simply as DX ((-, M ))  (-  M )|X .
+
+18
+
+JAVAD ASADOLLAHI, RASOOL HAFEZI AND MOHAMMAD H. KESHAVARZ
+
+Therefore, we have the following proposition.
+
+Proposition 5.1.5. Let  be an artin algebra and X be a functorially finite subcategory of mod- containing prj-. Then X -mod has enough injectives. Injective objects are those functors of the form (-  M )|X , where M  uniquely determined, up to isomorphism, by an object X in X .
+To have a better view on the injective covariant X -modules, let TX denote the subcategory of all left -modules M such that there exists X  X with D(-, X)  (-  M )|X . If we let X = mod-, then Gruson and Jensen's result stated in 5.1.1 imply that Tmod- = -mod. Moreover, it is easy to verify that Tprj- = -inj.
+We end this subsection by the following result, which is of independent interest.
+
+Proposition 5.1.6. Let X = Gprj- be the subcategory of Gorenstein projective -modules. Then TGprj- = -Ginj.
+
+Proof. Let P be a right -module. Consider the natural transformation (P,-) : -  D(P ) - DHom(-, P ), defined on a -module M by
+(P,M) : M  D(P )  DHom(M, P ), x  f  (  f ((x)))
+for x  M , f  D(P ) = Hom(P, E), and   Hom(M, P ). It is easily seen that (-,P ) is an equivalence if P is a finitely generated projective module. Now assume that G is a Gorenstein projective -module. So we have an exact sequence 0  G  P 0  P 1 with P 0 and P 1 projective. This in turn, induces the following commutative diagram
+
+-  D(P 1)
+
+/ -  D(P 0)
+
+/ -  D(G)
+
+/0
+
+(-,P 1 )
+
+(-,P 0)
+
+(-,G)
+
+
+
+
+
+
+
+DHom(-, P 1)
+
+/ DHom(-, P 0)
+
+/ DHom(-, G)
+
+/0
+
+in X -mod. But (-,P 1) and (-,P 0) are isomorphisms so is (-,G). This implies the result.
+
+5.2. Existence of Recollement. In this subsection, we will introduce two more functors  and v so that together with t defined in 5.1.2, we construct the desired recollement.
+
+5.2.1. Let us start by introducing  : -mod - X -mod. Pick a left -module M and consider an injective copresentation 0  M  I0 d I1 of it. By duality D = Hom(-, E(R/J)), there
+exist a morphism  : P1  P0 of projective right -modules such that D()  d. Hence we have the following commutative diagram
+
+0
+
+/M
+
+/ I0
+
+d
+
+/ I1
+
+
+
+
+
+ D(P0)
+
+D()
+
+/
+
+ D(P1).
+
+Define (M ) as
+
+(M ) = Ker((-  D(P0))|X (--d)|X (-  D(P1))|X ).
+
+Note that since X contains projective right -modules, the sequence
+
+0 - (M ) - (-  D(P0))|X (--d)|X (-  D(P1))|X .
+
+CATEGORICAL RESOLUTIONS OF BOUNDED DERIVED CATEGORIES
+
+19
+
+is an injective copresentation of (M ) in X -mod. The map  can be naturally defined on the morphisms, so we leave it to the readers.
+
+5.2.2. We define a functor v : X -mod - -mod as follows. Let F  X -mod. Consider injective copresentation
+0  G  (-  D(X0))|X -d (-  D(X1))|X of F . By Lemma 5.1.3, there exists a unique morphism f : D(X0)  D(X1) such that d = (-  f )|X . We define the functor v : X -mod  -mod by the attachment
+v(F ) := Ker(f : D(X0)  D(X1)).
+In a natural way, v can be defined on the morphisms.
+
+5.2.3. We denote by X -mod0 the subcategory of X -mod consisting of all functors that vanish on projective right -modules. By definition, it can be seen that X -mod0 is the kernel of the functor v defined in 5.2.2.
+Now we have enough ingredients to state the main theorem of this subsection.
+
+Theorem 5.2.4. Let X be a functorially finite subcategory of mod- consisting prj-. Then, there exists the recollement
+
+j
+
+t
+
+t X -modi 0
+
+j
+
+t / X -modi
+
+v
+
+/ -mod
+
+j
+
+
+
+of abelian categories.
+
+Proof. For the proof of the existence of the recollement, first it should be investigated that v is an exact functor, then verify that (t, v) and (v, ) are adjoint pairs and finally show that  is fully faithful. Since it is just a routine check similar to what is done for the proof of Theorem 3.7, we skip the proof.
+
+Two special cases are in order as the following two examples.
+
+Example 5.2.5. In the above theorem, set X = mod-. Then we have the following recollement
+
+r (mod-)-mod0
+k
+
+s / (mod-)-mod
+k
+
+/ -mod
+
+Example 5.2.6. If  is a Gorenstein algebra or more generally a virtually Gorenstein algebra,
+
+then Gprj- is a contravariantly finite subcategory of mod-. Moreover, since it is a resolving
+
+subcategory of mod- [Ho, Theorem 2.5], i.e. contains all projectives and is closed with respect
+
+to extensions and kernel of epimorphisms. Then by a result of Krause and Solberg [KS], Gprj-
+
+is also covariantly finite and hence is a functorially finite subcategory of mod-. Hence Theorem
+
+5.2.4 applies and so we have the following recollement
+
+s Gprj-mod0
+k
+
+t / Gprj-modj
+
+/ -mod
+
+Remark 5.2.7. Assume that  is a self-injective artin algebra and X is a functorially finite
+
+subcategory of mod- containing prj-. Then the recollement of Theorem 5.2.4 is the same as
+
+the recollement that is constructed in Theorem 3.8. To see this, just one should note that since
+
+ is self-injective, prj- = inj-.
+
+20
+
+JAVAD ASADOLLAHI, RASOOL HAFEZI AND MOHAMMAD H. KESHAVARZ
+
+5.3. Dualities of the categories of right and left -modules. In this short subsection, associated to any functorially finite subcategory X  prj- of mod-, a duality will be constructed between the categories of right and left -modules, also in the stable level.
+Let D : mod-X - X -mod be the usual duality, that exists because X is a dualising R-variety. It follows from the definition that D can be restricted to a functor
+
+D|mod0-X : mod0-X - X -mod0.
+
+Therefore, by Theorems 3.7 and 5.2.4 we get the following commutative diagram of abelian
+
+categories
+
+0
+
+/ mod0-X
+
+/ mod-X
+
+/
+
+mod-X mod0 -X
+
+/0
+
+D|
+
+D
+
+D
+
+0
+
+ / X -mod0
+
+ / X -mod
+
+
+
+/
+
+X -mod X -mod0
+
+/ 0.
+
+such that the horizontal maps are duality. Now we can define the duality DX with respect to the subcategory X as composition of the following functors
+
+mod- -- 1
+
+mod-X mod0-X
+
+-D
+
+X -mod X -mod0
+
+-v -mod,
+
+where  and v induced from the functors  and v introduced in Theorems 3.7 and 5.2.4, respectively.
+Now let P be a projective right -module. Then
+
+DX (P ) = vD -1(P ) = vD((-, P )|X ) = v(D(-, P )) = (-  D(P )) = D(P ).
+
+Hence right projective -modules project to the left injective -modules. Therefore the con-
+structed duality functor DX induces a duality between mod- and -mod. In particular, if X = prj-, then Dprj-, provides the usual duality between the stable cate-
+gories of right and left modules.
+
+6. Categorical resolutions of bounded derived categories
+In this section, we show that Db(mod-), the bounded derived category of , admits a categorical resolution, where  is an arbitrary artin algebra.
+We begin by the definition of a categorical resolution of the bounded derived category of an artin algebra. Although, the definition in literature is for arbitrary triangulated categories, in this paper we only concentrate on the bounded derived categories of artin algebras. We follow the definition presented by [Z, Definition 1.1], which is a combination of a definition due to Bondal and Orlov [BO] and also another one due to Kuznetsov [Ku, Definition 3.2], both as different attempts for providing a categorical translation of the notion of the resolutions of singularities.
+
+Convention. Throughout the section,  is an artin algebra and X is a contravariantly finite subcategory of mod- containing prj-. For a subcategory B of an abelian category A, C(B), resp. K(B), denote the category of complexes, resp. the homotopy category of complexes, over B. Their full subcategories consisting of bounded complexes will be denoted by Cb(B), resp. Kb(B).
+Definition 6.1. ([Z, Definition 1.1]) Let  be an artin algebra of infinite global dimension. A categorical resolution of Db(mod-), is a triple (Db(mod-), , ), where  is an artin
+
+CATEGORICAL RESOLUTIONS OF BOUNDED DERIVED CATEGORIES
+
+21
+
+algebra of finite global dimension and  : Db(mod-) - Db(mod-) and  : Kb(prj-) - Db(mod-) are triangle functors satisfying the following conditions.
+
+(i)
+
+
+
+induces
+
+a
+
+triangle-equivalence
+
+Db (mod- )
+Ker
+
+ Db(mod-);
+
+(ii) (, ) is an adjoint pair on Kb(prj-). That is, for every P  Kb(prj-) and every
+
+X  Db(mod-), there exists a functorial isomorphism
+
+Db(mod-)((P), X) = Db(mod-)(P, (X));
+
+(iii) The unit  : 1Kb(prj-) -  is a natural isomorphism. Furthermore, a categorical resolution (Db(mod-), , ) of Db(mod-) is called weakly crepant if  is also a right adjoint to  on Kb(prj-).
+
+6.2. Definitions and Notations. Let  and X be as in our convention.
+(i) The exact functor  : mod-X - mod-, defined in Remark 3.2, can be extended naturally to Db(mod-X ) to induce a triangle functor
+
+Db : Db(mod-X ) - Db(mod-). It acts on objects, as well as roofs, terms by terms. Let us denote the kernel of Db by Db0(mod-X ). By definition, it consists of all complexes K such that Db(K)  0. Clearly Db0(mod-X ) is a thick subcategory of Db(mod-X ). The induced functor
+Db(mod-X )/Db0(mod-X ) - Db(mod-)
+
+will be denoted by Db.
+
+(ii) Let Kb-ac(mod-X ) denote the full subcategory of Kb(mod-X ) consisting of all complexes F such that F() : · · · - F i-1() -i-1 F i() -i F i+1() - · · · ,
+
+is an acyclic complex of abelian groups. Note that if F is a complex in Kb-ac(mod-X ), then F(P ) is acyclic, for all P  prj-. The Verdier quotient Kb(mod-X )/Kb-ac(mod-X ) will be denoted by Db(mod-X ).
+The following proposition has been proved in [AAHV, Proposition 3.1.7] in slightly different settings. For the convenient of the reader, we provide a sketch of proof with some modifications to compatible it with our settings in this section.
+
+Proposition 6.3. Let F  C(mod-X ) be a complex over mod-X . There exists an exact sequence
+
+0 - F0 - F - (-, Db(F))|X - F1 - 0, where F0 and F1 are complexes over mod0-X . Proof. Let F = (F, i). By Remark 3.9, for every i  Z, there is an exact sequence
+0 - F0i - F i - (-, (F i))|X - F1i - 0, such that F0i and F1i belong to mod0-X . In view of Remark 4.2.4, for every i  Z, there exists unique morphism (i) : (F i) - (F i+1) and hence unique morphisms 0i : F0i - F0i+1 and
+
+22
+
+JAVAD ASADOLLAHI, RASOOL HAFEZI AND MOHAMMAD H. KESHAVARZ
+
+1i : F1i - F1i+1, making the following diagram commutative
+
+0
+
+/ F0i
+
+/ Fi
+
+/ (-, (F i))|X
+
+/ F1i
+
+/0
+
+0i
+
+i
+
+(-,(i))
+
+1i
+
+
+
+
+
+
+
+
+
+0
+
+/ F0i+1
+
+/ F i+1
+
+/ (-, (F i+1))|X
+
+/ F1i+1
+
+/ 0.
+
+The uniqueness of 0i , 1i and (i) yield the existence of complexes F0, F1 and Db(F) that fits together to imply the result. For more details see the proof of Proposition 3.1.7 of [AAHV].
+
+Let Kbac(mod-X ) denote the full subcategory of Kb(mod-X ) consisting of all acyclic complexes. It is a thick triangulated subcategory of Kb-ac(mod-X ). Consider the Verdier quotient
+Kb-ac(mod-X )/Kbac(mod-X ). Clearly, this quotient is a triangulated subcategory of Db(mod-X ) = Kb(mod-X )/Kbac(mod-X ).
+Corollary 6.4. With the assumptions as in our convention, Db0 (mod-X )  Kb-ac(mod-X )/Kbac(mod-X ).
+Proof. Let F be a complex in Db(mod-X ). For the proof, it is enough to show that if Db(F) is an acyclic complex, then F  Kb-ac(mod-X ). But it follows from the exact sequence
+0 - F0 - F - (-, Db(F))|X - F1 - 0, of the above Proposition. The proof is hence complete.
+
+Let
+
+
+
+:
+
+Db(mod-X )
+
+=
+
+Kb(mod-X ) Kb-ac(mod-X )
+
+-
+
+Kb(mod-X )/Kbac(mod-X ) Kb-ac(mod-X )/Kbac(mod-X )
+
+=
+
+Db(mod-X ) Db0 (mod-X )
+
+denote the equivalence of triangulated quotients [V2, Corollaire 4-3]. Clearly  acts as identity
+
+on
+
+the
+
+objects
+
+but
+
+sends
+
+a
+
+roof
+
+f s
+
+to
+
+the
+
+roof
+
+f /1 s/1
+
+.
+
+The composition
+
+ = Db : Db(mod-X ) - Db(mod-)
+
+attaches to any complex F the complex (F), where
+
+(F) : · · · - (F i-1) (-i-1) (F i) -(i) (F i+1) - · · · .
+
+Similarly,  sends a roof F o s H f / G to the roof
+
+(F) o (s) (H) (f) / (F) ,
+
+where for each morphism f in Kb(mod-X ), (f ) is the homotopy equivalence of a chain map in Cb(mod-) obtained by applying  terms by terms on a chain map in the homotopy equivalence class of f.
+Proposition 6.5. The functor  is an equivalence of triangulated categories. In particular, the functor Db is an equivalence of triangulated categories.
+
+CATEGORICAL RESOLUTIONS OF BOUNDED DERIVED CATEGORIES
+
+23
+
+Proof. It is obvious that  is an equivalence if and only if Db is so. This proves the second part. The proof of the first part, is just a modification of the proof of Proposition 3.1.9 of [AAHV] to our settings. So we leave it to the readers.
+
+Remark 6.6. The equivalence
+Db : Db(mod-X )/Db0 (mod-X ) - Db(mod-). is in fact a derived version of Auslander formula. This derived level formula has been proved by Krause [Kr1] for the case where X = mod-.
+
+To continue, we need an easy lemma.
+Lemma 6.7. Let  and X be as in our convention. Let P  Kb(prj-) and G  Kb(mod0-X ). Then
+Kb(mod-X )((-, P), G) = 0.
+Proof. Let P = (P i, Pi ) and G = (Gi, Gi ). By Yoneda lemma, for any i  Z, ((-, P i), Gi) = Gi(P i). But Gi(P i) = 0, because Gi  mod0-X . Hence, as we defined everything terms by terms, we deduce the results.
+
+Remark 6.8. Let F be a complex in C(mod-X ). By Proposition 6.3, there exists an exact sequence of complexes
+
+0 - F0 - F - (-, Db(F))|X - F1 - 0.
+
+such that F0 and F1 are complexes over mod0-X . This sequence can be divided to the following two short exact sequences of complexes
+
+0 - F0 - F - K - 0 and 0  K - (-, Db(F)) - F1 - 0.
+
+These two sequences, in turn, induce the following two triangles
+
+F0 - F - K
+
+and K - (-, Db(F)) - F1 ,
+
+in Db(mod-X ), where F0 and F1 are considered as objects of Db(mod0-X ). We use these triangles in our next propositions.
+
+Remark 6.9. The functor  : mod- - mod-X defined in 3.4, attaches to each projective -module P the projective functor (-, P ) in mod-X . Since  is an additive functor, it can be extended to Kb(prj-) to induce a functor
+Kb : Kb(prj-) - Kb(mod-X ).
+This functor maps a complex P  Kb(prj-) to the complex (-, P). So in fact, it is a functor from Kb(prj-) to Kb(prj-(mod-X )), that is, for every complex P  Kb(prj-), Kb (P) = (-, P) is a bounded complex of projective X -modules.
+
+Proposition 6.10. Let  and X be as above. Then for every complexes P  Kb(prj-) and F  Db(mod-X ), there exists an isomorphism
+Db(mod-X )(Kb (P), F) = Db(mod-)(P, Db(F)),
+of abelian groups. That is, Kb is left adjoint to Db on Kb(prj-).
+
+24
+
+JAVAD ASADOLLAHI, RASOOL HAFEZI AND MOHAMMAD H. KESHAVARZ
+
+Proof. Let F  Db(mod-X ). By Remark 6.8, there exists the following two triangles
+F0 - F - K , and K - (-, Db(F)) - F1 , where F0 and F1 are objects of Db(mod0-X ). Apply the functor Db(mod-X )(Kb (P), -) on these triangles, induce the following two long exact sequences of abelian groups
+(Kb (P), F0) - (Kb (P), F) - (Kb (P), K) - (Kb (P), F0[1])
+and
+(Kb (P), F1[-1]) - (Kb (P), K) - (Kb (P), (-, Db(F))) - (Kb (P), F1),
+respectively, where all Hom groups are taken in Db(mod-X ). But since P  Kb(prj-), Kb (P) = (-, P)  Kb(prj-(mod-X )) and hence some known abstract facts in triangulated categories, e.g. [W, Corollary 10.4.7], apply to guarantee that all these Hom sets can be also considered in Kb(mod-X ). This we do and so Lemma 6.7 now come to play to eventually establish the existence of the following isomorphism
+Kb(mod-X )(Kb (P), F) = Kb(mod-X )(Kb (P), (-, Db(F))),
+of abelian groups. Therefore, to complete the proof, it is enough to show that Kb(mod-X )(Kb (P), (-, Db(F))) = Kb(mod-)(P, Db(F)).
+This is a consequence of Yoneda lemma applying terms by terms in view of the fact that Kb(P) = (-, P). Note that since P is a bounded complex of projectives, by [W, Corollary 10.4.7], the Hom set (P, Db(F)) can be considered either in Kb(mod-X ) or in Db(mod-X ). The proof is now complete.
+
+Now we are in a position to state and prove the main theorem of this section. As it is mentioned in the introduction, it provides a generalization of a recent result due to Pu Zhang [Z, Theorem 4.1].
+
+Theorem 6.11. Let  be an artin algebra of infinite global dimension and  denote its A-algebra. Then (Db(mod-), Db, Kb ) is a categorical resolution of Db(mod-).
+
+Proof. Let n be the nilpotency index of . By definition,  = End(M ), where M =
+
+1in
+
+ Ji
+
+.
+
+It is known that  is of finite global dimension. In fact, it is a quasi-hereditary algebra
+
+[DR]. Set X := add-M . Then mod-X  mod-. By Propositions 6.5 and 6.10, the triple
+
+(Db(mod-), Db, Kb) satisfies the first two conditions of the Definition 6.1. So we only need to check condition (iii). This also trivially follows form the definition as DbKb(P) = Db((-, P)) = P.
+
+Towards the end of the paper, we show that if  is a self-injective artin algebra of infinite global dimension, then the triple (Db(mod-), Db, Kb ) introduced in the above theorem, provides a weakly crepant categorical resolution of Db(mod-). To do this, we need some preparations. Let us begin by a lemma.
+Lemma 6.12. Let  and X be as in our convention. Let I  inj-. Then the functor (-, I)|X is an injective object of mod-X .
+
+CATEGORICAL RESOLUTIONS OF BOUNDED DERIVED CATEGORIES
+
+25
+
+Proof. Since X is a contravariantly finite subcategory of mod-, there exists an exact sequence X1 -d1 X0 -d0 I - 0 of -modules such that d0 and d1 are right X -approximations of I and Kerd0, respectively. This guarantees the existence of the exact sequence
+
+(-, X1) (--,d1) (-, X0) (--,d0) (-, I)|X - 0
+
+in mod-X . Hence (-, I)|X is a finitely presented functor. To show that it is injective, pick a short exact sequence 0  F   F  F   0 of X -modules and apply the functor (-, (-, I)|X ) on it to get the sequence
+
+0 - (F , (-, I)|X ) - (F, (-, I)|X ) - (F , (-, I)|X ) - 0.
+
+Since by Proposition 3.6, (, ) is an adjoint pair, we have the following commutative diagram
+
+0
+
+/ (F , (-, I)|X )
+
+/ (F, (-, I)|X )
+
+/ (F , (-, I)|X )
+
+/0
+
+
+
+0
+
+/ ((F ), I)
+
+ / ((F ), I)
+
+
+
+/ ((F ), I)
+
+/ 0,
+
+where the vertical arrows are isomorphisms. But, the lower row is exact, because I is an injective module and  is an exact functor by Lemma 3.3. Hence the upper row should be exact, that implies the result.
+
+Remark 6.13. Let  be a self-injective artin algebra. So prj- = inj-. Hence a complex P  Kb(prj-) is also a bounded complex of injectives. So by the above lemma, Kb(P) = (-, P) is a complex of injective X -modules. Therefore by [W, Corollary 10.4.7], all Hom sets with either P or Kb (P) in the second variants, can be calculated either in Db(mod-X ) or in Kb(mod-X ).
+Lemma 6.14. Let  and X be as in our convention. Then for every complexes G  Kb(mod0-X ) and M  Kb(mod-),
+Kb(mod-X )(G, (-, M)|X ) = 0.
+Proof. Let G = (Gi, Fi ) and M = (M i, M i ). Since, by Proposition 3.6, (, ) is an adjoint pair, for every i  Z, we have an isomorphism
+mod-X (G, (-, M)|X ) = mod-((G), M).
+Hence mod-X (G, (-, M)|X ) = 0, because G  mod0-X = Ker. This can be extended naturally, terms by terms, to bounded complexes to prove the lemma.
+
+Theorem 6.15. Let  be a self-injective artin algebra of infinite global dimension. Then the triple (Db(mod-), Db, Kb ) introduced in Theorem 6.11, is a weakly crepant categorical resolution of Db(mod-).
+
+Proof. We just should show that Kb is a right adjoint of Db on Kb(prj-). Pick F  Db(mod-X ) and P  Kb(prj-). Use Remark 6.8, to deduce the existence of the following two triangles
+F0 - F - K , and K - (-, Db(F)) - F1 , with F0 and F1 objects of Db(mod0-X ). Apply the functor Db(mod-X )(-, Kb (P)) on these triangles to get two exact sequences of abelian groups. Apply Remark 6.13, to deduce that we may also compute the Hom sets in Kb(mod0-X ). Now we should use Lemma 6.14, to conclude the following isomorphism
+Kb(mod-X )(F, Kb (P)) = Kb(mod-X )((-, Db(F)), Kb (P)).
+
+26
+
+JAVAD ASADOLLAHI, RASOOL HAFEZI AND MOHAMMAD H. KESHAVARZ
+
+The extended version of Yoneda lemma finally helps us to establish the following isomorphism
+Kb(mod-X )((-, Db(F)), Kb (P)) = Kb(mod-)(Db(F), P)
+of abelian groups. The proof is hence complete.
+References
+[AAHV] J. Asadollahi, N. Asadollahi, R. Hafezi and R. Vahed, Auslander's formula: variations and applications, available at arXiv:1605.04745.
+[Au1] M. Auslander, Coherent functors, in Proc. Conf. Categorical Algebra (La Jolla, Calif., 1965), 189231, Springer, New York, 1966.
+[Au2] M. Auslander, Representation dimension of artin algebras, Queen Mary College Notes, 1971. [Au3] M. Auslander, Representation theory of artin algebras. I, II, Comm. Algebra 1 (1974), 177-268; ibid. 1
+(1974), 269-310. [AR1] M. Auslander and I. Reiten, Stable equivalence of dualizing R-varieties, Adv. Math. 12(3) (1974),
+306-366. [AR2] M. Auslander, I. Reiten, Applications of contravariantly finite subcategories, Adv. Math. 86 (1991),
+no. 1, 111-152. [AR3] M. Auslander and I. Reiten, DTr-periodic modules and functors, Representation theory of algebras
+(Cocoyoc, 1994), 39-50, CMS Conf. Proc., 18, Amer. Math. Soc., Providence, RI, 1996. [AS] M. Auslander and S. O. Smalø, Almost split sequences in subcategories, J. Algebra 69(2) (1981),
+426-454. [Be] A. Beligiannis, On algebras of finite Cohen-Macaulay type, Adv. Math. 226 (2011), 1973-2019. [BR] A. Beligiannis, I. Reiten, Homological and homotopical aspect of torsion theories, Mem. Amer. Math.
+Soc. 188, 2007. [BO] A. Bondal and D.Orlov, Derived categories of coherent sheaves, In: Proc. ICM 2002 Beijing, Vol. II,
+Higher Education Press, Beijing, 2002, 47-56. [Bu] A. B. Buan, Closed subfunctors of the extension functor, J. Algebra 244 (2001), 407-428. [DR] V. Dlab and C. M. Ringel, Every semiprimary ring is the endomorphism ring of a projective module
+over a quasihereditary ring, Proc. Amer. Math. Soc. 107 (1989), no. 1, 1-5. [E] O¨ . Eiriksson, From Submodule Categories to the Stable Auslander Algebra, arXiv:1607.08504v2
+[math.RT]. [FP] V. Franjou and T. Pirashvili, Comparison of abelian categories recollements, Doc. Math. 9 (2004),
+41-56. [Ga] P. Gabriel, Des cat´egories ab´eliennes, Bull. Soc. Math. France 90 (1962), 323-448. [GZ] N. Gao and P. Zhang, Gorenstein derived categories, J. Algebra 323 (2010), 2041-2057. [GJ] L. Gruson and C. U. Jensen, Modules alg´ebriquement compacts et foncteurs lim(i), C. R. Acad. Sci.
+Paris Ser. A-B, 276 (1973), 1651-1653. [Ho] H. Holm, Gorenstein homological dimensions, J. Pure Appl. Algebra 189(1-3) (2004), 167193. [HT] J. J. Hutchinson and D. R. Turnidge, Morita equivalent quotient rings, Comm. Algebra 4(6) (1976),
+669-675. [I1] O. Iyama, Auslander correspondence, Adv. Math., 210(1) (2007), 51-82. [I2] O. Iyama, Cluster tilting for higher Auslander algebras, Adv. Math., 226 (2011), 1-61. [IKM] O. Iyama, K. Kato, J. Miyachi, Recollement of homotopy categories and Cohen-Macaulay modules, J.
+K-Theory 8 (2011), 507-542. [JL] C. U. Jensen and H. Lenzing, Model theoretic algebra with particular emphasis on fields, rings, modules,
+Algebra Logic Appl. vol. 2. Gordon and Breach, New York (1989). [KY] O. Kerner and K. Yamagata, Morita algebras, J. Algebra 382 (2013), 185-202. [Kr1] H. Krause, Deriving Auslander's formula, Doc. Math. 20 (2015) 669-688. [Kr2] H. Krause, Morphisms determined by objects and flat covers, Forum Math. 28(3) (2016), 425-435. [KS] H. Krause and O. Solberg, Applications Of Cotorsion Pairs, J. London Math. Soc. (2) 68 (2003)
+631-650. [Ku] A. Kuznetsov, Lefschetz decompositions and categorical resolutions of singularities, Selecta Math. New
+Ser. 13 (2008), 661-696. [L] H. Lenzing, Auslanders work on Artin algebras, in Algebras and modules, I (Trondheim, 1996), 83105,
+CMS Conf. Proc., 23, Amer. Math. Soc., Providence, RI, 1998.
+
+CATEGORICAL RESOLUTIONS OF BOUNDED DERIVED CATEGORIES
+
+27
+
+[MT]
+[N] [Pr]
+[Ps]
+[PV]
+[V]
+[W] [Z]
+
+H. Matsui and R. Takahashi, Singularity categories and singular equivalences for resolving subcategories, To appear in Math. Z., doi:10.1007/s00209-016-1706-x. A. Neeman, The derived category of an exact category, J. Algebra 135(2) (1990), 388-394. M. Prest, The Functor Category, Categorical Methods in Representation Theory, Bristol, Sept. 2012. Available at: www.ma.man.ac.uk/ mprest/BristolTalksNotes.pdf. C. Psaroudakis, Homological theory of recollements of abelian categories, J. Algebra 398(15) (2014), 63-110. C. Psaroudakis and Jorge Vito´ria, Recollements of Module Categories, Appl. Cat. Str. 22(4) (2014), 579-593. J. L. Verdier, Des cat´egories d´eriv´ees ab´eliennes, Asterisque 239 (1996), xii+253 pp. (1997), with a preface by L. Illusie, edited and with a note by G. Maltsiniotis. C. A. Weibel, An Introduction to Homological Algebra, Cambridge University Press, 1995, 450 pages. P. Zhang Categorical resolutions of a class of derived categories, arXiv:1410.2414 [math.RT].
+
+Department of Mathematics, University of Isfahan, P.O.Box: 81746-73441, Isfahan, Iran and School of Mathematics, Institute for Research in Fundamental Science (IPM), P.O.Box: 19395-5746, Tehran, Iran
+E-mail address: asadollahi@ipm.ir, asadollahi@sci.ui.ac.ir
+Department of Mathematics, University of Isfahan, P.O.Box: 81746-73441, Isfahan, Iran E-mail address: keshavarz@sci.ui.ac.ir
+
+School of Mathematics, Institute for Research in Fundamental Sciences (IPM), P.O.Box: 193955746, Tehran, Iran
+E-mail address: hafezi@ipm.ir
+
+

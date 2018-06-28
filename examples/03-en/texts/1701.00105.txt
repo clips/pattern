@@ -1,0 +1,178 @@
+arXiv:1701.00105v1 [astro-ph.HE] 31 Dec 2016
+
+XXV European Cosmic Ray Symposium, Turin, Sept. 4-9 2016
+
+1
+
+Electron Acceleration Mechanisms in Thunderstorms
+S. Celestin LPC2E, University of Orleans, CNRS, Orleans, France
+Thunderstorms produce strong electric fields over regions on the order of kilometer. The corresponding electric potential differences are on the order of 100 MV. Secondary cosmic rays reaching these regions may be significantly accelerated and even amplified in relativistic runaway avalanche processes. These phenomena lead to enhancements of the high-energy background radiation observed by detectors on the ground and on board aircraft. Moreover, intense submillisecond gammaray bursts named terrestrial gamma-ray flashes (TGFs) produced in thunderstorms are detected from low Earth orbit satellites. When passing through the atmosphere, these gamma-rays are recognized to produce secondary relativistic electrons and positrons rapidly trapped in the geomagnetic field and injected into the near-Earth space environment. In the present work, we attempt to give an overview of the current state of research on high-energy phenomena associated with thunderstorms.
+
+I. INTRODUCTION
+A. High-Energy Radiation Bursts
+Terrestrial gamma-ray flashes (TGFs) are bursts of high-energy photons originating from the Earth's atmosphere in association with thunderstorm activity. TGFs were serendipitously discovered in the 1990s by the instrument BATSE on board the Compton Gamma-Ray Observatory (CGRO), which had been originally launched to perform observations of celestial gamma-ray sources [1]. Later on, the detection of these events has been reported using the Reuven Ramaty High Energy Solar Spectroscopic Imager (RHESSI) satellite [2], the Astrorivelatore Gamma a Immagini Leggero (AGILE) satellite [3], and the Fermi Gamma-ray Space Telescope [4]. An illustration of a TGF is given in Figure 1. A few events closely resembling TGFs have also been detected from the ground [5­8] and from an aircraft [9].
+Moreover, measurements have correlated TGFs with initial development stages of normal polarity intracloud lightning that transports negative charges
+
+upward (+IC) [10­14]. Recently, studies focusing on observation and theory of radio emissions believed to be associated with the acceleration processes of electrons producing TGF have provided a new insight in this phenomenon (e.g., see [15­18]).
+X-ray and gamma-ray bursts have also been recently observed during natural and rocket-triggered lightning discharges usually from the ground (e.g., [19­27]) but also using airborne detectors [28]. The energy of photons measured in lightning-produced Xray bursts are typically lower than that in TGFs.
+B. Enhancement of Background Radiation by Thunderstorms
+In addition to radiation bursts, another type of high-energy emission has been observed inside thunderstorms using detectors on board balloons [29, 30] and airplanes (e.g., [31­33]). These events, so-called gamma-ray glows, correspond to significant enhancements of background radiation that last for more than a few seconds up until a lightning discharge occurs and presumably depletes the charges responsible for the large-scale electric field present in the thunderstorm, which abruptly terminates the gamma-ray glow event. In fact, gamma-ray glows are often observed over a time corresponding to the duration of the presence of the detector in the active region, which is limited by the speed of the aircraft [33]. Similar emissions have been measured from ground-based detectors (e.g., [34­39]) and are usually referred to as Thunderstorm Ground Enhancements.
+
+FIG. 1: Representation of a TGF (pink points) produced by a terrestrial thunderstorm and its associated electron (yellow points) and positron (green points) beams. Credit: NASA/Goddard Space Flight Center/J. Dwyer, Florida Inst. of Technology.
+eConf C16-09-04.3
+
+C. Objectives
+The objectives of the present work are:
+· To present the recent and rapidly growing crossdisciplinary field of research named High-Energy Atmospheric Physics [40].
+
+2
+
+XXV European Cosmic Ray Symposium, Turin, Sept. 4-9 2016
+
+· To give insight into the main physical mechanisms and concepts believed to be at play in the acceleration of electrons in thunderstorms.
+· To point out the importance of secondary cosmic rays as high-energy seed particles playing a key role in some of the phenomena presented here.
+· To present future space missions dedicated to the observation of TGFs and the related highenergy particle bursts.
+II. PHENOMENOLOGY OF HIGH-ENERGY EVENTS ASSOCIATED WITH THUNDERSTORMS
+A. Terrestrial Gamma-ray Flashes
+The TGF energy spectrum observed by satellites extend from 10 keV to >40 MeV and is typical of bremsstrahlung produced by high-energy electrons accelerated in the atmosphere and colliding with atomic nuclei of air molecules [41]. TGFs duration is shorter than one millisecond [42­46] (for comparison gammaray bursts of cosmic origin (GRBs) have a duration of several seconds or more). When observed from low Earth orbit satellites (500 km altitude), they have a typical fluence slightly weaker than 1 photon/cm2 [e.g., 4].
+TGFs occur in correlation with lightning discharges inside thunderclouds. Remarkably, they are associated with the most common type of lightning discharges, i.e., intracloud lightning [e.g., 14, and references therein], occurring in what appears to be common thunderclouds [e.g., 47, 48]. The TGF source altitude determined from radio emissions typically ranges between 10 and 14 km [49], which is in agreement with the expected spectrum of bremsstrahlung photons produced in this altitude range and transported through the atmosphere up to satellite altitude [e.g., 50, 51]. The global TGF occurrence rate is estimated to be 400,000 per year concerning TGFs detectable by Fermi-GBM (Gamma ray Burst Monitor) [52], but detailed analysis of satellite measurements [53] and theoretical studies [54] suggest that it cannot be excluded that TGFs represent the visible part of a ubiquitous process taking place during the propagation of all lightning discharges.
+
+secondary processes accompanying the transport of gamma-rays through the atmosphere. These particles are capable of escaping into space. These events are usually referred to as terrestrial electron beams (TEBs) and represent an unforeseen and not yet quantified source of high-energy electrons and positrons in the Earths radiation belts [55, 56]. They result from the fact that high-energy photons propagating in air are subjected to mainly three collisional processes, which all produce secondary electrons: Photoelectric absorption (main process for energies up to 30 keV), Compton scattering (main process between 30 keV and 30 MeV), and electron-positron pair production (main process >30 MeV).
+C. Gamma-Ray Glows
+Gamma-ray glows associated with thunderstorms are becoming outstandingly interesting, as they are now believed to occur frequently. Indeed, Kelley et al. [33] estimate that a conservative 8% of electrified storms produce glows. Although fluxes of photons in glows are much lower than those in TGFs, energy spectra are similar [33]. Astoundingly, there is now evidence that glows may be of importance to the thundercloud charging mechanisms itself [33].
+D. Radiation Dose
+Dwyer et al. [57] have calculated that aircraft passengers finding themselves in an electron beam producing a TGF such as those observed from low-orbit might receive significant radiation doses. Moreover, given the energy of single photons in these events, TGFs are believed to produce neutrons through photonuclear reactions during their transport through the atmosphere [58, 59]. Tavani et al. [60] concluded that TGF-produced neutrons would cause serious hazard on the aircraft electronic equipment. The risk is limited by the fact that pilots try to avoid thunderstorms for other reasons. However, changing routes is not always possible and this is illustrated by the fact that aircraft are regularly hit by lightning discharges. Therefore, a careful risk assessment should be done, especially concerning the cumulated doses received by aircrews.
+
+B. Electron and Positron Beams Associated with TGFs
+
+E. Cosmic Ray Measurements to Probe Thunderstorms
+
+A remarkable phenomenon associated with TGFs, which was predicted and observed by Dwyer et al. [55], consists in the production of a great number of high-energy electrons and positrons produced by
+
+It is interesting to note that the electric field in thunderstorms is difficult to estimate. Balloon probes for example give local measurements at given times. Recently, the study of cosmic rays has brought a new
+
+eConf C16-09-04.3
+
+XXV European Cosmic Ray Symposium, Turin, Sept. 4-9 2016
+
+3
+
+Dynamic Friction Force (eV/m)
+
+108
+
+Electron Friction Force in Ground-level Air Max: 263 keV/cm
+
+at 126 eV 107
+Total
+
+106
+
+105
+
+104
+
+103
+
+1012 0-2
+
+100
+
+Min: 2.08 keV/cm at 1.26 MeV
+Purely Collisional
+
+102
+
+104
+
+Energy (eV)
+
+Radiative
+
+106
+
+108
+
+FIG. 2: Dynamic friction for electrons in air calculated at ground level.
+
+exciting way to probe thunderstorms. Indeed, Schellart et al. [71] have studied the intensity and polarization patterns of air showers using the radio telescope LOFAR and deduced one integrated component of the large-scale field inside the thunderstorms.
+
+III. ACCELERATION OF ELECTRONS IN DENSE MEDIA
+A. Dynamic Friction Force
+Large scale electric fields (hundreds of meters to kilometers) are usually produced in thunderstorms with amplitudes typically lower than or reaching 2N/N0 kV/cm (e.g., [61]), where N is the local air density and N0 is the air density at ground level. Free electrons are accelerated under the corresponding electric force, however, because of the high density of the atmosphere at these altitudes (cloud tops altitudes are limited by the tropopause, i.e., 10­15 km) electrons are usually rapidly slowed down by the collisions with air molecules. From the knowledge of the collisional cross sections and the corresponding energy loss, the dynamic friction (or equivalently the stopping power) of electrons can be calculated. Figure 2 shows the friction experienced by electrons in units of energy per meter calculated in the atmosphere at ground level (see [62­64] for more technical details on the calculation of the friction presented in Figure 2).
+The complexity of the lower energy part of the friction is caused by the intricacies of inelastic collisional processes between electrons and nitrogen or oxygen molecules while the high-energy part matches very well the Bethe formula with a mean excitation potential estimated for air (e.g., see [62]). Since different dedicated models and theories are used in both energy regimes, the seamless representation of electron
+
+collisions in air between low- and high-energy ranges is not trivial. It has been the focus of a recent effort, which has proven fruitful in the present field of research [64­68].
+B. Relativistic and Thermal Runaway Electrons
+Because of the amplitude of the dynamic friction in air and its strong increase with the electron energy for energies <100 eV, usually, electrons cannot reach high-energy regimes and are quickly thermalized. However, Figure 2 shows that under an electric field with an amplitude greater than 2.1 N/N0 kV/cm, high-energy electrons (e.g., secondary cosmic rays) experience an electric force greater than the dynamic friction force. Since they are continuously accelerating and hence separating from the thermal electrons in terms of energy as well as in the configuration space, these electrons are referred to as runaway electrons. In fact, mostly due to elastic scattering, the runaway threshold electric field is more precisely Erun 2.8N/N0 kV/cm in air at ground level [e.g., 40]. In some occasions, these amplitudes have been observed in thunderstorms [61].
+While most of ionizing collisions produced by runaway electrons result in low-energy secondary electrons that are not runaway electrons, there is a probability that a secondary runaway electron be produced. This situation occurs if the electric field extends over a region that is larger than the corresponding mean free path of such an ionizing collision. This avalanche mechanism was proposed by Gurevich et al. [69] and is now termed relativistic runaway electron avalanche (RREA) (see [40, and references therein]).
+However, one can see in Figure 2 that there is a maximum in the dynamic friction and hence, for extremely strong electric field (>260 N/N0 kV/cm), thermal electrons can accelerate to high-energy regime [70]. This process is usually named "thermal runaway" [63]. It is worth noting that such high fields are on the order of ten times the conventional breakdown field (field for which the ionization rate equals the electron attachment rate) and because of the strong ionization they would produce, and the corresponding increase of the local conductivity, they cannot be applied locally for durations longer than one nanosecond [65]. However, filamentary discharges named streamers might be able to sustain these high electric field in a dynamic fashion for longer durations [63, 65].
+C. Production of Gamma-Rays
+As they are deflected by nuclei of air molecules, electrons produce X- and gamma-rays through bremsstrahlung process. It has been theoretically
+
+eConf C16-09-04.3
+
+4
+
+XXV European Cosmic Ray Symposium, Turin, Sept. 4-9 2016
+
+shown that RREAs in large-scale homogeneous electric fields exhibit a robust characteristic exponential high-energy cutoff (7 MeV) in the electron energy distribution function [e.g., 40, 66, 72]. This signature is also present in the associated bremsstrahlung spectra. This property weakly depends on the production altitude and the magnitude of the large-scale homogeneous electric field that sustains the RREA [50, 73].
+Indeed, average TGF and gamma-ray glow spectra are very well reproduced by RREA-based models [33, 50]. However, the fluence of TGFs is believed to be too high to be produced by RREAs seeded by natural background radiation or extensive cosmic-ray air showers alone, and as a consequence, relativistic feedback mechanisms have been introduced [e.g., 74, 77]. If the ambient field is sufficiently strong, exotic largescale discharges driven by relativistic particles have been predicted to be produced in thunderstorms using numerical models [75].
+D. Theoretical Effort
+X-ray burst produced by cloud-to-ground lightning discharges and observed from the ground are understood to root from the production of thermal runaway electrons [22], probably caused by the extreme electric fields in streamer discharges during impulsive events occurring in the propagation of negative lightning leaders [65]. Once thermal runaway electrons are produced, they can accelerate further in the electric field produced in the vicinity of the lightning leader tip and gain part of the potential drop in the acceleration region [54, 67].
+Gamma-ray glows have similar energy spectra as TGFs [33]. For this reason, they are believed to be produced by RREAs as well. It seems likely that secondary cosmic rays are accelerated and sometimes even amplified in RREAs in thunderstorms to produce gamma-ray glows. Indeed, fluxes and energy spectra of Thunderstorm Ground Enhancements have been be well-explained by these processes acting on secondary cosmic ray background [39]. Moreover, electrons producing gamma-ray glows also produce significant quantities of ions and Kelley et al. [33] have estimated the corresponding ion current. They conclude that, in the glow region, this current is on average comparable with other discharging mechanisms such as lightning and precipitations [33]. This emphasizes the role of secondary cosmic rays in charging mechanisms of thunderstorms.
+Although there seems to be a broad consensus about the physical processes at play in the production of Xray bursts from lightning discharges and gamma-ray glows, two main theories are usually recognized to be able to explain the occurrence of TGFs in the literature: (1) the direct production of thermal runaway electrons by an ascending lightning leader at the mo-
+
+ment of an impulsive event during its propagation and their further amplification in RREAs developing in the leader-produced field [51, 54, 63, 65, 76] and (2) large-scale (kilometers) RREAs in the thundercloud field seeded by either cosmic-ray air showers or thermal runaway electrons produced by a lightning leader [e.g., 74]. Both theories are not mutually exclusive. However, if lightning leaders are to produce TGFs locally (in the field they produce), the two theories lead to different testable predictions [e.g., 54, 68].
+IV. FUTURE SPACE MISSIONS
+Two missions with TGF measurement as one of their primary goals are planned to be launched within the next few years (2017­2019). Namely, the European Space Agency mission ASIM, which will be placed on board the International Space Station (ISS), and the French space agency (CNES) low-orbit satellite TARANIS. Because they were designed to observe very different sources (e.g., gamma-ray bursts of cosmic origin last several seconds) and given the very high fluxes in TGFs over a timescale of 100 µs, spaceborne instruments with TGF-observing capabilities are limited by significant saturation effects [e.g., 42, 45, 78], which change the time dynamics and energy of detected counts as compared to real photons.
+Designed to study TGFs, TARANIS will have very rapid lanthanum-bromide- and plastic-based detectors (XGRE) that should remove, or at least strongly limit, dead time and pile-up effects. The XGRE instrument will also be able to discriminate electrons from photons, which is key to the understanding of terrestrial electron beams (TEBs). XGRE will detect photons from 20 keV to 10 MeV and electrons from 1 MeV to 10 MeV. Other instruments on board TARANIS will detect the associated electromagnetic signals and optical emissions. On board the ISS, ASIM will have imaging capabilities for photons with energies between 10 and 500 keV, and will be able to detect photons with energy up to 40 MeV. ASIM will also be equipped with photometers to detect the related optical emissions.
+V. CONCLUSIONS
+· Since the 1990s, a new field of research named High-Energy Atmospheric Physics has emerged [40].
+· Runaway electrons production, acceleration, and amplification mechanisms are key to understand the physical processes in this new field.
+· Various phenomena have been observed such as TGFs, TEBs, gamma-ray glows, and TGEs.
+
+eConf C16-09-04.3
+
+XXV European Cosmic Ray Symposium, Turin, Sept. 4-9 2016
+
+5
+
+· Production mechanisms of some of these phenomena are still up for debate.
+· The first space missions designed for the study of TGFs and related phenomena will be launched in the coming years: TARANIS (CNES) and ASIM (ESA).
+
+Acknowledgments
+We acknowledge support from the French space agency (CNES) in the framework of the space mission TARANIS.
+
+[1] G. Fishman, P. Bhat, R. Mallozzi, J. Horack, T. Koshut, C. Kouveliotou, G. Pendleton, C. Meegan, R. Wilson, W. Paciesas, et al., Science 264, 1313 (1994).
+[2] D. M. Smith, L. I. Lopez, R. P. Lin, and C. P. Barrington-Leigh, Science 307, 1085 (2005).
+[3] M. Marisaldi, F. Fuschino, C. Labanti, M. Galli, F. Longo, E. Del Monte, G. Barbiellini, M. Tavani, A. Giuliani, E. Moretti, et al., J. Geophys. Res. 115, A00E13 (2010).
+[4] M. S. Briggs, G. J. Fishman, V. Connaughton, P. N. Bhat, W. S. Paciesas, R. D. Preece, C. Wilson-Hodge, V. L. Chaplin, R. M. Kippen, A. von Kienlin, et al., J. Geophys. Res. 115, A07323 (2010).
+[5] J. R. Dwyer, H. K. Rassoul, M. Al-Dayeh, L. Caraway, B. Wright, A. Chrest, M. A. Uman, V. A. Rakov, K. J. Rambo, D. M. Jordan, et al., Geophys. Res. Lett. 31, L05119 (2004).
+[6] M. D. Tran, V. A. Rakov, S. Mallick, J. R. Dwyer, A. Nag, and S. Heckman, Jour. Atm. Sol. Terr. Phys. 136, 86 (2015).
+[7] J. R. Dwyer, M. M. Schaal, E. Cramer, S. Arabshahi, N. Liu, H. K. Rassoul, J. D. Hill, D. M. Jordan, and M. A. Uman, J. Geophys. Res. 117, A10303 (2012).
+[8] B. M. Hare, M. A. Uman, J. R. Dwyer, D. M. Jordan, M. I. Biggerstaff, J. A. Caicedo, F. L. Carvalho, R. A. Wilkes, D. A. Kotovsky, W. R. Gamerota, et al., J. Geophys. Res. 121, 6511 (2016).
+[9] D. M. Smith, J. R. Dwyer, B. J. Hazelton, B. W. Grefenstette, G. F. M. Martinez-McKinney, Z. Y. Zhang, A. W. Lowell, N. A. Kelley, M. E. Splitt, S. M. Lazarus, et al., J. Geophys. Res. 116, D20124 (2011).
+[10] M. A. Stanley, X.-M. Shao, D. M. Smith, L. I. Lopez, M. B. Pongratz, J. D. Harlin, M. Stock, and A. Regan, Geophys. Res. Lett. 33, L06803 (2006).
+[11] X.-M. Shao, T. Hamlin, and D. M. Smith, J. Geophys. Res. 115, A00E30 (2010).
+[12] G. Lu, R. J. Blakeslee, J. Li, D. M. Smith, X. Shao, E. W. McCaul, D. E. Buechler, H. J. Christian, J. M. Hall, and S. A. Cummer, Geophys. Res. Lett. 37, L11806 (2010).
+[13] G. Lu, S. A. Cummer, J. Li, F. Han, D. M. Smith, and B. W. Grefenstette, J. Geophys. Res. 116, A03316 (2011).
+[14] S. A. Cummer, F. Lyu, M. S. Briggs, G. Fitzpatrick, O. J. Roberts, and J. R. Dwyer, Geophys. Res. Lett. 42 (2015).
+[15] S. A. Cummer, G. Lu, M. S. Briggs, V. Connaughton, S. Xiong, G. J. Fishman, and J. R. Dwyer, Geophys. Res. Lett. 381, L14810 (2011).
+[16] V. Connaughton, M. S. Briggs, S. Xiong, J. R. Dwyer, M. L. Hutchins, J. E. Grove, A. Chekhtman, D. Tier-
+
+ney, G. Fitzpatrick, S. Foley, et al., J. Geophys. Res. 118, 2313 (2013). [17] J. R. Dwyer and S. A. Cummer, J. Geophys. Res. 118, 3769 (2013). [18] F. Lyu, S. A. Cummer, M. Briggs, M. Marisaldi, R. J. Blakeslee, E. Bruning, J. G. Wilson, W. Rison, P. Krehbiel, G. Lu, et al., Geophys. Res. Lett. 43, 8728 (2016). [19] C. B. Moore, K. B. Eack, G. D. Aulich, and W. Rison, Geophys. Res. Lett. 28, 2141 (2001). [20] J. R. Dwyer, M. A. Uman, H. K. Rassoul, M. AlDayeh, L. Caraway, J. Jerauld, V. A. Rakov, D. M. Jordan, K. J. Rambo, V. Corbin, et al., Science 299, 694 (2003). [21] J. R. Dwyer, H. K. Rassoul, M. Al-Dayeh, L. Caraway, B. Wright, A. Chrest, M. A. Uman, V. A. Rakov, K. J. Rambo, D. M. Jordan, et al., Geophys. Res. Lett. 31, L05118 (2004). [22] J. R. Dwyer, H. K. Rassoul, M. Al-Dayeh, L. Caraway, A. Chrest, B. Wright, E. Kozak, J. Jerauld, M. A. Uman, V. A. Rakov, et al., Geophys. Res. Lett. 32, L01803 (2005). [23] Z. Saleh, J. Dwyer, J. Howard, M. Uman, M. Bakhtiari, D. Concha, M. Stapleton, D. Hill, C. Biagi, and H. Rassoul, J. Geophys. Res. 114, D17210 (2009). [24] J. R. Dwyer, M. Schaal, H. K. Rassoul, M. A. Uman, D. M. Jordan, and D. Hill, J. Geophys. Res. 116, D20208 (2011). [25] S. Mallick, V. A. Rakov, and J. R. Dwyer, J. Geophys. Res. 117, D16107 (2012). [26] M. M. Schaal, J. R. Dwyer, Z. H. Saleh, H. K. Rassoul, J. D. Hill, D. M. Jordan, and M. A. Uman, J. Geophys. Res. 117, D15201 (2012). [27] M. M. Schaal, J. R. Dwyer, S. Arabshahi, E. S. Cramer, R. J. Lucia, N. Y. Liu, H. K. Rassoul, D. M. Smith, J. W. Matten, A. G. Reid, et al., J. Geophys. Res. 119, 982 (2014). [28] P. Kochkin, A. P. J. van Deursen, A. de Boer, M. Bardet, and J.-F. Boissin, J. Phys. D: Appl. Phys. 48, 425202 (2015), 1509.00997. [29] K. B. Eack, W. H. Beasley, W. David Rust, T. C. Marshall, and M. Stolzenburg, J. Geophys. Res. 101, 29637 (1996). [30] K. B. Eack and W. H. Beasley, J. Geophys. Res. 120, 6887 (2015). [31] G. K. Parks, B. H. Mauk, R. Spiger, and J. Chin, Geophys. Res. Lett. 8, 1176 (1981). [32] M. McCarthy and G. K. Parks, Geophys. Res. Lett. 12, 393 (1985). [33] N. A. Kelley, D. M. Smith, J. R. Dwyer, M. Splitt, S. Lazarus, F. Martinez-McKinney, B. Hazelton,
+
+eConf C16-09-04.3
+
+6
+
+XXV European Cosmic Ray Symposium, Turin, Sept. 4-9 2016
+
+B. Grefenstette, A. Lowell, and H. K. Rassoul, Nat. Commun. 6, 7845 (2015). [34] T. Torii, M. Takeishi, and T. Hosono, J. Geophys. Res. 107, 4324 (2002). [35] T. Torii, T. Nishijima, Z.-I. Kawasaki, and T. Sugita, Geophys. Res. Lett. 31, L05113 (2004). [36] T. Torii, T. Sugita, M. Kamogawa, Y. Watanabe, and K. Kusunoki, Geophys. Res. Lett. 38, L24801 (2011). [37] H. Tsuchiya, T. Enoto, T. Torii, K. Nakazawa, T. Yuasa, S. Torii, T. Fukuyama, T. Yamaguchi, H. Kato, M. Okano, et al., Phys. Rev. Lett. 102, 255003 (2009), 0906.0781. [38] A. Chilingarian, A. Daryan, K. Arakelyan, A. Hovhannisyan, B. Mailyan, L. Melkumyan, G. Hovsepyan, S. Chilingaryan, A. Reymers, and L. Vanyan, Phys. Rev. D 82, 043009 (2010). [39] A. Chilingarian, L. Vanyan, and B. Mailyan, Astropart. Phys. 48, 1 (2013). [40] J. R. Dwyer, D. M. Smith, and S. A. Cummer, Space Sci. Rev. 173, 133 (2012). [41] N. Østgaard, T. Gjesteland, J. Stadsnes, P. H. Connell, and B. Carlson, J. Geophys. Res. 113, A02307 (2008). [42] B. W. Grefenstette, D. M. Smith, J. R. Dwyer, and G. J. Fishman, Geophys. Res. Lett. 35, L06802 (2008). [43] Fishman et al., J. Geophys. Res. 116, A07304 (2011). [44] S. Foley, G. Fitzpatrick, M. S. Briggs, V. Connaughton, D. Tierney, S. McBreen, J. R. Dwyer, V. L. Chaplin, P. N. Bhat, D. Byrne, et al., J. Geophys. Res. 119, 5931 (2014). [45] M. Marisaldi, F. Fuschino, M. Tavani, S. Dietrich, C. Price, M. Galli, C. Pittori, F. Verrecchia, S. Mereghetti, P. W. Cattaneo, et al., J. Geophys. Res. 119, 1337 (2014). [46] M. Marisaldi, A. Argan, A. Ursi, T. Gjesteland, F. Fuschino, C. Labanti, M. Galli, M. Tavani, C. Pittori, F. Verrecchia, et al., Geophys. Res. Lett. 42, 9481 (2015), 1605.07886. [47] M. E. Splitt, S. M. Lazarus, D. Barnes, J. R. Dwyer, H. K. Rassoul, D. M. Smith, B. Hazelton, and B. Grefenstette, J. Geophys. Res. 115, A00E38 (2010). [48] T. Chronis, M. S. Briggs, G. Priftis, V. Connaughton, J. Brundell, R. Holzworth, S. Heckman, S. McBreen, G. Fitzpatrick, and M. Stanbro, B. Am. Meteorol. Soc. 97, 639 (2016). [49] S. A. Cummer, M. S. Briggs, J. R. Dwyer, S. Xiong, V. Connaughton, G. J. Fishman, G. Lu, F. Lyu, and R. Solanki, Geophys. Res. Lett. 41, 8586 (2014). [50] J. R. Dwyer and D. M. Smith, Geophys. Res. Lett. 32, L22804 (2005). [51] W. Xu, S. Celestin, and V. P. Pasko, Geophys. Res. Lett. 39, L08801 (2012). [52] M. S. Briggs, S. Xiong, V. Connaughton, D. Tierney, G. Fitzpatrick, S. Foley, J. E. Grove, A. Chekhtman, M. Gibby, G. J. Fishman, et al., J. Geophys. Res. 118, 3805 (2013). [53] N. Østgaard, T. Gjesteland, R. S. Hansen, A. B. Col-
+
+lier, and B. Carlson, J. Geophys. Res. 117, A03327 (2012). [54] S. Celestin, W. Xu, and V. P. Pasko, J. Geophys. Res. 120, 10,712 (2015). [55] J. R. Dwyer, B. W. Grefenstette, and D. M. Smith, Geophys. Res. Lett. 35, L02815 (2008). [56] Briggs et al., Geophys. Res. Lett. 38, L02808 (2011). [57] J. R. Dwyer, J. Geophys. Res. 115, A00E14 (2010). [58] B. E. Carlson, N. G. Lehtinen, and U. S. Inan, J. Geophys. Res. 115, A00E19 (2010). [59] C. Ko¨hn and U. Ebert, J. Geophys. Res. 120, 1620 (2015). [60] M. Tavani, A. Argan, A. Paccagnella, A. Pesoli, F. Palma, S. Gerardin, M. Bagatin, A. Trois, P. Picozza, P. Benvenuti, et al., Nat. Hazards Earth Syst. Sci. 13, 1127 (2013). [61] T. C. Marshall, M. P. McCarthy, and W. D. Rust, J. Geophys. Res. 100, 7097 (1995). [62] ICRU Report 37, Stopping powers for electrons and positrons (International Commision on Radiation Units and Measurements, 1984). [63] G. D. Moss, V. P. Pasko, N. Liu, and G. Veronis, J. Geophys. Res. 111, A02307 (2006). [64] S. Celestin and V. P. Pasko, J. Phys. D: Appl. Phys. 43, 315206 (2010). [65] S. Celestin and V. P. Pasko, J. Geophys. Res. 116, A03315 (2011). [66] S. Celestin, W. Xu, and V. P. Pasko, J. Geophys. Res. 117, A05315 (2012). [67] W. Xu, S. Celestin, and V. P. Pasko, Geophys. Res. Lett. 41, 7406 (2014). [68] W. Xu, S. Celestin, and V. P. Pasko, J. Geophys. Res. 42 (2015). [69] A. V. Gurevich, G. M. Milikh, and R. A. RousselDupr´e, Phys. Lett. A. 165, 463­468 (1992). [70] A. V. Gurevich, Sov. Phys. JETP 12, 904­912 (1961). [71] P. Schellart, T. N. G. Trinh, S. Buitink, A. Corstanje, J. E. Enriquez, H. Falcke, J. R. Ho¨randel, A. Nelles, J. P. Rachen, L. Rossetto, et al., Phys. Rev. Lett. 114, 165001 (2015), 1504.05742. [72] E. S. Cramer, J. R. Dwyer, S. Arabshahi, I. B. Vodopiyanov, N. Liu, and H. K. Rassoul, J. Geophys. Res. 119, 7794 (2014). [73] L. P. Babich, E. N. Donskoy, R. I. Il'Kaev, I. M. Kutsyk, and R. A. Roussel-Dupre, Plasma Phys. Rep. 30, 616 (2004). [74] J. R. Dwyer, J. Geophys. Res. 113, D10103 (2008). [75] N. Liu and J. R. Dwyer, J. Geophys. Res. 118, 2359 (2013). [76] B. E. Carlson, N. G. Lehtinen, and U. S. Inan, J. Geophys. Res. 114, A00E08 (2009). [77] A. B. Skeltved, N. Østgaard, B. Carlson, T. Gjesteland, and S. Celestin, J. Geophys. Res. 119, 9174 (2014). [78] D. Tierney, M. S. Briggs, G. Fitzpatrick, V. L. Chaplin, S. Foley, S. McBreen, V. Connaughton, S. Xiong, D. Byrne, M. Carr, et al., J. Geophys. Res. 118, 6644 (2013).
+
+eConf C16-09-04.3
+
+

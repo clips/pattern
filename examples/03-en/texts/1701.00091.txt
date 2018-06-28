@@ -1,0 +1,1094 @@
+The Rotating Vicsek Model: Pattern Formation and Enhanced Flocking in Chiral Active Matter
+Benno Liebchen1,  and Demian Levis2,  1SUPA, School of Physics and Astronomy, University of Edinburgh, Edinburgh EH9 3FD, United Kingdom
+2Departament de F´isica de la Mat`eria Condensada, Universitat de Barcelona, Mart´i i Franqu`es 1, E08028 Barcelona, Spain
+(Dated: January 25, 2017)
+We generalize the Vicsek model to describe the collective behaviour of polar circle swimmers with local alignment interactions. While the phase transition leading to collective motion in 2D (flocking) occurs at the same interaction to noise ratio as for linear swimmers, as we show, circular motion enhances the polarization in the ordered phase (enhanced flocking) and induces secondary instabilities leading to structure formation. Slow rotations promote phase separation whereas fast rotations generate patterns consisting of phase synchronized microflocks with a controllable selflimited size. Our results defy the viewpoint that monofrequent rotations form a vapid extension of the Vicsek model and establish a generic route to pattern formation in chiral active matter with possible applications to control coarsening and to design rotating microflocks.
+
+arXiv:1701.00091v3 [cond-mat.stat-mech] 24 Jan 2017
+
+Among the most remarkable features of active matter systems is their ability to spontaneously form selfsustained nonequilibrium structures, without requiring external driving. These active structures range from motility-induced phase separation of self-propelled particles into a dense and a dilute phase [1, 2] and clusters of self-limited size [3­7] in isotropic active matter, to long range ordered flocks and travelling bands in 2D polar active matter [8­12]. Despite their phenomenological diversity most of these (and other) activity-induced structures can be observed in a small class of archetypical minimal models allowing to explore their universality. For linear self-propelled particles which change their swimming direction only by diffusion (and alignment interactions), the Active Brownian Particle model and the Vicsek model have become standard models representing isotropic and polar active matter.
+Besides such linear swimmers, there is now a strong interest in a new class of self-propelled particles which change their direction of motion autonomously. This class of chiral active matter includes a variety of biological circle swimmers, such as E.coli which swim circularly when close to walls and interfaces [13­16], as well as sperm cells [17, 18], and magnetotactic bacteria in rotating external fields [19, 20]. Following the general principle that any deviation between the self-propulsion direction of the particle and its symmetry axis couples its translational and rotational degrees of freedom, it has also been possible to design synthetic circle swimmers; examples being L-shaped self-phoretic swimmers [21, 22] and actuated colloids allowing to design radius and frequency of circular trajectories on demand. While these synthetic examples have supported the recent boost of interest in chiral active matter, as the recent reviews [23, 24] reflect, surprisingly little is known about their
+Benno.Liebchen@staffmail.ed.ac.uk levis@ub.edu
+
+collective behaviour (exceptions exploring collective behaviour are [25, 26]).
+Therefore, following the spirit of formulating minimal models for the collective behaviour of linear active matter, we introduce here the 'rotating Vicsek model ' (RVM) to describe the collective behaviour of polar circle swimmers. This model describes overdamped self-propelled particles changing their direction autonomously with an intrinsic rotation frequency, and with local alignment interactions between circle swimmers (which are typically non-spherical). In the monofrequent case of identical circle swimmers, one might expect that circular swimming has little impact on the physics of the standard Vicsek model as the absence of inertia seems to guarantee invariance of the system by global rotation of the reference frame ­ as for an overdamped ideal gas in a rotating bucket, where global rotations do not change the particle dynamics inside. This viewpoint receives further support by the fact that the flocking transition of the Vicsek models proves invariant under rotations, as we will show. Strikingly, however, this flocking transition induces long-range polar order, which spontaneously breaks rotational invariance and allows rotations to dramatically change the physics of the Vicsek model. When rotations are fast compared to rotational diffusion, which is a natural parameter range for many circle swimmers, a new phase occurs, which we call the rotating micro-flock phase. This phase emerges via a short-wavelength clustering instability from a uniform flock and leads to a proper pattern of localized rotating flocks which do not coarsen beyond a characteristic length scale. This scale increases linearly with the swimming speed and decreases with the rotational frequency, allowing to use rotations as a tool to design microflock patterns. Besides fast rotations, also slow ones induce interesting collective effects: they allow for phase separation and lead to coherently moving large-scale structures with droplet-like shapes featuring an enhanced polarization as compared to flocks in the standard Vicsek model.
+
+2
+
+(a)
+
+(c)
+
+(e)
+
+(b)
+
+(d)
+
+(f )
+
+FIG. 1: Trajectories of a linear (a,  = 0) and a circle swimmer (b,  = 3). (c): For slow rotations (g = 0.14,  = 0.2), circle swimmers phase-lock and follow circular orbits allowing for aligned configurations (e) and the formation of large rotating droplets. (d): Fast rotations (g = 0.14,  = 3) leave no time to phase lock, which frustrates the alignment interactions and destroys circular trajectories (f). Self-organizing into a microflock pattern where circle swimmers move irregularly around a common microflock-centers allows them to compromise between rotations and alignment.
+
+Thus, in contrast to the common opinion that identical circle swimmers do not change the collective behaviour of linear swimmers significantly, the present work shows that they lead to a rich new phase diagram, involving a novel route to pattern formation. This route should be readily observable in identical synthetic circle swimmers (L-shaped or actuated colloids) or in magnetotactic bacteria in rotating external magnetic fields, and could be useful, for example, to design localized micro-flocks whose characteristic size can be (dynamically) controlled in the laboratory (e.g. by changing the self-propulsion velocity or the frequency of the applied field).
+Besides this, our results may find further applications for understanding pattern formation in 2D suspensions of sperm cells [18] and driven protein filaments [25, 27] qualitatively matching the microflocks we observe. In this context, we note that our results may qualitatively apply even to nonidentical but synchronized biological swimmer ensembles as discussed in [26].
+The rotating Vicsek model To specify our results we now define the RVM: it consists of N point-like selfpropelled particles with positions ri and orientations pi(t) = (cos i, sin i) which interact via an aligning pairpotential and change their direction in response to a systematic rotational force, according to:
+
+r i
+
+=
+
+vpi
+
+,
+
+i
+
+=
+
+
+
++
+
+K R2
+
+ji
+
+sin(j
+
+-
+
+i)
+
++
+
+2Dri , (1)
+
+Here, the sum runs over neighbours within a radius R around particle i and i(t) is a unit-variance Gaussian white noise with zero mean. In the non-interacting limit (K = 0), each particle performs an overdamped circular Brownian motion as shown in Fig. 1 and statistically characterised in [28]. To reduce the parameter space to its essential dimensions, we choose space and time units as R and 1/Dr. The RVM has four control param-
+
+eters: the particle density 0 = N/L2, a Peclet number Per = v/(DrR) measuring the persistence length in units of the alignment interaction range, g = K/(R2Dr) and  = /Dr, comparing alignment and rotational frequencies with the rotational diffusion rate. Remarkably, the phase diagram depends only on g0 and , as we discuss below, with most interesting phenomena occurring for gf := g0 > 2 and for   1 or  > 1. While the former criterion is the flocking criterion of the standard Vicsek model, most circle swimmers naturally feature suitable  values: Rotating E.coli (  0.1 - 1/s [15]; Dr  0.2/s - 1/s) lead to   1, whereas L-shaped swimmers (  0.1 - 0.3/s; Dr  6.10-4 [21]) allow to explore the regime   102 1 and magnetotactic bacteria in rotating fields should allow to tune  on demand.
+Pattern formation We now simulate the collective behaviour of N = 32000 identical circle swimmers in a quadratic box with periodic boundary conditions. For  = 0 we reproduce the phenomenology of the standard Vicsek model [12, 29­31]: a disordered homogeneous phase occurs below the flocking threshold (g < gf ), whereas g gf induces a global polarization with high density bands coexisting with a disordered gas (Fig. 2 (a)). These bands eventually become unstable at higher coupling strengths, leading to homogeneous flocking. Now choosing g > gf and switching on slow rotations ( = 0.2), we observe phase separation into a large polarly ordered dense phase and a low-density gas of incoherently rotating swimmers. Here, the presence of rotations changes the geometry of the high density region which now takes the form of a spherical cluster (droplet), reminiscent of the usual liquid-gas demixing. This droplet rotates coherently but slower than individual swimmers with a frequency  <  (see Fig. 1 (c), 2 (b) and Movie 1 in the Supplementary Material (SM) [32]). Tuning the frequency to values  1 arrests phase separation and leads, strikingly, to a pattern of dense spots which do not grow beyond a self-limited size (see Fig. 2 (c)-(h) and Movie 2). Within each spot, particles are synchronized and form rotating microflocks: hence we call the emerging phase the rotating microflock pattern. This pattern resembles vortex arrays observed in sperm cells and protein filaments [18, 27].
+Hydrodynamic equations and enhanced flocking To understand the emergence of patterns and their length scales, we derive a continuum theory for the RVM in the SM [32]. Following the approaches in [33, 34] we find [32] a closed set of equations for the particle density (x, t) and polarization density w(x, t) = (wx, wy) = P (with P(x, t) being the polarization field) where |w| measures the local degree of alignment and w/|w| the average
+
+3
+
+FIG. 2: Simulation snapshots for N = 32000 particles; colours encode particle orientations. (a, = 0): Travelling bands; (b,  = 0.2 < 1): rotating droplet (phase-separation) (c-h): Microflock pattern at g = 0.14,  = 3 and Per = 0.2 (c), Per = 1.0 (d) and Per = 2 (e) and at Per = 0.2,  = 3 and g = 0.12 (f), 0.18 (g) and 0.3 (h). (i,j): Microflock length scale l for  = 3; g = 0.14 as a function of Per (i) and for Per = 0.2 as a function of  (j).
+
+swimming direction.
+
+ = -Per · w
+
+(2)
+
+w
+
+=
+
+(g
+
+-
+
+2)
+
+w 2
+
+-
+
+Per 2
+
+
+
++
+
+Pe2r 2b
+
+2w
+
+-
+
+g2 b
+
+|w|2w
+
+(3)
+
++
+
+gPer 4b
+
+5w2 - 10w( · w) - 6(w · )w
+
++
+
+w
+
++
+
+Pe2r  4b
+
+2
+
+w
+
+-
+
+g2 2b
+
+|w|2
+
+w
+
+-
+
+gPer 8b
+
+3w2 - 6w( · w) - 10(w · )w
+
+Here b = 2(4 + 2), w(1) = (-wy(1), wx(1)) and  = (-y, x). We first note that the disordered uniform phase (D) (, w) = (0, 0) solves eq. (3) with 0 being the particle density. Linearizing eq. (3) around D (SM [32]) unveils an instability (flocking transition) g0 > 2, which is the same as for linear swimmers ( = 0) showing that the emergence of long-range order is invariant to rotations. Our simulations confirm this invariance (Fig. 3).[35]. Following the flocking instability, the RVM approaches a rotating uniform phase (F), (, |w|, w/|w|) = (0, w0, cos(0t), sin(0t)), featuring long-range order:
+
+w0
+
+=
+
+1 g
+
+(g0 - 2) (4 + 2)
+
+(4)
+
+In this phase, a macroscopic fraction of circle swimmers
+
+phase-synchronizes and rotates coherently with a fre-
+
+quency 0 = 
+
+3 2
+
+-
+
+g0 4
+
+.
+
+This frequency reduces to
+
+the single particle frequency at the onset of flocking,
+
+but slows down as g0 increases. Remarkably, Eq. (4)
+
+suggests that the polarization increases with , a phe-
+
+nomenon which we call enhanced flocking and confirm
+
+using particle based simulations in Fig. 3. [36] Physi-
+
+cally, enhanced flocking might be based on a decrease of
+
+the average time needed for a diffusive rotating particle (which is not yet part of the flock) to align its direction with the flock. That is, rotations allow the flock to collect particles with random orientations faster.
+Microflock-instability To understand the transition from (F) to the patterns observed above, we now perform a linear stability analysis of F. Here, the presence of long-range order allows terms of order ww to crucially impact the stability of (F) as we will see. First considering the case  = 0 we find an oscillatory long wavelength instability along the polarization direction for 2 < g0 < 22/7 (and a stationary long wavelength instability perpendicular to the flocking direction for 2 < g0 < 82/21). The oscillatory instability evokes moving density fluctuations only in polarization direction and is often associated with the emergence of travelling bands in the standard Vicsek model [31, 34]. In the RVM we also find oscillatory long wavelength instabilities, here producing moving density fluctuations both longitudinal and perpendicular to the flocking direction allowing for (coarsening) rotating droplets (Fig. 2)b in the RVM.
+Most strikingly, for larger  our linear stability analysis ([32]) unveils a rotation-induced oscillatory short wavelength instability. This instability generates pattern formation in the RVM and explains the observation of microflocks with a self-limited size (Fig. (2)); hence we call it the microflock-instability. Close to g0 = 2 the characteristic microflock size scales as (see [32])
+
+l
+
+
+
+Per 22
+
+|4(2
+
+- g0) + 2(12 - g0)| (g0 - 2)(4 + 2)
+
+(5)
+
+Thus, microflocks grow linearly with Per, but also grow with g0 and decrease with  in most parameter regimes. If  1, (5) yields l  v/: i.e. for fast rotations, the microflock size is proportional to the radius of a single circle swimmer. Our simulations confirm all these scalings
+
+P
+
+P
+
+0.75
+
+P
+
+0.5
+
+ = 0.0 = 0.2
+
+= 0.4
+
+= 0.6 = 0.8
+
+0.5
+
+0
+
+g 0
+
+g = 0.09
+= 0.5 0.1 = 0.12 = 0.14
+
+
+0.1
+
+0.2
+
+0
+
+0.5 0
+
+1 0.5 1
+
+FIG. 3: Global polarization over g (left) and  showing invariance of the flocking transition against rotations (left) and enhanced flocking (right) as predicted in the text.
+
+g0 4 0.7
+Phase 3.5 0.6 Separated 0.5
+Droplets 3 (LWI)
+2.5 0.1 0.2
+2
+
+LWI + SWI
+Microflock Patterns  (SWI) g
+
+1.5 0
+
+Uniform disordered phase
+
+1
+
+2
+
+3
+
+4
+
+
+(Fig. 2 (i-j)): Specifically, defining the length scale l of a numerically observed structure as the value of l where the pair correlation function G(l) = 1 leads to Fig. 2: panel (i) confirms the l  Per prediction and (j) shows a decrease of l with increasing , revealing that the microflock size can be tuned by the microscopic parameters in our model.[37] Note, that the microflock-instability does not only provide a proper route to pattern formation but also allows for structure formation at interaction to noise ratios where the standard Vicsek model is deep in the uniform flocking phase.
+What is the physical mechanism leading to the rotating droplet phase and the microflock pattern? While circle swimmers are effectively independent of each other at large distances in phase (D), for g0 > 2 they have satisfy the rotations while being aligned on average. If interactions dominate (g0/ 1) circle swimmers can phase lock before they rotate much and follow almost ideal circles (Fig. 1 (c)). Here, they are parallel to each other all along their circular orbits (Fig. 1 (e)) and form a macroscopic rotating droplet (Fig. 2(b)). In this state, interactions support circular motion: phase locking leads to an essentially stiffly rotating many-particle object that experiences an 'average' noise, inducing only weak deviations from circular motion (Fig. 1 (c)). Conversely, when rotations dominate (g0/ < 1), the phase locking timescale becomes comparable to the rotational timescale. This results in phase shifts among adjacent circle swimmers that frustrate, for swimmers on circular orbits, the alignment interaction (Fig. 1 (f)). The frustration, in turn, destroys circular orbits and makes large droplets of phase-locked swimmers impossible. As a result, the droplet phase breaks down which opens a route to pattern formation: the resulting microflock phase can be seen as an attempt of the RVM to satisfy alignment interactions in presence of rotations but in absence of phase-locking, at least on average (see Fig. 1 (d) for a typical trajectory): rotating around a common center allows particles to avoid closeto-orthogonal configurations as the one shown in Fig. 1 (f) even in presence of small phase shifts. Increasing the size of a microflock therefore dissatisfies the alignment interactions; hence microflocks naturally resist coarsening beyond a certain scale.
+To get an overview of the parameter regimes leading to droplet and microflock patterns we summarize our re-
+
+FIG. 4: Nonequilibrium phase diagram. Red domain: Oscillatory, short wavelength instability (SWI) inducing microflock patterns; blue region: phase-separating droplets induced by long wavelength instabilities (LWI; perpendicular to flocking direction in [32]). Red symbols show simulation results for the microflock-droplet-transition. Grey domain: stability of uniform disordered phase; black crosses: flocking transition from simulations. Filled symbols show parameters of Fig. 2: (a,b) blue squares; (c-e) brown dot, (f-g) grey triangles.
+sults from linear stability analysis and simulations in an instability or phase diagram, Fig. 4. Although the RVM depends on four dimensionless parameters, we show in the SM [32] that its phase diagram is fully characterized by g0 and . Thus, the two-dimensional plot in Fig. 4 represents the whole parameter space. In this plot, red shaded areas lead to pattern formation while blue ones represent the rotating macrodroplet phase (phase separation). Where both regimes overlap (  1 and g0 10/3) short and long wavelength instabilities perpendicular to the flocking direction coexist. Generally, we also find a coexisting long wavelength instability in polarization direction, which is not shown in Fig. 4 but detailed in the SM [32]. Often, the coexisting long and short wavelength instabilities are separated by a band of stable wavenumbers (Fig. 1 in [32]), suggesting that, depending on initial conditions, (F) proceeds either to phase separation or to pattern formation. This suggests hysteresis in the RVM: we confirm this in Movie 3, showing phase separation for small  persisting even after a quench to large  values, which normally lead to the microflock pattern, when our system is initialized in phase (F).
+Conclusions Conversely to the viewpoint that identical rotations are unimportant for the collective behaviour of overdamped self-propelled particles, we show they generate a generic route to structure formation. While slow rotations promote phase separation yielding a rotating macrodroplet featuring an enhanced polarization compared to the standard Viczek model, faster rotations induce phase-synchronized microflocks with a self-limited size. This size can be tuned via the swimming speed and the rotation frequency allowing to use rotations as a design principle for microflock patterns. Our results should
+
+5
+
+be observable, e.g. with autophoretic L-shaped colloids or magnetotactic bacteria, and provide a general framework to acknowledge and understand the rich collective behaviour of chiral active matter.
+Acknowledgements BL and DL gratefully acknowledge funding from a Marie Curie Intra European Fel-
+
+lowship (G.A. no 654908 and G.A. no 657517) within Horizon 2020. BL and DL contributed equally to this work.
+
+[1] J. Tailleur and M. Cates, Phys. Rev. Lett. 100, 218103 (2008).
+[2] M. E. Cates and J. Tailleur, Annu. Rev. Condens. Matter Phys. 6, 219 (2015).
+[3] I. Theurkauff, C. Cottin-Bizonne, J. Palacci, C. Ybert, and L. Bocquet, Phys. Rev. Lett. 108, 268303 (2012).
+[4] J. Palacci, S. Sacanna, A. P. Steinberg, D. J. Pine, and P. M. Chaikin, Science 339, 936 (2013).
+[5] I. Buttinoni, J. Bialk´e, F. Ku¨mmel, H. L¨owen, C. Bechinger, and T. Speck, Phys. Rev. Lett. 110, 238301 (2013).
+[6] D. Levis and L. Berthier, Phys. Rev. E 89, 062301 (2014). [7] B. Liebchen, D. Marenduzzo, I. Pagonabarraga, and M. E.
+Cates, Phys. Rev. Lett. 115, 258301 (2015). [8] T. Vicsek, A. Cziro´k, E. Ben-Jacob, I. Cohen, and
+O. Shochet, Phys. Rev. Lett. 75, 1226 (1995). [9] J. Toner and Y. Tu, Phys. Rev. Lett. 75, 4326 (1995). [10] F. Farrell, M. Marchetti, D. Marenduzzo, and J. Tailleur,
+Phys. Rev. Lett. 108, 248101 (2012). [11] J.-B. Caussin, A. Solon, A. Peshkov, H. Chat´e, T. Daux-
+ois, J. Tailleur, V. Vitelli, and D. Bartolo, Phys. Rev. Lett. 112, 148102 (2014). [12] A. P. Solon, H. Chat´e, and J. Tailleur, Phys. Rev. Lett. 114, 068101 (2015). [13] H. C. Berg and L. Turner, Biophys. J. 58, 919 (1990). [14] W. R. DiLuzio, L. Turner, M. Mayer, P. Garstecki, D. B. Weibel, H. C. Berg, and G. M. Whitesides, Nature 435, 1271 (2005). [15] E. Lauga, W. R. DiLuzio, G. M. Whitesides, and H. A. Stone, Biophys. J 90, 400 (2006). [16] R. Di Leonardo, D. DellArciprete, L. Angelani, and V. Iebba, Phys. Rev. Lett. 106, 038101 (2011). [17] B. M. Friedrich and F. Ju¨licher, Proc. Natl. Acad. Sci. 104, 13256 (2007). [18] I. H. Riedel, K. Kruse, and J. Howard, Science 309, 300 (2005). [19] K. E¯rglis, Q. Wen, V. Ose, A. Zeltins, A. Sharipo, P. A. Janmey, and A. C¯ebers, Biophys. J. 93, 1402 (2007). [20] A. C¯ebers, J. Magn. Magn. Mater. 323, 279 (2011). [21] F. Ku¨mmel, B. ten Hagen, R. Wittkowski, I. Buttinoni, R. Eichhorn, G. Volpe, H. Lo¨wen, and C. Bechinger, Phys. Rev. Lett. 110, 198302 (2013). [22] B. ten Hagen, F. Ku¨mmel, R. Wittkowski, D. Takagi, H. Lo¨wen, and C. Bechinger, Nat. Commun. 5, 4829 (2014). [23] H. Lo¨wen, Eur. Phys. J. Special Topics 225, 2319 (2016). [24] B. Friedrich, Eur. Phys. J. Special Topics 225, 2353 (2016). [25] J. Denk, L. Huber, E. Reithmann, and E. Frey, Phys. Rev. Lett. 116, 178301 (2016). [26] B. Liebchen, M. E. Cates, and D. Marenduzzo, Soft Matter 12, 7259 (2016). [27] M. Loose and T. J. Mitchison, Nat. Cell Biol. 16, 38
+
+(2014). [28] S. van Teeffelen and H. Lo¨wen, Phys. Rev. E 78, 020101
+(2008). [29] T. Vicsek and A. Zafeiris, Phys. Rep. 517, 71 (2012). [30] G. Gr´egoire and H. Chat´e, Phys. Rev. Lett. 92, 025702
+(2004). [31] S. Mishra, A. Baskaran, and M. C. Marchetti, Phys. Rev.
+E 81, 061916 (2010). [32] See Supplementary Material below. [33] D. S. Dean, J. Phys. A 29, L613 (1996). [34] E. Bertin, M. Droz, and G. Gr´egoire, J. Phys. A 42,
+445001 (2009). [35] We find a flocking transition close to but slightly below
+the theoretical prediction, as previously noted in [10]. [36] Note that the system typically does not reach F but forms
+secondary structures due to instabilities of F. However, enhanced polarization can still be observed for the (locally uniform) bubbles. [37] In Fig. 2 (j) we only show l within the regime where microflocks are approximately isotropic. For larger g, the length scale l as defined by the pair correlation function depends on the microflock shape and doesn't represent their length scale in a unique way.
+
+6
+Supplementary Material
+The Rotating Vicsek Model: Pattern Formation and Enhanced Polarization in Chiral Active Matter
+
+I. CONTINUUM THEORY OF CIRCLE SWIMMERS
+
+Here, we develop a continuum theory for the rotating Vicsek model (RVM), closely following the approach in [1]. We start with the Langevin equations as given by Eqs. (1) in the main text but replace the finite range alignment interaction by a pseudopotential (''-interaction), which is justified if the interaction is short ranged enough, such that the shape of the associated interaction potential is irrelevant to the many particle dynamics. Using dimensionless units, this leads to the following Langevin equations
+
+r i = Perpi; i =  + g
+
+ (rj - ri) sin(j - i) + 2i(t) .
+
+(6)
+
+j=i
+
+where i(t) represents Gaussian white noise with zero mean and unit variance.
+Now using It^os Lemma and following [3] we derive a continuum equation of motion for the combined N -particle
+N
+probability density f (r, , t) = (r - ri(t))( - i(t)) of finding a circle swimmer with orientation p = (cos , sin )
+i=1
+at position r at time t:
+
+f = -Perp · f - f - g d f (r,  ) sin( - )f (r, ) + 2f -  2f 
+
+(7)
+
+Here  = (r, , t) is a unit-variance Gaussian white noise field with zero mean. In the following, we focus on a mean-field description and neglect the multiplicative noise term - 2f . Transforming (7) to Fourier space, yields an equation of motion for the Fourier modes fk(r, t) = f (r, , t)eikd of f :
+
+fk (r,
+
+,
+
+t)
+
+=
+
+-
+
+Per 2
+
+[x
+
+(fk+1
+
++
+
+fk-1)
+
+-
+
+iy
+
+(fk+1
+
+-
+
+fk-1)]
+
++
+
+(ikfk
+
+-
+
+k2)fk
+
++
+
+igk 2
+
+
+
+fk-mF-mfm
+
+(8)
+
+m=-
+
+Here Fm is the m-th Fourier coefficient of sin(). Evaluating (8) for k = 0, 1.. leads to a hierarchy of equations for {fk} with f0(x, t) = (x, t) = f (x, , t)d being the probability density to find a circle swimmer at time t at position x (independently of its orientation) and (Ref1, Imf1) = w(x, t) = p()f (x, , t)d is the polarization density: the magnitude w  |w| represents the fraction of aligned circle swimmers and w/w their average swimming
+direction. To close the hierarchy of equations (8) we follow the scheme of [4], involving the assumption that deviations
+from isotropy are not too strong. Specifically, we assume that f2, representing nematic order, follows changes in f0, f1 adiabatically (i.e. f2  0) and that higher order fields approximately vanish (fk3  0). After a long but straightforward calculation, we find the following equations of motion for , w
+
+ = -Per · w
+
+(9)
+
+w
+
+=
+
+(g
+
+-
+
+2)
+
+w 2
+
+-
+
+Per 2
+
+
+
++
+
+Pe2r 2b
+
+2w
+
+-
+
+g2 b
+
+|w|2w
+
+(10)
+
++
+
+gPer 4b
+
+5w2 - 10w( · w) - 6(w · )w
+
++
+
+w
+
++
+
+Pe2r  4b
+
+2w
+
+-
+
+g2 2b
+
+|w|2
+
+w
+
+-
+
+gPer 8b
+
+3w2 - 6w( · w) - 10(w · )w
+
+Here b = 2(4 + 2), w(1) = (-wy(1), wx(1)), and  = (-y, x). In the special case  = 0, when neglecting second order derivatives (9,10) are identical to the limiting case of a density-independent swim speed in [2].
+
+7
+
+A. Flocking in circle swimmers: enhanced flocking
+
+Eqs. (9,10) have two uniform solutions representing the disordered uniform phase (D) (, w) = (0, 0), where 0 is fixed by the initial conditions and conserved in the course of the dynamics (9), and a uniform flock (F) (, |w|, ) = (0, w0, ) (where (x, t) is defined via w/w = (cos , sin )) which features long-range polar order in two-dimensions
+
+w0
+
+=
+
+1 g
+
+(g0 - 2)(4 + 2)
+
+(11)
+
+and rotates with a frequency
+
+0 = 
+
+3 2
+
+-
+
+g0 4
+
+(12)
+
+Remarkably, following (11), rotations enhance the degree of polar order in the flocking phase (enhanced flocking), as discussed in more detail in the main text. Interactions in turn, lead to a slowdown of rotations of the flock which changes direction with the frequency of the underlying circle swimmers 0 =  at the onset of flocking (g0 = 2) and slows down as more particles align (see (12)). Linearizing (9,10) (D) shows that the disordered phase gets unstable at g0 = 2, which is the ordinary flocking transition. Hence, independently of how strong rotations are, the emergence of long-range order solely depends on a competition of noise and alignment interactions. In other words: identical rotations of all swimmers are irrelevant for structure formation in the RVM in absence of polar order (g0 < 2). This finding crucially changes as soon as polar order emerges, as we now demonstrate.
+
+B. Pattern formation in circle swimmers: A linear stability analysis of the flocking phase
+
+To understand the onset of structure formation in the RVM, we now perform a linear stability analysis of the uniform flocking phase (F). As we will see, in this phase, circular swimming of individual particles dramatically changes the phenomenology as compared to the standard Vicsek model and creates a route to the formation of patterns whose length scale grows linearly with Per and decreases with .
+As usual, to test the stability of the flocking state we calculate whether a small perturbation on top of it grows or decays. We therefore linearize (9,10) around (11,12), i.e. we use (, w) = (0, w0) + ( , w ) with primes denoting fluctuations and transform the result to Fourier space. Generally, the rotation of the base state (F) produces timedependent coefficients in some terms. In most cases, however, we will see, that the maximum growth rates of unstable modes in the RVM at a given orientation of w strongly exceed ; e.g. by one decade in Fig. 5, left). Thus, the flock does not rotate much on the timescale where perturbations grow and drive the system out of the linear regime. Therefore, we perform our linear stability analysis at a given orientation of w, leading to the following linearized equations of motion:
+
+    0
+
+w x
+
+=
+
+gw0
+2
+
++
+
+i
+
+Pe 2
+
+qx
+
+w y
+
+i
+
+Pe 2
+
+qy
+
+iPeqx
+
+(2 - g0) + ir
+
+3qx
+
++
+
+5 2
+
+qy
+
+-
+
+Pe2 q2 2b
+
+(1
+
+-
+
+g0 2
+
+)
+
++
+
+0
+
+-
+
+ir
+
+5qy
+
+-
+
+3 2
+
+qx
+
+-
+
+Pe2 q2 4b
+
+iPeqy
+
+ 
+
+-0 + ir
+
+5qy
+
+-
+
+3 2
+
+qx
+
++
+
+Pe2 4b
+
+q2
+
+
+
+wx
+
+(13)
+
+ir
+
+3qx
+
++
+
+5 2
+
+qy
+
+-
+
+Pe2 q2 2b
+
+wy
+
+Here
+
+q
+
+=
+
+(qx, qy)
+
+is
+
+the
+
+wavevector,
+
+r
+
+=
+
+Pegw0 2b
+
+=
+
+Pe 4
+
+g 0 -2 4+2
+
+and
+
+b = 2(4 + 2).
+
+Despite its rather complicated appearance, (13) allows for a number of useful observations:
+
+(i) The Peclet number Per can be absorbed in the wavenumbers qx, qy in (13). Thus, linear stability criteria ('phase
+
+transition lines') are independent of the Peclet number and therefore in particular independent of the self-propulsion
+
+velocity (as long as Per = 0).
+
+(ii) For the same reason, the length scale of any pattern arising via a linear instability from the flocking solution
+
+will scale as l  Per. Such a scaling can be observed for the microflock pattern as we confirm with particle based
+
+simulations in the main text.
+
+(iii) g and 0 appear only together as g0 in (13). Thus, the linear stability (or nonequilibrium 'phase diagram')
+
+depends only on two dimensionless parameters: g0 and  and therefore, the two-dimensional plot of the phase
+
+diagram shown in the main text is representative for the complete parameter space of the RVM (whose dynamics
+
+generally depends on 7 (4) parameters before (after) transforming to nondimensional units.
+
+We now proceed with a more formal analysis of (13). The flocking phase is unstable if at least one of the eigenvalues
+
+of the matrix in (13) has a positive real part at some wavenumber q. As the base state rotates slowly compared to the
+
+8
+
+FIG. 5: Real part of the dispersion relation Re[(qy)] (growth rates) of phase (F) perpendicular to the polarization direction: Left: Close to the flocking threshold, rotations can suppress the long wavelength instability perpendicular to the flocking direction and generate an oscillatory short wavelength instability ( = 1.0; 1.5) leading to microflock patterns. For slow enough rotations  = 0.4 the long wavelength instability of the Vicsek model survives but turns into an oscillatory instability contributing to the emergence of rotating macro-droplets (see Fig. 2 in the main text). Right: Further away from the flocking threshold (g0 = 3.6) rotations can lead to coexisting short and long wavelength instabilities which are separated by a band of stable wavenumbers (colors represent the different branches of the dispersion relation for fixed parameter values).
+
+growth rate of fluctuations, we can analyse the stability of perturbations parallel (qy = 0) and perpendicular (qx = 0) to the polarization direction separately, as usual for nonrotating systems. Since the dispersion relation (qx, qy) is a complicated high order polynomial in qx, qy,  and g0, we apply various approximations to roughly understand the onset structure formation. The resulting instability criteria are summarized in an instability or nonequilibrium phase
+diagram in Fig. 4 of the main text.
+
+1. Instabilities along polarization direction (qy = 0)
+
+We first analyse the response of the standard Vicsek model to small perturbations parallel to the flocking direction
+for the standard Vicsek model ( = 0). Expanding the dispersion relation (qx) to second order in qx around qx = 0 unveils an oscillatory long wavelength instability for 2 < g < 22/7. This instability is often associated with the
+emergence of travelling bands in the Vicsek model if the density is not too large.
+To see how rotations affect this instability, we now expand (qx) to second order both in qx (around qx = 0) and in g0 (around the flocking threshold g = 2). As a result, we find that the same oscillatory long wavelength instability is always present in the RVM and hence robust against arbitrarily fast rotations. To see if this result also holds true
+further away from the flocking threshold, we now expand (qx) both in  and qx to second order around 0. As a first result, we find that any  > 0 destabilizes phase (F) even at zero wavenumber (q = 0) if g0 > 10/3. This suggests that the RVM allows for long-wavelength instabilities even at interaction to noise ratios where the standard Vicsek
+model is deep in the uniform flocking phase. (More generally, this result also follows by considering (q) for q = 0
+without expanding in .) The regime 22/7 < g0 < 10/3 is more involved: the same expansion in , qx shows that fast enough rotations can induce the long-wavelength instability also at moderate g0 values, where fast enough is quantified by[7]
+
+>4
+
+(g0 - 2)(14 - g0)3 g0 [49120 - g0(12808 + 3g0(9g0 - 424))] - 64944
+
+(14)
+
+Besides the long wavelength instability we also find a short wavelength instability in polarization direction. However, a quantitative criterion for this instability is quite involved as different modes (branches of the dispersion relation) can cross each other and the instability is in most cases caused by high order terms in qx. A numerical analysis of this instability shows that it typically masked by a corresponding short wavelength instability perpendicular to the flocking direction (which often has a larger growth rate) which we discuss below.
+
+2. Instabilities perpendicular to the polarization direction (qx = 0) We now explore the response of the RVM against small perturbations perpendicular to the polarization direction. Long Wavelength Instability: We first consider the standard Vicsek model ( = 0) again. Expanding (qy)
+
+9
+
+unveils a stationary long-wavelength instability perpendicular to the polarization direction, for 2 < g0 < 82/21  3.9.[8] (This perpendicular instability has not been discussed much in the literature; one exception is [5] where a corresponding instability was analysed and discussed but in a more phenomenological model.)
+For the RVM ( = 0) we expand the relevant branch of the dispersion relation (qy) up to second order around qy = 0 and g0 = 2. In presence of rotations, we find a corresponding perpendicular long wavelength instability if
+
+ < (8g0 - 16)/(7g0 - 5)
+
+(15)
+
+That is, rotations tend to suppress this long wavelength instability close to the flocking threshold; we visualize this in the phase diagram, Fig. 4, in the main text. Further away from the threshold, for g0 > 10/3, as mentioned above, any slow rotation generates a long-wavelength instability even at q = 0. Remarkably, while the long wavelength instability perpendicular to the flocking direction is stationary for the standard Vicsek model it is oscillatory for the RVM and plays an important role for the emergence of the rotating droplets as we discuss in the main text. To quantitatively compare the parameter domain where this instability exists with numerical simulations (see phase diagram, Fig. 4, in the main text) we now generalize (15), by expanding (qy) to third order in g0, which leads to
+
+<8
+
+(g0 - 2)(3g0 - 4) 196 + g0(69g0 - 164)
+
+(16)
+
+Microflock instability - Short wavelength modes: Most important to pattern formation in the RVM are short wavelength fluctuations perpendicular to the polarization direction. Identifying the branch of the dispersion relation which is most relevant for short wavelength instabilities and expanding it to second order around g0 = 2 and to first order around qy = 0, we find an oscillatory short wavelength instability if
+
+ > cr =
+
+4g0 - 8 12 - g0
+
+(17)
+
+This criterion holds true for g 2 and leads to a complex cr for g0 revealing that the corresponding instability only exists in presence of rotations. For  > 0 however, the transversal short wavelength instability generically exists close to the flocking threshold and leads to pattern formation in the RVM. This instability creates microflocks with a self-limited size l = 2/qm with qm being the long wavelength of the associated instability band, which reads
+
+qy
+
+
+
+42 Per
+
+|4(2 - g0) + 2(12 - g0)| (g0 - 2)(4 + 2)
+
+(18)
+
+The microflock length scale l increases linearly with the Peclet number as expected from our more general consider-
+ations above. It also increases with g0 and decreases with  (the latter holding true at least not too close to onset of this instability). While the scaling law (18) should be precise only close to the g0 = 2-flocking onset, we find that the qualitative scaling applies more generally as a numerical analysis of the dispersion relation shows. In the main
+text, we confirm these scaling predictions using particle based simulations.
+To quantitatively compare our prediction for the onset of pattern formation in the RVM with numerical simulations
+(main text), we now slightly generalize (17), by expanding (qy) to third order in g0 which allows for a feasible result:
+
+>2
+
+164
+
++
+
+160 g0(12
+
+-
+
+7g0)
+
+-
+
+1
+
+(19)
+
+For completeness, we finally account also for terms of order qy2; here, we expend (qy)) both in qy and to second order in g0. Among more complicated expressions resembling (19) this expansion shows that the short wavelength
+instability perpendicular to the flocking direction is generally present if  > 2 2/7. We finally note, that long wavelength instabilities both in (and perpendicular to the) polarization direction typically (partly) coexist with the short wavelength instability in the RVM (compare Fig. 5). This suggests that a given parameter allows for coexisting routes both towards phase separation and pattern formation. In this regime, the initial conditions decide which type of structure emerges (hysteresis) as we confirm with simulations (Movie 3).
+We summarize the instabilities perpendicular to the flocking direction in a nonequilibrium phase diagram in the main text, where we compare them with simulations.
+
+10
+
+r2, 2 2
+
+1
+10-5 1
+
+105
+
+2v02 D
+
+(t
+
++
+
+(e-D t
+
+-
+
+1)/D )
+
+2D t
+
+1
+
+4
+
+v02 2D
+
+t
+
+100
+
+10000
+
+1
+
+t
+
+2Dt + 2t2
+
+100 t
+
+10000
+
+FIG. 6: Single particle mean-squared displacements. Left: Translational r2 and angular 2 mean-squared displacement (in black and red dots respectively) in the absence of active rotations in the dilute limit (g = 0). Right: Angular mean-squared displacement in the dilute limit for a rotation frequency  = 0.1. Continuous lines correspond to the analytical results eqs. (15-17).
+
+II. BROWNIAN DYNAMICS SIMULATIONS OF CIRCLE SWIMMERS
+Here we provide some details about the numerical simulations of the RVM. In particular, we specify the specific parameters used and the different measurements done in order to obtain the results presented in the main text.
+
+A. Numerical details and method
+
+We solved numerically the Langevin equations (1) and (2) in the main text using the Euler integration method with a time step t = 0.1. We simulated system of particles moving in two dimensions in a L × L squared box with periodic boundary conditions. For all the simulations presented in this work the average density and the rotational diffusion coefficient are fixed to 0 = N/L2 = 20 and Dr = 0.5. To account for finite-size effects, we run simulations with N = 2000, 8000 and 32000. We vary the coupling strength from g = 0 to g = 0.4, the self-propulsion velocity from v = 0.1 to v = 1.5 and the rotation frequency from  = 0 to  = 2 ( = 4 in adimensional units). In order to reach the steady state we let the system evolve over more than 106 time steps. We took special care in making sure that the system has reached the stationary state by looking at space-time correlation functions. We found that the formation of the patterns described in the main text is a slow process and one needs to let the system relax over time scales of this order of magnitude to be able to make any reliable measurement.
+In order to provide a simple check of our simulation scheme we compare the mean-squared displacement of a single self-propelled particle obtained numerically with the analytical solution of the Langevin equations. In the non-interacting limit, the position variables should perform a persistent random walk characterized by v and Dr. The motion of the particles is diffusive at long time scales compared to the persistent time  = 1/D. The mean square displacement can be computed analytically and gives,
+
+r2(t)
+
+=
+
+(r(t) - r(0))2
+
+=
+
+-
+
+v2 D
+
+2 - e2Drt - e-Drt Dr
+
+,
+
+(20)
+
+which in the high persistence regime it can be approximated by
+
+r2(t) = 4 v2 t + 1 (e-Drt - 1) .
+
+(21)
+
+2Dr
+
+Dr
+
+In the dilute limit, the angular variables should verify
+
+2 = ((t) - (0))2 = 2t2 + 2Drt .
+
+(22)
+
+As shown in Fig. 6, our simulation method reproduces these results accurately.
+
+11
+10  = 0.0 = 0.2 = 0.4 = 0.6 = 0.8
+5
+
+
+
+0
+
+0.05
+
+0.1
+
+0.15
+
+0.2
+
+g
+
+FIG. 7: Susceptibility as a function of g for several values of . The peak of  indicating a phase transition is at g  0.08 independently of . The value predicted by the hydrodynamic theory is gf = 0.1, slightly above the numerical measurement.
+
+B. Flocking transition
+
+We focus first on the emergence of spontaneous polar order as g increases. We introduce the order parameter
+
+P = ||p|| , p = N -1 ni ,
+
+(23)
+
+i
+
+and its associated susceptibility
+
+ = N p2 - p 2 .
+
+(24)
+
+The order parameter as a function of the coupling g obtained for a system of N = 2000 circle swimmers is shown in Fig. 3 in the main text. We show here in Fig. 7 the corresponding susceptibility data. We identify the flocking transition with the maximum of the susceptibility. The phase boundary obtained in such a way is reported by black symbols in the phase diagram in the main text.
+As it has been argued for the standard Vicsek model, finite-size effects are particularly relevant to determine the nature of the flocking transition [6]. The patterns, like traveling bands, emerging in these systems can only be obtained in simulations of large enough systems. We did not attempt to provide here a full analysis of the flocking transition in this model. This would require a precise finite-size scaling analysis. As shown in Fig. 7, the amplitude of the order parameter fluctuations decreases with . It might indicate that rotations change the nature of the flocking transition. This is however a speculation and we postpone this issue to a future work.
+However, we systematically increase the size of our system in order to identify different patterns that are out of reach using small systems, since they are characterized by a length scale that might be of the order of the system size. Simulations of different system sizes also allows us to test the robustness of the results presented. Even larger systems than the ones investigated in this work would be needed in order to analyze the patterns at even higher couplings. The patterns are expected to grow with g and the different instability mechanisms described above might lead to different patterns that can not be properly identified with the simulations presented here.
+
+C. Microflocks
+As discussed in the main text, for fast enough rotations, we observe a change of morphology in the system. In practice, the phase boundary between the phase separated region and the microflock phase divides states with a single macroscopic cluster from states with several smaller ones. In order to make a quantitative estimation of this phase boundary that allows comparison with the linear instability analysis of the hydrodynamic equations, we compute the cluster size distribution Pm. We define a cluster as a connected set of particles distant of less that 1/3 (in units of R ).
+The results for g = 0.11 are shown in Fig. 8. In the phase separated region, the distribution of clusters is characterized by the coexistence between an exponential distribution of small clusters and a peak at cluster sizes of the order of the system size. In the presence of faster rotations, smaller clusters of a tunable finite size appear, which in the cluster size distribution translates into the presence of a peak at smaller values of m as compared to the phase separated state. This change of behaviour in the distribution allows us to estimate the phase boundary between both phases, as reported in the phase diagram in the main text.
+
+12
+
+1
+
+1
+
+1
+
+1
+
+ = 0.3
+
+ = 0.4
+
+ = 0.5
+
+ = 1.5
+
+0.01
+
+0.01
+
+0.01
+
+0.01
+
+Pm Pm Pm Pm
+
+10-4
+
+10-4
+
+10-4
+
+10-4
+
+10-6
+
+1
+
+100
+
+m
+
+10-6
+
+1
+
+100
+
+m
+
+10-6
+
+1
+
+100
+
+m
+
+10-6
+
+1
+
+100
+
+m
+
+20
+
+20
+
+20
+
+20
+
+6
+
+6
+
+6
+
+6
+
+5
+
+5
+
+5
+
+5
+
+15
+
+15
+
+15
+
+15
+
+4
+
+4
+
+4
+
+4
+
+10
+
+10
+
+10
+
+10
+
+3
+
+3
+
+3
+
+3
+
+2
+
+2
+
+2
+
+2
+
+5
+
+5
+
+5
+
+5
+
+1
+
+1
+
+1
+
+1
+
+0
+
+0
+
+0
+
+0
+
+0
+
+0
+
+0
+
+0
+
+0
+
+5
+
+10
+
+15
+
+20
+
+0
+
+5
+
+10
+
+15
+
+20
+
+0
+
+5
+
+10
+
+15
+
+20
+
+0
+
+5
+
+10
+
+15
+
+20
+
+FIG. 8: Top: Cluster size distribution for N = 8000, g = 0.11, v = 0.1 and several frequencies shown in the key. For  = 0.3 a macroscopic cluster of size comparable with the system size appears. As we increase  the location of the peak(s) moves to lower system sizes, indicating the presence of smaller clusters. The snapshots shown below confirm this picture. We identify the phase boundary at  = 0.4 ± 0.1. Bottom: Snapshots of the steady state configuration corresponding to the distributions shown on top.
+
+D. Movies
+For all the movies, the color code is the same as for Fig. 2 in the main text.
+· Movie 1: Evolution of a system made of N = 32000 particles from an initial homogenous disordered state towards a phase separated state with  = 0.2 and g = 0.14. Available at: https://drive.google.com/file/d/0B5Gy3WsV8841RlpqS3huRXNzOW8/view
+· Movie 2: Evolution of a system made of N = 32000 particles from an initial homogenous disordered state towards a microflock state with  = 3 and g = 0.14. Available at: https://drive.google.com/file/d/0B5Gy3WsV8841TXFnU1hXNmFxZkk/view
+· Movie 3: Evolution of a system made of N = 32000 particles from an initial inhomogenous state in the phase separated region (previously prepared with  = 0.2 and g = 0.14) for which faster rotations  = 3 are turned on at t = 0. Available at: https://drive.google.com/file/d/0B5Gy3WsV8841WnJyODZOWlEyYU0/view
+
+[1] B. Liebchen, M. E. Cates and D. Marenduzzo, Soft Matter, 12, 7259 (2016). [2] F. D. C. Farrell, M. C. Marchetti, D. Marenduzzo and J. Tailleur, Physical Review Letters, 108, 248101 (2012). [3] D. Dean, J. Phys. A 29, L613 (1996). [4] E. Bertin, M. Droz and G. Gregoire, J. Phys. A, 42, 445001 (2009). [5] A. Gopinath, M. Hagan, M. C. Marchetti and A. Baskaran, Phys. Rev. E 85, 061903 (2012). [6] T. Vicsek, and A. Zafeiris, Phys. Rep., 517, 71-140, (2012). [7] We note that the derivation of our continuum theory assumed that we are close to isotropy, so it is unclear if this regime
+really exists. [8] Remarkably, in a small parameter window, for g0  (3.4, 3.6) we also find an oscillatory short wavelength instability for
+the standard Vicsek model, which coexists with the long-wavelength instability and is separated from it by a gap of stable wavenumbers. While this suggests, in principle, the existence of some kind of dynamic non-coarsening pattern in the Vicsek model, such structures may not be observed in practice as the growth rate of the short wavelength structures is very small.
+
+

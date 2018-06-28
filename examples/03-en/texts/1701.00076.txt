@@ -1,0 +1,2112 @@
+arXiv:1701.00076v1 [math.CA] 31 Dec 2016
+
+Local Stable Manifold theorem for fractional systems revisited
+Amey Deshpande
+Department of Mathematics, Savitribai Phule Pune University, Pune - 411007, India, 2009asdeshpande@gmail.com
+Varsha Daftardar-Gejji
+Department of Mathematics, Savitribai Phule Pune University, Pune - 411007, India vsgejji@math.unipune.ac.in, vsgejji@gmail.com
+Abstract
+The subject of fractional calculus has witnessed rapid development over past few decades. In particular the area of fractional differential equations has received considerable attention. Several theoretical results have been obtained and powerful numerical methods have been developed. In spite of the extensive numerical simulations that have been carried out in the area of fractional order dynamical systems, analytical results obtained are very few. In pursuance to this, present authors have extended local stable manifold theorem in case of fractional systems [1]. Cong et al. [2] have pointed out discrepancies in the asymptotic expansion of two-parameter Mittag-Leffler functions with matrix argument (cf. Lemma 4 part 2 of article [1]). In the present communication we give the corrected expansion of the same and prove the local stable manifold theorem by following the same approach given in [1].
+1 Introduction
+The area of fractional order dynamical systems (FODS) is being actively pursued in the last few years due to their applications in diverse fields including viscoelasticity [3], fractional order control systems [4], mechanics [5, 6], bioengineering [7], economics [8] and so on. The study of stability of FODS was initiated by Matignon in the year 1996 [9]. Further important development in this area was due to Grigorenko and Grigorenko [10] who studied fractional Lorenz system and proved that the order of the fractional derivatives act as a chaos controlling parameter. Since then a lot of simulation work has been carried out to explore various FODS [11, 12, 13, 14, 15]. In spite of extensive numerical work, analytical results obtained in this area are very few. Concept of flow is pivotal in the theory of dynamical systems. One of the major hurdle in the development of FODS is that their solutions do not satisfy semi-group property. As a consequence, concept of `flow' in fractional framework has not been satisfactorily formulated.
+The local stable manifold theorem is one of the basic results in the realm of the dynamical systems. Present authors have generalized the local stable manifold for fractional systems. A proof of this theorem was presented in [1].
+1
+
+Cong et al. [2] have pointed out discrepancies in asymptotic expansion of two-parameter Mittag-Leffler function with matrix argument(Lemma 4, part 2) of the proof of local stable manifold theorem given by the present authors in [1]. In the present paper we provide correct formulation of the Lemma 4 part 2, and consequent changes in some expressions of Lemma 5, 6, 8 and the Step II of the proof of the main theorem given in [1]. Further we include the discussion about examples discussed both in [1] and [2]. Thus the proof of the local stable manifold theorem given by us in [1] continues to hold true in view of these corrections.
+
+2 Corrections
+
+The corrected version of Lemma 4 Part 2 of the ref. [1] is presented below. Note that the
+Lemma 4 part 1 remains as it is. Lemma 4 part 2. For 0 < p < 1, j = 1, 2 · · · , l and q  N\{1}.
+
+Ep,p(tpJj ) = t-pBj(t) + Cj (t),
+
+(1)
+
+where Bj(t) and Cj(t) are nj × nj matrices defined as
+
+Bj(t) := 0  0(t, j )
+Bj(t) := 
+
+1(t, j ) 0(t, j )
+
+··· 1(t, j) · · ·
+...
+
+
+
+nj
+
+-1(t, ...
+
+j
+
+) 
+
+,
+
+0(t, j )
+
+j = 1, 2, · · · , s, j = s + 1, s + 2, · · · , l,
+(2)
+
+ 0(t, j )
+Cj(t) := 
+
+1(t, j ) 0(t, j )
+
+··· 1(t, j) · · ·
+...
+
+
+
+nj-1(t, j )
+
+...
+
+
+
+,
+
+0(t, j ) nj×nj
+
+j = 1, 2, · · · , l, (3)
+
+and
+
+m(t, j )
+
+=
+
+1 m!
+
+m+1 m+1
+
+1
+exp(tjp
+
+)
+
+,
+
+m = 0, 1, 2, · · · , nj - 1.
+
+(4)
+
+2
+
+m(t, j )
+
+:=
+
+1 m!
+
+q
+
+(-1)m+2(k + (k - 1)!
+
+m)! -j k-m-1t-pk (1 - pk)
+
++ O(|j |-q-mt-p-pq)
+
+.
+
+(5)
+
+k=2
+
+Let B(t) and C(t) denote the block diagonal matrices consisting of Bj(t) and Cj(t) on the diagonal respectively.
+Then Ep,p(tpA) = t-pB(t) + C(t), where Jj and A are as defined in the paper [1].
+
+Proof. From [4, thm 1.3] for sufficiently large t,
+
+Ep,p(tpj )
+
+=
+
+1 p
+
+t1-p
+
+1
+jp
+
+-1
+
+1
+exp(tjp )
+
+-
+
+q
+
+t-pk-j k (p - pk)
+
++
+
+O(|j |-q-1)
+
+k=1
+
+= t-p
+
+1 p
+
+1
+tjp
+
+-1
+
+1
+exp(tjp
+
+)
+
+-
+
+q
+
+t-pk-j k (p - pk)
+
++
+
+O(|j |)
+
+k=1
+
+=
+
+t-p
+
+ 
+
+1
+exp(tjp )
+
+-
+
+q
+
+t-pk-j k (p - pk)
+
++
+
+O(|j |).
+
+(6)
+
+k=1
+
+Differentiating
+
+eqn.
+
+(6)
+
+m-times
+
+with
+
+respect
+
+to
+
+
+
+and
+
+multiplying
+
+by
+
+1 m!
+
+we
+
+obtain
+
+1 m!
+
+m m
+
+Ep,p(tpj
+
+)
+
+=
+
+t-p m!
+
+m+1 m+1
+
+1
+exp(tjp ) + m(t, j )
+
+= t-pm(t, j) + m(t, j), m = 0, 1, · · · , nj - 1.
+
+(7)
+
+The required results follow from the eqn. (7).
+
+The asymptotic behavior of C(t) and B(t): Along the same lines as in [1, Lemma 5], we get
+
+|B(-t)|
+
+
+
+nr~-1
+
+1 pm+1
+
+M
+
+(r~,
+
+m
+
++
+
+1)tm+1e-t.
+
+(8)
+
+m=0
+
+Further it is noted that |C(t)| and |C(t)| have the same asymptotic behavior. Since
+
+|C(t)|  K~1(q, r~)t-2p + K~2(q, r~)t-p-pq,
+
+(9)
+
+where K~1(q, r~) and K~2(q, r~) denote the arbitrary constants depending on q and r~. The revised version of [1, Lemma 6 (eqn. (35))] takes the following form:
+Lemma 6. For any t,  > 0,
+
+(t -  )B(t)B(- )
+
+=
+
+- p
+
+B(t
+
+-
+
+ ).
+
+(10)
+
+3
+
+Proof. Since B, B are block diagonal matrices, it is sufficient to prove
+
+(t
+
+-
+
+ )Bj(t)Bj(- )
+
+=
+
+- p
+
+Bj (t
+
+-
+
+ ),
+
+j = 1, 2, · · · , l.
+
+(11)
+
+In view of the definitions of Bj and Bj it suffices to find the elements in the first row
+of the matrix Bj(t)Bj(- ). Denote the elements in the first row by (0, 1, 2, · · · , nj-1). For m = 1, 2, · · · , nj - 1,
+
+m
+
+(t -  )m = (t -  ) i(t)m-i(- )
+
+(12)
+
+i=0
+
+= (t -  )
+
+m
+
+1 i i! i
+
+1 p
+
+1
+exp(tjp
+
+)
+
+1
+
+m-i+1
+
+(m - i)! m-i+1
+
+1
+exp(- jp )
+
+(13)
+
+i=0
+
+=
+
+(t -  ) p m!
+
+m
+
+m i
+
+i i
+
+exp(t1j /p )
+
+m-i m-i
+
+ 
+
+exp(- 1j/p)
+
+(14)
+
+i=0
+
+=
+
+(t -  ) p m!
+
+m m
+
+exp(t1j /p )
+
+ 
+
+exp(- 1j/p)
+
+(15)
+
+=
+
+- p m!
+
+m m
+
+(t
+
+- p
+
+
+
+)
+
+1
+jp
+
+-1
+
+exp((t
+
+-
+
+
+
+1
+)jp
+
+)
+
+(16)
+
+=
+
+- p
+
+1 m!
+
+m+1 m+1
+
+exp((t
+
+-
+
+1
+ )jp
+
+)
+
+(17)
+
+=
+
+- p
+
+m(t
+
+-
+
+ ).
+
+(18)
+
+In the light of the above corrected Lemma, the operator T(x) [1, eqn.(44) and eqn.(45)] should be replaced by the following equations. Note that [1, eqn.(45)] remains same. Keeping all notations same as in [1] we define
+
+u(Tx(t)) = Ep(tpA)
+
+ 0
+
+p 
+
+B(-
+
+)
+
+uf (x( ))d
+
++
+
+t
+
+(19)
+
+(t -  )p-1Ep,p((t -  )pA) uf (x( ))d,
+
+0
+
+t
+
+s(Tx(t)) = Ep(tpA) + (t -  )p-1Ep,p((t -  )pA) sf (x( ))d.
+
+(20)
+
+0
+
+Let N > 0, r~ > 0 be such that |Ep,(tpr~)| = 1mjaxl|Ep,(tpj)|,  > 0. Denote |A| by a and q  N\{1}. As a consequence of the above corrections, [1, Lemma 8 part 1 and part
+
+4
+
+2 (eqn. (46) and eqn. (47))] are revised below while [1, eqn. (48) and eqn. (49)] remain
+unaltered. Lemma 8 part 1 and part 2. Let for g  C[I, Rn], and t > N ,
+
+1.
+
+ 0
+
+p 
+
+C(t)B(- )
+
+ug( )d
+
+ K3(N, q, r~) g ,
+
+(21)
+
+where K3 is an arbitrary constant.
+
+2.
+
+t
+(t -  )p-1Ep,p((t -  )p A) ug( )d +
+0
+
+ 0
+
+p 
+
+B(t)B(- )
+
+ug(
+
+)d
+
+(22)
+
+< K5(N, q, r~, a) g ,
+
+where K5 denotes a arbitrary constant.
+
+Proof. 1.
+
+ 0
+
+p 
+
+C(t)B(- )
+
+ug( )d
+
+
+
+p 0
+
+|C(t)||B(- )|
+
+ug
+
+d
+
+
+
+g
+
+ 0
+
+p 
+
+|C(t)||B(- )|
+
+d
+
+(23)
+
+
+
+ g
+
+K~1(q, r~)t-2p
+
+0
+
++ K~2(q, r~)t-p-pq
+
+p 
+
+nr~-1
+
+1 pm+1
+
+M
+
+(r~,
+
+m
+
++
+
+1)
+
+m+1e- 
+
+d
+
+m=0
+
+
+
+g
+
+K~1(q, r~)t-2p + K~2(q, r~)t-p-pq
+
+nr~-1
+
+1 pm
+
+M
+
+(r~,
+
+m
+
++
+
+1)
+
+m=0
+
+
+ me-d
+0
+
+
+
+g
+
+K~1(q, r~)t-2p + K~2(q, r~)t-p-pq
+
+nr~-1
+
+1 pm
+
+M
+
+(r~,
+
+m
+
++
+
+1)
+
+m! m+1
+
+.
+
+m=0
+
+(24)
+
+Since t-2p  N -2p, t-p-pq  N -p-pq whenever t > N , we have
+
+ g  K~1(q, r~)
+
+nr~-1
+
+1 pm
+
+M
+
+(r~,
+
+m
+
++
+
+1)
+
+m! m+1
+
+m=0
+
+N -2p
+
++ K~2(q, r~)
+
+nr~-1
+
+1 pm
+
+M
+
+(r~,
+
+m
+
++
+
+1)
+
+m! m+1
+
+m=0
+
+N -p-pq .
+
+(25)
+
+5
+
+Denoting the terms in square bracket as K3(N, q, r~) we get
+
+C(t)pB(- ) ug( )d  K3(N, q, r~) g .
+0
+
+2.
+
+t
+(t -  )p-1Ep,p((t -  )p A)
+0
+
+ug( ) d +
+
+ 0
+
+p 
+
+B(t)B(- )
+
+ug( ) d
+
+t-1
+
+=
+
+(t -  )p-1Ep,p((t -  )p A) ug( ) d
+
+0
+
++
+
+t
+(t -  )p-1Ep,p((t -  )p A)
+t-1
+
+ug( ) d +
+
+ p B(t)B(- ) 0
+
+ug( ) d
+
+t-1
+
+
+
+(t -  )p-1 (t -  )-pB(t -  ) + C(t -  ) ug( ) d
+
+0
+
++
+
+t
+(t -  )p-1Ep,p((t -  )p A)
+t-1
+
+ug( ) d +
+
+ p B(t)B(- ) 0
+
+ug( ) d
+
+
+
+t-1
+
+
+
+(t -  )p-1C(t -  ) ug( ) d
+
+0
+
+
+
++
+
+t-1
+(t -  )-1B(t -  )
+0
+
+ug( )d +
+
+ 0
+
+p 
+
+B(t)B(- )
+
+ug( ) d
+
+t
+
++
+
+(t -  )p-1Ep,p((t -  )p A) ug( ) d .
+
+t-1
+
+
+
+ + +
+
+(26)
+
+The bounds for  and  are found in [1, eqn. (70) and eqn. (58)] and remain the same. The proof for the bound on  is given below.
+
+Using corrected Lemma 6 for t > N ,
+
+=
+
+t-1
+(t -  )-1 B(t -  )
+0
+
+ug( ) d +
+
+ 0
+
+p 
+
+B
+
+(t)B(-
+
+)
+
+ug( ) d
+
+=
+
+t-1 0
+
+B(t -  ) (t -  )
+
+ug( )
+
+d
+
+-
+
+ 0
+
+B(t -  ) (t -  )
+
+ug( )
+
+d
+
+ g
+
+t B(t -  ) t-1 (t -  )
+
+d +
+
+ B(t -  ) t (t -  )
+
+d
+
+.
+
+(27)
+
+From the asymptotic expansion of B we have
+
+ t
+
+B(t -  ) (t -  )
+
+d 
+
+ nr~-1 t m=0
+
+1 pm+1
+
+M
+
+(r~,
+
+m
+
++
+
+1)
+
+(
+
+- (
+
+t)m+1 - t)
+
+e-(
+
+-t)
+
+d,
+
+(28)
+
+6
+
+and by integrating terms on right side we get
+
+ t
+
+B(t -  ) (t -  )
+
+d 
+
+nr~-1
+
+1 pm+1
+
+M (r~,
+
+m
+
++
+
+1)
+
+m! m+1
+
+m=0
+
+,
+
+and
+
+t B(t -  ) t-1 (t -  )
+
+d 
+
+t t-1
+
+nr~-1 m=0
+
+1 pm+1
+
+M
+
+(r~,
+
+m
+
++
+
+1)(t
+
+-
+
+ )me(t-)d,
+
+since t -  > 0. Note
+
+t
+
+1
+
+1
+
+(t -  )me(t-)d = umeudu  edu  e.
+
+t-1
+
+0
+
+0
+
+In view of eqn. (31), eqn.(30) reduces to
+
+t B(t -  ) t-1 (t -  )
+
+d
+
+
+
+nr~-1
+
+1 pm+1
+
+M
+
+(r~,
+
+m
+
++
+
+1)e.
+
+m=0
+
+(29) (30) (31) (32)
+
+Substituting eqn. (29) and eqn. (32) in eqn. (27) we get
+
+
+
+nr~-1
+
+1 pm+1
+
+M (r~,
+
+m
+
++
+
+1)
+
+e
+
++
+
+m! m+1
+
+m=0
+
+g .
+
+(33)
+
+Adding ,, and renaming the constant as K5 we get
+
+t
+(t -  )p-1Ep,p((t -  )p A) ug( )d +
+0
+
+ 0
+
+p B(t)B(- ) 
+
+ug( )d
+
+(34)
+
+< K5(N, q, r~, a) g .
+
+Hence the proof.
+
+Lemma 9 part 1 (cf. [1, eqn. (74)]) takes the following form while Lemma 9 part 2 and
+
+part 3(cf. [1, eqn. (75) and eqn. (76)]) remain the same.
+
+Lemma 9 part 1. Let g  C[I, Rn], t  N and K8(N, a) := C1 exp(N a1/p + C2), C1, C2
+
+arbitrary. Further let  :=
+
+ 0
+
+p 
+
+B
+
+(-
+
+)
+
+ug( )
+
+d .
+
+Then
+
+Ep(tpA)
+
+ 0
+
+p 
+
+B(-
+
+)
+
+ug( )
+
+d
+
+ g   K8(N, a).
+
+(35)
+
+Note that from rectified Lemma 8 it is clear that integral in  exists in Rn, and hence 
+
+is well defined.
+
+The proof follows on similar lines as in the original article [1].
+
+Lemma 10 from ref. [1] remains same. For the sake of completeness, we re-state the
+
+results below: Lemma 10. Let x, y  C[I, Rn] and r := { x , y }, then
+
+f (x(t)) - f (y(t))  r x(t) - y(t) , (t  0),
+
+(36)
+
+whenever x, y  Nr(0). Then for any ,   Rn, following inequalities hold:
+
+7
+
+1. T(x) - T(y)   M5(N, q, r~, a)r x - y  + K9(N, q, r~, a)  -  .
+
+(37)
+
+2. T(x)   M5(N, q, r~, a)r x  + K9(N, q, r~, a)  .
+
+(38)
+
+Proof of local stable manifold theorem, Step II: Owing to the changes in the operator u, [1, eqn. (119) - eqn. (125)] should be replaced by the following.
+Consider the unstable projection of y(t) for t > N~ ,
+
+uy(t)
+
+=
+
+Ep(tpA)
+
+ 0
+
+p 
+
+B(- )
+
+uf (y( )) d
+
+t
++ (t -  )p-1Ep,p((t -  )pA)uf (y( ))d
+
+0
+
+
+
+ 0
+
+p 
+
+C (t)
+
+B(- )
+
+uf (y( )) d
+
+t
+
++
+
+(t -  )p-1Ep,p((t -  )pA)uf (y( ))d
+
+0
+
++
+
+ 0
+
+p 
+
+B(t)
+
+B(- )
+
+uf (y( ))
+
+d
+
+ K3(N~ , q, r~) + K5(N~ , q, r~, a) uf (y( )) ,
+
+(39)
+
+where the last inequality is due to corrected Lemma 8. Note
+
+uf (y( ))  f (y( ))  L+(L + ).
+
+(40)
+
+In view of eqn. (39)
+
+uy(t)  L+(L + ) K3(N~ , q, r~) + K5(N~ , q, r~, a)
+
+ L+(L + ) M5(N~ , q, r~, a)
+
+ (L + ).
+
+(41)
+
+Hence the proof for the step II follows. The rest of the proof of the theorem remains same.
+
+3 Illustrative Examples
+We discuss the example discussed in ref. [1] below. Due to the corrections proposed in Section 2 of this paper, the local stable manifold will be different, and is presented in the following example.
+
+8
+
+Example 1. Consider the following IVP:
+
+
+
+1
+
+Dpx(t) = Ax(t) + f (x(t)), x(0) = x0 = 2 ,
+
+(42)
+
+3
+
+
+
+
+
+
+
+
+
+
+
+x1(t)
+
+0
+
+-1 0 0
+
+where x(t) = x2(t), f (x) =  (x1(t))2  and A =  0 2 1 .
+
+x3(t)
+
+3(x1(t))2
+
+0 02
+
+By solving linear system Dpx = Ax, we find
+
+Es = {x0  Rn/2 = 3 = 0}.
+
+(43)
+
+The stable and unstable projections are defined as
+
+
+
+
+
+0
+
+x1
+
+ux = x2 , sx =  0  , where x = (x1, x2, x3)T  R3
+
+(44)
+
+x3
+
+0
+
+It may be noted that
+
+x1(t) = Ep(-tp)1.
+
+(45)
+
+By using unstable projection of T where  = (1, 0, 0) and using the fact that x(t) is a fixed point of T, we get
+
+ux(t) = Ep(tpA)
+
+ 0
+
+p 
+
+B(-
+
+)
+
+uf (x( ))
+
+d
+
+t
+
+(46)
+
++ (t -  )p-1Ep,p((t -  )pA) uf (x( )) d.
+
+0
+
+Note
+
+
+
+
+
+
+
+0
+
+0
+
+uf (x( )) =  x21( )  =  Ep2(- p)12 
+
+(47)
+
+3x21( )
+
+3Ep2(- p)12
+
+and
+
+
+
+
+
+p 
+
+0 B(- ) = 0
+0
+
+
+
+0
+
+p 
+
+0(-
+
+,
+
+2)
+
+0
+
+0
+
+p p 
+
+1(- 0(-
+
+, ,
+
+2) 2)
+
+.
+
+
+
+0
+
+0
+
+0
+
+= 0 0
+
+-2
+
+1 p
+
+-1e-2
+
+1 p
+
+
+
+0
+
+1 p
+
+2
+
+1 p
+
+-2
+
+e-2
+
+1 p
+
+
+
+1
+(2 p 
+
+- 1 + p)
+
+-2
+
+1 p
+
+-1
+
+e-2
+
+1 p
+
+
+
+(48)
+
+9
+
+In
+
+view
+
+of
+
+the
+
+values
+
+of
+
+uf (x( ))
+
+and
+
+p 
+
+B
+
+(-
+
+)
+
+given
+
+in
+
+eqn.
+
+(47),
+
+eqn.
+
+(48)
+
+respectively,
+
+eqn. (46) implies
+
+x3(t) = -3Ep(2tp)
+
+l
+
+12
+
+2
+
+1 p
+
+-1
+
++
+
+312
+
+t
+(t -  )p-1Ep,p(2(t -  )p)Ep2(- p) d,
+
+(49)
+
+0
+
+and
+
+x2(t)
+
+=
+
+-EP (2tp)
+
+l
+
+12
+
+2
+
+1 p
+
+-1
+
++
+
+3 p
+
+Ep(2tp)
+
+m
+
+12
+
+2
+
+1 p
+
+-2
+
+-
+
+ 
+
+Ep(tp)
+
+(3
+=2
+
+l
+
+12)
+
+2
+
+1 p
+
+-1
+
+t
+
+(50)
+
++ 12 (t -  )p-1Ep,p(2(t -  )p)Ep2(- p) d
+
+0
+
+t
++ 312 (t -  )p-1
+0
+
+ 
+
+Ep,p((t
+
+-
+
+
+
+)p)
+
+Ep2(- p)d,
+=2
+
+where
+
+l= m=
+
+
+
+e- 21/p Ep2(- p)d,
+
+0
+
+
+e- 21/p
+
+1
+( 2 p
+
+- 1 + p)
+
+Ep2(- p)
+
+d.
+
+0
+
+For sufficiently small neighborhood of origin and t = 0, eqn. (49) and eqn. (50) yield the map
+
+3
+
+=
+
+x3(0)
+
+=
+
+-3
+
+l
+
+12
+
+2
+
+1 p
+
+-1
+
+,
+
+2
+
+= x2(0)
+
+= -l
+
+12
+
+2
+
+1 p
+
+-1
+
++
+
+3 p
+
+m12
+
+2
+
+1 p
+
+-2
+
+,
+
+(51) (52)
+
+which defines the required local stable manifold over Es.
+
+The following example was discussed in [2]. We point out that this example is in agreement with the main result of the present article.
+
+Example 2. Consider the IVP:
+
+Dpx(t) = Ax(t) + f (x(t)),
+
+x(0) = x0 =
+
+1 2
+
+,
+
+(53)
+
+where x(t) =
+
+x1(t) x2(t)
+
+, f (x) =
+
+(x1(t))2 (x1(t))2 + (x2(t))2
+
+and A =
+
+-2 0
+
+0 2
+
+.
+
+Note that Es = x0  R2/2 = 0 . The stable and unstable projections are defined as
+
+ux =
+
+0 x2
+
+,
+
+sx =
+
+x1 0
+
+, where x = (x1, x2)T  R2.
+
+(54)
+
+10
+
+By using unstable projection of T where  = (1, 0) and using the fact that x(t) is a fixed point of T, we get
+
+ux(t) = Ep(tpA)
+
+ 0
+
+p 
+
+B(-
+
+)
+
+uf (x( ))
+
+d
+
+t
+
+(55)
+
++ (t -  )p-1Ep,p((t -  )pA) uf (x( )) d.
+
+0
+
+Let f (x( )) = ( ), we have
+
+uf (x( )) =
+
+0 (1( ))2 + (2( ))2
+
+(56)
+
+and
+
+p 
+
+B(- ) =
+
+0 0
+
+0
+
+p 
+
+0(-
+
+,
+
+2)
+
+=
+
+0
+
+0
+
+0
+
+-2
+
+1 p
+
+-1e-2
+
+1 p
+
+
+
+.
+
+(57)
+
+In view of the values of uf (x( )) and pB(- ) given in eqn. (56), eqn. (57), second component of eqn. (55) gives
+
+x2(t) = -Ep(2tp)
+
+
+
+2
+
+1 p
+
+-1
+
+1
+e- 2 p
+
+(21 + 22) d +
+
+t
+(t -  )p-1Ep,p(2(t -  )p) (21 + 22) d.
+
+0
+
+0
+
+(58)
+
+We claim that ux  0 as t   provided (t)  0 as t  . Consider
+
+ux = -Ep(2tp)
+
+
+
+2
+
+1 p
+
+-1
+
+e- 2
+
+1 p
+
+(21 +22) d +
+
+t
+(t- )p-1Ep,p(2(t- )p) (21 +22) d
+
+0
+
+0
+
+
+
+
+
+-
+
+2
+
+1 p
+
+-1
+
+1
+e- 2 p
+
+C(t) (21 + 22) d
+
+0
+
++
+
+t
+(t- )p-1Ep,p(2(t- )p) (21 +22) d +
+
+
+
+B
+
+(t)(-2
+
+1 p
+
+-1
+
+1
+e- 2 p
+
+)
+
+(21
+
++ 22 )
+
+d
+
+0
+
+0
+
+(59)
+
+From corrected Lemma 8 part 1 and 2, for sufficiently large t eqn. (59) becomes
+
+ux  K (21 + 22),
+
+(60)
+
+where K is an arbitrary constant. Since (t)  0 is given, eqn. (60) proves the claim.
+
+11
+
+Example 3. The fractional ordered Liu system is defined as
+
+Dx1 = -ax1 - ex22
+
+Dx2 = bx2 - kx1x3
+
+(61)
+
+Dx3 = -cx3 + mx1x2,
+
+where parameter values are taken as a = 1, e = 0, b = 2.5, k = 4, c= 5, m = 0. Let
+
+x1(t)
+
+0
+
+-1 0 0
+
+x(t) = x2(t) , f (x) = -4x1(t)x3(t) and A =  0 2.5 0  where matrix A
+
+x3(t)
+
+0
+
+0 0 -5
+
+denotes the Jacobian matrix of the system (61) around an equilibrium point (0, 0, 0)T . 1(t)
+
+Let x(0) = x0 = 2(t) be the given initial condition. In this case system (61) can be
+
+3(t)
+
+re-written in the form
+
+Dx = Ax + f (x), x(0) = x0.
+
+(62)
+
+Solving the linear part of the system (61) we get stable and unstable subspaces as
+
+Es = x0  R3 2 = 0 , Eu = x0  R3 1 = 3 = 0 .
+
+(63)
+
+Thus the stable and unstable projection maps are given as
+
+ux = (0, x2, 0)T , sx = (x1, 0, x3)T .
+
+(64)
+
+Solving system (61) we get
+
+x1(t) = Ep(-tp)1, and x3(t) = Ep(-5tp)3.
+
+(65)
+
+Using unstable projection of operator in (19) and fact that x is the fixed point we get
+
+ux(t) = Ep(tpA)
+
+ 0
+
+ 
+
+B
+
+(-
+
+)
+
+uf (x( ))
+
+d
+
+t
+
+(66)
+
++ (t -  )p-1Ep,p((t -  )pA) uf (x( )) d.
+
+0
+
+Now uf (x( )) = (0, -4Ep(-tp)Ep(-5tp)13, 0)T . Further
+
+p 
+
+B(-
+
+)
+
+=
+
+0 0
+0
+
+0
+
+p 
+
+0(-
+
+,
+
+5/2)
+
+0
+
+0
+
+ 0
+
+0 = 0
+
+0
+
+0
+
+0
+
+-(
+
+5 2
+
+)
+
+1 p
+
+-1
+
+e- (5/2)1/p
+
+0
+
+ 0 0 . 0
+
+(67)
+
+12
+
+In light of this, equation (66) gives
+
+x2
+
+(t)
+
+=
+
+Ep
+
+(
+
+5 2
+
+tp)
+
+
+4
+0
+
+(
+
+5
+
+)
+
+1 p
+
+-1
+
+2
+
+e- (5/2)1/p
+
+Ep(- p)
+
+Ep(-5 p)13
+
+d
+
+- 413
+
+t
+(t
+0
+
+-
+
+
+
+)p-1Ep,p(
+
+5 2
+
+(t
+
+-
+
+ )p)
+
+Ep(- p)
+
+Ep(-5 p)d.
+
+(68)
+
+For sufficiently small neighborhood of origin and t = 0, eqn. (68) yields the map
+
+2 = x2(0) = l 1 3, where
+
+(69)
+
+l
+
+=
+
+4
+
+(
+
+5 2
+
+)
+
+1 p
+
+-1
+
+
+e-(5/2)1/p Ep(- p) Ep(-5 p) d.
+0
+
+(70)
+
+For p = 0.5, the local stable manifold of the (61) around origin is plotted in figure (1).
+
+Figure 1: local stable manifold around equilibrium point (0, 0, 0) of fractional Liu system for p = 0.5.
+4 Conclusions
+Equation in Lemma 4 part 2 of the ref. [1] has been corrected. Further local stable manifold theorem has been established following the approach given in [1]. The example given in [2] has been discussed and it is shown that ux  0 in view of the corrections presented here.
+13
+
+References
+[1] A. Deshpande and V. Daftardar-Gejji, "Local stable manifold theorem for fractional systems," Nonlinear Dynamics, vol. 83, no. 4, pp. 2435­2452, 2016.
+[2] N. D. Cong, T. S. Doan, S. Siegmund, and H. T. Tuan, "On stable manifolds for fractional differential equations in high-dimensional spaces," Nonlinear Dynamics, pp. 1­ 10, 2016.
+[3] F. Mainardi, Fractional calculus and waves in linear viscoelasticity: an introduction to mathematical models. World Scientific, 2010.
+[4] I. Podlubny, Fractional Differential Equations. An Introduction to Fractional Derivatives, Fractional Differential Equations, Some Methods of Their Solution and Some of Their Applications. Academic Press, San Diego - New York - London, 1999.
+[5] F. Riewe, "Nonconservative lagrangian and hamiltonian mechanics," Physical Review E, vol. 53, no. 2, p. 1890, 1996.
+[6] F. Riewe, "Mechanics with fractional derivatives," Physical Review E, vol. 55, no. 3, p. 3581, 1997.
+[7] R. L. Magin, "Fractional calculus in bioengineering, part 1," Critical Reviews in Biomedical Engineering, vol. 32, no. 1, 2004.
+[8] M. Jun-hai and C. Yu-Shu, "Study for the bifurcation topological structure and the global complicated character of a kind of nonlinear finance system (i)," Applied Mathematics and Mechanics, vol. 22, no. 11, pp. 1240­1251, 2001.
+[9] D. Matignon, "Stability results for fractional differential equations with applications to control processing," in Computational engineering in systems applications, vol. 2, pp. 963­968, Lille France, 1996.
+[10] I. Grigorenko and E. Grigorenko, "Chaotic dynamics of the fractional lorenz system," Physical review letters, vol. 91, no. 3, p. 034101, 2003.
+[11] M. S. Tavazoei and M. Haeri, "Chaotic attractors in incommensurate fractional order systems," Physica D: Nonlinear Phenomena, vol. 237, no. 20, pp. 2628­2637, 2008.
+[12] V. Daftardar-Gejji and S. Bhalekar, "Chaos in fractional ordered liu system," Computers & mathematics with applications, vol. 59, no. 3, pp. 1117­1127, 2010.
+[13] S. Bhalekar and V. Daftardar-Gejji, "Fractional ordered liu system with time-delay," Communications in Nonlinear Science and Numerical Simulation, vol. 15, no. 8, pp. 2178­2191, 2010.
+14
+
+[14] C. Li and W. Deng, "Chaos synchronization of fractional-order differential systems," International Journal of Modern Physics B, vol. 20, no. 07, pp. 791­803, 2006.
+[15] Y. Yu and H.-X. Li, "The synchronization of fractional-order ro¨ssler hyperchaotic systems," Physica A: Statistical Mechanics and its Applications, vol. 387, no. 5, pp. 1393­ 1403, 2008.
+15
+
+

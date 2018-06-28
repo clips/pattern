@@ -1,0 +1,888 @@
+arXiv:1701.00078v2 [math.FA] 13 Feb 2017
+
+THE STRUCTURE OF A-FREE MEASURES WITH UNIFORMLY SINGULAR PART
+D. MITROVIC
+
+Abstract. We prove that a singular part µs of a measure µ satisfying Aµ = 0 for a linear partial differential operator A defined on Rd has the range in the intersection of kernels of the principal symbol of A if the
+
+singular part is singular with respect to all the variables (uniformly singular) i.e. it is such that for µs-
+
+almost
+
+every
+
+x
+
+ Rd
+
+there
+
+exist
+
+positive
+
+functions
+
+(), (),
+
+
+
+R,
+
+satisfying
+
+() 
+
+
+
+0,
+
+ ()
+
+
+
+0
+
+and
+
+a
+
+set
+
+E
+
+
+
+B(x, ())
+
+such
+
+that
+
+lim
+0
+
+µs (B(x, ())\E ) |µs |(E )
+
+=
+
+0.
+
+1. Introduction
+
+In the paper, we consider a finite Radon measure µ = (µ1, . . . , µm) defined on Rd satisfying the system of partial differential equation
+
+Aµ = (Aµ) = 0,
+
+(1)
+
+I
+
+where I = I1 × I2 × · · · × In  { = (1, . . . , d) : s  N  {0}, s = 1, . . . , d}n is a set of multi-indexes,  = x11 x22 . . . xdd , and A : Rd  M n×m are smooth mappings from Rd into the space of real n × m matrices. Written coordinate-wise, we actually have the following system of equations
+
+m
+
+Ajµ =
+
+(ajkµk) = 0, j = 1, . . . , n,
+
+(2)
+
+Ij k=1
+
+where Ij  { = (1, . . . , d) : s  N  {0}, s = 1, . . . , d}. Denote by Aj, j = 1, . . . , n, the principal symbol of the operator Aj given by
+
+m
+
+Aj(x, ) =
+
+ajk(x)(2i), Ij  Ij .
+
+(3)
+
+Ij k=1
+
+The sum given above is taken over all terms from (2) whose order of derivative  is not dominated by any other multi-index from Ij . As usual,  = 11 . . . dd for  = (1, . . . , d), and || = 1 + · · · + d.
+
+I
+
+For instance, for the (scalar) = I1 = {(1, 0), (0, 2)}.
+
+operator
+
+A
+
+=
+
+x1
+
++
+
+x2
+
++
+
+x22 ,
+
+we
+
+have
+
+I
+
+=
+
+I1
+
+=
+
+{(1, 0), (0, 1), (0, 2)}
+
+and
+
+We
+
+are
+
+interested
+
+in
+
+the
+
+range
+
+of
+
+the
+
+Radon-Nikodym
+
+derivative
+
+f (x)
+
+=
+
+dµs d|µs
+
+|
+
+(x)
+
+of
+
+the
+
+singular
+
+part
+
+µs
+
+of the measure µ = µa + µs where the latter is the Lebesgue decomposition of the measure µ. The problem
+
+is initiated in [1] where it is conjectured that for the k-th order operator A, the function f must take values
+
+in the wave cone A = ||=1KerAk() where Ak() is the sum of all symbols of order k (see [3] for details).
+
+2010 Mathematics Subject Classification. 35D30. Key words and phrases. Structure of measures.
+1
+
+2
+
+D. MITROVIC
+
+The problem is resolved in [3] where one can find thorough information on this issue concerning history and applications (in particular in the calculus of variations and geometric measure theory).
+
+Here, we shall improve the result from [3] by describing behavior of µs on more general manifolds. Moreover, we prove a stronger statement in the sense that the support of f is actually not in the union of kernels but in their intersection (of course, if we assume that µs is uniformly singular; see Definition 1).
+To this end, for every of the principal symbols Aj, j = 1, . . . , n, we assume that there exists a multi-index j = (1j , · · · , dj )  Ij  Nd+ such that for any positive   R the following homogeneity assumption holds
+
+Aj (x, 1j 1, . . . , dj d) = Aj (x, ),
+
+(4)
+
+implying that
+
+d
+
+kkj = 1 for every  = (1, . . . , d)  Ij .
+
+(5)
+
+k=1
+
+We then introduce the homogeneity manifolds:
+
+Pj = {  Rd : |1|1/1j + · · · + |d|1/dj = 1}
+
+and the corresponding projections
+
+
+
+
+
+j
+
+()
+
+=
+
+ 
+
+
+
+1 |1|1/1j + · · · + |d|1/dj
+
+1j , . . . ,
+
+d |1|1/1j + · · · + |d|1/dj
+
+dj
+
+, 
+
+  Rd.
+
+In the case of the operator A = x1 + x2 + x22, the corresponding symbol is A(1, 2) = -i(1 + 2) + 22, the principal symbol is A(1, 2) = -i1 + 22, and  = (1, 1/2).
+Finally, we need a condition on the singular part of the measure µ which we call the uniform singularity condition. Roughly speaking, we require that µs is singular with respect to every of the variables. For instance, such a condition is not fulfilled by the measure (x1)dx2 since it is not singular with respect to x2.
+
+Definition 1. We say that the measure µs is uniformly singular if for µs-almost every x  Rd there exist
+
+real
+
+positive
+
+functions
+
+(), (),
+
+
+
+
+
+R,
+
+satisfying
+
+() 
+
+
+
+0,
+
+ ()
+
+
+
+0,
+
+and
+
+a
+
+family
+
+of
+
+sets
+
+E
+
+
+
+B(x, ())
+
+such
+
+that
+
+lim
+0
+
+µs (B (x, ())\E ) |µs |(E )
+
+=
+
+0.
+
+For instance, it is clear that the measure (x1)(x2) satisfies the latter condition. We have the following theorem.
+
+Theorem 2. Let µ be a solution to (1) and let µ = h(x)dx + µs be the Lebesgue decomposition of the
+
+measure µ. Assume that the measure µs is uniformly singular in the sense of Definition 1. Denote by
+
+f = (f1, . . . , fm)  L1|µs|(Rd; Rm) the Radon-Nykodim derivatives of µs with respect to its total variation
+
+measure
+
+|µs|:
+
+f
+
+=
+
+dµs d|µs
+
+|
+
+.
+
+It
+
+holds
+
+for
+
+|µs|-almost
+
+every
+
+x
+
+ Rd:
+
+m
+
+ajk(x)(2 i)fk(x) = 0, Hd-1 - a.e.   Pj, j = 1, . . . , m.
+
+(6)
+
+Ij k=1
+
+3
+
+Remark that each equation of system (2) defines different homogeneity manifold. If all the manifolds Pj, j = 1, . . . , n, would be the same, say P , and we have the same set of dominating multi-indices I = Ij , j = 1, . . . , n, for then, denoting  = j, j = 1, . . . , n, we could rewrite (6) in the form
+(2 i)A(x)f (x) = 0 Hd-1 - a.e.   Pj , j = 1, . . . , m,
+I 
+for appropriate matrices A,   I. From here, we see that in the latter case, the statement of the theorem is actually
+
+f (x)  P Ker
+
+(2 i)A(x) for µs a.e. x  Rd.
+
+(7)
+
+I 
+
+We remark that in [3], a constant coefficients operator A of order k  N is considered and it was proved that (7) holds with the union  (instead of ) for || = k (instead of   I) with || = 1 (instead of   Pj,
+j = 1, . . . , m).
+
+We will dedicate the last section to the proof of the theorem. In the next section, we shall prove it in the case of first order constant coefficients operator and the scalar measure which captures all the elements of the general situation. The proof is based on the blow up method [7] and appropriate usage of Fourier multiplier operators (as in deriving appropriate defect functionals [2, 5]).
+
+Let us recall that the Fourier multiplier operator T with the symbol  is defined vie the Fourier and inverse Fourier transform
+Tu(x) = F -1(()F (u))(x), u  L2(Rd),
+where the Fourier and the inverse Fourier transforms are given by
+
+F (u)() = u^() = e-2ix·u(x)dx, F -1(u)(x) = u(x) = e2ix·u()d.
+
+For properties of the Fourier multiplier operators one can consult [4].
+
+2. Proof of Theorem 2 in the case of first order constant coefficients operator and the scalar measure
+
+Here, we shall prove Theorem 2 when the scalar finite Radon measure µ  M(Rd) satisfies the equation
+
+d
+
+xl (alµ) + a0µ = 0,
+
+(8)
+
+l=1
+
+where (a0, a1, . . . , ad) is a constant vector. The proof is essentially the same for the general operator of the form given in (1), but the proof is a bit less technical for (8). The proof in full generality is given in the next section.
+
+Before we start, let f be the Radon-Nykodim derivative of µs with respect to |µs| (we disregard the fact that f can take only values ±1):
+dµs(y) = f (y)d|µs|(y).
+
+We fix a convolution kernel  : Rd  R which is a smooth, compactly supported function of total mass
+
+one and convolve (8) by (x) =
+
+1 d
+
+(
+
+x 
+
+).
+
+Then, we take an arbitrary   Cc1(Rd) and test the convolved
+
+equation on such a function. We get (below we denote µ = µ   and (y), µ(y) = Rd (y)dµ(y))
+
+4
+
+D. MITROVIC
+
+Rd
+
+1 d
+
+
+
+x-y 
+
+, µ(y)
+
+d
+alxl (x)dx + a0
+l=1
+
+(x)dµ(x) = 0.
+Rd
+
+(9)
+
+We
+
+now
+
+fix
+
+z
+
+
+
+Rd
+
+and
+
+take
+
+(
+
+x-z 
+
+)
+
+instead
+
+of
+
+
+
+in
+
+(9).
+
+We
+
+get:
+
+Rd
+
+1 d
+
+
+
+x-y 
+
+, µ(y)
+
+d l=1
+
+al
+
+1 
+
+wl
+
+(w)
+
+dx
+
+w=
+
+x-z 
+
++
+
+a0
+
+
+Rd
+
+x-z 
+
+dµ(x) = 0.
+
+(10)
+
+We now introduce in the first integral the change of variables x = z + w and multiply entire expression by
+
+. We get:
+
+Rd
+
+
+
+z-y 
+
++
+
+w
+
+, µ(y)
+
+d
+alwl (w)dw + a0
+l=1
+
+
+Rd
+
+x-z 
+
+dµ(x) = 0.
+
+(11)
+
+Now, we shall use the uniform singularity conditions. We rewrite (11) in the form
+
++
+
++
+
+E
+
+B(z,())\E
+
+Rd \B (z, ())
+
+
+
+z-y 
+
++
+
+w
+
+, µ(y)
+
+d
+alwl (w)dw + a0
+l=1
+
+
+Rd
+
+x-z 
+
+dµ(x) = 0
+
+(12)
+
+for the set E and the function () corresponding to the point z in Definition 1. Now, according to the
+
+assumptions for the uniformly singular measures and the fact that  is compactly supported:
+
+E  B(z, ()),
+
+() 
+
+
+
+0;
+
+µs(B(z, ())\E) |µs|(E)
+
+
+
+0;
+
+(
+
+z
+
+- 
+
+y
+
++ w)
+
+
+
+0,
+
+z
+
+/
+
+B(z, ()),
+
+we get after dividing (12) by |µs|(E) and letting   0 in (12)
+
+d
+
+(w) alwl (w)f (z)dw = 0.
+
+(13)
+
+Rd
+
+l=1
+
+Now, by simple density arguments, we see that we can take   C01(Rd). We choose
+
+(w) = T(/||) (w),
+||
+
+where
+
+T (/||)
+||
+
+is
+
+the
+
+Fourier
+
+multiplier
+
+operator with
+
+the
+
+symbol
+
+(/||) ||
+
+.
+
+We
+
+get
+
+from
+
+(13)
+
+after
+
+applying
+
+the Plancherel theorem with respect to w:
+
+f (z)
+
+Rd
+
+d l=1
+
+al
+
+2 il ||
+
+(/||)|^()|2d
+
+=
+
+0.
+
+(14)
+
+From here, due to arbitrariness of  and z, we conclude that for |µs|-a.e. z  Rd,
+
+what we wanted to prove.
+
+d
+allf (z) = 0 Hd-1-a.e.  = (1, . . . , d), || = 1
+l=1
+
+5
+
+3. Proof of Theorem 2; general case
+
+We follow the steps from the previous section and we address a reader there for clarifications.
+
+We start by fixing j in (2) and the convolution kernel  : R  R which is smooth, compactly supported with total mass one. We then denote (x = (x1, . . . , xd) and w = (w1, . . . , wd) below)
+
+j,(x)
+
+=
+
+1 1j +···+dj
+
+d k=1
+
+(
+
+xj kj
+
+)
+
+and
+
+d
+(w) = (wk),
+k=1
+
+and convolve (2) by j,. We have for (ajlµs) = (ajlµl)  j,(x):
+
+m
+(ajlµl) = 0.
+Ij l=1
+
+(15)
+
+We then apply a test function   Cc(Rd) on (15) to get
+
+m
+
+(-1)||
+
+j,(x - y), ajl(y)µl(y) (x)dx = 0.
+
+Ij
+
+l=1 Rd
+
+(16)
+
+Now,
+
+we
+
+fix
+
+z
+
+
+
+Rd
+
+and
+
+take
+
+(x - z)
+
+=
+
+(
+
+x1 -z1 1j
+
+,
+
+.
+
+.
+
+.
+
+,
+
+) xd -zd
+dj
+
+in
+
+(16)
+
+instead
+
+of
+
+.
+
+Multiplying
+
+the
+
+obtained
+
+expression by  and taking into account (5), we conclude (only the principal symbols are in the sum below)
+
+m
+
+(-1)||
+
+j,(x - y), ajl(y)µk (y) (x - z)dx + R = 0,
+
+Ij
+
+l=1 Rd
+
+(17)
+
+where R  0 as   0 (for clarifications, see the last term on the left-hand side in (11)). Next, we introduce the change of variables x = (z1 + 1j w1, . . . , zd + dj wd) in the first term on the left-hand side of (17). We get
+
+m
+(-1)||
+
+Ij
+
+l=1
+
+Rd
+
+d k=1
+
+(
+
+zk - yk kj
+
++ wk), ajl(y)µl(y)
+
+(w)dw + R
+
+= 0.
+
+(18)
+
+Now, we divide (18) by |µs|(E) and let   0. Taking into account the uniform singularity assumptions as in (12), we get
+
+We now take
+
+m
+
+(-1)|| fl(z)ajl(z) (w)(w)dw = 0.
+
+Ij
+
+l=1
+
+Rd
+
+(19)
+
+(w) = T (j ()) (w),
+|1|1j +···+|d|dj
+where Tm is the Fourier multiplier operator with the symbol m. After inserting this in (19) and applying the Plancherel theorem with respect to w, we obtain:
+
+m
+(-1)|| fl (z)ajl (z)
+l=1 Ij
+
+Rd
+
+(2 i) |1|1j + · · · + |d|dj
+
+(j ())|^()|2d
+
+=
+
+0.
+
+From here, due to arbitrariness of , we get the claim.
+
+6
+
+D. MITROVIC
+
+Acknowledgement The work is supported in part by the Croatian Science Foundation under Project WeConMApp/HRZZ-9780.
+
+References
+[1] L. Ambrosio and E. De Giorgi, Un nuovo tipo di funzionale del calcolo delle variazioni , Atti. Acc. Naz. dei Lincei, Rend. Cl. Sc. Fis. Mat. Natur. 82 (1988), 199­210.
+[2] N. Antoni´c, D. Mitrovi´c: H-distributions: An Extension of H-Measures to an Lp - Lq Setting, Abstr. Appl. Anal. (2011), Article ID 901084, 12 pages.
+[3] G. DePhilippis, F. Rindler, On the structure of A-free measures with applications, Annals of Mathematics 184 (2016), 1017­1039 .
+[4] L. Grafakos, Classical Fourier Analysis, Springer, 2008. [5] M. Lazar, D. Mitrovi´c: Velocity averaging a general framework, Dynamics of PDEs, 9 (2012), 239­260. [6] D. Misur, D. Mitrovi´c, On a generalization of compensated compactness in the LpLq setting, Journal of Functional Analysis
+268 (2015), 1904­1927 [7] A. Vasseur, Strong traces for solutions of multidimensional scalar conservation laws, Arch. Ration. Mech. Anal. 160
+(2001), 181­193.
+
+Darko Mitrovic, Faculty of Mathematics, University of Montenegro 81000 Podgorica, Montenegro E-mail address: darkom@ac.me
+
+

@@ -1,0 +1,2805 @@
+arXiv:1701.00014v3 [hep-th] 1 Dec 2017
+
+CCNY-HEP-16/8 December 2016
+Gauge-invariant Variables and Entanglement Entropy
+Abhishek Agarwala, Dimitra Karabalib and V.P. Nairc
+a Physical Review Letters American Physical Society
+Ridge, NY 11961 bDepartment of Physics and Astronomy
+Lehman College of the CUNY Bronx, NY 10468
+cPhysics Department City College of the CUNY
+New York, NY 10031 E-mail: abhishek@aps.org
+dimitra.karabali@lehman.cuny.edu vpnair@ccny.cuny.edu
+Abstract
+The entanglement entropy (EE) of gauge theories in three spacetime dimensions is analyzed using manifestly gauge-invariant variables defined directly in the continuum. Specifically, we focus on the Maxwell, Maxwell-Chern-Simons (MCS), and nonabelian Yang-Mills theories. Special attention is paid to the analysis of edge modes and their contribution to EE. The contact term is derived without invoking the replica method and its physical origin is traced to the phase space volume measure for the edge modes. The topological contribution to the EE for the MCS case is calculated. For all the abelian cases, the EE presented in this paper agrees with known results in the literature. The EE for the nonabelian theory is computed in a gauge-invariant gaussian approximation, which incoprorates the dynamically generated mass gap. A formulation of the contact term for the nonabelian case is also presented.
+
+1 Introduction and Summary
+In this paper we formulate a gauge-invariant set up, defined directly in the continuum, for computing the entropy of vacuum entanglement (EE) for gauge theories in three spacetime dimensions. We apply this approach to analyze the EE for the abelian Maxwell, MaxwellChern-Simons (MCS) and nonabelian pure Yang-Mills theories. Our approach allows for the identification and clarification of the physical origin of the Kabat contact term for all these cases without invoking the replica trick and the ensuing conical partition function. The calculational framework is set up in such a way that it can be extended to more involved geometries than have been studied in the past.
+Quantifying the information content of gauge theory vacua has recently emerged as an interesting computational as well as a conceptual challenge. While it can be argued - in analogy with finite dimensional quantum mechanical models - that EE, defined as the von Neumann entropy of the reduced density matrix red is a reasonable measure of the ground state entanglement of any field theory, its definition and computation are far from obvious in a gauge theory. In a typical field theory without gauge symmetries (e.g a free scalar theory), even though the wave functionals do display entanglement, they, as well as observables, are expressed in terms of local fields. Thus, there is no conceptual obstruction to integrating out degrees of freedom for the "inside" region (or the "outside" region) to obtain a reduced density matrix for the complementary region. This can be done just as one would in a system of coupled oscillators, and this was indeed the approach taken in the early computations of EE for scalar field theories [1]. By contrast, the obvious physical degrees of freedom in a gauge theory are the nonlocal Wilson loops which can prevent a clean separation of the Hilbert space into "inside" and "outside" regions. Further, [1] used an explicit position space representation of the vacuum wave functional  for the scalar theory. Our explicit knowledge of gauge invariant 's is limited at best for gauge theories.
+Several different approaches to circumvent these issues have recently been explored. One could conceive of defining and computing EE on a lattice [2]. Though the lattice allows one to compute using quasi-local link and plaquette variables, the constraint of gauge invariance again impacts on separating variables into different regions. This leads to several prescriptions for "cutting" the lattice into "inside" and "outside" regions and they may lead to inequivalent expressions for EE. (See [3] for a computation explicitly devoted to these issues for the Maxwell theory in D = 2 + 1.) Further, a topological term such as the Chern-Simons term is difficult to realize on the lattice. An alternative method, the replica trick, allows one to work directly in the continuum by formally expressing the wave functional as a Euclidean path integral with specific boundary conditions at the initial and final time slices [4, 5].1 The -th power of the reduced density matrix red is formally expressed as a path integral over a cone using the replica method. However, a rigorous proof of equivalence of the entropy computed from the
+1 Some subtleties in the use of replica trick for EE for gauge theories have been discussed in [6].
+2
+
+cone partition function (Scone) with EE (as computed from an explicit construction of ) is lacking for gauge theories.2 In a beautiful paper, Kabat [7] computed Scone for Maxwell fields which have D - 2 physical degrees of freedom. The computation in [7] showed that Scone differed from the EE of D - 2 scalar fields by an additional negative contribution; the so called contact term. The contact term and its possible physical interpretation has been explored recently [8, 9], however it is is not completely clear if it arises in computations of EE entirely within a Hamiltonian formulation [9]. A natural question to ask is whether the contact term is an artifact of the replica trick and whether it can be ascribed a physical significance without recourse to the replica method. In this work we address this question specifically in three spacetime dimensions and find that the contact term arises naturally from the phase space integration measure. The result can also be generalized - at least formally - to the nonablelian case and to more involved geometries than are analytically accessible by the replica procedure.
+For purposes of computing "half-space" entanglement between two regions I and II, our strategy is to decompose the Hamiltonian and invariant degrees of freedom of the theory defined in I II such that we have a manifestly gauge invariant formulation of the theory individually in I and II. It is crucial to the decomposition to note that the gauge transformations that do not go to identity at spatial boundaries must be regarded as physical degrees of freedom; namely the edge modes of gauge theories [13]. Such edge modes would be present at the interface between I and II were it to be a real boundary. The process of entangling I and II involves integrating the edge modes out of the physical Hilbert space, rather than just setting them to zero. This, in turn, induces a degeneracy factor in the reduced density matrix. Formally, this degeneracy is captured by the measure of the phase space path integral and we show that it accounts precisely for the contact term. This construction generalizes to the MCS and, to some extent, to nonabelian cases. In the case of the MCS theory, we also show that an additional contribution from the edge modes arises when the entangling surface has a nontrivial topology. Specifically for the case of a circular interface, the zero modes of the edge modes produce an additional topological contribution, which is identical to what is obtained for the pure Chern-Simons theory.
+To briefly recapitulate, the key new results of this paper are the following. We formulate the computation of the EE in 2+1 dimensional gauge theories in terms of gauge-invariant variables and apply this to the abelian Maxwell, the Maxwell-Chern-Simons and (approximately) to pure Yang-Mills theories. The origin of the contact term is identified as arising from integration of the edge degrees of freedom on the interface, rather than factoring them out as gauge degrees of freedom. The contact term is shown to be related to the interface term which arises in the Mayer-Vietoris type decomposition of the determinant of the Laplacian on a Riemannian manifold, namely the BFK gluing formula [10]. This is also the term which is important in capturing the diffractive contributions in the Casimir effect [11]. For the Maxwell-Chern-
+2However Scone is interesting in its own right as it computes the one-loop correction to the BekensteinHawking entropy of a black hole.
+3
+
+Simons theory, with a circular interface separating the two regions of interest, we show that there is also a topological contribution which is identical to what is obtained for the ChernSimons theory modulo the usual regularization-dependent terms. For the nonabelian theory, we find a tractable regime where the EE for pure Yang-Mills theory can be computed, albeit approximately. It is possible to include the effect of the nonperturbative mass gap and also obtain an approximate expression for the contact term.
+This paper is organized as follows. In section 2, we collate and review some basic results for half-space entanglement for the massive scalar field in three spacetime dimensions, which we need to call on for later discussions. Section 3 is devoted to the Maxwell theory in terms of gauge-invariant variables, keeping track of the edge modes. The phase space measure of these modes is shown to account for the contact term after the modes are integrated out of the physical spectrum. In section 4, we do a similar analysis for the MCS theory. The contact term contribution remains the same as in the pure Maxwell case. The bulk EE is now given by that of a massive scalar. We also study the MCS theory with a circular entangling surface in which case we recover the well known topological term known to be present in the case of pure Chern-Simons theory. In section 5, we discuss the nonabelian pure-glue theory. Of course, this theory is not exactly solvable, and the computation of the EE, perforce, can only be approximate. We use the formulation due to [12] to obtain a gauge invariant truncation of the vacuum wave-functional of the gauge theory. This tractable regime allows us to work with a Gaussian wave functional which, nevertheless, retains information about the nonperturbative mass-gap of this theory. Specifically, we find that the mass-gap leads to a finite (and hence universal) term in the EE which is proportional to the area of the entangling surface. Interestingly, its contribution is negative, leading to a reduction in entanglement and provides a direct potential link between the IR properties of the gauge theory and EE. We also provide a general, although somewhat formal, expression for the contact term for the nonabelian theory. In the final section we comment on some conceptual connections between our approach and the replica-trick methods. There are two appendixes, one on a technical point on eliminating a certain field component and the other on the topological contribution to the EE for the MCS theory.
+
+2 The entanglement entropy of a massive scalar field
+
+Since many of the cases we discuss will utilize the EE of a massive scalar field, we start by
+
+briefly recalling how such a computation is carried out; for more details, see [5]. With a
+
+standard action given by
+
+S
+
+=
+
+1 2
+
+d3x ()2 - m22
+
+(1)
+
+the ground state (or vacuum) wave function is given by
+
+[] = N exp
+
+-
+
+1 2
+
+d2x d2y (x) ( m2 - 2)x,y (y)
+
+(2)
+
+4
+
+where  denotes the value of the field at a given time-slice, say, at t = 0. We can now apply the replica trick to the wave function. The first step involves giving (2) a path integral representation as [5]
+
+[] =
+
+[D]((xi, t = 0) - ) e-
+
+[
+
+1 2
+
+
+
+(p2
+
++m2
+
+)
+
+]
+
+(3)
+
+where we integrate over all fields from t = - to t = 0. Here we are using the Euclidean action, t for this expression being the Euclidean time variable. We simply regard the above as a mathematical representation of the wave functional without ascribing any fundamental meaning to the three-dimensional action appearing in the functional integral on the right hand side. Repeating this construction  times and integrating the degrees of freedom on the negative x-axis (out of the density matrix constructed from the wave function) reduces the EE computation to the evaluation of a functional integral for a massive scalar field on a cone with deficit angle 2(1 - ) [5]. More precisely, the EE can be defined as
+
+SE = ( - 1)W.
+
+(4)
+
+where, W is the effective action on the cone, defined in terms of the heat kernel K(s) =
+
+e-s(p2+m2) as
+
+W
+
+=
+
+-
+
+1 2
+
+
+trK (s)
+2
+
+(5)
+
+Using known techniques, we evaluate the conical partition function and express the entropy as
+
+SE (m)
+
+=
+
+2A 6
+
+ 2
+
+ds (4s)d/2
+
+e-m2 s
+
+(6)
+
+where A,  are the entangling area and UV cutoff respectively. This expression is written for
+
+any spacetime dimension d; more concretely, for d = 3, we get
+
+A
+
+SE (m)
+
+=
+
+ 12 
+
+e-2m2
+
+ - m  erfc(m)
+
+
+
+(7)
+
+In the above expression, erfc(x) is the complementary error function; 1-erf(x). It is instructive to expand (7) in powers of the UV cutoff  as
+
+A SE(m) = 12
+
+1 
+
+-
+
+ m
+
++
+
+O()
+
+(8)
+
+The leading term here is the EE of a massless scalar field, which is proportional to the area of the entangling surface and is cut-off dependent. (In 2+1 dimensions, A is the length of the entangling surface.) There is also a finite term proportional to the mass. This may be unambiguously extracted by taking the   0 limit of SE(m) - SE(0). Notice also that the mass correction tends to decrease the entanglement entropy. Since correlators are of short range ( 1/m) in a massive theory, we may expect the entanglement to be reduced, in agreement with (8).
+
+We now turn to the gauge theories.
+
+5
+
+3 The Maxwell theory
+
+Our approach, as mentioned in the introduction, is to cast the gauge theory entirely in terms of gauge-invariant variables and use it to calculate the entanglement entropy. The arguments presented, we believe, will help to clarify the role of the Kabat contact term. In three spacetime dimensions, the gauge field has one physical polarization, so that part of the entropy for the amount of entanglement encoded in the quantum vacuum wave function is identical to the contribution of a single massless scalar.3 However, the elimination of the gauge degrees of freedom and the factorization of the reduced phase volume into two regions can lead to a second contribution. We show that this extra contribution is indeed the contact term. It is related to the surface term in the BFK gluing formula for determinants of the Laplace-type operators [10]. This elucidates the nature of the contact term without invoking the replica trick and without referencing conical singularities.
+
+Since we will use a Hamiltonian framework, we start with the gauge A0 = 0. In two dimensions, the spatial components Ai and the electric field Ei have the general parametrization
+
+Ai = i + ij j,
+
+Ei = Ai = i + ijj 
+
+(9)
+
+(Since Ei = Ai,  and  are ,  in a Lagrangian description. But here we want to carry out a Hamiltonian analysis, so these are independent phase space variables.) Our strategy is to set up the theory in two regions I and II, with I  II being the spatial manifold. We then consider the theory defined on the full space I  II but write it in terms of variables appropriate to regions I and II. It is then easy to see that integrating over the variables in region II does not give the theory which was a priori defined in I. This discrepancy is due to entanglement. Alternatively, we can put together the theories defined in each region to obtain the full space theory via suitable matching conditions. This will also bring out the entanglement and the contact term.
+
+We begin the analysis starting with region I; the situation for II will be similar. Since degrees of freedom on the boundaries will be important, we start with a decomposition of the fields given by
+
+I(x) = ~I(x) + 0I(y) n · G(y, x)I
+I
+
+I(x) = ~I(x) + 0I(y) n · G(y, x)I
+
+(10)
+
+I
+
+Here the tilde-fields all obey Dirichlet boundary conditions, vanishing on I. The boundary
+
+values are explicitly shown as the fields with a subscript 0. They are continued into the interior
+
+such that they obey the Laplace equation, i.e.,
+
+2x 0I(y) n · G(y, x)I = 0, etc.
+
+(11)
+
+I
+
+3The last reference in [2] refers to this part of EE as the 'extractable contribution' where it was shown to count the number of correlated Bell pairs.
+
+6
+
+The Green's function G(y, x) obeys Dirichlet conditions on the boundary. The decomposition
+
+of the fields as in (10) follows from Green's theorem. We will also do a similar decomposition
+
+for the field ,
+
+I(x) = ~ I(x) + 0I(y) n · G(y, x)I
+
+(12)
+
+I
+
+A similar separation of modes for  will emerge from the simplifications which follow.
+
+The needed ingredients for the analysis are the canonical structure and the Hamiltonian expressed in terms of this parametrization (10), (12). The canonical one-form is given by
+
+A = Ei Ai
+
+=
+
+(-2~I) ~I + ~ I BI +
+
+I
+
+0I(y)M (y, x)I +  0I 0I(x)
+
++ 0I(y)M (y, x)I -  0I 0I(x)
+
+=
+
+(-2~I) ~I + ~ I BI + EI 0I(x) + QI 0I(x)
+
+(13)
+
+I
+
+where B = -2 is the magnetic field,  = niijj is the tangential derivative on the boundary, and
+
+M (x, y)I = n · x n · yG(x, y)I|x, y on I
+
+(14)
+
+EI(x) = 0I(y)M (y, x)I +  0I(x)
+y
+
+QI(x) = 0I(y)M (y, x)I -  0I(x)
+
+(15)
+
+y
+
+Notice that EI and -QI are related to the normal and tangential components of the electric
+
+field on the boundary, although not exactly equal to them. If we consider a large rectangular
+
+volume divided into two regions with a flat interface, then M = q2 where q is the momentum
+
+variable (wave vector in a Fourier decomposition of the fields) along the boundary and we have
+
+the identity
+
+xyM -1(x, y) = M (x, y)
+
+(16)
+
+In this case, it is easy to see that we have a constraint C = y EI(x)M -1(x, y) + QI(x) = 0. This is a first class constraint and so we can enforce it choosing a conjugate constraint 0  0. The canonical one-form thus reduces to
+
+A = (-2~I) ~I + ~ I BI + EI 0I
+
+(17)
+
+I
+
+The essence of the constraint on Q can be understood as follows. The definition of  via B = -2 allows some freedom, a new "gauge type " redundancy, since  and  + f give the same B, if 2f = 0. Such an f is entirely determined by the boundary value as in
+
+f (x) = f0(y) n · yG(y, x)
+
+(18)
+
+7
+
+It is then possible to choose f0 to obtain  = 0 on I, for the same magnetic field B. This freedom is reflected in the constraint and in our ability to choose the conjugate constraint 0  0.
+The canonical structure (17) shows that the phase volume is given by
+
+dµI = [d~d~]I [dE d0]I [d~ dB]I det(-2)I
+
+(19)
+
+The determinant is to be calculated with Dirichlet conditions on the modes. The Hamiltonian can be simplified in a similar way to obtain
+
+H=
+
+1 2
+
+(~I)2 + (~ I)2 + BI2
+
++
+
+1 2
+
+EI(x)M -1(x, y)I EI(y)
+
++
+
+1 2
+
+0I(x)(M (x, y) - xyM -1(x, y)) 0I(y)
+
+(20)
+
+The last term is actually zero for the flat interface in infinite volume (which is the case we will continue to discuss), due to (16). It is also zero for the interface being a circle. We display it here to show how there can be extra terms for interfaces with curvatures or for more general partitioning of the full space.
+
+It is also useful to write down the phase space path integral since it provides a succinct
+
+way to capture the effects of both the Hamiltonian (and hence the wave function) and the
+
+integration measure. For this, we first recall that, for a theory with first class constraints
+
+  0, and corresponding gauge fixing constraints   0, the phase space path integral is
+
+given by
+
+Z = dµ () () det{, } eiS
+
+(21)
+
+
+
+
+
+where dµ is the phase volume (for the full phase space before reduction by constraints) and {, } denotes the Poisson bracket (computed with the full canonical structure). For the Maxwell theory, in the Coulomb gauge with    · E and    · A, this gives
+
+Z = dµ ( · E) ( · A) det(-2) eiS
+
+(22)
+
+where the action is given, for I, by A and H as
+
+SI = (-2~I) ~I + ~ I B I + EI 0I(x) + QI 0I(x) - dt H
+
+(23)
+
+I
+
+We have already obtained dµ and H for region I. With the fields in (10), the constraints become
+
+ · E = 2~,  · A = 2~
+
+( · E) = (det(-2)I)-1 (~)
+
+( · A) = (det(-2)I)-1 (~)
+
+(24)
+
+8
+
+This is equivalent to imposing Gauss law with test functions going to zero on the boundary I. Using (19) and (20), the partition function (22) can be now obtained as
+
+ZI =
+
+dµI (~I) (~I) (det(-2))-I 1 eiSI
+
+= [dEd0]I [d~ dB]I exp iSI|~,~=0
+
+(25)
+
+We can carry out the integration over B as well to rewrite this as
+
+ZI = [dEd0]I [d~ ]I eiS~I
+
+S~I =
+
+1 2
+
+~ 2I - (~ I)2
+
++
+
+EI
+
+0I
+
+-
+
+1 2
+
+EI
+
+MI-1
+
+EI
+
+(26)
+
+We can do a similar calculation, resulting in similar formulae, for region II.
+
+Now we want to consider the theory defined on the full space III and consider integrating over the degrees of freedom in region II. The resulting theory is to be compared to the theory intrinsically defined in region I, namely to (26). For the theory on the full space, we use the same parametrization of fields as in (9). Further we assume that the fields go to zero at the spatial boundary of the full space. This leads to
+
+S=
+
+i
+
+i
+
++
+
+i
+
+i
+
+-
+
+1 2
+
+(i)2 + (i)2 + B2
+
+(27)
+
+Zfull = [dd] [ddB] [det(-2)]2 ( · E) ( · A) eiS
+
+=
+
+[d] exp
+
+i 2
+
+ 2 - ()2
+
+(28)
+
+On the full space, we have the theory for a scalar field . However, instead of just considering this theory, we want to rewrite the action (27) with the field variables decomposed into the two regions I and II. This can be done by writing
+
+
+
+(x)
+
+=
+
+~I(x) + ~II(x) +
+
+I 0(y) n · G(y, x)I II 0(y) n · G(y, x)II
+
+in I in II
+
+(29)
+
+Here 0 is the value of  on the interface between the two regions. There are similar expressions for the other fields as well. The action in terms of variables split into the two regions becomes
+
+Ssplit =
+
+I
+
+(-2~I)
+
+~I
+
+-
+
+1 2
+
+(i~I)2
+
++
+
+II
+
+(-2~II) ~II
+
+-
+
+1 2
+
+(i
+
+~II
+
+)2
+
++
+
+B
+
+-
+
+1 2
+
+(i)2 + B2
+
++
+
+0(MI
+
++
+
+MII) 0
+
+-
+
+1 2
+
+0
+
+(MI
+
++
+
+MII) 0
+
+=
+
+I
+
+(-2~I)
+
+~I
+
+-
+
+1 2
+
+(i~I)2
+
++
+
+II
+
+(-2~II) ~II
+
+-
+
+1 2
+
+(i
+
+~II
+
+)2
+
++
+
+B
+
+-
+
+1 2
+
+(i)2 + B2
+
++
+
+E
+
+0
+
+-
+
+1 2
+
+E
+
+(MI
+
++
+
+MII)-1
+
+E
+
+(30)
+
+9
+
+where E = (MI + MII) 0. We have dropped the cross terms ijji and ijij since by continuity of the tangential derivative of  and  across the interface the surface contributions cancel out. (Their inclusion will not change anything that follows, except for the definition of E in terms of 0. This is immaterial, we can just consider the redefined E as the conjugate variable to 0.) The action for , B will lead to the usual scalar field results, and since our focus is on the factoring out of the gauge degrees of freedom, we do not display the action for the  and B fields in terms of variables in each region. We will see how it reduces to a scalar field result.
+The phase space volume element in these variables is
+
+dµsplit = [d~d~]I [d~d~]II det(-2)I det(-2)II [dEd0] × dµ,B
+
+(31)
+
+As for the expressions for the constraints in terms of these variables, the nature of the test functions is the crucial ingredient. Considering test functions f, h, whose boundary values on the interface are f0, h0 respectively, and with the tilde-functions vanishing on the interface, we have
+
+if Ei = f~I(-2~I) + f~II(-2~II) + f0 E  0
+
+I
+
+II
+
+ih Ai = h~I(-2~I) + h~II(-2~II) + h0 (MI + MII) 0  0
+
+(32)
+
+I
+
+II
+
+For the theory on the full space, -dependence is eliminated everywhere including the interface, so, based on (32), we must interpret the constraints as
+
+( · E) ( · A) = [-2~I] [-2~II] [E] [-2~I] [-2~II] [(MI + MII)0]
+
+(33)
+
+Further, we can use the splitting formula (or the BFK gluing formula [10])
+
+det(-2) = det(-2)I det(-2)II det(MI + MII)
+
+(34)
+
+Using (31)-(34), it is then easy to verify that
+
+dµsplit [-2~I] [-2~II][E] [-2~I] [-2~II][(MI + MII)0] det(-2) eiSsplit
+
+=
+
+[d] exp
+
+i 2
+
+ 2 - ()2
+
+(35)
+
+does indeed reproduce the partition function in (28). The calculations from that point until (35) were meant to show that the parametrization with the splitting as in (29) does capture the theory on the full space.
+Consider now the integration of the degrees of freedom in region II. From the point of view of the theory in II, the modes due to E, 0 are physical edge degrees of freedom, they are not considered as gauge degrees of freedom. This means that one integrates over only the ~II
+
+10
+
+and ~II without imposing the constraints which eliminate the edge degrees of freedom. The corresponding test functions f , h in (32) are taken to vanish on the interface, so that we get
+
+dµsplit [-2~I] [-2~II][-2~I] [-2~II] det(-2) eiSsplit
+
+= det(MI + MII) [d~d~]I [-2~I] [-2~I] det(-2)I 2 [dEd0]dµ,B eiS
+
+= det(MI + MII) [dEd0]dµ,B eiS
+
+(36)
+
+S=
+
+E
+
+0
+
+-
+
+1 2
+
+E
+
+(MI
+
++
+
+MII)-1
+
+E
+
++ S,B
+
+(37)
+
+This has exactly the structure we expect for the partition function in region I, namely, (26),
+
+except for the prefactor of det(MI + MII). Even though the integrations in (26) involve EI
+
+and 0I while we have E, 0 in (36), the result is identical once the integral is performed; the
+
+result
+
+does
+
+not
+
+depend
+
+on
+
+the
+
+interface.
+
+In
+
+fact,
+
+defining
+
+a
+
+new
+
+variable
+
+
+
+=
+
+(K
+
+-1
+
+)
+
+1 2
+
+0,
+
+where
+
+K = (MI + MII)-1 or MI-1 appropriately, we see that
+
+[dEd0] exp i
+
+E
+
+0
+
+-
+
+1 2
+
+E
+
+K
+
+E
+
+= constant
+
+[d] exp
+
+-
+
+i 2
+
+2
+
+(38)
+
+where the constant does not depend on K. Also, in (36, 37) we have not displayed the integration over the -B-fields for region II. Since the action for this part is that of a scalar field (which is ), we take this to be done as in the case of a scalar field.
+
+So the only extra factor in reducing the theory by integrating over region II, but keeping the edge modes for II, is det(MI + MII). This term arises from the phase volume and hence must be counted as a degeneracy factor due to the additional modes. The corresponding density matrix must be defined to account for the extra degeneracy as
+
+1
+
+ = det(MI + MII) ()red
+
+(39)
+
+where ()red is the normalized reduced density matrix for a massless scalar (from the -B sector) and 1 is a unit matrix such that Tr 1 = det(MI + MII). This degeneracy factor affects EE which will now be given by
+
+A SE = SE  + log det(MI + MII) = 12
+
+1 
+
++
+
+O()
+
++ Tr log(MI + MII)
+
+(40)
+
+where  is the UV cutoff and A is the "area" of the entangling surface. (Once again, in 2+1 dimensions, this is just the length of the entangling surface.) The first term SE  is the contribution from the scalar field . The second term on the right hand side is the contact term.4 If we take the regions I and II to be the left and right half-planes, then MI  q2,
+4There is a slight abuse of notation between (36) and (39) or (40). The determinant in (36) involves a product over all time, which is not shown explicitly. This is because we have a factor det(MI + MII) on each time-slice, but, since the operator does not involve time-derivatives, this gives an overall integration over time in Tr log(MI + MII). The factors det(MI + MII) in (39) and (40) are at fixed time.
+
+11
+
+MII  q2, where q is the momentum along the interface [11]. In this case, we find
+
+Tr log(MI + MII)
+
+=
+
+1 2
+
+Tr
+
+log
+
+q2
+
++
+
+Tr
+
+log
+
+2
+
+=
+
+A - 4
+
+ 2
+
+ds
+
+e-m2s s3/2
+
+=
+
+A - 2
+
+1 
+
++
+
+O()
+
+(41)
+
+Here we absorbed the Tr log 2 part into a redefinition of the cut-off and used a mass term (i.e.
+
+q2  q2 + m2) as an infrared regulator, although this is ultimately not needed for the answer
+
+displayed. The result (41) agrees with Kabat's calculation of the contact term. Notice that
+
+1 2
+
+Tr
+
+log
+
+q2
+
+is
+
+the
+
+negative
+
+of
+
+the
+
+free
+
+energy
+
+of
+
+a
+
+massless
+
+scalar
+
+in
+
+d
+
+-
+
+2
+
+dimensions
+
+confined
+
+to the entangling surface, where d is the spacetime dimension of the theory.
+
+To recapitulate, we see that the "extractable part" of vacuum entanglement is captured
+
+by a single massless scalar. If one eliminates the gauge degrees of freedom over the full space
+
+I  II, and then considers integrating over the , B degrees of freedom in region II, then this
+
+is all there is to the entropy. However, if one keeps the E, 0 modes on the interface, since they are physical from the point of view of the theory in region II, then there is an additional
+
+contribution from the degeneracy. This reproduces the contact term obtained in the replica
+
+method. Although we phrased the arguments in terms of the phase space functional integral, the key point is the splitting of the phase volume. The factor det(-2), which may be viewed
+
+as arising from factoring out the gauge degrees of freedom, does not trivially factorize into the
+
+two regions. The "extra piece" det(MI + MII) is precisely the same surface term needed for the BFK gluing formula (34). We identify this as the contact term. Also, even though we have
+
+considered a flat spacetime with a flat interface between the two regions, it is clear that the
+
+result can be generalized to any bipartite partition of space, with the appropriate MI and MII.
+
+We will close this section with a few comments. In going from (25) to (26), we integrated
+
+over B. The resulting path integral is thus appropriate for describing the evolution of E-
+
+diagonal wave functions, since  is part of the electric field. One could also consider integrating
+
+over  to obtain a -diagonal representation with the corresponding wave functions as functions
+
+of
+
+.
+
+This
+
+results
+
+in
+
+a
+
+determinant
+
+(det(-2
+
+))-
+
+1 2
+
+with
+
+the
+
+relevant
+
+part
+
+of
+
+the
+
+action
+
+as
+
+S
+
+=
+
+1 2
+
+ (-2)  - (-2)2
+
+(42)
+
+(Here we consider the full space for simplicity.) Naively, it would seem that this does not lead to a scalar field result for the EE, since there are higher derivatives involved. However, notice that the commutation rules are
+
+[(x), (y)] = i G(y, x)
+
+(43)
+
+If we consider splitting the manifold into two regions, say, I and II, with the corresponding I and II, then this commutation rule tells us that there is some entanglement since [I, II] = 0
+due to the nonlocality of the Green's function; there is an uncertainty principle for simultaneous
+
+12
+
+measurements of  and  for far separated regions. This is true irrespective of which state of
+
+the system (or wave function) we choose and could be an additional source of entanglement
+
+beyond what is obtained from the wave function. Calculations just using the wave function
+
+are not adequate. To simplify the analysis, one option is to choose variables which give local
+
+commutation rules, thereby transferring all entanglement to the wave function. One such
+
+choice is
+
+ = -2 
+
+(44)
+
+In this case, the action for the -part reduces to
+
+S
+
+=
+
+1 2
+
+( )2 - ()2
+
+(45)
+
+Since
+
+[d](det(-2
+
+))-
+
+1 2
+
+=
+
+[d],
+
+the
+
+measure
+
+of
+
+integration
+
+also
+
+correctly
+
+corresponds
+
+to
+
+what
+
+is needed for a scalar field. Thus the previous results are still obtained.
+
+It is possible to include edge modes on the boundary of the full space as well, although they are not important for the entanglement entropy. The Hamiltonian for the full space has a form similar to (20) (without the subscript I, of course). The term involving E is the term corresponding to the edge modes. Since the E at different points on the boundary commute at equal time, the E-dependent term in the Hamiltonian is like a free particle kinetic energy term and gives continuous eigenvalues. This is in agreement with [13].
+
+4 The Maxwell-Chern-Simons theory
+
+We shall now consider a similar analysis for the Maxwell-Chern-Simons (MCS) theory. The
+
+action is given by
+
+SMCS =
+
+d3x
+
+1 2
+
+(E
+
+2
+
+-
+
+B2)
+
++
+
+ke2 4
+
+µAµ A
+
+(46)
+
+where e is the coupling constant. While the Maxwell term is manifestly gauge invariant, the Chern-Simons (CS) term changes by a boundary term upon carrying out a gauge transformation. This boundary term will have a contribution involving the spatial boundary and two terms on the initial and final time-slices which results from the time-integration. The latter terms will be part of the Gauss law of the theory, while the spatial boundary contributions will vanish for those transformations which become the identity at the spatial boundary. We will consider only such transformations for the boundary of the full space, so that the CS term can be taken to be gauge invariant in the full space.
+
+As in the case of the Maxwell theory, we want to start with the theory defined on the full space I  II and write it on terms of variables defined on each region. Again, we choose the A0 = 0 condition. We can simplify the canonical structure and the Hamiltonian in the parametrization we use and then consider integrating out the degrees of freedom in one of the
+
+13
+
+two regions, say, II. Using variables in the full space, but split up as in (29), we find
+
+A=
+
+Ei
+
+Ai
+
+-
+
+m 2
+
+ij
+
+Ai
+
+Aj
+
+=
+
+(-2~I) + m2~I ~I + (-2~II) + m2~II ~II +
+
+I
+
+II
+
++
+
+0(MI + MII)0 + +
+
+m 2
+
+i i
+
+ii
+
+= (-2~I) ~I + (-2~II) ~II + ii + 0(MI + MII)0
+
+I
+
+II
+
++
+
+m 2
+
+i i
+
+(47)
+
+where  =  - m, m = ke2/2. In arriving at this expression, we have also dropped some terms which cancel out between the two regions due to the continuity of the fields,
+
+ 0I
+
++
+
+m 2
+
+
+
+0I
+
+0I -
+
+ 0II
+
++
+
+m 2
+
+
+
+0II
+
+0II = 0
+
+(48)
+
+The last term in (47) is a canonical transformation, so it gives the well-known phase factor for the wave functions of the MCS theory. It will not be important for our discussion of the entanglement entropy. (In Appendix A we write down A and simplify it, showing one can choose 0 = 0. We have used the resulting expression along with (48) to obtain (47).) The Hamiltonian can be simplified as
+
+HMCS
+
+=
+
+1 2
+
+(E2 + B2)
+
+=
+
+1 2
+
+(-2~I) ~I
+I
+
++
+
+1 2
+
+(-2~II) ~II
+II
+
++
+
+1 2
+
+0(MI + MII) 0 + H(0,)B (49)
+
+The -B part of the Hamiltonian corresponds to a scalar field and is given by
+
+H(0,)B
+
+=
+
+1 2
+
+()2 + (-2)2
+
+(50)
+
+Denoting M = MI + MII, the -dependent terms of the Hamiltonian can be written in terms of  as
+
+HMCS
+
+=
+
+m2 2
+
+(-2~I) ~I + (-2~II) ~II
+
+I
+
+II
+
++
+
+1 2
+
+(-2~I) ~I
+I
+
++
+
+1 2
+
+(-2~II) ~II
+II
+
++
+
+1 2
+
+0M 0
+
++m ~~ + ~~
+
+(51)
+
+I
+
+II
+
+Notice that the first line of the right hand side involving only -dependent terms can be combined into the full space integral again. (If we retained 0, there would be an additional
+
+14
+
+term 0M 0, which would be just what is needed to combine the terms into the full space integral.) Thus
+
+HMCS
+
+=
+
+1 2
+
+(-2~I) ~I
+I
+
++
+
+1 2
+
+(-2~II) ~II
+II
+
++
+
+1 2
+
+0M 0
+
++m ~~ + ~~ + H,B
+
+I
+
+II
+
+H,B
+
+=
+
+1 2
+
+()2 + (-2)2 + m2()2
+
+(52)
+
+Notice that H,B corresponds to a massive scalar field. This part of the theory will contribute to the EE as a massive scalar field.
+
+The volume element for the phase space can be obtained from (47) as
+
+dµsplit = [d~d~]I [d~d~]II [d0 d0] det(-2)I det(-2)II det M
+
+(53)
+
+The constraint corresponding to the Gauss law can be identified from (47) and reads
+
+f~I(-2~I) + f~II(-2~II) + f0 M 0  0
+
+(54)
+
+I
+
+II
+
+Thus, if we want to factor out  on the full space including the interface, the constraints are
+
+given by
+
+C = [-2~I] [-2~II] [M 0] × [-2~I] [-2~II] [M 0]
+
+(55)
+
+The first set of terms on the right hand side correspond to the Gauss law while the second set gives the Coulomb gauge-fixing conditions. The Poisson bracket of the two constraints is again -2 which may be split up using the BFK formula (34). It is then easy to see that the theory on the full space reduces to the -B sector, i.e., the theory of a massive scalar field.
+
+However, as discussed before, in integrating over the region II, the modes 0 and 0 become physical degrees of freedom. We integrate only over ~II and ~II without imposing the constraints which eliminate the edge degrees of freedom. Following the same procedure as in the Maxwell
+case, we find that we get an extra factor of det M which can be essentially interpreted as the
+contact term. Thus the EE contributed by the gauge fields is
+
+SE = SE(m) + Tr log(MI + MII)
+
+(56)
+
+SE (m)
+
+is
+
+identical
+
+to
+
+the
+
+EE
+
+of
+
+a
+
+massive
+
+scalar
+
+field
+
+with
+
+mass
+
+m
+
+=
+
+ke2 2
+
+.
+
+When
+
+the
+
+entangling
+
+surface is flat, i.e., a planar or straight line interface, one can explicitly evaluate this term to
+
+get
+
+A SE(m) = 12
+
+1 
+
+-
+
+ke2 2
+
+ 
+
++
+
+Ø()
+
+(57)
+
+which brings out the massive corrections to the pure Maxwell case studied earlier. Most
+
+notably, we see the presence of a cut-off independent finite term proportional to the mass-gap
+
+15
+
+that scales as the area of the entangling surface. Tr log(MI + MII) is again the contact term, which is formally identical to what is obtained for the (massless) Maxwell case.
+
+When the boundary between region I and II has nontrivial topology, such as a circle, there
+
+can be an additional contribution to the EE, depending on the procedure of integrating out
+
+fields in II. To see how this can arise, we first consider splitting the fields as in (29), but keep
+
+distinct values 0I, 0II on the two sides of the interface,
+
+
+
+(x)
+
+=
+
+~I(x) + ~II(x) +
+
+I 0I(y) n II 0II(y)
+
+· G(y, x)I n · G(y, x)II
+
+in I in II
+
+(58)
+
+with a similar result for the other fields. The terms in the canonical one-form relevant to the
+
+fields 0, 0 are
+
+A(0, 0) =
+
+EI
+
+0I
+
++
+
+m 2
+
+ 0I0I
+
++
+
+EI/II = 0I/II MI/II ±  0I/II
+
+EII
+
+0II
+
+-
+
+m 2
+
+ 0II0II
+
+(59)
+
+We can consider the symplectic reduction of this via the constraints 0I - 0II  0, EI - EII  0, which are the matching conditions at the interface. Clearly A reduces to the previous expression (47) in this case. The  0 and  0 terms all cancel out between the two regions. The phase volume also reduces correctly. From (59) we get
+
+dµ = [dEId0I] [dEIId0II] det MI det MII
+
+(60)
+
+The Poisson bracket of the constraints is
+
+{0I - 0II, EI - EII} = MI-1 + MI-I 1
+
+(61)
+
+so that the reduced volume is
+
+dµ [EI - EII] [0I - 0II] det MI-1 + MI-I 1 = [dEd0] det(MI + MII)
+EII ,0II
+
+(62)
+
+Thus for a planar interface, we do recover the previous result, with the contact term as Tr log(MI + MII) 5.
+
+In the case of an interface which is a circle (or has the topology of a circle), the condition
+
+0I - 0II  0 is too restrictive. Since 0 is an angular variable, it can shift by an integer multiple of 2 upon going around the circle, so that we only need
+
+0I - 0II  0 mod 2Z
+
+(63)
+
+One way to enforce this constraint is to add a term Hconstraint to the Hamiltonian,
+
+Hconstraint
+
+=
+
+ 2
+
+[1 - cos(0I - 0II)]
+
+(64)
+
+5Since we have dd as well in the measure, dE  dd = d0  dd, so we can drop the   part at this point.
+
+16
+
+with    eventually. The result for the EE will thus be of the form
+
+SMCS = SE(m) + Tr log(MI + MII) + SChiral(k)
+
+(65)
+
+where SChiral(k) refers to the contribution from integrating over EI, EII, 0I, 0II with the constraint [EI - EII] and the term (64). For the pure Chern-Simons case (without the Maxwell
+
+action), such a calculation has been done [15, 16, 17, 18]. The key result of that calcula-
+
+tion
+
+is
+
+that
+
+there
+
+is
+
+a
+
+topological
+
+contribution
+
+-
+
+1 2
+
+log k
+
+in
+
+SChiral(k)
+
+in
+
+addition
+
+to
+
+the
+
+usual
+
+regularization-dependent terms. The topological term arises purely from a set of "zero modes"
+
+in the expansion of 0 and we can show that the same result holds for the Maxwell-Chern-
+
+Simons theory as well. In other words,
+
+SC hiral,M C S (k)
+
+=
+
+-
+
+1 2
+
+log
+
+k
+
++
+
+·
+
+·
+
+·
+
+(66)
+
+where the ellipsis again refers to regularization-dependent terms. This result is shown in Appendix B.
+
+5 Yang-Mills Theory
+
+We will now turn to the issues in computing the EE for the nonabelian gauge theory in 2+1 dimensions. It is useful to start with considerations within a perturbative scheme. In this case, we can consider the phase space functional integral which is given in the Coulomb gauge by
+
+Z = [dE dA] (DiEi) ( · A) det(- · D) eiS
+
+(67)
+
+Similar to the situation with the Abelian theory, we can introduce the parametrization
+
+Aai = ia + ijj a,
+
+Eia = ia + ijj a
+
+(68)
+
+This is not the parametrization best-suited to the nonabelian theory, nevertheless we can, in principle, consider this as a starting point for perturbation theory. A mode decomposition for fields in regions I and II can be done in a way analogous to (10) and (12). The action will contain terms which mix the boundary fields and the bulk fields, and the integration over various fields will have to be done in a perturbative expansion. The determinants involved in the factorization of the phase volume, i.e., the extension of formula (34), will also have to be obtained via a similar expansion. To the lowest order, the results will coincide with the Maxwell theory except for a multiplicative factor of dimG (= N 2 - 1 for SU (N )), since we have dim G fields rather than one.
+This approach is clearly unsatisfactory since we do not see any nonperturbative effects in the entropy. Some nonpertrubative effects, such as the mass gap, can be included using the KKN approach to gluodynamics [12]. Again, we do not expect an exact calculation, but there is a qualified free limit of the theory which corresponds to the inclusion of the nonperturbative
+
+17
+
+mass gap but otherwise ignores the interactions. So what we need is a formulation where we can use the mass term and expand around this free limit to get further corrections. We shall refer to [12] for the relevant technical details, capturing only what is relevant for the computation of EE below.
+As usual, we start with the choice of A0 = 0. The nonabelian analog of the fields , , for SU (N ) gauge symmetry, are SL(N, C)-valued complex matrices M and M  which parametrize the gauge fields as
+
+A
+
+=
+
+1 2
+
+(A1
+
++
+
+iA2)
+
+=
+
+-M M -1,
+
+A¯
+
+=
+
+1 2
+
+(A1
+
+- iA2)
+
+=
+
+M -1¯M 
+
+(69)
+
+Under gauge transformations, M  g M . The hermitian matrix H = M M , which is in SL(N, C)/SU (N ), provides a coordinatization of the space of gauge-invariant configurations C and can be regarded as the basic gauge-invariant observable (the nonabelian analog of ). The measure on the configuration space is given by [12]
+
+dµC = dµ[H ] e2 cA SW ZW [H]
+
+(70)
+
+where dµ[H] is the Haar measure on the space of hermitian matrices H and
+
+SW ZW [H]
+
+=
+
+1 2
+
+Tr( H ¯H -1 )
+
++
+
+i 12
+
+ Tr(H-1HH-1HH-1H)
+
+(71)
+
+is the Wess-Zumino-Witten (WZW) action for the field H. Also cA in (70) is the adjoint
+
+Casimir of the group, equal to N for SU (N ). As shown in [12], the SW ZW factor arises from the Jacobian for change of variables from A, A¯ to H. The Yang-Mills Hamiltonian can be
+
+rewritten in terms of the gauge invariant variable H, or more conveniently in terms of the
+
+currrent
+
+J
+
+=
+
+cA 
+
+
+
+H
+
+H
+
+-1,
+
+as
+
+H
+
+=
+
+e2cA 2
+
+J
+
+a
+
+ J
+
+a
+
++
+
+ab(x,
+
+y)
+
+J
+
+ a (x)
+
+J
+
+ b(y)
+
++
+
+22 e2c2A
+
+(¯J a¯J a)
+
+(72)
+
+where
+
+ab(x, y) = [DxG¯(y, x)]ab,
+
+Dx
+
+=
+
+cA 
+
+xab
+
++
+
+if abcJ c(x)
+
+(73)
+
+The Hamiltonian involves the covariant Green's function G¯ and hence needs to be defined with
+
+appropriate regulators in place. We refer to the original papers [12] for these and other technical
+
+issues. For our purposes, it is important to highlight that the first term in the Hamiltonian
+
+acts as a mass term when acting on functionals of J. It is this term that renders the theory
+
+massive and its coefficient m = (e2cA/2) is the basic mass gap of the nonabelian theory.
+
+Furthermore, (72) is self-adjoint only with respect to the measure (70) and the coefficient of
+
+the WZW action is fixed by the requirement of self-adjointness.
+
+While (72) is not known to be exactly solvable, one can compute the ground state wave functional in a strong coupling expansion. This has been carried out in a series of papers,
+
+18
+
+and the resulting string tension compares remarkably well with lattice results [21, 22]. To the leading order in this expansion, the wave functional is
+
+ = exp
+
+-
+
+22 e2c2A
+
+¯J
+
+1
+
+¯J + O(J3)
+
+m + m2 - 2
+
+(74)
+
+Focusing on just the quadratic part of the wave functional, we can rewrite it in more famil-
+
+iar terms. One can parametrize H as H = e and absorb the exponential factor involving
+
+SW ZW [H] in (70) in a redefinition of the wave function. After expanding to quadratic order
+
+in
+
+a
+
+and
+
+redefining
+
+a
+
+=
+
+1 -2
+
+a
+
+,
+
+we
+
+get
+
+ = exp
+
+-
+
+1 2
+
+a m2 - 2a + · · ·
+
+(75)
+
+The wave function (74) is square integrable with the integration measure for H given by (70), while the wave function (75) is square-integrable with just the Haar measure dµ[H]. The same manipulations allow us to rewrite the Hamiltonian in terms of its action on (75) as
+
+H
+
+=
+
+-
+
+1 2
+
+2 aa
+
++
+
+1 2
+
+a(-2 + m2)a + · · ·
+
+(76)
+
+The ellipsis refer to cubic and higher order terms in . Ignoring the higher order terms, it is clear that (75) is the wave functional for (76) . This quadratic theory is the non-standard free limit of the nonabelian theory we alluded to earlier. In this approximation, the gauge theory decouples into dim G copies of a massive scalar theory.
+Having reduced the problem to that of dimG copies of a massive scalar, we can borrow from (8) and write the EE for this theory (in the nonstandard free limit mentioned above) as
+
+A
+
+SE
+
+=
+
+dimG
+
+ 12 
+
+1
+
+-
+
+e2cA
+
+ 
+
++
+
+O()
+
+ 2
+
+(77)
+
+A couple of comments are in order at this point.
+
+1. The first term in (77) corresponds to the EE for dim G copies of the Maxwell theory, see the first term of the expression for SE in (40).
+
+2. Apart from the divergent 1/ term, we see that the three-dimensional entropy also con-
+
+tains a finite negative term -dimG (A m/12) that is proportional to the mass gap. This
+
+is reminiscent of the topological contribution to the entropy in Chern-Simons theories
+
+but, unlike the topological term, this contribution scales as the area. This result shows
+
+a direct link between the finite part of EE and the volume measure on the gauge the-
+
+ory configurations which - in turn - is deeply connected to IR properties of the theory.
+
+Specifically, m is renormalized in the presence of an explicit or induced Chern-Simons
+
+term by a finite amount [23],
+
+m  m + e2k 4
+
+19
+
+where k is the Chern-Simons level number. In theories with extended supersymmetry, the induced level number exactly cancels m and the mass gap is renormalized to zero [24]. (This is required by supersymmetry.) The finite term in (77) will thus be absent in such theories which are also known to be non-confining. This observation suggests a putative link between the finite terms in the EE and IR properties of gauge theories.
+
+As in the Abelian case, focusing on the gauge-invariant variable a, we get only the part
+of EE, the nonabelian version of the EE due to scalar fields, without the contact term. The
+wave function describes the vacuum properties of the scalar field part, so this contribution may
+be referred to as the contribution due to the wave function. The latter term was due to the
+measure factor from gauge-fixing. To see such an effect for the nonabelian theory, we must
+recast the formalism given here in the language of gauge fixing. As shown in [21], this can be done. Notice that we can write A = M -1(-HH-1)M  + M -1M , A¯ = M -1¯M , so that we may view the fields as a complex gauge transformation by M  of the configuration (A, A¯) = (-HH-1, 0). The Gauss law condition on the wave functions can then be used to eliminate E which is conjugate to A¯ in favor of E¯ in the expression for the Hamiltonian. This
+will involve some singular expressions which have to be evaluated with regularization and this
+leads to the mass term [21]. As far as the wave function is concerned, the physical variables one needs to take care of are E¯ and A. The canonical one-form for the theory is given by
+
+A = EiaAai = -4 Tr(E¯ A + E A¯)
+
+(78)
+
+where E = (-ita)(E1a + iE2a)/2, E¯ = (-ita)(E1a - iE2a)/2. The generator of gauge transformations (or the Gauss law operator) is
+
+Ga = 2(D¯ E + DE¯)a
+
+(79)
+
+We want to express A in terms of E¯, A, G and a conjugate constraint which gives the required
+
+gauge choice, say,   0. The gauge of interest can be viewed as M  = 1, but this is highly
+
+nonlocal in terms of the original fields. What we need is a choice for which the commutator [G(x), (y)] is local, so that there is no additional source of entanglement.  = A¯ is possible, but here the commutator is D¯ (x - y) and it is not clear how we can split the chiral operator D¯ into contributions from two regions. So we choose  = DA¯. The canonical one-form can
+
+then be written as
+
+A = -4 Tr E¯ A + G(x) (-DD¯ )-x,1y (y)
+
+(80)
+
+The phase volume then takes the form
+
+dµ = det[(-DD¯ )-1] [dE¯dA] [dGd]
+
+(81)
+
+or equivalently,
+
+det[(-DD¯ )] dµ = [dE¯dA] [dGd]
+
+(82)
+
+20
+
+The integral over G,  will have to be eliminated in the functional integral via suitable integration. This could be over a -function, or over a contour enclosing  = 0 after a deformation of the -contour into the complex plane suitably. In any case, we see that we get a factor det(-DD¯ )I in region I, det(-DD¯ )II in region II, and a similar term for the full space. Therefore, following the analysis for the Abelian case, we expect that the appropriate version of the contact term is given by
+
+Scontact = log
+
+det(-DD¯ )III det(-DD¯ )I det(-DD¯ )II
+
+(83)
+
+This result depends on the fields, and so, in the expression for the entropy, this will contribute with an averaging over the physical fields, i.e., the integration over H has to be carried out. We already have the mass term in this formulation, so we can consider the expansion of (83) around the qualified free limit mentioned earlier. The lowest order contribution from (83) is then the same as the result for (dimG copies of) the Abelian theory.
+
+6 The cone partition function and the contact term
+
+In this final section we connect our formulation of the contact term with the conventional results derived from the replica method. The ground state wave functional at a fixed time, say at t = 0, can be obtained as the functional integral of e-S , where S is the Euclidean action, over all fields for all t < 0 with specified fixed values at t = 0. For the Maxwell field, we can use the BRST gauge-fixed Euclidean action
+
+S
+
+=
+
+1 4
+
+Fµ F µ + Sgf
+
+Sgf = Q
+
+c¯
+
+
+
+·
+
+A
+
+-
+
+i
+
+N 2
+
+=
+
+iN
+
+
+
+·
+
+A
+
++
+
+N2 2
+
++
+
+c¯(-
+
+)c
+
+(84)
+
+Here c, c¯ are the ghost fields, N is the Nakanishi-Lautrup field. The wave function may thus
+
+be written as
+
+[A~µ] = D[A, c, c¯] (Aµ(xi, t = 0) - A~µ(xi)) e-S
+
+(85)
+
+If we apply the replica trick directly to this expression (85), the EE would still be given by (4), but W would now be given by [7]
+
+W
+
+=
+
+1 2
+
+tr
+
+ln(gµ
+
+(-
+
+) - Rµ ) - tr ln(-
+
+)
+
+(86)
+
+The first term is the gauge field contribution, while the second term arises from the ghost fields. The functional determinants above are to be evaluated on the cone and the curvature term Rµ represents a delta function contribution from the tip of the cone. Using the same techniques used in [7], one can obtain the following expression for the EE as derived from (86),
+
+SEcone = (d - 2)SE (m = 0) + SEcontact
+
+(87)
+
+21
+
+The last term in this equation, the so-called contact term, is given by
+
+SEcontact
+
+=
+
+A - 2
+
+1 
+
++
+
+O()
+
+(88)
+
+The expression for EE in (87) deviates from the expression obtained from the massless limit of
+
+(7) due to the contact term contribution. To better understand this additional contribution it
+
+is useful to deconstruct the evaluation of (86), which is expressed in terms of the vector heat
+
+kernel
+
+KV (s, x, y)µ = e-nsAnµ(x)An (y)
+
+(89)
+
+n
+
+Denoting the Lorentz indices along the cone (whose tip lies at the entangling surface) by a, b,
+
+the vector fields along those directions satisfy
+
+(-gab2 + Rab)Abn = nAna
+
+(90)
+
+These modes can be constructed from eigenfunctions of the scalar Laplacian n. Specifically, the longitudinal and transverse components of Aa are given by
+
+1 n
+
+an,
+
+1 n
+
+abbn
+
+(91)
+
+respectively [7]. The direction transverse to the cone has no curvature contributions and the gauge field along that direction simply contributes one scalar degree of freedom to the partition function. After tracing over the a, b indices, the heat kernel along the cone becomes [7, 8]
+
+KV (s, x, x) =
+
+n
+
+e-ns
+
+1 n
+
+2
+
+(anan)
+
+=
+
+2K (s,
+
+x,
+
+x)
+
++
+
+
+ds2K(s, x, x)
+s
+
+(92)
+
+In the second expression, we have carried out an integration by parts (and K(s) denotes the scalar heat kernel as before). The additional underlined term generates the contact contribution (88). Adding the scalar contribution from the direction transverse to the cone and those of the ghost fields, the above expression reproduces Kabat's result [7] given in (87). We are now in a position to argue how the above contact term obtained from the conical partition function has the same physical origin as the one discussed earlier (40). In our construction the contact term arose from unintegrated edge modes confined to the entangling surface. These are precisely the modes that the boundary term above captures which justifies our previous identification of det(MI + MII) as the contact term.
+
+We thank Daniel Kabat for many useful comments and discussions. This research was supported in part by the U.S. National Science Foundation grants PHY-1417562, PHY-1519449 and by PSC-CUNY awards.
+
+22
+
+Appendix A: Eliminating 0 for the Maxwell-Chern-Simons theory
+
+Consider the MCS theory defined in a region, say I, with boundary. The canonical one-form is given by
+
+A=
+
+EiAi
+
+-
+
+m 2
+
+ij
+
+AiAj
+
+=
+
+i~i~ + i~ i~ + Abndry + 
+
+m 2
+
+i
+
+i
+
+(93)
+
+Abndry =
+
+E
+
++
+
+m 2
+
+
+
+0
+
+0 +
+
+Q
+
+-
+
+m 2
+
+
+
+0
+
+0
+
+(94)
+
+where E and Q are, as in the Maxwell theory, given by E(x) = 0(y) M (y, x) +  0(x), Q(x) = 0(y) M (y, x)- 0(x). Because of (16) from the text, these still obey the constraint
+
+C = x E(y) M -1(y, x) + Q(x)  0
+
+(95)
+
+y
+
+The symplectic structure for the boundary fields is given by the boundary part of A as
+
+bndry =
+
+E
+
+0
+
++
+
+m 2
+
+
+
+0
+
+0
+
++
+
+Q
+
+0
+
+-
+
+m 2
+
+
+
+0
+
+0
+
+(96)
+
+Using this, the Hamiltonian vector fields for the boundary fields are given by
+
+V0
+
+
+
+-
+
+ E (x)
+
+,
+
+V0
+
+
+
+-
+
+ Q(x)
+
+VE
+
+
+
+ 0(x)
+
++
+
+m
+
+ x
+
+ E (x)
+
+VQ
+
+
+
+ 0(x)
+
++
+
+m
+
+ x
+
+ Q(x)
+
+(97)
+
+with the Poisson brackets given by {F, G} = -VF G. It is then easy to verify that {C(x), C(y)} = 0, so that they remain first class even with the Chern-Simons term added
+
+to the action. We can choose the conjugate constraint 0  0 as before and eliminate it. The canonical one-form thus reduces to
+
+Abndry =
+
+0(y)M (y,
+
+x)
+
++
+
+
+
+0(x)
+
++
+
+m 2
+
+
+
+0(x)
+
+0(x)
+
+(98)
+
+This is what is used in text, see (47), (48).
+
+Appendix B: The topological contribution for the MaxwellChern-Simons theory
+The topological contribution in the case of pure Chern-Simons theory has been computed using numerous techniques in the literature [15, 16, 17, 18]. We start with a brief outline of
+23
+
+the computation of the (topological) contribution to EE using the methods used in [15] which are closest in spirit to the Hamiltonian techniques employed in this paper.
+First of all, we make an observation which establishes a point of contact with the papers cited which use the Chern-Simons theory with a chiral field on the boundary. The ChernSimons term is not invariant under gauge transformations which do not vanish on the boundary. One can add a chiral field action on the boundary to make a gauge-invariant action SMCS = S1 + Sch, with
+
+S1 =
+
+d3x
+
+1 2
+
+(E
+
+2
+
+-
+
+B2)
+
++
+
+m 2
+
+µAµ
+
+A
+
+Sch
+
+=
+
+ke2 4
+
+dt
+
+0 (  + A ) -  A  + A0 A
+
+(99)
+
+This is invariant under the gauge transformation Ai  Ai + if (or    + f ),    - f , so that we may trade the field  for 0 by choosing a gauge where  is set to zero and retaining 0. The resulting contribution to A is of the form  0I0I -  0II0II which is what occurs in (59). So we can use techniques similar to those for the chiral field in [15].
+
+We consider the interface to be a circle of radius R, coordinatized by  , 0    l with l = 2R. Since  is angle-valued field on the circle, it is a map  : S1  S1. Thus, in a general mode expansion for , there is a part which is completely periodic and a part which gives a shift under    + l. Since we have a U (1) gauge symmetry, it is sufficient for ei to be periodic, so we can identify  and  + 2Z, which shows that there can be a nonzero shift 2Z. The latter may be viewed as  , or better as a nontrivial holonomy around the circle which can be accommodated by a constant gauge connection c.
+
+For the pure Chern-Simons action, we can drop the E-dependent terms in (59), (99). The
+
+canonical one-form for the Chern-Simons action (or the corresponding part from the chiral
+
+action (99)), is then
+
+A
+
+=
+
+k 4
+
+(  + 2 c) 
+
+(100)
+
+We have added the constant flat connection c to accommodate the nonperiodicity of . (We have also absorbed e2 into , c. The new  in (100) is periodic, ( + l) = ( ). The factor of 2 for c-term is convenient for the following reason. The phase space function which leads to the shift    +  via the Poisson brackets defined by   is 2 . With the factor of 2 for c, this function becomes   + c, which is a covariant derivative of  with connection c.)
+
+The relevant terms in the action for the computation of the entanglement entropy are then given by
+
+Sch
+
+=
+
+1 4
+
+H
+
+=
+
+v 4
+
+0XI XI - 0XII XII + 2 CI0XI - 2 CII0XII - dt H
+
+(101)
+
+( XI + CI)2 + ( XII + CII)2
+
++
+
+ 2
+
+1 - cos 1 (XI - XII) k
+
+24
+
+where
+
+we
+
+have
+
+written
+
+XI
+
+=
+
+ k 0I,
+
+CI
+
+ = k cI,
+
+etc.
+
+We
+
+have
+
+introduced
+
+the
+
+constraint
+
+term
+
+(64) in the Hamiltonian and also added an extra term for regularization. The parameter v can
+
+be regarded as a UV regulator which can eventually be set to zero.    forces the fields to
+
+be identified on the entangling surface while preserving the periodicity constraints.
+
+The chiral fields can be expanded in terms of their momentum modes as
+
+XI = X0I +
+n<0
+
+1 |n|
+
+ne2in
+
+/l
+
++
+
+1 |n|
+
+ne-2in
+
+/l
+
+XII = X0II +
+
+1n ne2in /l + 1n ne-2in /l
+
+n>0
+
+CI
+
+=
+
+2N l
+
+I
+
+,
+
+C II
+
+=
+
+2N II l
+
+(102)
+
+It is easy to verify from the action (101) that the "zero-mode operators" X0 and N are canonical conjugates, i.e., [X0I, N I] = i, [X0II, N II] = -i, as are the oscillator modes [n, m] = nm. In
+terms of the original -variable, we have the identification of  with +2Z. With the redefined
+
+th, itshmiseiamnpslitehsatthNatI/tIhI earheoolofntohme yform(k+Zc.)
+
+= c= Further,
+
+2Z. With the rescaling we have done, for practical purposes, one expands the
+
+cosine above to quadratic order in (XI - XII). The resultant Hamiltonian for the chiral modes
+
+can be expressed as the sum of a zero-mode Hamiltonian
+
+H0
+
+=
+
+v 2l
+
+(N I + N II)2 + l2 ~(X0I - X0II)2
+
+(103)
+
+and an oscillator Hamiltonian
+
+H
+
+=
+
+v 2l
+
+4|n|nn
+
++
+
+2|n|
+
++
+
+l2~ |n|
+
+(nn
+
+-
+
+n-n
+
++
+
+nn
+
+-
+
+n-n)
+
+n=0
+
+(104)
+
+where ~ = /(22kv). Further in deriving (103), (104) we imposed the condition (N I -
+
+N II) |0 = 0 on the ground state. The zero-mode part has the form of a harmonic oscillator
+
+and leads to a ground state wave function of the form
+
+| = exp
+n
+
+-
+
+(2nk)2 4l~
+
+|NI  |NII
+
+(105)
+
+ where we use n k = NI = NII. For the density matrix, the trace over the |NII states yields
+
+a reduced matrix
+
+ = exp
+n
+
+-
+
+2
+
+(2nk)2 4l~
+
+|NI NI|
+
+(106)
+
+The exponent can be taken as the modular Hamiltonian for this case, and gives the partition
+
+function
+
+1
+
+Zzero =
+
+exp
+n
+
+- 2l (n/l)2k ~
+
+
+
+l ~ 4
+
+2
+
+2 k
+
+(107)
+
+25
+
+where we display the large l behavior as the second approximate equality.
+
+H can be diagonalized by a suitable Bogoliubov transformation. The resulting density matrix leads to the partition function
+
+1
+
+Zosc =
+n>1
+
+1 1 - e-4n/l ~
+
+
+
+4 l ~
+
+2
+exp
+
+2l ~ 24
+
+(108)
+
+The regularization-dependent prefactors cancel out in the product giving the total partition
+
+function as
+
+Z  2 exp 2l ~
+
+k
+
+24
+
+(109)
+
+This
+
+leads
+
+to
+
+the
+
+-
+
+1 2
+
+log
+
+k
+
+in
+
+the
+
+entropy;
+
+this
+
+is
+
+the
+
+only
+
+k-dependence
+
+in
+
+EE
+
+and
+
+is
+
+not
+
+dependent on the area of the entangling surface or the regularization. Notice that this k-
+
+dependence is from the contribution of the zero modes. The nonzero modes cancel some of the
+
+regularization-dependent terms. The partition function (109) leads to the entropy from the
+
+chiral boundary modes as [15]
+
+SChiral(k)
+
+=
+
+2 12
+
+A 2
+
+~
+
+-
+
+1 2
+
+log
+
+k
+
++
+
+·
+
+·
+
+·
+
+(110)
+
+where the ellipsis represent terms that are subleading in 1/l. The first term is the cutoff
+
+dependent "area" term, with A = 2l, in which we see that the large , l and small v limits
+
+consistently reinforce each other. This term has the same structure as the leading divergent piece of the gauge field EE. The second term is the topological entropy.6
+
+To apply this to the case of the Maxwell-Chern-Simons theory, we start with the Green's function with Dirichlet boundary conditions for the Laplacian on a disc. This is given by
+
+G(r,  ; r,  )
+
+=
+
+1 4
+
+log
+
+R2(r2 + r2 - 2rr cos( - )) R4 + r2r2 - 2R2rr cos( - )
+
+(111)
+
+where  = 2 /l. From this, we obtain
+
+M (, )
+
+=
+
+1 R2
+
+-
+
+2(1
+
+-
+
+1 cos(
+
+-
+
+
+
+)
+
+=
+
+1 R2
+
+
+
+n
+
+un() un() + vn() vn()
+
+n=1
+
+un() = 1 cos(n), vn() = 1 sin(n)
+
+(112)
+
+un, vn are orthonormal mode functions (with integration over  rather than  ). Thus, apart from the R-2 factor which can be absorbed into integration variables,
+
+M -1 =
+
+
+
+1 n
+
+un() un() + vn() vn()
+
+n=1
+
+(113)
+
+6This result can also be obtained using conformal field theory techniques [17] or by applying the replica trick to the Chern-Simons path integral [18].
+
+26
+
+It is easy to verify that M -1 = M as in (16). Consider now the canonical one-form for the MCS theory given in (59), with the addition of the flat connection c; i.e.,
+
+A(0, 0) =
+
+EI 0I + e2
+
+k 4
+
+ 0I0I
+
++
+
+k 2
+
+cI
+
+0I
+
++
+
+EII 0II - e2
+
+k 4
+
+ 0II0II
+
++
+
+k 2
+
+cII0II
+
+(114)
+
+with EI/II = 0I/II MI/II ±  0I/II With the mode expansion (102), we can verify that the terms [0()M (, ) ±  0()]0() do not have a contribution from X0I/II. The "zero mode" fields X0I/II, N I/II are decoupled from the nonzero modes in the expression for A. For the nonzero modes, we have the straightforward identification of XI with XII. Therefore, the
+cancellations for the terms involving  0,    between I and II as mentioned in text (see
+(48)) apply and we can simplify A to
+
+A = 0IMI 0I + 0IIMII 0II + N IdX0I - N IIdX0II
+
+(115)
+
+The analysis of the zero mode part proceeds as in the Chern-Simons case, and we obtain the same topological contribution to the entropy. With the constraints 0I -0II  0, 0I -0II  0, we recover the arguments given in text in section 4, leading to the contact term as in (56).
+
+References
+[1] L. Bombelli, R. K. Koul, J. Lee and R. D. Sorkin, Phys. Rev. D 34, 373 (1986), doi:10.1103/PhysRevD.34.373; M. Srednicki, Phys. Rev. Lett. 71, 666 (1993), doi:10.1103/PhysRevLett.71.666 [hep-th/9303048].
+[2] P.V. Buividovic and M.I. Polikarpov, Phys. Lett. B670, 141 (2008) [arXiv:0806.3376[hepth]]; W. Donnelly, Phys. Rev. D 85, 085004 (2012), doi:10.1103/PhysRevD.85.085004 [arXiv:1109.0036 [hep-th]]; H. Casini, M. Huerta and J. A. Rosabal, Phys. Rev. D 89, no. 8, 085012 (2014), doi:10.1103/PhysRevD.89.085012 [arXiv:1312.1183 [hep-th]]; R. M. Soni and S. P. Trivedi, arXiv:1608.00353 [hep-th].
+[3] H. Casini and M. Huerta, Phys. Rev. D 90, no. 10, 105013 (2014), doi:10.1103/PhysRevD.90.105013 [arXiv:1406.2991 [hep-th]].
+[4] C. G. Callan, Jr. and F. Wilczek, Phys. Lett. B 333, 55 (1994), doi:10.1016/03702693(94)91007-3 [hep-th/9401072]; M. P. Hertzberg and F. Wilczek, Phys. Rev. Lett. 106, 050404 (2011), doi:10.1103/PhysRevLett.106.050404 [arXiv:1007.0993 [hep-th]].
+[5] S. N. Solodukhin, "Entanglement entropy of black holes," Living Rev. Rel. 14, 8 (2011), [arXiv:1104.3712 [hep-th]]; H. Casini and M. Huerta, J. Phys. A 42, 504007 (2009) [arXiv:0905.2562 [hep-th]]; P. Calabrese and J. Cardy, J. Phys. A 42,
+27
+
+504005 (2009), doi:10.1088/1751-8113/42/50/504005 [arXiv:0905.4013 [cond-mat.statmech]]; K. W. Huang, Phys. Rev. D 92, 025010 (2015), doi:10.1103/PhysRevD.92.025010 [arXiv:1412.2730 [hep-th]].
+[6] C. A. Agon, M. Headrick, D. L. Jafferis and S. Kasko, Phys. Rev. D 89, 025018 (2014), doi:10.1103/PhysRevD.89.025018 [arXiv:1310.4886 [hep-th]]; H. J. Schnitzer, arXiv:1611.03116 [hep-th].
+[7] D. N. Kabat, Nucl. Phys. B 453, 281 (1995), doi:10.1016/0550-3213(95)00443-V [hep-th/9503016].
+[8] W. Donnelly and A. C. Wall, Phys. Rev. Lett. 114, no. 11, 111603 (2015), doi:10.1103/PhysRevLett.114.111603 [arXiv:1412.1895 [hep-th]]; W. Donnelly and A. C. Wall, arXiv:1506.05792 [hep-th].
+[9] H. Casini and M. Huerta, Phys. Rev. D 93, no. 10, 105031 (2016), doi:10.1103/PhysRevD.93.105031 [arXiv:1512.06182 [hep-th]].
+[10] D. Burghelea, L. Friedlander and T. Kappeler, J. of Funct. Anal. 107, 34 (1992).
+[11] D. Kabat, D. Karabali and V. P. Nair, Phys. Rev. D 81, 125013 (2010); [Phys. Rev. D 84, 129901 (2011)] [arXiv:1002.3575 [hep-th]].
+[12] D. Karabali and V. P. Nair, Nucl. Phys. B 464, 135 (1996) [hep-th/9510157]; D. Karabali and V. P. Nair, Phys. Lett. B 379, 141 (1996) [hep-th/9602155]; D. Karabali, C. J. Kim and V. P. Nair, Nucl. Phys. B 524, 661 (1998) [hep-th/9705087].
+[13] A. P. Balachandran, L. Chandar, E. Ercolessi, T. R. Govindarajan and R. Shankar, Int. J. Mod. Phys. A 9, 3417 (1994). doi:10.1142/S0217751X94001357, arXiv:cond-mat/9309051; A. P. Balachandran, L. Chandar and A. Momen, Int. J. Mod. Phys. A 12, 625 (1997), doi:10.1142/S0217751X97000578 [hep-th/9512047]; M. Asorey, A. P. Balachandran and J. M. Perez-Pardo, Rev. Math. Phys. 28, no. 09, 1650020 (2016), doi:10.1142/S0129055X16500203 [arXiv:1505.03461 [math-ph]].
+[14] W. Donnelly and L. Freidel, JHEP 1609, 102 (2016) doi:10.1007/JHEP09(2016)102 [arXiv:1601.04744 [hep-th]]
+[15] J. Cano, T. L. Hughes and M. Mulligan, Phys. Rev. B 92, no. 7, 075104 (2015) doi:10.1103/PhysRevB.92.075104 [arXiv:1411.5369 [cond-mat.str-el]]; S. Furukawa and Y. B. Kim, Phys. Rev. B 83, 085112 (2011); Erratum: [Phys. Rev. B 87, no. 11, 119901 (2013)], doi:10.1103/PhysRevB.87.119901, 10.1103/PhysRevB.83.085112 [arXiv:1009.3016 [cond-mat.str-el]]; R. Lundgren, Y. Fuji, S. Furukawa and M. Oshikawa, Phys. Rev. B 88, no. 24, 245137 (2013); Erratum: [Phys. Rev. B 92, no. 3, 039903 (2015)], doi:10.1103/PhysRevB.92.039903, 10.1103/PhysRevB.88.245137
+28
+
+[16] A. Kitaev and J. Preskill, Phys. Rev. Lett. 96, 110404 (2006), doi:10.1103/PhysRevLett.96.110404 [hep-th/0510092]; M. Levin and X. G. Wen, Phys. Rev. Lett. 96, 110405 (2006), doi:10.1103/PhysRevLett.96.110405
+[17] X. Wen, S. Matsuura and S. Ryu, Phys. Rev. B 93, no. 24, 245140 (2016), doi:10.1103/PhysRevB.93.245140 [arXiv:1603.08534 [cond-mat.mes-hall]].
+[18] S. Dong, E. Fradkin, R. G. Leigh and S. Nowling, JHEP 0805, 016 (2008), doi:10.1088/1126-6708/2008/05/016 [arXiv:0802.3231 [hep-th]].
+[19] G. Alexanian and V. P. Nair, Phys. Lett. B 352, 435 (1995), doi:10.1016/03702693(95)00475-Z [hep-ph/9504256].
+[20] V. P. Nair, Phys. Rev. D 85, 105019 (2012), doi:10.1103/PhysRevD.85.105019 [arXiv:1109.6376 [hep-th]].
+[21] D. Karabali, C. J. Kim and V. P. Nair, Phys. Lett. B 434, 103 (1998), doi:10.1016/S03702693(98)00751-5 [hep-th/9804132];
+[22] D. Karabali, V. P. Nair and A. Yelnikov, Nucl. Phys. B 824, 387 (2010), doi:10.1016/j.nuclphysb.2009.07.019 [arXiv:0906.0783 [hep-th]].
+[23] D. Karabali, C. J. Kim and V. P. Nair, Nucl. Phys. B 566, 331 (2000), doi:10.1016/S05503213(99)00701-4 [hep-th/9907078]; A. Agarwal and V. P. Nair, J. Phys. A 48, no. 46, 465401 (2015), doi:10.1088/1751-8113/48/46/465401 [arXiv:1504.07201 [hep-th]].
+[24] A. Agarwal and V. P. Nair, Phys. Rev. D 85, 085011 (2012), doi:10.1103/PhysRevD.85.085011 [arXiv:1201.6609 [hep-th]].
+29
+
+

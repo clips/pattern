@@ -1,0 +1,259 @@
+Technical Report: Optimal Surveillance of Dynamic Parades using Teams of Aerial Robots
+Kostas Alexis
+
+arXiv:1701.00019v1 [cs.RO] 30 Dec 2016
+
+Abstract-- This technical report addresses the problem of optimal surveillance of the route followed by a dynamic parade using a team of aerial robots. The dynamic parade is considered to take place within an urban environment, it is discretized and at every iteration, the algorithm computes the best possible placing of the aerial robotic team members, subject to their camera model and the occlusions arising from the environment. As the parade route is only as well covered as its least­covered point, the optimization objective is to place the aerial robots such that they maximize the minimum coverage over the points in the route at every time instant of it. A set of simulation studies is used to demonstrate the operation and performance characteristics of the approach, while computational analysis is also provided and verifies the good scalability properties of the contributed algorithm regarding the size of the aerial robotics team.
+
+as its least­covered point, the optimization objective is to place the aerial robots of the team such that they maximize the minimum coverage over the points in the route at every time instant of it. Figure 1 presents the motivation behind the algorithmic contribution of our work.
+
+I. INTRODUCTION
+Aerial robotics have demonstrated their ability to provide rapid coverage of complex areas and environments by exploiting miniaturized sensing technology and their advanced locomotion capabilities. Nowadays, aerial robots of very limited cost present robust flight behavior [1, 2], and can be equipped with a multi­modal sensing suite that may contain visible light cameras [3­5], thermal imaging [6­9] or even Light Detection and Ranging (LiDAR) devices [10] and more. At the same time, progress in robotic perception has enabled the online, real­time, 3D reconstruction of the environment [11­13], tracking of areas and targets of interest [14] or even semantic scene understanding [15]. Finally, the sucessful combination of modern path planning strategies with the real­time localization and mapping capabilities of the robot has allowed aerial robots to navigate or even explore autonomously in possibly cluttered, challenging and previously unknown environments [16­23].
+Aiming to further leverage these outstanding achievements, this work deals with the challenge of using aerial robots to monitor dynamic social phenomena such as parades taking place in our cities. In particular, we aim to address the problem of optimally coordinating and positioning a team of aerial robots ­each of them equipped with a camera sensor­ such that they can provide optimal surveillance of a dynamically evolving parade route taking place within an urban environment. The parade route is able to change its spatial distribution and form dynamically, the aerial robots are subject ot the limitations of their sensing modules and the goal is to optimize the totally achieved coverage along the parade route. As the parade route is only as well covered
+1K. Alexis is with with the University of Nevada, Reno, 1664 N. Virginia Street, Reno, NV 89557, USA kalexis@unr.edu
+
+Fig. 1: Motivation figure of the optimal multi­aerial robot parade route surveillance algorithm: a team of aerial robots could be requested to provide coverage of a complex social event such as a parade in New York.
+To approach this problem, we contribute an algorithm that considers a team of aerial robots capable of flying holonomic trajectories and equipped with a camera sensor of limited field of view, assumes a dynamically evolving parade route within an urban environment consisting of buildings or other occlusion structures and aims to find the best possible "guarding" positions of the robot team such that optimal coverage is provided at every instance of the parade. As the parade route evolves, the robot team modifies its position to provide the best coverage at any time. As this problem is in general nonconvex and NP­hard, we contribute an algorithm that provides approximate solutions via convexification very fast. To demonstrate the capabilities of the algorithm we present a set of simulation studies, while the computational properties of the algorithm are also analyzed.
+The rest of this document is organized as follows: Section II overviews and details the specific problem considered, while Section III describes the proposed optimal multi­aerial robot dynamic parade route surveillance algorithm. Subsequently, Section IV presents detailed simulation results and computational analysis of the algorithm. Finally, conclusions
+
+are drawin Section V.
+II. PROBLEM DESCRIPTION
+A dynamic parade following the route trajectory r(t) is considered to take place in an urban 2D map, subsets of which are occupied by buildings­obstacles of rectangle shape. Given a set of S aerial robots capable of flying holonomic trajectories and a sensor model constrained by a field­of­view FOV, the problem is to find the set of aerial robot trajectories T(t) = [t1(t), t2(t), ..., tN (t)] that maximize the minimum coverage for every point of r(t). Due to its nature as a problem of finding dynamic guard positions to ensure coverage of a desired subset of the environment, this problem is expected to be NP­hard. The inclusion of visibility constraints and obstacles in the environment is then further complicating the effort to derive optimal solutions.
+III. PROPOSED ALGORITHM
+
+max t
+
+(1)
+
+s.t. t  A(k)xg(k), xg(k)  {0, 1}n, 1T xg(k) = S
+
+This problem is nonconvex and, in general, NP­hard due to the necessary boolean decision variable in its definition. This fact necessitates the derivation of methods and approaches that can approximate the optimal solutions efficiently, while presenting superior performance characteristics. This can be achieved via appropriate relaxations leading to the convexification of the problem [24, 25].
+
+C. Relaxation for Convexification
+In order to perform an efficient ­yet accurate­ convexification of the problem, we form the following convex relaxation:
+
+The specifics of the algorithmic approach to solve the problem of optimal dynamic parade route surveillance using a team of aerial robots are provided below.
+A. Representation of the Parade Route
+The dynamic parade is considered to follow the route r(t) and its dynamic evolution is sampled every Ts. The time­trajectory r(t) is considered to be constructed via the sequential, piecewise connection of linear segments, an approach that allows to easily model a parade that takes place within an urban environment. For every k­th sample of the route r(k), it is discretized into a set of m points {r1(k), r2(k), ..., rm(k)}.
+B. Optimization Objective
+For the parade route r(t), its discretized version r(k) per k­th iteration of the algorithm, and considering a team of S aerial robots, an equal amount of "guard positions" is desired to be computed to optimize the parade coverage. These guard positions may be selected from an arbitrary large set of possible guard locations n (fixed or varying per iteration). For these guard positions, the decision variable xg(k)  {0, 1}n is defined and becomes xg(k)i = 1 if and only if a robot is placed at the i­th location. Associated with each robot location i is a coverage vector i(k)  Rm, which describes how well an aerial robot placed at location i would cover each point in the current of the current instance r(k) of the parade route. Assuming additive coverage, the vector that describes the total coverage of every edge will be defined by A(k)xg(k), where A(k)  Rm×n has i(k) as its i­th column.
+Subsequently, as the parade route is only as secure as its least well­covered point, the optimization problem that deals with how to optimally position the aerial robots for the k­th sample of the route r(k) takes the form:
+
+max t
+
+(2)
+
+s.t. t  A(k)xg(k), 0  xg(k)  1, 1T xg(k) = S
+
+by constraining xg(k)  [0, 1]n. In general, the solution to this relaxed problem, xg will have fractional variables [25]. As a boolean allocation is considered in order to specifically
+assign a guard location to every robot, the iterated weighted 1 heuristic will be used to achieve the recovery of a Boolean
+solution [25].
+
+D. Application of the Iterated Weighted 1 Heuristic
+In order to recover a boolean solution, an approach is
+to solve a sequence of convex problems where the linear term -wT xg(k) is added to the objective, and then picking the weight vector w  Rn+ at each iteration to try and induce a sparse solution vector xg(k). Enhancing sparsity via reweighted 1 optimization is an extensively employed approach in convex optimization. Broadly, given a set v and denoting its cardinality as card(v), the iterated weighted 1 heuristic is the process of minimizing card(v) over v  V through the following process:
+
+1:  = 0 2: while running do 3: minimize ||diag()v||1 over v  V 4: i = 1/( + vi|)
+
+Naturally, this process is extended for the case of matrices, while the matrix rank operator rank(·) is then acting with the role of the cardinality operator. For the problem of finding solution to the relaxed, convex, problem of Section III-C, the iterated 1 heuristic consists of initializing w = 0 and repeating the two steps:
+
+Step 1:
+
+max t - wT xg(k)
+
+(3)
+
+s.t. t  A(k)xg(k),
+
+0  xg(k)  1,
+
+1T xg(k) = S
+
+Step 2:
+
+Let wi = /( + xig), i
+
+(4)
+
+Until a Boolean solution is reached. Within these expressions,  and  are adjusted to promote a sparse solution. Typical choices would be  = 1 and  = 10-4. Intuitively, the weight vector w is incentivizing elements of xg(k) which were close to zero in the last iteration towards zero in the next iteration. It is highlighted that the 1 heuristic is characterized by increased performance as it typically converges within 5 or fewer iterations.
+
+E. Iterative Algorithm Execution
+The aforementioned steps provide the solution of placing a team of aerial robots at the optimal guard positions to ensure the best coverage of a fixed instane of the parade route. As the parade is in fact dynamic, these steps are executed iteratively. At every step k ­sampled at a possibly varying sampling period Ts­ the current instance of the route r(k) is used and the relevant optimal robot positions are computed. The reference commands to the robots are then provided to the team on a nearest neighbor fashion.
+
+IV. SIMULATION STUDIES AND ANALYSIS
+To verify and evaluate the functionality of the algorithm, a set of simulation studies are considered. Within those, a 2D city is considered and parades are designed to follow complex trajectories within the city building blocks. At the same time, we varied the number of robots as well as the number of potential guard positions sampled in the environment. Below, a subset of these results will be presented and the computational analysis will be summarized.
+Figure 2 presents the case of a 6 aerial robots commanded to monitor a complicated parade route traveling within the a city environment consisting of 10 building blocks. The dynamic trajectory of the parade is discretized to k1, ..., k37 samples and a total of 512 possible guard positions are sampled within the obstacle­free subset of the workspace of the problem. Each robot is considered to be equipped with a camera with horizontal field of view F OV = 175deg. As shown, the algorithm dynamically adapts the positions of the robots to find feasible, full­coverage solutions at all times. Figure 6 presents the computation characteristics of the solution per step of iteration.
+Similarly, Figure 3 presents the results of the identical set­up with the exception of sampling 2048 possible guard locations. As shown the results of the robots positioning are very similar for almost all iterations which indicates that as long as a sufficient number of guard positions is sampled, then further enlargement of this sampling space will not tend
+
+Fig. 2: Simulation study for the case of 6 robots monitoring a dynamic parade route. The parade is considered to be taking place within a city­like environment consisting of 10 building blocks. Camera-occlusions are accounted for, while the field of view of the camera that equips every robot is considered to be 175deg. For this study 512 possible guard locations are sampled within the obstacle­free subset of the world.
+
+to lead to significantly better solutions. On the other hand, computational time increases a lot as shown in Figure 6, a fact that further highlights the need for a good prior tuning of the amount of guard positions to be sampled. As the sampling of possible guard positions is uniform however, tuning this value is in general only about having one good reference value for a given environment and then scaling with the surface of free space.
+Figure 4 presents the same case but now with 12 aerial robots. For this case, initially a total of 512 possible guard positions are sampled within the obstacle­free subset of the workspace of the problem. As shown, the solution is characterized with more close pressence of robots around the parade route. Figure 6 presents the computation characteristics of the solution per step of iteration.
+Similarly, Figure 5 presents the results of the identical set­ up with the exception of sampling 4096 possible guard locations. Again the results of the robots positioning are similar for almost all iterations, which further denotes that very large sets of possible guard locations are not providing significant solution­quality benefits. On the other hand, computational time increases a lot as shown in Figure 6.
+Figure 6 summarizes the computational properties of the algorithm for the above mentioned simulation cases. Furthermore, Figure 7 presents the computational analysis of a set of studies with 6, 12, 24 robots, while keeping the amount of potential sampled guard positions fixed to 1024. As shown, the computational cost is very similar for the different robot teams both in the sense of the average value as well as of the evolution of it. This indicates the good scalability properties of the algorithm for arbitrary large teams of aerial robots.
+In summary, it was shown that the algorithm is able to deal with complex parade routes taking place in urban­ like environments. Different sizes of robotic teams can be considered and the algorithm presents good computational scalability. Computation time is primarily affected by the size of the set of potential guard locations, which indicates that the size of the problem can influence the computation time. However, even in cases of very large potential guard location sets, the algorithm finds solutions within seconds - a performance considered to be sufficient given the large time scales of dynamic variations in social parades. At the current implementation of the algorithm, connection of subsequent optimal positions of the aerial robots team members relies on the nearest-neighbor concept as computed over collision­ free trajectories. Future work will incorportate a full optimal solution employing Multiple­Vehicle­Routing­Problem solvers such as the implementation in [26].
+
+V. CONCLUSIONS
+This technical report deals with the problem of positioning of a team of aerial robots such that they provide optimal coverage of a dynamically evolving parade taking place in an urban environment. The problem is solved iteratively over sampled representations of the parade route and it relies on convex approximates of the original noncovex problem. As the parade route is only as well covered as its least­covered
+
+Fig. 3: Simulation study for the case of 12 robots monitoring a dynamic parade route. The parade is considered to be taking place within a city­like environment consisting of 10 building blocks. Camera-occlusions are accounted for, while the field of view of the camera that equips every robot is considered to be 175deg. For this study 2048 possible guard locations are sampled within the obstacle­free subset of the world.
+
+Fig. 4: Simulation study for the case of 12 robots monitoring a dynamic parade route. The parade is considered to be taking place within a city­like environment consisting of 10 building blocks. Camera-occlusions are accounted for, while the field of view of the camera that equips every robot is considered to be 175deg. For this study 512 possible guard locations are sampled within the obstacle­free subset of the world.
+
+Fig. 5: Simulation study for the case of 12 robots monitoring a dynamic parade route. The parade is considered to be taking place within a city­like environment consisting of 10 building blocks. Camera-occlusions are accounted for, while the field of view of the camera that equips every robot is considered to be 175deg. For this study 4096 possible guard locations are sampled within the obstacle­free subset of the world.
+
+45
+
+S=6, n = 512
+
+S=6, n = 2048
+
+S=12, n = 512
+
+S=12, n = 4096
+
+40
+
+35
+
+30
+
+Time (s)
+
+25
+
+20
+
+15
+
+10
+
+5
+
+5
+
+10
+
+15
+
+20
+
+25
+
+30
+
+35
+
+Iteration
+
+Fig. 6: Analysis of the computational cost per iteration of the algorithm for the aforementioned four cases utilizing 6 or 12 robots and different sizes of potential guard positions sets. As illustrated, the factor that greatly impacts computational time is the size of the set of possible guard locations.
+
+S=6
+
+5.5
+
+S=12
+
+S=24
+
+5
+
+4.5
+
+4
+
+Time (s)
+
+3.5
+
+3
+
+2.5
+
+2
+
+1.5
+
+1
+
+5
+
+10
+
+15
+
+20
+
+25
+
+30
+
+35
+
+Iteration
+
+Fig. 7: Analysis of the computational cost per iteration of the
+
+algorithm
+
+for
+
+6 12 ,
+
+and
+
+24
+
+robots
+
+given
+
+that
+
+the
+
+set
+
+of
+
+potential
+
+guard positions is set to the fixed value of 1024. As shown the
+
+dynamics as well as the cost of the computation per iteration are
+
+similar regardless of the size of the team, a fact that highlights the
+
+scalability of the proposed approach.
+
+point, the optimization objective is to place the aerial robots such that they maximize the minimum coverage over the points in the route at every time instant of it. Simulation studies verify the functionality of the algorithm, present its capacity to handle large robot teams and complex parade routes, as well as its low computational cost.
+REFERENCES
+[1] K. Alexis, C. Papachristos, R. Siegwart, and A. Tzes, "Robust model predictive flight control of unmanned rotorcrafts," Journal of Intelligent & Robotic Systems, pp. 1­27, 2015.
+[2] ----, "Robust explicit model predictive flight control of unmanned rotorcrafts: Design and experimental evaluation," in Control Conference (ECC), 2014 European, June 2014, pp. 498­503.
+[3] M. Burri, J. Nikolic, C. Hurzeler, G. Caprari, and R. Siegwart, "Aerial service robots for visual inspection of thermal power plant boiler systems," in Applied Robotics for the Power Industry, 2012 2nd International Conference on, 2012.
+[4] J. Nikolic, J. Rehder, M. Burri, P. Gohl, S. Leutenegger, P. T. Furgale, and R. Y. Siegwart, "A Synchronized Visual-Inertial Sensor System with FPGA Pre-Processing for Accurate Real-Time SLAM," in IEEE International Conference on Robotics and Automation (ICRA), 2014.
+[5] C. Papachristos, K. Alexis, and A. Tzes, "Dual­authority thrust­vectoring of a tri­tiltrotor employing model predictive control," Journal of Intelligent & Robotic Systems, pp. 1­34, 2015. [Online]. Available: http://dx.doi.org/10.1007/s10846-015-0231-1
+
+[6] P. Oettershagen, T. Stastny, T. Mantel, A. Melzer, K. Rudin, G. Agamennoni, K. Alexis, and R. Siegwart, "Long-endurance sensing and mapping using a hand-launchable solar-powered uav," June 2015.
+[7] P. Oettershagen, A. Melzer, T. Mantel, K. Rudin, R. Lotz, D. Siebenmann, S. Leutenegger, K. Alexis and R. Siegwart, "A solar-powered hand-launchable uav for low-altitude multi-day continuous flight," in Robotics and Automation (ICRA), 2014 IEEE International Conference on. IEEE, May 2015, pp. 3986­3993.
+[8] Rudol, P. and Doherty, P., "Human body detection and geolocalization for uav search and rescue missions using color and thermal imagery," in Aerospace Conference, 2008 IEEE, 2008, pp. 1­8.
+[9] P. Rudol and P. Doherty, "Human body detection and localization for uav search and rescue missions using color and thermal imagery," in Aerospace Conference, 2008 IEEE. IEEE, 2008, pp. 1­8.
+[10] J. Zhang and S. Singh, "Loam: Lidar odometry and mapping in realtime," in Robotics: Science and Systems Conference (RSS), 2014, pp. 109­111.
+[11] S. Omari, P. Gohl, M. Burri, M. Achtelik, and R. Siegwart, "Visual industrial inspection using aerial robots," in Applied Robotics for the Power Industry (CARPI), 2014 3rd International Conference on. IEEE, 2014, pp. 1­5.
+[12] S. Lynen, M. W. Achtelik, S. Weiss, M. Chli, and R. Siegwart, "A robust and modular multi-sensor fusion approach applied to mav navigation," in Intelligent Robots and Systems (IROS), 2013 IEEE/RSJ International Conference on. IEEE, 2013, pp. 3923­3929.
+[13] S. Omari, M. Bloesch, P. Gohl, and R. Siegwart, "Dense visual-inertial navigation system for mobile robots," in Robotics and Automation (ICRA), 2015 IEEE International Conference on. IEEE, 2015, pp. 2634­2640.
+[14] C. Papachristos, D. Tzoumanikas, K. Alexis, and A. Tzes, "Autonomous robotic aerial tracking, avoidance, and seeking of a mobile human subject," in Advances in Visual Computing, ser. Lecture Notes in Computer Science. Springer International Publishing, 2015, vol. 9474, pp. 444­454.
+[15] J. Fernandez Galarreta, N. Kerle, and M. Gerke, "Uav-based urban structural damage assessment using object-based image analysis and semantic reasoning," Natural Hazards and Earth System Science, vol. 15, no. 6, pp. 1087­1101, 2015.
+[16] A. Bircher, M. Kamel, K. Alexis, M. Burri, P. Oettershagen, S. Omari, T. Mantel and R. Siegwart, "Three-dimensional coverage path planning via viewpoint resampling and tour optimization for aerial robots," Autonomous Robots, pp. 1­25, 2015.
+[17] A. Bircher, K. Alexis, U. Schwesinger, S. Omari, M. Burri, and R. Siegwart, "An incremental sampling-based approach to inspection planning: The rapidly-exploring random tree of trees," 2015.
+[18] A. Bircher, K. Alexis, M. Burri, P. Oettershagen, S. Omari, T. Mantel and R. Siegwart, "Structural inspection path planning via iterative viewpoint resampling with application to aerial robotics," in IEEE International Conference on Robotics and Automation (ICRA), May 2015, pp. 6423­6430. [Online]. Available: https://github.com/ethz-asl/StructuralInspectionPlanner
+[19] A. Bircher, M. Kamel, K. Alexis, H. Oleynikova and R. Siegwart, "Receding horizon "next-best-view" planner for 3d exploration," in IEEE International Conference on Robotics and Automation (ICRA), May 2016. [Online]. Available: https://github.com/ethz-asl/nbvplanner
+[20] A. Bircher, M. Kamel, K. Alexis, H. Oleynikova, and R. Siegwart, "Receding horizon path planning for 3d exploration and surface inspection," Autonomous Robots, pp. 1­16, 2016.
+[21] K. Alexis, C. Papachristos, R. Siegwart, and A. Tzes, "Uniform coverage structural inspection path-planning for micro aerial vehicles," September 2015.
+[22] C. Papachristos and K. Alexis, "Augmented reality-enhanced structural inspection using aerial robots," in Intelligent Control (ISIC), 2016 IEEE International Symposium on. IEEE, 2016, pp. 1­6.
+[23] C. Papachristos, K. Alexis, L. R. G. Carrillo, and A. Tzes, "Distributed infrastructure inspection path planning for aerial robotics subject to time constraints," in 2016 International Conference on Unmanned Aircraft Systems (ICUAS). IEEE, 2016, pp. 406­412.
+[24] J. Lofberg, "Automatic robust convex programming," Optimization Methods and Software, vol. 27, no. 1, pp. 115­129, 2012.
+[25] L. V. Stephen Boyd, Convex Optimization. Cambridge University Press, 2004.
+[26] M. Kuo, "Open-source framework for modeling Vehicle Routing Problems." [Online]. Available: https://github.com/mck-/Open-VRP
+
+

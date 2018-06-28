@@ -1,0 +1,651 @@
+arXiv:1701.00063v4 [hep-th] 15 Nov 2017
+
+November 16, 2017
+Stress tensor correlators of CCFT2 using flat-space holography
+Mohammad Asadi, Omid Baghchesaraei, Reza Fareghbal
+Department of Physics, Shahid Beheshti University, G.C., Evin, Tehran 19839, Iran. m asadi@sbu.ac.ir ,omidbaghchesaraei@gmail.com, r fareghbal@sbu.ac.ir Abstract
+We use the correspondence between three-dimensional asymptotically flat spacetimes and two-dimensional contracted conformal field theories (CCFTs) to derive the stress tensor correlators of CCFT2. On the gravity side we use the metric formulation instead of the ChernSimons formulation of three-dimensional gravity. This method can also be used for fourdimensional case where there is no Chern-Simons formulation for the bulk theory.
+1
+
+1 Introduction
+Extending gauge/gravity duality beyond the AdS/CFT correspondence requires that one proposes appropriate dual field theory for the spacetimes which are not asymptotically AdS. One of the candidates is asymptotically flat spacetimes. These spacetimes are given by vanishing cosmological constant limit of the asymptotically AdS counterparts. This connection on the gravity side may be a hint to the proposal of a dual field theory for the asymptotically flat spacetimes. One of the proposals which links the flat-space limit on the bulk side to the ultra-relativistic limit of the boundary theory, was put forward in [1]-[2]. This proposal which we henceforth call flat/CCFT, suggests a holographic connection between the asymptotically flat spacetimes in (d+1)-dimensions and contracted conformal filed theories (CCFT) in d-dimensions.
+A CCFT is given by taking an ultra-relativistic limit of the corresponding CFT. In the ultrarelativistic limit the speed of light approaches zero and in this singular limit, the symmetries of the theory are not Poincare symmetry. In two dimensions, the contracted conformal algebra is given by Inonu-Wigner contraction of two copies of the Virasoro algebra. Starting with a CFT2, the contracted algebra is obtained by using the generators of the Virasoro algebra and then contracting the time-coordinate [2]. The ultra-relativistic limit of the conformal algebra is the opposite of the non-relativistic limit which gives rise to the Galilean conformal algebra (GCA)[3]. In two dimensions, these two algebras are isomorphic but in higher dimensions they are different.
+A symmetry similar to the contracted conformal symmetry also appears as the asymptotic symmetry of the asymptotically flat spacetimes[4]-[8]. This symmetry which is called the BMS symmetry is infinite - dimensional for three and four dimensions. Taking the flat-space limit of the generators of the AdS asymptotic symmetry leads to the generators of the BMS algebra[9]. Thus it is plausible to propose that the ultra - relativistic limit of the CFT is indeed, the dual of the flat-space limit in the asymptotically AdS spacetimes. This idea is used in [1]-[2] where a holographic duality between the asymptotically flat spacetimes and CCFTs is proposed.
+Holographic calculation of the stress tensor correlators is a good check for the correctness of the correspondence between a field theory and a gravitational dual theory. It is well known that the correlation functions of the operators in CFTs have universal forms. One of the successes of the AdS/CFT correspondence is its proposed method for the holographic calculation of these correlators.
+Similar to the AdS/CFT correspondence, the correlation functions of the operators in a CCFT must have a dual description in the asymptotically flat spacetimes. There are two plausible ways to establish a dictionary which relates calculations in the two sides of the duality. One can ignore the AdS/CFT correspondence and consider flat/CCFT in its own right or one can take
+2
+
+the appropriate limit of the calculations of the AdS/CFT correspondence. Both of these methods have been invoked and the results have been consistent, so far.
+Calculating the stress tensor of CCFT by using flat-space holography was carried out for the first time in [10]. The method used to find the stress tensor of CCFT2, is taking the appropriate limit of the AdS/CFT computations. On the other hand, in [11] a direct method is invoked which yields the correlators of CCFT2. However, the holographic calculations of correlation functions in the gravity side just performed by using the Chern-Simons formulation of three - dimensional flat-space gravity. Generalizing such a correspondence to the higher - dimensional cases for which there is no Chern-Simons formulation for the gravity theory, necessitates the metric formulation of such a calculations.
+In the present paper we use the metric formulation of three - dimensional gravity in order to calculate the stress tensor correlators via holography. The fact that stress tensor of a field theory can be used to find the conserved charges of the symmetries is employed to derive an expression for the stress tensor components in terms of the conserved charges. Then the flat/CCFT proposal is used and the charges are substituted by results in the literature, found directly in the flat spacetimes. Our results in this paper are consistent with [10]. This method has also been used previously for the quasi-local stress tensor of the Kerr black hole [12] and the results are consistent with the ones obtained through taking the flat-space limit.
+To calculate the higher-point correlation functions, we make use of invariance of the correlators under the action of the global part of BMS3 algebra. We track this invariance back to the gravity side and find a general expression for all of the non-zero stress tensor correlator. Our results also confirm the idea that the symmetry algebra of CCFT2 is so rich that it dictates a universal form for the correlators. Another non-trivial point in our calculation is assuming a non-symmetric stress tensor for the CCFTs. Our investigations in the gravity side show that a covariant conservation formula requires a non-symmetric stress tensor. The fact that CCFTs do not exhibit Poincare' symmetry helps us avoid any inconsistencies. Our calculations in the present paper provide yet another confirmation for the fact that asymptotically flat spacetimes do have holographic duals which are CCFTs living in one less dimension.
+In Sec.2 we introduce the stress tensor of CCFT2 by using holographic method and metric formulation of three - dimensional gravity. In Sec.3 we calculate the p-point functions of the stress tensor by using holography. The last section, Sec.4, is devoted to a discussion and to directions for possible future investigations.
+3
+
+2 Stress tensor of CCFT
+
+Our goal is to calculate the correlation functions of the CCFT2 stress tensor. In the first step we need to introduce the stress tensor. According to our convention, a CCFT2 is a theory which is defined by the following infinite - dimensional symmetry:
+
+[Lm, Ln] = (m - n)Ln+m + CLm(m2 - 1)m+n,0, [Lm, Mn] = (m - n)Mn+m + CM m(m2 - 1)m+n,0,
+
+(2.1)
+
+where n and m can take any integer values. Similar to CFT2, one may expect that the above infinite - dimensional symmetry yields some universal results which are independent of the underlying action. The algebra (2.1) is given by the Inonu-Wigner contraction of the Virasoro algebra. Thus, one may consider CCFT2 as a contracted theory obtained from a parent CFT. There are two possible contractions of the Virasoro algebra which lead to (2.1), a non-relativistic and an ultra - relativistic contraction. The first one which is given by taking very large limit of the light speed, corresponds to scaling x  x and   0. On the other hand the ultra - relativistic contraction is obtained by the limit of vanishing light speed or equivalently scaling t  t and   0. In two dimensions both the non-relativistic and ultra - relativistic contractions of the Virasoro algebra give rise to the same algebra as in (2.1). However, in general , by CCFT we mean a theory for which the symmetry is given by the ultra-relativistic limit. The non-relativistic limit yields Galilean conformal algebra (GCA) which is interesting on its own[3].
+We suppose that CCFT2 lives on a cylinder with metric
+
+ds2 = -du2 + R2d2
+
+(2.2)
+
+where R is the radius of the cylinder, which will be fixed later when we use the holographic dictionary. Our starting point for finding the stress tensor of CCFT is the formula which gives the conserved charges of symmetry generators . Using (2.2) we can write
+
+2
+
+2
+
+Q = R
+
+dJu = R
+
+dT uµµ,
+
+0
+
+0
+
+(2.3)
+
+where Jµ is the symmetry current and T µ is the stress tensor. Here, we do not impose any
+
+conditions on the components of the stress tensor. For a CCFT that lives on the cylinder one can
+
+introduce a representation for the generators of (2.1)
+
+Ln = iein ( + inuu) ,
+
+Mn = ieinu.
+
+(2.4)
+
+4
+
+Thus we can write
+
+2
+
+QMn = -iR
+
+d ein T uu,
+
+0
+
+2
+
+QLn = R
+
+d ein nuT uu + iR2T u .
+
+0
+
+(2.5)
+
+Using the orthogonality condition of Fourier modes, we can find T uu and T u from (2.5) as
+
+T uu
+
+=
+
+i 2R
+
+QMn e-in
+
+n
+
+T u
+
+=
+
+-i 2R3
+
+e-in (QLn - iunQMn)
+
+n
+
+(2.6)
+
+The other components must be determined by using the conservation and traceless-ness conditions.
+
+However, in order to check the above calculations and find other components we make use of the
+
+flat/CCFT proposal and first do a holographic calculation.
+
+2.1 Holographic calculation using Flat/CCFT correspondence
+
+The calculations in the previous section are pure field theoretic ones and we merely defined a two - dimensional field theory by its symmetries. However, as is proposed in [1]-[2] this two dimensional field theory has a holographic dual theory. The dual theory is three - dimensional gravity in asymptotically flat backgrounds. The asymptotic symmetries of such a spacetimes at null infinity is known as a BMS3 symmetry which is isomorphic to (2.1). Thus we can find an interpretation for the charges QMn and QLn on the bulk side as the charges corresponding to the asymptotic symmetry generators. To be precise, let us consider a set of asymptotically flat spacetimes which transforms back into itself under the action of asymptotic symmetry generators. In a particular coordinate systems, known as BMS coordinates, the generic form of the asymptotically flat spacestimes with BMS3 asymptotic symmetry is given by [8]
+
+ds2 = M du2 - 2dudr + 2N dud + r2d2,
+
+(2.7)
+
+where
+
+M = (),
+
+N
+
+=
+
+()
+
++
+
+u 2
+
+(),
+
+(2.8)
+
+and () and () are arbitrary functions of the  coordinate. u is known as the retarded time
+
+where for the Minkowski spacetime u = t - r. The generators of an infinitesimal coordinate
+
+transformation, µ, which preserve the form of the metric (2.7), are given by
+
+u = F,
+
+
+
+=
+
+Y
+
+-
+
+1 r
+
+F,
+
+r
+
+=
+
+-rY
+
++ 2F
+
+-
+
+1 r
+
+N
+
+F,
+
+(2.9)
+
+5
+
+where
+
+Y = Y (), F = T () + uY (),
+
+(2.10)
+
+Y () and T () are arbitrary functions. Ln and Mn which are defined by
+
+Ln = (Y = iein, T = 0), Mn = (Y = 0, T = iein),
+
+(2.11)
+
+satisfy the algebra (2.1) at large r. The corresponding charges of Ln and Mn can be computed by various methods. They are given by covariant phase space method [13],[8] as1
+
+i QMn = 16G
+
+2 0
+
+d
+
+ein()
+
++
+
+i 8G
+
+n0
+
+,
+
+QLn
+
+=
+
+i 8G
+
+2
+d ein().
+0
+
+(2.12)
+
+The shift in the first line of (2.12) is necessary in order for the Poisson bracket of the charges
+
+produce the correct coefficient for the central term in the algebra (2.1). The interesting point
+
+here is that with this shift of charges we have QM0 = QL0 = 0 for the Minkowski metric. Substituting (2.12) in (2.6) one can find the components of the stress tensor as follows:
+
+T
+
+uu
+
+=
+
+-
+
+1 16GR
+
+(1
+
++
+
+())
+
+,
+
+T u
+
+=
+
+1 8GR3
+
+()
+
++
+
+u 2
+
+()
+
+.
+
+(2.13)
+
+This result is consistent with those of [10] where the components of the stress tensor are calcu-
+
+lated through taking flat-space limit from the quasi-local stress tensor of the asymptotically AdS
+
+spacetimes. Moreover, we find the same results as in [11] if M and N in [11] are identified as
+
+the Tuu and Tu components of the stress tensor. We have not fixed the constant R in the above calculations,yet. This can be done through relating the constant term in the uu component of
+
+the stress tensor with the central charges of (2.1).
+
+By assuming a standard conservation formula for the components of the stress tensor one
+
+arrives at
+
+uT u + T  = 0.
+
+(2.14)
+
+Thus using (2.13) we can determine T  to be
+
+T 
+
+=
+
+-
+
+() 16GR3
+
++
+
+K,
+
+(2.15)
+
+where K is a constant of integration. If we also impose a traceless-ness condition Tµµ = 0 for the
+
+stress tensor, K is determined and we have
+
+T
+
+
+
+=
+
+-
+
+1 16GR3
+
+(1
+
++
+
+())
+
+.
+
+(2.16)
+
+1 The calculation of surface charges in [8] has been done at the circle at infinity. Moreover, it is assumed that
+
+the background line element which is used to raise and lower indices is Minkowski, ds2 = -du2 - 2dudr + r2d2.
+
+6
+
+From (2.13) it is clear that the conservation equation,
+
+uT uu + T u = 0,
+
+(2.17)
+
+is not satisfied for a symmetric stress tensor, i.e. T u = T u. One possible way to overcome this obstacle is assuming a new conservation equation as uT uu = 0 [10]. However, if we want to write the conservation formula in a covariant way, there is a possibility of assuming non-symmetric stress tensors for the CCFTs. If we implement a non-symmetric stress tensor ( similar to the case in [14] ) such that T u is non-zero and is given by (2.13) but T u = 0 then the holographic calculations result in the standard conservation equation, µT µ = 0 for the CCFT. The fact that CCFTs are not Poincare' invariant theories makes this assumption reliable. We should note again that all of these results are consequences of accepting a holographic duality between CCFTs and asymptotically flat spacetimes. In summary, we have
+
+Tuu
+
+=
+
+-
+
+1 16GR
+
+(1
+
++
+
+())
+
+,
+
+Tu
+
+=
+
+-
+
+1 8GR
+
+() + u () 2
+
+,
+
+R T = - 16G (1 + ()) ,
+
+Tu = 0.
+
+(2.18)
+
+3 Correlators of stress tensor
+
+In this section we use the results of the previous sections to calculate the correlation functions of CCFT2. To do so, we assume that these functions are invariant under the global part of the two - dimensional symmetry algebra. For the two - dimensional theory, whose symmetry is given by (2.1), the global part is generated by {L0, L±1, M0, M±1}. According to (2.18), the holographic calculations yield the components of stress tensor in terms of two functions () and (). When we fix these functions on the gravity side, the asymptotically flat solution is completely determined. An infinitesimal coordinate transformation generated by (2.9) changes these functions to  +  and  + . The infinitesimal changes of the functions can be calculated by using the Lie derivative of the metric components and expressing them in such a way that the generic form (2.7) is preserved. We arrive at []
+
+ = Y  + 2Y  - 2Y ,
+
+ 
+
+=
+
+1 2
+
+T
+
+
+
++
+
+Y
+
+
+
++
+
+2Y
+
+
+
++
+
+T 
+
+-
+
+T .
+
+(3.1)
+
+7
+
+We apply (3.1) on the gravity side to find the variation of the stress tensor in the boundary. Using (2.18) and (3.1) and imposing the conditions
+
+Mn Tij = 0,
+
+Ln Tij = 0,
+
+n = 0, ±1
+
+(3.2)
+
+result in
+
+Tij = 0,
+
+(3.3)
+
+as expected. We can also use (2.18) and (3.1) to calculate higher-point functions. Since according to (2.18),
+T is the same as Tuu up to an overall factor, its correlation functions with the other components are similar to the correlation functions of Tuu. Similar to the one-point functions, we want to determine the p point functions by imposing
+
+Mn Ti1j · · · Tkpl = 0,
+
+Ln Ti1j · · · Tkpl = 0,
+
+n = 0, ±1
+
+(3.4)
+
+where Tilj = Tij (ul, l). If we define () = () + 1 then the uu and  components of the stress tensor will be
+
+proportional to (). For n = 0, ± 1 , equations (2.11) and (3.1) yield the following variations:
+
+Mn  = 0,
+
+Mn 
+
+=
+
+1 2
+
+ein
+
+(i
+
+-
+
+2n),
+
+Ln  = ein (i - 2n) , Ln  = ein (i - 2n) .
+
+(3.5)
+
+It is clear from (3.5) that imposing Ln Ti1j · · · Tkpl = 0 for n = 0, ± 1 results in the equations
+
+P
+X1 · · · eink (ik - 2n)Xk · · · Xp = 0,
+k=1
+
+(3.6)
+
+where Xi can be either i = (i) or i = (i) and k indicates the derivative with respect
+
+to the  at the point k. Thus we conclude that, for a given p, all of the p point functions of
+
+ and  with any numbers of  and  and any insertion of them have the same functionality
+
+of {1, 2, · · · , p} but with different overall constant factors. These constants can also be zero,
+
+which would render some correlation functions to vanish.
+
+The solution to Eq. (3.6) is given by
+
+X1 · · · Xp = C
+
+e2i pk=1k 4,
+1l<mp (eil - eim ) p-1
+
+(3.7)
+
+where C is a constant which can be zero. We determine C by imposing Mn Ti1j · · · Tkpl = 0 for
+
+n = 0, ± 1. 1 · · · p does not appear in any other equation; thus we conclude that it is given by the generic equation (3.7). Moreover, from Mn Tu1 · · · Tup = 0 we find that
+
+123 · · · p = 123 · · · p = · · · = 123 · · · p .
+
+(3.8)
+
+8
+
+However, applying Mn to other correlation functions which have at least one Tuu reveals that the correlations of  and  containing more than one  must be zero in order to be consistent with the generic result (3.7). Thus the only non-zero correlation functions of  and  are
+
+1 · · · p = C1 123 · · · p = · · · = 123 · · · p = C2
+
+e2i
+
+p k=1
+
+k
+
+4,
+
+1l<mp (eil - eim ) p-1
+
+e2i
+
+p k=1
+
+k
+
+4
+1l<mp (eil - eim ) p-1
+
+(3.9)
+
+where C1 and C2 are constants. They must be related to the central charges cM and cL of (2.1)
+
+but on the gravity side they are only constants of integration. Now using (2.18) and (3.9) we can
+
+calculate all of the correlation functions of the stress tensor:
+
+Tu1uTu2 · · · Tup Tu1Tu2 · · · Tup
+
+ C2
+
+e2i pk=1k
+4
+1l<mp (eil - eim ) p-1
+
+
+
+C1
+
++
+
+C2 2
+
+p
+
+ukk
+
+k=1
+
+e2i pk=1k
+4
+1l<mp (eil - eim ) p-1
+
+(3.10)
+
+It is clear from (3.10) that all of the p point functions of Tus are given by correlation of one Tuu and p - 1 of the Tu.
+For the two-point functions we find
+
+Tuu(1)Tuu(2) = 0,
+
+e2i(1+2) Tuu(1)Tu(u2, 2)  C2 (ei1 - ei2 )4 ,
+
+Tu(u1, 1)Tu(u2, 2)
+
+
+
+C1
+
+e2i(1+2) (ei1 - ei2 )4
+
+1
+
++
+
+2i C2 C1
+
+(u2
+
+-
+
+u1
+
+)
+
+ei1 ei1
+
++ -
+
+ei2 ei2
+
+.
+
+(3.11)
+
+which are exactly the same as results of [11] up to the constants C1 and C2 which are proportional to the central charges cM and cL. Our results for the three-point functions are also exactly the same as [11]. However, for the correlators higher than four we cannot regenerate the full
+
+correlation functions just by symmetry consideration similar to what we have done in this paper.
+
+In fact, some cross-ratios are necessary which we miss in this method. The main motivation for
+
+the calculations of this paper is to connect gravity calculations, using metric formulation in the
+
+three - dimensional asymptotically flat space times, to the direct calculations of correlators in Ref
+
+[11]. The consistency of our correlation functions (at least up to the four-dimensional correlators)
+
+with the results of [11] shows that a CCFT2 could be a good candidate for the holographic dual of three - dimensional asymptotically flat spacetimes.
+
+9
+
+4 Discussion
+In this paper we calculate all correlation functions of CCFT2 stress tensor by using Flat/CCFT proposal. On the gravity side we make use of the metric formulation of three-dimensional gravity. Our method is applicable for higher-dimensional cases, as well. The interesting point is that the asymptotic symmetry of four-dimensional asymptotically flat spacetimes is also infinitedimensional. The symmetry algebra is known as BMS4 algebra. Using flat/CCFT correspondence we conclude that CCFT3 also has an infinite - dimensional symmetry and therefore one expects universal behavior for the correlation functions of the operators [15]. Since the conformal symmetry in three dimensions is finite-dimensional, it is not clear how to find the correlators by taking the flat space limit. However, it is possible to generalize our method in this paper to the fourdimensional case. In the method which we use in this paper, the CCFTs are defined by using their symmetries. These symmetries are given by BMS algebra which is infinite-dimensional in two and three-dimensional CCFTs. In other words CCFTs are defined as BMS-invariant field theories. Using this definition we can forget the contraction. The steps for the calculation of the CCFT3 stress tensor correlators will be similar to those in two-dimensional case: The first step is to find the stress tensor components by using the standard definition of conserved charges. The starting point is to generalize (2.3) to three dimensions, which can be performed very simply. However, the main task is to derive the components by using the method of Sec.2. We expect some sort of non-symmetric stress tensor components for the three-dimensional case. We emphasize again that in the derivation of stress tensor components we just need the direct connection of CCFTs with the dual asymptotically flat spacetimes and parent CFT calculation is not necessary. The next step is to employ the invariance of the correlators under the action of the global part of the BMS4 symmetry ( as the symmetry of CCFT3) which is expected to fix the structure of correlators. Similar to CFT2 and CCFT2, it is plausible that the infinite-dimensional symmetry of CCFT3 dictates some universal form for the n point function of stress tensor correlators. If this is so some related interesting questions arise. Among them the issue of the entanglemet entropy of CCFT3 which is expected to use the universality of the correlation functions, is of great interest[16]-[18].
+Another interesting question in the context of Flat3/CCFT2 proposal is the calculation of the higher correlation functions by taking the appropriate limit of the AdS/CFT calculations. This might be done along the lines first introduced in [19]. The importance of this problem is that its solution is a necessary step in the path to find holographic renormalization method for the flat/CCFT correspondence.
+10
+
+Acknowledgements
+The authors would like to thank A. Bagchi for useful comments. R. F would like to thank the School of Particles and Accelerator of Institute for Research in Fundamental Sciences (IPM) for the research facilities.
+References
+[1] A. Bagchi, Correspondence between asymptotically flat spacetimes and nonrelativistic conformal field theories, Phys. Rev. Lett. 105, 171601 (2010). A. Bagchi, The BMS/GCA correspondence, arXiv:1006.3354 [hep-th].
+[2] A. Bagchi and R. Fareghbal, BMS/GCA redux: towards flatspace holography from nonrelativistic symmetries, JHEP 1210, 092 (2012) arXiv:1203.5795 [hep-th].
+[3] A. Bagchi and R. Gopakumar, Galilean conformal algebras and AdS/CFT,' JHEP 0907, 037 (2009) arXiv:0902.1385 [hep-th].
+[4] H. Bondi, M. G. van der Burg, and A. W. Metzner, Gravitational waves in general relativity. 7. Waves from axisymmetric isolated systems, Proc. R. Soc. Lond. A 269 (1962) 21. R. K. Sachs, Gravitational waves in general relativity. 8. Waves in asymptotically flat spacetimes, Proc. R. Soc. Lond. A 270 (1962) 103. R. K. Sachs, "Asymptotic symmetries in gravitational theory," Phys. Rev. 128 (1962) 2851.
+[5] A. Ashtekar, J. Bicak and B. G. Schmidt, Asymptotic structure of symmetry reduced general relativity, Phys. Rev. D 55, 669 (1997) arxiv:gr-qc/9608042.
+[6] G. Barnich and G. Compere, Classical central extension for asymptotic symmetries at null infinity in three spacetime dimensions, Class. Quantum Gravity. 24, F15 (2007) arxiv:grqc/0610130.
+[7] G. Barnich and C. Troessaert, Symmetries of asymptotically flat 4 dimensional spacetimes at null infinity revisited, arXiv:0909.2617 [gr-qc].
+[8] G. Barnich and C. Troessaert, "Aspects of the BMS/CFT correspondence," JHEP 1005, 062 (2010) arXiv:1001.1541[hep-th].
+[9] G. Barnich, A. Gomberoff and H. A. Gonzalez, Theflat limit of three dimensional asymptotically anti-de Sitter spacetimes, Phys. Rev. D 86, 024020 (2012) doi:10.1103/PhysRevD.86.024020 arXiv:1204.3288 [gr-qc].
+11
+
+[10] R. Fareghbal and A. Naseh, Flat-space energy-momentum tensor from BMS/GCA correspondence, JHEP 1403, 005 (2014) arXiv:1312.2109 [hep-th].
+[11] A. Bagchi, D. Grumiller and W. Merbis, Stress tensor correlators in three-dimensional gravity, Phys. Rev. D 93, no. 6, 061502 (2016) doi:10.1103/PhysRevD.93.061502 arXiv:1507.05620 [hepth].
+[12] O. Baghchesaraei, R. Fareghbal and Y. Izadi, flat-space holography and stress tensor of Kerr black hole, Phys. Lett. B 760, 713 (2016) doi:10.1016/j.physletb.2016.07.062 arXiv:1603.04137 [hep-th].
+[13] G. Barnich and F. Brandt, "Covariant theory of asymptotic symmetries, conservation laws and central charges," Nucl. Phys. B 633, 3 (2002) doi:10.1016/S0550-3213(02)00251-1 arxiv:hep-th/0111246.
+[14] J. Hartong, Holographic reconstruction of 3D flat space-time, JHEP 1610, 104 (2016) doi:10.1007/JHEP10(2016)104 arXiv:1511.01387 [hep-th].
+[15] A. Bagchi, R. Basu, A. Kakkar and A. Mehra, Flat holography: aspects of the dual field theory, arXiv:1609.06203 [hep-th].
+[16] A. Bagchi, R. Basu, D. Grumiller and M. Riegler, Entanglement entropy in Galilean conformal field theories and flat holography, Phys. Rev. Lett. 114, no. 11, 111602 (2015) doi:10.1103/PhysRevLett.114.111602 arXiv:1410.4089 [hep-th].
+[17] S. M. Hosseini and . Vliz-Osorio, Gravitational anomalies, entanglement entropy, and flatspace holography, Phys. Rev. D 93, no. 4, 046005 (2016) doi:10.1103/PhysRevD.93.046005 arXiv:1507.06625 [hep-th].
+[18] R. Basu and M. Riegler, Wilson Lines and holographic entanglement entropy in galilean conformal field theories, Phys. Rev. D 93, no. 4, 045003 (2016) doi:10.1103/PhysRevD.93.045003 arXiv:1511.08662 [hep-th].
+[19] R. N. Caldeira Costa, "Aspects of the zero  limit in the AdS/CFT correspondence," Phys. Rev. D 90, no. 10, 104018 (2014) doi:10.1103/PhysRevD.90.104018 arXiv:1311.7339 [hep-th].
+12
+
+
