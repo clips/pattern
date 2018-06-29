@@ -1700,8 +1700,6 @@ class Faroo(SearchEngine):
 # and ss of May 2018 the site is available in 86 languages
 
 
-
-
 # API Error Codes
 AUTHORIZATION_FAILED = 5    # Invalid access token
 PERMISSION_IS_DENIED = 7
@@ -1786,6 +1784,7 @@ class VK(SearchEngine):
     MAX_REQUEST_POSTS = 100
     MAX_NEWSFEED_POSTS = 200
     NEWSFEED_TIME_DELTA = 1000
+    NEWSFEED_POSTS_LIMIT = 1000
 
     def __init__(self, lisense, throttle=1.0, language=None):
         SearchEngine.__init__(self, lisense, throttle, language)
@@ -1813,7 +1812,7 @@ class VK(SearchEngine):
         - uid
         - first_name
         - last_name
-        -
+
         Additional fields:
         - sex
         - bdate
@@ -1850,6 +1849,7 @@ class VK(SearchEngine):
             users_info[i]['country'] = self._get_country_name_by_id(int(user['country']['id']))
             users_info[i]['sex'] = self._get_sex_by_id(user['sex'])
 
+        time.sleep(self.throttle)
         return users_info
 
     def get_user_posts(self, user_id, count=100, posts_type="all"):
@@ -1894,6 +1894,7 @@ class VK(SearchEngine):
             if num_requests % self.NUM_REQUESTS_PER_SECOND == 0:
                 time.sleep(self.throttle)
 
+        time.sleep(self.throttle)
         return user_posts
 
     def get_newsfeed_posts(self, query, count=100, end_time=None):
@@ -1904,6 +1905,7 @@ class VK(SearchEngine):
                         If the parameter is not specified, then it is considered equal to the current time.
         :return: posts from the newsfeed that match the given query
         """
+        count = min(self.NEWSFEED_POSTS_LIMIT, count)
 
         loaded = 0
         newsfeed_posts = []
@@ -1937,6 +1939,7 @@ class VK(SearchEngine):
             if num_requests % self.NUM_REQUESTS_PER_SECOND == 0:
                 time.sleep(self.throttle)
 
+        time.sleep(self.throttle)
         return newsfeed_posts
 
 
