@@ -1,9 +1,15 @@
 language: python
+<<<<<<< HEAD
 dist: precise
 
 python:
   - "3.6"
 
+=======
+
+python:
+  - "2.7.13"
+>>>>>>> ac0011bc921e8d868c11f85851a03a03ef1cab3c
 
 before_install:
   - export TZ=Europe/Brussels
@@ -12,12 +18,19 @@ before_install:
   - export PATH="$HOME/miniconda/bin:$PATH"
   - conda update --yes conda
   - conda install --yes numpy scipy
+<<<<<<< HEAD
   - pip install --quiet pytest pytest-cov pytest-xdist chardet
 
 install:
   - python setup.py install --quiet
   # Print all installed packages including versions
   - pip freeze
+=======
+  - pip install --quiet pytest pytest-cov pytest-xdist
+
+install:
+  - python setup.py install --quiet
+>>>>>>> ac0011bc921e8d868c11f85851a03a03ef1cab3c
   # Install and compile libsvm and liblinear  
   - sudo apt-get install -y build-essential
   - git clone https://github.com/cjlin1/libsvm
@@ -27,6 +40,7 @@ install:
 
 script:
   - pytest --cov=pattern
+<<<<<<< HEAD
 
 after_script:
   - pip install --quiet coveralls
@@ -42,3 +56,5 @@ notifications:
 # You can connect to MySQL/MariaDB using the username "travis" or "root" and a blank password.
 services:
   - mysql
+=======
+>>>>>>> ac0011bc921e8d868c11f85851a03a03ef1cab3c
