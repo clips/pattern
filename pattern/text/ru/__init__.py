@@ -41,44 +41,6 @@ from pattern.text.tree import (
     Tree, Text, Sentence, Slice, Chunk, PNPChunk, Chink, Word, table,
     SLASH, WORD, POS, CHUNK, PNP, REL, ANCHOR, LEMMA, AND, OR
 )
-# Import sentiment analysis base classes.
-from pattern.text import (
-    Sentiment as _Sentiment, NOUN, VERB, ADJECTIVE, ADVERB
-)
-# Import spelling base class.
-from pattern.text import (
-    Spelling
-)
-# Import verb tenses.
-from pattern.text import (
-    INFINITIVE, PRESENT, PAST, FUTURE,
-    FIRST, SECOND, THIRD,
-    SINGULAR, PLURAL, SG, PL,
-    PROGRESSIVE,
-    PARTICIPLE
-)
-# Import inflection functions.
-from pattern.text.en.inflect import (
-    article, referenced, DEFINITE, INDEFINITE,
-    pluralize, singularize, NOUN, VERB, ADJECTIVE,
-    grade, comparative, superlative, COMPARATIVE, SUPERLATIVE,
-    verbs, conjugate, lemma, lexeme, tenses,
-    predicative, attributive
-)
-# Import quantification functions.
-from pattern.text.en.inflect_quantify import (
-    number, numerals, quantify, reflect
-)
-# Import mood & modality functions.
-from pattern.text.en.modality import (
-    mood, INDICATIVE, IMPERATIVE, CONDITIONAL, SUBJUNCTIVE,
-    modality, uncertain, EPISTEMIC,
-    negated
-)
-# Import all submodules.
-from pattern.text.en import inflect
-from pattern.text.en import wordnet
-from pattern.text.en import wordlist
 
 sys.path.pop(0)
 
@@ -95,14 +57,14 @@ class Parser(_Parser):
         return _Parser.find_tags(self, tokens, **kwargs)
 
 parser = Parser(
-    lexicon=os.path.join(MODULE, "en-lexicon.txt"),  # A dict of known words => most frequent tag.
-    frequency=os.path.join(MODULE, "en-frequency.txt"),  # A dict of word frequency.
-    model=os.path.join(MODULE, "en-model.slp"),  # A SLP classifier trained on WSJ (01-07).
-    morphology=os.path.join(MODULE, "en-morphology.txt"),  # A set of suffix rules (e.g., -ly = adverb).
-    context=os.path.join(MODULE, "en-context.txt"),  # A set of contextual rules.
-    entities=os.path.join(MODULE, "en-entities.txt"),  # A dict of named entities: John = NNP-PERS.
-    default=("NN", "NNP", "CD"),
-    language="en"
+    lexicon=os.path.join(MODULE, "ru-lexicon.txt"),  # A dict of known words => most frequent tag.
+    frequency=os.path.join(MODULE, "ru-frequency.txt"),  # A dict of word frequency.
+    model=os.path.join(MODULE, "ru-model.slp"),  # A SLP classifier trained on WSJ (01-07).
+    #morphology=os.path.join(MODULE, "en-morphology.txt"),  # A set of suffix rules
+    #context=os.path.join(MODULE, "en-context.txt"),  # A set of contextual rules.
+    #entities=os.path.join(MODULE, "en-entities.txt"),  # A dict of named entities: John = NNP-PERS.
+    #default=("NN", "NNP", "CD"),
+    language="ru"
 )
 
 
