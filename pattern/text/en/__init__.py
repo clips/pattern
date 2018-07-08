@@ -153,7 +153,7 @@ sentiment = Sentiment(
 )
 
 spelling = Spelling(
-        path = os.path.join(MODULE, "en-spelling.txt")
+    path = os.path.join(MODULE, "en-spelling.txt")
 )
 
 

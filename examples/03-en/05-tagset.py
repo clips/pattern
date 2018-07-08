@@ -34,7 +34,7 @@ print(parse_es("los gatos negros", chunks=False))     # los/DT gatos/NNS negros/
 print(parse_fr("les chats noirs", chunks=False))      # les/DT chats/NNS noirs/JJ
 print(parse_it("i gatti neri", chunks=False))         # i/DT gatti/NNS neri/JJ
 print(parse_nl("de zwarte katten", chunks=False))     # de/DT zwarte/JJ katten/NNS
-print(parse_ru("Да здравствует Сталин!", chunks=False))
+print(parse_ru("какой сегодня хороший день!", chunks=False)) # какой/DT сегодня/RB хороший/JJ день/NN !/.
 print("")
 
 # In some cases, this means the original tagset is mapped to Penn Treebank:

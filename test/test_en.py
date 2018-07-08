@@ -17,6 +17,7 @@ import subprocess
 
 from pattern import text
 from pattern import en
+from pattern import ru
 
 from io import open
 
@@ -300,6 +301,15 @@ class TestSpelling(unittest.TestCase):
                 else:
                     j += 1
         self.assertTrue(i / (i + j) > 0.70)
+
+        for correct, wrong in Datasheet.load(os.path.join(PATH, "corpora", "spelling-ru.csv")):
+            for w in wrong.split(" "):
+                if ru.suggest(w)[0][0] == correct:
+                    i += 1
+                else:
+                    j += 1
+        self.assertTrue(i / (i + j) > 0.70)
+
         print("pattern.en.suggest()")
 
 #---------------------------------------------------------------------------------------------------

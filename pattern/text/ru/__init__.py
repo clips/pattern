@@ -42,6 +42,11 @@ from pattern.text.tree import (
     SLASH, WORD, POS, CHUNK, PNP, REL, ANCHOR, LEMMA, AND, OR
 )
 
+# Import spelling base class.
+from pattern.text import (
+    Spelling
+)
+
 sys.path.pop(0)
 
 #--- Russian PARSER --------------------------------------------------------------------------------
@@ -68,6 +73,11 @@ parser = Parser(
 )
 
 
+spelling = Spelling(
+    path=os.path.join(MODULE, "ru-spelling.txt"),
+    alphabet='CYRILLIC'
+)
+
 
 def tokenize(s, *args, **kwargs):
     """ Returns a list of sentences, where punctuation marks have been split from words.
@@ -85,3 +95,9 @@ def parsetree(s, *args, **kwargs):
     """ Returns a parsed Text from the given string.
     """
     return Text(parse(s, *args, **kwargs))
+
+
+def suggest(w):
+    """ Returns a list of (word, confidence)-tuples of spelling corrections.
+    """
+    return spelling.suggest(w)
