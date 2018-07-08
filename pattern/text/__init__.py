@@ -2604,10 +2604,20 @@ class Sentiment(lazydict):
 
 class Spelling(lazydict):
 
-    ALPHA = "abcdefghijklmnopqrstuvwxyz"
+    # latin alphabet
+    LATIN = "abcdefghijklmnopqrstuvwxyz"
 
-    def __init__(self, path=""):
+    # cyrillic alphabet
+    CYRILLIC = 'абвгдеёжзийклмнопрстуфхцчшщьыъэюя'
+
+    ALPHA = None
+
+    def __init__(self, path="", alphabet='LATIN'):
         self._path = path
+        if alphabet == 'CYRILLIC':
+            Spelling.ALPHA = Spelling.CYRILLIC
+        else:
+            Spelling.ALPHA = Spelling.LATIN
 
     def load(self):
         for x in _read(self._path):
@@ -2678,6 +2688,7 @@ class Spelling(lazydict):
                   or self._known(self._edit1(w)) \
                   or self._known(self._edit2(w)) \
                   or [w]
+
         candidates = [(self.get(c, 0.0), c) for c in candidates]
         s = float(sum(p for p, w in candidates) or 1)
         candidates = sorted(((p / s, w) for p, w in candidates), reverse=True)
@@ -2690,7 +2701,7 @@ class Spelling(lazydict):
 # print(parse("The cat sat on the mat.", language="en"))
 # print(parse("De kat zat op de mat.", language="nl"))
 
-LANGUAGES = ["en", "es", "de", "fr", "it", "nl"]
+LANGUAGES = ["en", "es", "de", "fr", "it", "nl", "ru"]
 
 _modules = {}
 
