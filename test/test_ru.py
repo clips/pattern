@@ -36,12 +36,13 @@ class TestSpelling(unittest.TestCase):
         for correct, wrong in Datasheet.load(os.path.join(PATH, "corpora", "spelling-ru.csv")):
             for w in wrong.split(" "):
                 suggested = ru.suggest(w)
-                if (suggested[0][0] == correct) or (len(suggested) > 1 and suggested[1][0] == correct):
+                if suggested[0][0] == correct:
                     i += 1
                 else:
+                    print(suggested[0][0], correct)
                     j += 1
         print(i / (i + j))
-        self.assertTrue(i / (i + j) > 0.60)
+        self.assertTrue(i / (i + j) > 0.65)
         print("pattern.ru.suggest()")
 
 #---------------------------------------------------------------------------------------------------
