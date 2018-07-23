@@ -2610,14 +2610,12 @@ class Spelling(lazydict):
     # cyrillic alphabet
     CYRILLIC = 'абвгдеёжзийклмнопрстуфхцчшщьыъэюя'
 
-    ALPHA = None
-
     def __init__(self, path="", alphabet='LATIN'):
         self._path = path
         if alphabet == 'CYRILLIC':
-            Spelling.ALPHA = Spelling.CYRILLIC
+            self.alphabet = Spelling.CYRILLIC
         else:
-            Spelling.ALPHA = Spelling.LATIN
+            self.alphabet = Spelling.LATIN
 
     def load(self):
         for x in _read(self._path):
@@ -2655,8 +2653,8 @@ class Spelling(lazydict):
         delete, transpose, replace, insert = (
             [a + b[1:] for a, b in split if b],
             [a + b[1] + b[0] + b[2:] for a, b in split if len(b) > 1],
-            [a + c + b[1:] for a, b in split for c in Spelling.ALPHA if b],
-            [a + c + b[0:] for a, b in split for c in Spelling.ALPHA]
+            [a + c + b[1:] for a, b in split for c in self.alphabet if b],
+            [a + c + b[0:] for a, b in split for c in self.alphabet]
         )
         return set(delete + transpose + replace + insert)
 
