@@ -23,3 +23,7 @@ install:
 
 script:
   - pytest --cov=pattern
+
+ branches:
+ only:
+ - development
