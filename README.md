@@ -1,17 +1,10 @@
 Pattern
 =======
 
-<<<<<<< HEAD
-[![Build Status](http://img.shields.io/travis/clips/pattern/development.svg?style=flat)](https://travis-ci.org/clips/pattern/branches)
-[![Coverage](https://img.shields.io/coveralls/clips/pattern/development.svg?style=flat)](https://coveralls.io/github/clips/pattern?branch=development)
-[![PyPi version](http://img.shields.io/pypi/v/pattern.svg?style=flat)](https://pypi.python.org/pypi/pattern)
-[![License](https://img.shields.io/badge/License-BSD%203--Clause-green.svg?style=flat)](https://github.com/clips/pattern/blob/development/LICENSE.txt)
-=======
 [![Build Status](http://img.shields.io/travis/clips/pattern/master.svg?style=flat)](https://travis-ci.org/clips/pattern/branches)
 [![Coverage](https://img.shields.io/coveralls/clips/pattern/master.svg?style=flat)](https://coveralls.io/github/clips/pattern?branch=master)
 [![PyPi version](http://img.shields.io/pypi/v/pattern.svg?style=flat)](https://pypi.python.org/pypi/pattern)
 [![License](https://img.shields.io/badge/License-BSD%203--Clause-green.svg?style=flat)](https://github.com/clips/pattern/blob/master/LICENSE.txt)
->>>>>>> ac0011bc921e8d868c11f85851a03a03ef1cab3c
 
 Pattern is a web mining module for Python. It has tools for:
 
@@ -53,11 +46,7 @@ print(knn.classify('stupid autocorrect'))
 Installation
 ------------
 
-<<<<<<< HEAD
-Pattern supports Python 2.7 and Python 3.6+. To install Pattern so that it is available in all your scripts, unzip the download and from the command line do:
-=======
 Pattern supports Python 2.7 and Python 3.6+. The Python 3 version is currently **only** available on the `development` branch. To install Pattern so that it is available in all your scripts, unzip the download and from the command line do:
->>>>>>> ac0011bc921e8d868c11f85851a03a03ef1cab3c
 ```bash
 cd pattern-2.6
 python setup.py install
