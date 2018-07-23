@@ -1,5 +1,7 @@
 language: python
 
+dist: precise
+
 python:
   - "3.6"
 
@@ -14,6 +16,7 @@ before_install:
 
 install:
   - python setup.py install --quiet
+  - pip freeze
   # Install and compile libsvm and liblinear
   - sudo apt-get install -y build-essential
   - git clone https://github.com/cjlin1/libsvm
