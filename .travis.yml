@@ -10,7 +10,7 @@ before_install:
   - export PATH="$HOME/miniconda/bin:$PATH"
   - conda update --yes conda
   - conda install --yes numpy scipy
-  - pip install --quiet pytest pytest-cov pytest-xdist
+  - pip install --quiet pytest pytest-cov pytest-xdist chardet
 
 install:
   - python setup.py install --quiet
@@ -25,6 +25,17 @@ script:
   - pytest --cov=pattern
 
 
+after_script:
+  - pip install --quiet coveralls
+  - coveralls
+
 branches:
 only:
   - development
+
+notifications:
+  email: false
+
+# You can connect to MySQL/MariaDB using the username "travis" or "root" and a blank password.
+services:
+  - mysql
