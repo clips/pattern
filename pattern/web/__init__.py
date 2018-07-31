@@ -2971,9 +2971,10 @@ class DBPediaResource(str):
         # http://dbpedia.org/resource/Australia => Australia
         s = re.sub("^http://dbpedia.org/resource/", "", self)
         s = s.replace("_", " ")
-        s = encode_utf8(s)
-        s = decode_url(s)
-        s = decode_utf8(s)
+        if sys.version_info[0] < 3:
+            s = encode_utf8(s)
+            s = decode_url(s)
+            s = decode_utf8(s)
         return s
 
 

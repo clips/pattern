@@ -5,6 +5,7 @@ from builtins import str, bytes, dict, int
 
 import os
 import sys
+import codecs
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), "..", ".."))
 
 import pattern.text as text_module
@@ -16,8 +17,11 @@ for f in os.listdir('./texts'):
 
 texts = []
 for p in paths:
-    with open(p, "rb") as f:
-        texts.append(str(f.read()))
+    with codecs.open(p, "rb", encoding='latin-1') as f:
+        if sys.version_info[0] < 3:
+            texts.append(f.read())
+        else:
+            texts.append(str(f.read()))
 
 ng = text_module.train_topmine_ngrammer(texts, threshhold=1, regexp="[^a-zA-Z0-9]")
 ngrams = text_module.topmine_ngramms(texts[0], ng, threshhold=1)
@@ -33,11 +37,11 @@ for key in ngrams.keys():
     elif len(key.split("_")) == 3:
         trigrams.append(key)
 
-print("Extracted {} bigrams (removed stopwords):\n".format(len(bigrams)))
+print("Extracted {} bigrams:\n".format(len(bigrams)))
 print(bigrams)
 print("\n")
 
-print("Extracted {} trigrams (removed stopwords):\n".format(len(trigrams)))
+print("Extracted {} trigrams:\n".format(len(trigrams)))
 print(trigrams)
 print("\n")
 
