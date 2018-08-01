@@ -318,7 +318,7 @@ def levenshtein_similarity(string1, string2):
 
 
 def dice_coefficient(string1, string2):
-    """ Returns the similarity between string1 and string1 as a number between 0.0 and 1.0,
+    """ Returns the similarity between string1 and string2 as a number between 0.0 and 1.0,
         based on the number of shared bigrams, e.g., "night" and "nacht" have one common bigram "ht".
     """
     def bigrams(s):
