@@ -44,7 +44,7 @@ from __future__ import unicode_literals
 
 __author__    = "Tom De Smedt"
 __credits__   = "Tom De Smedt, Walter Daelemans"
-__version__   = "2.6"
+__version__   = "3.6"
 __copyright__ = "Copyright (c) 2010 University of Antwerp (BE)"
 __license__   = "BSD"
 

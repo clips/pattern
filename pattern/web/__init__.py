@@ -246,7 +246,7 @@ send = asynchronous
 
 # User agent and referrer.
 # Used to identify the application accessing the web.
-USER_AGENT = "Pattern/2.6 +http://www.clips.ua.ac.be/pattern"
+USER_AGENT = "Pattern/3.6 +http://www.clips.ua.ac.be/pattern"
 REFERRER = "http://www.clips.ua.ac.be/pattern"
 
 # Mozilla user agent.
