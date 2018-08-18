@@ -70,6 +70,8 @@ setup(
         "pattern.text.en",
         "pattern.text.en.wordlist",
         "pattern.text.en.wordnet",
+        "pattern.text.ru",
+        "pattern.text.ru.wordlist",
         "pattern.text.es",
         "pattern.text.fr",
         "pattern.text.it",
@@ -87,6 +89,8 @@ setup(
         "pattern.text.en"         : ["*.txt", "*.xml", "*.slp"],
         "pattern.text.en.wordlist": ["*.txt"],
         "pattern.text.en.wordnet" : ["*.txt", "dict/*"],
+        "pattern.text.ru": ["*.txt", "*.xml", "*.slp"],
+        "pattern.text.ru.wordlist": ["*.txt"],
         "pattern.text.es"         : ["*.txt", "*.xml"],
         "pattern.text.fr"         : ["*.txt", "*.xml"],
         "pattern.text.it"         : ["*.txt", "*.xml"],
@@ -118,9 +122,9 @@ setup(
         "Operating System :: OS Independent",
         "Programming Language :: JavaScript",
         "Programming Language :: Python",
-        "Programming Language :: Python 2",
+        "Programming Language :: Python :: 2",
         "Programming Language :: Python :: 2.7",
-        "Programming Language :: Python 3",
+        "Programming Language :: Python :: 3",
         "Programming Language :: Python :: 3.6",
         "Topic :: Internet :: WWW/HTTP :: Indexing/Search",
         "Topic :: Multimedia :: Graphics",
@@ -142,7 +146,8 @@ setup(
         "scipy",
         "nltk",
         "python-docx",
-        "cherrypy"
+        "cherrypy",
+        "requests"
     ],
     zip_safe = False
 )
