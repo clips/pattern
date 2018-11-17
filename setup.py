@@ -148,7 +148,7 @@ setup(
         "cherrypy",
         "requests"
     ],
-    extra_requires = {
+    extras_require = {
         'mysql': ["mysqlclient"],
     },
     zip_safe = False
