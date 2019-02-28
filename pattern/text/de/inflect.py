@@ -431,31 +431,31 @@ class Verbs(_Verbs):
         """ For a regular verb (base form), returns the forms using a rule-based approach.
         """
         v = verb.lower()
-        # Stem = infinitive minus -en, -ln, -rn.
-        b = b0 = re.sub("en$", "", re.sub("ln$", "l", re.sub("rn$", "r", v)))
         # Split common prefixes.
         x, x1, x2, x3 = "", "", "", ""
         base_verb_found_inseparable, baseverb_found_separable = False, False
         for prefix in prefixes:
             if v.startswith(prefix):
                 if prefix in prefix_separable:
-                    b, x = b[len(prefix):], prefix
+                    b, x = v[len(prefix):], prefix
                     x1 = (" " + x).rstrip()
                     x2 = x + "ge"
                 else:
                     try:
-                        b, x3 = b[len(prefix):], prefix
+                        b, x3 = v[len(prefix):], prefix
                         x2 = prefix
                     except:
-                        print('error:', b, prefix)
+                        print('error:', v, prefix)
                 try:
-                    base_verb = self.lemma(b, parse=False) or self.lemma(b + 'en', parse=False)
+                    base_verb = self.lemma(b, parse=False)
                     assert base_verb
                     baseverb_found_separable = prefix in prefix_separable
                     base_verb_found_inseparable = prefix in prefix_inseparable
                 except:
                     pass
                 break
+        # Stem = infinitive minus -en, -ln, -rn.
+        b = b0 = re.sub("en$", "", re.sub("ln$", "l", re.sub("rn$", "r", v)))
 
         # Present tense 1sg and subjunctive -el: handeln => ich handle, du handlest.
         pl = b.endswith("el") and b[:-2] + "l" or b
