@@ -449,7 +449,7 @@ class Verbs(_Verbs):
                     except:
                         print('error:', b, prefix)
                 try:
-                    base_verb = self.lemma(b, parse=False)
+                    base_verb = self.lemma(b, parse=False) or self.lemma(b + 'en', parse=False)
                     assert base_verb
                     baseverb_found_separable = prefix in prefix_separable
                     base_verb_found_inseparable = prefix in prefix_inseparable
