@@ -2095,11 +2095,8 @@ def tense_id(*args, **kwargs):
         tense, mood = PRESENT, CONDITIONAL
     # Disambiguate aliases: "pl" =>
     # (PRESENT, None, PLURAL, INDICATIVE, IMPERFECTIVE, False).
-    try:
-        return TENSES_ID.get(tense.lower(),
-           TENSES_ID.get((tense, person, number, mood, aspect, negated)))
-    except AttributeError:
-        pass
+    return TENSES_ID.get(tense.lower(),
+        TENSES_ID.get((tense, person, number, mood, aspect, negated)))
 
 tense = tense_id
 
