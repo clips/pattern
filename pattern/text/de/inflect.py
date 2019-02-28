@@ -441,11 +441,8 @@ class Verbs(_Verbs):
                     x1 = (" " + x).rstrip()
                     x2 = x + "ge"
                 else:
-                    try:
-                        b, x3 = v[len(prefix):], prefix
-                        x2 = prefix
-                    except:
-                        print('error:', v, prefix)
+                    b, x3 = v[len(prefix):], prefix
+                    x2 = prefix
                 try:
                     base_verb = self.lemma(b, parse=False)
                     assert base_verb
@@ -453,30 +450,7 @@ class Verbs(_Verbs):
                     base_verb_found_inseparable = prefix in prefix_inseparable
                 except:
                     pass
-                break
-        # Stem = infinitive minus -en, -ln, -rn.
-        b = b0 = re.sub("en$", "", re.sub("ln$", "l", re.sub("rn$", "r", v)))
 
-        # Present tense 1sg and subjunctive -el: handeln => ich handle, du handlest.
-        pl = b.endswith("el") and b[:-2] + "l" or b
-        # Present tense 1pl -el: handeln => wir handeln
-        pw = v.endswith(("ln", "rn")) and v or b + "en"
-        # Present tense ending in -d or -t gets -e:
-        pr = b.endswith(("d", "t")) and b + "e" or b
-        # Present tense 2sg gets -st, unless stem ends with -s or -z.
-        p2 = pr.endswith(("s", "z")) and pr + "t" or pr + "st"
-        # Present participle: spiel + -end, arbeiten + -d:
-        pp = b.endswith(("en", "ln", "rn")) and b + "d" or b + "end"
-        # Past tense regular:
-        pt = encode_sz(pr) + "t"
-        # Past participle: haushalten => hausgehalten
-        ge = (v.startswith(prefix_inseparable) or b.endswith(("r", "t"))) and pt or "ge" + pt
-        ge = x and x + "ge" + pt or ge
-        # Present subjunctive: stem + -e, -est, -en, -et:
-        s1 = encode_sz(pl)
-        # Past subjunctive: past (usually with Umlaut) + -e, -est, -en, -et:
-        s2 = encode_sz(pt)
-        # Construct the lexeme:
         if base_verb_found_inseparable or baseverb_found_separable:
 
             base_inflected = self.lexeme(base_verb, no_duplicates=False)
@@ -506,6 +480,29 @@ class Verbs(_Verbs):
                 for func, form in zip(inflectfunctions, base_inflected):
                     lexeme.extend(func(form))
         else:
+            # Stem = infinitive minus -en, -ln, -rn.
+            b = b0 = re.sub("en$", "", re.sub("ln$", "l", re.sub("rn$", "r", v)))
+
+            # Present tense 1sg and subjunctive -el: handeln => ich handle, du handlest.
+            pl = b.endswith("el") and b[:-2] + "l" or b
+            # Present tense 1pl -el: handeln => wir handeln
+            pw = v.endswith(("ln", "rn")) and v or b + "en"
+            # Present tense ending in -d or -t gets -e:
+            pr = b.endswith(("d", "t")) and b + "e" or b
+            # Present tense 2sg gets -st, unless stem ends with -s or -z.
+            p2 = pr.endswith(("s", "z")) and pr + "t" or pr + "st"
+            # Present participle: spiel + -end, arbeiten + -d:
+            pp = b.endswith(("en", "ln", "rn")) and b + "d" or b + "end"
+            # Past tense regular:
+            pt = encode_sz(pr) + "t"
+            # Past participle: haushalten => hausgehalten
+            ge = (v.startswith(prefix_inseparable) or b.endswith(("r", "t"))) and pt or "ge" + pt
+            ge = x and x + "ge" + pt or ge
+            # Present subjunctive: stem + -e, -est, -en, -et:
+            s1 = encode_sz(pl)
+            # Past subjunctive: past (usually with Umlaut) + -e, -est, -en, -et:
+            s2 = encode_sz(pt)
+            # Construct the lexeme:
             lexeme = a = [
                 v,
                 pl + "e" + x1, p2 + x1, pr + "t" + x1, pw + x1, pr + "t" + x1, pp,                 # present
