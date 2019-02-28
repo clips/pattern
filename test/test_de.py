@@ -173,6 +173,8 @@ class TestInflection(unittest.TestCase):
         # Assert tense recognition.
         self.assertTrue((de.PRESENT, 3, de.SG) in de.tenses("ist"))
         self.assertTrue("2sg" in de.tenses("bist"))
+        self.assertTrue((de.PAST, 2, de.SINGULAR) in de.tenses('gingst vor'))
+        self.assertTrue((de.PRESENT, 2, de.SINGULAR, de.SUBJUNCTIVE) in de.tenses('gehest vor'))
         print("pattern.de.tenses()")
 
 #---------------------------------------------------------------------------------------------------

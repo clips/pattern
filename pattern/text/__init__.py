@@ -2095,8 +2095,11 @@ def tense_id(*args, **kwargs):
         tense, mood = PRESENT, CONDITIONAL
     # Disambiguate aliases: "pl" =>
     # (PRESENT, None, PLURAL, INDICATIVE, IMPERFECTIVE, False).
-    return TENSES_ID.get(tense.lower(),
+    try:
+        return TENSES_ID.get(tense.lower(),
            TENSES_ID.get((tense, person, number, mood, aspect, negated)))
+    except AttributeError:
+        pass
 
 tense = tense_id
 
@@ -2177,7 +2180,7 @@ class Verbs(lazydict):
         if parse is True: # rule-based
             return self.find_lemma(verb)
 
-    def lexeme(self, verb, parse=True):
+    def lexeme(self, verb, parse=True, no_duplicates=True):
         """ Returns a list of all possible inflections of the given verb.
         """
         a = []
@@ -2186,9 +2189,14 @@ class Verbs(lazydict):
             a = [x for x in self[b] if x != ""]
         elif parse is True: # rule-based
             a = self.find_lexeme(b)
-        u = []
-        [u.append(x) for x in a if x not in u]
-        return u
+
+        if no_duplicates:
+            u = []
+
+            [u.append(x) for x in a if x not in u]
+            return u
+        else:
+            return a
 
     def conjugate(self, verb, *args, **kwargs):
         """ Inflects the verb and returns the given tense (or None).

@@ -434,13 +434,29 @@ class Verbs(_Verbs):
         # Stem = infinitive minus -en, -ln, -rn.
         b = b0 = re.sub("en$", "", re.sub("ln$", "l", re.sub("rn$", "r", v)))
         # Split common prefixes.
-        x, x1, x2 = "", "", ""
-        for prefix in prefix_separable:
+        x, x1, x2, x3 = "", "", "", ""
+        base_verb_found_inseparable, baseverb_found_separable = False, False
+        for prefix in prefixes:
             if v.startswith(prefix):
-                b, x = b[len(prefix):], prefix
-                x1 = (" " + x).rstrip()
-                x2 = x + "ge"
+                if prefix in prefix_separable:
+                    b, x = b[len(prefix):], prefix
+                    x1 = (" " + x).rstrip()
+                    x2 = x + "ge"
+                else:
+                    try:
+                        b, x3 = b[len(prefix):], prefix
+                        x2 = prefix
+                    except:
+                        print('error:', b, prefix)
+                try:
+                    base_verb = self.lemma(b, parse=False)
+                    assert base_verb
+                    baseverb_found_separable = prefix in prefix_separable
+                    base_verb_found_inseparable = prefix in prefix_inseparable
+                except:
+                    pass
                 break
+
         # Present tense 1sg and subjunctive -el: handeln => ich handle, du handlest.
         pl = b.endswith("el") and b[:-2] + "l" or b
         # Present tense 1pl -el: handeln => wir handeln
@@ -450,7 +466,7 @@ class Verbs(_Verbs):
         # Present tense 2sg gets -st, unless stem ends with -s or -z.
         p2 = pr.endswith(("s", "z")) and pr + "t" or pr + "st"
         # Present participle: spiel + -end, arbeiten + -d:
-        pp = v.endswith(("en", "ln", "rn")) and v + "d" or v + "end"
+        pp = b.endswith(("en", "ln", "rn")) and b + "d" or b + "end"
         # Past tense regular:
         pt = encode_sz(pr) + "t"
         # Past participle: haushalten => hausgehalten
@@ -461,14 +477,43 @@ class Verbs(_Verbs):
         # Past subjunctive: past (usually with Umlaut) + -e, -est, -en, -et:
         s2 = encode_sz(pt)
         # Construct the lexeme:
-        lexeme = a = [
-            v,
-            pl + "e" + x1, p2 + x1, pr + "t" + x1, pw + x1, pr + "t" + x1, pp,                 # present
-            pt + "e" + x1, pt + "est" + x1, pt + "e" + x1, pt + "en" + x1, pt + "et" + x1, ge, # past
-            b + "e" + x1, pr + "t" + x1, x + pw,                                               # imperative
-            s1 + "e" + x1, s1 + "est" + x1, s1 + "en" + x1, s1 + "et" + x1,                    # subjunctive I
-            s2 + "e" + x1, s2 + "est" + x1, s2 + "en" + x1, s2 + "et" + x1                     # subjunctive II
-        ]
+        if base_verb_found_inseparable or baseverb_found_separable:
+
+            base_inflected = self.lexeme(base_verb, no_duplicates=False)
+            if base_verb_found_inseparable:
+                lexeme = a = list(map(lambda t: t.startswith('ge') and x3 + t[2:] or x3 + t, base_inflected))
+            else:
+                keep = lambda t: [t]
+                postfix_prefix = lambda t: [t + x1]
+                prefix_prefix = lambda t: [x + t]
+                postfix_add_dummy = lambda t: postfix_prefix(t) + [None]
+                # desired output for German:
+                # ['inf',
+                # '1sg', '2sg', '3sg', '1pl', '2pl', 'part', '
+                # 1sgp', '2sgp',  '3sgp', '1ppl', '2ppl', 'ppart',
+                # '2sg!', '2pl!', '1pl!',
+                # '1sg?', '2sg?', '1pl?', '2pl?', '
+                # 1sgp?', '2sgp?', '1ppl?', '2ppl?']
+                inflectfunctions = [keep,
+                    postfix_prefix, postfix_prefix, postfix_prefix, postfix_prefix, postfix_prefix,
+                                         prefix_prefix,                 # present
+                    postfix_prefix, postfix_prefix, postfix_prefix, postfix_prefix, postfix_prefix, lambda t: [x2 + t], # past
+                    postfix_prefix, postfix_prefix, postfix_prefix,                                            # imperative
+                    postfix_prefix, postfix_prefix, postfix_prefix, postfix_prefix,                     # subjunctive I
+                    postfix_prefix, postfix_prefix, postfix_prefix, postfix_prefix,                      # subjunctive
+                ]
+                lexeme = a = []
+                for func, form in zip(inflectfunctions, base_inflected):
+                    lexeme.extend(func(form))
+        else:
+            lexeme = a = [
+                v,
+                pl + "e" + x1, p2 + x1, pr + "t" + x1, pw + x1, pr + "t" + x1, pp,                 # present
+                pt + "e" + x1, pt + "est" + x1, pt + "e" + x1, pt + "en" + x1, pt + "et" + x1, ge, # past
+                b + "e" + x1, pr + "t" + x1, x + pw,                                               # imperative
+                s1 + "e" + x1, s1 + "est" + x1, s1 + "en" + x1, s1 + "et" + x1,                    # subjunctive I
+                s2 + "e" + x1, s2 + "est" + x1, s2 + "en" + x1, s2 + "et" + x1                     # subjunctive II
+            ]
         # Encode Eszett (ß) and attempt to retrieve from the lexicon.
         # Decode Eszett for present and imperative.
         if encode_sz(v) in self:
