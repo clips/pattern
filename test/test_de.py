@@ -155,8 +155,9 @@ class TestInflection(unittest.TestCase):
           ("sein", "wären",   (de.PAST, 1, de.PLURAL, de.SUBJUNCTIVE)),
           ("sein", "wäret",   (de.PAST, 2, de.PLURAL, de.SUBJUNCTIVE)),
           ("sein", "wären",   (de.PAST, 3, de.PLURAL, de.SUBJUNCTIVE)),
-          ("vorgehen", "gingst vor", (de.PAST, 2, de.SINGULAR))
-        ):
+          ("vorgehen", "gingst vor", (de.PAST, 2, de.SINGULAR)),
+          ("betreffen", "betroffen", (de.PAST, de.PARTICIPLE))
+            ):
             self.assertEqual(de.conjugate(v1, tense), v2)
         print("pattern.de.conjugate()")
 
