@@ -666,7 +666,7 @@ def smoothrange(a=None, b=None, n=10):
         a, b = 0, a
     if a == b:
         yield float(a)
-        raise StopIteration
+        return
     r = _multiple(b - a)
     t = _multiple(r / (n - 1), round=True)
     a = floor(a / t) * t
