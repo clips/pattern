@@ -444,7 +444,7 @@ class Verbs(_Verbs):
                     b, x3 = v[len(prefix):], prefix
                     x2 = prefix
                 try:
-                    base_verb = self.lemma(b, parse=False)
+                    base_verb = self.lemma(b, parse=True)
                     assert base_verb
                     baseverb_found_separable = prefix in prefix_separable
                     base_verb_found_inseparable = prefix in prefix_inseparable
