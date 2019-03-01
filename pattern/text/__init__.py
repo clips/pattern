@@ -2210,7 +2210,10 @@ class Verbs(lazydict):
         i1 = self._format.get(id)
         i2 = self._format.get(self._default.get(id))
         i3 = self._format.get(self._default.get(self._default.get(id)))
-        b = self.lemma(verb, parse=kwargs.get("parse", True))
+        if kwargs.get('allow_inflected', True):
+            b = self.lemma(verb, parse=kwargs.get("parse", True))
+        else:
+            b = verb
         v = []
         # Get the verb lexeme and return the requested index.
         if b in self:
