@@ -364,6 +364,13 @@ prefix_separable = (
 )
 prefixes = prefix_inseparable + prefix_separable
 
+# verbs with an initial sequence that looks like it might be a prefix of either category
+# these need to be excluded even when they are regular
+faux_prefix_verbs = (
+    'geiern', 'geifern', 'betteln', 'bersten', 'bechern', 'entern', 'hindern',
+    'zurren', 'zucken', 'zupfen', 'beichten', 'beißen', 'einen', 'mitteln', 'zerren'
+
+) # probably more
 
 def encode_sz(s):
     return s.replace("ß", "ss")
