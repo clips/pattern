@@ -622,7 +622,7 @@ class Database(object):
             except Exception as e:
                 # Create the database if it doesn't exist yet.
                 if "unknown database" not in str(e).lower():
-                    raise DatabaseConnectionError(e[1]) # Wrong host, username and/or password.
+                    raise DatabaseConnectionError(e.args[1]) # Wrong host, username and/or password.
                 connection = MySQLdb.connect(self.host, self.username, self.password)
                 cursor = connection.cursor()
                 cursor.execute("create database if not exists `%s`;" % self.name)
