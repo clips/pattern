@@ -104,9 +104,13 @@ class TestInflection(unittest.TestCase):
         for v1, v2 in de.inflect.verbs.inflections.items():
             if de.inflect.verbs.find_lemma(v1) == v2:
                 i += 1
+            else:
+                pass
             n += 1
         self.assertTrue(float(i) / n > 0.86)
-        print("pattern.de.inflect.verbs.find_lemma()")
+        rate_correct = float(i) / n
+        self.assertTrue(float(i) / n > 0.86)
+        print("pattern.de.inflect.verbs.find_lemma() - hit rate {}".format(rate_correct))
 
     def test_find_lexeme(self):
         # Assert the accuracy of the verb conjugation algorithm.
