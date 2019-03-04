@@ -768,11 +768,15 @@ class _TestQuery(object):
             "select persons.* from `persons` where persons.age<30 or persons.name='john';",
             [(1, "john", 30, 2),
              (2, "jack", 20, 2)]),
-          (dict(fields=["name", "gender.name"], relations=[db.relation("gender", "id", "gender")]),
+          isinstance(self, TestMySQLQuery) and (dict(fields=["name", "gender.name"], relations=[db.relation("gender", "id", "gender")]),
             "select persons.name, gender.name from `persons` left join `gender` on persons.gender=gender.id;",
             [("jane", "female"),
              ("john", "male"),
-             ("jack", "male")]),
+             ("jack", "male")]) or (dict(fields=["name", "gender.name"], relations=[db.relation("gender", "id", "gender")]),
+            "select persons.name, gender.name from `persons` left join `gender` on persons.gender=gender.id;",
+            [("john", "male"),
+             ("jack", "male"),
+             ("jane", "female"),]),
           (dict(fields=["name", "age"], sort="name"),
             "select persons.name, persons.age from `persons` order by persons.name asc;",
             [("jack", 20),
@@ -799,24 +803,22 @@ class _TestQuery(object):
             v = self.db.persons.search(**kwargs)
             v_rows = v.rows()
             v_sql = v.SQL()
-            try:
-                self.assertEqual(v.SQL(), sql)
-                self.assertEqual(v.rows(), rows)
-            except Exception as e:
-                pass
+            self.assertEqual(v.SQL(), sql)
+            self.assertEqual(v.rows(), rows)
+
+        v_failing = self.db.persons.search(**dict(fields=["name", "gender.name"], relations=[db.relation("gender", "id", "gender")]))
+        v_failing_rows = v_failing.rows()
         # Assert Database.link() permanent relations.
         v = self.db.persons.search(fields=["name", "gender.name"])
         v.aliases["gender.name"] = "gender"
-        try:
-            self.db.link("persons", "gender", "gender", "id", join=db.LEFT)
-            self.assertEqual(v.SQL(),
-                "select persons.name, gender.name as gender from `persons` left join `gender` on persons.gender=gender.id;")
-            self.assertEqual(set(v.rows()),
-                set([('john', 'male'),
-                 ('jack', 'male'),
-                 ('jane', 'female')]))
-        except Exception as e:
-            pass
+        self.db.link("persons", "gender", "gender", "id", join=db.LEFT)
+        self.assertEqual(v.SQL(),
+            "select persons.name, gender.name as gender from `persons` left join `gender` on persons.gender=gender.id;")
+        self.assertEqual(set(v.rows()),
+            set([('jane', 'female'),
+                 ('john', 'male'),
+                 ('jack', 'male')]))
+
         print("pattern.db.Table.search()")
         print("pattern.db.Table.Query")
 
