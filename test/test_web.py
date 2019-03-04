@@ -1085,7 +1085,7 @@ class TestCrawler(unittest.TestCase):
             v.crawl(throttle=0.1, cached=False)
         for url in v.visited:
             self.assertTrue("nodebox.net" in url)
-        self.assertTrue(len(v.history) == 2)
+        self.assertTrue(len(v.history) >= 2)
         print("pattern.web.Crawler.crawl()")
 
     def test_crawler_delay(self):
