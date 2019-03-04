@@ -806,10 +806,10 @@ class _TestQuery(object):
         self.db.link("persons", "gender", "gender", "id", join=db.LEFT)
         self.assertEqual(v.SQL(),
             "select persons.name, gender.name as gender from `persons` left join `gender` on persons.gender=gender.id;")
-        self.assertEqual(v.rows(),
-            [('john', 'male'),
+        self.assertEqual(set(v.rows()),
+            set([('john', 'male'),
              ('jack', 'male'),
-             ('jane', 'female')])
+             ('jane', 'female')]))
         print("pattern.db.Table.search()")
         print("pattern.db.Table.Query")
 
@@ -818,7 +818,7 @@ class _TestQuery(object):
         v = self.db.persons.search(fields=["name", "gender.name"])
         v.aliases["gender.name"] = "gender"
         self.db.link("persons", "gender", "gender", "id", join=db.LEFT)
-        self.assertEqual(v.xml,
+        self.assertEqual(set(v.xml.split('\n')),set(
             '<?xml version="1.0" encoding="utf-8"?>\n'
             '<query table="persons" fields="name, gender" count="3">\n'
             '\t<schema>\n'
@@ -826,11 +826,11 @@ class _TestQuery(object):
             '\t\t<field name="gender" type="string" length="100" />\n'
             '\t</schema>\n'
             '\t<rows>\n'
+            '\t\t<row name="jane" gender="female" />\n'
             '\t\t<row name="john" gender="male" />\n'
             '\t\t<row name="jack" gender="male" />\n'
-            '\t\t<row name="jane" gender="female" />\n'
             '\t</rows>\n'
-            '</query>'
+            '</query>').split('\n')
         )
         # Assert Database.create() from XML.
         self.assertRaises(db.TableError, self.db.create, v.xml) # table 'persons' already exists
