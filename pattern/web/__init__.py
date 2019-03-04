@@ -4178,8 +4178,11 @@ class Crawler(object):
         if link.url not in self.visited:
             t = time.time()
             url = URL(link.url)
-            if base(link.url) in self.history:
-                if time.time() - self.history[base(link.url)] < self.delay:
+            base_link_url = base(link.url) in self.history and base(link.url) or base(link.referrer) in self.history and base(link.referrer) or None # in self.history  or self.history.get(base(link.referrer), None)
+
+            if base_link_url in self.history:
+                if time.time() - self.history[base_link_url] < self.delay:
+                    self.push(link)
                     return False
             if url.mimetype == "text/html":
                 try:
