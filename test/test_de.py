@@ -160,19 +160,19 @@ class TestInflection(unittest.TestCase):
           ("sein", "wären",   (de.PAST, 1, de.PLURAL, de.SUBJUNCTIVE)),
           ("sein", "wäret",   (de.PAST, 2, de.PLURAL, de.SUBJUNCTIVE)),
           ("sein", "wären",   (de.PAST, 3, de.PLURAL, de.SUBJUNCTIVE)),
-          ("vorgehen", "gingst vor", (de.PAST, 2, de.SINGULAR)),
-          ("betreffen", "betroffen", (de.PAST, de.PARTICIPLE)),
-          ("umbenennen", "benanntest um", (de.PAST, 2, de.SINGULAR)),
-          ("einberufen", 'berief ein', (de.PAST, 3, de.SINGULAR)),
-          ('entern', 'geentert', (de.PAST, de.PARTICIPLE)),
-          ('zurren', 'zurrt', (de.PRESENT, 3, de.SINGULAR)),
-          ('bechern', 'gebechert', (de.PAST, de.PARTICIPLE)),
-          ('drangsalieren', 'drangsaliert', (de.PAST, de.PARTICIPLE)),
-          ('stapfen', 'gestapft', (de.PAST, de.PARTICIPLE)),
-          ('fristen', 'gefristet', (de.PAST, de.PARTICIPLE)),
-          ('gieren', 'gegiert', (de.PAST, de.PARTICIPLE)),
-          ('angeln', 'angeltest', (de.PAST, 2, de.SINGULAR)),
-          ('geifern', 'gegeifert', (de.PAST, de.PARTICIPLE))
+          ("vorgehen", "gingst vor", (de.PAST, 2, de.SINGULAR)), # separable prefix, irregular base
+          ("betreffen", "betroffen", (de.PAST, de.PARTICIPLE)), # inseparable prefix, irregular base
+          ("umbenennen", "benanntest um", (de.PAST, 2, de.SINGULAR)), # stacked prefixes, irregular base
+          ("einberufen", 'berief ein', (de.PAST, 3, de.SINGULAR)), # stacked prefixes, irregular base
+          ('entern', 'geentert', (de.PAST, de.PARTICIPLE)), # looks like prefix ent-
+          ('zurren', 'zurrt', (de.PRESENT, 3, de.SINGULAR)), # looks like prefix zu-
+          ('bechern', 'gebechert', (de.PAST, de.PARTICIPLE)), # looks like prefix be-
+          ('drangsalieren', 'drangsaliert', (de.PAST, de.PARTICIPLE)), # blocking ge-prefixation
+          ('stapfen', 'gestapft', (de.PAST, de.PARTICIPLE)), #
+          ('fristen', 'gefristet', (de.PAST, de.PARTICIPLE)), # might be misinterpreted as past form
+          ('gieren', 'gegiert', (de.PAST, de.PARTICIPLE)), # ends in -ieren but doesn't block ge-prefixation
+          ('angeln', 'angeltest', (de.PAST, 2, de.SINGULAR)), # looks like prefix an-
+          ('geifern', 'gegeifert', (de.PAST, de.PARTICIPLE)), # looks like prefix ge-
             ):
             self.assertEqual(de.conjugate(v1, tense, allow_inflected=False), v2,)
         print("pattern.de.conjugate()")
