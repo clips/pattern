@@ -164,7 +164,6 @@ class TestInflection(unittest.TestCase):
           ("betreffen", "betroffen", (de.PAST, de.PARTICIPLE)),
           ("umbenennen", "benanntest um", (de.PAST, 2, de.SINGULAR)),
           ("einberufen", 'berief ein', (de.PAST, 3, de.SINGULAR)),
-          ('vorentwirren', 'entwirrte vor', (de.PAST, 1, de.SINGULAR)),
           ('entern', 'geentert', (de.PAST, de.PARTICIPLE)),
           ('zurren', 'zurrt', (de.PRESENT, 3, de.SINGULAR)),
           ('bechern', 'gebechert', (de.PAST, de.PARTICIPLE)),
@@ -172,7 +171,8 @@ class TestInflection(unittest.TestCase):
           ('stapfen', 'gestapft', (de.PAST, de.PARTICIPLE)),
           ('fristen', 'gefristet', (de.PAST, de.PARTICIPLE)),
           ('gieren', 'gegiert', (de.PAST, de.PARTICIPLE)),
-
+          ('angeln', 'angeltest', (de.PAST, 2, de.SINGULAR)),
+          ('geifern', 'gegeifert', (de.PAST, de.PARTICIPLE))
             ):
             self.assertEqual(de.conjugate(v1, tense, allow_inflected=False), v2,)
         print("pattern.de.conjugate()")

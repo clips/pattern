@@ -367,14 +367,15 @@ prefixes = prefix_inseparable + prefix_separable
 # verbs with an initial sequence that looks like it might be a prefix of either category
 # these need to be excluded even when they are regular
 faux_prefix_verbs = (
-    'geiern', 'geifern', 'betteln', 'bersten', 'bechern', 'entern', 'hindern',
-    'zurren', 'zucken', 'zupfen', 'beichten', 'beißen', 'einen', 'mitteln', 'zerren'
-
+    'geiern', 'geifern', 'betteln', 'bersten', 'bechern', 'entern', 'hindern', 'einigen',
+    'zurren', 'zucken', 'zupfen', 'beichten', 'beißen', 'einen', 'mitteln', 'zerren', 'zuenden', # zünden
+    'zuzeln', 'gellen', 'zuechten', # züchten
+    'ankern', 'angeln'
 ) # probably more
 
 faux_latinate = (
     'gieren', 'stieren'
-) # verbs that look like they might have -ieren suffix that blocks ge- prefixation
+) # verbs that look like they might have -ieren suffix that blocks ge- prefixation, but don't
 
 def encode_sz(s):
     return s.replace("ß", "ss")
@@ -507,7 +508,9 @@ class Verbs(_Verbs):
             # Past tense regular:
             pt = encode_sz(pr) + "t"
             # Past participle: haushalten => hausgehalten
-            ge = (v.startswith(prefix_inseparable) and not v in faux_prefix_verbs or (b.endswith(("ier")) and not v in faux_latinate)) and pt or "ge" + pt
+            ge = (v.startswith(prefix_inseparable) and not v in faux_prefix_verbs or
+                  (b.endswith(("ier")) \
+                    and not v in faux_latinate)) and pt or "ge" + pt
             ge = x and x + "ge" + pt or ge
             # Present subjunctive: stem + -e, -est, -en, -et:
             s1 = encode_sz(pl)
