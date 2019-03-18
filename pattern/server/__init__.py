@@ -1524,7 +1524,7 @@ class Template(object):
             a = Template._cache[k]
         # Caching disabled / template not yet cached.
         if cached is False or b is False:
-            a = "".join(static(p, mimetype="text/html")) if os.path.exists(p) else path
+            a = "".join(x.decode() for x in static(p, mimetype="text/html")) if os.path.exists(p) else path
             a = self._compile(a)
         # Caching enabled + template not yet cached.
         if cached is True and b is False:
