@@ -45,6 +45,12 @@ import collections
 import sqlite3 as sqlite
 import cherrypy as cp
 
+try: # Python 2.x vs 3.x
+    from urllib import quote_plus, unquote_plus
+except ImportError:
+    from urllib.parse import quote_plus, unquote_plus
+
+
 try:
     import json
     json.encoder.FLOAT_REPR = lambda f: ("%.2f" % f)
@@ -147,11 +153,11 @@ def decode_entities(string):
 
 
 def encode_url(string):
-    return urllib.quote_plus(string.encode("utf-8")) # "black/white" => "black%2Fwhite".
+    return quote_plus(string.encode("utf-8")) # "black/white" => "black%2Fwhite".
 
 
 def decode_url(string):
-    return urllib.unquote_plus(string)
+    return unquote_plus(string)
 
 _TEMPORARY_FILES = []
 
