@@ -1537,6 +1537,8 @@ class Template(object):
         """ Returns the given value as a string (empty string for None).
         """
         # Used in Template._render().
+        if isinstance(v, bytes):
+            v = v.decode('utf-8')
         v = "%s" % (v if v is not None else "")
         v = v.replace("\n", "\n" + indent) if indent else v
         return v
