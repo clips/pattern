@@ -944,9 +944,9 @@ class TestClassifier(unittest.TestCase):
         # Assert the accuracy of the classifier.
         A, P, R, F, o = vector.NB.test(self.model, folds=10, method=vector.BERNOUILLI)
         #print(A, P, R, F, o)
-        self.assertTrue(P >= 0.88)
-        self.assertTrue(R >= 0.89)
-        self.assertTrue(F >= 0.88)
+        self.assertGreaterEqual(P, 0.88)
+        self.assertGreaterEqual(R, 0.89)
+        self.assertGreaterEqual(F, 0.88)
 
     def test_igtree(self):
         # Assert information gain tree classification.
@@ -954,9 +954,9 @@ class TestClassifier(unittest.TestCase):
         # Assert the accuracy of the classifier.
         A, P, R, F, o = vector.IGTREE.test(self.model, folds=10, method=vector.GAINRATIO)
         #print(A, P, R, F, o)
-        self.assertTrue(P >= 0.87)
-        self.assertTrue(R >= 0.88)
-        self.assertTrue(F >= 0.89)
+        self.assertGreaterEqual(P, 0.87)
+        self.assertGreaterEqual(R, 0.88)
+        self.assertGreaterEqual(F, 0.89)
 
     def test_knn(self):
         # Assert nearest-neighbor classification.
@@ -964,9 +964,9 @@ class TestClassifier(unittest.TestCase):
         # Assert the accuracy of the classifier.
         A, P, R, F, o = vector.KNN.test(self.model, folds=10, k=2, distance=vector.COSINE)
         #print(A, P, R, F, o)
-        self.assertTrue(P >= 0.91)
-        self.assertTrue(R >= 0.92)
-        self.assertTrue(F >= 0.92)
+        self.assertGreaterEqual(P, 0.91)
+        self.assertGreaterEqual(R, 0.92)
+        self.assertGreaterEqual(F, 0.92)
 
     def test_slp(self):
         random.seed(1)
@@ -975,9 +975,9 @@ class TestClassifier(unittest.TestCase):
         # Assert the accuracy of the classifier.
         A, P, R, F, o = vector.SLP.test(self.model, folds=10, iterations=3)
         #print(A, P, R, F, o)
-        self.assertTrue(P >= 0.90)
-        self.assertTrue(R >= 0.91)
-        self.assertTrue(F >= 0.91)
+        self.assertGreaterEqual(P, 0.90)
+        self.assertGreaterEqual(R, 0.91)
+        self.assertGreaterEqual(F, 0.91)
 
     def test_svm(self):
         try:
@@ -990,9 +990,9 @@ class TestClassifier(unittest.TestCase):
         # Assert the accuracy of the classifier.
         A, P, R, F, o = vector.SVM.test(self.model, folds=10, type=vector.SVC, kernel=vector.LINEAR)
         #print(A, P, R, F, o)
-        self.assertTrue(P >= 0.93)
-        self.assertTrue(R >= 0.93)
-        self.assertTrue(F >= 0.93)
+        self.assertGreaterEqual(P, 0.93)
+        self.assertGreaterEqual(R, 0.93)
+        self.assertGreaterEqual(F, 0.93)
 
     def test_liblinear(self):
         # If LIBLINEAR can be loaded,
