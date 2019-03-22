@@ -490,7 +490,7 @@ class TestSearchEngine(unittest.TestCase):
             return
         t = time.time()
         e = Engine(license=license, throttle=0.25, language="en")
-        v = e.search(query, type, start=1, count=1, cached=False)
+        v = e.search(query, type, start=1, count=1, cached=False, timeout=30)
         t = time.time() - t
         self.assertTrue(t >= 0.25)
         self.assertEqual(e.license, license)
