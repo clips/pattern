@@ -88,6 +88,18 @@ class TestUtilityFunctions(unittest.TestCase):
             self.assertEqual(vector.shi(a), b)
         print("pattern.vector.shi()")
 
+    def test_mix(self):
+        # Assert mix() generate as expected, merging lists with the given interval
+        self.assertEqual(
+            list(vector.mix([[1, 2, 3, 4], ["a", "b"]], n=2)),
+            [1, 2, "a", 3, 4, "b"])
+
+    def test_bin(self):
+        # Assert bin() returns expected dict, with keys as defined by the param `key`
+        self.assertEqual(
+            vector.bin([["a", 1], ["a", 2], ["b", 3]], key=lambda x: x[0]),
+            {"a": [["a", 1], ["a", 2]], "b": [["b", 3]]})
+
     def test_shuffled(self):
         # Assert shuffled() <=> sorted().
         v1 = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
