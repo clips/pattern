@@ -3,7 +3,7 @@ language: python
 dist: precise
 
 python:
-  - "3.6"
+  - "3.6.5"
 
 before_install:
   - export TZ=Europe/Brussels
@@ -11,6 +11,8 @@ before_install:
   - bash miniconda.sh -b -p $HOME/miniconda
   - export PATH="$HOME/miniconda/bin:$PATH"
   - conda update --yes conda
+  - conda create --yes --name pattern python=$TRAVIS_PYTHON_VERSION
+  - source activate pattern
   - conda install --yes numpy scipy
   - pip install --quiet pytest pytest-cov pytest-xdist chardet
 
