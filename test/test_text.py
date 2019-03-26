@@ -9,6 +9,7 @@ from builtins import map, zip, filter
 from builtins import object, range
 
 import os
+from random import seed
 import sys
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), ".."))
 import unittest
@@ -92,6 +93,7 @@ class TestModel(unittest.TestCase):
     def test_model(self):
         # Assert SLP language model.
         v = text.Model()
+        seed(0) # Reset RNG seed set by current time inside the constructor above
         for i in range(2):
             v.train("black", "JJ", previous=("the", "DT"), next=("cat", "NN"))
             v.train("on", "IN", previous=("sat", "VBD"), next=("the", "DT"))
