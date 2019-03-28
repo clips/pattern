@@ -2170,6 +2170,11 @@ class Verbs(lazydict):
         """
         if dict.__len__(self) == 0:
             self.load()
+        if self._language == 'de' and len(verb.split()) > 1:
+            # allow to find base for prefix forms in split representation,
+            # e. g. 'nimmst an' -> 'annehmen'
+            verb = verb.split()
+            return self.lemma(''.join(verb[1:]  + verb[:1]), parse=parse)
         if verb.lower() in self._inverse:
             return self._inverse[verb.lower()]
         if verb in self._inverse:
