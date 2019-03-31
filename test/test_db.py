@@ -63,7 +63,7 @@ def create_db_sqlite():
         password = PASSWORD)
 
     # Drop all tables first
-    for table in list(DB_MYSQL.tables):
+    for table in list(DB_SQLITE.tables):
         DB_SQLITE.drop(table)
 
     return DB_SQLITE
