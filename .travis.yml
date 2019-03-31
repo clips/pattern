@@ -3,15 +3,13 @@ language: python
 dist: precise
 
 python:
+  - "2.7"
   - "3.6"
+  - "3.7"
 
 before_install:
+  # Define TZ as some tests rely on timezone
   - export TZ=Europe/Brussels
-  - if [ ${TRAVIS_PYTHON_VERSION:0:1} == "2" ]; then wget http://repo.continuum.io/miniconda/Miniconda-latest-Linux-x86_64.sh -O miniconda.sh; else wget http://repo.continuum.io/miniconda/Miniconda3-latest-Linux-x86_64.sh -O miniconda.sh; fi
-  - bash miniconda.sh -b -p $HOME/miniconda
-  - export PATH="$HOME/miniconda/bin:$PATH"
-  - conda update --yes conda
-  - conda install --yes numpy scipy
   - pip install --quiet pytest pytest-cov pytest-xdist chardet
 
 install:
