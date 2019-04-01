@@ -206,9 +206,12 @@ class TestParser(unittest.TestCase):
 
     def test_find_lemmata(self):
         # Assert lemmata for nouns, adjectives and verbs.
-        v = de.parser.find_lemmata([["Ich", "PRP"], ["sage", "VB"], ["schöne", "JJ"], ["Dinge", "NNS"]])
+        v = de.parser.find_lemmata([['Man', 'PRP'], ['nimmt an', 'VB'], [',', 'PUNC'], ["ich", "PRP"], ["sage", "VB"], ["schöne", "JJ"], ["Dinge", "NNS"]])
         self.assertEqual(v, [
-            ["Ich", "PRP", "ich"],
+            ['Man', 'PRP', 'man'],
+            ['nimmt an', 'VB', 'annehmen'],
+            [',', 'PUNC', ','],
+            ["ich", "PRP", "ich"],
             ["sage", "VB", "sagen"],
             ["schöne", "JJ", "schön"],
             ["Dinge", "NNS", "ding"]])
