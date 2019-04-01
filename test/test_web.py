@@ -533,6 +533,7 @@ class TestSearchEngine(unittest.TestCase):
     def test_search_bing(self):
         self._test_search_engine("Bing", *self.api["Bing"])
 
+    @unittest.skip('Test fails unpredictably - call limit issue?')
     def test_search_twitter(self):
         self._test_search_engine("Twitter", *self.api["Twitter"])
 
