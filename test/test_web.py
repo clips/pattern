@@ -533,9 +533,19 @@ class TestSearchEngine(unittest.TestCase):
     def test_search_bing(self):
         self._test_search_engine("Bing", *self.api["Bing"])
 
-    @unittest.skip('Test fails unpredictably - call limit issue?')
     def test_search_twitter(self):
-        self._test_search_engine("Twitter", *self.api["Twitter"])
+        n_tries = 5
+        for i in range(n_tries):
+            try:
+                self._test_search_engine("Twitter", *self.api["Twitter"])
+                break
+            except AssertionError:
+                if i < n_tries - 1:
+                    # Sleep for a moment to try again
+                    time.sleep(30)
+                    pass
+                else:
+                    raise
 
     @unittest.skip('Mediawiki/Wikipedia API or appearance changed')
     def test_search_wikipedia(self):
@@ -1086,7 +1096,7 @@ class TestCrawler(unittest.TestCase):
             v.crawl(throttle=0.1, cached=False)
         for url in v.visited:
             self.assertTrue("nodebox.net" in url)
-        self.assertTrue(len(v.history) >= 2)
+        self.assertTrue(len(v.history) == 2)
         print("pattern.web.Crawler.crawl()")
 
     def test_crawler_delay(self):
