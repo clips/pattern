@@ -63,7 +63,7 @@ def create_db_sqlite():
         password = PASSWORD)
 
     # Drop all tables first
-    for table in list(DB_MYSQL.tables):
+    for table in list(DB_SQLITE.tables):
         DB_SQLITE.drop(table)
 
     return DB_SQLITE
@@ -768,8 +768,8 @@ class _TestQuery(object):
             "select persons.* from `persons` where persons.age<30 or persons.name='john';",
             [(1, "john", 30, 2),
              (2, "jack", 20, 2)]),
-          (dict(fields=["name", "gender.name"], relations=[db.relation("gender", "id", "gender")]),
-            "select persons.name, gender.name from `persons` left join `gender` on persons.gender=gender.id;",
+          (dict(fields=["name", "gender.name"], relations=[db.relation("gender", "id", "gender")], sort=["persons.id"]),
+            "select persons.name, gender.name from `persons` left join `gender` on persons.gender=gender.id order by persons.id asc;",
             [("john", "male"),
              ("jack", "male"),
              ("jane", "female")]),
