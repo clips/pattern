@@ -62,7 +62,7 @@ is_vowel = lambda ch: ch in VOWELS
 # Masculine is the most common, so it is the default for all functions.
 MASCULINE, FEMININE, NEUTER, PLURAL = \
     MALE, FEMALE, NEUTRAL, PLURAL = \
-        M, F, N, PL = "m", "f", "n", "p"
+    M, F, N, PL = "m", "f", "n", "p"
 
 # Inflection role.
 # - nom = subject, "Der Hund bellt" (the dog barks).
@@ -73,17 +73,25 @@ NOMINATIVE, ACCUSATIVE, DATIVE, GENITIVE = SUBJECT, OBJECT, INDIRECT, PROPERTY =
     "nominative", "accusative", "dative", "genitive"
 
 article_definite = {
-    ("m", "nom"): "der", ("f", "nom"): "die", ("n", "nom"): "das", ("p", "nom"): "die",
-    ("m", "acc"): "den", ("f", "acc"): "die", ("n", "acc"): "das", ("p", "acc"): "die",
-    ("m", "dat"): "dem", ("f", "dat"): "der", ("n", "dat"): "dem", ("p", "dat"): "den",
-    ("m", "gen"): "des", ("f", "gen"): "der", ("n", "gen"): "des", ("p", "gen"): "der",
+    ("m", "nom"): "der", ("f", "nom"): "die", ("n", "nom"): "das",
+    ("p", "nom"): "die",
+    ("m", "acc"): "den", ("f", "acc"): "die", ("n", "acc"): "das",
+    ("p", "acc"): "die",
+    ("m", "dat"): "dem", ("f", "dat"): "der", ("n", "dat"): "dem",
+    ("p", "dat"): "den",
+    ("m", "gen"): "des", ("f", "gen"): "der", ("n", "gen"): "des",
+    ("p", "gen"): "der",
 }
 
 article_indefinite = {
-    ("m", "nom"): "ein"  , ("f", "nom"): "eine" , ("n", "nom"): "ein"  , ("p", "nom"): "eine",
-    ("m", "acc"): "einen", ("f", "acc"): "eine" , ("n", "acc"): "ein"  , ("p", "acc"): "eine",
-    ("m", "dat"): "einem", ("f", "dat"): "einer", ("n", "dat"): "einem", ("p", "dat"): "einen",
-    ("m", "gen"): "eines", ("f", "gen"): "einer", ("n", "gen"): "eines", ("p", "gen"): "einer",
+    ("m", "nom"): "ein", ("f", "nom"): "eine", ("n", "nom"): "ein",
+    ("p", "nom"): "eine",
+    ("m", "acc"): "einen", ("f", "acc"): "eine", ("n", "acc"): "ein",
+    ("p", "acc"): "eine",
+    ("m", "dat"): "einem", ("f", "dat"): "einer", ("n", "dat"): "einem",
+    ("p", "dat"): "einen",
+    ("m", "gen"): "eines", ("f", "gen"): "einer", ("n", "gen"): "eines",
+    ("p", "gen"): "einer",
 }
 
 
@@ -98,6 +106,7 @@ def indefinite_article(word, gender=MALE, role=SUBJECT):
     """
     return article_indefinite.get((gender[:1].lower(), role[:3].lower()))
 
+
 DEFINITE = "definite"
 INDEFINITE = "indefinite"
 
@@ -106,8 +115,10 @@ def article(word, function=INDEFINITE, gender=MALE, role=SUBJECT):
     """ Returns the indefinite (ein) or definite (der/die/das/die) article for the given word.
     """
     return function == DEFINITE \
-       and definite_article(word, gender, role) \
-        or indefinite_article(word, gender, role)
+           and definite_article(word, gender, role) \
+           or indefinite_article(word, gender, role)
+
+
 _article = article
 
 
@@ -116,36 +127,49 @@ def referenced(word, article=INDEFINITE, gender=MALE, role=SUBJECT):
     """
     return "%s %s" % (_article(word, article, gender, role), word)
 
+
 #### GENDER #########################################################################################
 
 gender_masculine = (
     "ant", "ast", "ich", "ig", "ismus", "ling", "or", "us"
 )
 gender_feminine = (
-    "a", "anz", "ei", "enz", "heit", "ie", "ik", "in", "keit", "schaf", "sion", "sis",
+    "a", "anz", "ei", "enz", "heit", "ie", "ik", "in", "keit", "schaf", "sion",
+    "sis",
     "tät", "tion", "ung", "ur"
 )
 gender_neuter = (
-    "chen", "icht", "il", "it", "lein", "ma", "ment", "tel", "tum", "um", "al", "an", "ar",
+    "chen", "icht", "il", "it", "lein", "ma", "ment", "tel", "tum", "um", "al",
+    "an", "ar",
     "ät", "ent", "ett", "ier", "iv", "o", "on", "nis", "sal"
 )
 gender_majority_vote = {
     MASCULINE: (
-        "ab", "af", "ag", "ak", "am", "an", "ar", "at", "au", "ch", "ck", "eb", "ef", "eg",
-        "el", "er", "es", "ex", "ff", "go", "hn", "hs", "ib", "if", "ig", "ir", "kt", "lf",
-        "li", "ll", "lm", "ls", "lt", "mi", "nd", "nk", "nn", "nt", "od", "of", "og", "or",
-        "pf", "ph", "pp", "ps", "rb", "rd", "rf", "rg", "ri", "rl", "rm", "rr", "rs", "rt",
-        "rz", "ss", "st", "tz", "ub", "uf", "ug", "uh", "un", "us", "ut", "xt", "zt"
+        "ab", "af", "ag", "ak", "am", "an", "ar", "at", "au", "ch", "ck", "eb",
+        "ef", "eg",
+        "el", "er", "es", "ex", "ff", "go", "hn", "hs", "ib", "if", "ig", "ir",
+        "kt", "lf",
+        "li", "ll", "lm", "ls", "lt", "mi", "nd", "nk", "nn", "nt", "od", "of",
+        "og", "or",
+        "pf", "ph", "pp", "ps", "rb", "rd", "rf", "rg", "ri", "rl", "rm", "rr",
+        "rs", "rt",
+        "rz", "ss", "st", "tz", "ub", "uf", "ug", "uh", "un", "us", "ut", "xt",
+        "zt"
     ),
     FEMININE: (
-        "be", "ce", "da", "de", "dt", "ee", "ei", "et", "eu", "fe", "ft", "ge", "he", "hr",
-        "ht", "ia", "ie", "ik", "in", "it", "iz", "ka", "ke", "la", "le", "me", "na", "ne",
-        "ng", "nz", "on", "pe", "ra", "re", "se", "ta", "te", "ue", "ur", "ve", "ze"
+        "be", "ce", "da", "de", "dt", "ee", "ei", "et", "eu", "fe", "ft", "ge",
+        "he", "hr",
+        "ht", "ia", "ie", "ik", "in", "it", "iz", "ka", "ke", "la", "le", "me",
+        "na", "ne",
+        "ng", "nz", "on", "pe", "ra", "re", "se", "ta", "te", "ue", "ur", "ve",
+        "ze"
     ),
 
     NEUTER: (
-        "ad", "al", "as", "do", "ed", "eh", "em", "en", "hl", "id", "il", "im", "io", "is",
-        "iv", "ix", "ld", "lk", "lo", "lz", "ma", "md", "mm", "mt", "no", "ns", "ol", "om",
+        "ad", "al", "as", "do", "ed", "eh", "em", "en", "hl", "id", "il", "im",
+        "io", "is",
+        "iv", "ix", "ld", "lk", "lo", "lz", "ma", "md", "mm", "mt", "no", "ns",
+        "ol", "om",
         "op", "os", "ot", "pt", "rk", "rn", "ro", "to", "tt", "ul", "um", "uz"
     )
 }
@@ -169,51 +193,93 @@ def gender(word, pos=NOUN):
             if w.endswith(gender_majority_vote[g]):
                 return g
 
+
 #### PLURALIZE ######################################################################################
 
 plural_inflections = [
-    ("aal", "äle"   ), ("aat", "aaten"), ("abe", "aben" ), ("ach", "ächer"), ("ade", "aden"  ),
-    ("age", "agen"  ), ("ahn", "ahnen"), ("ahr", "ahre" ), ("akt", "akte" ), ("ale", "alen"  ),
-    ("ame", "amen"  ), ("amt", "ämter"), ("ane", "anen" ), ("ang", "änge" ), ("ank", "änke"  ),
-    ("ann", "änner" ), ("ant", "anten"), ("aph", "aphen"), ("are", "aren" ), ("arn", "arne"  ),
-    ("ase", "asen"  ), ("ate", "aten" ), ("att", "ätter"), ("atz", "ätze" ), ("aum", "äume"  ),
-    ("aus", "äuser" ), ("bad", "bäder"), ("bel", "bel"  ), ("ben", "ben"  ), ("ber", "ber"   ),
-    ("bot", "bote"  ), ("che", "chen" ), ("chs", "chse" ), ("cke", "cken" ), ("del", "del"   ),
-    ("den", "den"   ), ("der", "der"  ), ("ebe", "ebe"  ), ("ede", "eden" ), ("ehl", "ehle"  ),
-    ("ehr", "ehr"   ), ("eil", "eile" ), ("eim", "eime" ), ("eis", "eise" ), ("eit", "eit"   ),
-    ("ekt", "ekte"  ), ("eld", "elder"), ("ell", "elle" ), ("ene", "enen" ), ("enz", "enzen" ),
-    ("erd", "erde"  ), ("ere", "eren" ), ("erk", "erke" ), ("ern", "erne" ), ("ert", "erte"  ),
-    ("ese", "esen"  ), ("ess", "esse" ), ("est", "este" ), ("etz", "etze" ), ("eug", "euge"  ),
-    ("eur", "eure"  ), ("fel", "fel"  ), ("fen", "fen"  ), ("fer", "fer"  ), ("ffe", "ffen"  ),
-    ("gel", "gel"   ), ("gen", "gen"  ), ("ger", "ger"  ), ("gie", "gie"  ), ("hen", "hen"   ),
-    ("her", "her"   ), ("hie", "hien" ), ("hle", "hlen" ), ("hme", "hmen" ), ("hne", "hnen"  ),
-    ("hof", "höfe"  ), ("hre", "hren" ), ("hrt", "hrten"), ("hse", "hsen" ), ("hte", "hten"  ),
-    ("ich", "iche"  ), ("ick", "icke" ), ("ide", "iden" ), ("ieb", "iebe" ), ("ief", "iefe"  ),
-    ("ieg", "iege"  ), ("iel", "iele" ), ("ien", "ium"  ), ("iet", "iete" ), ("ife", "ifen"  ),
-    ("iff", "iffe"  ), ("ift", "iften"), ("ige", "igen" ), ("ika", "ikum" ), ("ild", "ilder" ),
-    ("ilm", "ilme"  ), ("ine", "inen" ), ("ing", "inge" ), ("ion", "ionen"), ("ise", "isen"  ),
-    ("iss", "isse"  ), ("ist", "isten"), ("ite", "iten" ), ("itt", "itte" ), ("itz", "itze"  ),
-    ("ium", "ium"   ), ("kel", "kel"  ), ("ken", "ken"  ), ("ker", "ker"  ), ("lag", "läge"  ),
-    ("lan", "läne"  ), ("lar", "lare" ), ("lei", "leien"), ("len", "len"  ), ("ler", "ler"   ),
-    ("lge", "lgen"  ), ("lie", "lien" ), ("lle", "llen" ), ("mel", "mel"  ), ("mer", "mer"   ),
-    ("mme", "mmen"  ), ("mpe", "mpen" ), ("mpf", "mpfe" ), ("mus", "mus"  ), ("mut", "mut"   ),
-    ("nat", "nate"  ), ("nde", "nden" ), ("nen", "nen"  ), ("ner", "ner"  ), ("nge", "ngen"  ),
-    ("nie", "nien"  ), ("nis", "nisse"), ("nke", "nken" ), ("nkt", "nkte" ), ("nne", "nnen"  ),
-    ("nst", "nste"  ), ("nte", "nten" ), ("nze", "nzen" ), ("ock", "öcke" ), ("ode", "oden"  ),
-    ("off", "offe"  ), ("oge", "ogen" ), ("ohn", "öhne" ), ("ohr", "ohre" ), ("olz", "ölzer" ),
-    ("one", "onen"  ), ("oot", "oote" ), ("opf", "öpfe" ), ("ord", "orde" ), ("orm", "ormen" ),
-    ("orn", "örner" ), ("ose", "osen" ), ("ote", "oten" ), ("pel", "pel"  ), ("pen", "pen"   ),
-    ("per", "per"   ), ("pie", "pien" ), ("ppe", "ppen" ), ("rag", "räge" ), ("rau", "raün"  ),
-    ("rbe", "rben"  ), ("rde", "rden" ), ("rei", "reien"), ("rer", "rer"  ), ("rie", "rien"  ),
-    ("rin", "rinnen"), ("rke", "rken" ), ("rot", "rote" ), ("rre", "rren" ), ("rte", "rten"  ),
-    ("ruf", "rufe"  ), ("rzt", "rzte" ), ("sel", "sel"  ), ("sen", "sen"  ), ("ser", "ser"   ),
-    ("sie", "sien"  ), ("sik", "sik"  ), ("sse", "ssen" ), ("ste", "sten" ), ("tag", "tage"  ),
-    ("tel", "tel"   ), ("ten", "ten"  ), ("ter", "ter"  ), ("tie", "tien" ), ("tin", "tinnen"),
-    ("tiv", "tive"  ), ("tor", "toren"), ("tte", "tten" ), ("tum", "tum"  ), ("tur", "turen" ),
-    ("tze", "tzen"  ), ("ube", "uben" ), ("ude", "uden" ), ("ufe", "ufen" ), ("uge", "ugen"  ),
-    ("uhr", "uhren" ), ("ule", "ulen" ), ("ume", "umen" ), ("ung", "ungen"), ("use", "usen"  ),
-    ("uss", "üsse"  ), ("ute", "uten" ), ("utz", "utz"  ), ("ver", "ver"  ), ("weg", "wege"  ),
-    ("zer", "zer"   ), ("zug", "züge" ), ("ück", "ücke" )
+    ("aal", "äle"), ("aat", "aaten"), ("abe", "aben"), ("ach", "ächer"),
+    ("ade", "aden"),
+    ("age", "agen"), ("ahn", "ahnen"), ("ahr", "ahre"), ("akt", "akte"),
+    ("ale", "alen"),
+    ("ame", "amen"), ("amt", "ämter"), ("ane", "anen"), ("ang", "änge"),
+    ("ank", "änke"),
+    ("ann", "änner"), ("ant", "anten"), ("aph", "aphen"), ("are", "aren"),
+    ("arn", "arne"),
+    ("ase", "asen"), ("ate", "aten"), ("att", "ätter"), ("atz", "ätze"),
+    ("aum", "äume"),
+    ("aus", "äuser"), ("bad", "bäder"), ("bel", "bel"), ("ben", "ben"),
+    ("ber", "ber"),
+    ("bot", "bote"), ("che", "chen"), ("chs", "chse"), ("cke", "cken"),
+    ("del", "del"),
+    ("den", "den"), ("der", "der"), ("ebe", "ebe"), ("ede", "eden"),
+    ("ehl", "ehle"),
+    ("ehr", "ehr"), ("eil", "eile"), ("eim", "eime"), ("eis", "eise"),
+    ("eit", "eit"),
+    ("ekt", "ekte"), ("eld", "elder"), ("ell", "elle"), ("ene", "enen"),
+    ("enz", "enzen"),
+    ("erd", "erde"), ("ere", "eren"), ("erk", "erke"), ("ern", "erne"),
+    ("ert", "erte"),
+    ("ese", "esen"), ("ess", "esse"), ("est", "este"), ("etz", "etze"),
+    ("eug", "euge"),
+    ("eur", "eure"), ("fel", "fel"), ("fen", "fen"), ("fer", "fer"),
+    ("ffe", "ffen"),
+    ("gel", "gel"), ("gen", "gen"), ("ger", "ger"), ("gie", "gie"),
+    ("hen", "hen"),
+    ("her", "her"), ("hie", "hien"), ("hle", "hlen"), ("hme", "hmen"),
+    ("hne", "hnen"),
+    ("hof", "höfe"), ("hre", "hren"), ("hrt", "hrten"), ("hse", "hsen"),
+    ("hte", "hten"),
+    ("ich", "iche"), ("ick", "icke"), ("ide", "iden"), ("ieb", "iebe"),
+    ("ief", "iefe"),
+    ("ieg", "iege"), ("iel", "iele"), ("ien", "ium"), ("iet", "iete"),
+    ("ife", "ifen"),
+    ("iff", "iffe"), ("ift", "iften"), ("ige", "igen"), ("ika", "ikum"),
+    ("ild", "ilder"),
+    ("ilm", "ilme"), ("ine", "inen"), ("ing", "inge"), ("ion", "ionen"),
+    ("ise", "isen"),
+    ("iss", "isse"), ("ist", "isten"), ("ite", "iten"), ("itt", "itte"),
+    ("itz", "itze"),
+    ("ium", "ium"), ("kel", "kel"), ("ken", "ken"), ("ker", "ker"),
+    ("lag", "läge"),
+    ("lan", "läne"), ("lar", "lare"), ("lei", "leien"), ("len", "len"),
+    ("ler", "ler"),
+    ("lge", "lgen"), ("lie", "lien"), ("lle", "llen"), ("mel", "mel"),
+    ("mer", "mer"),
+    ("mme", "mmen"), ("mpe", "mpen"), ("mpf", "mpfe"), ("mus", "mus"),
+    ("mut", "mut"),
+    ("nat", "nate"), ("nde", "nden"), ("nen", "nen"), ("ner", "ner"),
+    ("nge", "ngen"),
+    ("nie", "nien"), ("nis", "nisse"), ("nke", "nken"), ("nkt", "nkte"),
+    ("nne", "nnen"),
+    ("nst", "nste"), ("nte", "nten"), ("nze", "nzen"), ("ock", "öcke"),
+    ("ode", "oden"),
+    ("off", "offe"), ("oge", "ogen"), ("ohn", "öhne"), ("ohr", "ohre"),
+    ("olz", "ölzer"),
+    ("one", "onen"), ("oot", "oote"), ("opf", "öpfe"), ("ord", "orde"),
+    ("orm", "ormen"),
+    ("orn", "örner"), ("ose", "osen"), ("ote", "oten"), ("pel", "pel"),
+    ("pen", "pen"),
+    ("per", "per"), ("pie", "pien"), ("ppe", "ppen"), ("rag", "räge"),
+    ("rau", "raün"),
+    ("rbe", "rben"), ("rde", "rden"), ("rei", "reien"), ("rer", "rer"),
+    ("rie", "rien"),
+    ("rin", "rinnen"), ("rke", "rken"), ("rot", "rote"), ("rre", "rren"),
+    ("rte", "rten"),
+    ("ruf", "rufe"), ("rzt", "rzte"), ("sel", "sel"), ("sen", "sen"),
+    ("ser", "ser"),
+    ("sie", "sien"), ("sik", "sik"), ("sse", "ssen"), ("ste", "sten"),
+    ("tag", "tage"),
+    ("tel", "tel"), ("ten", "ten"), ("ter", "ter"), ("tie", "tien"),
+    ("tin", "tinnen"),
+    ("tiv", "tive"), ("tor", "toren"), ("tte", "tten"), ("tum", "tum"),
+    ("tur", "turen"),
+    ("tze", "tzen"), ("ube", "uben"), ("ude", "uden"), ("ufe", "ufen"),
+    ("uge", "ugen"),
+    ("uhr", "uhren"), ("ule", "ulen"), ("ume", "umen"), ("ung", "ungen"),
+    ("use", "usen"),
+    ("uss", "üsse"), ("ute", "uten"), ("utz", "utz"), ("ver", "ver"),
+    ("weg", "wege"),
+    ("zer", "zer"), ("zug", "züge"), ("ück", "ücke"), ('apfel', 'äpfel')
 ]
 
 
@@ -237,9 +303,11 @@ def pluralize(word, pos=NOUN, gender=MALE, role=SUBJECT, custom={}):
             return w + "n"
         if w.endswith("ien"):
             return w[:-2] + "um"
-        if w.endswith(("au", "ein", "eit", "er", "en", "el", "chen", "mus", "tät", "tik", "tum", "u")):
+        if w.endswith(("au", "ein", "eit", "er", "en", "el", "chen", "mus",
+                       "tät", "tik", "tum", "u")):
             return w
-        if w.endswith(("ant", "ei", "enz", "ion", "ist", "or", "schaft", "tur", "ung")):
+        if w.endswith(("ant", "ei", "enz", "ion", "ist", "or", "schaft", "tur",
+                       "ung")):
             return w + "en"
         if w.endswith("in"):
             return w + "nen"
@@ -252,70 +320,115 @@ def pluralize(word, pos=NOUN, gender=MALE, role=SUBJECT, custom={}):
         if w.endswith("a"):
             return w[:-1] + "en"
         # Inflect common umlaut vowels: Kopf => Köpfe.
-        if w.endswith(("all", "and", "ang", "ank", "atz", "auf", "ock", "opf", "uch", "uss")):
+        if w.endswith(("all", "and", "ang", "ank", "atz", "auf", "ock", "opf",
+                       "uch", "uss")):
             umlaut = w[-3]
             umlaut = umlaut.replace("a", "ä")
             umlaut = umlaut.replace("o", "ö")
             umlaut = umlaut.replace("u", "ü")
             return w[:-3] + umlaut + w[-2:] + "e"
         for a, b in (
-          ("ag",  "äge"),
-          ("ann", "änner"),
-          ("aum", "äume"),
-          ("aus", "äuser"),
-          ("zug", "züge")):
+                ("ag", "äge"),
+                ("ann", "änner"),
+                ("aum", "äume"),
+                ("aus", "äuser"),
+                ("zug", "züge")):
             if w.endswith(a):
                 return w[:-len(a)] + b
         return w + "e"
     return w
 
+
 #### SINGULARIZE ###################################################################################
 
 singular_inflections = [
-    ( "innen", "in" ), ( "täten", "tät"), ( "ahnen", "ahn"), ( "enten", "ent"), ( "räser", "ras"),
-    ( "hrten", "hrt"), ( "ücher", "uch"), ( "örner", "orn"), ( "änder", "and"), ( "ürmer", "urm"),
-    ( "ahlen", "ahl"), ( "uhren", "uhr"), ( "ätter", "att"), ( "suren", "sur"), ( "chten", "cht"),
-    ( "kuren", "kur"), ( "erzen", "erz"), ( "güter", "gut"), ( "soren", "sor"), ( "änner", "ann"),
-    ( "äuser", "aus"), ( "taten", "tat"), ( "isten", "ist"), ( "bäder", "bad"), ( "ämter", "amt"),
-    ( "eiten", "eit"), ( "raten", "rat"), ( "ormen", "orm"), ( "ionen", "ion"), ( "nisse", "nis"),
-    ( "ölzer", "olz"), ( "ungen", "ung"), ( "läser", "las"), ( "ächer", "ach"), ( "urten", "urt"),
-    ( "enzen", "enz"), ( "aaten", "aat"), ( "aphen", "aph"), ( "öcher", "och"), ( "türen", "tür"),
-    ( "sonen", "son"), ( "ühren", "ühr"), ( "ühner", "uhn"), ( "toren", "tor"), ( "örter", "ort"),
-    ( "anten", "ant"), ( "räder", "rad"), ( "turen", "tur"), ( "äuler", "aul"), (  "änze", "anz"),
-    (  "tten", "tte"), (  "mben", "mbe"), (  "ädte", "adt"), (  "llen", "lle"), (  "ysen", "yse"),
-    (  "rben", "rbe"), (  "hsen", "hse"), (  "raün", "rau"), (  "rven", "rve"), (  "rken", "rke"),
-    (  "ünge", "ung"), (  "üten", "üte"), (  "usen", "use"), (  "tien", "tie"), (  "läne", "lan"),
-    (  "iben", "ibe"), (  "ifen", "ife"), (  "ssen", "sse"), (  "gien", "gie"), (  "eten", "ete"),
-    (  "rden", "rde"), (  "öhne", "ohn"), (  "ärte", "art"), (  "ncen", "nce"), (  "ünde", "und"),
-    (  "uben", "ube"), (  "lben", "lbe"), (  "üsse", "uss"), (  "agen", "age"), (  "räge", "rag"),
-    (  "ogen", "oge"), (  "anen", "ane"), (  "sken", "ske"), (  "eden", "ede"), (  "össe", "oss"),
-    (  "ürme", "urm"), (  "ggen", "gge"), (  "üren", "üre"), (  "nten", "nte"), (  "ühle", "ühl"),
-    (  "änge", "ang"), (  "mmen", "mme"), (  "igen", "ige"), (  "nken", "nke"), (  "äcke", "ack"),
-    (  "oden", "ode"), (  "oben", "obe"), (  "ähne", "ahn"), (  "änke", "ank"), (  "inen", "ine"),
-    (  "seen", "see"), (  "äfte", "aft"), (  "ulen", "ule"), (  "äste", "ast"), (  "hren", "hre"),
-    (  "öcke", "ock"), (  "aben", "abe"), (  "öpfe", "opf"), (  "ugen", "uge"), (  "lien", "lie"),
-    (  "ände", "and"), (  "ücke", "ück"), (  "asen", "ase"), (  "aden", "ade"), (  "dien", "die"),
-    (  "aren", "are"), (  "tzen", "tze"), (  "züge", "zug"), (  "üfte", "uft"), (  "hien", "hie"),
-    (  "nden", "nde"), (  "älle", "all"), (  "hmen", "hme"), (  "ffen", "ffe"), (  "rmen", "rma"),
-    (  "olen", "ole"), (  "sten", "ste"), (  "amen", "ame"), (  "höfe", "hof"), (  "üste", "ust"),
-    (  "hnen", "hne"), (  "ähte", "aht"), (  "umen", "ume"), (  "nnen", "nne"), (  "alen", "ale"),
-    (  "mpen", "mpe"), (  "mien", "mie"), (  "rten", "rte"), (  "rien", "rie"), (  "äute", "aut"),
-    (  "uden", "ude"), (  "lgen", "lge"), (  "ngen", "nge"), (  "iden", "ide"), (  "ässe", "ass"),
-    (  "osen", "ose"), (  "lken", "lke"), (  "eren", "ere"), (  "üche", "uch"), (  "lüge", "lug"),
-    (  "hlen", "hle"), (  "isen", "ise"), (  "ären", "äre"), (  "töne", "ton"), (  "onen", "one"),
-    (  "rnen", "rne"), (  "üsen", "üse"), (  "haün", "hau"), (  "pien", "pie"), (  "ihen", "ihe"),
-    (  "ürfe", "urf"), (  "esen", "ese"), (  "ätze", "atz"), (  "sien", "sie"), (  "läge", "lag"),
-    (  "iven", "ive"), (  "ämme", "amm"), (  "äufe", "auf"), (  "ppen", "ppe"), (  "enen", "ene"),
-    (  "lfen", "lfe"), (  "äume", "aum"), (  "nien", "nie"), (  "unen", "une"), (  "cken", "cke"),
-    (  "oten", "ote"), (   "mie", "mie"), (   "rie", "rie"), (   "sis", "sen"), (   "rin", "rin"),
-    (   "ein", "ein"), (   "age", "age"), (   "ern", "ern"), (   "ber", "ber"), (   "ion", "ion"),
-    (   "inn", "inn"), (   "ben", "ben"), (   "äse", "äse"), (   "eis", "eis"), (   "hme", "hme"),
-    (   "iss", "iss"), (   "hen", "hen"), (   "fer", "fer"), (   "gie", "gie"), (   "fen", "fen"),
-    (   "her", "her"), (   "ker", "ker"), (   "nie", "nie"), (   "mer", "mer"), (   "ler", "ler"),
-    (   "men", "men"), (   "ass", "ass"), (   "ner", "ner"), (   "per", "per"), (   "rer", "rer"),
-    (   "mus", "mus"), (   "abe", "abe"), (   "ter", "ter"), (   "ser", "ser"), (   "äle", "aal"),
-    (   "hie", "hie"), (   "ger", "ger"), (   "tus", "tus"), (   "gen", "gen"), (   "ier", "ier"),
-    (   "ver", "ver"), (   "zer", "zer"),
+    ("innen", "in"), ("täten", "tät"), ("ahnen", "ahn"), ("enten", "ent"),
+    ("räser", "ras"),
+    ("hrten", "hrt"), ("ücher", "uch"), ("örner", "orn"), ("änder", "and"),
+    ("ürmer", "urm"),
+    ("ahlen", "ahl"), ("uhren", "uhr"), ("ätter", "att"), ("suren", "sur"),
+    ("chten", "cht"),
+    ("kuren", "kur"), ("erzen", "erz"), ("güter", "gut"), ("soren", "sor"),
+    ("änner", "ann"),
+    ("äuser", "aus"), ("taten", "tat"), ("isten", "ist"), ("bäder", "bad"),
+    ("ämter", "amt"),
+    ("eiten", "eit"), ("raten", "rat"), ("ormen", "orm"), ("ionen", "ion"),
+    ("nisse", "nis"),
+    ("ölzer", "olz"), ("ungen", "ung"), ("läser", "las"), ("ächer", "ach"),
+    ("urten", "urt"),
+    ("enzen", "enz"), ("aaten", "aat"), ("aphen", "aph"), ("öcher", "och"),
+    ("türen", "tür"),
+    ("sonen", "son"), ("ühren", "ühr"), ("ühner", "uhn"), ("toren", "tor"),
+    ("örter", "ort"),
+    ("anten", "ant"), ("räder", "rad"), ("turen", "tur"), ("äuler", "aul"),
+    ("änze", "anz"),
+    ("tten", "tte"), ("mben", "mbe"), ("ädte", "adt"), ("llen", "lle"),
+    ("ysen", "yse"),
+    ("rben", "rbe"), ("hsen", "hse"), ("raün", "rau"), ("rven", "rve"),
+    ("rken", "rke"),
+    ("ünge", "ung"), ("üten", "üte"), ("usen", "use"), ("tien", "tie"),
+    ("läne", "lan"),
+    ("iben", "ibe"), ("ifen", "ife"), ("ssen", "sse"), ("gien", "gie"),
+    ("eten", "ete"),
+    ("rden", "rde"), ("öhne", "ohn"), ("ärte", "art"), ("ncen", "nce"),
+    ("ünde", "und"),
+    ("uben", "ube"), ("lben", "lbe"), ("üsse", "uss"), ("agen", "age"),
+    ("räge", "rag"),
+    ("ogen", "oge"), ("anen", "ane"), ("sken", "ske"), ("eden", "ede"),
+    ("össe", "oss"),
+    ("ürme", "urm"), ("ggen", "gge"), ("üren", "üre"), ("nten", "nte"),
+    ("ühle", "ühl"),
+    ("änge", "ang"), ("mmen", "mme"), ("igen", "ige"), ("nken", "nke"),
+    ("äcke", "ack"),
+    ("oden", "ode"), ("oben", "obe"), ("ähne", "ahn"), ("änke", "ank"),
+    ("inen", "ine"),
+    ("seen", "see"), ("äfte", "aft"), ("ulen", "ule"), ("äste", "ast"),
+    ("hren", "hre"),
+    ("öcke", "ock"), ("aben", "abe"), ("öpfe", "opf"), ("ugen", "uge"),
+    ("lien", "lie"),
+    ("ände", "and"), ("ücke", "ück"), ("asen", "ase"), ("aden", "ade"),
+    ("dien", "die"),
+    ("aren", "are"), ("tzen", "tze"), ("züge", "zug"), ("üfte", "uft"),
+    ("hien", "hie"),
+    ("nden", "nde"), ("älle", "all"), ("hmen", "hme"), ("ffen", "ffe"),
+    ("rmen", "rma"),
+    ("olen", "ole"), ("sten", "ste"), ("amen", "ame"), ("höfe", "hof"),
+    ("üste", "ust"),
+    ("hnen", "hne"), ("ähte", "aht"), ("umen", "ume"), ("nnen", "nne"),
+    ("alen", "ale"),
+    ("mpen", "mpe"), ("mien", "mie"), ("rten", "rte"), ("rien", "rie"),
+    ("äute", "aut"),
+    ("uden", "ude"), ("lgen", "lge"), ("ngen", "nge"), ("iden", "ide"),
+    ("ässe", "ass"),
+    ("osen", "ose"), ("lken", "lke"), ("eren", "ere"), ("üche", "uch"),
+    ("lüge", "lug"),
+    ("hlen", "hle"), ("isen", "ise"), ("ären", "äre"), ("töne", "ton"),
+    ("onen", "one"),
+    ("rnen", "rne"), ("üsen", "üse"), ("haün", "hau"), ("pien", "pie"),
+    ("ihen", "ihe"),
+    ("ürfe", "urf"), ("esen", "ese"), ("ätze", "atz"), ("sien", "sie"),
+    ("läge", "lag"),
+    ("iven", "ive"), ("ämme", "amm"), ("äufe", "auf"), ("ppen", "ppe"),
+    ("enen", "ene"),
+    ("lfen", "lfe"), ("äume", "aum"), ("nien", "nie"), ("unen", "une"),
+    ("cken", "cke"),
+    ("oten", "ote"), ("mie", "mie"), ("rie", "rie"), ("sis", "sen"),
+    ("rin", "rin"),
+    ("ein", "ein"), ("age", "age"), ("ern", "ern"), ("ber", "ber"),
+    ("ion", "ion"),
+    ("inn", "inn"), ("ben", "ben"), ("äse", "äse"), ("eis", "eis"),
+    ("hme", "hme"),
+    ("iss", "iss"), ("hen", "hen"), ("fer", "fer"), ("gie", "gie"),
+    ("fen", "fen"),
+    ("her", "her"), ("ker", "ker"), ("nie", "nie"), ("mer", "mer"),
+    ("ler", "ler"),
+    ("men", "men"), ("ass", "ass"), ("ner", "ner"), ("per", "per"),
+    ("rer", "rer"),
+    ("mus", "mus"), ("abe", "abe"), ("ter", "ter"), ("ser", "ser"),
+    ("äle", "aal"),
+    ("hie", "hie"), ("ger", "ger"), ("tus", "tus"), ("gen", "gen"),
+    ("ier", "ier"),
+    ("ver", "ver"), ("zer", "zer"), ("äpfel", "apfel")
 ]
 
 singular = {
@@ -334,8 +447,8 @@ def singularize(word, pos=NOUN, gender=MALE, role=SUBJECT, custom={}):
         return singular[word]
     if pos == NOUN:
         for a, b in singular_inflections:
-            if w.endswith(a):
-                return w[:-len(a)] + b
+            if w.lower().endswith(a):
+                return (w[:-len(a)] + b).capitalize()
         # Default rule: strip known plural suffixes (baseline = 51%).
         for suffix in ("nen", "en", "n", "e", "er", "s"):
             if w.endswith(suffix):
@@ -343,39 +456,49 @@ def singularize(word, pos=NOUN, gender=MALE, role=SUBJECT, custom={}):
                 break
         # Corrections (these add about 1% accuracy):
         if w.endswith(("rr", "rv", "nz")):
-            return w + "e"
-        return w
-    return w
+            return (w + "e").capitalize()
+        return w.capitalize()
+    return
+
 
 #### VERB CONJUGATION ##############################################################################
 # The verb table was trained on CELEX and contains the top 2000 most frequent verbs.
 
 prefix_inseparable = (
-    "be", "emp", "ent", "er", "ge", "miss", "über", "unter", "ver", "voll", "wider", "zer"
+    "be", "emp", "ent", "er", "ge", "miss", "über", "unter", "ver", "voll",
+    "wider", "zer"
 )
 prefix_separable = (
-    "ab", "an", "auf", "aus", "bei", "durch", "ein", "fort", "mit", "nach", "vor", "weg",
-    "zurück", "zusammen", "zu", "dabei", "daran", "da", "empor", "entgegen", "entlang",
-    "fehl", "fest", "gegenüber", "gleich", "herab", "heran", "herauf", "heraus", "herum",
-    "her", "hinweg", "hinzu", "hin", "los", "nieder", "statt", "umher", "um", "weg",
-    "weiter", "wieder", "zwischen"
-) + ( # There are many more...
-     "dort", "fertig", "frei", "gut", "heim", "hoch", "klein", "klar", "nahe", "offen", "richtig"
-)
+                       "ab", "an", "auf", "aus", "bei", "durch", "ein", "fort",
+                       "mit", "nach", "vor", "weg",
+                       "zurück", "zusammen", "zu", "dabei", "daran", "da",
+                       "empor", "entgegen", "entlang",
+                       "fehl", "fest", "gegenüber", "gleich", "herab", "heran",
+                       "herauf", "heraus", "herum",
+                       "her", "hinweg", "hinzu", "hin", "los", "nieder",
+                       "statt", "umher", "um", "weg",
+                       "weiter", "wieder", "zwischen"
+                   ) + (  # There are many more...
+                       "dort", "fertig", "frei", "gut", "heim", "hoch", "klein",
+                       "klar", "nahe", "offen", "richtig"
+                   )
 prefixes = prefix_inseparable + prefix_separable
 
 # verbs with an initial sequence that looks like it might be a prefix of either category
 # these need to be excluded even when they are regular
 faux_prefix_verbs = (
-    'geiern', 'geifern', 'betteln', 'bersten', 'bechern', 'entern', 'hindern', 'einigen',
-    'zurren', 'zucken', 'zupfen', 'beichten', 'beißen', 'einen', 'mitteln', 'zerren', 'zuenden', # zünden
-    'zuzeln', 'gellen', 'zuechten', # züchten
-    'ankern', 'angeln'
-) # probably more
+    'geiern', 'geifern', 'betteln', 'bersten', 'bechern', 'entern', 'hindern',
+    'einigen', 'gerben', 'gehen',
+    'zurren', 'zucken', 'zupfen', 'beichten', 'beißen', 'einen', 'mitteln',
+    'zerren', 'zuenden',  # zünden
+    'zuzeln', 'gellen', 'zuechten',  # züchten
+    'ankern', 'angeln', 'herzigen' # 'be-herzigen after decomposition
+)  # probably more
 
 faux_latinate = (
     'gieren', 'stieren'
-) # verbs that look like they might have -ieren suffix that blocks ge- prefixation, but don't
+)  # verbs that look like they might have -ieren suffix that blocks ge- prefixation, but don't
+
 
 def encode_sz(s):
     return s.replace("ß", "ss")
@@ -389,17 +512,18 @@ class Verbs(_Verbs):
 
     def __init__(self):
         _Verbs.__init__(self, os.path.join(MODULE, "de-verbs.txt"),
-            language = "de",
-              format = [0, 1, 2, 3, 4, 5, 8, 17, 18, 19, 20, 21, 24, 52, 54, 53, 55, 56, 58, 59, 67, 68, 70, 71],
-             default = {6: 4, 22: 20, 57: 55, 60: 58, 69: 67, 72: 70}
-            )
+                        language="de",
+                        format=[0, 1, 2, 3, 4, 5, 8, 17, 18, 19, 20, 21, 24, 52,
+                                54, 53, 55, 56, 58, 59, 67, 68, 70, 71],
+                        default={6: 4, 22: 20, 57: 55, 60: 58, 69: 67, 72: 70}
+                        )
 
     def find_lemma(self, verb):
         """ Returns the base form of the given inflected verb, using a rule-based approach.
         """
         v = verb.lower()
         # Common prefixes: be-finden and emp-finden probably inflect like finden.
-        if not (v.startswith("ge") and v.endswith("t")): # Probably gerund.
+        if not (v.startswith("ge") and v.endswith("t")):  # Probably gerund.
             for prefix in prefixes:
                 if v.startswith(prefix) and v[len(prefix):] in self.inflections:
                     return prefix + self.inflections[v[len(prefix):]]
@@ -409,20 +533,26 @@ class Verbs(_Verbs):
         if b.endswith(("ln", "rn")):
             return b
         # Lemmatize regular inflections.
-        for x in ("test", "est", "end", "ten", "tet", "en", "et", "te", "st", "e", "t"):
+        for x in (
+        "test", "est", "end", "ten", "tet", "en", "et", "te", "st", "e", "t"):
             if b.endswith(x):
-                b = b[:-len(x)]; break
+                b = b[:-len(x)];
+                break
         # Subjunctive: hielte => halten, schnitte => schneiden.
         for x, y in (
-          ("ieb", "eib"), ( "ied", "eid"), ( "ief", "auf" ), ( "ieg", "eig" ), ("iel", "alt"),
-          ("ien", "ein"), ("iess", "ass"), ( "ieß", "aß"  ), ( "iff", "eif" ), ("iss", "eiss"),
-          ( "iß", "eiß"), (  "it", "eid"), ( "oss", "iess"), ( "öss", "iess")):
+                ("ieb", "eib"), ("ied", "eid"), ("ief", "auf"), ("ieg", "eig"),
+                ("iel", "alt"),
+                ("ien", "ein"), ("iess", "ass"), ("ieß", "aß"), ("iff", "eif"),
+                ("iss", "eiss"),
+                ("iß", "eiß"), ("it", "eid"), ("oss", "iess"), ("öss", "iess")):
             if b.endswith(x):
-                b = b[:-len(x)] + y; break
+                b = b[:-len(x)] + y;
+                break
         b = b.replace("eeiss", "eiss")
         b = b.replace("eeid", "eit")
         # Subjunctive: wechselte => wechseln
-        if not b.endswith(("e", "l")) and not (b.endswith("er") and len(b) >= 3 and not b[-3] in VOWELS):
+        if not b.endswith(("e", "l")) and not (
+                b.endswith("er") and len(b) >= 3 and not b[-3] in VOWELS):
             b = b + "e"
         # abknallst != abknalln => abknallen
         if b.endswith(("hl", "ll", "ul", "eil")):
@@ -452,7 +582,8 @@ class Verbs(_Verbs):
                     if prefix in prefix_separable:
                         b, x = v[len(prefix):], prefix
                         x1 = (" " + x).rstrip()
-                        x2 = x + "ge"
+                        x2 = (not b.startswith(
+                            prefix_inseparable) or b in faux_prefix_verbs) and x + "ge" or x
                     else:
                         b, x3 = v[len(prefix):], prefix
                         x2 = prefix
@@ -468,7 +599,9 @@ class Verbs(_Verbs):
 
             base_inflected = self.lexeme(base_verb, no_duplicates=False)
             if base_verb_found_inseparable:
-                lexeme = a = list(map(lambda t: t.startswith('ge') and x3 + t[2:] or x3 + t, base_inflected))
+                lexeme = a = list(map(lambda t: (t.startswith(
+                    'ge')) and x3 + t[2:] or x3 + t,
+                                      base_inflected))
             else:
                 keep = lambda t: [t]
                 postfix_prefix = lambda t: [t + x1]
@@ -480,20 +613,32 @@ class Verbs(_Verbs):
                 # '2sg!', '2pl!', '1pl!',
                 # '1sg?', '2sg?', '1pl?', '2pl?', '
                 # 1sgp?', '2sgp?', '1ppl?', '2ppl?']
-                inflectfunctions = [keep,
-                    postfix_prefix, postfix_prefix, postfix_prefix, postfix_prefix, postfix_prefix,
-                                         prefix_prefix,                 # present
-                    postfix_prefix, postfix_prefix, postfix_prefix, postfix_prefix, postfix_prefix, lambda t: [x2 + t], # past
-                    postfix_prefix, postfix_prefix, postfix_prefix,                                            # imperative
-                    postfix_prefix, postfix_prefix, postfix_prefix, postfix_prefix,                     # subjunctive I
-                    postfix_prefix, postfix_prefix, postfix_prefix, postfix_prefix,                      # subjunctive
-                ]
+                inflectfunctions = [prefix_prefix, # infinitive
+                                    postfix_prefix, postfix_prefix,
+                                    postfix_prefix, postfix_prefix,
+                                    postfix_prefix,
+                                    prefix_prefix,  # present gerund
+                                    postfix_prefix, postfix_prefix,
+                                    postfix_prefix, postfix_prefix,
+                                    postfix_prefix, lambda t: [
+                        x2 + t if not t.startswith('ge') else x2 + t[2:]],
+                                    # past
+                                    postfix_prefix, postfix_prefix,
+                                    postfix_prefix,  # imperative
+                                    postfix_prefix, postfix_prefix,
+                                    postfix_prefix, postfix_prefix,
+                                    # subjunctive I
+                                    postfix_prefix, postfix_prefix,
+                                    postfix_prefix, postfix_prefix,
+                                    # subjunctive
+                                    ]
                 lexeme = a = []
                 for func, form in zip(inflectfunctions, base_inflected):
                     lexeme.extend(func(form))
         else:
             # Stem = infinitive minus -en, -ln, -rn.
-            b = b0 = re.sub("en$", "", re.sub("ln$", "l", re.sub("rn$", "r", v)))
+            b = b0 = re.sub("en$", "",
+                            re.sub("ln$", "l", re.sub("rn$", "r", v)))
 
             # Present tense 1sg and subjunctive -el: handeln => ich handle, du handlest.
             pl = b.endswith("el") and b[:-2] + "l" or b
@@ -508,9 +653,10 @@ class Verbs(_Verbs):
             # Past tense regular:
             pt = encode_sz(pr) + "t"
             # Past participle: haushalten => hausgehalten
-            ge = (v.startswith(prefix_inseparable) and not v in faux_prefix_verbs or
+            ge = (v.startswith(
+                prefix_inseparable) and not v in faux_prefix_verbs or
                   (b.endswith(("ier")) \
-                    and not v in faux_latinate)) and pt or "ge" + pt
+                   and not v in faux_latinate)) and pt or "ge" + pt
             ge = x and x + "ge" + pt or ge
             # Present subjunctive: stem + -e, -est, -en, -et:
             s1 = encode_sz(pl)
@@ -519,17 +665,22 @@ class Verbs(_Verbs):
             # Construct the lexeme:
             lexeme = a = [
                 v,
-                pl + "e" + x1, p2 + x1, pr + "t" + x1, pw + x1, pr + "t" + x1, pp,                 # present
-                pt + "e" + x1, pt + "est" + x1, pt + "e" + x1, pt + "en" + x1, pt + "et" + x1, ge, # past
-                b + "e" + x1, pr + "t" + x1, x + pw,                                               # imperative
-                s1 + "e" + x1, s1 + "est" + x1, s1 + "en" + x1, s1 + "et" + x1,                    # subjunctive I
-                s2 + "e" + x1, s2 + "est" + x1, s2 + "en" + x1, s2 + "et" + x1                     # subjunctive II
+                pl + "e" + x1, p2 + x1, pr + "t" + x1, pw + x1, pr + "t" + x1,
+                pp,  # present
+                pt + "e" + x1, pt + "est" + x1, pt + "e" + x1, pt + "en" + x1,
+                pt + "et" + x1, ge,  # past
+                b + "e" + x1, pr + "t" + x1, x + pw,  # imperative
+                s1 + "e" + x1, s1 + "est" + x1, s1 + "en" + x1, s1 + "et" + x1,
+                # subjunctive I
+                s2 + "e" + x1, s2 + "est" + x1, s2 + "en" + x1, s2 + "et" + x1
+                # subjunctive II
             ]
         # Encode Eszett (ß) and attempt to retrieve from the lexicon.
         # Decode Eszett for present and imperative.
         if encode_sz(v) in self:
             a = self[encode_sz(v)]
-            a = [decode_sz(v) for v in a[:7]] + a[7:13] + [decode_sz(v) for v in a[13:20]] + a[20:]
+            a = [decode_sz(v) for v in a[:7]] + a[7:13] + [decode_sz(v) for v in
+                                                           a[13:20]] + a[20:]
         # Since the lexicon does not contain imperative for all verbs, don't simply return it.
         # Instead, update the rule-based lexeme with inflections from the lexicon.
         return [a[i] or lexeme[i] for i in range(len(a))]
@@ -542,9 +693,12 @@ class Verbs(_Verbs):
             # auswirkte => wirkte aus
             for prefix in prefix_separable:
                 if verb.startswith(prefix):
-                    tenses = _Verbs.tenses(self, verb[len(prefix):] + " " + prefix, parse)
+                    tenses = _Verbs.tenses(self,
+                                           verb[len(prefix):] + " " + prefix,
+                                           parse)
                     break
         return tenses
+
 
 verbs = Verbs()
 
@@ -555,34 +709,45 @@ conjugate, lemma, lexeme, tenses = \
 
 # Strong inflection: no article.
 adjectives_strong = {
-    ("m", "nom"): "er", ("f", "nom"): "e" , ("n", "nom"): "es", ("p", "nom"): "e",
-    ("m", "acc"): "en", ("f", "acc"): "e" , ("n", "acc"): "es", ("p", "acc"): "e",
-    ("m", "dat"): "em", ("f", "dat"): "er", ("n", "dat"): "em", ("p", "dat"): "en",
-    ("m", "gen"): "en", ("f", "gen"): "er", ("n", "gen"): "en", ("p", "gen"): "er",
+    ("m", "nom"): "er", ("f", "nom"): "e", ("n", "nom"): "es",
+    ("p", "nom"): "e",
+    ("m", "acc"): "en", ("f", "acc"): "e", ("n", "acc"): "es",
+    ("p", "acc"): "e",
+    ("m", "dat"): "em", ("f", "dat"): "er", ("n", "dat"): "em",
+    ("p", "dat"): "en",
+    ("m", "gen"): "en", ("f", "gen"): "er", ("n", "gen"): "en",
+    ("p", "gen"): "er",
 }
 
 # Mixed inflection: after indefinite article ein & kein and possessive determiners.
 adjectives_mixed = {
-    ("m", "nom"): "er", ("f", "nom"): "e" , ("n", "nom"): "es", ("p", "nom"): "en",
-    ("m", "acc"): "en", ("f", "acc"): "e" , ("n", "acc"): "es", ("p", "acc"): "en",
-    ("m", "dat"): "en", ("f", "dat"): "en", ("n", "dat"): "en", ("p", "dat"): "en",
-    ("m", "gen"): "en", ("f", "gen"): "en", ("n", "gen"): "en", ("p", "gen"): "en",
+    ("m", "nom"): "er", ("f", "nom"): "e", ("n", "nom"): "es",
+    ("p", "nom"): "en",
+    ("m", "acc"): "en", ("f", "acc"): "e", ("n", "acc"): "es",
+    ("p", "acc"): "en",
+    ("m", "dat"): "en", ("f", "dat"): "en", ("n", "dat"): "en",
+    ("p", "dat"): "en",
+    ("m", "gen"): "en", ("f", "gen"): "en", ("n", "gen"): "en",
+    ("p", "gen"): "en",
 }
 
 # Weak inflection: after definite article.
 adjectives_weak = {
-    ("m", "nom"): "e",  ("f", "nom"): "e" , ("n", "nom"): "e",  ("p", "nom"): "en",
-    ("m", "acc"): "en", ("f", "acc"): "e" , ("n", "acc"): "e",  ("p", "acc"): "en",
-    ("m", "dat"): "en", ("f", "dat"): "en", ("n", "dat"): "en", ("p", "dat"): "en",
-    ("m", "gen"): "en", ("f", "gen"): "en", ("n", "gen"): "en", ("p", "gen"): "en",
+    ("m", "nom"): "e", ("f", "nom"): "e", ("n", "nom"): "e", ("p", "nom"): "en",
+    ("m", "acc"): "en", ("f", "acc"): "e", ("n", "acc"): "e",
+    ("p", "acc"): "en",
+    ("m", "dat"): "en", ("f", "dat"): "en", ("n", "dat"): "en",
+    ("p", "dat"): "en",
+    ("m", "gen"): "en", ("f", "gen"): "en", ("n", "gen"): "en",
+    ("p", "gen"): "en",
 }
 
 # Uninflected + exceptions.
 adjective_attributive = {
-    "etwas" : "etwas",
-    "genug" : "genug",
-    "viel"  : "viel",
-    "wenig" : "wenig"
+    "etwas": "etwas",
+    "genug": "genug",
+    "viel": "viel",
+    "wenig": "wenig"
 }
 
 
@@ -593,21 +758,23 @@ def attributive(adjective, gender=MALE, role=SUBJECT, article=None):
         (nominative, accusative, dative, genitive).
     """
     w, g, c, a = \
-        adjective.lower(), gender[:1].lower(), role[:3].lower(), article and article.lower() or None
+        adjective.lower(), gender[:1].lower(), role[
+                                               :3].lower(), article and article.lower() or None
     if w in adjective_attributive:
         return adjective_attributive[w]
     if a is None \
-    or a in ("mir", "dir", "ihm") \
-    or a in ("ein", "etwas", "mehr") \
-    or a.startswith(("all", "mehrer", "wenig", "viel")):
+            or a in ("mir", "dir", "ihm") \
+            or a in ("ein", "etwas", "mehr") \
+            or a.startswith(("all", "mehrer", "wenig", "viel")):
         return w + adjectives_strong.get((g, c), "")
     if a.startswith(("ein", "kein")) \
-    or a.startswith(("mein", "dein", "sein", "ihr", "Ihr", "unser", "euer")):
+            or a.startswith(
+        ("mein", "dein", "sein", "ihr", "Ihr", "unser", "euer")):
         return w + adjectives_mixed.get((g, c), "")
     if a in ("arm", "alt", "all", "der", "die", "das", "den", "dem", "des") \
-    or a.startswith((
-      "derselb", "derjenig", "jed", "jeglich", "jen", "manch",
-      "dies", "solch", "welch")):
+            or a.startswith((
+            "derselb", "derjenig", "jed", "jeglich", "jen", "manch",
+            "dies", "solch", "welch")):
         return w + adjectives_weak.get((g, c), "")
     # Default to strong inflection.
     return w + adjectives_strong.get((g, c), "")
@@ -626,12 +793,13 @@ def predicative(adjective):
         for suffix in ("em", "en", "er", "es", "e"):
             if w.endswith(suffix):
                 b = w[:max(-len(suffix), -(len(w) - 3))]
-                if b.endswith("bl"): # plausibles => plausibel
+                if b.endswith("bl"):  # plausibles => plausibel
                     b = b[:-1] + "el"
-                if b.endswith("pr"): # propres => proper
+                if b.endswith("pr"):  # propres => proper
                     b = b[:-1] + "er"
                 return b
     return w
+
 
 #### COMPARATIVE & SUPERLATIVE #####################################################################
 
@@ -657,6 +825,6 @@ def comparative(adjective):
 def superlative(adjective):
     return grade(adjective, SUPERLATIVE)
 
-#print(comparative("schönes"))
-#print(superlative("schönes"))
-#print(superlative("große"))
+# print(comparative("schönes"))
+# print(superlative("schönes"))
+# print(superlative("große"))
