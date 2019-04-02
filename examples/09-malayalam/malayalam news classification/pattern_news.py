@@ -11,8 +11,9 @@ from pattern.web import Bing, SEARCH, plaintext,Google
 from ulmfit import ULMFiT
 engine = Google(license=key)
 searched=[]
+search_key='സഞ്ജു സാംസൺ'
 
-for result in engine.search('സഞ്ജു സാംസൺ', type=SEARCH, start=1):
+for result in engine.search(search_key, type=SEARCH, start=1):
     print(repr(plaintext(result.text)))
     searched.append(repr(plaintext(result.text)))
 print(len(searched))    
