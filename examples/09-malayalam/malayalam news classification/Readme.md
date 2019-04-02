@@ -8,7 +8,7 @@ Buisiness, entertainment,sports,Kerala,India.
 <br>Before running the program, download the folder <b>News</b> from the following link and use it in the same folder as the sample code</br>
 <br>
 
-[Link to the model](https://drive.google.com/open?id=1HPtrsoL9cX70rZ31lWgmPCjdbZfN_zjG)</br>
+[Download Link to the news file](https://drive.google.com/open?id=1HPtrsoL9cX70rZ31lWgmPCjdbZfN_zjG)</br>
 
 
 
