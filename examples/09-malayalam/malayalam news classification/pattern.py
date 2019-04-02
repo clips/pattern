@@ -9,7 +9,7 @@ Created on Tue Apr  2 02:17:22 2019
 
 from pattern.web import Bing, SEARCH, plaintext,Google
 from ulmfit import ULMFiT
-engine = Google(license='AIzaSyCND8YQhyxQZU1E4y4gCzg8V61NQ61BYtw')
+engine = Google(license=key)
 searched=[]
 
 for result in engine.search('സഞ്ജു സാംസൺ', type=SEARCH, start=1):
