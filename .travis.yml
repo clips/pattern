@@ -3,7 +3,8 @@ language: python
 dist: precise
 
 python:
-  - "3.6"
+  - "3.6.7"
+
 
 before_install:
   - export TZ=Europe/Brussels
