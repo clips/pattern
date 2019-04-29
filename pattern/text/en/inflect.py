@@ -363,7 +363,8 @@ plural_categories = {
         "focus"      , "nimbus"     , "succubus"     ,
         "fungus"     , "nucleolus"  , "torus"        ,
         "genius"     , "radius"     , "umbilicus"    ,
-        "incubus"    , "stylus"     , "uterus"
+        "incubus"    , "stylus"     , "uterus"       ,
+        "syllabus"   , "cactus"     , "nucleus"
         ],
     "us-us*": [
         "apparatus"  , "hiatus"     , "plexus"       , "status" ,
@@ -518,6 +519,7 @@ singular_rules = [
     # -a
     (r'(?i)([ti])a$'          , '\\1um'   ),
     (r'(?i)(n)ews$'           , '\\1ews'  ),
+    (r'(?i)(.)i$'             , '\\1us'   ),
     (r'(?i)s$'                , ''        ),
 ]
 
