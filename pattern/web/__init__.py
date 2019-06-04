@@ -2384,7 +2384,7 @@ class MediaWiki(SearchEngine):
                     yield x[id]
             start = data.get("query-continue", {}).get("allpages", {})
             start = start.get("apcontinue", start.get("apfrom", -1))
-        raise StopIteration
+        return
 
     # Backwards compatibility.
     list = index
@@ -2909,7 +2909,7 @@ class Wikia(MediaWiki):
                 for x in (data or {}).get("pages", {}).values():
                     yield WikiaArticle(title=x.get("title", ""), source=x.get("html", ""))
                 if done:
-                    raise StopIteration
+                    return
         for title in self.index(**kwargs):
             yield self.search(title, **kwargs)
 

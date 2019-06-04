@@ -666,7 +666,7 @@ def smoothrange(a=None, b=None, n=10):
         a, b = 0, a
     if a == b:
         yield float(a)
-        raise StopIteration
+        return
     r = _multiple(b - a)
     t = _multiple(r / (n - 1), round=True)
     a = floor(a / t) * t
@@ -1077,7 +1077,7 @@ def gammai(a, x, tail=UPPER):
             s = s + d
             if abs(d) < abs(s) * epsilon:
                 return (s * exp(-x + a * log(x) - ln), ln)
-        raise StopIteration(abs(d), abs(s) * epsilon)
+        return
 
     # Continued fraction approximation.
     def _gf(a, x, epsilon=3.e-7, iterations=200):
@@ -1099,7 +1099,7 @@ def gammai(a, x, tail=UPPER):
                 if abs((g - g0) / g) < epsilon:
                     return (g * exp(-x + a * log(x) - ln), ln)
                 g0 = g
-        raise StopIteration(abs((g - g0) / g))
+        return
 
     if a <= 0.0:
         return 1.0
