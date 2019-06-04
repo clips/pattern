@@ -14,7 +14,7 @@ before_install:
   - bash miniconda.sh -b -p $HOME/miniconda
   - export PATH="$HOME/miniconda/bin:$PATH"
   - conda update --yes conda
-  - conda install --yes numpy scipy
+  - conda install --yes numpy scipy mysqlclient
   - pip install --quiet pytest pytest-cov pytest-xdist chardet
 
 install:
