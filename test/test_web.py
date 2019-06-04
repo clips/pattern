@@ -501,15 +501,14 @@ class TestSearchEngine(unittest.TestCase):
             self.assertEqual(v.source, source)
             self.assertEqual(v.type, type)
             #this also behaves completely randomly
-            if len(v) > 0:
-                self.assertEqual(len(v), 1)
-                self.assertTrue(isinstance(v[0], web.Result))
-                self.assertTrue(isinstance(v[0].url, str))
-                self.assertTrue(isinstance(v[0].title, str))
-                self.assertTrue(isinstance(v[0].description, str))
-                self.assertTrue(isinstance(v[0].language, str))
-                self.assertTrue(isinstance(v[0].author, (str, tuple)))
-                self.assertTrue(isinstance(v[0].date, str))
+            self.assertEqual(len(v), 1)
+            self.assertTrue(isinstance(v[0], web.Result))
+            self.assertTrue(isinstance(v[0].url, str))
+            self.assertTrue(isinstance(v[0].title, str))
+            self.assertTrue(isinstance(v[0].description, str))
+            self.assertTrue(isinstance(v[0].language, str))
+            self.assertTrue(isinstance(v[0].author, (str, tuple)))
+            self.assertTrue(isinstance(v[0].date, str))
         else:
             self.assertTrue(isinstance(v, web.MediaWikiArticle))
         # Assert zero results for start < 1 and count < 1.
