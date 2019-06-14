@@ -143,7 +143,7 @@ setup(
         "feedparser",
         "pdfminer" if sys.version < "3" else "pdfminer.six",
         "numpy",
-        "scipy",
+        "scipy" if sys.version >= 3 else "scipy==1.2.1",
         "nltk",
         "python-docx",
         "cherrypy",
