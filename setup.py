@@ -143,10 +143,10 @@ setup(
         "feedparser",
         "pdfminer" if sys.version < "3" else "pdfminer.six",
         "numpy",
-        "scipy" if sys.version >= 3 else "scipy==1.2.1",
+        "scipy" if sys.version >= "3" else "scipy==1.2.1",
         "nltk",
         "python-docx",
-        "cherrypy",
+        "cherrypy" if sys.version >= "3" else "cherrypy==17.4.1",
         "requests"
     ],
     zip_safe = False
