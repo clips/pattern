@@ -95,6 +95,7 @@ studieren,studiere,studierst,studiert,studieren,studiert,studierend,studierte,st
 eignen,eigne,eignest,eignet,eignen,eignet,eignend,eignete,eignetest,eignete,eigneten,eignetet,geeignet,eigne,eignet,eignen,eigne,eignest,eignen,eignet,eignete,eignetest,eigneten,eignetet
 wärmen,wärme,wärmst,wärmt,wärmen,wärmt,wärmend,wärmte,wärmtest,wärmte,wärmten,wärmtet,gewärmt,wärme,wärmt,wärmen,wärme,wärmest,wärmen,wärmet,wärmte,wärmtest,wärmten,wärmtet
 jagen,jage,jagst,jagt,jagen,jagt,jagend,jagte,jagtest,jagte,jagten,jagtet,gejagt,jage,jagt,jagen,jage,jagest,jagen,jaget,jagte,jagtest,jagten,jagtet
+geschehen,geschehe,geschiehst,geschieht,geschehen,gescheht,geschehend,geschah,geschahst,geschah,geschahen,geschaht,geschehen,geschehe,gescheht,geschehen,geschehe,geschehest,geschehen,geschehet,geschähe,geschähest,geschähen,geschähet
 spinnen,spinne,spinnst,spinnt,spinnen,spinnt,spinnend,spann,spannst,spann,spannen,spannt,gesponnen,spinne,spinnt,spinnen,spinne,spinnest,spinnen,spinnet,spönne,spännest,spännen,spännet
 rationalisieren,rationalisiere,rationalisierst,rationalisiert,rationalisieren,rationalisiert,rationalisierend,rationalisierte,rationalisiertest,rationalisierte,rationalisierten,rationalisiertet,rationalisiert,rationalisiere,rationalisiert,rationalisieren,rationalisiere,rationalisierest,rationalisieren,rationalisieret,rationalisierte,rationalisiertest,rationalisierten,rationalisiertet
 rächen,räche,rächst,rächt,rächen,rächt,rächend,rächte,rächtest,rächte,rächten,rächtet,gerächt,räche,rächt,rächen,räche,rächest,rächen,rächet,rächte,rächtest,rächten,rächtet
