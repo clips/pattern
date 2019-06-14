@@ -1081,7 +1081,7 @@ class Parser(object):
             # Word part-of-speech classifier.
             try:
                 self.model = Model(path=model)
-            except ImportError: # pattern.vector
+            except ImportError as e: # pattern.vector
                 pass
 
     def find_keywords(self, string, **kwargs):
