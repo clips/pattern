@@ -10,7 +10,7 @@ python:
 before_install:
   # Define TZ as some tests rely on timezone
   - export TZ=Europe/Brussels
-  - pip install --quiet pytest pytest-cov pytest-xdist chardet
+  - pip install --quiet pytest==4.4 pytest-cov pytest-xdist chardet
 
 install:
   - python setup.py install --quiet
