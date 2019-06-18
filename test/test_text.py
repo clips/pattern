@@ -21,7 +21,7 @@ except ImportError:
 
 from pattern import text
 from random import seed
-seed(0)
+
 #---------------------------------------------------------------------------------------------------
 
 
@@ -93,6 +93,7 @@ class TestModel(unittest.TestCase):
     def test_model(self):
 
         # Assert SLP language model.
+        seed(0)
         v = text.Model()
         for i in range(2):
             v.train("black", "JJ", previous=("the", "DT"), next=("cat", "NN"))
