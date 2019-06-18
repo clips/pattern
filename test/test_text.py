@@ -20,7 +20,8 @@ except ImportError:
     from io import StringIO
 
 from pattern import text
-
+from random import seed
+seed(0)
 #---------------------------------------------------------------------------------------------------
 
 
@@ -90,6 +91,7 @@ class TestModel(unittest.TestCase):
         pass
 
     def test_model(self):
+
         # Assert SLP language model.
         v = text.Model()
         for i in range(2):

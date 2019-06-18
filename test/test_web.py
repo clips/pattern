@@ -17,7 +17,8 @@ import time
 import warnings
 
 from pattern import web
-
+from random import seed
+seed(0)
 try:
     PATH = os.path.dirname(os.path.realpath(__file__))
 except:
