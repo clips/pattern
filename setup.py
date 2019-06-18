@@ -51,7 +51,7 @@ if sys.argv[-1] == "zip":
 
 setup(
             name = "Pattern",
-         version = "2.6",
+         version = "3.6.1",
      description = "Web mining module for Python.",
          license = "BSD",
           author = "Tom De Smedt",
@@ -70,6 +70,8 @@ setup(
         "pattern.text.en",
         "pattern.text.en.wordlist",
         "pattern.text.en.wordnet",
+        "pattern.text.ru",
+        "pattern.text.ru.wordlist",
         "pattern.text.es",
         "pattern.text.fr",
         "pattern.text.it",
@@ -87,6 +89,8 @@ setup(
         "pattern.text.en"         : ["*.txt", "*.xml", "*.slp"],
         "pattern.text.en.wordlist": ["*.txt"],
         "pattern.text.en.wordnet" : ["*.txt", "dict/*"],
+        "pattern.text.ru": ["*.txt", "*.xml", "*.slp"],
+        "pattern.text.ru.wordlist": ["*.txt"],
         "pattern.text.es"         : ["*.txt", "*.xml"],
         "pattern.text.fr"         : ["*.txt", "*.xml"],
         "pattern.text.it"         : ["*.txt", "*.xml"],
@@ -118,9 +122,9 @@ setup(
         "Operating System :: OS Independent",
         "Programming Language :: JavaScript",
         "Programming Language :: Python",
-        "Programming Language :: Python 2",
+        "Programming Language :: Python :: 2",
         "Programming Language :: Python :: 2.7",
-        "Programming Language :: Python 3",
+        "Programming Language :: Python :: 3",
         "Programming Language :: Python :: 3.6",
         "Topic :: Internet :: WWW/HTTP :: Indexing/Search",
         "Topic :: Multimedia :: Graphics",
@@ -139,10 +143,11 @@ setup(
         "feedparser",
         "pdfminer" if sys.version < "3" else "pdfminer.six",
         "numpy",
-        "scipy",
+        "scipy" if sys.version >= "3" else "scipy==1.2.1",
         "nltk",
         "python-docx",
-        "cherrypy"
+        "cherrypy" if sys.version >= "3" else "cherrypy==17.4.1",
+        "requests"
     ],
     zip_safe = False
 )

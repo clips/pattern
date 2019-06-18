@@ -63,7 +63,7 @@ def create_db_sqlite():
         password = PASSWORD)
 
     # Drop all tables first
-    for table in list(DB_MYSQL.tables):
+    for table in list(DB_SQLITE.tables):
         DB_SQLITE.drop(table)
 
     return DB_SQLITE
@@ -768,8 +768,8 @@ class _TestQuery(object):
             "select persons.* from `persons` where persons.age<30 or persons.name='john';",
             [(1, "john", 30, 2),
              (2, "jack", 20, 2)]),
-          (dict(fields=["name", "gender.name"], relations=[db.relation("gender", "id", "gender")]),
-            "select persons.name, gender.name from `persons` left join `gender` on persons.gender=gender.id;",
+          (dict(fields=["name", "gender.name"], relations=[db.relation("gender", "id", "gender")], sort=["persons.id"]),
+            "select persons.name, gender.name from `persons` left join `gender` on persons.gender=gender.id order by persons.id asc;",
             [("john", "male"),
              ("jack", "male"),
              ("jane", "female")]),
@@ -797,19 +797,24 @@ class _TestQuery(object):
             [(1, "jack", 20),
              (2, "john,jane", 30)])):
             v = self.db.persons.search(**kwargs)
-            v.xml
+            v_rows = v.rows()
+            v_sql = v.SQL()
             self.assertEqual(v.SQL(), sql)
             self.assertEqual(v.rows(), rows)
+
+        v_failing = self.db.persons.search(**dict(fields=["name", "gender.name"], relations=[db.relation("gender", "id", "gender")]))
+        v_failing_rows = v_failing.rows()
         # Assert Database.link() permanent relations.
         v = self.db.persons.search(fields=["name", "gender.name"])
         v.aliases["gender.name"] = "gender"
         self.db.link("persons", "gender", "gender", "id", join=db.LEFT)
         self.assertEqual(v.SQL(),
             "select persons.name, gender.name as gender from `persons` left join `gender` on persons.gender=gender.id;")
-        self.assertEqual(v.rows(),
-            [('john', 'male'),
-             ('jack', 'male'),
-             ('jane', 'female')])
+        self.assertEqual(set(v.rows()),
+            set([('jane', 'female'),
+                 ('john', 'male'),
+                 ('jack', 'male')]))
+
         print("pattern.db.Table.search()")
         print("pattern.db.Table.Query")
 
@@ -818,7 +823,7 @@ class _TestQuery(object):
         v = self.db.persons.search(fields=["name", "gender.name"])
         v.aliases["gender.name"] = "gender"
         self.db.link("persons", "gender", "gender", "id", join=db.LEFT)
-        self.assertEqual(v.xml,
+        self.assertEqual(set(v.xml.split('\n')),set(
             '<?xml version="1.0" encoding="utf-8"?>\n'
             '<query table="persons" fields="name, gender" count="3">\n'
             '\t<schema>\n'
@@ -826,11 +831,11 @@ class _TestQuery(object):
             '\t\t<field name="gender" type="string" length="100" />\n'
             '\t</schema>\n'
             '\t<rows>\n'
+            '\t\t<row name="jane" gender="female" />\n'
             '\t\t<row name="john" gender="male" />\n'
             '\t\t<row name="jack" gender="male" />\n'
-            '\t\t<row name="jane" gender="female" />\n'
             '\t</rows>\n'
-            '</query>'
+            '</query>'.split('\n'))
         )
         # Assert Database.create() from XML.
         self.assertRaises(db.TableError, self.db.create, v.xml) # table 'persons' already exists

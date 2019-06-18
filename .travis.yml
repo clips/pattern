@@ -1,28 +1,26 @@
 language: python
 
-dist: precise
+dist: xenial
 
 python:
+  - "2.7"
   - "3.6"
+  - "3.7"
 
 before_install:
+  # Define TZ as some tests rely on timezone
   - export TZ=Europe/Brussels
-  - if [ ${TRAVIS_PYTHON_VERSION:0:1} == "2" ]; then wget http://repo.continuum.io/miniconda/Miniconda-latest-Linux-x86_64.sh -O miniconda.sh; else wget http://repo.continuum.io/miniconda/Miniconda3-latest-Linux-x86_64.sh -O miniconda.sh; fi
-  - bash miniconda.sh -b -p $HOME/miniconda
-  - export PATH="$HOME/miniconda/bin:$PATH"
-  - conda update --yes conda
-  - conda install --yes numpy scipy
-  - pip install --quiet pytest pytest-cov pytest-xdist chardet
+  - pip install --quiet pytest==4.4 pytest-cov pytest-xdist chardet
 
 install:
   - python setup.py install --quiet
   - pip freeze
-  # Install and compile libsvm and liblinear
-  - sudo apt-get install -y build-essential
-  - git clone https://github.com/cjlin1/libsvm
-  - cd libsvm; make lib; sudo cp libsvm.so.2 /lib; sudo ln -s /lib/libsvm.so.2 /lib/libsvm.so; cd ..
-  - git clone https://github.com/cjlin1/liblinear
-  - cd liblinear; make lib; sudo cp liblinear.so.3 /lib; sudo ln -s /lib/liblinear.so.3 /lib/liblinear.so; cd ..
+  # No need to recompile libsvm and liblinear, can rely on the precompiled commited versions, so removes an eventual installed version
+  - path_to_libsvm=$(ldconfig -p | grep -m1 "libsvm.so.2" | cut -d ' ' -f4)
+  - if [[ -e $path_to_libsvm ]]; then sudo rm -f $path_to_libsvm; fi
+  - path_to_liblinear=$(ldconfig -p | grep -m1 "liblinear.so.3" | cut -d ' ' -f4)
+  - if [[ -e $path_to_liblinear ]]; then sudo rm -f $path_to_liblinear; fi
+  - sudo ldconfig
 
 script:
   - pytest --cov=pattern

@@ -3104,7 +3104,7 @@ class SLP(Classifier):
             p = sorted((self._classes[type], type) for type, w in p.items() if w == m > 0)
             p = [type for frequency, type in p if frequency == p[0][0]]
             return choice(p)
-        except:
+        except Exception as e:
             return self.baseline
 
     def finalize(self):

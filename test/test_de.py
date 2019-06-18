@@ -104,9 +104,13 @@ class TestInflection(unittest.TestCase):
         for v1, v2 in de.inflect.verbs.inflections.items():
             if de.inflect.verbs.find_lemma(v1) == v2:
                 i += 1
+            else:
+                pass
             n += 1
         self.assertTrue(float(i) / n > 0.86)
-        print("pattern.de.inflect.verbs.find_lemma()")
+        rate_correct = float(i) / n
+        self.assertTrue(float(i) / n > 0.86)
+        print("pattern.de.inflect.verbs.find_lemma() - hit rate {}".format(rate_correct))
 
     def test_find_lexeme(self):
         # Assert the accuracy of the verb conjugation algorithm.
@@ -119,8 +123,9 @@ class TestInflection(unittest.TestCase):
                 if lexeme1[j] == lexeme2[j]:
                     i += 1
                 n += 1
+        rate_correct = float(i) / n
         self.assertTrue(float(i) / n > 0.86)
-        print("pattern.de.inflect.verbs.find_lexeme()")
+        print("pattern.de.inflect.verbs.find_lexeme() - hit rate {}".format(rate_correct))
 
     def test_conjugate(self):
         # Assert different tenses with different conjugations.
@@ -154,8 +159,22 @@ class TestInflection(unittest.TestCase):
           ("sein", "wäre",    (de.PAST, 3, de.SINGULAR, de.SUBJUNCTIVE)),
           ("sein", "wären",   (de.PAST, 1, de.PLURAL, de.SUBJUNCTIVE)),
           ("sein", "wäret",   (de.PAST, 2, de.PLURAL, de.SUBJUNCTIVE)),
-          ("sein", "wären",   (de.PAST, 3, de.PLURAL, de.SUBJUNCTIVE))):
-            self.assertEqual(de.conjugate(v1, tense), v2)
+          ("sein", "wären",   (de.PAST, 3, de.PLURAL, de.SUBJUNCTIVE)),
+          ("vorgehen", "gingst vor", (de.PAST, 2, de.SINGULAR)), # separable prefix, irregular base
+          ("betreffen", "betroffen", (de.PAST, de.PARTICIPLE)), # inseparable prefix, irregular base
+          ("umbenennen", "benanntest um", (de.PAST, 2, de.SINGULAR)), # stacked prefixes, irregular base
+          ("einberufen", 'berief ein', (de.PAST, 3, de.SINGULAR)), # stacked prefixes, irregular base
+          ('entern', 'geentert', (de.PAST, de.PARTICIPLE)), # looks like prefix ent-
+          ('zurren', 'zurrt', (de.PRESENT, 3, de.SINGULAR)), # looks like prefix zu-
+          ('bechern', 'gebechert', (de.PAST, de.PARTICIPLE)), # looks like prefix be-
+          ('drangsalieren', 'drangsaliert', (de.PAST, de.PARTICIPLE)), # blocking ge-prefixation
+          ('stapfen', 'gestapft', (de.PAST, de.PARTICIPLE)), #
+          ('fristen', 'gefristet', (de.PAST, de.PARTICIPLE)), # might be misinterpreted as past form
+          ('gieren', 'gegiert', (de.PAST, de.PARTICIPLE)), # ends in -ieren but doesn't block ge-prefixation
+          ('angeln', 'angeltest', (de.PAST, 2, de.SINGULAR)), # looks like prefix an-
+          ('geifern', 'gegeifert', (de.PAST, de.PARTICIPLE)), # looks like prefix ge-
+            ):
+            self.assertEqual(de.conjugate(v1, tense, allow_inflected=False), v2,)
         print("pattern.de.conjugate()")
 
     def test_lexeme(self):
@@ -173,6 +192,8 @@ class TestInflection(unittest.TestCase):
         # Assert tense recognition.
         self.assertTrue((de.PRESENT, 3, de.SG) in de.tenses("ist"))
         self.assertTrue("2sg" in de.tenses("bist"))
+        self.assertTrue((de.PAST, 2, de.SINGULAR) in de.tenses('gingst vor'))
+        self.assertTrue((de.PRESENT, 2, de.SINGULAR, de.SUBJUNCTIVE) in de.tenses('gehest vor'))
         print("pattern.de.tenses()")
 
 #---------------------------------------------------------------------------------------------------
@@ -185,9 +206,12 @@ class TestParser(unittest.TestCase):
 
     def test_find_lemmata(self):
         # Assert lemmata for nouns, adjectives and verbs.
-        v = de.parser.find_lemmata([["Ich", "PRP"], ["sage", "VB"], ["schöne", "JJ"], ["Dinge", "NNS"]])
+        v = de.parser.find_lemmata([['Man', 'PRP'], ['nimmt an', 'VB'], [',', 'PUNC'], ["ich", "PRP"], ["sage", "VB"], ["schöne", "JJ"], ["Dinge", "NNS"]])
         self.assertEqual(v, [
-            ["Ich", "PRP", "ich"],
+            ['Man', 'PRP', 'man'],
+            ['nimmt an', 'VB', 'annehmen'],
+            [',', 'PUNC', ','],
+            ["ich", "PRP", "ich"],
             ["sage", "VB", "sagen"],
             ["schöne", "JJ", "schön"],
             ["Dinge", "NNS", "ding"]])

@@ -46,9 +46,9 @@ print(knn.classify('stupid autocorrect'))
 Installation
 ------------
 
-Pattern supports Python 2.7 and Python 3.6+. The Python 3 version is currently **only** available on the `development` branch. To install Pattern so that it is available in all your scripts, unzip the download and from the command line do:
+Pattern supports Python 2.7 and Python 3.6. To install Pattern so that it is available in all your scripts, unzip the download and from the command line do:
 ```bash
-cd pattern-2.6
+cd pattern-3.6
 python setup.py install
 ```
 
@@ -60,9 +60,9 @@ pip install pattern
 If none of the above works, you can make Python aware of the module in three ways:
 - Put the pattern folder in the same folder as your script.
 - Put the pattern folder in the standard location for modules so it is available to all scripts:
-  * `c:\python26\Lib\site-packages\` (Windows),
-  * `/Library/Python/2.6/site-packages/` (Mac OS X),
-  * `/usr/lib/python2.6/site-packages/` (Unix).
+  * `c:\python36\Lib\site-packages\` (Windows),
+  * `/Library/Python/3.6/site-packages/` (Mac OS X),
+  * `/usr/lib/python3.6/site-packages/` (Unix).
 - Add the location of the module to `sys.path` in your script, before importing it:
 
 ```python
@@ -79,7 +79,7 @@ For documentation and examples see the [user documentation](http://www.clips.ua.
 Version
 -------
 
-2.6
+3.6
 
 License
 -------

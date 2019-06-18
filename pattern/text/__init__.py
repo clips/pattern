@@ -606,7 +606,7 @@ def _read(path, encoding="utf-8", comment=";;;"):
             if not line or (comment and line.startswith(comment)):
                 continue
             yield line
-    raise StopIteration
+    return
 
 
 class Lexicon(lazydict):
@@ -1081,7 +1081,7 @@ class Parser(object):
             # Word part-of-speech classifier.
             try:
                 self.model = Model(path=model)
-            except ImportError: # pattern.vector
+            except ImportError as e: # pattern.vector
                 pass
 
     def find_keywords(self, string, **kwargs):
@@ -2096,7 +2096,7 @@ def tense_id(*args, **kwargs):
     # Disambiguate aliases: "pl" =>
     # (PRESENT, None, PLURAL, INDICATIVE, IMPERFECTIVE, False).
     return TENSES_ID.get(tense.lower(),
-           TENSES_ID.get((tense, person, number, mood, aspect, negated)))
+        TENSES_ID.get((tense, person, number, mood, aspect, negated)))
 
 tense = tense_id
 
@@ -2170,6 +2170,11 @@ class Verbs(lazydict):
         """
         if dict.__len__(self) == 0:
             self.load()
+        if self._language == 'de' and len(verb.split()) > 1:
+            # allow to find base for prefix forms in split representation,
+            # e. g. 'nimmst an' -> 'annehmen'
+            verb = verb.split()
+            return self.lemma(''.join(verb[1:]  + verb[:1]), parse=parse)
         if verb.lower() in self._inverse:
             return self._inverse[verb.lower()]
         if verb in self._inverse:
@@ -2177,7 +2182,7 @@ class Verbs(lazydict):
         if parse is True: # rule-based
             return self.find_lemma(verb)
 
-    def lexeme(self, verb, parse=True):
+    def lexeme(self, verb, parse=True, no_duplicates=True):
         """ Returns a list of all possible inflections of the given verb.
         """
         a = []
@@ -2186,9 +2191,14 @@ class Verbs(lazydict):
             a = [x for x in self[b] if x != ""]
         elif parse is True: # rule-based
             a = self.find_lexeme(b)
-        u = []
-        [u.append(x) for x in a if x not in u]
-        return u
+
+        if no_duplicates:
+            u = []
+
+            [u.append(x) for x in a if x not in u]
+            return u
+        else:
+            return a
 
     def conjugate(self, verb, *args, **kwargs):
         """ Inflects the verb and returns the given tense (or None).
@@ -2205,7 +2215,10 @@ class Verbs(lazydict):
         i1 = self._format.get(id)
         i2 = self._format.get(self._default.get(id))
         i3 = self._format.get(self._default.get(self._default.get(id)))
-        b = self.lemma(verb, parse=kwargs.get("parse", True))
+        if kwargs.get('allow_inflected', True):
+            b = self.lemma(verb, parse=kwargs.get("parse", True))
+        else:
+            b = verb
         v = []
         # Get the verb lexeme and return the requested index.
         if b in self:

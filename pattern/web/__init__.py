@@ -2384,7 +2384,7 @@ class MediaWiki(SearchEngine):
                     yield x[id]
             start = data.get("query-continue", {}).get("allpages", {})
             start = start.get("apcontinue", start.get("apfrom", -1))
-        raise StopIteration
+        return
 
     # Backwards compatibility.
     list = index
@@ -2909,9 +2909,10 @@ class Wikia(MediaWiki):
                 for x in (data or {}).get("pages", {}).values():
                     yield WikiaArticle(title=x.get("title", ""), source=x.get("html", ""))
                 if done:
-                    raise StopIteration
-        for title in self.index(**kwargs):
-            yield self.search(title, **kwargs)
+                    return
+        else:
+            for title in self.index(**kwargs):
+                yield self.search(title, **kwargs)
 
 
 class WikiaArticle(MediaWikiArticle):
@@ -2971,9 +2972,10 @@ class DBPediaResource(str):
         # http://dbpedia.org/resource/Australia => Australia
         s = re.sub("^http://dbpedia.org/resource/", "", self)
         s = s.replace("_", " ")
-        s = encode_utf8(s)
-        s = decode_url(s)
-        s = decode_utf8(s)
+        if sys.version_info[0] < 3:
+            s = encode_utf8(s)
+            s = decode_url(s)
+            s = decode_utf8(s)
         return s
 
 
@@ -4176,6 +4178,12 @@ class Crawler(object):
         if link.url not in self.visited:
             t = time.time()
             url = URL(link.url)
+            base_link_url = base(link.url) in self.history and base(link.url) or base(link.referrer) in self.history and base(link.referrer) or None # in self.history  or self.history.get(base(link.referrer), None)
+
+            if base_link_url in self.history:
+                if time.time() - self.history[base_link_url] < self.delay:
+                    self.push(link)
+                    return False
             if url.mimetype == "text/html":
                 try:
                     kwargs.setdefault("unicode", True)

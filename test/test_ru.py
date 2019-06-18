@@ -39,9 +39,7 @@ class TestSpelling(unittest.TestCase):
                 if suggested[0][0] == correct:
                     i += 1
                 else:
-                    print(suggested[0][0], correct)
                     j += 1
-        print(i / (i + j))
         self.assertTrue(i / (i + j) > 0.65)
         print("pattern.ru.suggest()")
 

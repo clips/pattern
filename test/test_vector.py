@@ -888,7 +888,7 @@ class TestClassifier(unittest.TestCase):
 
     def _test_classifier(self, Classifier, **kwargs):
         # Assert classifier training + prediction for trivial cases.
-        v = Classifier(**kwargs)
+        v = Classifier(seed=0, **kwargs)
         test_doc1 = None
         test_doc2 = None
 
