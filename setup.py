@@ -137,7 +137,8 @@ setup(
     install_requires = [
         "future",
         "backports.csv",
-        # "mysqlclient",
+        # WIP
+        # "mysqlclient", hack for a specific use case - DO NOT PULL
         "beautifulsoup4",
         "lxml",
         "feedparser",
