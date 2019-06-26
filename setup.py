@@ -142,6 +142,7 @@ setup(
         "beautifulsoup4",
         "lxml",
         "feedparser",
+        "more-itertools==5.0.0" if sys.version < "3" else "more-itertools",
         "pdfminer" if sys.version < "3" else "pdfminer.six",
         "numpy",
         "scipy" if sys.version >= "3" else "scipy==1.2.1",
