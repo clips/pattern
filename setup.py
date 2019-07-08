@@ -147,7 +147,7 @@ setup(
         "numpy",
         "scipy" if sys.version >= "3" else "scipy==1.2.1",
         "nltk",
-        "python-docx",
+        # "python-docx", hack for a specific use case - DO NOT PULL
         "cherrypy" if sys.version >= "3" else "cherrypy==17.4.1",
         "requests"
     ],
