@@ -2252,11 +2252,10 @@ class Verbs(lazydict):
                     if i == index:
                         a.add(id)
                 for id1, id2 in self._default.items():
-                    if id2 in a:
-                        a.add(id1)
-                for id1, id2 in self._default.items():
-                    if id2 in a:
-                        a.add(id1)
+                    # don't return tenses with more specific form
+                    if id2 in a and not v[id1]:
+                        a.add(id1) 
+                    
 
         a = list(TENSES[id][:-2] for id in a)
 
