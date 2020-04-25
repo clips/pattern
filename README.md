@@ -13,7 +13,7 @@ Pattern is a web mining module for Python. It has tools for:
  * Machine Learning: vector space model, clustering, classification (KNN, SVM, Perceptron)
  * Network Analysis: graph centrality and visualization.
 
-It is well documented, thoroughly tested with 350+ unit tests and comes bundled with 50+ examples. The source code is licensed under BSD and available from <http://www.clips.ua.ac.be/pages/pattern>.
+It is well documented, thoroughly tested with 350+ unit tests and comes bundled with 50+ examples. The source code is licensed under BSD.
 
 ![Example workflow](https://raw.githubusercontent.com/clips/pattern/master/docs/g/pattern_schema.gif)
 
@@ -52,7 +52,7 @@ cd pattern-3.6
 python setup.py install
 ```
 
-If you have pip, you can automatically download and install from the [PyPI repository](https://pypi.python.org/pypi/Pattern):
+If you have pip, you can automatically download and install from the [PyPI repository](https://pypi.python.org/pypi/pattern):
 ```bash
 pip install pattern
 ```
@@ -74,7 +74,7 @@ from pattern.en import parsetree
 Documentation
 -------------
 
-For documentation and examples see the [user documentation](http://www.clips.ua.ac.be/pages/pattern). If you are a developer, go check out the [developer documentation](http://www.clips.ua.ac.be/pages/pattern-dev).
+For documentation and examples see the [user documentation](https://github.com/clips/pattern/wiki).
 
 Version
 -------
@@ -94,7 +94,7 @@ De Smedt, T., Daelemans, W. (2012). Pattern for Python. *Journal of Machine Lear
 Contribute
 ----------
 
-The source code is hosted on GitHub and contributions or donations are welcomed. Please have look at the [developer documentation](http://www.clips.ua.ac.be/pages/pattern-dev). If you use Pattern in your work, please cite our reference paper.
+The source code is hosted on GitHub and contributions or donations are welcomed.
 
 Bundled dependencies
 --------------------
