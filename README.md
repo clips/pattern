@@ -57,6 +57,12 @@ If you have pip, you can automatically download and install from the [PyPI repos
 pip install pattern
 ```
 
+If you wish to use MySQL support, install specifying the optional extra
+requirement:
+```
+pip install pattern[mysql]
+```
+
 If none of the above works, you can make Python aware of the module in three ways:
 - Put the pattern folder in the same folder as your script.
 - Put the pattern folder in the standard location for modules so it is available to all scripts:
