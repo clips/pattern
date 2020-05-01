@@ -58,7 +58,7 @@ pip install pattern
 ```
 
 If none of the above works, you can make Python aware of the module in three ways:
-- Put the pattern folder in the same folder as your script.
+- Put the pattern folder in the same location as your script.
 - Put the pattern folder in the standard location for modules so it is available to all scripts:
   * `c:\python36\Lib\site-packages\` (Windows),
   * `/Library/Python/3.6/site-packages/` (Mac OS X),
