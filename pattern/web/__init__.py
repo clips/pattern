@@ -16,6 +16,7 @@ from __future__ import division
 from builtins import str, bytes, dict, int, chr
 from builtins import map, filter, zip
 from builtins import object, range, next
+from translate import Translator
 
 from .utils import get_url_query, get_form_action, stringify_values, json_iter_parse
 
@@ -2146,6 +2147,22 @@ class Twitter(SearchEngine):
             else:
                 self._pagination[k] = id
         return results
+    
+    
+    
+    def translated(self,lang,query):
+        trans_results=self.search(query, start=1, count=10)
+        translator= Translator(to_lang=lang)
+        translation = translator.translate(trans_results)
+        return translation
+        
+    '''
+    This translated takes the results from a search query and translates it to the language
+    specified by the lang keyword.
+    usage===>Twitter.translated("German","cat")
+    
+    '''    
+        
 
     def profile(self, query, start=1, count=10, **kwargs):
         """ Returns a list of results for the given author id, alias or search query.

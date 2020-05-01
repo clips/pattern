@@ -3,7 +3,7 @@ language: python
 dist: precise
 
 python:
-  - "3.6"
+  - "3.6.5"
 
 before_install:
   - export TZ=Europe/Brussels
@@ -19,6 +19,7 @@ install:
   - pip freeze
   # Install and compile libsvm and liblinear
   - sudo apt-get install -y build-essential
+  - pip install translate
   - git clone https://github.com/cjlin1/libsvm
   - cd libsvm; make lib; sudo cp libsvm.so.2 /lib; sudo ln -s /lib/libsvm.so.2 /lib/libsvm.so; cd ..
   - git clone https://github.com/cjlin1/liblinear
