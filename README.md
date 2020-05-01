@@ -24,7 +24,7 @@ This example trains a classifier on adjectives mined from Twitter using Python 3
 
 ```python
 from pattern.web import Twitter
-from pattern.en import tag
+from pattern.text.en import tag
 from pattern.vector import KNN, count
 
 twitter, knn = Twitter(), KNN()
@@ -68,7 +68,7 @@ If none of the above works, you can make Python aware of the module in three way
 ```python
 MODULE = '/users/tom/desktop/pattern'
 import sys; if MODULE not in sys.path: sys.path.append(MODULE)
-from pattern.en import parsetree
+from pattern.text.en import parsetree
 ```
 
 Documentation
