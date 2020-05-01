@@ -141,7 +141,7 @@ setup(
         "beautifulsoup4",
         "lxml",
         "feedparser",
-        "pdfminer" if sys.version < "3" else "pdfminer.six",
+        "pdfminer.six" if sys.version < "3" else "pdfminer",
         "numpy",
         "scipy",
         "nltk",
