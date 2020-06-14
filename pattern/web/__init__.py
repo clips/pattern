@@ -2382,8 +2382,7 @@ class MediaWiki(SearchEngine):
             for x in data.get("query", {}).get("allpages", {}):
                 if x.get(id):
                     yield x[id]
-            start = data.get("query-continue", {}).get("allpages", {})
-            start = start.get("apcontinue", start.get("apfrom", -1))
+            start = data.get("continue", {}).get("apcontinue", -1)
         raise StopIteration
 
     # Backwards compatibility.
