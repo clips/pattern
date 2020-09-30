@@ -84,7 +84,9 @@ Version
 License
 -------
 
-**BSD**, see `LICENSE.txt` for further details.
+**BSD**
+
+Click [here](https://github.com/clips/pattern/blob/master/LICENSE.txt) for further details.
 
 Reference
 ---------
