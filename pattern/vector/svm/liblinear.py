@@ -39,7 +39,7 @@ except:
 	elif find_library('liblinear'):
 		liblinear = CDLL(find_library('liblinear'))
 	else:
-		libsvm = CDLL(path.join(path.dirname(__file__), 'ubuntu/liblinear-2.20/liblinear.so.3'))
+		liblinear= CDLL(path.join(path.dirname(__file__), 'ubuntu/liblinear-2.20/liblinear.so.3'))
 
 L2R_LR = 0
 L2R_L2LOSS_SVC_DUAL = 1
