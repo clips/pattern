@@ -6,6 +6,7 @@ Pattern
 [![PyPi version](http://img.shields.io/pypi/v/pattern.svg?style=flat)](https://pypi.python.org/pypi/pattern)
 [![License](https://img.shields.io/badge/License-BSD%203--Clause-green.svg?style=flat)](https://github.com/clips/pattern/blob/master/LICENSE.txt)
 
+[![forthebadge](https://forthebadge.com/images/badges/made-with-python.svg)](https://forthebadge.com)  
 Pattern is a web mining module for Python. It has tools for:
 
  * Data Mining: web services (Google, Twitter, Wikipedia), web crawler, HTML DOM parser
@@ -84,7 +85,9 @@ Version
 License
 -------
 
-**BSD**, see `LICENSE.txt` for further details.
+**BSD**
+
+Click [here](https://github.com/clips/pattern/blob/master/LICENSE.txt) for further details.
 
 Reference
 ---------
