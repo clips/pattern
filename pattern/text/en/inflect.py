@@ -731,12 +731,15 @@ class Verbs(_Verbs):
                 return v + "e"      # decre => decree
             if v.endswith(("th", "ang", "un", "cr", "vr", "rs", "ps", "tr")):
                 return v + "e"
-        return verb
+        return v
 
     def conjugate(self, verb, *args, **kwargs):
         verb, sattelites = self.decompose_particle_verb(verb)
         conjugated_verb = _Verbs.conjugate(self, verb, *args, **kwargs)
-        return ' '.join([conjugated_verb, sattelites])
+        if sattelites:
+            return ' '.join([conjugated_verb, sattelites])
+        else:
+            return conjugated_verb
 
     def find_lexeme(self, verb):
         """ For a regular verb (base form), returns the forms using a rule-based approach.
