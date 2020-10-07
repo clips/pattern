@@ -655,10 +655,37 @@ class Verbs(_Verbs):
                 29: 32, 30: 32, 31: 32, 32: 33  # past plural negated
             })
 
+    def decompose_particle_verb(self, verb):
+        try:
+            if len(verb.split()) > 1:
+                verb, sattelites = verb.split(' ', 1)
+            else:
+                sattelites = ''
+        except Exception as e:
+            sattelites = ''
+
+        return verb, sattelites
+
+    def tenses(self, verb, parse=True):
+        if parse:
+            verb, _ = self.decompose_particle_verb(verb)
+        return _Verbs.tenses(self, verb, parse=parse)
+
+    def lemma(self, verb, parse=True):
+        if parse:
+            verb, sattelites = self.decompose_particle_verb(verb)
+            lemmatized = _Verbs.lemma(self, verb, parse=parse)
+            if sattelites:
+                return ' '.join([lemmatized, sattelites])
+            return lemmatized
+        else:
+            return _Verbs.lemma(self, verb, parse=parse)
+
     def find_lemma(self, verb):
         """ Returns the base form of the given inflected verb, using a rule-based approach.
             This is problematic if a verb ending in -e is given in the past tense or gerund.
         """
+
         v = verb.lower()
         b = False
         if v in ("'m", "'re", "'s", "n't"):
@@ -705,6 +732,14 @@ class Verbs(_Verbs):
             if v.endswith(("th", "ang", "un", "cr", "vr", "rs", "ps", "tr")):
                 return v + "e"
         return v
+
+    def conjugate(self, verb, *args, **kwargs):
+        verb, sattelites = self.decompose_particle_verb(verb)
+        conjugated_verb = _Verbs.conjugate(self, verb, *args, **kwargs)
+        if sattelites:
+            return ' '.join([conjugated_verb, sattelites])
+        else:
+            return conjugated_verb
 
     def find_lexeme(self, verb):
         """ For a regular verb (base form), returns the forms using a rule-based approach.
