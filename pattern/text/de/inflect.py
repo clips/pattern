@@ -493,7 +493,7 @@ faux_prefix_verbs = (
     'zerren', 'zuenden',  # zünden
     'zuzeln', 'gellen', 'zuechten',  # züchten
     'ankern', 'angeln', 'herzigen', # 'be-herzigen after decomposition
-    'dauern', 'darben', 'danken', # for whatever reason 'da' appears in prefix_separable
+    'dauern', 'darben', 'danken', 'daten' # for whatever reason 'da' appears in prefix_separable
 )  # probably more
 
 faux_latinate = (
