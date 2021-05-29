@@ -1650,8 +1650,11 @@ class Query(object):
 def associative(query):
     """ Yields query rows as dictionaries of (field, value)-items.
     """
+    result = []
     for row in query:
-        yield query.record(row)
+        # yield query.record(row)
+        result.append(query.record(row))
+    return result
 
 assoc = associative
 
@@ -2351,8 +2354,11 @@ class DatasheetRows(list):
         return len(self._datasheet)
 
     def __iter__(self):
+        result = []
         for i in range(len(self)):
-            yield list.__getitem__(self._datasheet, i)
+            # yield list.__getitem__(self._datasheet, i)
+            result.append(list.__getitem__(self._datasheet, i))
+        return result
 
     def __repr__(self):
         return repr(self._datasheet)
@@ -2436,8 +2442,11 @@ class DatasheetColumns(list):
         return len(self._datasheet) > 0 and len(self._datasheet[0]) or 0
 
     def __iter__(self):
+        result = []
         for i in range(len(self)):
-            yield self.__getitem__(i)
+            # yield self.__getitem__(i)
+            result.append(self.__getitem__(i))
+        return result
 
     def __repr__(self):
         return repr(list(iter(self)))
@@ -2566,8 +2575,11 @@ class DatasheetColumn(list):
         return len(self._datasheet)
 
     def __iter__(self): # Can be put more simply but optimized for performance:
+        result = []
         for i in range(len(self)):
-            yield list.__getitem__(self._datasheet, i)[self._j]
+            # yield list.__getitem__(self._datasheet, i)[self._j]
+            result.append(list.__getitem__(self._datasheet, i)[self._j])
+        return result
 
     def __reversed__(self):
         return reversed(list(iter(self)))

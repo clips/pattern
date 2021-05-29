@@ -128,9 +128,12 @@ class Map(list):
 
     def __iter__(self):
         i = 0
+        result = []
         while i < len(self._a):
-            yield self._f(self._a[i])
+            # yield self._f(self._a[i])
+            result.append(self._f(self._a[i]))
             i += 1
+        return result
 
 ### SENTENCE #######################################################################################
 
@@ -1037,8 +1040,11 @@ class Sentence(object):
             Possible tags: WORD, LEMMA, POS, CHUNK, PNP, RELATION, ROLE, ANCHOR or a custom word tag.
             Any order or combination of tags can be supplied.
         """
+        result = []
         for i in range(len(self.words)):
-            yield tuple([self.get(i, tag=tag) for tag in tags])
+            # yield tuple([self.get(i, tag=tag) for tag in tags])
+            result.append(tuple([self.get(i, tag=tag) for tag in tags]))
+        return result
 
     def indexof(self, value, tag=WORD):
         """ Returns the indices of tokens in the sentence where the given token tag equals the string.

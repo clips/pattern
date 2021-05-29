@@ -183,6 +183,7 @@ class Synset(object):
     def __iter__(self):
         for s in self.synonyms:
             yield s
+        # return (s for s in self.synonyms)
 
     def __len__(self):
         return len(self.synonyms)
