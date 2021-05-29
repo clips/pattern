@@ -36,10 +36,13 @@ def corpus(path, encoding="utf-8"):
         which is a .txt file with a sentence on each line, 
         with slash-encoded tokens (e.g., the/DT cat/NN).
     """
+    result = []
     for s in open(path, encoding=encoding):
         s = list(map(lambda w: w.split("/"), s.strip().split(" ")))
         s = list(map(lambda w: (w[0].replace("&slash;", "/"), w[1]), s))
-        yield s
+        # yield s
+        result.append(s)
+    return result
 
 # The corpus is included in the Pattern download zip, in pattern/test/corpora:
 path = os.path.join(os.path.dirname(__file__), "..", "..", "test", "corpora", "tagged-en-oanc.txt")
