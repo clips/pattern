@@ -1601,19 +1601,15 @@ class HTMLCanvasRenderer(GraphRenderer):
         # Copy compressed graph.js + canvas.js (unless a custom path is given.)
         if self.javascript is None:
             for p, f in (("..", "canvas.js"), (".", "graph.js")):
-                a = open(os.path.join(MODULE, p, f), "r")
-                b = open(os.path.join(path, f), "w")
-                b.write(minify(a.read()))
-                b.close()
+                with open(os.path.join(MODULE, p, f), "r") as a, open(os.path.join(path, f), "w") as b:
+                    b.write(minify(a.read()))
         # Create style.css.
         if self.stylesheet == DEFAULT:
-            f = open(os.path.join(path, "style.css"), "w")
-            f.write(self.style)
-            f.close()
+            with open(os.path.join(path, "style.css"), "w") as f:
+                f.write(self.style)
         # Create index.html.
-        f = open(os.path.join(path, "index.html"), "w", encoding=encoding)
-        f.write(self.html)
-        f.close()
+        with open(os.path.join(path, "index.html"), "w", encoding=encoding) as f:
+            f.write(self.html)
 
 #--- GRAPH EXPORT: GRAPHML ------------------------------------------------------------------------
 # Exports graphs as GraphML XML, which can be read by Gephi (https://gephi.org).
@@ -1627,7 +1623,8 @@ class GraphMLRenderer(GraphRenderer):
     def serialize(self, directed=False):
         p = "tmp.graphml"
         self.export(p, directed, encoding="utf-8")
-        s = open(p, encoding="utf-8").read()
+        with open(p, encoding="utf-8") as f:
+            s = f.read()
         os.unlink(p)
         return s
 

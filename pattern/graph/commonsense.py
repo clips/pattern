@@ -134,7 +134,8 @@ class Commonsense(Graph):
         # Load data from the given path,
         # a CSV-file of (concept1, relation, concept2, context, weight)-items.
         if data is not None:
-            s = open(data, encoding = 'utf-8').read()
+            with open(data, encoding = 'utf-8') as f:
+                s = f.read()
             s = s.strip(BOM_UTF8)
             s = ((v.strip("\"") for v in r.split(",")) for r in s.splitlines())
             for concept1, relation, concept2, context, weight in s:
@@ -246,7 +247,8 @@ def download(path=os.path.join(MODULE, "commonsense.csv"), threshold=50):
         Saves the data as commonsense.csv which can be the input for Commonsense.load().
     """
     s = "http://nodebox.net/perception?format=txt&robots=1"
-    s = urlopen(s).read()
+    with urlopen(s) as u:
+        s = u.read()
     s = s.decode("utf-8")
     s = s.replace("\\'", "'")
     # Group relations by author.
@@ -284,10 +286,9 @@ def download(path=os.path.join(MODULE, "commonsense.csv"), threshold=50):
     for (concept1, relation, concept2), (context, weight) in r.items():
         s.append("\"%s\",\"%s\",\"%s\",\"%s\",%s" % (
             concept1, relation, concept2, context, weight))
-    f = open(path, "w", encoding = 'utf-8')
-    f.write(BOM_UTF8)
-    f.write("\n".join(s))
-    f.close()
+    with open(path, "w", encoding = 'utf-8') as f:
+        f.write(BOM_UTF8)
+        f.write("\n".join(s))
 
 
 def json():
