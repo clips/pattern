@@ -357,7 +357,7 @@ def decrypt_string(s, key=""):
     s = decode_utf8(s)
     return s
 
-RE_AMPERSAND = re.compile("\&(?!\#)")           # & not followed by #
+RE_AMPERSAND = re.compile(r"\&(?!\#)")           # & not followed by #
 RE_UNICODE = re.compile(r'&(#?)(x|X?)(\w+);') # &#201;
 
 
@@ -1078,9 +1078,9 @@ class Table(object):
         self.db.tables[name] = self
         for i, r in enumerate(self.db.relations):
             if r[0] == self._name:
-                self.db.relations = (name, r[1], r[2], r[3])
+                self.db.relations[i] = (name, r[1], r[2], r[3], r[4])
             if r[2] == self.name:
-                self.db.relations = (r[0], r[1], name, r[3])
+                self.db.relations[i] = (r[0], r[1], name, r[3], r[4])
         self._name = name
 
     name = property(_get_name, _set_name)
@@ -1893,7 +1893,7 @@ def csv_header_encode(field, type=STRING):
 def csv_header_decode(s):
     # csv_header_decode("age (INTEGER)") => ("age", INTEGER).
     p = r"STRING|INTEGER|FLOAT|TEXT|BLOB|BOOLEAN|DATE|"
-    p = re.match(r"(.*?) \((" + p + ")\)", s)
+    p = re.match(r"(.*?) \((" + p + r")\)", s)
     s = s.endswith(" ()") and s[:-3] or s
     return p and (string(p.group(1), default=None), p.group(2).lower()) or (string(s) or None, None)
 
@@ -1948,10 +1948,9 @@ class CSV(list):
         s = s.strip()
         s = re.sub("([^\"]|^)\"None\"", "\\1None", s)
         s = s if not password else encrypt_string(s, password)
-        f = open(path, "w", encoding="utf-8")
-        f.write(BOM_UTF8)
-        f.write(s)
-        f.close()
+        with open(path, "w", encoding="utf-8") as f:
+            f.write(BOM_UTF8)
+            f.write(s)
 
     @classmethod
     def load(cls, path, separator=",", decoder=lambda v: v, headers=False, preprocess=None, password=None, **kwargs):
@@ -1965,21 +1964,21 @@ class CSV(list):
         # Date objects are saved and loaded as strings, but it is easy to convert these back to dates:
         # - set a DATE field type for the column,
         # - or do Table.columns[x].map(lambda s: date(s))
-        data = open(path, "rU", encoding="utf-8")
-        data = data if not password else decrypt_string(data.read(), password)
-        data.seek(data.readline().startswith(BOM_UTF8) and 3 or 0)
-        data = data if not password else BytesIO(data.replace("\r\n", "\n").replace("\r", "\n"))
-        data = data if not preprocess else BytesIO(preprocess(data.read()))
-        data = csvlib.reader(data, delimiter=separator)
-        i, n = kwargs.get("start"), kwargs.get("count")
-        if i is not None and n is not None:
-            data = list(islice(data, i, i + n))
-        elif i is not None:
-            data = list(islice(data, i, None))
-        elif n is not None:
-            data = list(islice(data, n))
-        else:
-            data = list(data)
+        with open(path, "r", encoding="utf-8") as data:
+            data = data if not password else decrypt_string(data.read(), password)
+            data.seek(data.readline().startswith(BOM_UTF8) and 3 or 0)
+            data = data if not password else BytesIO(data.replace("\r\n", "\n").replace("\r", "\n"))
+            data = data if not preprocess else BytesIO(preprocess(data.read()))
+            data = csvlib.reader(data, delimiter=separator)
+            i, n = kwargs.get("start"), kwargs.get("count")
+            if i is not None and n is not None:
+                data = list(islice(data, i, i + n))
+            elif i is not None:
+                data = list(islice(data, i, None))
+            elif n is not None:
+                data = list(islice(data, n))
+            else:
+                data = list(data)
         if headers:
             fields = [csv_header_decode(field) for field in data.pop(0)]
             fields += [(None, None)] * (max([0] + [len(row) for row in data]) - len(fields))
