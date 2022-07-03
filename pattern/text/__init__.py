@@ -589,24 +589,28 @@ def _read(path, encoding="utf-8", comment=";;;"):
     """ Returns an iterator over the lines in the file at the given path,
         strippping comments and decoding each line to Unicode.
     """
-    if path:
-        if isinstance(path, str) and os.path.exists(path):
-            # From file path.
-            f = open(path, "r", encoding="utf-8")
-        elif isinstance(path, str):
-            # From string.
-            f = path.splitlines()
-        else:
-            # From file or buffer.
-            f = path
-        for i, line in enumerate(f):
+    def process(lines):
+        for i, line in enumerate(lines):
             line = line.strip(BOM_UTF8) if i == 0 and isinstance(line, str) else line
             line = line.strip()
             line = decode_utf8(line, encoding)
             if not line or (comment and line.startswith(comment)):
                 continue
             yield line
-    raise StopIteration
+    if path:
+        if isinstance(path, str) and os.path.exists(path):
+            # From file path.
+            with open(path, "r", encoding="utf-8") as f:
+                yield from process(f)
+        elif isinstance(path, str):
+            # From string.
+            f = path.splitlines()
+            yield from process(f)
+        else:
+            # From file or buffer.
+            f = path
+            yield from process(f)
+    # raise StopIteration
 
 
 class Lexicon(lazydict):
@@ -1851,7 +1855,11 @@ def commandline(parse=Parser().parse):
         print(__version__)
         sys.path.pop(0)
     # Either a text file (-f) or a text string (-s) must be supplied.
-    s = o.file and codecs.open(o.file, "r", o.encoding).read() or o.string
+    if o.file:
+        with codes.open(o.file, "r", o.encoding):
+            s = f.read()
+    else:
+        s = o.string
     # The given text can be parsed in two modes:
     # - implicit: parse everything (tokenize, tag/chunk, find relations, lemmatize).
     # - explicit: define what to parse manually.
@@ -2594,9 +2602,8 @@ class Sentiment(lazydict):
                              "label=\"%s\""   % self.labeler.get(w, "")
                     ))
         a.append("</sentiment>")
-        f = open(path, "w", encoding="utf-8")
-        f.write(BOM_UTF8 + encode_utf8("\n".join(a)))
-        f.close()
+        with open(path, "w", encoding="utf-8") as f:
+            f.write(BOM_UTF8 + encode_utf8("\n".join(a)))
 
 #### SPELLING CORRECTION ###########################################################################
 # Based on: Peter Norvig, "How to Write a Spelling Corrector", http://norvig.com/spell-correct.html
@@ -2640,9 +2647,8 @@ class Spelling(lazydict):
             model[w] = w in model and model[w] + 1 or 1
         model = ("%s %s" % (k, v) for k, v in sorted(model.items()))
         model = "\n".join(model)
-        f = open(path, "w", encoding="utf-8")
-        f.write(model)
-        f.close()
+        with open(path, "w", encoding="utf-8") as f:
+            f.write(model)
 
     def _edit1(self, w):
         """ Returns a set of words with edit distance 1 from the given word.

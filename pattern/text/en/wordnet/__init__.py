@@ -411,7 +411,8 @@ def map32(id, pos=NOUN):
     """
     global _map32_cache
     if not _map32_cache:
-        _map32_cache = open(os.path.join(MODULE, "dict", "index.32"), encoding="latin-1").readlines()
+        with open(os.path.join(MODULE, "dict", "index.32"), encoding="latin-1") as f:
+            _map32_cache = f.readlines()
         _map32_cache = (x for x in _map32_cache if x[0] != ";") # comments
         _map32_cache = dict(x.strip().split(" ") for x in _map32_cache)
     k = pos in _map32_pos2 and pos or _map32_pos1.get(pos, "x")

@@ -19,8 +19,7 @@ from builtins import object, range
 
 import re
 import itertools
-
-from functools import cmp_to_key
+from itertools import product, compress, combinations
 
 #--- TEXT, SENTENCE AND WORD -----------------------------------------------------------------------
 # The search() and match() functions work on Text, Sentence and Word objects (see pattern.text.tree),
@@ -150,35 +149,6 @@ def find(function, iterable):
             return x
 
 
-def combinations(iterable, n):
-    # Backwards compatibility.
-    return product(iterable, repeat=n)
-
-
-def product(*args, **kwargs):
-    """ Yields all permutations with replacement:
-        list(product("cat", repeat=2)) => 
-        [("c", "c"), 
-         ("c", "a"), 
-         ("c", "t"), 
-         ("a", "c"), 
-         ("a", "a"), 
-         ("a", "t"), 
-         ("t", "c"), 
-         ("t", "a"), 
-         ("t", "t")]
-    """
-    p = [[]]
-    for iterable in map(tuple, args) * kwargs.get("repeat", 1):
-        p = [x + [y] for x in p for y in iterable]
-    for p in p:
-        yield tuple(p)
-
-try:
-    from itertools import product
-except:
-    pass
-
 
 def variations(iterable, optional=lambda x: False):
     """ Returns all possible variations of a sequence with optional items.
@@ -200,8 +170,13 @@ def variations(iterable, optional=lambda x: False):
         v = tuple(iterable[i] for i in range(len(v)) if not v[i])
         a.add(v)
     # Longest-first.
-    f = lambda x, y: len(y) - len(x)
-    return sorted(a, key=cmp_to_key(f))
+    return sorted(a, key=len, reverse=True)
+
+def variations(iterable, optional=lambda x: False):
+    optional = [*map(optional, iterable)]
+    candidates = [*product(*([False, True] if opt else [True] for opt in optional))]
+    candidates.sort(key=sum, reverse=True)
+    return [(*compress(iterable, cnd),) for cnd in candidates]
 
 #### TAXONOMY ######################################################################################
 
