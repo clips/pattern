@@ -1361,24 +1361,23 @@ def certificate(domain=LOCALHOST, country=None, state=None, city=None, company=N
     # > openssl genrsa 2048 -out ssl.key
     s = subprocess.PIPE
     p = ("openssl", "genrsa", "%s" % kwargs.get("encryption", 2048))
-    p = subprocess.Popen(p, stdin=s, stdout=s, stderr=s)
-    k = kwargs.get("key") or p.communicate()[0]
-    f = tempfile.NamedTemporaryFile(delete=False)
-    f.write(k)
-    f.close()
+    with subprocess.Popen(p, stdin=s, stdout=s, stderr=s) as p:
+        k = kwargs.get("key") or p.communicate()[0]
+        with tempfile.NamedTemporaryFile(delete=False) as f:
+            f.write(k)
     # Generate certificate.
     # > openssl req -new -x509 -days 365 -key ssl.key -out ssl.crt
     p = ("openssl", "req", "-new", "-key", f.name)
     p = p + ("-x509", "-days", "365") if signed else p
-    p = subprocess.Popen(p, stdin=s, stdout=s, stderr=s)
-    x = p.communicate("%s\n%s\n%s\n%s\n.\n%s\n%s\n\n\n" % (
-          country or ".",       # BE
-            state or ".",       # Antwerp
-             city or ".",       # Antwerp
-          company or ".",       # CLiPS
-           domain or LOCALHOST, # Tom De Smedt
-          contact or "."        # tom@organisms.be
-    ))[0]
+    with subprocess.Popen(p, stdin=s, stdout=s, stderr=s) as p:
+        x = p.communicate("%s\n%s\n%s\n%s\n.\n%s\n%s\n\n\n" % (
+              country or ".",       # BE
+                state or ".",       # Antwerp
+                 city or ".",       # Antwerp
+              company or ".",       # CLiPS
+               domain or LOCALHOST, # Tom De Smedt
+              contact or "."        # tom@organisms.be
+        ))[0]
     os.unlink(f.name)
     return (k, x)
 

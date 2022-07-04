@@ -102,10 +102,10 @@ def profile(function, *args, **kwargs):
     id = function.__name__ + "()"
     profile.run("__profile_run__()", id)
     p = pstats.Stats(id)
-    p.stream = open(id, "w")
-    p.sort_stats("cumulative").print_stats(30)
-    p.stream.close()
-    s = open(id).read()
+    with open(id, "w") as p.stream:
+        p.sort_stats("cumulative").print_stats(30)
+    with open(id) as f:
+        s = f.read()
     os.remove(id)
     return s
 

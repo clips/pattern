@@ -221,7 +221,7 @@ class AsynchronousRequest(object):
 
     @property
     def done(self):
-        return not self._thread.isAlive()
+        return not self._thread.is_alive()
 
     @property
     def value(self):

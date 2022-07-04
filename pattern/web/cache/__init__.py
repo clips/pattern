@@ -87,11 +87,10 @@ class Cache(object):
         return self.get(k)
 
     def __setitem__(self, k, v):
-        f = open(self._hash(k), "w", encoding = "utf-8")
-        f.write(BOM_UTF8)
-        v = decode_utf8(v)
-        f.write(v)
-        f.close()
+        with open(self._hash(k), "w", encoding = "utf-8") as f:
+            f.write(BOM_UTF8)
+            v = decode_utf8(v)
+            f.write(v)
 
     def __delitem__(self, k):
         try:
@@ -104,9 +103,8 @@ class Cache(object):
             With unicode=True, returns a Unicode string.
         """
         if k in self:
-            f = open(self._hash(k), "rb")
-            v = f.read().lstrip(BOM_UTF8.encode("utf-8"))
-            f.close()
+            with open(self._hash(k), "rb") as f:
+                v = f.read().lstrip(BOM_UTF8.encode("utf-8"))
             if unicode is True:
                 return decode_utf8(v)
             else:
