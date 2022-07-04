@@ -33,30 +33,31 @@ def svm_read_problem(data_file_name, return_scipy=False):
     prob_x = []
     row_ptr = [0]
     col_idx = []
-    for i, line in enumerate(open(data_file_name)):
-        line = line.split(None, 1)
-        # In case an instance with all zero features
-        if len(line) == 1:
-            line += ['']
-        label, features = line
-        prob_y += [float(label)]
-        if scipy is not None and return_scipy:
-            nz = 0
-            for e in features.split():
-                ind, val = e.split(":")
-                val = float(val)
-                if val != 0:
-                    col_idx += [int(ind) - 1]
-                    prob_x += [val]
-                    nz += 1
-            row_ptr += [row_ptr[-1] + nz]
-        else:
-            xi = {}
-            for e in features.split():
-                ind, val = e.split(":")
-                if val != 0:
-                    xi[int(ind)] = float(val)
-            prob_x += [xi]
+    with open(data_file_name) as f:
+        for i, line in enumerate(f):
+            line = line.split(None, 1)
+            # In case an instance with all zero features
+            if len(line) == 1:
+                line += ['']
+            label, features = line
+            prob_y += [float(label)]
+            if scipy is not None and return_scipy:
+                nz = 0
+                for e in features.split():
+                    ind, val = e.split(":")
+                    val = float(val)
+                    if val != 0:
+                        col_idx += [int(ind) - 1]
+                        prob_x += [val]
+                        nz += 1
+                row_ptr += [row_ptr[-1] + nz]
+            else:
+                xi = {}
+                for e in features.split():
+                    ind, val = e.split(":")
+                    if val != 0:
+                        xi[int(ind)] = float(val)
+                prob_x += [xi]
     if scipy is not None and return_scipy:
         prob_y = scipy.array(prob_y)
         prob_x = scipy.array(prob_x)

@@ -22,9 +22,9 @@ __all__ = ['libsvm', 'svm_problem', 'svm_parameter',
 try:
 	dirname = path.dirname(path.abspath(__file__))
 	if sys.platform == 'win32':
-		libsvm = CDLL(path.join(dirname, 'windows\libsvm-3.22\libsvm.dll'))
+		libsvm = CDLL(path.join(dirname, r'windows\libsvm-3.22\libsvm.dll'))
 	else:
-		libsvm = CDLL(path.join(dirname, 'macos/libsvm-3.22/libsvm.so.2'))
+		libsvm = CDLL(path.join(dirname, r'macos/libsvm-3.22/libsvm.so.2'))
 
 except:
 # For unix the prefix 'lib' is not considered.

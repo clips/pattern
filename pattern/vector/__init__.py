@@ -280,9 +280,9 @@ class readonlylist(list):
 stopwords = _stopwords = {}
 for f in glob.glob(os.path.join(MODULE, "stopwords-*.txt")):
     language = os.path.basename(f)[-6:-4] # stopwords-[en].txt
-    w = codecs.open(f, encoding="utf-8")
-    w = (w.strip() for w in w.read().split(","))
-    stopwords[language] = dict.fromkeys(w, True)
+    with codecs.open(f, encoding="utf-8") as w:
+        w = (w.strip() for w in w.read().split(","))
+        stopwords[language] = dict.fromkeys(w, True)
 
 # The following English words could also be meaningful nouns:
 
@@ -514,7 +514,8 @@ class Document(object):
             The given text file must be generated with Document.save().
         """
         # Open unicode file.
-        s = open(path, "rb").read()
+        with open(path, "rb") as f:
+            s = f.read()
         s = s.lstrip(codecs.BOM_UTF8)
         s = decode_utf8(s)
         a = {}
@@ -571,10 +572,9 @@ class Document(object):
         s = "\n".join(s)
         s = encode_utf8(s)
         # Save unicode file.
-        f = open(path, "wb")
-        f.write(codecs.BOM_UTF8)
-        f.write(s)
-        f.close()
+        with open(path, "wb") as f:
+            f.write(codecs.BOM_UTF8)
+            f.write(s)
 
     def _get_model(self):
         return self._model
@@ -1068,9 +1068,8 @@ class Model(object):
         # Deserialize Model.classifier.
         if model.classifier:
             p = path + ".tmp"
-            f = open(p, "wb")
-            f.write(model.classifier)
-            f.close()
+            with open(p, "wb") as f:
+                f.write(model.classifier)
             model._classifier = Classifier.load(p)
             os.remove(p)
         return model
@@ -1095,7 +1094,8 @@ class Model(object):
         if self._classifier:
             p = path + ".tmp"
             self._classifier.save(p, final)
-            self._classifier = open(p, "rb").read()
+            with open(p, "rb") as f:
+                self._classifier = f.read()
             os.remove(p)
         f = gzip.GzipFile(path, "wb")
         f.write(pickle.dumps(self, 1))  # 1 = binary
@@ -1130,9 +1130,8 @@ class Model(object):
                 v = "%s,%s" % (v, document.type or "")
                 s.append(v)
         s = "\n".join(s)
-        f = open(path, "w", encoding="utf-8")
-        f.write(decode_utf8(s))
-        f.close()
+        with open(path, "w", encoding="utf-8") as f:
+            f.write(decode_utf8(s))
 
     def _update(self):
         # Ensures that all document vectors are recalculated
@@ -3633,7 +3632,8 @@ class SVM(Classifier):
         # Unlink LIBSVM/LIBLINEAR binaries for cPickle.
         svm, model = self._svm, self._model
         self._svm = None
-        self._model = (open(path, "rb").read(),) + model[1:]
+        with open(path, "rb") as f:
+            self._model = (f.read(),) + model[1:]
         Classifier.save(self, path, final)
         self._svm = svm
         self._model = model

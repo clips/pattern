@@ -29,9 +29,9 @@ __all__ = ['liblinear', 'feature_node', 'gen_feature_nodearray', 'problem',
 try:
 	dirname = path.dirname(path.abspath(__file__))
 	if sys.platform == 'win32':
-		liblinear = CDLL(path.join(dirname, 'windows\liblinear-2.20\liblinear.dll'))
+		liblinear = CDLL(path.join(dirname, r'windows\liblinear-2.20\liblinear.dll'))
 	else:
-		liblinear = CDLL(path.join(dirname, 'macos/liblinear-2.20/liblinear.so.3'))
+		liblinear = CDLL(path.join(dirname, r'macos/liblinear-2.20/liblinear.so.3'))
 except:
 # For unix the prefix 'lib' is not considered.
 	if find_library('linear'):
