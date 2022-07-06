@@ -240,7 +240,9 @@ class TestParser(unittest.TestCase):
         )
         # Assert the accuracy of the Italian tagger.
         i, n = 0, 0
-        for sentence in open(os.path.join(PATH, "corpora", "tagged-it-wacky.txt")).readlines():
+        with open(os.path.join(PATH, "corpora", "tagged-it-wacky.txt")) as f:
+            sentences = f.readlines()
+        for sentence in sentences:
             sentence = sentence.strip()
             s1 = [w.split("/") for w in sentence.split(" ")]
             s2 = [[w for w, pos in s1]]
@@ -268,9 +270,9 @@ class TestParser(unittest.TestCase):
     def test_command_line(self):
         # Assert parsed output from the command-line (example from the documentation).
         p = ["python", "-m", "pattern.it", "-s", "Il gatto nero.", "-OTCRL"]
-        p = subprocess.Popen(p, stdout=subprocess.PIPE)
-        p.wait()
-        v = p.stdout.read().decode('utf-8')
+        with subprocess.Popen(p, stdout=subprocess.PIPE) as p:
+            p.wait()
+            v = p.stdout.read().decode('utf-8')
         v = v.strip()
         self.assertEqual(v, "Il/DT/B-NP/O/O/il gatto/NN/I-NP/O/O/gatto nero/JJ/I-NP/O/O/nero ././O/O/O/.")
         print("python -m pattern.it")

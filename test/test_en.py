@@ -546,7 +546,9 @@ class TestParser(unittest.TestCase):
         # 7) Assert the accuracy of the English tagger.
         i, n = 0, 0
         for corpus, a in (("tagged-en-wsj.txt", (0.968, 0.945)), ("tagged-en-oanc.txt", (0.929, 0.932))):
-            for sentence in open(os.path.join(PATH, "corpora", corpus)).readlines():
+            with open(os.path.join(PATH, "corpora", corpus)) as f:
+                sentences = f.readlines()
+            for sentence in sentences:
                 sentence = sentence.strip()
                 s1 = [w.split("/") for w in sentence.split(" ")]
                 s2 = [[w for w, pos in s1]]
@@ -607,9 +609,9 @@ class TestParser(unittest.TestCase):
     def test_command_line(self):
         # Assert parsed output from the command-line (example from the documentation).
         p = ["python", "-m", "pattern.en", "-s", "Nice cat.", "-OTCRL"]
-        p = subprocess.Popen(p, stdout=subprocess.PIPE)
-        p.wait()
-        v = p.stdout.read().decode('utf-8')
+        with subprocess.Popen(p, stdout=subprocess.PIPE) as p:
+            p.wait()
+            v = p.stdout.read().decode('utf-8')
         v = v.strip()
         self.assertEqual(v, "Nice/JJ/B-NP/O/O/nice cat/NN/I-NP/O/O/cat ././O/O/O/.")
         print("python -m pattern.en")

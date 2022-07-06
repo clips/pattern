@@ -177,9 +177,11 @@ class TestParser(unittest.TestCase):
             "sur/IN/B-PP/B-PNP le/DT/B-NP/I-PNP tapis/NN/I-NP/I-PNP ././O/O"
         )
         # Assert the accuracy of the French tagger.
-        f = fr.penntreebank2universal
         i, n = 0, 0
-        for sentence in open(os.path.join(PATH, "corpora", "tagged-fr-wikinews.txt")).readlines():
+        with open(os.path.join(PATH, "corpora", "tagged-fr-wikinews.txt")) as f:
+            sentences = f.readlines()
+        f = fr.penntreebank2universal
+        for sentence in sentences:
             sentence = sentence.strip()
             s1 = [w.split("/") for w in sentence.split(" ")]
             s2 = [[w for w, pos in s1]]
@@ -202,9 +204,9 @@ class TestParser(unittest.TestCase):
     def test_command_line(self):
         # Assert parsed output from the command-line (example from the documentation).
         p = ["python", "-m", "pattern.fr", "-s", "Le chat noir.", "-OTCRL"]
-        p = subprocess.Popen(p, stdout=subprocess.PIPE)
-        p.wait()
-        v = p.stdout.read().decode('utf-8')
+        with subprocess.Popen(p, stdout=subprocess.PIPE) as p:
+            p.wait()
+            v = p.stdout.read().decode('utf-8')
         v = v.strip()
         self.assertEqual(v, "Le/DT/B-NP/O/O/le chat/NN/I-NP/O/O/chat noir/JJ/I-NP/O/O/noir ././O/O/O/.")
         print("python -m pattern.fr")

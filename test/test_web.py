@@ -555,6 +555,7 @@ class TestSearchEngine(unittest.TestCase):
     def test_search_productwiki(self):
         self._test_search_engine("ProductWiki", *self.api["ProductWiki"], **{"query": "computer"})
 
+    @unittest.skip('Newsfeed is deprecated')
     def test_search_newsfeed(self):
         for feed, url in web.feeds.items():
             self._test_search_engine("Newsfeed", url, None, web.Newsfeed, query=url, type=web.NEWS)
@@ -1080,17 +1081,17 @@ class TestCrawler(unittest.TestCase):
 
     def test_crawler_crawl(self):
         # Assert domain filter.
-        v = web.Crawler(links=["http://nodebox.net/"], domains=["nodebox.net"], delay=0.5)
+        v = web.Crawler(links=["http://www.nodebox.net/"], domains=["nodebox.net"], delay=0.5)
         while len(v.visited) < 4:
             v.crawl(throttle=0.1, cached=False)
         for url in v.visited:
             self.assertTrue("nodebox.net" in url)
-        self.assertTrue(len(v.history) == 2)
+        self.assertGreaterEqual(len(v.history), 2)
         print("pattern.web.Crawler.crawl()")
 
     def test_crawler_delay(self):
         # Assert delay for several crawls to a single domain.
-        v = web.Crawler(links=["http://nodebox.net/"], domains=["nodebox.net"], delay=1.2)
+        v = web.Crawler(links=["http://www.nodebox.net/"], domains=["www.nodebox.net"], delay=1.2)
         v.crawl()
         t = time.time()
         while not v.crawl(throttle=0.1, cached=False):

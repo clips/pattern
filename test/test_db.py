@@ -22,7 +22,7 @@ from pattern import db
 
 # To test MySQL, you need MySQLdb and a username + password with rights to create a database.
 HOST, PORT, USERNAME, PASSWORD = \
-    "localhost", 3306, "root", ""
+    "mariadb", 3306, "root", "password"
 
 DB_MYSQL = DB_SQLITE = None
 
@@ -63,7 +63,7 @@ def create_db_sqlite():
         password = PASSWORD)
 
     # Drop all tables first
-    for table in list(DB_MYSQL.tables):
+    for table in list(DB_SQLITE.tables):
         DB_SQLITE.drop(table)
 
     return DB_SQLITE
@@ -180,7 +180,7 @@ class TestDate(unittest.TestCase):
         self.assertEqual(str(v5), "2014-01-01 00:00:00")
         # Assert timestamp input.
         v6 = db.date(db.date(2014, 1, 1).timestamp)
-        self.assertEqual(str(v5), "2014-01-01 00:00:00")
+        self.assertEqual(str(v6), "2014-01-01 00:00:00")
         # Assert DateError for other input.
         self.assertRaises(db.DateError, db.date, None)
         print("pattern.db.date()")
@@ -204,7 +204,8 @@ class TestDate(unittest.TestCase):
     def test_timestamp(self):
         # Assert Date.timestamp.
         v = db.date(2010, 9, 21, format=db.DEFAULT_DATE_FORMAT)
-        self.assertEqual(v.timestamp, 1285020000)
+        v = v.replace(tzinfo=datetime.timezone.utc)
+        self.assertEqual(v.timestamp, 1285027200)
         print("pattern.db.Date.timestamp")
 
     def test_time(self):
@@ -955,7 +956,8 @@ class TestCSV(unittest.TestCase):
         # Assert CSV file contents.
         v = self.csv
         v.save("test.csv", headers=True)
-        v = open("test.csv", "rb").read()
+        with open("test.csv", "rb") as f:
+            v = f.read()
         v = db.decode_utf8(v.lstrip(codecs.BOM_UTF8))
         v = v.replace("\r\n", "\n")
         self.assertEqual(v,

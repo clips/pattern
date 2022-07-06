@@ -431,7 +431,8 @@ class TestModel(unittest.TestCase):
                 "0,0,0.3466,0.6931,0,0,døg\n"
                 "0.6931,0,0.3466,0,0,0,døg")):
             self.model.export("test_%s.txt" % format, format=format)
-            v = open("test_%s.txt" % format, encoding="utf-8").read()
+            with open("test_%s.txt" % format, encoding="utf-8") as f:
+                v = f.read()
             v = v.replace("\r\n", "\n")
             for line in src.split("\n"):
                 self.assertTrue(line in src)
@@ -974,7 +975,7 @@ class TestClassifier(unittest.TestCase):
         self._test_classifier(vector.SLP)
         # Assert the accuracy of the classifier.
         A, P, R, F, o = vector.SLP.test(self.model, folds=10, iterations=3)
-        #print(A, P, R, F, o)
+        # print(A, P, R, F, o)
         self.assertTrue(P >= 0.90)
         self.assertTrue(R >= 0.91)
         self.assertTrue(F >= 0.91)

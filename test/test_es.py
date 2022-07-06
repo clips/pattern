@@ -232,7 +232,9 @@ class TestParser(unittest.TestCase):
         )
         # Assert the accuracy of the Spanish tagger.
         i, n = 0, 0
-        for sentence in open(os.path.join(PATH, "corpora", "tagged-es-wikicorpus.txt")).readlines():
+        with open(os.path.join(PATH, "corpora", "tagged-es-wikicorpus.txt")) as f:
+            sentences = f.readlines()
+        for sentence in sentences:
             sentence = sentence.strip()
             s1 = [w.split("/") for w in sentence.split(" ")]
             s2 = [[w for w, pos in s1]]
@@ -255,9 +257,9 @@ class TestParser(unittest.TestCase):
     def test_command_line(self):
         # Assert parsed output from the command-line (example from the documentation).
         p = ["python", "-m", "pattern.es", "-s", "El gato negro.", "-OTCRL"]
-        p = subprocess.Popen(p, stdout=subprocess.PIPE)
-        p.wait()
-        v = p.stdout.read().decode('utf-8')
+        with subprocess.Popen(p, stdout=subprocess.PIPE) as p:
+            p.wait()
+            v = p.stdout.read().decode('utf-8')
         v = v.strip()
         self.assertEqual(v, "El/DT/B-NP/O/O/el gato/NN/I-NP/O/O/gato negro/JJ/I-NP/O/O/negro ././O/O/O/.")
         print("python -m pattern.es")
