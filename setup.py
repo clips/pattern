@@ -134,7 +134,7 @@ setup(
         "Topic :: Text Processing :: Linguistic",
         "Topic :: Text Processing :: Markup :: HTML"
     ],
-    install_requires = [
+    install_requires = list([
         "future",
         "backports.csv",
         "mysqlclient",
@@ -148,6 +148,6 @@ setup(
         "python-docx",
         "cherrypy",
         "requests"
-    ],
+    ]),
     zip_safe = False
 )
