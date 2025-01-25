@@ -1,4 +1,4 @@
-Pattern
+README.md Pattern
 =======
 
 [![Build Status](http://img.shields.io/travis/clips/pattern/master.svg?style=flat)](https://travis-ci.org/clips/pattern/branches)
