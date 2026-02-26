@@ -29,7 +29,7 @@ import re
 
 try:
     MODULE = os.path.dirname(os.path.realpath(__file__))
-except:
+except Exception:
     MODULE = ""
 
 sys.path.insert(0, os.path.join(MODULE, "..", "..", "..", ".."))

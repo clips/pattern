@@ -124,7 +124,7 @@ def _match(string, pattern):
         if WILDCARD in p[1:-1]:
             p = p.split(WILDCARD)
             return string.startswith(p[0]) and string.endswith(p[-1])
-    except:
+    except Exception:
         # For performance, calling isinstance() last is 10% faster for plain strings.
         if isinstance(p, regexp):
             return p.search(string) is not None
@@ -176,7 +176,7 @@ def product(*args, **kwargs):
 
 try:
     from itertools import product
-except:
+except Exception:
     pass
 
 
@@ -450,10 +450,10 @@ class WordNetClassifier(Classifier):
         if wordnet is None:
             try:
                 from pattern.en import wordnet
-            except:
+            except Exception:
                 try:
                     from .en import wordnet
-                except:
+                except Exception:
                     pass
         Classifier.__init__(self, self._parents, self._children)
         self.wordnet = wordnet
@@ -461,13 +461,13 @@ class WordNetClassifier(Classifier):
     def _children(self, word, pos="NN"):
         try:
             return [w.synonyms[0] for w in self.wordnet.synsets(word, pos[:2])[0].hyponyms()]
-        except:
+        except Exception:
             pass
 
     def _parents(self, word, pos="NN"):
         try:
             return [w.synonyms[0] for w in self.wordnet.synsets(word, pos[:2])[0].hypernyms()]
-        except:
+        except Exception:
             pass
 
 #from en import wordnet

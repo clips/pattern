@@ -49,7 +49,7 @@ from email.utils import parsedate_tz, mktime_tz
 
 try:
     MODULE = os.path.dirname(os.path.realpath(__file__))
-except:
+except Exception:
     MODULE = ""
 
 from pattern.helpers import encode_string, decode_string
@@ -259,12 +259,12 @@ def date(*args, **kwargs):
             args = (args[0].decode("utf-8"),)
         try:
             d = Date.fromtimestamp(mktime_tz(parsedate_tz(args[0])))
-        except:
+        except Exception:
             for format in ("format" in kwargs and [kwargs["format"]] or []) + date_formats:
                 try:
                     d = Date.strptime(args[0], format)
                     break
-                except:
+                except Exception:
                     pass
         if d is None:
             raise DateError("unknown date format for %s" % repr(args[0]))
@@ -334,7 +334,7 @@ def encrypt_string(s, key=""):
     for i in range(len(s)):
         try:
             a.append(chr(ord(s[i]) + ord(key[i % len(key)]) % 256).encode("latin-1"))
-        except:
+        except Exception:
             raise EncryptionError()
     s = b"".join(a)
     s = base64.urlsafe_b64encode(s)
@@ -351,7 +351,7 @@ def decrypt_string(s, key=""):
     for i in range(len(s)):
         try:
             a.append(chr(ord(s[i]) - ord(key[i % len(key)]) % 256))
-        except:
+        except Exception:
             raise DecryptionError()
     s = "".join(a)
     s = decode_utf8(s)
@@ -456,7 +456,7 @@ def cast(x, f, default=None):
         f = lambda x: int(round(float(x)))
     try:
         return f(x)
-    except:
+    except Exception:
         return default
 
 #### LIST FUNCTIONS ################################################################################
@@ -864,7 +864,7 @@ class Database(object):
     def __delete__(self):
         try:
             self.disconnect()
-        except:
+        except Exception:
             pass
 
 #### FIELD #########################################################################################
@@ -2154,7 +2154,7 @@ class Datasheet(CSV):
         try:
             # Copy the row (fast + safe for generators and DatasheetColumns).
             row = [v for v in row]
-        except:
+        except Exception:
             raise TypeError("Datasheet.insert(x): x must be list")
         list.insert(self, i, row)
         m = max((len(self) > 1 and self._m or 0, len(row)))
@@ -2461,7 +2461,7 @@ class DatasheetColumns(list):
         """
         try:
             column = [v for v in column]
-        except:
+        except Exception:
             raise TypeError("Datasheet.columns.insert(x): x must be list")
         column = column + [default] * (len(self._datasheet) - len(column))
         if len(column) > len(self._datasheet):

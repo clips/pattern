@@ -46,7 +46,7 @@ try:
     from config import SLASH
     from config import WORD, POS, CHUNK, PNP, REL, ANCHOR, LEMMA
     MBSP = True # Memory-Based Shallow Parser for Python.
-except:
+except Exception:
     SLASH, WORD, POS, CHUNK, PNP, REL, ANCHOR, LEMMA = \
         "&slash;", "word", "part-of-speech", "chunk", "preposition", "relation", "anchor", "lemma"
     MBSP = False
@@ -155,7 +155,7 @@ class Word(object):
         if not isinstance(string, str):
             try:
                 string = string.decode("utf-8") # ensure Unicode
-            except:
+            except Exception:
                 pass
         self.sentence = sentence
         self.index    = index
@@ -659,7 +659,7 @@ class Sentence(object):
             for encoding in (("utf-8",), ("windows-1252",), ("utf-8", "ignore")):
                 try:
                     string = string.decode(*encoding)
-                except:
+                except Exception:
                     pass
         self.parent      = None # A Slice refers to the Sentence it is part of.
         self.text        = None # A Sentence refers to the Text it is part of.
@@ -1586,7 +1586,7 @@ def parse_string(xml):
         if MBSP:
             from mbsp import TokenString
         return TokenString(string.strip(), tags=format, language=language)
-    except:
+    except Exception:
         return TaggedString(string.strip(), tags=format, language=language)
 
 

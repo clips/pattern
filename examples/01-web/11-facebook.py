@@ -30,7 +30,7 @@ try:
     # With an index on the first column we can quickly check if an id already exists.
     table = Datasheet.load(pd("opinions.csv"))
     index = set(table.columns[0])
-except:
+except Exception:
     table = Datasheet()
     index = set()
 

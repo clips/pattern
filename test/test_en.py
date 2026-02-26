@@ -22,7 +22,7 @@ from io import open
 
 try:
     PATH = os.path.dirname(os.path.realpath(__file__))
-except:
+except Exception:
     PATH = ""
 
 #---------------------------------------------------------------------------------------------------

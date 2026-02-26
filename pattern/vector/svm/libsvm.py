@@ -26,7 +26,7 @@ try:
 	else:
 		libsvm = CDLL(path.join(dirname, 'macos/libsvm-3.22/libsvm.so.2'))
 
-except:
+except Exception:
 # For unix the prefix 'lib' is not considered.
 	if find_library('svm'):
 		libsvm = CDLL(find_library('svm'))

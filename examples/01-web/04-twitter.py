@@ -22,7 +22,7 @@ try:
     # The pd() function returns the parent directory of this script + any given path.
     table = Datasheet.load(pd("cool.csv"))
     index = set(table.columns[0])
-except:
+except Exception:
     table = Datasheet()
     index = set()
 

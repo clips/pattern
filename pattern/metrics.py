@@ -93,7 +93,7 @@ def profile(function, *args, **kwargs):
         raise TypeError("%s is not a function" % type(function))
     try:
         import cProfile as profile
-    except:
+    except Exception:
         import profile
     import pstats
     import os

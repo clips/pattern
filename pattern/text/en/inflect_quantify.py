@@ -22,7 +22,7 @@ from math import log, ceil
 
 try:
     MODULE = os.path.dirname(os.path.realpath(__file__))
-except:
+except Exception:
     MODULE = ""
 
 sys.path.insert(0, os.path.join(MODULE, "..", "..", "..", ".."))
@@ -155,7 +155,7 @@ def number(s):
             # Words that are not in any dicionary may be numbers (e.g. "2.5" => 2.5).
             try:
                 i += "." in x and float(x) or int(x)
-            except:
+            except Exception:
                 pass
     return n + i + f
 
@@ -267,7 +267,7 @@ def approximate(word, amount=1, plural={}):
     """
     try:
         p = pluralize(word, custom=plural)
-    except:
+    except Exception:
         raise TypeError("can't pluralize %s (not a string)" % word.__class__.__name__)
     # Anything up to 200.
     if amount == 0:
@@ -331,7 +331,7 @@ def count(*args, **kwargs):
             try:
                 count.setdefault(word, 0)
                 count[word] += 1
-            except:
+            except Exception:
                 raise TypeError("can't count %s (not a string)" % word.__class__.__name__)
     # Create an iterator of (count, item) tuples, sorted highest-first.
     s = [(count[word], word) for word in count]
@@ -394,7 +394,7 @@ def reflect(object, quantify=True, replace=readable_types):
             for v in object.__dict__.values():
                 try:
                     types.append(str(v.__classname__))
-                except:
+                except Exception:
                     # Not a class after all (some stuff like ufunc in Numeric).
                     types.append(_type(v))
     # Lists and tuples can consist of several types of objects.

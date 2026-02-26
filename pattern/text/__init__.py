@@ -36,7 +36,7 @@ from math import log, sqrt
 
 try:
     MODULE = os.path.dirname(os.path.realpath(__file__))
-except:
+except Exception:
     MODULE = ""
 
 from pattern.text.tree import Tree, Text, Sentence, Slice, Chunk, PNPChunk, Chink, Word, table

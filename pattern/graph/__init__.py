@@ -29,7 +29,7 @@ from functools import cmp_to_key
 
 try:
     MODULE = os.path.dirname(os.path.realpath(__file__))
-except:
+except Exception:
     MODULE = ""
 
 # float("inf") doesn't work on windows.
