@@ -95,19 +95,19 @@ try:
     # If this module is used separately,
     # a dict is used (i.e. this Python session only).
     from .cache import Cache, cache, TMP
-except:
+except ImportError:
     cache = {}
 
 try:
     from .imap import Mail, MailFolder, Message, GMAIL
     from .imap import MailError, MailServiceError, MailLoginError, MailNotLoggedIn
     from .imap import FROM, SUBJECT, DATE, BODY, ATTACHMENTS
-except:
+except ImportError:
     pass
 
 try:
     MODULE = os.path.dirname(os.path.realpath(__file__))
-except:
+except Exception:
     MODULE = ""
 
 #### UNICODE #######################################################################################
