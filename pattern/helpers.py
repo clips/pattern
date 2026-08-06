@@ -21,7 +21,7 @@ def decode_string(v, encoding="utf-8"):
         for e in encoding:
             try:
                 return v.decode(*e)
-            except:
+            except Exception:
                 pass
         return v
     return str(v)
@@ -36,7 +36,7 @@ def encode_string(v, encoding="utf-8"):
         for e in encoding:
             try:
                 return v.encode(*e)
-            except:
+            except Exception:
                 pass
         return v
     return bytes(v)

@@ -112,7 +112,7 @@ def evaluations_scipy(ty, pv):
     with scipy.errstate(all = 'raise'):
         try:
             SCC = ((l * sumvy - sumv * sumy) * (l * sumvy - sumv * sumy)) / ((l * sumvv - sumv * sumv) * (l * sumyy - sumy * sumy))
-        except:
+        except Exception:
             SCC = float('nan')
     return (float(ACC), float(MSE), float(SCC))
 
@@ -146,7 +146,7 @@ def evaluations(ty, pv, useScipy = True):
     MSE = total_error / l
     try:
         SCC = ((l * sumvy - sumv * sumy) * (l * sumvy - sumv * sumy)) / ((l * sumvv - sumv * sumv) * (l * sumyy - sumy * sumy))
-    except:
+    except Exception:
         SCC = float('nan')
     return (float(ACC), float(MSE), float(SCC))
 

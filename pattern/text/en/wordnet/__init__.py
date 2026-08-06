@@ -37,7 +37,7 @@ from pattern.text import lazydict
 
 try:
     MODULE = os.path.dirname(os.path.realpath(__file__))
-except:
+except Exception:
     MODULE = ""
 
 # Path to WordNet /dict folder.
@@ -98,7 +98,7 @@ def normalize(word):
     if not isinstance(word, str):
         try:
             word = word.encode("utf-8", "ignore")
-        except:
+        except Exception:
             pass
     for k, v in DIACRITICS.items():
         for v in v:
@@ -154,7 +154,7 @@ class _synset(lazydict):
         for pos in ("n", "v", "a", "r"):
             try:
                 synset = wn._synset_from_pos_and_offset(pos, k)
-            except:
+            except Exception:
                 pass
             if synset:
                 return synset
@@ -429,7 +429,7 @@ sys.path.insert(0, os.path.join(MODULE, "..", ".."))
 
 try:
     from pattern.text import Sentiment
-except:
+except Exception:
     class Sentiment(object):
         PLACEHOLDER = True
 
@@ -455,7 +455,7 @@ class SentiWordNet(Sentiment):
             s = wn._synset_from_pos_and_offset(pos, id)
             lemma = s.lemma_names()[0]
             return self[lemma]
-        except:
+        except Exception:
             pass
 
         return None

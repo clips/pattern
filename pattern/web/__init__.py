@@ -95,19 +95,19 @@ try:
     # If this module is used separately,
     # a dict is used (i.e. this Python session only).
     from .cache import Cache, cache, TMP
-except:
+except Exception:
     cache = {}
 
 try:
     from .imap import Mail, MailFolder, Message, GMAIL
     from .imap import MailError, MailServiceError, MailLoginError, MailNotLoggedIn
     from .imap import FROM, SUBJECT, DATE, BODY, ATTACHMENTS
-except:
+except Exception:
     pass
 
 try:
     MODULE = os.path.dirname(os.path.realpath(__file__))
-except:
+except Exception:
     MODULE = ""
 
 #### UNICODE #######################################################################################
@@ -149,7 +149,7 @@ def fix(s, ignore=""):
         else:
             try:
                 ch = ch.encode("latin-1")
-            except:
+            except Exception:
                 ch = ch.encode("utf-8")
         u.append(s[i:j].encode("utf-8"))
         u.append(ch)
@@ -292,7 +292,7 @@ def urldecode(query):
             return int(s)
         try:
             return float(s)
-        except:
+        except Exception:
             return s
     if query:
         query = query.lstrip("?").split("&")
@@ -628,7 +628,7 @@ class URL(object):
             return True
         except URLError:
             return False
-        except:
+        except Exception:
             return True
         return True
 
@@ -4453,5 +4453,5 @@ def parsedoc(path, format=None):
     for f in (parsepdf, parsedocx, parsehtml):
         try:
             return f(path)
-        except:
+        except Exception:
             pass

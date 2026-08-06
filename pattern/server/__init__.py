@@ -69,7 +69,7 @@ except ImportError:
 try:
     # Folder that contains pattern.server.
     MODULE = os.path.dirname(os.path.realpath(__file__))
-except:
+except Exception:
     MODULE = ""
 
 try:
@@ -79,7 +79,7 @@ try:
     f = inspect.getouterframes(f)[-1][0]
     f = f.f_globals["__file__"]
     SCRIPT = os.path.dirname(os.path.abspath(f))
-except:
+except Exception:
     SCRIPT = os.getcwd()
 
 
@@ -95,7 +95,7 @@ def chown(path, owner=None):
                     grp.getgrnam(y).gr_gid if not isinstance(y, int) else y)
             os.chown(path, x, y)
             return True
-        except:
+        except Exception:
             return False
 
 # On Linux + Apache mod_wsgi, the user that executes the Python script is "www-data".
@@ -339,7 +339,7 @@ class Database(object):
     def __del__(self):
         try:
             self.disconnect()
-        except:
+        except Exception:
             pass
 
     @property
@@ -1019,7 +1019,7 @@ class Application(object):
             return ""
         try: # (bool, int, float, object.__unicode__)
             return str(v)
-        except:
+        except Exception:
             return encode_entities(repr(v))
 
     @cp.expose
@@ -1327,7 +1327,7 @@ class Application(object):
         """
         try:
             atexit._exithandlers.remove((self.stop, (), {}))
-        except:
+        except Exception:
             pass
         cp.engine.exit()
         sys.stdout = sys.__stdout__

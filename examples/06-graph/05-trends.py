@@ -33,7 +33,7 @@ for i in range(1, 10):
             # Exclude common phrases such as "this is the new thing".
             if A and B and A not in ("it", "this", "here", "what", "why", "where"):
                 comparisons.append((A, B))
-        except:
+        except Exception:
             pass
 
 g = Graph()

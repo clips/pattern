@@ -67,17 +67,17 @@ import scipy
 
 try:
     MODULE = os.path.dirname(os.path.realpath(__file__))
-except:
+except Exception:
     MODULE = ""
 
 try:
     from pattern.text import singularize, predicative, conjugate, tokenize
-except:
+except Exception:
     try:
         import sys
         sys.path.insert(0, os.path.join(MODULE, ".."))
         from text import singularize, predicative, conjugate, tokenize
-    except:
+    except Exception:
         singularize = lambda w, **k: w
         predicative = lambda w, **k: w
         conjugate   = lambda w, t, **k: w
@@ -2427,7 +2427,7 @@ class Probabilities(defaultdict):
             if self[b] < m:
                 return choice([x for x in self if self[x] == m > 0]), m
             return b, m
-        except:
+        except Exception:
             return b, 0.0
 
 #--- CLASSIFIER EVALUATION -------------------------------------------------------------------------
@@ -2716,7 +2716,7 @@ class NB(Classifier):
             p = sorted((self._classes[type], type) for type, g in p.items() if g == m > 0)
             p = [type for frequency, type in p if frequency == p[0][0]]
             return choice(p)
-        except:
+        except Exception:
             return self.baseline
 
 Bayes = NaiveBayes = NB
@@ -2768,7 +2768,7 @@ class KNN(Classifier):
             p = sorted((self._classes[type], type) for type, w in p.items() if w == m > 0)
             p = [type for frequency, type in p if frequency == p[0][0]]
             return choice(p)
-        except:
+        except Exception:
             return self.baseline
 
 NearestNeighbor = kNN = KNN
@@ -3104,7 +3104,7 @@ class SLP(Classifier):
             p = sorted((self._classes[type], type) for type, w in p.items() if w == m > 0)
             p = [type for frequency, type in p if frequency == p[0][0]]
             return choice(p)
-        except:
+        except Exception:
             return self.baseline
 
     def finalize(self):
@@ -3757,7 +3757,7 @@ class LR(Classifier):
             x = scipy.sparse.csr_matrix(x) # faster dot
             y = scipy.array([H1[type] for type, v in self._vectors])
             t = self._gradient_descent(x, y, l=0.1, iterations=self._iterations)
-        except:
+        except Exception:
             t = None
         self._model = (t, H1, H2, H3, H4)
 
@@ -3842,7 +3842,7 @@ class LR(Classifier):
             p = sorted((self._classes[type], type) for type, w in p.items() if w == m > 0)
             p = [type for frequency, type in p if frequency == p[0][0]]
             return choice(p)
-        except:
+        except Exception:
             return self.baseline
 
     def save(self, path, final=False):

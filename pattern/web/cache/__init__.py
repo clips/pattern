@@ -16,7 +16,7 @@ from io import open
 try:
     import hashlib
     md5 = hashlib.md5
-except:
+except Exception:
     import md5
     md5 = md5.new
 
@@ -40,7 +40,7 @@ BOM_UTF8 = BOM_UTF8.decode('utf-8')
 
 try:
     MODULE = os.path.dirname(os.path.realpath(__file__))
-except:
+except Exception:
     MODULE = ""
 
 TMP = os.path.join(tempfile.gettempdir(), "pattern_web")

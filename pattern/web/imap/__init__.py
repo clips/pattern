@@ -22,22 +22,22 @@ import time
 
 try:
     MODULE = os.path.dirname(os.path.realpath(__file__))
-except:
+except Exception:
     MODULE = ""
 
 # Import the Cache class from pattern.web so e-mails can be cached locally (faster):
 try:
     from ..cache import cache
-except:
+except Exception:
     try:
         import os
         import sys
         sys.path.append(os.path.join(MODULE, ".."))
         from cache import cache
-    except:
+    except Exception:
         try:
             from pattern.web.cache import cache
-        except:
+        except Exception:
             cache = {}
 
 from pattern.helpers import encode_string, decode_string
@@ -123,7 +123,7 @@ class Mail(object):
         self._imap4 = (self._secure and IMAP4_SSL or IMAP4)(self._host, self._port)
         try:
             status, response = self._imap4.login(username, password)
-        except:
+        except Exception:
             raise MailLoginError
         if status != "OK":
             raise MailLoginError(response)
@@ -170,7 +170,7 @@ def _decode(s, message):
     try:
         # Decode MIME header (e.g., "=?utf-8?q?").
         s = email.Header.decode_header(s)[0][0]
-    except:
+    except Exception:
         pass
     try:
         # Decode message Content-Type charset to Unicode.
@@ -178,13 +178,13 @@ def _decode(s, message):
         e = message.get("Content-Type")
         e = e.split("charset=")[-1].split(";")[0].strip("\"'").lower()
         s = s.decode(e)
-    except:
+    except Exception:
         try:
             s = s.decode("utf-8")
-        except:
+        except Exception:
             try:
                 s = s.decode("latin-1")
-            except:
+            except Exception:
                 pass
     return s
 

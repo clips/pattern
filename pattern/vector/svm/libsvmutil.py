@@ -92,7 +92,7 @@ def evaluations(ty, pv):
     MSE = total_error / l
     try:
         SCC = ((l * sumvy - sumv * sumy) * (l * sumvy - sumv * sumy)) / ((l * sumvv - sumv * sumv) * (l * sumyy - sumy * sumy))
-    except:
+    except Exception:
         SCC = float('nan')
     return (ACC, MSE, SCC)
 

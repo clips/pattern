@@ -31,7 +31,7 @@ import base64
 try:
     from hashlib import sha1
     from hashlib import md5
-except:
+except Exception:
     import sha as sha1
     import md5
     md5 = md5.new

@@ -27,7 +27,7 @@ from pattern.db import Datasheet
 
 try:
     PATH = os.path.dirname(os.path.realpath(__file__))
-except:
+except Exception:
     PATH = ""
 
 

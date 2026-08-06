@@ -16,7 +16,7 @@ import sys
 try:
 	import scipy
 	from scipy import sparse
-except:
+except Exception:
 	scipy = None
 	sparse = None
 
@@ -32,7 +32,7 @@ try:
 		liblinear = CDLL(path.join(dirname, 'windows\liblinear-2.20\liblinear.dll'))
 	else:
 		liblinear = CDLL(path.join(dirname, 'macos/liblinear-2.20/liblinear.so.3'))
-except:
+except Exception:
 # For unix the prefix 'lib' is not considered.
 	if find_library('linear'):
 		liblinear = CDLL(find_library('linear'))
@@ -129,7 +129,7 @@ def gen_feature_nodearray(xi, feature_max=None):
 try:
 	from numba import jit
 	jit_enabled = True
-except:
+except Exception:
 	jit = lambda x: x
 	jit_enabled = False
 

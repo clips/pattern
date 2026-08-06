@@ -13,5 +13,5 @@ except ImportError as e:
 try:
     from . import liblinear
     from . import liblinearutil
-except:
+except Exception:
     LIBLINEAR = False
