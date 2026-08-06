@@ -56,7 +56,7 @@ setup(
          license = "BSD",
           author = "Tom De Smedt",
     author_email = "tom@organisms.be",
-             url = "http://www.clips.ua.ac.be/pages/pattern",
+             url = "https://github.com/clips/pattern",
         packages = [
         "pattern",
         "pattern.web",
