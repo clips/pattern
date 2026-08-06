@@ -13,6 +13,7 @@ before_install:
   - conda update --yes conda
   - conda install --yes numpy scipy
   - pip install --quiet pytest pytest-cov pytest-xdist chardet
+  - pip install ".[mysql]"
 
 install:
   - python setup.py install --quiet
