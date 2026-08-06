@@ -4,6 +4,10 @@ dist: precise
 
 python:
   - "3.6"
+addons:
+  homebrew:
+    packages:
+    - mysqlclient
 
 before_install:
   - export TZ=Europe/Brussels
