@@ -1606,28 +1606,36 @@ class Template(object):
         k.update(kwargs)
         k["template"] = template
         indent = kwargs.pop("indent", False)
+        result = []
         for cmd, v, w in compiled:
             if indent is False:
                 w = ""
             if cmd is None:
                 continue
             elif cmd == "<str>":
-                yield self._encode(v, w)
+                # yield self._encode(v, w)
+                result.append(self._encode(v, w))
             elif cmd == "<arg>":
-                yield self._encode(k.get(v, "$" + v), w)
+                # yield self._encode(k.get(v, "$" + v), w)
+                result.append(self._encode(k.get(v, "$" + v), w))
             elif cmd == "<if>":
-                yield "".join(self._render(v[1], k)) if eval(v[0]) else ""
+                # yield "".join(self._render(v[1], k)) if eval(v[0]) else ""
+                result.append("".join(self._render(v[1], k)) if eval(v[0]) else "")
             elif cmd == "<for>":
-                yield "".join(["".join(self._render(v[2], k, self._dict(v[0], i))) for i in eval(v[1], k)])
+                # yield "".join(["".join(self._render(v[2], k, self._dict(v[0], i))) for i in eval(v[1], k)])
+                result.append("".join(["".join(self._render(v[2], k, self._dict(v[0], i))) for i in eval(v[1], k)]))
             elif cmd == "<eval>":
-                yield self._encode(eval(v, k), w)
+                # yield self._encode(eval(v, k), w)
+                result.append(self._encode(eval(v, k), w))
             elif cmd == "<exec>":
                 o = StringIO()
                 k["write"] = o.write # Code blocks use write() for output.
                 exec(v, k)
-                yield self._encode(o.getvalue(), w)
+                # yield self._encode(o.getvalue(), w)
+                result.append(self._encode(o.getvalue(), w))
                 del k["write"]
                 o.close()
+        return result
 
     def render(self, *args, **kwargs):
         """ Returns the rendered template as a string.

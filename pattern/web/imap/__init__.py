@@ -273,6 +273,7 @@ class MailFolder(object):
         """
         for i in reversed(range(len(self))):
             yield self[i]
+        # return (self[i] for i in reversed(range(len(self))))
 
     def __len__(self):
         status, response = self.parent.imap4.select(self.name, readonly=1)

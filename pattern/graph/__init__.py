@@ -898,11 +898,13 @@ def dijkstra_shortest_path(graph, id1, id2, heuristic=None, directed=False):
         Raises an IndexError between nodes on unconnected graphs.
     """
     # Based on: Connelly Barnes, http://aspn.activestate.com/ASPN/Cookbook/Python/Recipe/119466
-    def flatten(list):
+    def flatten(linked_list):
         # Flattens a linked list of the form [0,[1,[2,[]]]]
-        while len(list) > 0:
-            yield list[0]
-            list = list[1]
+        result = []
+        while len(linked_list) > 0:
+            # yield list[0]
+            result.append(linked_list[0])
+            linked_list = linked_list[1]
     G = adjacency(graph, directed=directed, heuristic=heuristic)
     q = [(0, id1, ())] # Heap of (cost, path_head, path_rest).
     visited = set()    # Visited nodes.

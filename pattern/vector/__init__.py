@@ -118,10 +118,13 @@ def chunk(iterable, n):
     n = int(n)
     i = 0
     j = 0
+    result = []
     for m in range(n):
         j = i + len(a[m::n])
-        yield a[i:j]
+        # yield a[i:j]
+        result.append(a[i:j])
         i = j
+    return result
 
 
 def mix(iterables=[], n=10):
@@ -129,10 +132,13 @@ def mix(iterables=[], n=10):
     """
     # list(mix([[1, 2, 3, 4], ["a", "b"]], n=2)) => [1, 2, "a", 3, 4, "b"]
     a = [list(chunk(x, n)) for x in iterables]
+    result = []
     for i in range(int(n)):
         for x in a:
             for item in x[i]:
-                yield item
+                # yield item
+                result.append(item)
+    return result
 
 
 def bin(iterable, key=lambda x: x, value=lambda x: x):
@@ -2136,9 +2142,12 @@ def sequence(i=0, f=lambda i: i + 1):
     # Used to generate unique vector id's in hierarchical().
     # We cannot use Vector.id, since the given vectors might be plain dicts.
     # We cannot use id(vector), since id() is only unique for the lifespan of the object.
+    result = []
     while True:
-        yield i
+        # yield i
+        result.append(i)
         i = f(i)
+    return result
 
 
 def hierarchical(vectors, k=1, iterations=1000, distance=COSINE, **kwargs):
@@ -2569,14 +2578,20 @@ def folds(documents=[], K=10, **kwargs):
         a = list(iterable)
         i = 0
         j = 0
+        result = []
         for m in range(n):
             j = i + len(a[m::n])
-            yield a[i:j]
+            # yield a[i:j]
+            result.append(a[i:j])
             i = j
+        return result
     k = kwargs.get("k", K)
     d = list(chunks(documents, max(k, 2)))
+    res = []
     for holdout in range(k):
-        yield list(chain(*(d[:holdout] + d[holdout + 1:]))), d[holdout]
+        # yield list(chain(*(d[:holdout] + d[holdout + 1:]))), d[holdout]
+        res.append(list(chain(*(d[:holdout] + d[holdout + 1:]))), d[holdout])
+    return res
 
 _folds = folds
 
@@ -2595,10 +2610,13 @@ def gridsearch(Classifier, documents=[], folds=10, **kwargs):
         # Yields the cartesian product of given iterables:
         # list(product([1, 2], [3, 4])) => [(1, 3), (1, 4), (2, 3), (2, 4)]
         p = [[]]
+        result = []
         for iterable in args:
             p = [x + [y] for x in p for y in iterable]
         for p in p:
-            yield tuple(p)
+            # yield tuple(p)
+            result.append(tuple(p))
+        return result
     s = [] # [((A, P, R, F, o), parameters), ...]
     p = [] # [[("c", 0.1), ("c", 10), ...],
            #  [("gamma", 0.1), ("gamma", 0.2), ...], ...]

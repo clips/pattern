@@ -589,6 +589,7 @@ def _read(path, encoding="utf-8", comment=";;;"):
     """ Returns an iterator over the lines in the file at the given path,
         strippping comments and decoding each line to Unicode.
     """
+    result = []
     if path:
         if isinstance(path, str) and os.path.exists(path):
             # From file path.
@@ -605,8 +606,10 @@ def _read(path, encoding="utf-8", comment=";;;"):
             line = decode_utf8(line, encoding)
             if not line or (comment and line.startswith(comment)):
                 continue
-            yield line
-    raise StopIteration
+            # yield line
+            result.append(line)
+    # raise StopIteration
+    return result
 
 
 class Lexicon(lazydict):

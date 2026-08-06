@@ -2352,8 +2352,11 @@ class MediaWiki(SearchEngine):
             Optional parameters can include those passed to
             MediaWiki.index(), MediaWiki.search() and URL.download().
         """
+        result = []
         for title in self.index(**kwargs):
-            yield self.search(title, **kwargs)
+            # yield self.search(title, **kwargs)
+            result.append(self.search(title, **kwargs))
+        return result
 
     # Backwards compatibility.
     all = articles
@@ -2367,6 +2370,7 @@ class MediaWiki(SearchEngine):
         id = kwargs.pop("_id", "title")
         # Loop endlessly (= until the last request no longer yields an "apcontinue").
         # See: http://www.mediawiki.org/wiki/API:Allpages
+        result = []
         while start != -1:
             url = URL(self._url, method=GET, query={
                      "action": "query",
@@ -2381,10 +2385,12 @@ class MediaWiki(SearchEngine):
             data = json.loads(data)
             for x in data.get("query", {}).get("allpages", {}):
                 if x.get(id):
-                    yield x[id]
+                    # yield x[id]
+                    result.append(x[id])
             start = data.get("query-continue", {}).get("allpages", {})
             start = start.get("apcontinue", start.get("apfrom", -1))
-        raise StopIteration
+        # raise StopIteration
+        return result
 
     # Backwards compatibility.
     list = index

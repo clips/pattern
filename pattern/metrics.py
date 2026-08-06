@@ -69,9 +69,12 @@ def cumsum(iterable):
     """ Returns an iterator over the cumulative sum of values in the given list.
     """
     n = 0
+    result = []
     for x in iterable:
         n += x
-        yield n
+        # yield n
+        result.append(n)
+    return result
 
 #### PROFILER ######################################################################################
 
@@ -465,9 +468,12 @@ def type_token_ratio(string, n=100, punctuation=PUNCTUATION):
         as opposed to the total number of words (= lexical diversity, vocabulary richness).
     """
     def window(a, n=100):
+        result = []
         if n > 0:
             for i in range(max(len(a) - n + 1, 1)):
-                yield a[i:i + n]
+                # yield a[i:i + n]
+                result.append(a[i:i + n])
+        return result
     s = string.lower().split()
     s = [w.strip(punctuation) for w in s]
     # Covington & McFall moving average TTR algorithm.
@@ -519,16 +525,20 @@ def isplit(string, sep="\t\n\x0b\x0c\r "):
         This is efficient in combination with cooccurrence(), 
         since the string may be very long (e.g., Brown corpus).
     """
+    result = []
     a = []
     for ch in string:
         if ch not in sep:
             a.append(ch)
             continue
         if a:
-            yield "".join(a)
+            # yield "".join(a)
+            result.append("".join(a))
             a = []
     if a:
-        yield "".join(a)
+        # yield "".join(a)
+        result.append("".join(a))
+    return result
 
 
 def cooccurrence(iterable, window=(-1, -1), term1=lambda x: True, term2=lambda x: True, normalize=lambda x: x, matrix=None, update=None):
@@ -665,14 +675,18 @@ def smoothrange(a=None, b=None, n=10):
     if b is None:
         a, b = 0, a
     if a == b:
-        yield float(a)
-        raise StopIteration
+        # yield float(a)
+        return float(a)
+        # raise StopIteration
     r = _multiple(b - a)
     t = _multiple(r / (n - 1), round=True)
     a = floor(a / t) * t
     b = ceil(b / t) * t
+    result = []
     for i in range(int((b - a) / t) + 1):
-        yield a + i * t
+        # yield a + i * t
+        result.append(a + i * t)
+    return result
 
 #### STATISTICS ####################################################################################
 
@@ -733,11 +747,14 @@ def simple_moving_average(iterable, k=10):
     """ Returns an iterator over the simple moving average of the given list of values.
     """
     a = iterable if isinstance(iterable, list) else list(iterable)
+    result = []
     for m in range(len(a)):
         i = m - k
         j = m + k + 1
         w = a[max(0, i):j]
-        yield float(sum(w)) / (len(w) or 1)
+        # yield float(sum(w)) / (len(w) or 1)
+        result.append(float(sum(w)) / (len(w) or 1))
+    return result
 
 sma = simple_moving_average
 

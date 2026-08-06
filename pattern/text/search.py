@@ -168,11 +168,14 @@ def product(*args, **kwargs):
          ("t", "a"), 
          ("t", "t")]
     """
+    result = []
     p = [[]]
     for iterable in map(tuple, args) * kwargs.get("repeat", 1):
         p = [x + [y] for x in p for y in iterable]
     for p in p:
-        yield tuple(p)
+        # yield tuple(p)
+        result.append(tuple(p))
+    return result
 
 try:
     from itertools import product
@@ -722,14 +725,18 @@ class Pattern(object):
         # Parse nested lists and tuples from the sequence into groups.
         # [DT [JJ NN]] => Match.group(1) will yield the JJ NN sequences.
         def _ungroup(sequence, groups=None):
+            result = []
             for v in sequence:
                 if isinstance(v, (list, tuple)):
                     if groups is not None:
                         groups.append(list(_ungroup(v, groups=None)))
                     for v in _ungroup(v, groups):
-                        yield v
+                        # yield v
+                        result.append(v)
                 else:
-                    yield v
+                    # yield v
+                    result.append(v)
+            return result
         self.groups = []
         self.sequence = list(_ungroup(sequence, groups=self.groups))
         # Assign Constraint.index:
