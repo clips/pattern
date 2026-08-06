@@ -1359,7 +1359,7 @@ class HTMLCanvasRenderer(GraphRenderer):
     def data(self):
         """ Yields a string of Javascript code that loads the nodes and edges into variable g,
             which is a Javascript Graph object (see graph.js).
-            This can be the response of an XMLHttpRequest, after wich you move g into your own variable.
+            This can be the response of an XMLHttpRequest, after which you move g into your own variable.
         """
         return "".join(self._data())
 
